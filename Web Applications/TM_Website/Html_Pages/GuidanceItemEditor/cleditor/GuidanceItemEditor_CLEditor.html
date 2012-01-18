@@ -1,0 +1,68 @@
+	<link href="/javascript/htmlEditors/CLEditor/jquery.cleditor.css"  rel="stylesheet" type="text/css" />	 
+    <script src="/javascript/htmlEditors/CLEditor/jquery.cleditor.min.js" type="text/javascript" ></script>
+	
+    	     
+	<!--GuidanceItem Editor : CLEDITOR-->
+	
+	<script>
+	
+		TM.Gui.GuidanceItemEditor_Div = "guidanceItem";
+		TM.Gui.GuidanceItemEditor.applyCssFix = function()
+			{															
+				$('#rawGuidanceItem').width("99%").height($(window.document).height() -150)
+				
+				/*if ($.browser.msie)
+				{				
+					$('#rawGuidanceItem').width("99%").height($(window.document).height() -150)
+				}
+				else
+				{
+					$('#rawGuidanceItem').absolute().left(2).right(2).bottom(10).top(180);
+				}*/				
+				
+				$(".cleditorMain").css("border","0");
+				//$(".cleditorToolbar").css("border","1px solid");
+				$(window).resize(TM.Gui.GuidanceItemEditor.onResize);							
+			}
+			
+		TM.Gui.GuidanceItemEditor.onResize = function()
+			{				
+				//console.log('on resize')
+				var height = $(window.document).height() 
+								 - 170 
+								 - $(".cleditorToolbar").height();
+				$(".cleditorMain").height(height);
+				$(".cleditorMain iframe").height('99%').width('100%');
+			}			
+				
+		TM.Gui.GuidanceItemEditor.showGuidanceItemHtml = function(htmlCode)
+			{	
+			$("#rawGuidanceItem").show();			
+				$.cleditor.defaultOptions.width = "99%";
+				//$.cleditor.defaultOptions.height = 	$(window.document).height() -150;
+                $('#rawGuidanceItem').val(htmlCode);
+				TM.Gui.GuidanceItemEditor.cleditor = $("#rawGuidanceItem").cleditor();								
+				TM.Gui.GuidanceItemEditor.applyCssFix();
+				TM.Gui.GuidanceItemEditor.onResize();
+				
+				
+				//fix the weird bug that happens when the user presses on enter in the new link text box
+				if ($.browser.msie)
+					$(".cleditorPopup input[type=text]").keypress(function(e) { if(e.which ==  13) { return false;} })
+			}				
+			
+		TM.Gui.GuidanceItemEditor.getEditorCode = function()
+            {
+				return $('#rawGuidanceItem').val();
+			}
+			
+		$(function()
+			{
+				$("#rawGuidanceItem").hide();
+				
+				
+			});	
+	</script>
+	
+	<TextArea id="rawGuidanceItem"></TextArea>  
+	

@@ -1,0 +1,82 @@
+<!DOCTYPE HTML>
+<html>
+	<head>				
+		<link rel="stylesheet" href="/javascript/slickGrid/slick.grid.css" type="text/css" media="screen" charset="utf-8" />        
+		<link rel="stylesheet" href="/javascript/slickGrid/examples.css" type="text/css" media="screen" charset="utf-8" />
+			
+		<script src="/javascript/jQuery/jquery-1.7.1.min.js"></script>
+		<script src="/javascript/jQuery.event.drag/jquery.event.drag-2.0.min.js"></script>
+		
+		<script src="/javascript/slickGrid/slick.core.js"></script>
+		<script src="/javascript/slickGrid/slick.grid.js"></script>
+				
+		<script src="/javascript/TM/GlobalVariables.js" type="text/javascript"></script>
+		<script src="/javascript/TM/WebServices.js" type="text/javascript"></script>
+		<script src="/javascript/json/json2.js" 				type="text/javascript"></script>	
+		<script src="/javascript/TM/GuiObjects.js" type="text/javascript"></script>
+
+		
+	</head>
+	
+	<body>
+			
+		<script>			
+			var showSlickGrid = function(element, options, columns, data)
+			{
+				var grid = new Slick.Grid(element, data, columns, options);
+				$(element).show();				
+				return grid
+			}
+			
+		
+			var setUpGrid = function() 
+			{							
+				//var grid;
+				var columns = [
+					{id:"id", name:"Id", field:"id", width: 10},
+					{id:"uniqueString", name:"Unique String", field:"uniqueString"}				
+				];			
+		
+				var options = {
+					enableCellNavigation: false,
+					enableColumnReorder: false
+				};				
+				
+				var data = [] ; 
+				$.each(TM.WebServices.Data.GuiObjects.UniqueStrings, 
+					function(index,value) 
+					{ 
+						data.push({id: index, uniqueString:value}) ; 
+					}); 				
+									
+			$("#myGrid").css({ 
+									//display:'none' ,
+									position:'absolute',
+									top:50, 
+									left:0,
+									right:0,
+									bottom:0									
+								  });
+			
+				
+				var myGrid=showSlickGrid("#myGrid", options, columns, data);
+				
+				myGrid.autosizeColumns();
+				
+				TM.testGrid = myGrid
+				UnitTest_Helper_SlickGridLoaded = true;		
+				//myGrid.setData(data,true);myGrid.render()				}
+			
+			};							
+			
+			TM.Events.onGuiObjectsLoaded(setUpGrid)
+						
+			
+		</script>
+		
+		<h2>SlickGrid - View Unique Strings</h2>
+		<div id="myGrid"></div>
+			
+		</table>		
+	</body>
+</html>

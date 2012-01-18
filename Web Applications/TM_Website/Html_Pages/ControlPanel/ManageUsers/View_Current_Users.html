@@ -1,0 +1,142 @@
+<h2>Manage Users</h2>
+
+<script type="text/javascript">
+						
+		var userRoles = ["Anonymous","Admin","Reader","Editor","Developer"];
+		
+		/*var data = {
+						name: 'User list',
+						list_id: 4,
+						table: [
+							{id: 1, name: 'Anne', age: 22, mail: 'anne@domain.com'},
+							{id: 2, name: 'Amelie', age: 24, mail: 'amelie@domain.com'}
+						]
+					};*/
+
+		var testEditCurrentUser = function()
+			{
+				"editUserDiv".$().load('/Html_Pages/ControlPanel/ManageUsers/EditUser.html?time=' + new Date().getTime(), 
+									   function() { editCurrentUser() });
+			}
+		
+		var editUser = function(userId)
+			{				
+				var userData = jlinq.from(allUserData).equals("UserID", userId).first()
+				"editUserDiv".$().load('/Html_Pages/ControlPanel/ManageUsers/EditUser.html?time=' + new Date().getTime(), 
+									   function() { loadUserData(userData, refreshUserTable)} );
+				//alert(userData.UserID);
+			}
+			
+		var deleteSelectedUser = function(userId)
+		{
+			var userData = jlinq.from(allUserData).equals("UserID", userId).first()
+			description = "user: '{0}'".format(userData.UserName);
+			TM.Gui.Dialog.deleteConfirmation(description, function() { deleteUser(userId, loadUserData) } );
+		}
+		
+		var refreshUserTable = function()	
+			{
+				$(allUserData).each(function()
+					{ 						
+						this.GroupName =userRoles[this.GroupID];						
+					});
+				$("#result1").setTemplateElement("template")							
+							 .processTemplate(allUserData);
+				$("#status").html("");							 
+				cssFixes();
+			}
+			
+		var showData = function(data)
+			{			
+				
+				allUserData= data.d;				
+				
+				//alert(JSON.stringify(data));
+				//document.write(JSON.stringify(data));
+				refreshUserTable();				
+				TM.Events.onControlPanelViewLoaded();
+			};
+		
+		var loadUserData = function() 
+			{				
+				$("#status").html("loading data");
+				getUsers(showData);				
+								
+				//showData(data);
+			};
+			
+		var cssFixes = function()
+			{
+				//"userTable th".$().css('text-align','left')
+			}
+			
+		$(document).ready(
+			function() {
+							loadUserData();							
+							loadPage("#createUsersDiv", '/Html_Pages/ControlPanel/Views/../ManageUsers/CreateUsers.html')	 							
+							TM.Events.onCreateUsers.add(function() { loadUserData(); });
+ 						});
+</script>
+	<style type="text/css"> 
+		.jTemplatesTest {
+			background: #EEE;
+			border: 2px solid #000000;
+			margin: 2em;
+			width: 90%;
+		}
+		.jTemplatesTest * {
+			padding: 2px;
+			margin: 2px auto;
+		}			
+		
+		.jTemplatesTest table {
+			width: 100%;
+		}
+	</style>
+
+
+<!-- Template content --> 
+	<textarea id="template" style="display:none"> 
+
+		<table id="userTable">
+			<tr style="text-align : 'left'">
+				<th>UserID</th>
+				<th>UserName</th>				
+				<th>FirstName</th>
+				<th>LastName</th>
+				<th>Title</th>
+				<th>Company</th>
+				<th>EMail</th>
+				<th>GroupID</th>
+				<!--<th>IsActive</th>
+				<th>ExpirationDate</th>-->
+				<th> actions</th>
+			</tr>
+			
+			{#foreach $T as record}
+			<tr>
+				<td>{$T.record.UserID}</td>
+				<td>{$T.record.UserName}</td>
+				<td>{$T.record.FirstName}</td>
+				<td>{$T.record.LastName}</td>
+				<td>{$T.record.Title}</td>
+				<td>{$T.record.Company}</td>
+				<td>{$T.record.EMail}</td>
+				<!--<td>{$T.record.GroupID}</td>-->
+				<td>{$T.record.GroupName}</td>
+				<!--<td>{$T.record.IsActive}</td>
+				<td>{$T.record.ExpirationDate}</td>-->				
+				<td><a href=# onclick="javascript: editUser({$T.record.UserID});return false">edit</a>
+					<a href=# onclick="javascript:jQuery(this).closest('tr').css('color', 'red'); deleteSelectedUser({$T.record.UserID});return false">delete</a>
+					</td>
+			</tr>
+			{#/for}
+		</table>
+	</textarea> 
+
+
+<div id="result1" class="jTemplatesTest"></div>  	
+<div id="status" ></div>  		
+<div id="editUserDiv"></div>
+
+<div id="createUsersDiv"></div>

@@ -1,0 +1,149 @@
+	<link rel="stylesheet" href="./codeMirror/codemirror.css">
+    <script src="./codeMirror/codemirror.js"></script>
+    <script src="./codeMirror/javascript.js"></script>
+    <link rel="stylesheet" href="./codeMirror/default.css">    
+    <style type="text/css">
+		.CodeMirror {
+						border-top: 1px solid black;
+						border-bottom: 1px solid black;
+						font-size:12px
+					}
+				
+	</style>
+	<script>
+	
+		var codeMirror;
+		function showMessage(message)
+		{			
+			savedMessage.html("<div class='ui-widget'><div class='ui-state-highlight ui-corner-all' style='top:100px;left:200;position:absolute;margin-left: 20px; margin-right: 20px; padding: 0px'>" + message + "</div></div>")
+						.fadeIn(2000)
+						.delay(2000)
+						.fadeOut(1000);
+		}
+		
+		function previewFile(locationId, openAsNewWindow)
+		{
+                  	var url = locationId.$().attr('value');
+			var url_WithTime = url+"?".add_Time();
+	                if(openAsNewWindow)
+                          	window.open(url_WithTime);
+                  	else
+				openUrl(url_WithTime, url,500);
+		}
+		
+		function deleteFile(locationId)
+		{
+			var fileToDelete = locationId.$().attr('value');
+			WebEditor.deleteFile(fileToDelete, showMessage);
+			//showMessage("deleting file: " + fileToDelete);
+			//"filePreview".$().css('border-color','red');
+			//"filePreview".$().load(url, function() { "filePreview".$().css('border-color','black'); });			
+		}
+		
+		function loadScript(locationId, editorId)
+		{	
+			var fileToGet = locationId.$().attr('value');
+			WebEditor.getFile(fileToGet, function(data) { showScript(data,editorId)} );
+			//codeId.$html('');
+			//var url = locationId.$().attr('value')+"?".add_Time();			
+			//$.get(url, '' , function(data) {showScript(data, editorId); });					
+		}
+		
+		function showScript(sourceCode, editorId)
+		{	
+			editorId.$html('');			
+			//var htmlSourceCode = codeId.$html();			
+			codeMirror = CodeMirror(document.getElementById(editorId), 
+											{  
+												lineNumbers :true, 
+												matchBrackets :true, 
+												value: sourceCode,   
+												mode:  "javascript" 
+											});
+			
+			//editorId.$().find('.CodeMirror-scroll').height(400)
+                  	//"filePreview".$().resizable().draggable(); 
+                	"codeEditor".$().resizable().draggable(); 
+                  	
+                  	var resyncHeights = function() { "CodeMirror-scroll".$().height("codeEditor".$().height() - 27);};
+
+                  	 "codeEditor".$().resize(resyncHeights);
+//                  	 "codeEditor".$().resize(function() 
+//                                                 	{ 
+//                                                          	//"CodeMirror-scroll".$().height("codeEditor".$().height() - 27);
+//	                                                          resyncHeights();
+//                                                        } );
+                  	resyncHeights();
+			//
+			//
+		}
+		savePwd = "secret";
+		function saveScript(locationId)
+		{
+			var saveLocation = locationId.$().value();
+			var code = codeMirror.getValue();
+						
+				
+			WebEditor.saveFile(saveLocation, code , showMessage);
+			//invokeWebService(wsUrl,params, function(response) { alert(response.d)});
+			
+		}
+		
+		$(function()
+		{						
+			var defaultCodeUrl = '/default.htm';			
+								  
+			locationId = "javascriptEditor".$().add_TextBox(defaultCodeUrl)
+												   .width(400)
+												   //.relative()
+												   //.top(-15)
+												   //.left(50)	
+												   .id();
+			loadLink = "javascriptEditor".$().add_Link("load", "#");	
+								  //.relative();
+								  //.left(10)	;
+			saveLink = "javascriptEditor".$().append(' - ').add_Link("save", "#");
+			
+                  	//link: preview
+			"javascriptEditor".$()  .append(' - ')
+                          			.add_Link("preview (here)", "#")
+                          			.click(function() { previewFile(locationId,false) } );
+                  	//link: openNew window                  
+			"javascriptEditor".$()  .append(' - ')
+                          			.add_Link("preview (new tab)", "#")
+                          			.click(function() { previewFile(locationId,true) } );
+			
+			deleteLink = "javascriptEditor".$().add_Link("delete file", "#")
+											   .absolute().right(10).top(3);
+								  
+			loadLink.click(function() { loadScript(locationId,editorId ) } );
+			saveLink.click(function() { saveScript(locationId) } );
+
+			deleteLink.click(function() { deleteFile(locationId) } );
+			
+
+			savedMessage = "javascriptEditor".$().add_Div();												 
+			
+			"javascriptEditor".$().add_Div();
+			var editorId = "javascriptEditor".$().add_Div().id();					
+								  
+			/*var editor = CodeMirror.fromTextArea(document.getElementById("code"), 
+							{
+								lineNumbers: true,
+								matchBrackets: true
+							});					  
+			*/		
+			
+			//codeId.$html("this is the source code");			
+			loadLink.click();
+		});
+	</script>
+
+<div id="javascriptEditor">	
+</div>
+
+<script>
+	
+  
+</script>
+

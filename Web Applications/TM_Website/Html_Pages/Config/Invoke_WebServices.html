@@ -1,0 +1,169 @@
+<!-- contents of /javascript/jsPrettify/prettify.css -->
+<style type="text/css"> 
+	.str{color:#080}.kwd{color:#008}.com{color:#800}.typ{color:#606}.lit{color:#066}.pun{color:#660}
+	.pln{color:#000}.tag{color:#008}.atn{color:#606}.atv{color:#080}.dec{color:#606}
+	pre.prettyprint{font-size:11;  ;padding:2px;border:1px solid #888}
+	ol.linenums{margin-top:0;margin-bottom:0}
+	li.L0,li.L1,li.L2,li.L3,li.L5,li.L6,li.L7,li.L8{list-style:none}
+	li.L1,li.L3,li.L5,li.L7,li.L9{background:#eee}
+	@media print{.str{color:#060}
+	.kwd{color:#006;font-weight:bold}
+	.com{color:#600;font-style:italic}
+	.typ{color:#404;font-weight:bold}
+	.lit{color:#044}
+	.pun{color:#440}.pln{color:#000}
+	.tag{color:#006;font-weight:bold}
+	.atn{color:#404}.atv{color:#060}}
+</style>	
+
+<style type="text/css"> 
+				
+		.url {
+			width: 98%;
+		}
+		.invoke {
+			width: 100%;
+			height: 60px;
+		}
+		.result {
+			width: 100%;
+			height: 50pt;
+		}
+		.prettyprint{
+			font-size: 11px;
+			background: white;			
+		}
+		.availableMethods tr td {
+			align:right , 
+			text-align:right
+		}
+		.availableMethods div2 {			
+			width: 400px			
+		}
+</style> 	
+	
+
+<script type="text/javascript">
+							
+
+		//functions
+		var invokeService = function()
+		{
+			var url = jQuery('#url').attr('value');
+			var params = jQuery('#params').attr('value');			
+			jQuery('#code').html('');
+			jQuery('#errorMessage').html('');			
+			invokeWebService(url, params, 
+							function(data) 
+								{ 												
+									var jsonString = js_beautify(JSON.stringify(data));					
+									jQuery('#code').text((jsonString)); 					
+									prettyPrint();											
+								},
+							function(errorMsg)
+								{	
+									if (typeof(errorMsg)=="object")
+										errorMsg = errorMsg.responseText;																		
+									jQuery('#code').text('');									
+									if ( (typeof(errorMsg)=="string") &&
+										 (errorMsg.search("Request for principal permission failed.") > 0 || 
+										  errorMsg.search("There was an error processing the request.") > 0) )
+									{
+										jQuery('#errorMessage').html("Security Exception: Your current login is not authorized to make this request")
+															   .css('color','red');
+									}									
+									else									
+									{
+										jQuery('#errorMessage').html(errorMsg)
+															   .css('color','');
+									}
+								});	
+		};
+		
+		var loadGui = function()
+		{					
+				
+			if (typeof prettyPrint == "function" && typeof js_beautify == "function")
+			{
+				
+				prettyPrint();
+				
+				$("#result1").html('loadGui....');
+								
+				$("#result1").setTemplateElement("template")							
+							 .processTemplate(data);				
+				
+							
+				
+				jQuery('#invoke').click(function () { invokeService(); } );			
+				jQuery('#invoke').trigger('click');
+				jQuery('#url').keypress(function(e) { if(e.which == 13){ invokeService() } } );
+				jQuery('#params').keypress(function(e) { if(e.which == 13){ invokeService() } } );
+				
+			}
+			else
+			{
+				
+				$("#result1").html("loading js_beautify and prettyPrint");			
+			}			
+		};
+		
+		$(document).ready(			
+			function() {	
+				
+							loadGui();							
+							if (typeof js_beautify == "undefined") {
+								jQuery.getScript('/javascript/jsPrettify/beautify.js', loadGui); }
+							if (typeof prettyPrint == "undefined") {
+								jQuery.getScript('/javascript/jsPrettify/prettify.js', loadGui); }							
+							
+ 						}); 						 		
+</script>
+
+
+<!-- Template content --> 
+	<textarea id="template" style="display:none"> 		
+		<table>	
+	 		<tr class="availableMethods">
+				<td colspan="2">					
+					Available Methods:			
+					{#foreach $T.table as record}		
+						{#if (typeof $T.record != "undefined") }
+							<a href="#" onclick="javascript:jQuery('#url').attr('value','{$T.record.url}') ;jQuery('#params').attr('value','{$T.record.params}');jQuery('#params').select();return false;">{$T.record.name}</a> 
+						{#/if}
+					{#/for}						
+					
+				</td>
+				<td></td>
+			<tr>	
+			<tr>
+				<td width='20'>WebMethod</td>
+				<td><input id='url' class='url' type='TextBox' value="{$T.url}"/></td>
+				<td width='100' rowspan=2><input id='invoke' class='invoke' type='button' value='invoke'/></td>
+				
+			</tr>						
+			<tr>
+				<td width='20'>Params</td>
+				<td><input id='params' class='url' type='TextBox' value="{$T.params}"/></td>				
+				
+			</tr>						
+			<tr>
+				<td colspan=3>
+					<div id = "codeDiv">
+						<pre id="code" class="prettyprint"></pre>
+					</div>
+				</td>
+			</tr>
+			<td>
+				<td colspan=3>
+					<div id = errorMessage class="prettyprint"> </div>
+						
+				</td>
+				
+			</tr>
+		</table>
+	</textarea> 
+	
+	
+	<div id="result1" class="jTemplatesTest"></div>  			
+	

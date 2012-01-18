@@ -1,0 +1,5 @@
+/javascript/jQuery.simplymodal/simplemodal.css
+/javascript/jQuery.DataTable/demo_table.css
+/javascript/jQueryUI/jquery-ui-1.8.14.custom.css
+/css/default.css
+/javascript/Growl/growl.css

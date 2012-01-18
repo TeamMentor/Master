@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>		
+	<title>Team Mentor - QUnit tests for: TM MAIN GUI for Admin user</title>
+	<script src="/javascript/TM/GlobalVariables.js" type="text/javascript"></script>
+	<!-- code files-->
+	<link rel="stylesheet" href="/javascript/qunit/qunit-git.css" type="text/css" media="screen">
+	<script src="/javascript/qunit/qunit-git.js" ></script>		
+	<script src="/Html_Pages/_UnitTest_Helpers/TM_qUnit_Tests/js/_TM_QUnit_support.js"></script>	
+		
+	<!-- add jQuery so that we can load the scripts in a sync way (from html_pages/Gui/Scripts_used_in_MainGui.html)-->	
+	
+	<script src="/javascript/jQuery/jquery-1.6.2.min.js" 	type="text/javascript"></script>
+		
+	<!-- qunit tests -->		
+
+	<script type="text/javascript" src="/Html_Pages/_UnitTest_Helpers/TM_qUnit_Tests/js/TM_Main_Gui/TM_Main_Gui_-_Helper_Functions.js"></script>	
+	<script type="text/javascript" src="/Html_Pages/_UnitTest_Helpers/TM_qUnit_Tests/js/TM_Main_Gui/TM_Main_Gui_Admin_Funcionality.js"></script>
+	
+	<script>			
+		
+		$(function()
+			{
+				$.ajaxSetup({ async:false});
+				$("#ScriptLoader").load("/html_pages/Gui/Scripts_used_in_MainGui.html");
+				$.ajaxSetup({ async:true});
+				$("#QUnit_Results").absolute().width("20%").top(0).left(0)
+								   .resizable();
+				$("#Canvas").absolute().width("79%").top(0).right(0).bottom(0)
+							.css("border","1px solid")				
+			});
+	</script>
+</head>
+<body>
+	<div>
+		<div id ="ScriptLoader"></div>
+		<div id ="QUnit_Results">
+			<h1 id="qunit-header">TM MAIN GUI for Admin user<br/></h1>
+<!--			<h2 id="qunit-banner"></h2>			
+			<div id="qunit-testrunner-toolbar"></div>
+			<h2 id="qunit-userAgent"></h2>-->
+			<ol id="qunit-tests"></ol>
+			<div id="qunit-fixture">test markup</div>			
+		</div>
+		<div id="Canvas" >...</div>
+	</div>
+</body>
+</html>

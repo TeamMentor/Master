@@ -1,0 +1,101 @@
+<script>
+
+
+
+TM.Gui.TextSearch.getCurrentFilteredGuidanceItemsIds = function()
+	{
+		var aaData = TM.WebServices.Data.filteredDataTable.aaData.length > 0
+						? TM.WebServices.Data.filteredDataTable.aaData
+						: TM.WebServices.Data.lastDataTableData.aaData
+						
+		return jlinq.from(aaData)
+					.select(function() 
+						{ 
+							return this[6]
+						});
+	}
+	
+TM.Gui.TextSearch.getValueAndApplyGlobalFilter = function()
+	{					
+		$("#SearchTextBox").css('background','#DDFFDD')
+		
+		var searchText = $('#SearchTextBox').val();		
+		var guidanceItemsIds = TM.Gui.TextSearch.getCurrentFilteredGuidanceItemsIds(); //use [] to search all
+		//TM.WebServices.Data.targetObjectGuidanceItemsIds;  //use [] to search all
+		
+		var callback = function (matchedIds) 
+			{
+				var _matchedIds = matchedIds;
+				$("#SearchTextBox").css('background','white')				
+				var matchedIds_DataTable = TM.WebServices.Data.getGuidanceItems_For_DataTable( matchedIds);      
+			  			  
+				TM.Gui.DataTable.displayDataTable(matchedIds_DataTable)
+				TM.Gui.DataTable.currentTextFilter = searchText;
+				TM.Events.onTextSearch();
+								
+			}; 
+		   
+		var params =   { searchText: searchText , guidanceItemsIds: guidanceItemsIds}
+		TM.WebServices.Helper.invoke_TM_WebService('XmlDatabase_GuidanceItems_SearchTitleAndHtml', params, callback);	
+		
+	}
+
+TM.Gui.TextSearch.invalidateSearchText = function()
+	{	
+		if ($('#SearchTextBox').val() != "")
+		{
+			TM.Gui.DataTable.currentTextFilter 	= "";			
+			$("#SearchTextBox").css('background','#FFDDDD')
+		}
+	}
+
+TM.Gui.TextSearch.setup = function()
+	{
+		TM.Gui.DataTable.currentTextFilter = "";
+		//if (! $.browser.msie)			
+			$('#SearchTextBox').keypress(
+				function(e) 
+					{ 
+						$("#SearchTextBox").css('background','#FFDDDD')
+						if(e.which == 13)
+							{ 										
+								TM.Gui.TextSearch.getValueAndApplyGlobalFilter();
+							} 
+					} );
+		$(".searchContent").height(24);
+		$(".SearchButton").height(23)
+		$(".SearchTextBox").width("center-north".$().width()-150)	
+	}
+	
+	$(function()
+		{	
+			TM.Gui.TextSearch.setup();
+			TM.Events.onInvalidateSearchText.add(TM.Gui.TextSearch.invalidateSearchText);
+			//TM.Events.onAppliedFieldsEnd.
+		});
+</script>
+
+<div class="searchCorners">
+
+	<b class="xb2"></b><b class="xb3"></b><b class="xb4"></b><b class="xb5"></b><b class="xb6">
+
+	</b><b class="xb7"></b>
+
+	<div class="searchContent">
+
+		<div class="SearchInner">
+			Search
+			<input type="text" id="SearchTextBox" class="SearchTextBox" maxlength="200" />
+
+			<input type="image" name="ctl00$ContentPlaceHolder1$SearchControl1$SearchButton" 
+			id="ctl00_ContentPlaceHolder1_SearchControl1_SearchButton" 
+			class="SearchButton" src="/Images/Search.png" 
+			onclick="TM.Gui.TextSearch.getValueAndApplyGlobalFilter();" style="border-width:0px;" />
+
+		</div>
+
+	</div>
+
+</div>
+
+		

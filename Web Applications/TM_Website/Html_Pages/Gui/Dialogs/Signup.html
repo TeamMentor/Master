@@ -1,0 +1,237 @@
+<script>
+
+	function signupResult(data)
+	{			
+		if (data.d == 0)
+		{
+			jQuery('#signupMessage').html("<h2>Failed to create user, please try again</h2>").css('color','red');
+			jQuery('#signupContent').show();
+		}
+		else
+		{
+			jQuery('#signupMessage').html("<h2>Account created successfully</h2>").css('color','black');
+			jQuery('#signupMessage').append("Please <a href='#' onclick='javascript:TM.Gui.Dialog.loginPage()'>Login</a> ");
+		}
+	}
+	
+	function submitForm_Signup()
+	{
+		//alert('submiting form');
+		jQuery('#signupContent').hide();
+		jQuery('#signupMessage').html('<h1>Creating user<h1>').css('color','black');
+		var username = jQuery('#ctl00_ContentPlaceHolder1_UsernameBox').attr('value');
+		var password = jQuery('#ctl00_ContentPlaceHolder1_PasswordBox').attr('value');
+		var passwordHash = SHA256(username+ password);
+		var email = jQuery('#ctl00_ContentPlaceHolder1_EmailBox').attr('value');
+		var firstName = jQuery('#ctl00_ContentPlaceHolder1_FNameBox').attr('value');
+		var lastName = jQuery('#ctl00_ContentPlaceHolder1_LNameBox').attr('value');
+		jQuery('#signupMessage').append("username: " + username + "</br>" +
+										"password: " + password + "<br>"  + 
+										"passwordHash: " + passwordHash + "<br>"  + 
+										"email: " + email + "<br/>" +
+										"firstname: " + firstName + "<br/>" +
+										"lastname: " + lastName + "<br/>");							
+		createUser(username, passwordHash, email, firstName, lastName, 'created from web', signupResult);														
+	}
+	
+	if (typeof(signupDialog) != "undefined")
+			signupDialog.remove();
+			
+	$(function()
+		{
+						
+			signupDialog = "signUpDiv".$().dialog(
+										{ 	
+											title:'Signup to TeamMentor' , 
+											modal: true  , 													
+											//buttons: { "create account" : loginUser},
+											width: '600px'
+										});//parent().width(400).top(100).height(250);
+
+				
+			$("#ctl00_ContentPlaceHolder1_SignUp").button()
+			$(".SignUpCol1").css('font-size', '12px')
+		});
+
+</script>	
+
+<div id="signUpDiv">
+
+	
+		<div id="signupMessage"></div>
+		<div class="SignupContent" id ="signupContent">
+			
+
+				<!--<span id="ctl00_ContentPlaceHolder1_TitleLable">Sign Up</span></h1>-->
+
+			<!--
+			<span id="ctl00_ContentPlaceHolder1_WelcomeText" class="WelcomeText">-->
+			
+			Please provide the following information to sign up for TeamMentor. <br />Note: if you already have a username and password, please <a href='#' onclick='javascript:TM.Gui.Dialog.loginPage()'>login</a>.
+			<!--</span>-->			
+
+			<br />
+			<br />
+
+			<strong>Bold Items</strong> are required:
+<br />
+<br />
+			<table class="SignupTable">
+
+				<tr>
+
+					<td class="SignUpCol1">
+
+						<strong>Username</strong>
+
+					</td>
+
+					<td>
+
+						<input name="ctl00$ContentPlaceHolder1$UsernameBox" type="text" id="ctl00_ContentPlaceHolder1_UsernameBox" class="otherTextBox" style="width:350px;" />
+
+					</td>
+
+<!--					<td>
+
+						<span id="ctl00_ContentPlaceHolder1_UsernameValidator" style="color:Red;display:none;">Usernames must be longer than three characters, and can only contain a-z, 0-9, . and - </span>
+
+						<span id="ctl00_ContentPlaceHolder1_UsernameRequired" style="color:Red;visibility:hidden;">Please provide a username</span>
+
+					</td>
+-->
+				</tr>
+
+				<tr>
+
+					<td class="SignUpCol1">
+
+						<strong>Password</strong>
+
+<!--						<br />
+
+						at least 5 characters
+-->
+					</td>
+
+					<td>
+
+						<input name="ctl00$ContentPlaceHolder1$PasswordBox" type="password" id="ctl00_ContentPlaceHolder1_PasswordBox" class="otherTextBox" style="width:350px;" />
+
+					</td>
+
+<!--					<td>
+
+						<span id="ctl00_ContentPlaceHolder1_checkPassword" style="color:Red;display:none;">Please type a password that is at least five characters long</span>
+
+						<span id="ctl00_ContentPlaceHolder1_PasswordRequired" style="color:Red;visibility:hidden;">Please provide a password</span>
+
+					</td>
+-->
+				</tr>
+
+				<tr>
+
+<!--					<td class="SignUpCol1">
+
+						<strong>Repeat Password</strong>
+
+					</td>
+
+					<td>
+
+						<input name="ctl00$ContentPlaceHolder1$RepeatPasswordBox" type="password" id="ctl00_ContentPlaceHolder1_RepeatPasswordBox" class="otherTextBox" style="width:350px;" />
+
+					</td>
+
+					<td>
+
+						<span id="ctl00_ContentPlaceHolder1_PassMatch" style="color:Red;visibility:hidden;">Both Passwords must match</span>
+
+					</td>
+
+				</tr>
+-->
+				
+
+				<tr>
+
+					<td class="SignUpCol1">
+
+						<strong>E-Mail</strong>
+
+					</td>
+
+					<td>
+
+						<input name="ctl00$ContentPlaceHolder1$EmailBox" type="text" id="ctl00_ContentPlaceHolder1_EmailBox" class="otherTextBox" style="width:350px;" />
+
+					</td>
+
+<!--					<td>
+
+						<span id="ctl00_ContentPlaceHolder1_checkEmail" style="color:Red;display:none;">Please verify the e-mail you typed is valid</span><br />
+
+						<span id="ctl00_ContentPlaceHolder1_emailRequired" style="color:Red;visibility:hidden;">Please provide an email</span>
+
+					</td>
+-->
+				</tr>
+				<tr>
+
+					<td class="SignUpCol1">
+
+						First Name
+
+					</td>
+
+					<td>
+
+						<input name="ctl00$ContentPlaceHolder1$FNameBox" type="text" id="ctl00_ContentPlaceHolder1_FNameBox" class="otherTextBox" style="width:350px;" />
+
+					</td>
+
+				</tr>
+
+				<tr>
+
+					<td class="SignUpCol1">
+
+						Last Name
+
+					</td>
+
+					<td>
+
+						<input name="ctl00$ContentPlaceHolder1$LNameBox" type="text" id="ctl00_ContentPlaceHolder1_LNameBox" class="otherTextBox" style="width:350px;" />
+
+					</td>
+
+				</tr>
+
+	
+				<tr>
+
+					<td class="SignUpCol1">
+
+						&nbsp;
+
+					</td>
+
+					<td align="right">
+
+						<input type="submit" name="ctl00$ContentPlaceHolder1$SignUp" value="Sign Up" onclick ="submitForm_Signup()" _onclick="SHASubmit();WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ContentPlaceHolder1$SignUp&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, false))" id="ctl00_ContentPlaceHolder1_SignUp" />
+
+					</td>
+
+				</tr>
+
+			</table>
+
+			<input type="hidden" name="ctl00$ContentPlaceHolder1$PasswordHash" id="ctl00_ContentPlaceHolder1_PasswordHash" />
+
+		</div>
+
+	
+
+</div>

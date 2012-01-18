@@ -1,0 +1,76 @@
+<script>
+	TM.ControlPanel.GitHubSync = 
+		{
+				
+				executeSync		: function()
+					{		
+						var that = this;
+						var username = $("#username").value();
+						var password = $("#password").value();
+						var params = { username : username, password : password  };
+						
+						TM.WebServices.Helper.invoke_TM_WebService('SyncWithGitHub',params, TM.ControlPanel.GitHubSync.showResult);						
+//						TM.WebServices.Helper.invoke_TM_WebService('GetTime', {} , TM.ControlPanel.GitHubSync.showResult);
+					}	
+					
+			, 	showResult		: function(result)
+					{								
+						result = result.replace(/\r\n/g, "<br/>");						
+						$("#result").html(JSON.stringify(result));
+					}
+			, 	applyCss		: function() 
+					{						
+						$("input:[type=text],input[type='password']").addClass("ui-widget-content ui-corner-all")
+															 .absolute()
+															 .left(100)
+															 .width(200);
+						$("#submit").button().absolute()
+											 .left(100)
+											 .css('font-size',12)
+											 .click(this.executeSync);
+						$("#gitForm").height(100)
+					}
+		}
+	$(function()
+		{
+			TM.ControlPanel.GitHubSync.applyCss();
+			
+			$("#username").val("TMInstall");
+		});
+</script>
+
+<div id="GitHubSync">  
+	<h2>GitHub Sync...</h2>
+	<br/>
+	<p>
+		Util to sync the current TeamMentor website with the latest development branch
+	</p>
+	<br/>
+	<h3>Account details:</h3>
+	<br/>
+	<p>Note that these values will be cached on the TMConfig file (so next time you don't need to provide them).</p>
+		
+	<div> 
+		<br/>
+		<form id="gitForm">
+			<p>
+				<label for="username">Username:</label>
+				<input type="text" id="username">
+			</p>
+			</br/>
+			<p>
+				<label for="password">Password</label>			
+				<input type="password" id="password"/>
+			</p>
+			<br/>
+			<input type="button" id="submit" value="Sync Now"/>
+		</form>
+	</div>
+	<div>
+		<h3>Result</h3>
+		<br/>
+		<div id ="result" >...</div>
+	</div>
+</div>
+          
+</div>

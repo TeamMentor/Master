@@ -1,0 +1,38 @@
+
+	<link rel="stylesheet" href="/Javascript/htmlEditors/elrte-1.3/css/elrte.min.css" type="text/css" media="screen" charset="utf-8">
+<!--GuidanceItem Editor : Raw Html -->
+	
+	<script>
+		TM.Gui.GuidanceItemEditor_Div = "guidanceItem";
+						
+		var applyCssFix = function()
+			{				
+				
+				if ($.browser.msie)
+				{				
+					$('#rawGuidanceItem').width("99%").height($(window.document).height() -150)
+				}
+				else
+				{
+					$('#rawGuidanceItem').absolute().left(2).right(2).bottom(10).top(130);
+				}
+				//$('#rawGuidanceItem').val('');
+			};
+				
+		showGuidanceItemHtml = function(htmlCode)
+			{						
+				//alert(htmlCode);
+				applyCssFix();
+                $('#rawGuidanceItem').val(htmlCode);
+				
+			}				
+			
+		getEditorCode = function()
+            {
+				return $('#rawGuidanceItem').val();
+			}
+			
+		//$(loadSetEditor);	
+	</script>
+
+	<TextArea id="rawGuidanceItem"></TextArea>  

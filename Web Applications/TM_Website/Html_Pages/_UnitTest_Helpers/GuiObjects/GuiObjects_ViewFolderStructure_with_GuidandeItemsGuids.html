@@ -1,0 +1,66 @@
+<script src="/javascript/jQuery/jquery-1.6.2.min.js" type="text/javascript"></script>
+<script src="/javascript/TM/GlobalVariables.js" type="text/javascript"></script>
+<script src="/javascript/TM/WebServices.js" type="text/javascript"></script>
+<script src="/javascript/json/json2.js" 	type="text/javascript"></script>	
+<script src="/javascript/TM/GuiObjects.js" type="text/javascript"></script>
+
+<script>
+		
+	function clearTable()
+	{
+		$('#testDiv').html("....");
+	}	
+	
+	function showTreeStructure() 
+	{			
+		var startTime = new Date();
+		var addSubItems = function(target, items, type, property, color)
+		{
+			if (typeof(items) != 'undefined')
+			{
+				var subItem = $('<ul>');
+				target.append(subItem);
+				addItems(subItem,items, type,property,color);
+			}
+		}
+		var addItems = function(target, items, type, property, color)
+		  {		
+			   $.each(items, function()
+					   {									               
+							var text = this[property] ?  this[property] : this;  															
+							var itemNode = target.append($('<li>').css('color',color).addClass(type).append(type + ': ' + text));									                    		
+							addSubItems(itemNode , this.subFolders, 'folder', 'name', 'darkGreen')
+							addSubItems(itemNode , this.views, 'view', 'caption', 'blue')
+							addSubItems(itemNode , this.guidanceItems, 'guidanceItem', 'caption', 'black')
+																					
+					   });
+		  }
+		
+		var treeStructure  = $('<div id=treeStructure />');
+		var libraries = TM.WebServices.Data.folderStructure;
+		
+		addSubItems(treeStructure , libraries, 'library', 'name', 'orange');
+		
+		$('#testDiv').html(treeStructure);			
+		UnitTest_Helper_Loaded = true;	
+		var timeSpan = new Date(new Date() - startTime);
+		$("#time").append(timeSpan.getSeconds() + "s " + timeSpan.getMilliseconds() + "ms")  ; 
+	};
+	
+	$(function()
+		{			
+			$('#testDiv').html('fetching gui objects');
+			TM.WebServices.Data.extractGuiObjects(function() 
+				{ 
+					$('#testDiv').html('mapped: ' + TM.WebServices.Data.GuidanceItemsIDs.length); 
+					
+					TM.WebServices.WS_Data.getFolderStructure(showTreeStructure);					
+				} )
+		});
+</script>
+
+<a href="javascript:document.location=document.location + '?time='+new Date().getTime();"/>reload</a> - 
+<a href="javascript:clearTable()"/>clear table</a>
+<a href="javascript:showTreeStructure()"/>show tree</a>
+<div id="time">load time: </div> note: chrome and firefox hover at about 650ms while IE 8 does it in 4s 50ms
+<div id='testDiv' />

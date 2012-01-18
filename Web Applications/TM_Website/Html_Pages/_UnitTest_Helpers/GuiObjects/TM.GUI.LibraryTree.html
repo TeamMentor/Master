@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html>
+	<head>	
+		<script src="/javascript/jQuery/jquery-1.6.2.min.js" 			type="text/javascript"></script>
+		<script src="/javascript/jQuery/jquery.validate.min.js" 		type="text/javascript"></script>	
+
+		<script src="/javascript/TM/GlobalVariables.js" 				type="text/javascript"></script>	
+		<script src="/javascript/TM/WebServices.js" 					type="text/javascript"></script>
+		<script src="/javascript/json/json2.js" 						type="text/javascript"></script>	
+		<script src="/javascript/TM/GuiObjects.js" 						type="text/javascript"></script>
+		<script src="/javascript/jLinq/jLinq.js" 						type="text/javascript"></script>	
+		<script src="/javascript/IE_Fixes.js" 							type="text/javascript"></script>	
+		
+		<!--jQuery jsTree-->
+		<script src="/javascript/jQuery.jsTree/jquery.jstree.js" 		type="text/javascript"></script>
+		<script src="/javascript/jQuery.jsTree/jquery.cookie.js" 		type="text/javascript"></script>
+		<script src="/javascript/jQuery.jsTree/jquery.hotkeys.js" 		type="text/javascript"></script>		
+<!--
+		<script src="/javascript/jQuery.jsTree/jsTree.ExtraMethods.js" 	type="text/javascript"></script>	
+-->
+		<script src="/javascript/TM.Gui/TM.Gui.LibraryTree.js" 			type="text/javascript"></script>
+	</head>
+	<body>
+		<script>
+			var createLibraryTree = function()
+				{
+					var libraryTree = TM.Gui.LibraryTree.open("#TestLibraryTree");
+					TM.Events.onFolderStructureLoaded.add(function()
+					{
+						libraryTree.create_TreeUsingJSON();									
+					});
+					
+					libraryTree.onSelectedNode = function () 
+						{ 
+							var jsonString = JSON.stringify(TM.Gui.selectedNodeData);
+							$("#TestLibraryTreeProperties").html(jsonString)
+						};
+					
+					libraryTree.onTreeLoaded = function()
+					{
+						TM.Debug.UnitTest_Message = "Test Complete";
+						libraryTree.selectFirstNode();
+					}
+				}
+				
+				
+			$(function()
+				{
+					$("#TestLibraryTreeProperties")
+						.css(
+							{ 	border		:'solid 2px' , 
+								background	: '#C0C0C0'  ,
+								position	: "absolute" ,
+								padding		: 10 ,
+								right		: 0  ,
+								bottom		: 0  ,
+								top			: 0  ,
+								left		: '50%' });							
+					createLibraryTree();					
+				});
+		</script>
+		<h1>Testing LibrariesView component</h1>
+		<div id = "TestLibraryTree"></div>
+		<div id = "TestLibraryTreeProperties"></div>
+	</body>
+</html>

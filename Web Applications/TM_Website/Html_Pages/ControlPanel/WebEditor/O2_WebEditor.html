@@ -1,0 +1,106 @@
+<html>
+   <head>
+	<script src="javascript/jQuery/jquery-1.6.2.min.js" type="text/javascript"></script>
+	<script src="javascript/jQuery/jquery.validate.min.js" type="text/javascript"></script>
+	<script src="javascript/jQueryUI/jquery-ui-1.8.14.custom.min.js" type="text/javascript"></script> 
+	<script src="javascript/jQueryUI/plugin.jqueryui.framedialog.js" type="text/javascript"></script>
+	<script src="javascript/jQuery.jsTree/jquery.jstree.js" type="text/javascript"></script>
+
+	<script src="javascript/jO2/jO2_String_ExtensionMethods.js"></script>	
+	<script src="javascript/jO2/jO2_jQuery_ExtensionMethods.js"></script>	
+ 
+	<script src="O2_WebEditor.js"></script>
+
+	<link   href="javascript/jQueryUI/jquery-ui-1.8.14.custom.css" rel="stylesheet" type="text/css" />        		
+	
+	<!--jQuery UniForm-->
+	<script src="/javascript/jQuery.UniForm/uni-form.jquery.min.js" type="text/javascript"></script>
+	<script src="/javascript/jQuery.UniForm/uni-form.ExtraMethods.js" type="text/javascript"></script>	
+	<link   href="/javascript/jQuery.UniForm/uni-form.css" rel="stylesheet" type="text/css" />        
+	<link   href="/javascript/jQuery.UniForm/dark.uni-form.css" rel="stylesheet" type="text/css" />        
+
+	<!--jQuery simple modal-->
+	<script src="/javascript/jQuery.simplymodal/jquery.simplemodal.js" type="text/javascript"></script>
+	<link href="/javascript/jQuery.simplymodal/simplemodal.css" rel="stylesheet" type="text/css" />        		
+
+	<link   href="/css/default.css" type="text/css" rel="stylesheet" /> 
+   
+   </head>
+<body>
+
+   <style>	
+	#filesTreeView 	{ position:absolute ; left:10px; width:400px ; border: solid 2pt ; }
+	#codeEditor 	{ position:absolute ; left:420px; right:10px; top:10px; bottom:10px ; border: solid 2pt }
+
+   </style>
+
+<script>
+
+var onNodeSelected = function(selectedNode)
+	{
+		var selectedNodeIds = jQuery(selectedNode).parent().attr('id');	
+		//alert(selectedNodeIds);
+		loadFile(selectedNodeIds);
+	}	
+	
+var showFilesInTreeView = function(treeData)
+{		
+	if (typeof(treeData) == "string")
+	{
+		$("#filesJsTree").html('not authorized');
+	}
+	else	
+	{
+		$("#filesJsTree").jstree({ "json_data" : treeData,		
+									  "plugins" : [ "themes", "json_data" , "ui"]	
+								 })
+								 .delegate("a", "click", function (event, data) { onNodeSelected(this) });
+	}
+}	
+
+var loadTreeWithFiles = function()
+	{		
+		$("#filesTreeView").html('').add_Div("filesJsTree");
+		$("#filesTreeView").add_Link("refresh").absolute().top(0).right(10).click(function(){ loadTreeWithFiles()})
+		$("#filesJsTree").html('loading treeview with files....');
+                $("#filesTreeView").resizable().draggable();
+		 WebEditor.getFiles(showFilesInTreeView);		
+	}
+
+var loadFile = function(file)
+	{
+		locationId.$().attr('value',file);
+		loadLink.click();		
+	}
+	
+var askUserForSecurityToken = function()
+	{
+		//alert('asking user for security token');
+		askUserSecretQuestion('Security Question', 'what is the edit password', 
+			function(answer) 
+				{ 
+					WebEditor.securityToken = answer;
+					loadWebEditorGui();
+				}) ;
+	}	
+
+var loadWebEditorGui = function()
+	{
+		loadTreeWithFiles();				
+		$("#codeEditor").load('./codeMirror/javascript_Editor.html?time=' + new Date().getTime());		
+	}
+	
+$(function()
+	{	
+		if (WebEditor.securityToken =='')		
+			askUserForSecurityToken();		
+		else	
+			loadWebEditorGui();								
+	})
+</script>
+<div id="filesTreeView">
+	//<div id="filesJsTree"></div>
+</div>
+<div id="codeEditor"></div>
+</body>
+</html>

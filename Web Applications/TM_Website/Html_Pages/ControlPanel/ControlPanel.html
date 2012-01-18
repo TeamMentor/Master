@@ -1,0 +1,130 @@
+<!DOCTYPE HTML>
+<html>
+	<head>			
+		<!-- global TM Variables -->				
+
+		<script src="/aspx_Pages/scriptCombiner.ashx?s=ControlPanel_JS"							type="text/javascript"></script>		
+		<script src="/aspx_Pages/scriptCombiner.ashx?s=ControlPanel_JS_TM&dontMinify=true"		type="text/javascript"></script>	
+		<link  href="/aspx_Pages/scriptCombiner.ashx?s=ControlPanel_CSS&ct=css" 				type="text/css" rel="stylesheet" /> 
+		
+		
+		<script>		
+			function checkForDeveloperHashTag()	
+				{
+					if (document.location.hash === "#developer")
+						TM.Debug.showExperimentalFeatures = true;
+				}
+			
+			function loadControlPanelDefaultPages()
+				{			
+					TM.ControlPanel.open_LinksPage 	  ("#controlPanel_Left");
+					TM.ControlPanel.open_WelcomeScreen("#controlPanel_Center");
+					if ($("#HeaderImage").length==0)
+						TM.ControlPanel.open_Banner		  ("#controlPanel_Top");
+				}
+				
+			function createControlPanelGui()
+				{					
+					myLayout = $('#controlPanel').layout(
+						{							
+							north__resizable:		false,
+							north__closable:		false,					
+							north__spacing_open:	0,
+							north__size:			80,
+							
+							west__showOverflowOnHover: true,						// enable showOverflow on west-pane so popups will overlap north pane
+							west__resizable:		false,
+							west__closable:		false
+							
+
+						});
+													
+					TM.Gui.CurrentUser.loadUserData();
+					//TM.ControlPanel.refresh();
+					
+					TM.Gui.ShowProgressBar.close();	
+				}
+			
+			function cssFixesFor_ControlPanel()
+				{
+					$("#controlPanel").css(
+						{
+							//'font-family' 	: 'Calibri',
+							top				: '0px',
+							bottom			: '0px',		
+							left			: '0px',
+							right			: '0px',
+							position		: 'absolute',
+							_height			: '95%', 	/* min-height for IE6 */
+							_width			:'95%'  	/* min-width for IE6 */	
+						})
+				}
+			
+			function loadControlPanel()
+				{	
+					checkForDeveloperHashTag();
+					TM.ControlPanel.refresh 	  = loadControlPanelDefaultPages;
+					TM.Events.onUserChange		.add(TM.Gui.CurrentUser.loadUserData);					
+					TM.Events.onUserDataLoaded	.add(loadControlPanelDefaultPages);
+					
+					
+					TM.Gui.ShowProgressBar.open("Loading TeamMentor ControlPanel");												
+					cssFixesFor_ControlPanel();																				
+					createControlPanelGui();
+
+					if ($.browser.msie && $.browser.version == '7.0')		//wreird IE 7 bug where we need to call this twice for the layouts to be visible
+						createControlPanelGui();
+					
+				}		
+
+			$(loadControlPanel);		
+		</script>
+
+		
+		<style type="text/css">
+
+			
+
+			#controlPanel {
+//				background:	#999;
+				
+			}
+
+			.pane {
+				display:	none; /* will appear when layout inits */
+
+			}
+
+			</style>	
+
+		<style type="text/css">
+		
+		.ui-layout-pane 
+			{ /* all 'panes' */ 
+				background: #FFF; 
+				
+				padding: 10px;
+				overflow: auto;
+			}
+		.ui-layout-north
+			{
+				padding: 0px;
+			}
+		.ui-layout-west
+			{	
+				border: 1px solid #BBB; 
+			}
+				
+		</style>
+	</head>
+	<body>		
+		<div id="loadingMessage"></div>
+		<div id="controlPanel">
+			<div class="pane ui-layout-center" id="controlPanel_Center">		
+			</div>				
+			<div class="pane ui-layout-north" id="controlPanel_Top"></div>			
+			<div class="pane ui-layout-west" id="controlPanel_Left"></div>									
+		</div>
+		<div id="ScriptLoader"></div>
+	</body>
+</html>	

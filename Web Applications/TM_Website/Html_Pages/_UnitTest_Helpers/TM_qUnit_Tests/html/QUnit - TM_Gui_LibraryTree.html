@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>		
+	<title>Team Mentor - QUnit tests for: TM.GUI.LibraryTree control</title>
+	<script src="/javascript/TM/GlobalVariables.js" type="text/javascript"></script>
+	<!-- code files-->
+	<link rel="stylesheet" href="/javascript/qunit/qunit-git.css" type="text/css" media="screen">
+	<script src="/javascript/qunit/qunit-git.js" ></script>		
+	<script src="/Html_Pages/_UnitTest_Helpers/TM_qUnit_Tests/js/_TM_QUnit_support.js"></script>	
+		
+	<!-- dependencies for tests (below) -->	
+	<script src="/javascript/jQuery/jquery-1.6.2.min.js" 				type="text/javascript"></script>	
+	<script src="/javascript/jO2/jO2_jQuery_ExtensionMethods.js"		type="text/javascript"></script>	
+	<script src="/javascript/jQueryUI/jquery-ui-1.8.14.custom.min.js" 	type="text/javascript"></script> 	
+	<script src="/javascript/TM/WebServices.js"						 	type="text/javascript"></script>
+	<script src="/javascript/TM/GuiObjects.js" 							type="text/javascript"></script>
+	<script src="/javascript/json/json2.js" 							type="text/javascript"></script>	
+	<script src="/javascript/webtoolkit.SHA256.js" 						type="text/javascript"></script>
+	<script src="/javascript/jLinq/jLinq.js" 							type="text/javascript"></script>
+	<script src="/javascript/IE_Fixes.js" 								type="text/javascript"></script>	
+	<script src="/javascript/TM.Gui/TM.GUI.Dialog.js"					type="text/javascript" ></script>
+	<link  href="/javascript/jQueryUI/jquery-ui-1.8.14.custom.css" 		type="text/css" rel="stylesheet" />  
+<!--	 
+	<script src="/javascript/jQueryUI/TM.jQueryUI.ExtraMethods.js" type="text/javascript"></script>
+-->	
+	<!--jQuery jsTree-->
+	<script src="/javascript/jQuery.jsTree/jquery.jstree.js" type="text/javascript"></script>
+	<script src="/javascript/jQuery.jsTree/jquery.cookie.js" type="text/javascript"></script>
+	<script src="/javascript/jQuery.jsTree/jquery.hotkeys.js" type="text/javascript"></script>		
+	
+	<script src="/javascript/TM.Gui/TM.GUI.LibraryTree.js"></script>
+	
+	<!-- for editor mode-->
+	
+	<script src="/javascript/TM_WS_Methods.js"				type="text/javascript" ></script>
+	<script src="/javascript/TM.Gui/TM.Gui.CurrentUser.js"	type="text/javascript" ></script>
+	<script src="/javascript/TM.Gui/TM.GUI.Dialog.js"		type="text/javascript" ></script>
+	<script src="/javascript/jQuery/jquery.validate.min.js" type="text/javascript"></script>	
+	
+	<!-- qunit tests -->		
+
+	<script type="text/javascript" src="/Html_Pages/_UnitTest_Helpers/TM_qUnit_Tests/js/TM_Gui/TM_Gui_LibraryTree.js"></script>
+	<script type="text/javascript" src="/Html_Pages/_UnitTest_Helpers/TM_qUnit_Tests/js/TM_Gui/TM_Gui_LibraryTree - with JSON data.js"></script>
+	<script type="text/javascript" src="/Html_Pages/_UnitTest_Helpers/TM_qUnit_Tests/js/TM_Gui/TM_GUI_LibraryTree - Edit Mode.js"></script>
+	
+
+	
+	
+	<script>	
+		//$.getScript("/javascript/TM.Gui/TM.Gui.LibraryTree.js");	
+		//$.getScript("/Html_Pages/_UnitTest_Helpers/TM_qUnit_Tests/js/TM_gui/TM_GUI_LibraryTree.js");
+		
+		
+		$(function()
+			{
+				$("#QUnit_Results").absolute().width("49%").top(0).left(0)
+				$("#Canvas").absolute().width("49%").top(0).right(0).bottom(0).css("border","1px solid")
+			});
+	</script>
+</head>
+<body>
+	<div>
+		<div id ="QUnit_Results">
+			<h1 id="qunit-header">Team Mentor - QUnit tests for: TM.GUI.LibraryTree control</h1>
+			<h2 id="qunit-banner"></h2>
+			<div id="qunit-testrunner-toolbar"></div>
+			<h2 id="qunit-userAgent"></h2>
+			<ol id="qunit-tests"></ol>
+			<div id="qunit-fixture">test markup</div>
+			<a href="javascript:document.location = document.location">reload</a>
+		</div>
+		<div id="Canvas" >...</div>
+	</div>
+</body>
+</html>

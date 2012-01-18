@@ -1,0 +1,524 @@
+<!DOCTYPE HTML>
+<html>	
+	<head>			
+		<link  href="/aspx_Pages/scriptCombiner.ashx?s=HomePage_CSS&ct=css" 				type="text/css" rel="stylesheet" /> 					
+		<script src="/aspx_Pages/scriptCombiner.ashx?s=HomePage_JS"							type="text/javascript"></script>		
+		<script src="/aspx_Pages/scriptCombiner.ashx?s=HomePage_JS_TM&dontMinify=true&v1"	type="text/javascript"></script>			
+	</head>
+	<body>	
+		<script>		
+
+			//$(function() { TM.Debug.FireBugLite.open() });
+			
+			//TM.Gui.GuidanceItemEditor.popupTest = function() {} ;  	// for the popup tester (not working);
+
+			TM.Gui.GuidanceItemEditor_Page = "";
+			
+			function showEditor_Elrte()
+			{
+				TM.Gui.GuidanceItemEditor_Page = "/html_pages/GuidanceItemEditor/Elrte/GuidanceItemEditor_Elrte.html".add_TimeToUrl();
+				loadEditor();			
+			}
+			
+			function showEditor_CLEditor()
+			{
+				TM.Gui.GuidanceItemEditor_Page = "/html_pages/GuidanceItemEditor/cleditor/GuidanceItemEditor_cleditor.html".add_TimeToUrl();
+				loadEditor();			
+			}
+			
+			function showEditor_RawHtml()
+			{
+				TM.Gui.GuidanceItemEditor_Page = "/html_pages/GuidanceItemEditor/RawHtml/GuidanceItemEditor_RawHtml.html".add_TimeToUrl();
+				loadEditor();			
+			}
+			
+			function loadGuidanceItemEditor()
+				{									
+/*					$.ajaxSetup({ async:false});					
+					$("#ScriptLoader").load("/html_pages/GuidanceItemEditor/Scripts_used_in_GuidanceItemEditor.html?time="+new Date().getTime());
+					$.ajaxSetup({ async:true});					
+*/					
+					//TM.Gui.Main.homePage();
+					//TM.Gui.Main.homePage();
+					if ($.browser.msie)
+						TM.Gui.GuidanceItemEditor_Page = "/html_pages/GuidanceItemEditor/RawHtml/GuidanceItemEditor_RawHtml.html";								
+					else
+						TM.Gui.GuidanceItemEditor_Page = "/html_pages/GuidanceItemEditor/Elrte/GuidanceItemEditor_Elrte.html";
+					
+					TM.Gui.GuidanceItemEditor_Page = "/html_pages/GuidanceItemEditor/cleditor/GuidanceItemEditor_cleditor.html".add_TimeToUrl();					
+				}	
+
+			function createComboBoxForAutoComplete()
+				{
+					//based on  jQuery UI Autocomplete comboxbox example					
+		
+					$.widget( "ui.combobox", 
+								{
+									_create: function() 
+												{
+													var self = this,
+														select = this.element.hide(),
+														selected = select.children( ":selected" ),
+														value = selected.val() ? selected.text() : "";
+													var input = this.input = $( "<input>" )
+														.attr('id', this.element.attr('id') + '_input')
+														.insertAfter( select )
+														.val( value )
+														.autocomplete(
+															{
+																delay: 0,
+																minLength: 0,
+																source: function( request, response ) 
+																			{
+																				var matcher = new RegExp( $.ui.autocomplete.escapeRegex(request.term), "i" );
+																				response( select.children( "option" )
+																								.map(function() 
+																										{
+																											var text = $( this ).text();
+																											if ( this.value && ( !request.term || matcher.test(text) ) )
+																												return {
+																															label: text.replace(new RegExp(
+																																								"(?![^&;]+;)(?!<[^<>]*)(" +
+																																								$.ui.autocomplete.escapeRegex(request.term) +
+																																								")(?![^<>]*>)(?![^&;]+;)", "gi"
+																																							), 
+																																				 "<strong>$1</strong>" ),
+																															value: text,
+																															option: this
+																														};																											
+																										} ) );
+																			},
+																select: function( event, ui ) 
+																			{
+																				ui.item.option.selected = true;
+																				self._trigger( "selected", event, 
+																					{
+																						item: ui.item.option
+																					});
+																			},
+																change: function( event, ui ) 
+																			{
+																				if ( !ui.item ) 
+																				{
+																					var matcher = new RegExp( "^" + $.ui.autocomplete.escapeRegex( $(this).val() ) + "$", "i" )
+																					valid = false;
+																					
+																					select.children( "option" ).each(function() 
+																						{
+																							if ( $( this ).text().match( matcher ) ) {
+																								this.selected = valid = true;
+																								return false;
+																							}
+																						});
+																					if ( !valid ) 
+																					{
+																						// remove invalid value, as it didn't match anything
+																						//$( this ).val( "" );
+																						//select.val( "" );
+																						//input.data( "autocomplete" ).term = "";
+																						return false;
+																					}
+																				}
+																			}
+															})
+														.addClass( "ui-widget ui-widget-content ui-corner-left" );
+
+														input.data( "autocomplete" )._renderItem = function( ul, item ) 
+															{
+																return $( "<li></li>" ) .data( "item.autocomplete", item )
+																						.append( "<a>" + item.label + "</a>" )
+																						.appendTo( ul );
+															};
+
+														this.button = $( "<button type='button'>&nbsp;</button>" )
+															.attr( "tabIndex", -1 )
+															.attr( "title", "Show All Items" )
+															.insertAfter( input )
+															.button({	icons:  {
+																					primary: "ui-icon-triangle-1-s"
+																				},
+																		text: false
+																	})
+															.removeClass( "ui-corner-all" )
+															.addClass( "ui-corner-right ui-button-icon" )
+															.click(function() 
+																		{																								
+																			// close if already visible
+																			if ( input.autocomplete( "widget" ).is( ":visible" ) ) 
+																			{
+																				input.autocomplete( "close" );
+																				return;
+																			}
+
+																			// work around a bug (likely same cause as #5265)
+																			$( this ).blur();
+
+																			// pass empty string as value to search for, displaying all results
+																			input.autocomplete( "search", "" );
+																			input.focus();
+																		});
+												},
+
+									destroy	: function() 
+												{
+													this.input.remove();
+													this.button.remove();
+													this.element.show();
+													$.Widget.prototype.destroy.call( this );
+												}
+								});
+					
+					$( ".ItemDetailTable .combobox" ).combobox();					
+					
+					$(".ItemDetailHeader button").height(21).width(15).top(6)
+					
+					if ($.browser.mozilla)
+						$(".ItemDetailHeader button").top(8)
+					else 
+					{
+						if ($.browser.msie)
+						{ 
+							if($.browser.version == '7.0')
+								$(".ItemDetailHeader button").top(0)
+						}
+					}
+					
+					$("#topButtons").css({ 'padding'  : '2px'});
+					$("#topButtons button").css({ 'font-size':'13px'})					
+					$(".ui-autocomplete").css('font-size','11px')
+					$("input").css('font-size', '13px')
+							  .css('padding','2px')
+							  .css('font-family','Calibri, Arial, Helvetica, sans-serif');
+					
+					$("#Title").addClass('ui-widget-content ui-corner-left ui-corner-rigth')
+										
+				
+					TM.Gui.GuidanceItemEditor.checkIfComboxShouldBeVisible();
+					
+					$("#ItemDetailTable").show();
+				}	
+		
+		TM.Gui.GuidanceItemEditor.checkIfComboxShouldBeVisible = function()
+		{
+			//hide the buttons in the cases where there is no auto complete
+			$.each($(".ItemDetailTable select"), 
+				function()
+					{						
+						var options = $(this).find("option")
+						if (options.length === 0)	
+							$(this).parent().find("button").hide()
+					});
+
+		}
+		
+  		var guidanceId = ""
+		
+		function showMessage(message)
+		{			
+			//if (parent===this)
+				TM.Gui.Dialog.alertUser(message);
+			//else
+			//	parent.TM.Gui.Dialog.alertUser(message);
+			
+			/*"savedMessage".$().html("<div class='ui-widget'><div class='ui-state-highlight ui-corner-all' style='top:0;left: 400px;position:absolute;margin-left: 20px; margin-right: 20px; padding: 5px'>" + message + "</div></div>")
+						.fadeIn(2000)
+						.delay(2000)
+						.fadeOut(1000);*/
+		}
+
+		var handleCommand = function(command)
+                	{
+                          	var splitCommand = command.split(":");
+                          	if(splitCommand.length ==2 && splitCommand[0] == 'id')
+                                {
+                                  	guidanceId = splitCommand[1];
+	                                loadGuidanceItem();
+                                        return false;
+                                }
+                          	return true;   // to continue links
+                	}
+
+                var setGuidanceIdfromUrlHash =  function()
+                    	{
+                          	handleCommand(window.location.hash.slice(1).split("&")[0]);
+                    	}
+                    
+			var loadGuidanceItem = function()				
+                        {                                
+                                getGuidanceItemData(guidanceId, showGuidanceItemData);
+                        }
+				
+            var showGuidanceItemData = function(data)
+			{		
+				loadedGuidanceItem = data.d;
+				if(isUndefined(loadedGuidanceItem) || loadedGuidanceItem === null)
+				{
+					TM.Gui.Dialog.alertUser("Error: There was a problem loading selected Guidance Item data");
+					return;
+				}
+				
+				"#Title".$().val(loadedGuidanceItem.title);
+				$("#TechnologyValue_input").val(loadedGuidanceItem.technology);
+				$("#PhaseValue_input").val(loadedGuidanceItem.phase);
+				$("#TypeValue_input").val(loadedGuidanceItem.rule_Type);
+				$("#CategoryValue_input").val(loadedGuidanceItem.category);
+
+				TM.Gui.GuidanceItemEditor.showGuidanceItemHtml(loadedGuidanceItem.htmlContent);
+								
+			}						  		
+
+				
+		TM.Gui.GuidanceItemEditor.showGuidanceItemHtml = function(htmlCode)
+			{				
+                 //$('#guidanceItem').elrte('val', htmlCode);
+				 TM.Gui.Dialog.alertUser('not implemented: showGuidanceItemHtml');
+			}
+                  
+        TM.Gui.GuidanceItemEditor.getEditorCode = function()
+			{				
+				TM.Gui.Dialog.alertUser('not implemented: getEditorCode');
+				return null;
+			}
+
+		var onSave = function(data)
+			{
+				if(data.d == true)
+                                {
+                                  	showMessage("GuidanceItem Saved Ok");
+									updateCacheWithSavedGuidanceItem();
+                                }
+
+                         	else
+                                  	TM.Gui.Dialog.alertUser('Error: problems saving data');
+			}
+
+		var updateCacheWithSavedGuidanceItem = function()
+			{						
+				var opener = window.opener;
+				if (opener ==null)					
+					opener = window.parent;
+				if (opener ==null)					
+					return;
+				
+				var newData = savedGuidanceItem.guidanceItem;
+				
+				objectToUpdate = opener.$.data[newData.guidanceItemId];
+				if (isDefined(objectToUpdate))
+				{
+					objectToUpdate.category = newData.category;
+					objectToUpdate.phase = newData.phase;
+					objectToUpdate.technology = newData.technology;
+					objectToUpdate.title = newData.title;
+					objectToUpdate.type = newData.rule_Type;						
+				}	
+				opener.TM.Events.onRefreshGuiData();
+			}
+		
+		var saveEditorCode = function()
+			{
+					var htmlCode = TM.Gui.GuidanceItemEditor.getEditorCode()
+					if (htmlCode ===null)
+						return;					
+				    savedGuidanceItem = { guidanceItem: 
+												{ 
+														guidanceItemId : guidanceId  ,														
+														title : "#Title".$().val(), 
+														technology : "TechnologyValue_input".$().val(), 														
+														phase : "PhaseValue_input".$().val(), 
+														rule_Type: "TypeValue_input".$().val(), 
+														category: "CategoryValue_input".$().val(), 
+														topic: loadedGuidanceItem.topic,
+														priority : loadedGuidanceItem.priority, 
+														status : loadedGuidanceItem.status, 
+														author :  loadedGuidanceItem.author, 
+														libraryId : loadedGuidanceItem.libraryId , 
+														guidanceType : loadedGuidanceItem.guidanceType , 
+														creatorId : loadedGuidanceItem.creatorId, 
+														creatorCaption: loadedGuidanceItem.creatorCaption, 
+														images : loadedGuidanceItem.images, 
+														//lastUpdate :  /Date(1309232562210)/ , // BUG: there is a conversion prob // "DateLabel".$().val(), //loadedGuidanceItem.lastUpdate,
+														htmlContent : htmlCode
+												}
+											};    
+                                    
+//				updateGuidanceItemHtml(guidanceId, htmlCode, onSave)
+				updateGuidanceItem(savedGuidanceItem, onSave)
+                                  
+                  	}
+		
+		var openGuidanceItemViewer = function()
+		{			
+			document.location = "/Aspx_Pages/ViewGuidanceItem.aspx?#ruledisplay:" + guidanceId;
+		}
+		
+        var loadEditor = function()
+		{			
+						
+			$("#guidanceItemEditor").load(TM.Gui.GuidanceItemEditor_Page, setGuidanceIdfromUrlHash);
+						
+/*			
+			$("#linksToEditors").html('');
+			$("#linksToEditors").add_Link("Elrte Editor"  , window.location.hash).click(showEditor_Elrte);
+			$("#linksToEditors").add_Link("RawHtml Editor", window.location.hash).click(showEditor_RawHtml);
+			$("#linksToEditors").add_Link("CLEditor Editor", window.location.hash).click(showEditor_CLEditor);
+			
+			$("#linksToEditors a").css('padding',5);
+*/
+//			setEditor();			
+								
+									
+		}
+		
+		var mapAutoCompleteValues = function()
+			{	
+				if(opener == null)
+					opener=parent;
+					
+				if(opener != null)
+				{					
+					technologies =[];  opener.$("#pivotPanel_Technology input").each(function() { technologies.push($.trim($(this).parent().text()) ) } ); 					
+					phases =[];  opener.$("#pivotPanel_Phase input").each(function()			{ phases.push($.trim($(this).parent().text()) ) } ); 
+					types =[];  opener.$("#pivotPanel_Type input").each(function() 				{ types.push($.trim($(this).parent().text()) ) } ); 
+					categories =[];  opener.$("#pivotPanel_Category input").each(function() 	{ categories.push($.trim($(this).parent().text()) ) } ); 
+					
+					/*$("#TechnologyLabel"	).autocomplete( { source: technologies });					
+					$("#PhaseLabel"			).autocomplete( { source: phases	   	});			
+					$("#GuidanceTypeLabel"	).autocomplete( { source: types		   	});
+					$("#CategoriesLabel"	).autocomplete( { source: categories 	});				
+					*/
+					
+					var loadData = function(data, target)
+					{
+						$.each(data, function(index, value)
+							{
+								$(target).append($("<option>").append(value).attr('value', value))
+							});
+					}
+					loadData(technologies,"#TechnologyValue");
+					loadData(phases,"#PhaseValue");
+					loadData(types,"#TypeValue");
+					loadData(categories,"#CategoryValue");
+				}
+			}
+		
+		
+		$(function()
+			{								
+				$("#ItemDetailTable").hide();
+				loadGuidanceItemEditor();
+				mapAutoCompleteValues();
+				createComboBoxForAutoComplete();
+								
+				if ($("#loadingMessage").length ===1)
+					$("#loadingMessage").remove();	
+				
+				TM.Gui.ShowProgressBar.close();
+				
+				
+				currentUserHasRole('EditArticles', 
+					function(result){										
+										if(result.d)
+											loadEditor();	
+										else
+										{
+											//"saveChanges".$().hide();
+											$("button").hide();
+											"ItemDetailTable".$().hide();
+											showMessage("You don't have privileges to edit this item");
+											//"guidanceItem".$().hide();
+											"guidanceItemEditor".$().html("<h1>Access denied.</h1><h2>please close this window</h2>");
+										}													
+									});
+				
+				
+				$("button").button();
+				
+				$("#backToViewer").click(openGuidanceItemViewer);
+				
+				$("#saveChanges").click(saveEditorCode);
+				//css changes
+				"ItemTitle".$().css('width', '100%');
+				$(".ui-autocomplete-input").width(140) ;
+				$(".ItemDetailTable").width(750)				
+
+			});
+			
+		$(window).bind('hashchange', setGuidanceIdfromUrlHash);
+		
+		$('a').live('click',function () 
+			{ 
+				var href = $(this).attr('href');
+				if(isDefined(href))
+				{
+					window.location.hash = href;                  					
+					return href.slice(0,11)!="id";
+				}
+				return true;
+			});	
+				
+		
+	</script>	
+	
+		<div id="ScriptLoader"> </div>
+		<div id="guiWithPanels"></div>	
+
+		<div id="topButtons">
+			<button id="backToViewer">Back to Guidance Item View Mode</button>            
+			<button id="saveChanges">Save Changes</button>  
+		</div>
+	<span id="linksToEditors"></span>
+        <br/>	
+		<!-- GuidanceItem properties-->
+		<table class="ItemDetailTable" cellpadding="0" cellspacing="0">
+                  	<tr>
+				<td class="ItemDetailHeader">
+					Title
+				</td>
+				<td class="ItemDetailHeader" colspan=4>	
+                                  	<input type=text class="ItemTitle" ID="Title" ></input>
+                             	</td>     
+			</tr>                                  
+
+			<tr>
+				<td class="ItemDetailHeader">
+					Technology
+				</td>
+				<td class="ItemDetailHeader">
+					Phase
+				</td>
+				<td class="ItemDetailHeader">
+					Type
+				</td>		
+				<td class="ItemDetailHeader">
+					Category
+				</td>												
+			</tr>
+			<tr>
+				<td class="ItemDetailHeader">					
+					<select class="combobox" id="TechnologyValue">					
+					</select>
+					<!--<input type=text ID="TechnologyLabel"> </input>-->
+				</td>								
+				<td class="ItemDetailHeader">
+					<select class="combobox" id="PhaseValue">						
+					</select>
+				<!--	<input type=text ID="PhaseLabel"> </input>-->
+				</td>				
+				<td class="ItemDetailHeader">
+					<select class="combobox" id="TypeValue">
+					</select>
+					<!--<input type=text ID="GuidanceTypeLabel"> </input>-->
+				</td>		                                							
+				<td class="ItemDetailHeader">					
+					<select class="combobox" id="CategoryValue">
+					</select>
+					<!--<input type=text ID="CategoriesLabel"> </input>-->
+				</td>
+			</tr>
+		</table>
+		<br/>
+		<!-- Html Content-->
+		<div id="guidanceItemEditor"> </div>
+		<div id="savedMessage"></div>    
+	</body>
+</html>

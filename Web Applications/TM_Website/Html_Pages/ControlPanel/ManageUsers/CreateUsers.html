@@ -1,0 +1,86 @@
+<script>
+	
+	TM.ControlPanel.UserCreation = 
+		{
+			createUserData		:  [],
+			createUserResult	:  "",			
+			createUsers 		: function()
+				{					
+					var createValue = $.trim("usersToCreate".$().val());					
+					TM.ControlPanel.UserCreation.createUserData = createValue.split("\n");
+					batchUserCreation(createValue, TM.ControlPanel.UserCreation.userCreationResult);
+				},
+			userCreationResult	:	function(data)
+				{
+					var resultData = data.d;
+					TM.ControlPanel.UserCreation.createUserResult = resultData;					
+					var resultDataText = JSON.stringify(resultData);
+					TM.Events.onCreateUsers();
+					var resultMessage = $("<div>").append("<h3>User creation result</h3>");
+					
+					resultMessage.append("<br/>The following users were created:<br><br><ul>");
+					
+					$.each(resultData, function(index, value)
+						{							
+							try
+							{
+								if (value ==null)
+								{
+									console.log("error: " + TM.ControlPanel.UserCreation.createUserData[index]);
+									var escaptedText = escape(TM.ControlPanel.UserCreation.createUserData[index])  //to prevent XSS									
+									resultMessage.append($("<li>").append("Error Creating user with: '" + escaptedText + "'</li>") //
+																  .css('color','red'));
+								}
+								else
+								{
+									console.log("ok value: " + value);
+									console.log("ok value.UserName: {0}" + value.UserName);
+									var escaptedUserName = escape(value.UserName);									
+									console.log("ok escaptedUserName: " + escaptedUserName);
+									resultMessage.append($("<li>").append("User Created OK: " + escaptedUserName)
+																  .css('color','green'));
+								}
+							}
+							catch(error)
+							{								
+								console.log("Error:" + JSON.stringify(error.message));
+							}
+						});					
+					_resultMessage = resultMessage;						
+					"batchUserCreationGui".$().html(resultMessage);
+					TM.Events.onCreateUsers();
+				}			
+			
+		}		
+		
+	$(document).ready(								
+
+				function()  {	
+								var testUsers = "test_user_1_reader\t, pwd\t,firstName\t,lastName\t,2".line() +
+												"test_user_2_editor\t, pwd\t,test\t\t\t,user2\t\t,3"
+								
+								"batchUserCreationGui".$().css('padding',10);
+								"usersToCreate".$().height(200)
+												   .width('100%')
+												   .css('padding',2)
+												   .html(testUsers);
+								$("button").button();
+								$("#createUsersButton").click(TM.ControlPanel.UserCreation.createUsers);
+								TM.Events.onControlPanelViewLoaded();
+								
+							});
+</script>
+
+<div id="CreateUsersTitle"><h2>Create Multiple Users</h2></div>
+
+<div id="batchUserCreationGui">
+	
+	<br/>
+	Please, enter user information below.<br/>
+	<br/>
+	CVS Syntax: {username},{password}, {firstName},{lastName}, {userole: 1=admin, 2=reader, 3=editor}<br>
+	<br/>
+	<textarea id="usersToCreate"></textarea><br>
+
+	<button id= "createUsersButton">Create Users</button>
+</div>

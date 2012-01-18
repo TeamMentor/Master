@@ -1,0 +1,120 @@
+Page: <b>Invoke Javascript</b
+
+<!-- contents of /javascript/jsPrettify/prettify.css -->
+<style type="text/css"> 
+	.str{color:#080}.kwd{color:#008}.com{color:#800}.typ{color:#606}.lit{color:#066}.pun{color:#660}
+	.pln{color:#000}.tag{color:#008}.atn{color:#606}.atv{color:#080}.dec{color:#606}
+	pre.prettyprint{font-size:11;  ;padding:2px;border:1px solid #888}
+	ol.linenums{margin-top:0;margin-bottom:0}
+	li.L0,li.L1,li.L2,li.L3,li.L5,li.L6,li.L7,li.L8{list-style:none}
+	li.L1,li.L3,li.L5,li.L7,li.L9{background:#eee}
+	@media print{.str{color:#060}
+	.kwd{color:#006;font-weight:bold}
+	.com{color:#600;font-style:italic}
+	.typ{color:#404;font-weight:bold}
+	.lit{color:#044}
+	.pun{color:#440}.pln{color:#000}
+	.tag{color:#006;font-weight:bold}
+	.atn{color:#404}.atv{color:#060}}
+</style>	
+
+<style type="text/css"> 
+				
+		.url {
+			width: 98%;
+		}
+		.invoke {
+			width: 100%;
+		/*	height: 60px; */
+		}
+		.result {
+			width: 100%;
+			height: 50pt;
+		}
+		.prettyprint{
+			font-size: 11px;
+			background: white;			
+		}
+</style> 	
+	
+
+<script type="text/javascript">
+				
+		
+		var invokeJavascript = function()
+		{
+			try
+			{
+				var jsCode = jQuery('#jsCode').attr('value');	
+				var evalString = "(function() { " + jsCode + "})()"; 				
+				var jsEvalResponse = eval(evalString);
+				jsEvalResponse = JSON.stringify(jsEvalResponse);
+							
+				var jsonString = js_beautify(jsEvalResponse);					
+				jQuery('#code').text((jsonString)); 					
+				prettyPrint();								
+			}
+			catch(e)
+			{
+				jQuery('#code').text(e.message);
+			}
+		};
+		
+		var loadGui = function()
+		{									
+			var data = {
+							defaultScript: "return 'hello'"
+							
+					   };
+			if (typeof prettyPrint == "function" && typeof js_beautify == "function")
+			{
+				prettyPrint();
+				$("#result1").html('loadGui2');
+				$("#result1").setTemplateElement("template")							
+							 .processTemplate(data);
+						 										 							
+				jQuery('#invoke').click(function () { invokeJavascript(); } );							
+				jQuery('#jsCode').keypress(function(e) { if(e.which == 13){ invokeJavascript() } } );
+			}
+			else
+			{
+				$("#result1").html('loadGui4');
+				$("#result1").html("loading js_beautify and prettyPrint");			
+			}						
+		}
+		
+		$(document).ready(			
+			function() {								
+							
+							loadGui();
+							if (typeof js_beautify == "undefined")
+								jQuery.getScript('/javascript/jsPrettify/beautify.js', loadGui);							
+							if (typeof prettyPrint == "undefined")
+								jQuery.getScript('/javascript/jsPrettify/prettify.js', loadGui);
+								
+ 						}); 						 		
+</script>
+
+
+<!-- Template content --> 
+	<textarea id="template" style="display:none"> 		
+		<table>		 		
+			<tr>
+				<td width='100'>Javascript to invoke: </td>
+				<td><input id='jsCode' class='url' type='TextBox' value="{$T.defaultScript}"/></td>
+				<td width='100' rowspan=1><input id='invoke' class='invoke' type='button' value='invoke (enter also works)'/></td>
+				
+			</tr>									
+			<tr>
+				<td width='100'>Eval response: </td>
+				<td colspan=2>
+					<div id = codeDiv>
+						<pre id="code" class="prettyprint">
+					</pre>
+				</td>
+			</tr>
+		</table>
+	</textarea> 
+	
+	
+	<div id="result1" class="jTemplatesTest"></div>  				

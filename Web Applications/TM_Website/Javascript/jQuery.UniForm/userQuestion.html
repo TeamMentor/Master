@@ -1,0 +1,66 @@
+<script>
+	
+	var modal_UserQuestion;
+
+	var _onUserQuestionClickCallBack
+	
+	function invoke_onUserQuestionClickCallBack()
+	{
+		_onUserQuestionClickCallBack("userQuestion_questionField".$().val());
+		close_AskQuestion();
+	}
+	
+	function askSecretQuestion(title, question, onUserQuestionClickCallBack)
+	{
+		askQuestionOrSecret(title, question, true, onUserQuestionClickCallBack);
+	}
+	
+	function askQuestion(title, question, onUserQuestionClickCallBack)
+	{
+		askQuestionOrSecret(title, question, false, onUserQuestionClickCallBack);
+	}
+	
+	function askQuestionOrSecret(title, question, usePasswordField, onUserQuestionClickCallBack)
+	{			
+		_onUserQuestionClickCallBack = onUserQuestionClickCallBack;
+		"UserQuestionTitle".$().html(title);
+		var fieldsId = "inlineLabels"			
+		fieldsId.$().html('');
+		if (usePasswordField)
+			addPasswordField(fieldsId, question, "userQuestion_questionField");
+		else
+			addTextField(fieldsId, question, "userQuestion_questionField");
+			
+		addButton(fieldsId, "Submit","invoke_onUserQuestionClickCallBack");
+		
+				
+		modal_UserQuestion =  "UserQuestionDiv"	.$()
+												.hide()
+												.modal();
+		"simplemodal-container".$().width(300).height('auto');
+		cssFixes_UniForm();
+		//"2000".wait(close_AskQuestion);
+		return modal_UserQuestion;
+	}
+	
+	function close_AskQuestion()
+	{
+		modal_UserQuestion.close();
+	}		
+	
+	$(function()
+		{	
+			"UserQuestionDiv".$().hide();
+		});
+</script>
+
+<div id="UserQuestionDiv">  
+	<h1 id="UserQuestionTitle"></h1>
+	<br/>
+	
+	<form action="#" class="uniForm">
+		<fieldset class="inlineLabels">
+		</fieldset>
+	</form>	
+</div>	
+          

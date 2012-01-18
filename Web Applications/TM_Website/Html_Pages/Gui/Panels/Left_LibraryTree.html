@@ -1,0 +1,74 @@
+<script>
+
+function applyJsTreeCssPatches()
+{
+	jQuery('.jstree-default.jstree-focused').css('background-color','#FFFFFF');
+}
+
+TM.Gui.LibraryTree.showTree = function()    
+	{						
+	
+		$("#libraryJsTree").html('...loading tree...')			
+					
+		libraryTree = TM.Gui.LibraryTree.open("#libraryJsTree");		
+		
+		libraryTree.onTreeLoaded = function()  
+			{					
+				applyJsTreeCssPatches();
+				
+				$(libraryTree.targetDiv).delegate("a", "click", 
+					function (event, data) 	
+						{ 		
+							TM.Events.onLibraryTreeSelected();							
+						});			
+				
+				var firstNode = TM.Gui.LibraryTree.selectFirstNode()
+				TM.Gui.LibraryTree.openNode(firstNode);
+				TM.Events.onLibraryTreeSelected();				
+
+			};	
+		libraryTree.create_TreeUsingJSON();			
+		
+	}
+	
+var fixCSS_libraryTree = function()
+{
+	"LibraryTree".$().width("93%");
+	"LibraryTreeHeader".$().height(32);	
+}
+	
+$(function () 
+	{		
+		fixCSS_libraryTree();				
+	
+		TM.Events.onFolderStructureMapped.add(function() { TM.Gui.LibraryTree.showTree() } );				
+	});
+	
+var openGuidanceItemEditor = function(newGuidanceItemId)
+	{
+		editGuidanceItemInNewWindow(newGuidanceItemId);
+
+	/*	openUrl("/Aspx_Pages/EditGuidanceItem.aspx?#id:" + newGuidanceItemId,
+				"Edit Guidance Item", 
+				$(window).width() - 100, 
+				$(window).height() - 50);
+				*/
+	}		
+</script>
+
+
+<div id="ctl00_ContentPlaceHolder1_LibraryTree1_LibraryPanel" class="LibraryTree">
+
+	
+	<h3 class="LibraryTreeHeader">
+		<span id="ctl00_ContentPlaceHolder1_LibraryTree1_LibraryTreeHeader">Guidance Libraries</span>
+	</h3>
+	<div class="AspNet-TreeView" id="ctl00_ContentPlaceHolder1_LibraryTree1_TreeView1">
+		<div id="libraryTreeTitle"></div>
+		<div id="libraryJsTree"></div>					
+	</div>
+
+	<div id="loginNeeded"></div>
+</div>	
+			
+

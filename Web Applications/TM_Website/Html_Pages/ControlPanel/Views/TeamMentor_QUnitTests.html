@@ -1,0 +1,124 @@
+<script>
+	TM.ControlPanel.QUnitTests = 
+		{
+			baseUrl				: "/html_pages/_UnitTest_Helpers/TM_qUnit_Tests/html/",
+			targetDiv			: "#qUnitTestsLinks",
+			
+			add_QUnitTestLink 	: function(testFile)
+				{
+					var description = testFile.replace(/_/g, " ")										   
+										      .replace("QUnit - TM", "");
+					var fullUrl = this.baseUrl + testFile + '.html';
+					$(this.targetDiv).add_Link(description, fullUrl)
+									 .attr("target","pageExecutionFrame")
+								     .append("<br/>");
+				},
+				
+			add_QUnitTestLinks 	: function(tests)
+				{
+					var that = this;
+					$.each(tests, function() { that.add_QUnitTestLink(this) } );
+				},
+			
+			add_Title			: function(title)
+				{
+					$(this.targetDiv).append("<h3>QTest Suites</h3>");
+				},
+				
+			add_PageLink 		: function(description, target, addTimeStamp)
+				{
+					var fullUrl = this.baseUrl + target;
+					if (addTimeStamp)
+						fullUrl =fullUrl.add_TimeToUrl()
+					$(this.targetDiv).add_Link(description, fullUrl)
+										 .attr("target","pageExecutionFrame")
+										 .append("<br/>");
+					return this;			
+				},
+				
+			add_FunctionLink 	: function(description, callback)
+				{					
+					$(this.targetDiv).add_Link(description)
+									 .click(callback)
+									 .append("<br/>");
+					return this;			
+				}, 
+				
+			runAllQUnitTests	: function()
+				{						
+					var runAllTests = function() 
+						{
+							$(TM.ControlPanel.QUnitTests.targetDiv + " a").each(function() 
+								{ 									
+									if ($(this).attr('href').indexOf('QUnit') > -1) 
+										{ window.open($(this).attr('href'), "_blank") } 					
+								} )
+						};
+					TM.Gui.Dialog.actionConfirmation("Run all Qunit tests in separate windows", runAllTests, 400,150)
+				}				
+		}
+		
+	
+		
+	$(function()
+		{
+			var qUnitTestsPage = TM.ControlPanel.QUnitTests;
+			
+			var teamMentorQUnitTests =  
+					[
+						'QUnit_-_TM_ControlPanel_LIVE_ONE', 
+						
+						'QUnit - TM_Gui_Dialog', 
+						'QUnit - TM_Gui_LibraryTree',						
+						'QUnit - TM_GUI_ShowProgressBar',
+						'QUnit - TM_GuiObjects',
+						'QUnit - TM_WebService_User',
+						'QUnit - TM_XmlDatabase',						
+						//'QUnit_-_TM_GuidanceItemEditor_Elrte', 
+						//'QUnit_-_TM_GuidanceItemViewer',
+						//'QUnit_-_TM_Main_Gui_for_ALL_users',
+						'QUnit_-_TM_Main_Gui_for_User_Anonymous',
+						'QUnit_-_TM_Main_Gui_for_User_Editor',
+						'QUnit_-_TM_Main_Gui_for_User_Viewer',
+						'QUnit_-_TM_Main_Gui_for_User_Admin',
+						'QUnit_-_TM_Main_GUI_LIVE_ONE'
+					];
+			
+			qUnitTestsPage.add_Title("QTest Suites");			
+			qUnitTestsPage.add_QUnitTestLinks(teamMentorQUnitTests);
+			
+			
+			qUnitTestsPage.add_Title("Individual tests");	
+			$("#qUnitTestsLinks").append("<br/><h3></h3>");
+			/*$("#qUnitTestsLinks").add_Link("Open Test with Library Tree in Edit Mode", "http://127.0.0.1:12355/html_pages/_UnitTest_Helpers/TM_qUnit_Tests/html/QUnit%20-%20TM_Gui_LibraryTree.html?filter=TM.Gui.LibraryTree%20-%20Edit%20Mode%3A%20Open%20Library%20in%20Edit%20Mode")
+								 .attr("target","_blank")
+								 .append("<br/>");;*/
+
+			qUnitTestsPage.add_PageLink("Open Test with Library Tree in Edit Mode", "QUnit%20-%20TM_Gui_LibraryTree.html?filter=TM.Gui.LibraryTree%20-%20Edit%20Mode%3A%20Open%20Library%20in%20Edit%20Mode", false)
+						  .add_PageLink("View onFolderStructureLoaded stats", "../../GuiObjects/onFolderStructureLoaded.html", true)
+						  .add_PageLink("View GuidanceItems Mappings Table (Html table)", "../../GuiObjects/GuiObjects_CreateMappingsTable.html", true);
+			
+			qUnitTestsPage.add_Title("Test Utils");				
+						
+			qUnitTestsPage.add_FunctionLink("Run all QUnit tests (new windows/tabs)", qUnitTestsPage.runAllQUnitTests)
+						  .add_FunctionLink("Reload View", TM.ControlPanel.open_QUnitTests)
+			
+						
+			//$("#pageExecution").hide();
+			$("#pageExecution").absolute().top(70).left(300)
+										  .width($("#pageExecution").parent().width() - 300)
+										  .height($("#pageExecution").parent().height()-70)
+										  .resizable();
+			
+			$("#pageExecutionFrame").width("98%")
+									.height("98%");
+			TM.Events.onControlPanelViewLoaded();			
+		});	
+</script>
+
+<H1> TeamMentor QUnit Tests</h1>
+<br/><br/>
+<div id="qUnitTestsLinks"></div>
+<div id= "pageExecution">
+	<iframe id="pageExecutionFrame" />	
+</div>

@@ -1,0 +1,75 @@
+<!doctype html> 
+<html>
+	<head>						
+			<script src="/javascript/jQuery/jquery-1.6.2.min.js" 	type="text/javascript"></script>
+			<script src="/javascript/TM/GlobalVariables.js" 		type="text/javascript"></script>
+			<script src="/javascript/TM/WebServices.js" 			type="text/javascript"></script>
+			<script src="/javascript/json/json2.js" 				type="text/javascript"></script>	
+			<script src="/javascript/TM/GuiObjects.js" 				type="text/javascript"></script>
+			<script src="/javascript/jLinq/jLinq.js" 				type="text/javascript"></script>
+			<script src="/javascript/IE_Fixes.js" 					type="text/javascript"></script>	
+			<script>
+				var startTime = new Date();
+				
+				var showStats = function()
+					{					
+						$("#info").html("load complete");											
+						
+						var timings = $("<ul>");
+						timings .append($("<li>").append("this page: " 						+ new Date(new Date() - startTime)					.secondsAndMiliSeconds()))
+								.append($("<li>").append("ExtractFolderStructure: " 		+ TM.Debug.TimeSpan_ExtractFolderStructure			.secondsAndMiliSeconds()))
+								.append($("<li>").append("ExtractAllMappings: " 			+ TM.Debug.TimeSpan_ExtractAllMappings				.secondsAndMiliSeconds()))
+								.append($("<li>").append("CalculateFolderStructure: " 		+ TM.Debug.TimeSpan_CalculateFolderStructure		.secondsAndMiliSeconds()))
+								.append($("<li>").append("CalculateAllMappings: " 			+ TM.Debug.TimeSpan_CalculateAllMappings			.secondsAndMiliSeconds()))
+								.append($("<li>").append("WebService_getFolderStructure: "	+ TM.Debug.TimeSpan_WebService_getFolderStructure	.secondsAndMiliSeconds()))
+								.append($("<li>").append("WebService_getGUIObjects: " 		+ TM.Debug.TimeSpan_WebService_getGUIObjects		.secondsAndMiliSeconds()))
+								
+								;
+						
+						var stats = $("<ul>");
+						stats.append($("<li>").append("# of unique strings: " 			+ TM.WebServices.Data.GuiObjects.UniqueStrings.length))
+							 .append($("<li>").append("# of guidanceItems mappings: " 	+ TM.WebServices.Data.GuiObjects.GuidanceItemsMappings.length))
+							 .append($("<li>").append("# of guidanceItems in 1st lib: " + TM.WebServices.Data.AllLibraries[0].guidanceItems.length))							 						 
+							 .append($("<li>").append("# of Libraries: " 				+ TM.WebServices.Data.AllLibraries.length))
+							 .append($("<li>").append("# of Folders: " 					+ TM.WebServices.Data.AllFolders.length))
+							 .append($("<li>").append("# of Views: " 					+ TM.WebServices.Data.AllViews.length));
+						
+						
+						var data = $("<ul>");								  
+						try
+						{
+							data.append($("<li>").append($("<b>").append(" 1st library:")).append( 
+														$.data[TM.WebServices.Data.AllLibraries[0].id].name))
+								.append($("<li>").append($("<b>").append("1st folder of 1st library:")).append(
+														 $.data[TM.WebServices.Data.AllLibraries[0].id].subFolders[0].name))
+								.append($("<li>").append($("<b>").append("1st view of 1st folder of 1st library: ")).append(
+														 $.data[TM.WebServices.Data.AllLibraries[0].id].subFolders[0].views[0].caption))
+								.append($("<li>").append($("<b>").append("1st Title of 1st view of 1st folder of 1st library: ")).append(
+														 $.data[$.data[TM.WebServices.Data.AllLibraries[0].id].subFolders[0].views[0].guidanceItems[0]].title));
+						}
+						catch(exception)
+						{
+							data.append($("<li>").append($("<b>").append("ERROR CHECKING Library data:" + exception.message)));
+						}
+						$("#info").append($("<h3>").append("timings"))	.append(timings)
+								  .append($("<h3>").append("stats"))	.append(stats)
+								  .append($("<h3>").append("data"))		.append(data);
+								  
+						//alert(TM.WebServices.Data.getGuidanceItemsInGuid_For_DataTable("ea854894-8e16-46c8-9c61-737ef46d7e82"));
+						
+						TM.Debug.UnitTest_Message = "Test Complete";
+						
+					}
+				$(function()
+					{	
+						$("#info").html("calling onFolderStructureLoaded");
+						TM.Events.onFolderStructureLoaded.add(showStats);	
+					});
+			</script>
+	</head>
+	<body>
+		<h2>TM.Events.onFolderStructureLoaded stats</h2>
+		<div id="info" ></div>						
+	</body>
+</html>
+

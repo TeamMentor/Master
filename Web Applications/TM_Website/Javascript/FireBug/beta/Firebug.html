@@ -1,0 +1,38 @@
+
+
+Firebug should open below ...
+<script type="text/javascript">
+var loadFireBug = function(F, i, r, e, b, u, g, L, I, T, E)
+	{	
+		//if (F.getElementById(b)) return;
+	
+//		alert('trying to start firebug');
+		
+		E = F.documentElement.namespaceURI;
+		E = E ? F[i + 'NS'](E, 'script') : F[i]('script');
+		E = F[i]('script');
+		E[r]('id', b);
+		E[r]('src', I + g + T);
+		E[r](b, u);
+		(F[e]('head')[0] || F[e]('body')[0]).appendChild(E);
+		E = new Image;
+		E[r]('src', I + L);		
+	};
+	
+	jQuery(function()
+	{		
+		loadFireBug(document,
+					'createElement',
+					'setAttribute',
+					'getElementsByTagName',
+					'FirebugLiteBookmarlet',
+				    '1.3.0.2',
+					'firebug_lite_beta.js?time=' + new Date().getTime(),
+					'../skin/xp/sprite.png',
+					'/Javascript/Firebug/beta/',
+					'#startOpened');
+		
+	})
+	
+
+</script>

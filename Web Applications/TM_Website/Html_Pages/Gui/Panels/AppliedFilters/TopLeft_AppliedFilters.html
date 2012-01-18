@@ -1,0 +1,33 @@
+<script>
+
+$(function() 
+	{				
+		TM.Gui.AppliedFiltersList.fixCSS_appliedFilters();	
+		TM.Events.onAppliedFieldsEnd.add(TM.Gui.AppliedFiltersList.populateAppliedFiltersTable);
+		TM.Events.onTextSearch		.add(TM.Gui.AppliedFiltersList.populateAppliedFiltersTable);
+		//TM.Events.onUserChange.add(TM.Events.onLibraryTreeSelected);
+		
+	});
+								
+</script>
+
+
+
+		<div id="AppliedFiltersPanel" class="AppliedFilter">
+
+			<span id="ctl00_ContentPlaceHolder1_AppliedFilters1_RemoveFiltersImage">
+				<img src="/Images/RemoveAllButton.jpg" onclick="TM.Gui.AppliedFiltersList.removeFilters()" class="RemoveFilters" alt="Clear filter" />
+			</span>
+			<div class="AppliedFilterHeader">	
+				<h3>Applied Filters</h3>
+			</div>
+
+			<div id=AppliedFilterBody class="AppliedFilterBody">				
+				<div id="ctl00_ContentPlaceHolder1_AppliedFilters1_UpdatePanel1">								
+					<div class="AppliedFilterItems" id="AppliedFilterItems"></div>
+				</div>				
+			</div>
+
+		</div>
+
+

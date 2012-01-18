@@ -1,0 +1,17 @@
+<h1>Manage Guidance Items..</h1>
+  <script>
+  	$(function () 
+		{
+                  	var treeId = "libraryTree";
+  			jsTreeWithFolders(function(data) {showTree(treeId, data.d); } );
+                  
+			jsTreeWithFolders(function(data) {showTree("GuidanceItemsTree", data.d); } );
+                  
+                });
+                                         
+  </script>
+<div id=EditGui>
+
+  <div id="libraryTree"></div>	
+  <div id="GuidanceItemsTree"></div>	
+<div>

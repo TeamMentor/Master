@@ -1,0 +1,136 @@
+<!--jQuery UniForm-->
+
+<script  src="/javascript/jQuery.UniForm/uni-form.jquery.min.js" 				type="text/javascript"></script>
+<script  src="/javascript/jQuery.UniForm/uni-form.ExtraMethods.js" 				type="text/javascript"></script>	
+<link   href="/javascript/jQuery.UniForm/uni-form.css" 							type="text/css" rel="stylesheet"/>
+<link   href="/javascript/jQuery.UniForm/dark.uni-form.css" 					type="text/css" rel="stylesheet" />        	
+
+
+<script>	
+	var addGroupsSelect = function(targetDiv, labelText, selectId)
+		{
+			//addTextField(targetDiv, "Group ID", selectId);
+	
+			//targetDiv.$().append("bbbbbbb");
+								  
+			targetDiv.$().append(				
+				"<label for=''>{0}</label>".format(labelText) + 
+				"<select id='{0}'>".format(selectId) + 
+								  "<option value='0'>Anonymous</option>" +
+								  "<option value='1'>Admin</option>" +
+								  "<option value='2'>Reader</option>" +
+								  "<option value='3'>Editor</option>" +
+								  "<option value='4'>Developer</option>" +
+								  "</select>"
+				//'<input type="{0}" id="{1}" name="" value="" size="15" class="textInput"/> '.format(type, inputId) 
+				//+ 
+				//'</_div>'
+				);    
+		}
+	
+	
+	var editCurrentUser = function()
+		{
+			/*getCurrentUser(function(data) 	
+							{								
+								loadUserData(data.d) 
+							});			*/
+			loadUserData(TM.Gui.CurrentUser.userData);
+		}	
+	
+	var loadUserData = function(userData, _onSaveCallback)
+		{			
+			onSaveCallback = _onSaveCallback
+			currentUserData = userData;
+			editUserId = userData.UserID;			
+			"userName".$().val(userData.UserName);			
+			"firstName".$().val(userData.FirstName);
+			"lastName".$().val(userData.LastName);					
+			"title".$().val(userData.Title);
+			"company".$().val(userData.Company);
+			"email".$().val(userData.Email);	
+			"groupId".$().find('option').eq(userData.GroupID).attr('selected','selected')			
+		//	"groupId".$().val(userData.GroupID);
+			"newPassword".$().val('');
+			
+		}
+	
+	var saveData = function()
+		{
+			var newPassword = "newPassword".$().val();
+			if (newPassword != "")
+			{				
+				updateUserPassword(editUserId, "userName".$().val(), newPassword, 
+									function (data) { if (data.d ==false) {alert('Failed to update user password')}} ); 
+			}
+			updateUser(editUserId, 
+					   "userName".$().val(),
+					   "firstName".$().val(),
+					   "lastName".$().val(),
+					   "title".$().val(),
+					   "company".$().val(),
+					   "email".$().val(),
+					   "groupId".$().val(),
+					   onSave);			
+		}
+	var onSave = function(data)
+		{
+			if (data.d)
+			{				
+				currentUserData.UserName = "userName".$().val();
+				currentUserData.FirstName = "firstName".$().val();
+				currentUserData.LastName = "lastName".$().val();
+				currentUserData.Title = "title".$().val();
+				currentUserData.Company = "company".$().val();
+				currentUserData.Email = "email".$().val();
+				currentUserData.GroupID = "groupId".$().val();								
+				if (typeof(onSaveCallback) != "undefined")
+					onSaveCallback();
+				TM.ControlPanel.userEditModalWindow.close();
+			}
+			else	
+				alert('Could not save user data')
+				
+			TM.ControlPanel.open_ManageUsers();	
+		}
+	$(function() 
+		{					
+			var fieldsId = "inlineLabels"
+			//alert(fieldsId);
+			//var formId = 
+			//addTextField(fieldsId, "User ID", "userId");
+			addTextField(fieldsId, "User Name", "userName");
+			addTextField(fieldsId, "First Name", "firstName");
+			addTextField(fieldsId, "Last Name", "lastName");			
+			//addTextField(fieldsId, "IsActive", "isActive");
+			//addTextField(fieldsId, "Expiration Date", "expirationDate");
+			addTextField(fieldsId, "Title", "title");
+			addTextField(fieldsId, "Company", "company");
+			addTextField(fieldsId, "Email", "email");
+			
+			//addTextField(fieldsId, "Group ID", "groupId");			
+			addGroupsSelect(fieldsId,"Group ID", "groupId")			
+			
+			addTextField(fieldsId, "New Password", "newPassword");
+			addButton(fieldsId, "Save Changes","saveData");
+			//loadData();
+			cssFixes_UniForm();
+			
+			TM.ControlPanel.userEditModalWindow = "userEditDialog".$().hide().modal();
+			
+			TM.Events.onControlPanelViewLoaded();
+		});
+</script>	
+
+
+<div id="userEditDialog">  
+	<h2>editing user</h2>
+	<br/>
+	
+	<form action="#" class="uniForm">
+		<fieldset class="inlineLabels">
+
+		</fieldset>
+	</form>
+          
+</div>

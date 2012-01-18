@@ -1,0 +1,198 @@
+<!DOCTYPE HTML>
+<html>
+	<head>	
+	
+	<script src="/javascript/jQuery/jquery-1.6.2.min.js" type="text/javascript"></script>
+	<script src="/javascript/jQuery/jquery.validate.min.js" type="text/javascript"></script>	
+	
+	<script src="/javascript/TM/GlobalVariables.js" type="text/javascript"></script>
+	<script src="/javascript/TM/WebServices.js" type="text/javascript"></script>
+	<script src="/javascript/json/json2.js" 				type="text/javascript"></script>	
+	<script src="/javascript/TM/GuiObjects.js" type="text/javascript"></script>
+
+	<!-- jLinq -->
+		<script src="/javascript/jLinq/jLinq.js" type="text/javascript"></script>
+		<script src="/javascript/jLinq/jlinq.jquery.js" type="text/javascript"></script>	
+
+
+	<!-- jO2 -->
+		<script src="/javascript/jO2/jO2_String_ExtensionMethods.js"></script>	
+		<script src="/javascript/jO2/jO2_jQuery_ExtensionMethods.js"></script>	
+		
+	<!--for jTemplates, JSon-->
+		<script src="/javascript/jQuery/jquery-jtemplates.js"  type="text/javascript"></script>
+		<script src="/javascript/json/json2.js" type="text/javascript"></script>	
+		
+		<!-- TM Helper JS & TM Applied filters-->
+		<script src="/javascript/TM_HelperMethods.js"  type="text/javascript"></script>	
+		<script src="/Html_Pages/Gui/Panels/AppliedFilters/AppliedFilters.js" type="text/javascript"></script> 
+		<script src="/Html_Pages/Gui/Panels/AppliedFilters/AppliedFIlters.DataManipulation.js" type="text/javascript"></script> 	
+
+		<!--Browser Related Fixes and methods -->
+		<script src="/javascript/IE_Fixes.js" type="text/javascript"></script>	
+		
+		<!-- CSS -->	
+		<link   href="/css/default.css" type="text/css" rel="stylesheet" /> 		
+	</head>
+	<body>
+	
+<script>
+		
+	var mapDependencies = function()
+		{			
+			Object.prototype.fnFilterClear = function() {}											 
+		}
+
+		
+	var cssFixes = function()
+		{
+			if ($.browser.webkit)
+				$(".PivotBody").width(144);
+			$("#info").css('padding',5)	
+		}
+			
+	var showLibrary = function(id)
+	{
+		$("#title").html("Showing Library " + (id +1));
+		showFiltersForTableData(TM.WebServices.Data.AllLibraries[id].id.toString())
+	}
+	
+	var showFolder = function(id)
+	{
+		$("#title").html("Showing Folder " + (id +1))
+		showFiltersForTableData(TM.WebServices.Data.AllFolders[id].id.toString())
+	}
+	
+	var showView = function(id)
+	{
+		$("#title").html("Showing View " + (id +1))
+		showFiltersForTableData(TM.WebServices.Data.AllViews[id].id.toString())
+	}
+
+	
+	var showFiltersWithCurrentData = function()
+	{
+		//var dataTable = TM.WebServices.Data.getGuidanceItemsInGuid_For_DataTable()
+		showFiltersForTableData();
+	}
+	
+	var showFiltersForTableData = function(guid)
+	{	
+		
+		$("#timespan").html('...starting...');
+		var startTime = new Date();
+		
+		
+		TM.Events.onAppliedFieldsEnd.add(function()
+			{
+				 $("#timespan").append(" ... showed Filters in: " + TM.Debug.TimeSpan_Gui_AppliedFilters_ShowFilters.secondsAndMiliSeconds());
+			});
+		
+		setTimeout(function() 
+			{				
+				var dataTable = TM.WebServices.Data.getGuidanceItemsInGuid_For_DataTable(guid)
+				
+				//currentDataTable = dataTable;
+				//received_DataTable_Data = dataTable;				
+				//received_DataTable_aaData = received_DataTable_Data.aaData;
+				//current_DataTable_Data = received_DataTable_Data;
+				
+				
+				TM.Gui.AppliedFiltersList.populateAppliedFiltersTable();
+
+				cssFixes();
+				
+				$("#timespan").html("<br/> it took: " + startTime.toNow_SecondsAndMiliSeconds()  +
+									"<br/> for: " + dataTable.aaData.length + "items");			
+				
+				/*var original_onAppliedFieldsEnd = TM.Events.onAppliedFieldsEnd;
+				TM.Events.onAppliedFieldsEnd =  
+					function() {
+									UnitTest_Helper_AppliedFilters	= true;	
+									original_onAppliedFieldsEnd();
+							   }*/	
+				TM.Events.onAppliedFieldsEnd.add(function() { UnitTest_Helper_AppliedFilters	= true;	 });
+			}, 200);
+		return "ok";
+	}
+	//$("#PivotPanels input").size()
+	var loadGui = function()
+		{
+			$("#_pivotPanels").load('/Html_Pages/Gui/Panels/AppliedFilters/PivotPanels.html?time='+new Date().getTime());
+			$("#_appliedFilters").load('/Html_Pages/Gui/Panels/AppliedFilters/TopLeft_AppliedFilters.html?time='+new Date().getTime());
+			
+			//$("#_pivotPanels").absolute().left(0).top(200);
+			
+			$("#_pivotPanels").absolute().left(270).top(100);
+			$("#_appliedFilters").absolute().left(0).top(100).width(250);			
+			
+			
+			
+			$('#testDiv').html('Number of GuidanceItems loaded: ' + TM.WebServices.Data.GuidanceItemsIDs.length); 
+			
+			$("#links").append("load and view data for: ");
+			var addLink = function (type, jsFunction, id)
+				{
+					$("#links").add_Link(type + " " + (id+1) , 
+										  "javascript:" + jsFunction + "(" + id + ")" );
+				}	
+			addLink("library", "showLibrary", 0);	
+			addLink("library", "showLibrary", 1);	
+			addLink("library", "showLibrary", 2);	
+			addLink("folder", "showFolder", 0);
+			addLink("folder", "showFolder", 1);
+			addLink("folder", "showFolder", 2);
+			addLink("view", "showView", 0);
+			addLink("view", "showView", 1);
+			addLink("view", "showView", 2);
+			//$("#links").add_Link("show library 2", "javascript:showLibrary(1)")
+			//$("#links").add_Link("show library 3", "javascript:showLibrary(2)")
+			
+			$("#links a").css('padding','3px')	
+			
+				
+			
+			//setTimeout(showFiltersWithCurrentData, 400);
+			setTimeout(function() { showLibrary(0);} , 400);
+			
+			load_QUnitTests();
+		}
+	
+	var load_QUnitTests = function()
+		{
+			return;
+		$("body").append("<div id='QUnitTests'></div>"); 
+			$("#QUnitTests").absolute().top(200).left(0).width(550).bottom(0).css('border','2px solid').html('qUnitTests will go here')
+							.load("/html_pages/_UnitTest_Helpers/TM_qUnit_Tests/AppliedFilters/TM_AppliedFilters.html",
+								function() {
+												QUnit.load();
+											})
+		};
+		
+	$(function()
+		{		
+			cssFixes();
+			mapDependencies();
+			//TM.Events.onGuiObjectsLoaded(loadGui);
+			TM.Events.onFolderStructureLoaded.add(loadGui);	
+			
+			$("#links").add_Link("execute qUnit tests","javascript:load_QUnitTests()");
+		});
+</script>
+
+<!--<a href="javascript:document.location=document.location + '?time='+new Date().getTime();"/>reload</a> 
+-->
+<div id="info">	
+	<h2><span id="title"></span></h2>
+	<div id="links"></div>	
+	<div id="timespan"></div>
+</div>
+
+<div>
+	<div id='_pivotPanels' ></div>
+	<div id='_appliedFilters' ></div>
+</div>
+
+
+</body>
+</html>

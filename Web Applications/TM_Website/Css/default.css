@@ -1,0 +1,1307 @@
+﻿*
+{
+	margin: 0;
+	padding: 0;
+}
+ul
+{
+	padding-top:15;
+	padding-left: 30px;
+	padding-bottom:15;
+}
+
+ol
+{
+	padding-top:15;
+	padding-left: 30px;
+	padding-bottom:15;
+}
+body
+{
+	font-family: Calibri, Arial, Helvetica, sans-serif;	
+	font-size: small; 
+	color: #111;
+}
+img
+{
+	border: 0px;
+}
+
+a:link
+{
+	color: #339;
+	font-weight: bold;
+}
+
+a:hover
+{
+	color: #000;
+}
+
+a:visited, a:active
+{
+	color: #339;
+/*	color: #933;*/
+	font-weight: bold;
+}
+
+/*:link,:visited { text-decoration:none }*/
+/*   LAYOUT    */
+#header
+{
+	background-image: url(/Images/HeaderRepeat.jpg);
+	background-repeat:repeat-x;
+	height: 75px;
+}
+
+.footer
+{
+	margin: 0px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding: 10px;
+	border-top: solid 1px #888;	
+	clear: both;
+}
+
+#content
+{
+	margin: 0;
+	padding: 0;
+}
+
+#main-content
+{
+	margin-right: 20px;
+	margin-left: 250px;
+}
+
+#sidebar
+{
+	width: 230px;
+	float: left;
+}
+
+/*    CONTROLS    */
+/*    PIVOTS      */
+.Pivot
+{
+	padding: 5px;
+	float: left;
+	width: 220px;
+}
+.PivotHeader
+{
+	padding-top: 5px;
+	text-align: center;
+	background-image: url(/Images/PivotHeader.jpg);
+	background-repeat: no-repeat; /*		border: solid 2px #c6c6c6; 	background-color: #f8f8f8;*/
+	font-size: 120%;
+	color: black;
+	height: 21px;
+}
+
+.PivotBody
+{
+	padding: 3px;
+	border: solid 1px #c6c6c6;
+	border-top: none;
+	background-color: #f8f8f8;
+	width: 85%;
+	text-align: left;
+	height: 120px;
+	overflow: scroll;
+	overflow-x: auto;
+	margin-left: 5%;
+}
+.PivotItemIsAvail
+{
+	color: #000;
+	margin: 0 0px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	font-weight: bold;
+}
+
+.PivotItemNotAvail
+{
+	color: #888;
+	padding-left: -10px;
+	margin: 0 0px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+.PivotItemIsAvail:hover
+{
+	color: #000;
+	margin: 0 0px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	font-weight: bold;
+	background-color: #FFF;
+}
+
+.PivotItemNotAvail:hover
+{
+	color: #888;
+	padding-left: -10px;
+	margin: 0 0px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	background-color: #FFF;
+}
+
+/*    SPIN        */
+
+.Spin
+{
+	overflow-y: auto;
+	overflow: hidden;
+	overflow: scroll; /*	border-bottom: solid 2px #5290ca; 	border: solid 2px #5290ca; 	background-color: #eff5fa;*/
+}
+
+#SpinInner
+{
+	margin: auto;
+	width: 920px;
+}
+
+/*    APPLIED FILTER    */
+.AppliedFilter
+{
+	padding: 5px;
+	padding-left: 0px;
+	width: 100%;
+}
+
+.AppliedFilterHeader
+{
+	background-image: url(/Images/AppliedFiltersHeader.jpg);
+	background-position: -70px;
+	background-repeat: repeat;
+	font-size: 120%;
+	color: black;
+	height: 26px;
+	/*height: 33px;
+	width: 300px*/
+	padding-left: 6px;
+	padding-top: 6px;
+	
+}
+
+.AppliedFilterBody
+{
+	border: solid 1px #5290ca;
+	border-left: none;
+	border-top: none;
+	background-color: #eff5fa;
+	width: 91%;
+	text-align: left;
+	padding: 2%;
+}
+
+.AppliedFilterItem
+{
+	padding-left: 15px;
+	text-indent: -13px;
+	padding-right: 5px;
+	padding-top: 3px;
+	padding-bottom: 0px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+
+.AppliedFilterItem:hover
+{
+	padding-left: 15px;
+	text-indent: -13px;
+	padding-right: 5px;
+	padding-top: 3px;
+	padding-bottom: 0px;
+	background-color: #FFFFFF;
+}
+.DeleteFilter
+{
+	float: right;
+	cursor: pointer;
+}
+
+.RemoveFilters
+{
+	cursor: pointer;
+	float: right;
+}
+
+/*  SEARCH     */
+.Search
+{
+	border: solid 2px #5290ca;
+	background-color: #eff5fa;
+	padding: 3px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	vertical-align: middle;
+	height: 30px;
+	background-color: #eff5fa;
+}
+
+.SearchInner
+{
+	margin: auto;
+	text-align: center;
+	font-weight: bold;
+}
+
+.SearchButton
+{
+	cursor: pointer;
+	vertical-align: top;
+	padding-bottom: 3px;
+}
+
+.SearchTextBox
+{
+	margin-top: 3px;
+	width: 80%;
+}
+
+/*  GUIDANCE ITEMS  */
+.ViewGuidanceItem
+{
+	margin: 20px;
+	margin-top: 10px;
+}
+
+h1.ItemTitle
+{
+	color: #111155;
+	margin-bottom: 10px;
+	font-size: 160%;
+}
+
+.ItemContent
+{
+	padding: 10px;
+	margin-top: 0px;
+}
+
+/*  ITEM DETAIL  */
+.ItemDetailTable
+{
+	border: solid 1px #BBB;
+}
+
+.ItemDetailHeader
+{
+	background-color: #EEE;
+	padding: 3px;
+	padding-left: 10px;
+	padding-right: 10px;
+	border-bottom: solid 1px #BBB;
+}
+
+.ItemDetailValue
+{
+	font-weight: bold;
+	padding: 3px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+/*    ITEM LIST    */
+.ItemListPanel
+{
+	margin-top: 10px;
+}
+
+.ItemListViewTable
+{
+	width: 100%;
+}
+
+
+.ItemListViewHeaderRow
+{
+	border-bottom: none;
+	text-align: center;
+	background-color: #DDD;
+}
+
+.ItemListViewFirstHeaderCell
+{
+	width: 31px;
+}
+
+.ItemListViewHeaderCellTitle
+{
+	width: 60%;
+	color: #222;
+	padding: 5px;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+.ItemListViewHeaderCell
+{
+	width: 10%;
+	color: #222;
+	padding: 5px;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+.ItemListViewRow
+{
+	background-color: #F8F8F8;
+}
+
+.ItemListViewRow:hover
+{
+	background-color: #FFF;
+}
+
+.ItemListViewFirstCell
+{
+	border-left: solid 1px #888;
+	border-right: solid 1px #888;
+	border-top: solid 1px #888;
+	padding: 5px;
+}
+
+.ItemListTitle
+{
+	font-weight: bold;
+}
+
+.ItemListViewCellTitle
+{
+	width: 60%;
+	border-right: solid 1px #888;
+	border-top: solid 1px #888;
+	padding: 5px;
+}
+.ItemListViewCell
+{
+	width: 10%;
+	border-right: solid 1px #888;
+	border-top: solid 1px #888;
+	padding: 5px;
+}
+
+.ItemShortDescription
+{
+	display: none;
+	background-color: #F8F8F8;
+}
+
+.ItemShortDescriptionFirstCell
+{
+	border-left: solid 1px #888;
+	border-right: solid 1px #888;
+	padding: 5px;
+}
+
+.ItemShortDescriptionCell
+{
+	border-right: solid 1px #888;
+}
+
+.ItemShortDescriptionInner
+{
+	margin-left: 20px;
+	margin-right: 5px;
+	margin-top: 0px;
+	margin-bottom: 10px;
+	padding: 5px;
+	border: solid 1px #888;
+	background-color: #FFF;
+}
+
+.ItemListViewFirstBlankCell
+{
+	border-left: solid 1px #888;
+	border-right: solid 1px #888;
+}
+
+.ItemListViewBlankCell
+{
+	border-right: solid 1px #888;
+}
+
+.noResults
+{
+	padding: 20px;
+	background-color: #fbfbfb;
+	border: solid 2px #BBB;
+	border-top: none;
+	border-bottom: none;
+}
+
+.noResults ul
+{
+	padding-left: 40px;
+}
+
+.Pager
+{
+	text-align: center;
+	font-weight: bold;
+	margin-bottom: 5px;
+}
+
+.PagerLink
+{
+	color: #118;
+}
+
+.PagerLinks
+{
+	white-space: nowrap;
+}
+
+.DeleteButton
+{
+	cursor: pointer;
+	float: right;
+}
+
+/*    LIBRARY TREE    */
+.LibraryTree
+{
+	width: 98%;
+	padding: 5px;
+	padding-left: 0px;
+	float: left;
+}
+
+/*padding-top: 5px;
+	text-align: center;	
+	background-image: url(/Images/PivotHeader.png);
+	font-size: 16px;
+	color: black;
+	height: 21px;*/
+
+.LibraryTreeHeader
+{
+	background-image: url(/Images/GuidanceViewsHeader.png);
+	background-position: -100px;
+	background-repeat: no-repeat;
+	font-size: 120%;
+	color: black;
+	height: 26px;
+	padding-left: 6px;
+	padding-top: 6px;
+}
+
+.LibraryTreeBody
+{
+	color: Black;
+	border: solid 1px #c6c6c6;
+	border-left: none;
+	border-top: none;
+	background-color: #f8f8f8;
+	width: 91%;
+	text-align: left;
+	padding: 2%;
+}
+
+.LibraryTree a:link, .LibraryTree a:visited, .LibraryTree a:hover, .LibraryTree a:active
+{
+	color: #333333;
+	text-decoration: none;
+	font-weight: normal;
+}
+
+/* These styles contain RARELY CHANGED rules used when the TreeView control adapter is enabled. */
+/* Empty rules are provided merely as a convenience for your future use or experimentation. */
+.PrettyTree
+{
+	position: relative;
+	margin-left: -14px;
+}
+
+.PrettyTree div.AspNet-TreeView li
+{
+	padding: 1px 0px 1px 16px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+
+.PrettyTree div.AspNet-TreeView li:hover
+{
+}
+
+.PrettyTree div.AspNet-TreeView ul ul
+{
+}
+
+.PrettyTree div.AspNet-TreeView ul li img
+{
+}
+
+.PrettyTree div.AspNet-TreeView li a:hover
+{
+	background-color: #FFF;
+}
+
+.PrettyTree div.AspNet-TreeView li.AspNet-TreeView-Root
+{
+}
+
+.PrettyTree div.AspNet-TreeView li.AspNet-TreeView-Parent
+{
+}
+
+.PrettyTree div.AspNet-TreeView li.AspNet-TreeView-Leaf
+{
+}
+
+.PrettyTree div.AspNet-TreeView .AspNet-TreeView-Collapse
+{
+	display: none;
+}
+
+.PrettyTree div.AspNet-TreeView .AspNet-TreeView-Expand
+{
+}
+
+.PrettyTree div.AspNet-TreeView a, .PrettyTree div.AspNet-TreeView a:visited, .PrettyTree div.AspNet-TreeView a:active, .PrettyTree div.AspNet-TreeView a:link
+{
+}
+
+.PrettyTree div.AspNet-TreeView a:hover
+{
+}
+
+.PrettyTree div.AspNet-TreeView .AspNet-TreeView-Selected a
+{
+}
+
+.PrettyTree div.AspNet-TreeView .AspNet-TreeView-Selected ul a
+{
+}
+.contentBottom
+{
+	background-color: #eee;
+	padding: 10px;
+	padding-bottom: 20px;
+	padding-left: 345;
+}
+
+/***COMMENTS***/
+
+
+.Comments
+{
+	margin-top: 00px;
+	border-top: solid 2px #888;
+	padding-bottom: 10px;
+}
+
+.Comments h2
+{
+	font-size: 140%;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.Comment
+{
+	margin-top: 10px;
+	margin-bottom: 10px;
+	border-left: solid 2px #EEE;
+}
+.CommentTitle
+{
+	background-color: #EEE;
+	padding: 2px 5px;
+}
+.CommentAuthor
+{
+	font-style: italic;
+	padding: 5px;
+}
+.CommentBody
+{
+	padding: 5px;
+}
+.CommentResponses
+{
+	margin-left: 20px;
+}
+
+.AddComment
+{
+	margin: 10px;
+	margin-top: 0px;
+	padding: 20px;
+	padding-top: 0px;
+}
+
+.CommentH1
+{
+	margin: 0px;
+	margin-top: 5px;
+	margin-left: 10px;
+	font-size: 120%;
+}
+
+.CommentBodyBox
+{
+	width: 100%;
+	height: 150px;
+	font-family: Calibri;
+}
+
+.CommentEmailBox
+{
+	font-family: Calibri;
+}
+
+.CommentTitleBox
+{
+	width: 100%;
+	font-family: Calibri;
+}
+
+.saveCommentText
+{
+	padding-top: 10px;
+	padding-left: 10px;
+	font-size: 80%;
+	color: #800;
+}
+
+/*Rounded Corners for Search box*/
+.searchCorners
+{
+	background: transparent;
+	margin-bottom: 5px;
+	margin-top: 5px;
+	border-bottom: solid 2px #5290ca;
+}
+* html .searchCorners span
+{
+	width: 20px;
+	height: 12px;
+	width: 0;
+	height: 0;
+}
+.xb2, .xb3, .xb4, .xb5, .xb6, .xb7
+{
+	display: block;
+	overflow: hidden;
+	font-size: 0;
+}
+.xb2, .xb3, .xb4, .xb5, .xb6
+{
+	height: 1px;
+}
+.xb4, .xb5, .xb6, .xb7
+{
+	background: #ccc;
+	border-left: 1px solid #5290ca;
+	border-right: 1px solid #5290ca;
+}
+.xb2
+{
+	margin: 0 6px;
+	background: #5290ca;
+}
+.xb3
+{
+	margin: 0 4px;
+	background: #5290ca;
+}
+.xb4
+{
+	margin: 0 3px;
+	background: #eff5fa;
+	border-width: 0 4px;
+}
+.xb5
+{
+	margin: 0 2px;
+	background: #eff5fa;
+	border-width: 0 3px;
+}
+.xb6
+{
+	margin: 0 2px;
+	background: #eff5fa;
+	border-width: 0 2px;
+}
+.xb7
+{
+	margin: 0 1px;
+	background: #eff5fa;
+	border-width: 0 2px;
+	height: 2px;
+}
+.searchContent
+{
+	display: block;
+	background: #eff5fa;
+	border: 2px solid #5290ca;
+	border-width: 0 2px;
+}
+
+/*Rounded Corners for Spin Control*/
+.spinCorners
+{
+	background: transparent;
+	margin-bottom: 5px;
+	margin-top: 5px;
+	border-bottom: solid 2px #5290ca;
+}
+* html .searchCorners span
+{
+	width: 20px;
+	height: 12px;
+	width: 0;
+	height: 0;
+}
+.sc2, .sc3, .sc4, .sc5, .sc6, .sc7
+{
+	display: block;
+	overflow: hidden;
+	font-size: 0;
+}
+.sc2, .sc3, .sc4, .sc5, .sc6
+{
+	height: 1px;
+}
+.sc4, .sc5, .sc6, .sc7
+{
+	background: #ccc;
+	border-left: 1px solid #5290ca;
+	border-right: 1px solid #5290ca;
+}
+.sc2
+{
+	margin: 0 6px;
+	background: #5290ca;
+}
+.sc3
+{
+	margin: 0 4px;
+	background: #5290ca;
+}
+.sc4
+{
+	margin: 0 3px;
+	background: #eff5fa;
+	border-width: 0 4px;
+}
+.sc5
+{
+	margin: 0 2px;
+	background: #eff5fa;
+	border-width: 0 3px;
+}
+.sc6
+{
+	margin: 0 2px;
+	background: #eff5fa;
+	border-width: 0 2px;
+}
+.sc7
+{
+	margin: 0 1px;
+	background: #eff5fa;
+	border-width: 0 2px;
+	height: 2px;
+}
+.spinContent
+{
+	display: block;
+	background: #eff5fa;
+	border: 2px solid #5290ca;
+	border-width: 0 2px;
+}
+
+/*Rounded Corners for Items List*/
+.itemListCorners
+{
+	background: transparent;
+	margin-bottom: 0px;
+	margin-top: 5px;
+	border-bottom: solid 2px #BBB;
+}
+* html .itemListCorners span
+{
+	width: 20px;
+	height: 12px;
+	width: 0;
+	height: 0;
+}
+* html .searchCorners span
+{
+	width: 20px;
+	height: 12px;
+	width: 0;
+	height: 0;
+}
+.il2, .il3, .il4, .il5, .il6, .il7
+{
+	display: block;
+	overflow: hidden;
+	font-size: 0;
+}
+.il2, .il3, .il4, .il5, .il6
+{
+	height: 1px;
+}
+.il4, .il5, .il6, .il7
+{
+	background: #ccc;
+	border-left: 1px solid #BBB;
+	border-right: 1px solid #BBB;
+}
+.il2
+{
+	margin: 0 6px;
+	background: #BBB;
+}
+.il3
+{
+	margin: 0 4px;
+	background: #BBB;
+}
+.il4
+{
+	margin: 0 3px;
+	background: #DDD;
+	border-width: 0 4px;
+}
+.il5
+{
+	margin: 0 2px;
+	background: #DDD;
+	border-width: 0 3px;
+}
+.il6
+{
+	margin: 0 2px;
+	background: #DDD;
+	border-width: 0 2px;
+}
+.il7
+{
+	margin: 0 1px;
+	background: #DDD;
+	border-width: 0 2px;
+	height: 2px;
+}
+.itemListContent
+{
+	display: block;
+	background: #DDD;
+	border: 2px solid #BBB;
+	border-width: 0 2px;
+}
+
+/*Rounded Corners for ErrorBox List*/
+.itemListCorners
+{
+	background: transparent;
+	margin-bottom: 0px;
+	margin-top: 5px;
+	border-bottom: solid 2px #BBB;
+}
+* html .itemListCorners span
+{
+	width: 20px;
+	height: 12px;
+	width: 0;
+	height: 0;
+}
+* html .searchCorners span
+{
+	width: 20px;
+	height: 12px;
+	width: 0;
+	height: 0;
+}
+.eb2, .eb3, .eb4, .eb5, .eb6, .eb7
+{
+	display: block;
+	overflow: hidden;
+	font-size: 0;
+}
+.eb2, .eb3, .eb4, .eb5, .eb6
+{
+	height: 1px;
+}
+.eb4, .eb5, .eb6, .eb7
+{
+	background: #ccc;
+	border-left: 1px solid #BBB;
+	border-right: 1px solid #BBB;
+}
+.eb2
+{
+	margin: 0 6px;
+	background: #BBB;
+}
+.eb3
+{
+	margin: 0 4px;
+	background: #BBB;
+}
+.eb4
+{
+	margin: 0 3px;
+	background: #fbfbfb;
+	border-width: 0 4px;
+}
+.eb5
+{
+	margin: 0 2px;
+	background: #fbfbfb;
+	border-width: 0 3px;
+}
+.eb6
+{
+	margin: 0 2px;
+	background: #fbfbfb;
+	border-width: 0 2px;
+}
+.eb7
+{
+	margin: 0 1px;
+	background: #fbfbfb;
+	border-width: 0 2px;
+	height: 2px;
+}
+.itemListContent
+{
+	display: block;
+	background: #fbfbfb;
+	border: 2px solid #BBB;
+	border-width: 0 2px;
+}
+
+/*Guidance Item Styles*/
+
+.ItemContent h1
+{
+	font-size: 130%;
+	padding-top: 10px;
+}
+
+.ItemContent h2
+{
+	font-size: 115%;
+}
+
+.ItemContent h3
+{
+	font-size: 100%;
+}
+
+
+.ItemContent P
+{
+	line-height: 1.5em;
+	margin-top: 0.5em;
+	margin-bottom: 1.0em;
+}
+
+.ItemContent table
+{
+	font-size: 100%;
+	border-collapse: collapse;
+	border: 2px solid #333;
+}
+
+.ItemContent table pre
+{
+	padding: 0px;
+	margin: 0px;
+	background: none;
+}
+
+.ItemContent tr
+{
+	border-bottom: 1px solid #333;
+}
+
+.ItemContent TD
+{
+	border-bottom: 1px solid #333;
+	border-right: 2px solid #333;
+	padding: .2em;
+	vertical-align: middle;
+}
+
+.ItemContent TH
+{
+	border: 2px solid #333;
+	padding: .2em;
+	vertical-align: middle;
+}
+
+.ItemContent UL
+{
+	margin-left: 25px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.ItemContent OL
+{
+	margin-left: 25px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.userTable
+{
+	font-size: 100%;
+	border-collapse: collapse;
+	border: 2px solid #333;
+}
+
+.ItemContent pre
+{
+	font-size: small;
+	width: 90%;
+	background-color: #EEE;
+	padding: 10px;
+}
+
+
+.ItemContent a:hover
+{
+	color: #000;
+}
+
+.ItemContent a:visited, .ItemContent a:active
+{
+	color: #000;
+}
+
+.LoggedInLinks
+{
+	text-align: right;
+	float: right;
+	padding-right: 10px;
+	padding-top: 10px;
+}
+
+.errorMessage
+{
+	padding: 15px;
+	color: Red;
+}
+
+.errorMessageLogin
+{
+/*	padding: 15px;*/
+	color: Red;
+/*	width: 272px;*/
+}
+
+.UpdatePasswordTextbox
+{
+	width: 200px;
+	margin-top: 3px;
+}
+
+.PitchPanel
+{
+	padding-left: 30px;
+	padding-bottom: 20px;
+	width: 600px;
+	float: left;
+}
+
+.LoginArea
+{
+	float: left;
+}
+
+#LoginMainContent
+{
+	padding: 15px;
+	margin: 15px;
+	width: 932px;
+}
+
+.PitchPanel li
+{
+	margin-left: 40px;
+}
+.PitchPanel div
+{
+	margin-top: 10px;
+}
+
+.SignUpTag
+{
+	color: #125;
+	font-size: large;
+	font-weight: bold;
+	padding-bottom: 20px;
+}
+
+.jitGuidanceImage
+{
+	border: none;
+	float: right;
+	padding: 15px;
+}
+
+.SignupContent
+{
+	padding: 5px;
+	margin: 5px;
+}
+
+.SignupFinished
+{
+}
+
+.EventBody
+{
+	padding: 5px;
+}
+
+.EventSeverity
+{
+	text-align: right;
+	margin-top: -10px;
+	margin-right: 20px;
+	font-size: large;
+	font-weight: bold;
+}
+
+.EventSeverity1
+{
+	border: solid 1px Red;
+	background-color: LightPink;
+}
+.EventSeverity2
+{
+	border: solid 1px #F90;
+	background-color: #FDA;
+}
+.EventSeverity3
+{
+	border: solid 1px #FF0;
+	background-color: #FFA;
+}
+.EventSeverity4
+{
+	border: solid 1px #0F0;
+	background-color: #AFA;
+}
+.EventSeverity5
+{
+	border: solid 1px #CCC;
+	background-color: #EEE;
+}
+.EventSeverity6
+{
+	border: solid 1px #CCC;
+	background-color: #FFF;
+}
+.EventSeverityItemAccessViewGuidanceItem
+{
+	border: solid 1px #CCF;
+	background-color: #EEF;
+}
+.EventSeverityCreatedComment
+{
+	border: solid 1px #CFC;
+	background-color: #EFE;
+}
+.EventSeverityLoginSuccess
+{
+	border: solid 1px #FCC;
+	background-color: #FEE;
+}
+.EventSeverityUserLoggedOut 
+{
+	border: solid 1px #CFF;
+	background-color: #EFF;
+}
+.Event
+{
+	padding: 3px;
+	margin: 3px;
+	margin-top: 5px;
+}
+
+.SignupTable
+{
+	vertical-align:top;
+}
+
+.SignupTable tr
+{
+	min-height: 35px;
+}
+
+.requiredTextBox
+{
+	background-color: #FFF0F0;
+	font-size: large;
+	border: solid 1px #999;
+}
+
+.otherTextBox
+{
+	font-size: large;
+	border: solid 1px #999;
+}
+.CalTextBox
+{
+	font-size: large;
+	border: solid 1px #999;
+	background-image: url(/Images/calendar-icon.png);
+	background-position: right;
+	background-repeat: no-repeat;
+}
+.DateHelpText
+{
+	font-size: small;
+}
+.ClearExpiration
+{
+	cursor: hand;
+	padding-left: 10px;
+}
+textarea
+{
+	font-family: Calibri, Arial, Sans-Serif;
+}
+
+.SignUpCol1
+{
+	width: 100px;
+}
+.WelcomeText
+{
+	font-size: medium;
+	color: #002255;
+	font-weight: bold;
+}
+
+.UpgradeMessage
+{
+	font-size: small;
+	border: solid 2px #83AA35;
+	border-top: none;
+	background-color: #FFF;
+	text-align: center;
+	padding: 2px;
+	margin-bottom: 5px;
+}

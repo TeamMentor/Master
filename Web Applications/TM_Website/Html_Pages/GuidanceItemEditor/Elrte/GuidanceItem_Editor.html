@@ -1,0 +1,21 @@
+
+<!--GuidanceItem Editor : Elrte -->
+	<script src="/Javascript/htmlEditors/elrte-1.3/elrte.min.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" href="/Javascript/htmlEditors/elrte-1.3/css/elrte.min.css" type="text/css" media="screen" charset="utf-8">
+	
+	<script>
+		TM.Gui.GuidanceItemEditor_Div = "guidanceItem";
+		setEditor = function()
+			{
+                var opts = {
+				cssClass : 'el-rte',
+				height   : 450,
+				toolbar  : 'complete',
+				cssfiles : ['/Javascript/htmlEditors/elrte-1.3/css/elrte-inner.css']
+			}
+			$('#guidanceItem').elrte(opts);
+                        elRTE.prototype.save = saveEditorCode;
+                }
+	</script>
+
+	<div id="guidanceItem_Elrte"></div>  

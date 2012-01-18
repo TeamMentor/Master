@@ -1,0 +1,166 @@
+<script>
+
+/*TM.Gui.TopRigthLinks = 
+		function()
+		{
+			var targetDiv = "";
+			var htmlPage = "";
+			return {
+						blink: function()
+									{										
+										targetDiv.$().find('div')
+												     .fadeOut(500)
+													 .fadeIn(500);
+									},
+						refresh : function()
+									{											
+										if (targetDiv !="" && htmlPage != "")
+											loadPage(targetDiv, htmlPage, this.blink);
+									},
+						show : function(_targetDiv, _htmlPage)
+									{									
+										targetDiv = _targetDiv;
+										htmlPage = _htmlPage;
+										this.refresh();					
+									}
+					//				,
+					//	get_HtmlPage: function() { return htmlPage; }
+					}
+		}();
+*/
+    
+	TM.Gui.TopRightLinks = 
+		{
+				topRightMenuDiv 			: "topRightMenu"
+				
+			,	aboutTeamMentor				: function()
+												{
+													openUrl("/html_pages/Gui/Panels/About_TeamMentor.html".add_TimeToUrl(), "About TeamMentor", 650,400)
+												}
+			,	loginPage					: function ()
+												{ 			
+													loadDialog('/Html_Pages/Gui/Dialogs/Login.Html'); 
+												}
+			,	signupPage					: function()
+												{ 
+													loadDialog('/Html_Pages/Gui/Dialogs/Signup.html') 
+												}
+			, 	controlPanel				: function ()
+												{																
+													document.location ="/Html_Pages/ControlPanel/ControlPanel.html";			
+												}
+												
+			,	onLogout					: function ()
+												{
+													if(TM.Gui.editMode)
+														TM.Gui.Main.homePage()
+													else
+														TM.Gui.TopRigthLinks.refresh();
+												}
+			
+			,	add_Link 					: function(text, callback)
+												{
+													this.topRightMenuDiv.$().add_Link(text).click(callback)
+													this.topRightMenuDiv.$().append("    ");
+												}		
+												
+			,	add_SimpleLink 				: function(text, link)
+												{
+													this.topRightMenuDiv.$().add_Link(text).click(function()
+																					{ 
+																						window.location=link;
+																					});
+													this.topRightMenuDiv.$().append("    ");
+												}		
+			
+			,	showLinksMappedToCurrentUser : function()
+												{			
+													userData = TM.Gui.CurrentUser.get_UserData();																											
+													this.topRightMenuDiv.$().html("");
+													
+													if(TM.Gui.CurrentUser.loggedIn())
+													{	
+																		
+														if(TM.Gui.CurrentUser.isEditor())
+														{
+															if (TM.Gui.editMode)
+																this.add_Link("Exit Edit Mode", function() { TM.Gui.showUserMode() });
+															else
+																this.add_Link("Edit Mode", TM.Gui.showEditMode);
+														}				
+														
+														if (TM.Gui.CurrentUser.isAdmin())
+														{
+															//add_Link("Home Page", function() { TM.Gui.Main.homePage() } );								
+															this.add_Link("Control Panel", this.controlPanel);
+														}
+														//this.add_Link("About", this.aboutTeamMentor);
+														this.add_Link("Logout", TM.WebServices.WS_Users.logout);			
+																		
+													}
+													else
+													{
+														this.add_Link("Login", this.loginPage);
+														this.add_Link("Sign Up", this.signupPage);														
+													}
+													
+													
+													//"topRightMenu".$().append("<br/>");
+
+													this.topRightMenuDiv.$().append("<br/>" + TM.tmVersion);
+													
+													if(TM.Gui.CurrentUser.loggedIn())			
+														this.topRightMenuDiv.$()
+															.append("<br/><br/>Logged in as:<b> {0} {1}  ({2}) </b>  ".format(userData.FirstName, userData.LastName, userData.UserName))
+															.add_Link("About").click(this.aboutTeamMentor);
+													else
+													{
+														this.topRightMenuDiv.$()
+															.append("<br/><br/>")
+															.add_Link("About").click(this.aboutTeamMentor);
+													}
+													TM.HomePageLinks = "Loaded";				
+													//setTimeout(function() { TM.Events.onHomePageLinksLoaded();} , 1);
+													TM.Events.onHomePageLinksLoaded();
+												}
+			
+			,	showUserLinks 				: function ()
+												{												
+													var that = TM.Gui.TopRightLinks;													
+													that.applyCss();
+													that.showLinksMappedToCurrentUser();															
+													that.topRightMenuDiv.$().hide().fadeIn(1000);
+												}
+			, 	refresh						: function()
+												{
+													//var that = TM.Gui.TopRightLinks;													
+													TM.Gui.CurrentUser.loadUserData();
+												}
+			, 	applyCss					: function()
+												{
+													this.topRightMenuDiv.$()
+															.absolute()
+															.right(10).zIndex(10)
+												}			
+		}
+		
+	$(document).ready(function () 
+			{				
+				TM.Events.onUserDataLoaded	.add(TM.Gui.TopRightLinks.showUserLinks);
+				TM.Events.onEditModeChange	.add(TM.Gui.TopRightLinks.showUserLinks);				
+				TM.Events.onUserChange		.add(TM.Gui.TopRightLinks.refresh);
+				
+				//TM.Gui.CurrentUser.loadUserData();
+				TM.Gui.CurrentUser.start_checkUserLoop()
+				
+				
+/*				if ($.browser.msie)
+				{
+					"TopMenuLinks".$().absolute()
+									  .right(0);
+				}				*/
+			});
+	
+</script>
+
+<div id="topRightMenu"> </div>

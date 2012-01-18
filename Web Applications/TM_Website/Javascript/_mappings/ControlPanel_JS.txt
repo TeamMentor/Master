@@ -1,0 +1,17 @@
+/javascript/jQuery/jquery-1.6.2.min.js
+
+/javascript/json/json2.js
+/javascript/webtoolkit.SHA256.js
+/javascript/jLinq/jLinq.js
+
+/javascript/jQueryUI/plugin.jqueryui.framedialog.js
+/javascript/jQuery.layout/jquery.layout.min.js
+/javascript/jQuery/jquery.validate.min.js
+/javascript/jQuery.simplymodal/jquery.simplemodal.js
+
+/javascript/jQuery.DataTable/jquery.dataTables.min.js
+/javascript/jQuery.DataTable/DataTable.PlugIns.js 		
+
+
+/javascript/jQuery/jquery-jtemplates.js
+

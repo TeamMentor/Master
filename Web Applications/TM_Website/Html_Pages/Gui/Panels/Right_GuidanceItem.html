@@ -1,0 +1,82 @@
+<script>
+	TM.Gui.GuidanceItemViewer = 
+		{
+				guidanceItemId				: null
+			,	guidanceItemTitle			: ""
+			, 	userNotLoggedInPage 		: "/html_pages/Gui/Panels/User_Not_Logged.html"
+			, 	lastPageLoaded				: ""
+			,	refresh						: function() 
+												{
+													var that = TM.Gui.GuidanceItemViewer;
+													that.showSelectedGuidanceId(that.guidanceItemId, that.guidanceItemTitle);
+												}
+			, 	showSelectedGuidanceId 		: function()
+												{											
+													var id = TM.Gui.selectedGuidanceId;
+													var title = TM.Gui.selectedGuidanceTitle;
+													TM.Gui.GuidanceItemViewer.guidanceItemId 	= id;
+													TM.Gui.GuidanceItemViewer.guidanceItemTitle = title;
+													
+													//$("#selectedGuidanceItem").html('.... Events.onUserDataLoaded')
+													
+													jQuery("#selectedGuidanceItem").css('color','#C0C0C0');
+													if(TM.Gui.CurrentUser.isViewer())
+													{
+														if (id != null)
+														{
+															getGuidanceItemHtml(id, function(html) 
+															{ 					
+																var code = "<h1>{0}</h1><hr/><br/>{1}".format(title, html.d);
+																jQuery("#selectedGuidanceItem").html(code);																
+																fixGuidanceItemLinks();
+																$("#selectedGuidanceItemBorder").animate({ scrollTop: 0 }, 'fast');
+																
+																TM.Gui.GuidanceItemViewer.lastPageLoaded = id;
+																//checkForUserActivities(guidanceId);
+															});
+														}
+													}
+													else
+													{	
+														if (TM.Gui.GuidanceItemViewer.lastPageLoaded != TM.Gui.GuidanceItemViewer.userNotLoggedInPage)
+														{
+															loadPage("#selectedGuidanceItem", TM.Gui.GuidanceItemViewer.userNotLoggedInPage);
+																
+															TM.Gui.GuidanceItemViewer.lastPageLoaded = TM.Gui.GuidanceItemViewer.userNotLoggedInPage
+														}
+													}
+													$("#selectedGuidanceItem").css('color','black');																
+												}
+
+		}
+		
+	$(function()
+		{
+			$('#selectedGuidanceItemBorder').css('border',"2px solid #c6c6c6").css('padding','20px');
+			$("#selectedGuidanceItemBorder").absolute().top(43)
+											.left(0).right(0)
+											.bottom(0).css({"overflow" :"auto"})
+			
+			TM.Events.onUserDataLoaded.add(TM.Gui.GuidanceItemViewer.refresh);
+			TM.Events.onShowGuidanceItem.add(TM.Gui.GuidanceItemViewer.showSelectedGuidanceId);
+			
+		});
+</script>
+<div class="searchCorners">
+	<b class="xb2"></b><b class="xb3"></b><b class="xb4"></b><b class="xb5"></b>
+	<b class="xb6"></b><b class="xb7"></b>
+
+	<div class="searchContent">
+		<div class="SearchInner">
+			<h2>Selected Guidance Item</h2>			
+		</div>
+	</div>
+</div>	
+<div id="selectedGuidanceItemBorder">
+	<div id="selectedGuidanceItem" class="selectedGuidanceItem" _style="width:200px"> </div>
+</div>  
+          
+<!--<div id="selectedGuidanceItemPopup" >
+	<div id="selectedGuidanceItemPopupContent" class="selectedGuidanceItem"> </div>
+-->
+

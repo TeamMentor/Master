@@ -1,0 +1,110 @@
+<!--Page: <b>Login Page </b>-->
+	<script>
+		function loginResponse(loginId)
+		{			
+			//$('#PleaseWait').f('display','none');					
+			if(loginId =='00000000-0000-0000-0000-000000000000')
+			{
+				$('#LoginMainContent').css('display','');			
+				$('#errorMessageLogin').html('Incorrect username or password')
+									   .fadeIn(1000); 
+				TM.Debug.LastLoginResult = "Failed";
+			}
+			else
+			{
+				loginDialog.closeDialog();			
+/*				
+				//currentUser = $('#UsernameBox').attr('value');
+				$('#LoginMainContent').html('login ok');
+				$('#UsernameBox').remove();
+				$('#PasswordBox').remove();
+				//$('#PleaseWait').remove();
+				$('#LoginMainContent').remove();
+				loginDialog.remove();			
+				
+				//TM.Gui.TopRigthLinks.refresh();
+				
+				//TM.Gui.CurrentUser.loadUserData(TM.Gui.TopRigthLinks.refresh);  // need to do this here so that we also support the case when the user logs in via the control panel				
+*/				
+				TM.Debug.LastLoginResult = "Ok";				
+			}			
+			
+		}
+		
+		function loginUser()
+		{		
+			$('#errorMessageLogin').hide();
+			//alert('loginUser');
+			//$('#PleaseWait').css('display','');
+			$('#LoginMainContent').css('display','none');			
+			//"LoginDialog".$().dialog().parent().width(400).top(100).height(250);
+			var username = $('#UsernameBox').attr('value');
+			var password = $('#PasswordBox').attr('value');			
+			
+			if (typeof("WindowsLogin".$().attr("checked")) == "undefined")
+				TM.WebServices.WS_Users.login(username, password, loginResponse);
+			else
+				{					
+					loginToWindows(username, password, loginResponse);
+				}
+			//if ("WindowsLogin".$().value() == "on")
+			//	
+			//else
+				
+		}
+		
+		if (typeof(loginDialog) != "undefined")
+			loginDialog.remove();
+		if (typeof(signupDialog) != "undefined")
+			signupDialog.remove();
+			
+		$(function()
+			{		
+				$("*").eq(0).css('overflow','hidden')
+				
+				if(TM.Gui.windowsLoginEnabled===false)					
+					$("#windowsLogin").hide();
+				delete (TM.Debug.LastLoginResult);
+				var dialogOptions = { 	
+											title:'Login into TeamMentor'
+										,	modal: true		
+										,	buttons: { " login" : loginUser}
+										,	width: '400px'
+										, 	open:  TM.Events.onLoginDialogOpen	
+										, 	close: function()
+													{														
+														TM.Gui.CurrentUser.loadUserData();
+														TM.Events.onLoginDialogClose()
+													}
+					/*					,	focus: 	function() {
+																	console.log("on focus");
+																	$('.ui-widget-overlay').css('width','40%');//.height('40%'); 
+															   }*/
+									};				
+				
+
+				//$('.ui-widget-overlay').css('width','30%').height('30%'); 
+				
+				loginDialog = "LoginDialog".$().dialog(dialogOptions);											
+								
+				//$('.ui-widget-overlay').css('width','90%').height('90%'); 
+				
+				$('#UsernameBox').keypress(function(e)  { if(e.which == 13) { loginUser(); } });
+				$('#PasswordBox').keypress(function(e)  { if(e.which == 13) { loginUser(); } });
+				
+				//TM.Events.onLoginDialogOpen();
+			});
+	</script>
+	<div id="LoginDialog" class="_LoginArea">							
+		<!--<h1>Login</h1>-->
+		
+		<span id="usernameLabel" style="display:inline-block;width:130px;">Username:</span><input name="ctl00$ContentPlaceHolder1$UsernameBox" type="text" id="UsernameBox" class="otherTextBox" style="width:200px;" /><br />
+		<br />
+		<span id="passwordLabel" style="display:inline-block;width:130px;">Password:</span><input name="ctl00$ContentPlaceHolder1$PasswordBox" type="password" id="PasswordBox" class="otherTextBox" style="width:200px;" /><br />		
+		<br />		
+		<div id="windowsLogin">		
+			<span id="passwordLabel" style="display:inline-block;width:130px;">Windows Login</span><input type="checkbox" id="WindowsLogin"  />
+			<br /><br />
+		</div>		
+		<span class="errorMessageLogin" id ="errorMessageLogin" ></span>
+	</div>

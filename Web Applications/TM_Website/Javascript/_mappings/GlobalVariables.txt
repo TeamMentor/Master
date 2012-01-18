@@ -1,0 +1,5 @@
+/javascript/jQuery/jquery-1.6.2.min.js
+/javascript/TM/GlobalVariables.js
+/javascript/TM/Debug.js
+/javascript/TM/Settings.js
+/javascript/TM/Events.js
