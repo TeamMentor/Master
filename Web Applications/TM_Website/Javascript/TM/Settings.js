@@ -1,5 +1,5 @@
 //TM Settings
-TM.tmVersion = "TM 3.0 RC10 (19 Jan)";	
+TM.tmVersion = "TM 3.0 RC9 (18 Jan)";	
 
 TM.tmWebServices = '/Aspx_Pages/TM_WebServices.asmx/';
 TM.configDir = '/Html_Pages/Config/';		
