@@ -10,6 +10,7 @@ TM.Gui.AppliedFiltersList.removeFilters = function()
 
 TM.Gui.AppliedFiltersList.removeCriteraFromCriteriaCollection = function(text,title, column, state)
 	{
+
 		setPivotPanelFilter(text, title, column, false);
 	}
 	
@@ -53,7 +54,7 @@ TM.Gui.AppliedFiltersList.populateAppliedFiltersTable = function ()
 		})
 		
 	if (TM.Gui.DataTable.currentTextFilter != "") //escape
-		TM.Gui.AppliedFiltersList.add_Filter(htmlEscape(TM.Gui.DataTable.currentTextFilter), 'Text Filter', -1 , false);
+		TM.Gui.AppliedFiltersList.add_Filter(htmlEscape(TM.Gui.DataTable.currentTextFilter), 'Search', -1 , true);
 		
 	TM.Gui.AppliedFiltersList.fixCSS_appliedFilters();
 }
