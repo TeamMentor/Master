@@ -7,10 +7,14 @@ TM.WebServices.Config.Version = "v0.3";
 //Helpers
 TM.WebServices.Helper.invokeWebService = function(url, params, handleData, handleError)
 {										
-	if (typeof(handleData) == "undefined")
+	if (typeof(handleData) == "undefined") 
+    {   
 		handleData = TM.WebServices.Helper.defaultCallback;
+	}
 	if (typeof(handleError) == "undefined")	
+	{
 		handleError = TM.WebServices.Helper.defaultErrorHandler;		
+	}
     $.ajax( {
 				type: "POST",
 				url: url,

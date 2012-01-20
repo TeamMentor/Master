@@ -45,7 +45,9 @@
 											title:'Signup to TeamMentor' , 
 											modal: true  , 													
 											//buttons: { "create account" : loginUser},
-											width: '600px'
+											width: '600px' ,
+											open:  TM.Events.onSignupDialogOpen ,	
+											close: TM.Events.onSignupDialogClose
 										});//parent().width(400).top(100).height(250);
 
 				

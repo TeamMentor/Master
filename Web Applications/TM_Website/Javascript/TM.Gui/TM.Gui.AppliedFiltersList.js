@@ -10,6 +10,7 @@ TM.Gui.AppliedFiltersList.removeFilters = function()
 
 TM.Gui.AppliedFiltersList.removeCriteraFromCriteriaCollection = function(text,title, column, state)
 	{
+
 		setPivotPanelFilter(text, title, column, false);
 	}
 	
@@ -45,7 +46,7 @@ TM.Gui.AppliedFiltersList.populateAppliedFiltersTable = function ()
 		return;
 	TM.Gui.AppliedFiltersList.clear_FiltersGui();
 	
-	TM.Gui.AppliedFiltersList.add_Filter(TM.Gui.selectedNodeData.name, TM.Gui.selectedNodeData.type, -1 , false);
+//	TM.Gui.AppliedFiltersList.add_Filter(TM.Gui.selectedNodeData.name, TM.Gui.selectedNodeData.type, -1 , false);
 	
 	$.each(currentPivotPanelFilters, function()
 		{			
@@ -53,7 +54,7 @@ TM.Gui.AppliedFiltersList.populateAppliedFiltersTable = function ()
 		})
 		
 	if (TM.Gui.DataTable.currentTextFilter != "") //escape
-		TM.Gui.AppliedFiltersList.add_Filter(escape(TM.Gui.DataTable.currentTextFilter), 'Text Filter', -1 , false);
+		TM.Gui.AppliedFiltersList.add_Filter(htmlEscape(TM.Gui.DataTable.currentTextFilter), 'Search', -1 , true);
 		
 	TM.Gui.AppliedFiltersList.fixCSS_appliedFilters();
 }
@@ -65,7 +66,7 @@ TM.Gui.AppliedFiltersList.fixCSS_appliedFilters = function()
 		if ( $.browser.msie )
 		{
 			//"AppliedFilterHeader".$().height(32);		
-			"AppliedFilterHeader".$().height(26)
+			"AppliedFilterHeader".$().height(26);
 			"ctl00_ContentPlaceHolder1_AppliedFilters1_RemoveFiltersImage".$()
 				.absolute()
 				.right(0)
@@ -79,4 +80,16 @@ TM.Gui.AppliedFiltersList.fixCSS_appliedFilters = function()
 		}*/
 	}
 	catch(message) {}	
+}
+
+
+
+function htmlEscape(str) 
+{
+    return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
 }

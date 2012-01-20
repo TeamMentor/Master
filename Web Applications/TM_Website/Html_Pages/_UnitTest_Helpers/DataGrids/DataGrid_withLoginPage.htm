@@ -1,0 +1,117 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title></title>
+	<link href="/aspx_Pages/scriptCombiner.ashx?s=HomePage_CSS&ct=css" type="text/css"
+		rel="stylesheet" />
+	<script src="/aspx_Pages/scriptCombiner.ashx?s=WebServices_JS" type="text/javascript"></script>
+	<script src="/aspx_Pages/scriptCombiner.ashx?s=DataTable_JS" type="text/javascript"></script>
+	<script type="text/javascript">
+
+		var showLoginDialog = false;
+		var message = "delete the password value: <input type='password' value='baaa' id ='pwd'/>";
+		var title = "Chrome CPU Spike test";
+
+		var createDialog = function ()
+		{
+			$("<div>{0}</div>".format(message)).dialog({ title: title });
+		}
+
+		var createTableData = function ()
+		{
+			var tableOptions = TM.WebServices.Data.lastDataTableData;
+
+			dataTableData =
+					{
+						bPaginate: false
+					};
+
+			dataTableData.aoColumns = [{ "sTitle": "Index", "sWidth": "5%" }, { "sTitle": "Title", "sWidth": "50%" }, { "sTitle": "Technology" }, { "sTitle": "Phase", "sWidth": "15%" }, { "sTitle": "Type", "sWidth": "15%" }, { "sTitle": "Category", "sWidth": "15%" }, { "sTitle": "Guid"}]
+
+
+			var sampleItem = ["1", "2", "3", "4", "5", "6", "7"]
+			var aaData = [];
+			var itemsToAdd = 500;
+
+			for (var i = 0; i < itemsToAdd; i++)
+			{
+				aaData.push(sampleItem)
+			}
+
+			dataTableData.aaData = aaData;
+
+			$('#guidanceItemsTable').dataTable(dataTableData)
+
+		}
+
+		var createHtmlTable = function ()
+		{
+			$("body").append("<table id='Table1' style='width: 100%'><thead/><tbody/></table>");
+			/* $("#guidanceItemsTable").css('border', 'solid 4px')
+										.width(500)
+										.height(50000)*/
+			var columns = "<tr><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th><th>G</th></tr>";
+			var rowHtml = "<tr class='odd' ><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td></tr>" + 
+						  "<tr class='even'><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td></tr>";;
+
+			$("#Table1 thead").append(columns);
+			var rowsToCreate = 300;
+			for (var i = 0; i < rowsToCreate; i++)			
+				$("#Table1 tbody").append(rowHtml);
+
+		}
+		var createTestCase = function ()
+		{
+			//createTableData();
+			//createHtmlTable();
+			createHtmlTable();
+			createDialog()
+		}
+
+		var setupGui = function ()
+		{
+
+			/*
+			TM.Events.onFolderStructureLoaded()
+			TM.Events.onFolderStructureMapped.add(function()
+			{
+			TM.Gui.selectedNodeId = "4738d445-bc9b-456c-8b35-a35057596c16"
+			//$.data[TM.Gui.selectedNodeId].guidanceItems = $.data[TM.Gui.selectedNodeId].guidanceItems.concat($.data[TM.Gui.selectedNodeId].guidanceItems);
+			//$.data[TM.Gui.selectedNodeId].guidanceItems = $.data[TM.Gui.selectedNodeId].guidanceItems.concat($.data[TM.Gui.selectedNodeId].guidanceItems);
+			//$.data[TM.Gui.selectedNodeId].guidanceItems = $.data[TM.Gui.selectedNodeId].guidanceItems.concat($.data[TM.Gui.selectedNodeId].guidanceItems);
+						
+						
+			TM.WebServices.Data.getGuidanceItemsInGuid_For_DataTable(TM.Gui.selectedNodeId);	
+					
+
+			//TM.Gui.Dialog.showUserMessage("delete the password value: <input type='password' value='baaa' id ='pwd'/>", "Chrome CPU Spike test")
+			//TM.Gui.DataTable.displayCurrentDataTable();
+			//$('#guidanceItemsTable').dataTable(TM.WebServices.Data.lastDataTableData)
+
+			if (showLoginDialog)
+			{
+			TM.Events.onLoginDialogOpen.add(function() {   $("#PasswordBox").val('aaa').focus() });
+			TM.Gui.Dialog.loginPage()					
+			}
+			});
+				
+			TM.Events.onDataTableDisplayed.add(function()
+			{
+			$("#guidanceItemsTable").absolute();
+			})
+			*/
+			//loadPage("guiWithPanels",'/Html_Pages/Gui/Panels/Middle_GuidanceItems.html');			
+			createTestCase()
+		}
+
+		$(setupGui);
+	</script>
+</head>
+<body>
+	<div id="guiWithPanels">
+		<h1>
+			Chrome CPU Spype POC</h1>
+		<!--<table id="guidanceItemsTable" />-->
+	</div>
+</body>
+</html>

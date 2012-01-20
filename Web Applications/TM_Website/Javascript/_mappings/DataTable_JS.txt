@@ -1,0 +1,10 @@
+﻿/javascript/jQuery.DataTable/jquery.dataTables.min.js
+/javascript/jQuery.DataTable/DataTable.PlugIns.js
+
+
+/javascript/jQueryUI/TM.jQueryUI.ExtraMethods.js
+
+/javascript/TM.Gui/TM.Gui.DataTable.js
+/javascript/TM.Gui/TM.Gui.DataTableViewer.js
+
+/javascript/jQuery.DataTable/DataTable.ExtraMethods.js
