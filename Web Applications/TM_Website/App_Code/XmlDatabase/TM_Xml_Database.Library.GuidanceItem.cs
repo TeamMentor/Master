@@ -14,6 +14,7 @@ using O2.DotNetWrappers.Windows;
 using O2.XRules.Database.Utils;
 using urn.microsoft.guidanceexplorer;
 using urn.microsoft.guidanceexplorer.guidanceItem;
+using Microsoft.Security.Application;
 //O2File:TM_Xml_Database.cs
 //O2File:../O2_Scripts_APIs/_O2_Scripts_Files.cs
 
@@ -36,15 +37,16 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		
 		public static List<Guid> guidanceItems_SearchTitleAndHtml(this TM_Xml_Database tmDatabase, List<GuidanceItem_V3> guidanceItems, string searchText)
 		{
-			//var maxNumberOfItemsToReturn = 100;
-			var lowercaseSearchText = searchText.lower();			
+            var searchTextEncoded = HttpUtility.HtmlEncode(searchText).lower();   
+            
+			//var maxNumberOfItemsToReturn = 100;			
 			"There are {0} GIs to search".error(guidanceItems.size());
 			return 	(from guidanceItem in guidanceItems
 					 where guidanceItem.title.valid() &&
-						   (guidanceItem.title.lower().contains		(lowercaseSearchText)  ||
-					        guidanceItem.title.regEx	   				(searchText) 	   ||		
-						    guidanceItem.htmlContent.lower().contains(lowercaseSearchText) ||
-						    guidanceItem.htmlContent.regEx			(searchText)           )									
+                           (guidanceItem.title.lower().contains(searchTextEncoded)       ||
+//					        guidanceItem.title.regEx	   				(searchText) 	 ||
+                            guidanceItem.htmlContent.lower().contains(searchTextEncoded) )
+//                       || guidanceItem.htmlContent.regEx			(searchText)           )									
 					 select guidanceItem.guidanceItemId
 					).toList(); 
 		}		
