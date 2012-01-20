@@ -95,7 +95,7 @@ var getColumnFromArray = function(arrayData, columnIndex)
 		{
 			if (TM.Gui.CurrentUser.isViewer())
 			{
-				window.open('/Aspx_Pages/ViewGuidanceItem.aspx?#ruledisplay:' + guidanceId
+				window.open('/html_pages/GuidanceItemViewer/GuidanceItemViewer.html?#ruledisplay:' + guidanceId
 								,'_blank'
 								,'location=1,status=1,scrollbars=1,  width=1020,height=700');
 			}
@@ -166,7 +166,7 @@ var getColumnFromArray = function(arrayData, columnIndex)
 				var giData= $.data[id];
 				if (isDefined(giData) || href.indexOf('http') > -1)
 				{
-					var popupViewHref = href.replace("?#ruledisplay:","/Aspx_Pages/ViewGuidanceItem.aspx?#ruledisplay:");
+					var popupViewHref = href.replace("?#ruledisplay:","/html_pages/GuidanceItemViewer/GuidanceItemViewer.html?#ruledisplay:");
 					$(this).attr('href',popupViewHref)
 						   .attr('target', '_blank')
 				}
