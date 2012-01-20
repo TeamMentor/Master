@@ -1,23 +1,315 @@
 <!DOCTYPE HTML>
 <html>	
-	<head>			
-		<script src="/javascript/jQuery/jquery-1.6.2.min.js" 	type="text/javascript"></script>		
-		<script src="/javascript/TM/GlobalVariables.js" type="text/javascript"></script>			
+	<head>	
+		<title>TeamMentor 3.0</title>		
+		<link  href="/aspx_Pages/scriptCombiner.ashx?s=HomePage_CSS&ct=css" 				type="text/css" rel="stylesheet" /> 					
+		<script src="/aspx_Pages/scriptCombiner.ashx?s=WebServices_JS"						type="text/javascript"></script>			
 	</head>
 	<body>	
-		<script>						
+			<script type="text/javascript">
+  				var guidanceId = "";
+		//		var topUrl = window.location.href.split('#');
+		
+				var currentHtml = "";
 				
-			function loadGuidanceItemEditor()
-				{									
-					$.ajaxSetup({ async:false});					
-					$("#ScriptLoader").load("/html_pages/GuidanceItemEditor/Scripts_used_in_GuidanceItemViewer.html?time="+new Date().getTime());
-					$.ajaxSetup({ async:true});										
-				}			
+
+				var scrollToTopOfPage = function()
+					{
+						$('html, body').animate({ scrollTop: 0 }, 'slow');
+					}
 			
-			$(loadGuidanceItemEditor);
-		</script>
-		<div id="ScriptLoader"> </div>
-		<div id="guiWithPanels"></div>		
+				var handleCommand = function(command)
+                			{
+
+                          			var splitCommand = command.split(":");
+                          			if(splitCommand.length ==2 && splitCommand[0] == 'ruledisplay')
+										{
+                                  			guidanceId = splitCommand[1];
+											//alert("set guidanceitem to: " + splitCommand[1]);
+											loadGuidanceItem();
+												return false;
+										}
+                          			return true;   // to continue links
+                			}
+
+						var setGuidanceIdfromUrlHash =  function()
+                    			{							
+                          			handleCommand(window.location.hash.slice(1).split("&")[0]);
+                    			}
+                  
+                
+		//                alert(getGuidanceIdfromUrl());
+                
+						var loadGuidanceItem = function()
+                    			{
+                          			//getGuidanceItemHtml(guidanceId, function(data) { showGuidanceItemHtml(data.d) } )                                  				
+									getGuidanceItemData(guidanceId, showGuidanceItemData);
+									//getSliderData();
+
+								}
+						
+				showGuidanceItemData = function(data)
+				{	
+			
+					var loadedGuidanceItem = data.d;	
+					if (loadedGuidanceItem != null)
+					{			
+						"#Title".$().html(loadedGuidanceItem.title);
+						"CategoriesLabel".$().html(data.d.category);
+						"PhaseLabel".$().html(loadedGuidanceItem.phase);
+						"TechnologyLabel".$().html(loadedGuidanceItem.technology);
+						"GuidanceTypeLabel".$().html(loadedGuidanceItem.rule_Type);
+						//"DateLabel".$().html(loadedGuidanceItem.lastUpdate);
+						showGuidanceItemHtml(loadedGuidanceItem.htmlContent);
+					//.html(data.d.category);;
+			//			checkForActivitys();
+					}
+					else
+					{
+						"#Title".$().html("(Invalid GUID: No Guidance Item found)");
+						"CategoriesLabel".$().html("");
+						"PhaseLabel".$().html("");
+						"TechnologyLabel".$().html("");
+						"GuidanceTypeLabel".$().html("");
+						//"DateLabel".$().html("");
+						showGuidanceItemHtml("");
+					}
+				}
+		
+				var fixGuidanceItemLinks = function()
+				{
+					$("a").css('color','#339')			// fix link color
+					if(window.opener ==null)
+						return;
+					$(".ItemContent a[href]").each(function()
+						{					
+							var href = $(this).attr('href');
+							if (href.indexOf('http') > -1)
+								$(this).attr('target', '_blank');
+							else
+							{
+								var id =  href.replace("?#ruledisplay:","");				   					
+								var giData= window.opener.$.data[id];
+								if (isUndefined(giData))					
+								{
+									$(this).removeAttr('href')
+										   .css("text-decoration" , "underline");							
+								}						
+							}
+						})
+				
+				};
+	
+				showGuidanceItemHtml = function(html)
+					{				
+						$("#guidanceItem").html(html);
+						currentHtml = html;
+						fixGuidanceItemLinks();
+				
+						scrollToTopOfPage();
+					}
+                
+			   showPageChange = function(changeID)
+                   			{                          
+                          			if (changeID ==0)
+									{
+										$("#guidanceItem").html(currentHtml);
+										$("#byUser").html('');
+										$("#userComment").html('');
+										$("#userActivity").html('');
+									}
+                          			else
+										{
+                                  			var changePage = sliderData[sliderData.length - changeID];
+                                  			newHtml = changePage.PageContent
+											if (newHtml != "")          
+												$("#guidanceItem").html(newHtml);
+											$("#byUser").html(changePage.UserName);
+											$("#userComment").html(changePage.UserComment);
+											$("#userActivity").html(changePage.UserActivity);                          
+										}
+                   			}
+                
+						showSlider = function(data)
+                  			{
+                          			sliderData = data.d;
+									$('#previousVersions').html("<b>There are " + sliderData.length + " previous versions</b>");
+
+		//                         	alert(JSON.stringify(data.d));  
+                         			 $('#slider').slider(	{
+                                  						min:0 ,
+                                  						max:sliderData.length, 
+                                  						change : function(event,ui) {  showPageChange( $('#slider').slider('value') ) },
+                                   						slide : function(event,ui) {  showPageChange( $('#slider').slider('value') ) } 
+                                					}) ; 
+                          
+						$('#slider').slider('value',0);
+                          
+								}
+				getSliderData = function()
+                  			{
+                         			getPagesHistory_by_PageId(guidanceId, showSlider);
+								}
+
+		
+                  
+				var openGuidanceItemEditor = function()
+				{
+					//document.location = "EditGuidanceItem.aspx?#id:" + guidanceId;
+					document.location = "/html_pages/GuidanceItemEditor/GuidanceItemEditor.html?#id:" + guidanceId;
+				}
+        
+				var logUserActivity = function(activity)
+				{
+					//alert('logUserActivity: ' + activity);
+					guidanceItem_LogPageUserActivity(guidanceId,activity,getSliderData);
+		//			checkForActivitys();
+				}		
+				
+				var logUserComment = function()
+				{
+					var userComment = "UserCommentTextBox".$().val();
+					guidanceItem_LogPageUserComment(guidanceId,userComment,getSliderData);			
+					"addCommentBox".$().dialog().parent().hide();
+				}		
+		
+				var showAddCommentDialog = function()
+				{	
+					"addCommentBox".$().dialog().parent().show();
+					"addCommentBox".$().dialog({title:'Add Comment'});
+				}
+		
+				var loadUserDataAndBuildGui = function()
+					{
+						TM.Gui.CurrentUser.loadUserData();
+					}
+			
+				var buildGui = function()
+					{				
+								
+						if(TM.Gui.CurrentUser.isViewer())
+							setGuidanceIdfromUrlHash();
+						else
+						{										
+							$("#guidanceItem").parent().html("<h2>Access denied.</h2><br/><h3>please close this window</h3");
+
+						//	TM.Gui.Dialog.loginPage();					
+						}
+					
+						if(TM.Gui.CurrentUser.isEditor() )				
+						{
+							$("#SidePanel").show();					
+						}
+						else
+							$("#SidePanel").hide();
+
+				
+				
+						//css fixes 
+				
+				
+						//"links".$().height(20);
+						//"previousVersions".$().height(20);
+						//"addCommentBox".$().hide();
+						//"logCommentButton".$().absolute().bottom(10).right(10)
+						//"UserCommentTextBox".$().absolute().top(10).right(20).bottom(40).left(10);
+						"ItemTitle".$().css('padding',10)	
+
+				
+					}
+		
+				$(function()
+					{
+						$("#loadingMessage").remove();								
+				
+						TM.Events.onUserDataLoaded.add(buildGui);
+				
+						loadUserDataAndBuildGui();			
+				
+						"links".$().add_Link("Edit Guidance Item", "javascript:openGuidanceItemEditor()");								
+						"SidePanel".$().css({ border:'solid 2px' , background: '#C0C0C0'}).absolute().right(0).top(0)										   
+									   .width(140).css('padding',10)
+									   .hide();
+						if($.browser.msie)	
+							"SidePanel".$().width(170)
+						TM.Gui.ShowProgressBar.close();
+				
+					});
+
+		
+				//monitor hash tag change (and reload GI accordingly)	
+				if ( $.browser.msie )   //IE specific
+				{
+					var current_hash = document.location.hash; 
+
+					function TrackHash() {			
+						if (current_hash != document.location.hash ) {							
+							current_hash = document.location.hash; 
+							setGuidanceIdfromUrlHash();					
+						}
+						return false;
+					}
+					setInterval('TrackHash()', 500);
+				}
+				else
+					$(window).bind('hashchange', setGuidanceIdfromUrlHash);
+			
+				$('a[href]').live('click',function () { 
+													var href = $(this).attr('href');
+													if (href.slice(0,11)=="ruledisplay")
+													{
+														window.location.hash = href;
+														return false;
+													}
+													return true;
+                						});
+			</script>
+		<div id="header">			
+			<img src="/Images/HeaderImage.jpg" alt="TeamMentor Enterprise Edition" class="HeaderImage"/>
+		</div>
+		<br/>
+		<div id=SidePanel>      
+			<div id="links"></div> 
+		</div>
+   
+		<h1><div class="ItemTitle" ID="Title"> </div></h1>
+  
+		 <div class="ItemContent">
+   
+  
+				 <table class="ItemDetailTable" cellpadding="0" cellspacing="0">
+					<tr>
+						<td class="ItemDetailHeader">
+							Technology
+						</td>				
+						<td class="ItemDetailHeader">
+							Phase
+						</td>				
+						<td class="ItemDetailHeader">
+							Type
+						</td>
+						<td class="ItemDetailHeader">
+							Category
+						</td>				
+					</tr>
+					<tr>
+						<td class="ItemDetailValue">					
+							<strong><div ID="TechnologyLabel"> </div></strong>								
+						</td>				
+						<td class="ItemDetailValue">
+							<strong><div ID="PhaseLabel"> </div></strong>				
+						</td>				
+						<td class="ItemDetailValue">					
+							<strong><div ID="GuidanceTypeLabel"> </div></strong>												
+						</td>		
+						<td class="ItemDetailValue">
+							<strong><div ID="CategoriesLabel"> </div></strong>
+						</td>
+					</tr>
+				</table>
+	
+				<div id=guidanceItem>...</div>  
+			</div>
 
 	
 	</body>

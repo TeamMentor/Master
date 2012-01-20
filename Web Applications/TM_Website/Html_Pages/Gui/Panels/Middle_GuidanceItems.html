@@ -1,47 +1,5 @@
 <script>
 		
-/*	var onNodeSelected = function(selectedNode)
-	{			
-		$('#legend').html("...loading data...");		
-		loadDataTableForGuid(TM.Gui.selectedNodeId);				
-	}*/
-
-/*	TM.Gui.DataTable.loadDataTableFromWebService = function(selectedNodeIds)
-	{				
-		jsTableWithGuidanceItems(selectedNodeIds, 
-									 function(data) { showGuidanceItemsTable(selectedNodeIds, data) } );
-	}	*/
-	
-/*	TM.Gui.DataTable.loadDataTableForGuid = function()
-	{
-		var guid = TM.Gui.selectedNodeId;
-		var dataTable = TM.WebServices.Data.getGuidanceItemsInGuid_For_DataTable(guid);		 
-		TM.Gui.DataTable.loadDataTable(dataTable);
-	}
-*/
-	
-
- 
-	
-
-	/*TM.Gui.DataTable.displayLastDataTable = function()
-		{
-			//if(isDefined(TM.Gui.lastDataLoaded))
-			//	TM.Gui.DataTable.displayDataTable(TM.Gui.lastDataLoaded)
-		}*/
-			
-	
-		
-	
-	
-	
-/*	var showGuidanceItemsTable = function(dataKey, guidanceItemsTable)
-	{
-		jQuery('body').data(dataKey, guidanceItemsTable.d);
-		loadDataTable(guidanceItemsTable.d);
-	}*/
-	
-		
 
 $(function()
 	{
@@ -51,19 +9,11 @@ $(function()
 		//TM.Debug.CallTrace.traceObject("TM.Gui.DataTable", TM.Gui.DataTable)	
 //		TM.Debug.CallTrace.trace_TM_Object();
 
-		TM.Events.onAppliedFieldsEnd	.add(TM.Gui.DataTable.displayCurrentDataTable);				
-		//TM.Events.onDisplayDataTable();	
-		//TM.Events.onDisplayDataTable	.add(TM.Gui.DataTable.displayCurrentDataTable);				
+ 		TM.Events.onAppliedFieldsEnd	.add(TM.Gui.DataTable.displayCurrentDataTable);				
 		TM.Events.onEditModeChange		.add(TM.Gui.DataTable.displayCurrentDataTable);		
-
 		TM.Events.onUserDataLoaded		.add(TM.Gui.DataTable.displayCurrentDataTable_onUserChange);
-		
-		//TM.Events.onEditModeChange		.add(TM.Gui.DataTable.displayCurrentDataTable_onUserChange);		
-		
-		//TM.Events.onEditModeChange		.add(TM.Gui.DataTable.displayLastDataTable);		
-		
-		//TM.Events.onLibraryTreeSelected.add(TM.Gui.DataTable.loadDataTableForGuid);
 	});
+	
 </script>
 
 <div class="ItemListPanel">

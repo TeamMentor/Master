@@ -65,7 +65,7 @@ TM.Gui.AppliedFiltersList.fixCSS_appliedFilters = function()
 		if ( $.browser.msie )
 		{
 			//"AppliedFilterHeader".$().height(32);		
-			"AppliedFilterHeader".$().height(26)
+			"AppliedFilterHeader".$().height(26);
 			"ctl00_ContentPlaceHolder1_AppliedFilters1_RemoveFiltersImage".$()
 				.absolute()
 				.right(0)

@@ -2,7 +2,6 @@
 TM.tmVersion = "TM 3.0 RC9 (18 Jan)";	
 
 TM.tmWebServices = '/Aspx_Pages/TM_WebServices.asmx/';
-TM.configDir = '/Html_Pages/Config/';		
 
 TM.Gui.windowsLoginEnabled 						= false;
 
@@ -26,7 +25,7 @@ TM.Debug.logLoadedEvents					  	= false;
 TM.Debug.logLoadedPages						  	= false;
 
 //only put real passwords here in QA environments
-TM.QUnit.defaultPassord_Admin = "!!tmbeta";
+TM.QUnit.defaultPassord_Admin  = "!!tmbeta";
 TM.QUnit.defaultPassord_Editor = "!!tmbeta";
 TM.QUnit.defaultPassord_Reader = "!!tmbeta";
 

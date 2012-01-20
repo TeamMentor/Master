@@ -5,7 +5,7 @@
 <!--		<script src="/aspx_Pages/scriptCombiner.axd?s=HomePage_JS&dontMinify=true"				type="text/javascript"></script>		-->
 		<link  href="/aspx_Pages/scriptCombiner.ashx?s=HomePage_CSS&ct=css" 				type="text/css" rel="stylesheet" /> 					
 		<script src="/aspx_Pages/scriptCombiner.ashx?s=HomePage_JS"							type="text/javascript"></script>		
-		<script src="/aspx_Pages/scriptCombiner.ashx?s=HomePage_JS_TM&dontMinify=true&v1"	type="text/javascript"></script>		
+		<script src="/aspx_Pages/scriptCombiner.ashx?s=HomePage_JS_TM&_dontMinify=true&v1"	type="text/javascript"></script>		
 		
 	</head>	
 			
@@ -14,7 +14,7 @@
 		function loadTeamMentorGUI()
 			{	
 				TM.Events.onMainGuiDivAvailable();
-								
+				
 				if (TM.Debug.load_HomePage)
 				{
 					TM.Gui.ShowProgressBar.open("Loading TeamMentor");							
