@@ -53,7 +53,7 @@ TM.Gui.AppliedFiltersList.populateAppliedFiltersTable = function ()
 		})
 		
 	if (TM.Gui.DataTable.currentTextFilter != "") //escape
-		TM.Gui.AppliedFiltersList.add_Filter(escape(TM.Gui.DataTable.currentTextFilter), 'Text Filter', -1 , false);
+		TM.Gui.AppliedFiltersList.add_Filter(htmlEscape(TM.Gui.DataTable.currentTextFilter), 'Text Filter', -1 , false);
 		
 	TM.Gui.AppliedFiltersList.fixCSS_appliedFilters();
 }
@@ -79,4 +79,16 @@ TM.Gui.AppliedFiltersList.fixCSS_appliedFilters = function()
 		}*/
 	}
 	catch(message) {}	
+}
+
+
+
+function htmlEscape(str) 
+{
+    return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
 }
