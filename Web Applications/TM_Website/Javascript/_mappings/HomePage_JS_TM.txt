@@ -30,7 +30,7 @@
 /javascript/TM.Gui/TM.Gui.DataTableViewer.js
 /javascript/TM.Gui/TM.Gui.AppliedFiltersList.js
 
-/Html_Pages/Gui/Panels/AppliedFilters/AppliedFilters.js
-/Html_Pages/Gui/Panels/AppliedFilters/AppliedFIlters.DataManipulation.js
+/javascript/TM.Gui/AppliedFilters.js
+/javascript/TM.Gui/AppliedFIlters.DataManipulation.js
 
 /_Customizations/homepage.js
