@@ -153,7 +153,7 @@ namespace SecurityInnovation.TeamMentor.Authentication.ExtensionMethods
 				userRole.demand();
 				return true;
 			}
-			catch(Exception ex)
+			catch//(Exception ex)
 			{
 				return false;
 			}
