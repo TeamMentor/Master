@@ -226,6 +226,8 @@
     <Content Include="Html_Pages\Gui\Dialogs\Login.Html" />
     <Content Include="Html_Pages\Gui\Dialogs\Signup.html" />
     <Content Include="Html_Pages\Gui\Panels\About_TeamMentor.html" />
+    <Content Include="Html_Pages\_UnitTest_Helpers\Tests_For_BrowserBugs\Chrome_CPU_Spike_on_Password_Field_in_JQueryUI_Dialog.htm" />
+    <Content Include="Html_Pages\_UnitTest_Helpers\_Javascript_Loaders\FirebugLite_with_TM_WebServices.html" />
     <Content Include="Javascript\TM.ControlPanel\TM.ControlPanel.AdminTasks.js" />
     <Content Include="Javascript\TM.Gui\AppliedFIlters.DataManipulation.js" />
     <Content Include="Javascript\TM.Gui\AppliedFIlters.js" />
@@ -301,7 +303,6 @@
     <Content Include="Html_Pages\_UnitTest_Helpers\TM_qUnit_Tests\js\TM_XmlDatabase.js" />
     <Content Include="Html_Pages\_UnitTest_Helpers\TM_qUnit_Tests\js\_TM_QUnit_support.js" />
     <Content Include="Html_Pages\_UnitTest_Helpers\TM_qUnit_Tests\TM_All_StandAlone_QUnit_tests.html" />
-    <Content Include="Html_Pages\_UnitTest_Helpers\_Javascript_Loaders\jQuery.html" />
     <Content Include="Html_Pages\_UnitTest_Helpers\_Javascript_Loaders\jQuery_tmWebServices.html" />
     <Content Include="Javascript\fileUploader\fileuploader.css" />
     <Content Include="Javascript\fileUploader\fileuploader.js" />
@@ -544,6 +545,7 @@
     <Content Include="Javascript\_mappings\ControlPanel_CSS.txt" />
     <Content Include="Javascript\_mappings\ControlPanel_JS.txt" />
     <Content Include="Javascript\_mappings\ControlPanel_JS_TM.txt" />
+    <Content Include="Javascript\_mappings\DataTable_JS.txt" />
     <Content Include="Javascript\_mappings\GlobalVariables.txt" />
     <Content Include="Javascript\_mappings\WebServices_JS.txt" />
     <Content Include="Javascript\_mappings\HomePage_CSS.txt" />
