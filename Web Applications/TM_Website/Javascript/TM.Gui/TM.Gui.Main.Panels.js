@@ -247,6 +247,11 @@ TM.Gui.Main.Panels.enableChromeCPUSpikeBugFix = function()
         {
             TM.Events.onLoginDialogOpen .add( function () { $("#guidanceItemsTable").fadeOut(); }) ;
             TM.Events.onLoginDialogClose.add( function () { $("#guidanceItemsTable").fadeIn(); }) ;
+
+
+            TM.Events.onSignupDialogOpen .add( function () { $("#guidanceItemsTable").fadeOut(); }) ;
+            TM.Events.onSignupDialogClose.add( function () { $("#guidanceItemsTable").fadeIn(); }) ;
+
         }
     }
 ;
