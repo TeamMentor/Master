@@ -45,7 +45,7 @@ TM.Gui.AppliedFiltersList.populateAppliedFiltersTable = function ()
 		return;
 	TM.Gui.AppliedFiltersList.clear_FiltersGui();
 	
-	TM.Gui.AppliedFiltersList.add_Filter(TM.Gui.selectedNodeData.name, TM.Gui.selectedNodeData.type, -1 , false);
+//	TM.Gui.AppliedFiltersList.add_Filter(TM.Gui.selectedNodeData.name, TM.Gui.selectedNodeData.type, -1 , false);
 	
 	$.each(currentPivotPanelFilters, function()
 		{			
