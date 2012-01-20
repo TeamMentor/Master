@@ -27,3 +27,4 @@
 /javascript/IE_Fixes.js
 
 /javascript/TM.ControlPanel/TM.ControlPanel.js
+/javascript/TM.ControlPanel/TM.ControlPanel.AdminTasks.js

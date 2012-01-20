@@ -2,8 +2,7 @@
 <html>	
 	<head>			
 		<link  href="/aspx_Pages/scriptCombiner.ashx?s=HomePage_CSS&ct=css" 				type="text/css" rel="stylesheet" /> 					
-		<script src="/aspx_Pages/scriptCombiner.ashx?s=HomePage_JS"							type="text/javascript"></script>		
-		<script src="/aspx_Pages/scriptCombiner.ashx?s=HomePage_JS_TM&dontMinify=true&v1"	type="text/javascript"></script>			
+		<script src="/aspx_Pages/scriptCombiner.ashx?s=WebServices_JS"						type="text/javascript"></script>			
 	</head>
 	<body>	
 		<script>		
@@ -348,7 +347,7 @@
 		
 		var openGuidanceItemViewer = function()
 		{			
-			document.location = "/Aspx_Pages/ViewGuidanceItem.aspx?#ruledisplay:" + guidanceId;
+			document.location = "/html_pages/GuidanceItemViewer/GuidanceItemViewer.html?#ruledisplay:" + guidanceId;
 		}
 		
         var loadEditor = function()
@@ -474,7 +473,7 @@
 				<td class="ItemDetailHeader">
 					Title
 				</td>
-				<td class="ItemDetailHeader" colspan=4>	
+				<td class="ItemDetailHeader" colspan="4">	
                                   	<input type=text class="ItemTitle" ID="Title" ></input>
                              	</td>     
 			</tr>                                  

@@ -20,7 +20,7 @@ TM.ControlPanel =
 		,	open_AdminTasks		: function(targetDiv)		{	TM.ControlPanel.open_Page(targetDiv, "Admin_Tasks.html"					);	}			
 				
 		
-		,	open_WebServices	: function(targetDiv)		{	TM.ControlPanel.open_Page(targetDiv, "../../Config/TM_Webservices.html"	);	}
+		,	open_WebServices	: function(targetDiv)		{	TM.ControlPanel.open_Page(targetDiv, "../WebServices/TM_Webservices.html"	);	}
 
 		,	open_QUnitTests		: function(targetDiv)		{	TM.ControlPanel.open_Page(targetDiv, "TeamMentor_QUnitTests.html"		);	}
 		,	open_GitHubSync		: function(targetDiv)		{	TM.ControlPanel.open_Page(targetDiv, "GitHub_Sync.html"					);	}
@@ -30,4 +30,9 @@ TM.ControlPanel =
 		,	open_AdminActions	: function(targetDiv)		{	window.open(TM.ControlPanel.baseFolder + "../UIAutomation/AdminActions.html", "_blank" , "top=200, left=700,height=200, width=400, toolbar=no,scrollbars=no,  menubar=no, location=no"		);	}
 		,	open_UserActions	: function(targetDiv)		{	window.open(TM.ControlPanel.baseFolder + "../UIAutomation/UserActions.html" , "_blank" , "top=200, left=700,height=500, width=400, toolbar=no,scrollbars=no,  menubar=no, location=no"		);	}
 		,	refresh				: function() 				{ }									
+
+
+
+
+        ,   WebServices         : {}
 	}

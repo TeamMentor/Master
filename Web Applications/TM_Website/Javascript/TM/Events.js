@@ -107,6 +107,8 @@ TM.Events._eventsFor_Gui =
 			,	'onHomePageLinksLoaded'						// when the top rigth links are loaded
 			,	'onLoginDialogOpen'							// when the login dialog is openeded
 			,	'onLoginDialogClose'						// when the login dialog is closed
+            ,   'onSignupDialogOpen'
+            ,   'onSignupDialogClose'
 			,	'onUserDataLoaded'							// called after we refreshed the current user data
 			,	'onUserChange'								// called when the current user changes (login or logout)			
 			, 	'onShowGuidanceItem'						// when we want to show a guidanceItem

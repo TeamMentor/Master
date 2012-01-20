@@ -214,7 +214,7 @@ TM.Gui.DataTable.loadDataIntoDataTable_Step3 = function()
 TM.Gui.DataTable.loadDataIntoDataTable_Step4 = function()
 	{
 		//cssFixes
-		$('#guidanceItemsTable').css('width', '100%')
+		$('#guidanceItemsTable').css('width', '100%');
 		$(".GuidanceItemCheckBox").parent().attr('style','text-align: center');	
 		$('#guidanceItemsTable').css('font-size', '13')
 		jQuery('#guidanceItemsTable_filter').css('display','none');

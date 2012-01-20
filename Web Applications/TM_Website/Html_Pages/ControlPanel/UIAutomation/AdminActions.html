@@ -1,5 +1,6 @@
 <html>
 	<head>
+		<title>Admin Actions</title>
 		<script src="/aspx_Pages/scriptCombiner.ashx?s=GlobalVariables"				type="text/javascript"></script>				
 
 		<script>
@@ -50,11 +51,12 @@
 							
 					, 	login_and_OpenLink : function(linkText)
 							{		
-								opener.TM.Events.onControlPanelGuiLoaded.add( 
-									 function() {													
-													opener.$("#leftMenu_Links").find("a:contains('"+ linkText+"')").click()
-													opener.TM.Events.onControlPanelGuiLoaded.remove();
-												});
+								opener.TM.Events.onLoginDialogClose.add(
+									 function () 
+                                        {	                                            										
+											opener.$("#leftMenu_Links").find("a:contains('"+ linkText+"')").click()
+											opener.TM.Events.onControlPanelGuiLoaded.remove();
+										});
 								this.login_as_User("admin");									
 							}
 				};

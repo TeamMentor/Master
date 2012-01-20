@@ -321,7 +321,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 				guidanceItem.title = title;
 				return UpdateGuidanceItem(guidanceItem);
 			}
-			catch(Exception ex)
+			catch//(Exception ex)
 			{				
 				return false;
 			}

@@ -109,7 +109,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 					guidanceExplorers.Add(libraryGuid, _guidanceExplorer);
 
 				}
-				catch(Exception ex)
+				catch//(Exception ex)
 				{
 					"[addGuidanceExplorerObject] error importing guidanceExplorer: {0}".error(_guidanceExplorer);
 				}
