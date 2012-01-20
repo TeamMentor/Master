@@ -1,0 +1,32 @@
+<h2>Page: <b>Invoke Web Services for : User Management</b></h2>
+
+<script type="text/javascript">
+		
+		var data = {
+						url: TM.tmWebServices + 'GetTime',
+						params: '{}',
+						table: [							
+							{ name: 'GetUser_byId'			, url: TM.tmWebServices + 'GetUser_byID' 			, params: '{ userId:"1"}' },
+							{ name: 'GetUser_byName'		, url: TM.tmWebServices + 'GetUser_byName'			, params: '{ name:"admin"}' },
+							{ name: 'GetUsers'				, url: TM.tmWebServices + 'GetUsers'				, params: '{}' },
+							{ name: 'CreateUser'			, url: TM.tmWebServices + 'CreateUser'				, params: '{ newUser: { username:"a", passwordHash:"fb8e20fc2e4c3f248c60c39bd652f3c1347298bb977b8b4d5903b85055620603",email:"c",firstname: "d", lastname:"e", note: "f" } }' },
+							{ name: 'CreateUsers'			, url: TM.tmWebServices + 'CreateUsers'				, params: '{ newUsers: [  { username:"a2", passwordHash:"b",email:"c",firstname: "d", lastname:"e", note: "f" }  , { username:"a1", passwordHash:"b",email:"c",firstname: "d", lastname:"e", note: "f" } ]  }' },
+							{ name: 'BatchUserCreation'		, url: TM.tmWebServices + 'BatchUserCreation'		, params: '{ batchUserData: "test_user_1 , pwd , test, user1 \\\\n test_user_2 , pwd , test, user2" }' },
+							{ name: 'DeleteUser'			, url: TM.tmWebServices + 'DeleteUser' 				, params: '{ userId:"12345"}' },
+							{ name: 'DeleteUsers'			, url: TM.tmWebServices + 'DeleteUsers'		        , params: '{ userIds: [ "2","3" ]  }' }, 
+							{ name: 'UpdateUser'			, url: TM.tmWebServices + 'UpdateUser'		        , params: '{ userId : "12345", userName : "a1" , firstname  : "b1" , lastname : "c1" , title  : "d1" , company  : "e1" , email : "f1" , groupId:0 }' },
+							{ name: 'SetUserPasswordHash'		, url: TM.tmWebServices + 'SetUserPasswordHash'	, params: '{ userId: "", passwordHash : "" }' },  
+  							{ name: 'GetPasswordHash'		, url: TM.tmWebServices + 'GetPasswordHash'		    , params: '{username: "a" , password: "b" }' },	
+							{ name: 'GetUserGroupName'		, url: TM.tmWebServices + 'GetUserGroupId'			, params: '{ userId: "" }' },
+							{ name: 'GetUserRoles'			, url: TM.tmWebServices + 'GetUserRoles'			, params: '{ userId: "" }' },
+							{ name: 'SetUserGroupId'		, url: TM.tmWebServices + 'SetUserGroupId'			, params: '{ userId: "" , roleId: "2"}' },
+							
+							 
+						]
+					};
+
+		jQuery('#local_JS_Page').load(TM.ControlPanel.WebServices.configDir + 'Invoke_WebServices.html?time=' + new Date().getTime());
+</script>		
+
+<div id="local_JS_Page"> </div>
+
