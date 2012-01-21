@@ -18,19 +18,19 @@
 	{
 		//alert('submiting form');
 		jQuery('#signupContent').hide();
-		jQuery('#signupMessage').html('<h1>Creating user<h1>').css('color','black');
+		jQuery('#signupMessage').html('<h2>Creating user</h2> Please wait...').css('color','black');
 		var username = jQuery('#ctl00_ContentPlaceHolder1_UsernameBox').attr('value');
 		var password = jQuery('#ctl00_ContentPlaceHolder1_PasswordBox').attr('value');
 		var passwordHash = SHA256(username+ password);
 		var email = jQuery('#ctl00_ContentPlaceHolder1_EmailBox').attr('value');
 		var firstName = jQuery('#ctl00_ContentPlaceHolder1_FNameBox').attr('value');
 		var lastName = jQuery('#ctl00_ContentPlaceHolder1_LNameBox').attr('value');
-		jQuery('#signupMessage').append("username: " + username + "</br>" +
+/*		jQuery('#signupMessage').append("username: " + username + "</br>" +
 										"password: " + password + "<br>"  + 
 										"passwordHash: " + passwordHash + "<br>"  + 
 										"email: " + email + "<br/>" +
 										"firstname: " + firstName + "<br/>" +
-										"lastname: " + lastName + "<br/>");							
+										"lastname: " + lastName + "<br/>");		*/					
 		createUser(username, passwordHash, email, firstName, lastName, 'created from web', signupResult);														
 	}
 	
