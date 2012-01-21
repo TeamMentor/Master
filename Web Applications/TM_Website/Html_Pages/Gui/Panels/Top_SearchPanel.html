@@ -45,7 +45,8 @@ TM.Gui.TextSearch.invalidateSearchText = function()
 		if ($('#SearchTextBox').val() != "")
 		{
 			TM.Gui.DataTable.currentTextFilter 	= "";			
-			$("#SearchTextBox").css('background','#FFDDDD')
+			//$("#SearchTextBox").css('background','#FFDDDD')
+			$("#SearchTextBox").val('');
 		}
 	}
 
@@ -55,8 +56,8 @@ TM.Gui.TextSearch.setup = function()
 		//if (! $.browser.msie)			
 			$('#SearchTextBox').keypress(
 				function(e) 
-					{ 
-						$("#SearchTextBox").css('background','#FFDDDD')
+					{ 						
+						$("#SearchTextBox").css('background', (TM.Gui.DataTable.currentTextFilter 	=== "") ? 'white' : '#FFDDDD');
 						if(e.which == 13)
 							{ 										
 								TM.Gui.TextSearch.getValueAndApplyGlobalFilter();
