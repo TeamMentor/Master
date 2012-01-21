@@ -1,5 +1,5 @@
 <!--Page: <b>Login Page </b>-->
-	<script>
+	<script type="text/javascript">
 		function loginResponse(loginId)
 		{			
 			//$('#PleaseWait').f('display','none');					
@@ -13,6 +13,7 @@
 			else
 			{
 				loginDialog.closeDialog();			
+
 /*				
 				//currentUser = $('#UsernameBox').attr('value');
 				$('#LoginMainContent').html('login ok');
@@ -91,7 +92,7 @@
 				
 				$('#UsernameBox').keypress(function(e)  { if(e.which == 13) { loginUser(); } });
 				$('#PasswordBox').keypress(function(e)  { if(e.which == 13) { loginUser(); } });
-				
+			
 				//TM.Events.onLoginDialogOpen();
 			});
 	</script>
@@ -103,7 +104,7 @@
 		<span id="passwordLabel" style="display:inline-block;width:130px;">Password:</span><input name="ctl00$ContentPlaceHolder1$PasswordBox" type="password" id="PasswordBox" class="otherTextBox" style="width:200px;" /><br />		
 		<br />		
 		<div id="windowsLogin">		
-			<span id="passwordLabel" style="display:inline-block;width:130px;">Windows Login</span><input type="checkbox" id="WindowsLogin"  />
+			<span id="winpasswordLabel" style="display:inline-block;width:130px;">Windows Login</span><input type="checkbox" id="WindowsLogin"  />
 			<br /><br />
 		</div>		
 		<span class="errorMessageLogin" id ="errorMessageLogin" ></span>
