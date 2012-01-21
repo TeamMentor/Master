@@ -1,7 +1,9 @@
 ﻿/javascript/jQuery/jquery-1.7.1.min.js
 
 /javascript/jQueryUI/jquery-ui-1.8.14.custom.min.js
+/javascript/jQueryUI/plugin.jqueryui.framedialog.js
 /javascript/jQuery/jquery.validate.min.js
+
 /javascript/json/json2.js
 /javascript/webtoolkit.SHA256.js
 /javascript/jLinq/jLinq.js
