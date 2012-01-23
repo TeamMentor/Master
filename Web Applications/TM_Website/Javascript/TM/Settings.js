@@ -1,5 +1,5 @@
 //TM Settings
-TM.tmVersion = "TM 3.0 RC11 (21 Jan)";	
+TM.tmVersion = "TM 3.0 (23 Jan)";	
 
 TM.tmWebServices = '/Aspx_Pages/TM_WebServices.asmx/';
 
@@ -25,9 +25,9 @@ TM.Debug.logLoadedEvents					  	= false;
 TM.Debug.logLoadedPages						  	= false;
 
 //only put real passwords here in QA environments
-TM.QUnit.defaultPassord_Admin  = "!!tmbeta";
-TM.QUnit.defaultPassord_Editor = "!!tmbeta";
-TM.QUnit.defaultPassord_Reader = "!!tmbeta";
+TM.QUnit.defaultPassord_Admin                   = "!!tmbeta";
+TM.QUnit.defaultPassord_Editor                  = "!!tmbeta";
+TM.QUnit.defaultPassord_Reader                  = "!!tmbeta";
 
 //Individual trace options
 TM.WebServices.Helper.trace						= false;
