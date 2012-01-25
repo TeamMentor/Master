@@ -77,7 +77,7 @@
 										CHECKED/>
 							{#else}  			
 								<input 	type="checkbox" 								
-										onclick='setPivotPanelFilter("{$T.item.text}", "{$T.title}", "{$T.column}", this.checked);' />
+										onclick='setPivotPanelFilter("{$T.item.text}", "{$T.title}", "{$T.column}", this.checked);'/>
 							{#/if}  
 							<label title='Any'>{$T.item.text}</label>
 						</div>		
@@ -88,11 +88,11 @@
 						<div class="PivotItemNotAvail">
 							{#if $T.item.checked }	
 								<input 	type="checkbox" 								
-										onclick='setPivotPanelFilter("{$T.item.text}", "{$T.title}", "{$T.column}", this.checked);'
+										onclick='setPivotPanelFilter("{$T.item.text}", "{$T.title}", "{$T.column}", this.checked);' disabled
 										CHECKED/>
 							{#else}  			
 								<input 	type="checkbox" 								
-										onclick='setPivotPanelFilter("{$T.item.text}", "{$T.title}", "{$T.column}", this.checked);' />
+										onclick='setPivotPanelFilter("{$T.item.text}", "{$T.title}", "{$T.column}", this.checked);' disabled/>
 							{#/if}  
 							<label 	for='Any' title='Any'>{$T.item.text}</label>
 						</div>
