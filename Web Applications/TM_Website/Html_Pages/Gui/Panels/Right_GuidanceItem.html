@@ -10,6 +10,7 @@
 													var that = TM.Gui.GuidanceItemViewer;
 													that.showSelectedGuidanceId(that.guidanceItemId, that.guidanceItemTitle);
 												}
+
 			, 	showSelectedGuidanceId 		: function()
 												{											
 													var id = TM.Gui.selectedGuidanceId;
@@ -20,24 +21,23 @@
 													//$("#selectedGuidanceItem").html('.... Events.onUserDataLoaded')
 													
 													jQuery("#selectedGuidanceItem").css('color','#C0C0C0');
-													if(TM.Gui.CurrentUser.isViewer())
-													{
-														if (id != null)
-														{
-															getGuidanceItemHtml(id, function(html) 
-															{ 					
-																var code = "<h1>{0}</h1><hr/><br/>{1}".format(title, html.d);
-																jQuery("#selectedGuidanceItem").html(code);																
-																fixGuidanceItemLinks();
-																$("#selectedGuidanceItemBorder").animate({ scrollTop: 0 }, 'fast');
+													if(TM.Gui.CurrentUser.isViewer() && id != null)
+													{		
+														$("#openGIInNewWindow").show();												
+														getGuidanceItemHtml(id, function(html) 
+														{ 					
+															var code = "<h1>{0}</h1><hr/><br/>{1}".format(title, html.d);
+															jQuery("#selectedGuidanceItem").html(code);																
+															fixGuidanceItemLinks();
+															$("#selectedGuidanceItemBorder").animate({ scrollTop: 0 }, 'fast');
 																
-																TM.Gui.GuidanceItemViewer.lastPageLoaded = id;
-																//checkForUserActivities(guidanceId);
-															});
-														}
+															TM.Gui.GuidanceItemViewer.lastPageLoaded = id;
+															//checkForUserActivities(guidanceId);
+														});														
 													}
 													else
 													{	
+														$("#openGIInNewWindow").hide();
 														if (TM.Gui.GuidanceItemViewer.lastPageLoaded != TM.Gui.GuidanceItemViewer.userNotLoggedInPage)
 														{
 															loadPage("#selectedGuidanceItem", TM.Gui.GuidanceItemViewer.userNotLoggedInPage);
@@ -47,19 +47,39 @@
 													}
 													$("#selectedGuidanceItem").css('color','black');																
 												}
+			,	addLink_OpenGIInNewWindow	: function()
+												{
+													$("<img>").attr('id','openGIInNewWindow')//.hide()
+															  .attr("src" , "/Images/open_in_new_window.png")
+															  .appendTo('#SelectedGITitle').absolute().zIndex(100)
+															  .width(18)
+															  .top(15).right(10)
+															  .click(function() 
+																			{									
+																				viewGuidanceItemInNewWindow(TM.Gui.selectedGuidanceId);
+																			})
+															  .mouseover(function () 
+																			{
+																				$(this).css('cursor', 'pointer');
+																			});
+												}
+			,	cssFixes					: function()
+												{
+													$('#selectedGuidanceItemBorder').css('border',"2px solid #c6c6c6").css('padding','20px');
+													$("#selectedGuidanceItemBorder").absolute().top(43)
+																					.left(0).right(0)
+																					.bottom(0).css({"overflow" :"auto"})			
+												}
 
 		}
 		
 	$(function()
-		{
-			$('#selectedGuidanceItemBorder').css('border',"2px solid #c6c6c6").css('padding','20px');
-			$("#selectedGuidanceItemBorder").absolute().top(43)
-											.left(0).right(0)
-											.bottom(0).css({"overflow" :"auto"})
-			
-			TM.Events.onUserDataLoaded.add(TM.Gui.GuidanceItemViewer.refresh);
-			TM.Events.onShowGuidanceItem.add(TM.Gui.GuidanceItemViewer.showSelectedGuidanceId);
-			
+		{			
+			TM.Gui.GuidanceItemViewer.cssFixes();
+			TM.Gui.GuidanceItemViewer.addLink_OpenGIInNewWindow();
+
+			TM.Events.onUserDataLoaded	.add(TM.Gui.GuidanceItemViewer.refresh);
+			TM.Events.onShowGuidanceItem.add(TM.Gui.GuidanceItemViewer.showSelectedGuidanceId);			
 		});
 </script>
 <div class="searchCorners">
@@ -67,7 +87,7 @@
 	<b class="xb6"></b><b class="xb7"></b>
 
 	<div class="searchContent">
-		<div class="SearchInner">
+		<div class="SearchInner" id="SelectedGITitle">
 			<h2>Selected Guidance Item</h2>			
 		</div>
 	</div>
