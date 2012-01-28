@@ -8,46 +8,60 @@
 				
 				TM.ControlPanel.FileUpload = 	
 					{
-							uploader				: {}, 
-							buildGui				: function()
-								{									         
-									this.uploader = new qq.FileUploader(
-										{
-											element			: document.getElementById('file-uploader'),
-											action			: '/aspx_pages/File_Upload.ashx',
-											debug			: false, 
+							uploadToken					: null
+						,	uploader					: {} 
+						,	defaultAction				: '/aspx_pages/File_Upload.ashx'
+						,	buildGui					: function()
+															{									         
+																this.uploader = new qq.FileUploader(
+																	{
+																			element			: document.getElementById('file-uploader')																		
+																		,	action			: '/aspx_pages/File_Upload.ashx'
+																		,   params			:  { } 
+																		,	debug			: false
 											
-											onSubmit		: function(id, fileName){ console.log("onSubmit:" + fileName); } ,
-//											onProgress		: function(id, fileName, loaded, total){console.log("onProgress:" + fileName);},
-											onComplete		: function(id, fileName, responseJSON)
-																{ 
-																	console.log("onComplete: " + fileName + " -> " + responseJSON);
-																	TM.Events.onFileUploaded();
-																},
-											onCancel		: function(id, fileName)	{ console.log("onComplete");},
+																		,	onSubmit		: function(id, fileName)
+																								{ 																								
+																									//console.log("onSubmit:" + fileName); 
+																								} 
+								//										,	onProgress		: function(id, fileName, loaded, total){console.log("onProgress:" + fileName);}
+																		,	onComplete		: function(id, fileName, responseJSON)
+																								{ 
+																									//console.log("onComplete: " + fileName + " -> " + responseJSON);
+																									TM.Events.onFileUploaded();
+																									TM.ControlPanel.FileUpload.getUploadToken();  // get another token
+																								}
+																		,	onCancel		: function(id, fileName)	{ console.log("onComplete");}
 
-											messages: {},
-											showMessage: function(message){ console.log(message); }
-										});           
-								}        
-    								
-/*						,	applyCss				: function()  
+																		,	messages: {}
+																		,	showMessage: function(message){ console.log(message); }
+																	});           
+																this.applyCss();
+																this.getUploadToken();
+															}        
+
+    					,	getUploadToken				: function()
+															{
+																var that = TM.ControlPanel.FileUpload;
+																$(that.uploader._options.element).hide();
+																var setUploadToken = function(token)
+																	{																		
+																		that.uploadToken = token;
+																		that.uploader.setParams({uploadToken : that.uploadToken});
+																		$(that.uploader._options.element).fadeIn();
+																	}
+																TM.WebServices.Helper.invoke_TM_WebService('GetUploadToken', {} , setUploadToken);
+															}
+																		
+						,	applyCss				: function()  
 								{
-									$("input:[type=file]").addClass("ui-widget-content ui-corner-all")
-														  .width(300);
-														  
-									$("#upload").button()
-												.css('font-size',12);
-												
-									$("#fileUploadIFrame").width("100%").height(400);
-									$("#fileUploadIFrame").attr('src', "views/File_Upload.html");
-								}*/
+									$(".qq-upload-drop-area").width(200);
+								}
 					}	
 					
 				$(function()
-				{					
-					TM.ControlPanel.FileUpload.buildGui();
-					
+				{														
+					TM.ControlPanel.FileUpload.buildGui();					
 				});
 		</script>
 	
