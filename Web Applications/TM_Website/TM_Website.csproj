@@ -588,7 +588,7 @@
     <Content Include="Images\Up.png" />
     <Content Include="Images\ViewIcon.png" />
     <Content Include="Images\HeaderImage.jpg" />
-    <None Include="App_Code\FileUpload\FileUpload.cs" />
+    <Compile Include="App_Code\FileUpload\FileUpload.cs" />
     <None Include="Aspx_Pages\File_Upload.ashx" />
     <None Include="Aspx_Pages\ScriptCombiner.ashx" />
     <None Include="Aspx_Pages\TM_3_0.Master" />

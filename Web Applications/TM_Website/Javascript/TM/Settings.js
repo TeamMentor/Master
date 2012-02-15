@@ -1,5 +1,5 @@
 //TM Settings
-TM.tmVersion = "TM 3.0 (23 Jan)";	
+TM.tmVersion = "TM 3.0 HF2 (28 Jan)";	
 
 TM.tmWebServices = '/Aspx_Pages/TM_WebServices.asmx/';
 
