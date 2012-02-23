@@ -6,13 +6,13 @@ using System.Web;
 using System.Web.Services;
 using System.Security.Permissions;	
 using SecurityInnovation.TeamMentor.WebClient;
-using SecurityInnovation.TeamMentor.Authentication.ExtensionMethods;
-using SecurityInnovation.TeamMentor.Authentication.AuthorizationRules;
-using SecurityInnovation.TeamMentor.Authentication.WebServices.AuthorizationRules;
 using O2.Kernel.ExtensionMethods;
 using Microsoft.Practices.Unity;
 using O2.XRules.Database.Utils;
 using O2.XRules.Database.APIs;
+using SecurityInnovation.TeamMentor.Authentication.ExtensionMethods;
+using SecurityInnovation.TeamMentor.Authentication.AuthorizationRules;
+using SecurityInnovation.TeamMentor.Authentication.WebServices.AuthorizationRules;
 
 
 //O2File:../Authentication/ExtensionMethods/TeamMentorUserManagement_ExtensionMethods.cs
@@ -38,115 +38,28 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
     /// <summary>
     /// Summary description for Authentication
     /// </summary>
-    [WebService(Namespace = "http://tempuri.org/")]
+    [WebService(Namespace = "http://teammentor.securityinnoation.com/")]
     [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
     [System.ComponentModel.ToolboxItem(false)]
-    // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
     [System.Web.Script.Services.ScriptService]
     public partial class TM_WebServices : System.Web.Services.WebService 
     {
-		[Dependency]
-		public IJavascriptProxy javascriptProxy {get;set;}
-		
-		public ActivityTracking activityTracking {get;set;}
-		
-		//public new HttpContextBase MyContext { get; set;}
-		
-		//This stores the adminSessionID value in a session variable
-		//MOVE THIS TO AN HTTPMODULE
-		private Guid _sessionID;	// for unit tests
-				
-		public Guid sessionID
-		{
-			get 
-			{
-				try
-				{
-					// first check if there s a session variable already set
-					if (Session["sessionID"].notNull())
-						return (Guid)Session["sessionID"];
-					// then check the cookie
-					var sessionCookie = System.Web.HttpContext.Current.Request.Cookies["Session"];
-					if (sessionCookie.notNull() && sessionCookie.Value.isGuid())
-						return sessionCookie.Value.guid();							
-					var sessionHeader = System.Web.HttpContext.Current.Request.Headers["Session"];
-					if (sessionHeader.notNull() && sessionHeader.isGuid())
-						return sessionHeader.guid();								
-					//if none is set, return an empty Guid	
-					return Guid.Empty;
-				}
-				catch//(Exception ex) // this will happen on the unit tests
-				{					
-					//"sessionID.get: {0}".error(ex.Message);
-					//System.Web.HttpContext.Current.Response.Write("\n\nERROR: {0} ---\n\n".format(ex.Message));
-					return _sessionID;
-				}                 
-			 	
-			}
-			
-			set
-			{				
-			//	MyContext.Session["sessionID"] = value;
-				
-				try
-				{					
-					//if (Session.notNull())
-					Session["sessionID"] = value;
-					//var sessionCookie = System.Web.HttpContext.Current.Request.Cookies["Session"];
-					//if (sessionCookie.isNull())
-					//{
-					var sessionCookie = new HttpCookie("Session", value.str());
-					sessionCookie.HttpOnly = true;
-					System.Web.HttpContext.Current.Response.Cookies.Add(sessionCookie);
-					//}
-				}
-				catch//(Exception ex) // this will happen on the unit tests
-				{
-					_sessionID = value;
-					//"sessionID.set: {0}".error(ex.Message);
-				}				
-				if (value!= Guid.Empty)
-					new UserRoleBaseSecurity().MapRolesBasedOnSessionGuid(value);
-			}
-		}
-		
-		public TMUser currentUser 
-		{
-			get 
-			{
-				try
-				{
-					return sessionID.session_TmUser();
-				}
-				catch
-				{
-					return new TMUser();
-				}
-			}			
-		}
+        [Dependency]
+        public IJavascriptProxy javascriptProxy { get; set; }
+
+        public ActivityTracking activityTracking { get; set; }
+
+        public TM_Authentication tmAuthentication { get; set; }
 		
         public TM_WebServices()
-        {			
+        {			                
             UnityInjection.resolve(this);
-			try
-			{                
-                javascriptProxy.adminSessionID = sessionID;                                    
-			}
-			catch(Exception ex)	// this will happen on the unit tests
-			{
-				"TM_WebServices.ctor: {0}".error(ex.Message);
-			}
-			if (sessionID!= Guid.Empty)
-				new UserRoleBaseSecurity().MapRolesBasedOnSessionGuid(sessionID);						
-				
-			if (GetCurrentUserRoles().size()==0)
-				if (TMConfig.Current.ShowContentToAnonymousUsers)
-					UserGroup.Reader.setThreadPrincipalWithRoles();
-				else
-					UserGroup.Anonymous.setThreadPrincipalWithRoles();		
+			tmAuthentication = new TM_Authentication(this);
+			tmAuthentication.mapUserRoles();					
 			
-			activityTracking = new ActivityTracking();
-			activityTracking.LogRequest();
+			//Disable Activity Tracking
+			//activityTracking = new ActivityTracking();
+			//activityTracking.LogRequest();
         }        
         
 
@@ -178,19 +91,19 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		
         //********  Session Management (& Login)
         [WebMethod(EnableSession = true)]	public Guid LoginToWindows(string username, string password)  		{
-																													return sessionID = SecurityInnovation.TeamMentor.Authentication.WindowsAndLDAP.loginOnLocalMachine(username,password);
+																													return tmAuthentication.sessionID = SecurityInnovation.TeamMentor.Authentication.WindowsAndLDAP.loginOnLocalMachine(username,password);
 																												}		
 
         
-        [WebMethod(EnableSession = true)]	public Guid Login(string username, string passwordHash)      		{   return sessionID = javascriptProxy.Login(username, passwordHash); }		
-		[WebMethod(EnableSession = true)]	public Guid Login_PwdInClearText(string username, string password)	{	return sessionID = javascriptProxy.Login_PwdInClearText(username, password); }		
+        [WebMethod(EnableSession = true)]	public Guid Login(string username, string passwordHash)      		{   return tmAuthentication.sessionID = javascriptProxy.Login(username, passwordHash); }		
+		[WebMethod(EnableSession = true)]	public Guid Login_PwdInClearText(string username, string password)	{	return tmAuthentication.sessionID = javascriptProxy.Login_PwdInClearText(username, password); }		
 		[WebMethod(EnableSession = true)]	public Guid Logout()      											{																													
-																													sessionID = Guid.Empty;			
-																													return sessionID;																													
+																													tmAuthentication.sessionID = Guid.Empty;
+                                                                                                                    return tmAuthentication.sessionID;																													
 																												}																												
-		[WebMethod(EnableSession = true)]	public Guid Current_SessionID()										{	return sessionID;  }
-		[WebMethod(EnableSession = true)]	public TMUser Current_User()										{	return currentUser;  }
-		[WebMethod(EnableSession = true)]	public List<string> GetCurrentUserRoles()							{	return sessionID.session_UserRoles().toStringList();  }		
+		[WebMethod(EnableSession = true)]	public Guid Current_SessionID()										{	return tmAuthentication.sessionID;  }
+		[WebMethod(EnableSession = true)]	public TMUser Current_User()										{	return tmAuthentication.currentUser;  }
+		[WebMethod(EnableSession = true)]	public List<string> GetCurrentUserRoles()							{	return tmAuthentication.sessionID.session_UserRoles().toStringList();  }		
 		
 		//********  Libraries		
 		[WebMethod(EnableSession = true)]	public List<TM_Library> GetLibraries()										{	return javascriptProxy.GetLibraries();	}		
@@ -250,11 +163,11 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 																							{																								
 																								if (result)
 																								{																									
-																									new PagesHistory().logPageChange(guidanceItem.guidanceItemId, 
-																																	 currentUser.notNull() 
-																																		? currentUser.UserName 
-																																		: "[tm error: no user]", 
-																																	 sessionID, 
+																									new PagesHistory().logPageChange(guidanceItem.guidanceItemId,
+                                                                                                                                     tmAuthentication.currentUser.notNull()
+                                                                                                                                        ? tmAuthentication.currentUser.UserName 
+																																		: "[tm error: no user]",
+                                                                                                                                     tmAuthentication.sessionID, 
 																																	 guidanceItem.htmlContent);
 																									return true;																																	
 																								}
@@ -275,8 +188,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		
 		
 		//Extra (not in Javascript proxy (move to separate file if more than a couple are needed)
-		[WebMethod(EnableSession = true)] [EditArticles(SecurityAction.Demand)]	
-		public bool DeleteLibrary(Guid libraryId)
+		[WebMethod(EnableSession = true)] [EditArticles(SecurityAction.Demand)]		public bool DeleteLibrary(Guid libraryId)
 		{
 			this.resetCache();
 			if (javascriptProxy.GetLibraryById(libraryId.str()).isNull())
@@ -285,10 +197,8 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			javascriptProxy.UpdateLibrary(libraryToDelete);
 			var libraryDeleted = javascriptProxy.GetLibraryById(libraryId.str());
 			return libraryDeleted.isNull();// || libraryDeleted.delete;
-		}
-		
-		[WebMethod(EnableSession = true)] [EditArticles(SecurityAction.Demand)]	
-		public bool RenameLibrary(Guid libraryId, string newName)
+		}		
+		[WebMethod(EnableSession = true)] [EditArticles(SecurityAction.Demand)]	    public bool RenameLibrary(Guid libraryId, string newName)
 		{
 			this.resetCache();
 			if (javascriptProxy.GetLibraryById(libraryId.str()).isNull())
@@ -296,10 +206,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			var libraryToRename = new Library  { id = libraryId.str(), caption = newName };
 			return javascriptProxy.UpdateLibrary(libraryToRename);			
 		}
-		
-		
-		[WebMethod(EnableSession = true)] [EditArticles(SecurityAction.Demand)]	
-		public List<Guid> DeleteTempLibraries()
+		[WebMethod(EnableSession = true)] [EditArticles(SecurityAction.Demand)]		public List<Guid> DeleteTempLibraries()
 		{
 			var deletedLibraries = new List<Guid>();
 			foreach(var library in javascriptProxy.GetLibraries())
