@@ -168,8 +168,8 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		public bool UpdateGuidanceItemHtml(Guid guidanceItemId, string htmlContent)
 		{
 			var guidanceItem = javascriptProxy.GetGuidanceItemById(guidanceItemId.str());
-			
-			new PagesHistory().logPageChange(guidanceItemId, currentUser.UserName, sessionID, guidanceItem.htmlContent.sanitizeHtmlContent());
+
+            new PagesHistory().logPageChange(guidanceItemId, tmAuthentication.currentUser.UserName, tmAuthentication.sessionID, guidanceItem.htmlContent.sanitizeHtmlContent());
 			
 			guidanceItem.htmlContent = htmlContent.sanitizeHtmlContent();
 								
@@ -187,7 +187,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		[WebMethod(EnableSession= true)]
 		public bool currentUserHasActivityInGuidanceItem(Guid guidanceItemId, string userActivity)
 		{
-			return userHasActivityInGuidanceItem(guidanceItemId, currentUser.UserName, userActivity);
+            return userHasActivityInGuidanceItem(guidanceItemId, tmAuthentication.currentUser.UserName, userActivity);
 		}
 		
 		[WebMethod(EnableSession= true)]
@@ -202,15 +202,15 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		[WebMethod(EnableSession= true)]
 		[EditArticles(SecurityAction.Demand)]
 		public ChangedPage logPageUserComment(Guid guidanceItemId, string userComment)
-		{					
-			return new PagesHistory().logPageChange(guidanceItemId, currentUser.UserName, sessionID, "", userComment, "");
+		{
+            return new PagesHistory().logPageChange(guidanceItemId, tmAuthentication.currentUser.UserName, tmAuthentication.sessionID, "", userComment, "");
 		}
 			
 		[WebMethod(EnableSession= true)]
 		[EditArticles(SecurityAction.Demand)]
 		public ChangedPage logPageUserActivity(Guid guidanceItemId, string userActivity)
-		{			
-			return new PagesHistory().logPageChange(guidanceItemId, currentUser.UserName, sessionID, "", "",userActivity);			
+		{
+            return new PagesHistory().logPageChange(guidanceItemId, tmAuthentication.currentUser.UserName, tmAuthentication.sessionID, "", "", userActivity);			
 		}		
     }
 

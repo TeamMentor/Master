@@ -588,6 +588,7 @@
     <Content Include="Images\Up.png" />
     <Content Include="Images\ViewIcon.png" />
     <Content Include="Images\HeaderImage.jpg" />
+    <Compile Include="App_Code\Authentication\TM_Authentication.cs" />
     <Compile Include="App_Code\FileUpload\FileUpload.cs" />
     <None Include="Aspx_Pages\File_Upload.ashx" />
     <None Include="Aspx_Pages\ScriptCombiner.ashx" />
