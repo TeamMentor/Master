@@ -14,6 +14,7 @@ using O2.DotNetWrappers.Windows;
 using O2.XRules.Database.Utils;
 using urn.microsoft.guidanceexplorer;
 using urn.microsoft.guidanceexplorer.guidanceItem;
+using System.Threading;
 //O2File:TM_Xml_Database.cs
 
 namespace SecurityInnovation.TeamMentor.WebClient.WebServices
@@ -47,6 +48,8 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 
 	public static class TM_Xml_Database_ExtensionMethods_Load_and_FileCache
 	{
+		public static Thread Save_GuidanceItemsCache;
+
 		public static TM_Xml_Database setGuidanceExplorerObjects(this TM_Xml_Database tmDatabase)
 		{			
 			"in setGuidanceExplorerObjects".info();
@@ -180,8 +183,21 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			"[TM_Xml_Database] clear_GuidanceItemsCache".info();
 			TM_Xml_Database.Cached_GuidanceItems.Clear();
 			return tmDatabase;
+		}		
+
+		public static TM_Xml_Database queue_Save_GuidanceItemsCache(this TM_Xml_Database tmDatabase)
+		{
+			// do this on a separate thread so that we don't hang the current request
+			var enabled = true;
+			if (enabled && Save_GuidanceItemsCache.isNull())
+				Save_GuidanceItemsCache = O2Thread.mtaThread(
+					()=>{
+							tmDatabase.sleep(1000);
+							tmDatabase.save_GuidanceItemsCache();
+							Save_GuidanceItemsCache = null;
+						});
+			return tmDatabase;
 		}
-						
 		public static TM_Xml_Database save_GuidanceItemsCache(this TM_Xml_Database tmDatabase)
 		{
 			"[TM_Xml_Database] save_GuidanceItemsCache".info();
@@ -208,16 +224,17 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		}
 		
 		public static guidanceItem update_Cache_GuidanceItems(this guidanceItem guidanceItem,  TM_Xml_Database tmDatabase)
-		{
+		{			
 			var guidanceItemGuid = guidanceItem.id.guid();
 			if (TM_Xml_Database.Cached_GuidanceItems.hasKey(guidanceItemGuid))
 				TM_Xml_Database.Cached_GuidanceItems[guidanceItemGuid] = guidanceItem.tmGuidanceItemV3();
 			else
 				TM_Xml_Database.Cached_GuidanceItems.Add(guidanceItem.id.guid(), guidanceItem.tmGuidanceItemV3());
-				
+			
 			//TM_Xml_Database.mapGuidanceItemsViews();  		// update views (to make sure they are pointing to the correct GuidanceItem object	
-			// do this on a separate thread so that we don't hang the current request
-			O2Thread.mtaThread(()=> tmDatabase.save_GuidanceItemsCache());;
+
+			tmDatabase.queue_Save_GuidanceItemsCache();
+			
 			return guidanceItem;
 		}	
 	

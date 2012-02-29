@@ -64,38 +64,31 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		 
 		static TM_Xml_Database()
 		{			
-			try
-			{
-				//GuidanceItems_All = new Dictionary<string, TM_GuidanceItem>();
-				Cached_GuidanceItems = new Dictionary<Guid, GuidanceItem_V3> ();
-				GuidanceItems_FileMappings = new Dictionary<Guid,string>();
-				GuidanceExplorers_XmlFormat = new Dictionary<Guid, guidanceExplorer>();
-	//			GuidanceItems_InViews = new Dictionary<Guid, List<GuidanceItem_V3>>();			
+			Cached_GuidanceItems = new Dictionary<Guid, GuidanceItem_V3> ();
+			GuidanceItems_FileMappings = new Dictionary<Guid,string>();
+			GuidanceExplorers_XmlFormat = new Dictionary<Guid, guidanceExplorer>();	
+			
+			TMUsers = new List<TMUser>();
+			TMUsersPasswordHashes = new O2.XRules.Database.Utils.Items ();
+			ActiveSessions = new Dictionary<Guid, TMUser>();
 				
-				TMUsers = new List<TMUser>();
-				TMUsersPasswordHashes = new O2.XRules.Database.Utils.Items ();
-				ActiveSessions = new Dictionary<Guid, TMUser>();
-				"[TM_Xml_Database]: TMConfig.BaseFolder: {0}".info(TMConfig.BaseFolder);
+			setDataFromCurrentScript(@"..\..");
+			
+			/*	"[TM_Xml_Database]: TMConfig.BaseFolder: {0}".info(TMConfig.BaseFolder);
 				Path_XmlDatabase = TMConfig.BaseFolder.pathCombine(@"..\..\Library_Data\XmlDatabase").fullPath();
 				"[TM_Xml_Database] in static ctor: Path to XMLDatabase = {0}".info(Path_XmlDatabase);
 				//Path_XmlDatabase = AppDomain.CurrentDomain.BaseDirectory.pathCombine(@"..\..\Library_Data\XmlDatabase").fullPath();			
 				setLibraryPath(TMConfig.Current.XmlLibrariesPath);
 				
 				TM_Xml_Database_Load_and_FileCache_Utils.populateGuidanceItemsFileMappings();	//only do this once
-			}
-			catch(Exception ex)
-			{
-				"[TM_Xml_Database] static .ctor: {0} \n\n".error(ex.Message, ex.StackTrace);
-			}
+			*/				
 		} 
 		
 		public TM_Xml_Database()
 		{	
 			TM_Xml_Database.Current = this;
 			try
-			{			
-				//"[TM_Xml_Database] in ctor:  TMConfig.BaseFolder: {0}".info(TMConfig.BaseFolder);
-				//"[TM_Xml_Database] in  ctor: Path to XMLDatabase = {0}".info(Path_XmlDatabase);
+			{							
 				this.xmlDB_Load_GuidanceItems();
 				this.createDefaultAdminUser();	// make sure this user exists		
 			}
@@ -107,16 +100,25 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		
 		public static void setDataFromCurrentScript(string virtualPathMapping)
 		{
-			"virtualPathMapping: {0}".info(virtualPathMapping);
-			TM_Xml_Database.Path_XmlDatabase = //PublicDI .CurrentScript.directoryName()
-												TMConfig.BaseFolder
-														.pathCombine(virtualPathMapping)
-														.fullPath()
-														.pathCombine("Library_Data/XmlDatabase");
-			TM_Xml_Database.setLibraryPath(TMConfig.Current.XmlLibrariesPath);
-			"[TM_Xml_Database][setDataFromCurrentScript] TM_Xml_Database.Path_XmlDatabase: {0}".debug(TM_Xml_Database.Path_XmlDatabase);
-			"[TM_Xml_Database][setDataFromCurrentScript] TMConfig.Current.XmlLibrariesPath: {0}".debug(TMConfig.Current.XmlLibrariesPath);
+			try
+			{				
+				"[setDataFromCurrentScript] virtualPathMapping: {0}".info(virtualPathMapping);
+				TM_Xml_Database.Path_XmlDatabase = //PublicDI .CurrentScript.directoryName()
+													TMConfig.BaseFolder
+															.pathCombine(virtualPathMapping)
+															.fullPath()
+															.pathCombine("Library_Data/XmlDatabase");
+				TM_Xml_Database.setLibraryPath(TMConfig.Current.XmlLibrariesPath);
+				"[TM_Xml_Database][setDataFromCurrentScript] TM_Xml_Database.Path_XmlDatabase: {0}".debug(TM_Xml_Database.Path_XmlDatabase);
+				"[TM_Xml_Database][setDataFromCurrentScript] TMConfig.Current.XmlLibrariesPath: {0}".debug(TMConfig.Current.XmlLibrariesPath);
+				TM_Xml_Database_Load_and_FileCache_Utils.populateGuidanceItemsFileMappings();	//only do this once			
+			}
+			catch(Exception ex)
+			{
+				"[TM_Xml_Database] static .ctor: {0} \n\n".error(ex.Message, ex.StackTrace);
+			}
 		}
+		
 		public string reloadData()
 		{
 			return reloadData(null);

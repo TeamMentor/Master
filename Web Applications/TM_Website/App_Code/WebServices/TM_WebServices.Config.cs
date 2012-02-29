@@ -16,6 +16,7 @@ using O2.XRules.Database.APIs;
 //O2File:../IJavascriptProxy.cs
 //O2File:../Authentication/UserRoleBaseSecurity.cs
 //O2File:TM_WebServices.asmx.cs
+//O2File:../FileUpload/FileUpload.cs
 //O2Ref:System.Web.Services.dll 
 //O2Ref:Microsoft.Practices.Unity.dll
 //O2Ref:System.Xml.Linq.dll
