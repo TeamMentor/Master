@@ -14,10 +14,7 @@ using SecurityInnovation.TeamMentor.Authentication.ExtensionMethods;
 using SecurityInnovation.TeamMentor.Authentication.AuthorizationRules;
 using SecurityInnovation.TeamMentor.Authentication.WebServices.AuthorizationRules;
 
-
-//O2File:../Authentication/ExtensionMethods/TeamMentorUserManagement_ExtensionMethods.cs
-//O2File:../Authentication/UserRoleBaseSecurity.cs
-//O2File:../Authentication/WindowsAndLDAP.cs
+//O2File:../Authentication/TM_Authentication.cs
 //O2File:../UnityInjection.cs
 //O2File:../DataViewers/JsTreeNode.cs
 //O2File:../O2_Scripts_APIs/_O2_Scripts_Files.cs
@@ -38,7 +35,8 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
     /// <summary>
     /// Summary description for Authentication
     /// </summary>
-    [WebService(Namespace = "http://teammentor.securityinnoation.com/")]
+    //[WebService(Namespace = "http://teammentor.securityinnoation.com/")]
+	[WebService(Namespace = "http://tempuri.org/")]	 
     [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
     [System.ComponentModel.ToolboxItem(false)]
     [System.Web.Script.Services.ScriptService]

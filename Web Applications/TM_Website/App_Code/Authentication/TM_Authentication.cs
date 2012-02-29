@@ -4,11 +4,14 @@ using System.Linq;
 using System.Web;
 using O2.Kernel.ExtensionMethods;
 using O2.XRules.Database.Utils;
-using SecurityInnovation.TeamMentor.Authentication.AuthorizationRules;
 using System.Security;
 using SecurityInnovation.TeamMentor.Authentication.ExtensionMethods;
 using SecurityInnovation.TeamMentor.Authentication.AuthorizationRules;
 using SecurityInnovation.TeamMentor.Authentication.WebServices.AuthorizationRules;
+
+//O2File:ExtensionMethods/TeamMentorUserManagement_ExtensionMethods.cs
+//O2File:UserRoleBaseSecurity.cs
+//O2File:WindowsAndLDAP.cs
 
 namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 {
@@ -97,7 +100,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                 {
                     var tmUser = sessionID.session_TmUser();
 					if (tmUser.notNull())
-						tmUser.CSRF_Token = this.sessionID.hash().str();
+						tmUser.CSRF_Token = this.sessionID.str().hash().str();	
 					return tmUser;
                 }
                 catch
@@ -113,7 +116,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			var header_CSRF_Token = tmWebServices.Context.Request.Headers["CSRF_Token"];
 			if (header_CSRF_Token.valid())
 			{
-				if (header_CSRF_Token == sessionID.hash().str())
+				if (header_CSRF_Token == sessionID.str().hash().str())			// interrestingly session.hash().str() produces a different value
 					return true;
 			}
 			return false;
@@ -124,11 +127,14 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		{
 			if (sessionID != Guid.Empty)
 			{
-				if(check_CSRF_Token())		// only map the roles if the CSRF check passed
+				if (check_CSRF_Token())		// only map the roles if the CSRF check passed
+				{
 					new UserRoleBaseSecurity().MapRolesBasedOnSessionGuid(sessionID);
+					return this;
+				}
 			}
-
-			if (tmWebServices.GetCurrentUserRoles().size() == 0)
+			
+			//if (tmWebServices.GetCurrentUserRoles().size() == 0)
 				if (TMConfig.Current.ShowContentToAnonymousUsers)
 					UserGroup.Reader.setThreadPrincipalWithRoles();
 				else
