@@ -514,8 +514,8 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		
 		public static GuidanceItem_V3 tmGuidanceItemV3(this guidanceItem _guidanceItem) //, Guid guidanceId)
 		{
-			var phase = "";
-			var ruleType = "";
+			//var phase = "";
+			//var ruleType = "";
 
 
 			/*if (_guidanceItem.phase.valid())			
