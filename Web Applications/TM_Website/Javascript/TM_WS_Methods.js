@@ -3,7 +3,8 @@
 var lastDataReceived = {};
 function invokeWebService(url, params, handleData, handleError)
 {		
-    $.ajax({
+	TM.WebServices.Helper.invokeWebService(url, params, handleData, handleError);
+    /*$.ajax({
         type: "POST",
         url: url,
         data: params,
@@ -24,7 +25,7 @@ function invokeWebService(url, params, handleData, handleError)
 			handleError(msg);
             //handleError("error: " + JSON.stringify(msg));
         }
-    });
+    });*/
 }
 
 

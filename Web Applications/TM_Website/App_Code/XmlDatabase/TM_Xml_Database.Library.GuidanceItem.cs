@@ -275,6 +275,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		[PrincipalPermission(SecurityAction.Demand, Role = "EditArticles")]
 		public static bool xmlDB_Save_GuidanceItem(this guidanceItem guidanceItem, Guid libraryId, TM_Xml_Database tmDatabase)
 		{
+			
 			var xmlLibraries = TM_Xml_Database.Path_XmlLibraries;
 			var guidanceXmlPath = tmDatabase.getXmlFilePathForGuidanceId(guidanceItem.id.guid(), libraryId);
 			
@@ -284,7 +285,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			guidanceItem.Save(guidanceXmlPath);			
 			//add it to in Memory cache
 
-			tmDatabase.setGuidanceExplorerObjects();
+//			tmDatabase.setGuidanceExplorerObjects();
 			guidanceItem.update_Cache_GuidanceItems(tmDatabase);			
 			
 			return guidanceXmlPath.fileExists();			

@@ -3,6 +3,7 @@
 TM.tmWebServices = '/Aspx_Pages/TM_WebServices.asmx/';
 TM.WebServices.Data.lastDataReceived = {};
 TM.WebServices.Config.Version = "v0.3";
+TM.WebServices.Config.CSRF_Token = "";
 
 //Helpers
 TM.WebServices.Helper.invokeWebService = function(url, params, handleData, handleError)
@@ -16,28 +17,28 @@ TM.WebServices.Helper.invokeWebService = function(url, params, handleData, handl
 		handleError = TM.WebServices.Helper.defaultErrorHandler;		
 	}
     $.ajax( {
-				type: "POST",
-				url: url,
-				data: params,
-				contentType: "application/json; charset=utf-8",
-				dataType: "json",
-				success: function (msg) 
-					{   						
-						//TM.Events.raiseWebServiceReceivedData();
-						TM.WebServices.Data.lastDataReceived = msg;				
-						if(typeof(msg.d) == "undefined")
-							handleError("No data received from call to: " + url);
-						else
-							handleData(msg)			
-					},
-				failure: function (msg) 
-					{						
-						handleError(msg);            
-					},
-				error: function (msg) 
-					{
-						handleError(msg);					
-					}
+					type            : "POST"
+				,   url             : url
+				,	data            : params                
+				,	headers			: { "CSRF_Token" : TM.WebServices.Config.CSRF_Token}
+				,	contentType: "application/json; charset=utf-8"
+				,	dataType: "json"
+				,	success: function (msg) 
+						{   													
+							TM.WebServices.Data.lastDataReceived = msg;				
+							if(typeof(msg.d) == "undefined")
+								handleError("No data received from call to: " + url);
+							else
+								handleData(msg)			
+						}
+				,	failure: function (msg) 
+						{						
+							handleError(msg);            
+						}
+				,	error: function (msg) 
+						{
+							handleError(msg);					
+						}
 			});
 }
 

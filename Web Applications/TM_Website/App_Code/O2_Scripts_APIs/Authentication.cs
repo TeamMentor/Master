@@ -974,88 +974,20 @@ public partial class Authentication : System.Web.Services.Protocols.SoapHttpClie
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(Namespace = "https://TeamMentor.securityinnovation.com:13415/")]
 public partial class TMUser
-{
+{	
+	public int UserID			{ get; set; }
+	public string	UserName	{ get; set; }
+	public string	FirstName	{ get; set; }
+	public string	LastName	{ get; set; }
+	public string	Title		{ get; set; }
+	public string	Company		{ get; set; }
+	public string	EMail		{ get; set; }
+	public int		GroupID		{ get; set; }
+	public bool		IsActive	{ get; set; }
+	public string	CSRF_Token	{ get; set; }
 
-	private int userIDField;
-
-	private string userNameField;
-
-	private string firstNameField;
-
-	private string lastNameField;
-
-	private string titleField;
-
-	private string companyField;
-
-	private string eMailField;
-
-	private int groupIDField;
-
-	private bool isActiveField;
-
-	private System.Nullable<System.DateTime> expirationDateField;
-
-	/// <remarks/>
-	public int UserID {
-		get { return this.userIDField; }
-		set { this.userIDField = value; }
-	}
-
-	/// <remarks/>
-	public string UserName {
-		get { return this.userNameField; }
-		set { this.userNameField = value; }
-	}
-
-	/// <remarks/>
-	public string FirstName {
-		get { return this.firstNameField; }
-		set { this.firstNameField = value; }
-	}
-
-	/// <remarks/>
-	public string LastName {
-		get { return this.lastNameField; }
-		set { this.lastNameField = value; }
-	}
-
-	/// <remarks/>
-	public string Title {
-		get { return this.titleField; }
-		set { this.titleField = value; }
-	}
-
-	/// <remarks/>
-	public string Company {
-		get { return this.companyField; }
-		set { this.companyField = value; }
-	}
-
-	/// <remarks/>
-	public string EMail {
-		get { return this.eMailField; }
-		set { this.eMailField = value; }
-	}
-
-	/// <remarks/>
-	public int GroupID {
-		get { return this.groupIDField; }
-		set { this.groupIDField = value; }
-	}
-
-	/// <remarks/>
-	public bool IsActive {
-		get { return this.isActiveField; }
-		set { this.isActiveField = value; }
-	}
-
-	/// <remarks/>
 	[System.Xml.Serialization.XmlElementAttribute(IsNullable = true)]
-	public System.Nullable<System.DateTime> ExpirationDate {
-		get { return this.expirationDateField; }
-		set { this.expirationDateField = value; }
-	}
+	public System.Nullable<System.DateTime> ExpirationDate { get; set; }
 }
 
 /// <remarks/>
