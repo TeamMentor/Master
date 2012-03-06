@@ -35,7 +35,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		[Admin(SecurityAction.Demand)]	
 		public RequestData GetRequestData()
 		{
-			return activityTracking.GetRequestData(sessionID, currentUser.UserName);
+            return activityTracking.GetRequestData(tmAuthentication.sessionID, tmAuthentication.currentUser.UserName);
 		}
 		 
 		[WebMethod(EnableSession= true)] 

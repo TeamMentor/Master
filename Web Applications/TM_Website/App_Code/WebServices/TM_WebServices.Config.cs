@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Web.Services;
 using System.Security.Permissions;	
+using SecurityInnovation.TeamMentor.WebClient;
 using SecurityInnovation.TeamMentor.Authentication.AuthorizationRules;
 using SecurityInnovation.TeamMentor.Authentication.WebServices.AuthorizationRules;
 using Microsoft.Practices.Unity;
@@ -15,6 +16,7 @@ using O2.XRules.Database.APIs;
 //O2File:../IJavascriptProxy.cs
 //O2File:../Authentication/UserRoleBaseSecurity.cs
 //O2File:TM_WebServices.asmx.cs
+//O2File:../FileUpload/FileUpload.cs
 //O2Ref:System.Web.Services.dll 
 //O2Ref:Microsoft.Practices.Unity.dll
 //O2Ref:System.Xml.Linq.dll
@@ -112,23 +114,30 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		//Get_Libraries_Zip_Folder
 		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public string Get_Libraries_Zip_Folder()
 																					{
-																						return TMConfig.Current.LibrariesZipsFolder;
+                                                                                        var librariesZipsFolder = TMConfig.Current.LibrariesZipsFolder;                                                                                        
+                                                                                        return TM_Xml_Database.Path_XmlDatabase.fullPath().pathCombine(librariesZipsFolder).fullPath();
 																					}
 		//Get_Libraries_Zip_Folder_Files
 		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public List<string> Get_Libraries_Zip_Folder_Files()
 																					{
-																						return TMConfig.Current.LibrariesZipsFolder.files().fileNames();
+                                                                                        return Get_Libraries_Zip_Folder().files().fileNames();
 																					}																					
 		//Set_Libraries_Zip_Folder
 		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public string Set_Libraries_Zip_Folder(string folder)
 																					{
 																						var tmConfig = TMConfig.Current;
 																						tmConfig.LibrariesZipsFolder = folder;
-																						folder.createDir();
+																						//folder.createDir();
 																						if (tmConfig.SaveTMConfig())																																										
 																							return "Path set to '{0}' which currently has {1} files".format(folder.fullPath(), folder.files().size());
 																						return null;
 																					}
-																					
+
+        [WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]        public Guid GetUploadToken()
+                                                                                    {
+                                                                                        var uploadToken = Guid.NewGuid();
+                                                                                        FileUpload.UploadTokens.Add(uploadToken);
+                                                                                        return uploadToken;
+																					}
     }
 }

@@ -1,1 +1,1 @@
-<%@ WebHandler Language="C#" Class="FileUpload" %>
+<%@ WebHandler Language="C#" Class="SecurityInnovation.TeamMentor.WebClient.FileUpload" %>

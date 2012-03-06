@@ -516,7 +516,9 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		{
 			var phase = "";
 			var ruleType = "";
-			if (_guidanceItem.phase.valid())			
+
+
+			/*if (_guidanceItem.phase.valid())			
 			{
 				phase = _guidanceItem.phase;
 				ruleType = _guidanceItem.Rule_Type ?? "";
@@ -525,21 +527,21 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			{
 				phase = _guidanceItem.Rule_Type ?? "";
 				ruleType = _guidanceItem.Type1 ?? "";
-			}
+			}*/
 						
 			return new GuidanceItem_V3()
 							{
 								guidanceItemId 			= _guidanceItem.id.guid(), //guidanceId,
 								guidanceItemId_Original = _guidanceItem.id_original.guid(),
 								author 					= _guidanceItem.Author,
-								category 				= _guidanceItem.Category,
+								category 				= _guidanceItem.Category   ?? "",
 								priority 				= _guidanceItem.Priority,								
-								phase					= phase,
-								rule_Type 				= ruleType,								
+								phase					= _guidanceItem.phase ?? "",
+								rule_Type 				=  _guidanceItem.Rule_Type ?? _guidanceItem.Type1 ?? "" ,								
 								status 					= _guidanceItem.Status,
-								technology 				= _guidanceItem.Technology,
+								technology 				= _guidanceItem.Technology ?? "",
 								title 					= _guidanceItem.title,								
-								topic 					= _guidanceItem.Topic,
+								topic 					= _guidanceItem.Topic	   ?? "",
 				//				lastUpdate 				= DateTime.Parse(_guidanceItem.Date),								
 								htmlContent				= _guidanceItem.content.sanitizeHtmlContent(), 
 								libraryId 				= _guidanceItem.libraryId.guid()
