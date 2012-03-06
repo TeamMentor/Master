@@ -400,6 +400,21 @@
 				}
 			}
 		
+		var showGuiBasedOnUserPrivileges = function()
+			{				
+				currentUserHasRole('EditArticles', 
+					function(result){										
+										if(result.d)
+											loadEditor();	
+										else
+										{											
+											$("button").hide();
+											"ItemDetailTable".$().hide();
+											showMessage("You don't have privileges to edit this item");											
+											"guidanceItemEditor".$().html("<h1>Access denied.</h1><h2>please close this window</h2>");
+										}													
+									});
+			}		
 		
 		$(function()
 			{								
@@ -414,20 +429,9 @@
 				TM.Gui.ShowProgressBar.close();
 				
 				
-				currentUserHasRole('EditArticles', 
-					function(result){										
-										if(result.d)
-											loadEditor();	
-										else
-										{
-											//"saveChanges".$().hide();
-											$("button").hide();
-											"ItemDetailTable".$().hide();
-											showMessage("You don't have privileges to edit this item");
-											//"guidanceItem".$().hide();
-											"guidanceItemEditor".$().html("<h1>Access denied.</h1><h2>please close this window</h2>");
-										}													
-									});
+				TM.Events.onUserDataLoaded	.add(showGuiBasedOnUserPrivileges);
+				TM.Gui.CurrentUser.loadUserData();
+				
 				
 				
 				$("button").button();
