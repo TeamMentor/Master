@@ -37,20 +37,20 @@ function defaultErrorHandler(msg)
 		_msg = msg;
 		if (typeof(msg)=="object" && typeof(msg.d)!="undefined")
 		{
-			showUserMessage(JSON.stringify(msg.d));
+			TM.Gui.Dialog.alertUser(JSON.stringify(msg.d));
 		}
 		else
 		{
 			
 			var errorMessage = JSON.parse(msg.responseText).Message;
 			if ( $.browser.msie )			//no idea why the concat below doesn't work in IE (so for now let's show the error message without the extra explanation
-				showUserMessage(errorMessage);
+				TM.Gui.Dialog.alertUser(errorMessage);
 			else
-				showUserMessage(errorMessage + "<br/><br/>Most likely because the current user doesn't have enough priviledges to execute this operation");			
+				TM.Gui.Dialog.alertUser(errorMessage + "<br/><br/>Most likely because the current user doesn't have enough priviledges to execute this operation");			
 		}
 	}
 	catch(error)
-	{		
+	{			
 		console.error("error in defaultErrorHandler: " + error.message);
 	}	
 }
