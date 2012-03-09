@@ -517,31 +517,34 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			var phase = "";
 			var ruleType = "";
 
-
-			/*if (_guidanceItem.phase.valid())			
+			//happens on the cases from the original main SI Library (whose metadata is not correct)
+			if (_guidanceItem.Type1.notNull() && _guidanceItem.phase.isNull())
 			{
-				phase = _guidanceItem.phase;
-				ruleType = _guidanceItem.Rule_Type ?? "";
+				phase = _guidanceItem.Rule_Type;
+				ruleType = _guidanceItem.Type1;
 			}
 			else
 			{
-				phase = _guidanceItem.Rule_Type ?? "";
-				ruleType = _guidanceItem.Type1 ?? "";
-			}*/
+				phase = _guidanceItem.phase;
+				ruleType = _guidanceItem.Rule_Type;
+			}			
 						
 			return new GuidanceItem_V3()
 							{
 								guidanceItemId 			= _guidanceItem.id.guid(), //guidanceId,
-								guidanceItemId_Original = _guidanceItem.id_original.guid(),
-								author 					= _guidanceItem.Author,
-								category 				= _guidanceItem.Category   ?? "",
-								priority 				= _guidanceItem.Priority,								
-								phase					= _guidanceItem.phase ?? "",
-								rule_Type 				=  _guidanceItem.Rule_Type ?? _guidanceItem.Type1 ?? "" ,								
-								status 					= _guidanceItem.Status,
+								guidanceItemId_Original = _guidanceItem.id_original.guid(),								
+								title					= _guidanceItem.title ?? "",
+
+								category 				= _guidanceItem.Category   ?? "",								
+								phase					=  phase ?? "", // _guidanceItem.phase ?? "",
+								rule_Type 				=  ruleType ?? "", //_guidanceItem.Rule_Type ?? _guidanceItem.Type1 ?? "" ,																
 								technology 				= _guidanceItem.Technology ?? "",
-								title 					= _guidanceItem.title,								
-								topic 					= _guidanceItem.Topic	   ?? "",
+
+								topic					= _guidanceItem.Topic ?? "",
+								author 					= _guidanceItem.Author,
+								status 					= _guidanceItem.Status,
+								priority 				= _guidanceItem.Priority,								
+								
 				//				lastUpdate 				= DateTime.Parse(_guidanceItem.Date),								
 								htmlContent				= _guidanceItem.content.sanitizeHtmlContent(), 
 								libraryId 				= _guidanceItem.libraryId.guid()
