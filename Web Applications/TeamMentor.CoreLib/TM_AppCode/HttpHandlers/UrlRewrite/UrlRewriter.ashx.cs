@@ -14,8 +14,9 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 
 		public void ProcessRequest(HttpContext context)
 		{
-			var value = Encoder.HtmlEncode(context.Request["value"]);
-			new HandleUrlRequest().handleRequest_Article(value);			
+			var value = context.Request["value"];
+            var action = context.Request["action"];
+			new HandleUrlRequest().handleRequest(action, value);			
 		}
 
 		public bool IsReusable

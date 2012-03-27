@@ -216,7 +216,6 @@
     <Content Include="Html_Pages\Gui\Panels\About_TeamMentor.html" />
     <Content Include="Html_Pages\_UnitTest_Helpers\Tests_For_BrowserBugs\Chrome_CPU_Spike_on_Password_Field_in_JQueryUI_Dialog.htm" />
     <Content Include="Html_Pages\_UnitTest_Helpers\_Javascript_Loaders\FirebugLite_with_TM_WebServices.html" />
-    <Content Include="Irony_Parser\Parsing\Construction\_about_parser_construction.txt" />
     <Content Include="Javascript\TM.ControlPanel\TM.ControlPanel.AdminTasks.js" />
     <Content Include="Javascript\TM.Gui\AppliedFIlters.DataManipulation.js" />
     <Content Include="Javascript\TM.Gui\AppliedFIlters.js" />
@@ -540,13 +539,6 @@
     <Content Include="Javascript\_mappings\HomePage_CSS.txt" />
     <Content Include="Javascript\_mappings\HomePage_JS.txt" />
     <Content Include="Javascript\_mappings\HomePage_JS_TM.txt" />
-    <Content Include="O2_DotNetWrappers\Windows\Mdi.cs.txt" />
-    <Content Include="O2_DotNetWrappers\Windows\RemoteThreadInjection.cs.txt" />
-    <Content Include="O2_Interfaces\Messages\IM_OpenControlInGUI.cs.txt" />
-    <Content Include="O2_Interfaces\O2Tools\ISearchEngine.cs.txt" />
-    <Content Include="O2_Kernel\InterfacesBaseImpl\KM_OpenControlInGUI.cs.txt" />
-    <Content Include="O2_Views_ASCX\ChangeLog.txt" />
-    <Content Include="O2_Views_ASCX\classes\o2FindingsScriptLibrary.xml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -558,7 +550,6 @@
     <Content Include="Images\AppliedFiltersHeader.png" />
     <Content Include="Images\calendar-icon.png" />
     <Content Include="Images\CollapseOne.png" />
-    <Content Include="Images\default.css" />
     <Content Include="Images\DeleteFilterIcon.png" />
     <Content Include="Images\Down.png" />
     <Content Include="Images\ExpandAll.png" />
@@ -576,10 +567,6 @@
     <Content Include="Images\RemoveAllFilters.png" />
     <Content Include="Images\Search.png" />
     <Content Include="Images\SingleLibrary.png" />
-    <Content Include="Images\sortASC.png" />
-    <Content Include="Images\sortBlank.png" />
-    <Content Include="Images\sortDESC.png" />
-    <Content Include="Images\spacer.png" />
     <Content Include="Images\SpinLeft.png" />
     <Content Include="Images\SpinRight.png" />
     <Content Include="Images\Up.png" />

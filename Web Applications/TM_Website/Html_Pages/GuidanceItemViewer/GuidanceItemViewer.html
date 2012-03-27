@@ -42,7 +42,8 @@
 						
                 var getGuidFromUrl = function()
 					{
-						var mapping = "{ mapping : '" + document.URL + "' }";
+                        var id = document.URL.split('/').pop();
+						var mapping = "{ mapping : '" + id + "' }";                        
 						TM.WebServices.Helper.invoke_TM_WebService("getGuidForMapping",mapping, function(data)
 							{
 								guidanceId = data;

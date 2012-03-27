@@ -45,13 +45,15 @@ namespace SecurityInnovation.TeamMentor.Authentication.AuthorizationRules
                 MapRolesBasedOnSessionGuid(new Guid(sessionId));
         }
 
-        public void MapRolesBasedOnSessionGuid(Guid sessionIdGuid)
+        public UserGroup MapRolesBasedOnSessionGuid(Guid sessionIdGuid)
         {
 			if (sessionIdGuid != Guid.Empty)
 			{
-				var userGroup = sessionIdGuid.session_UserGroup();			
+				var userGroup = sessionIdGuid.session_UserGroup();                
 				HttpContextFactory.Current.SetCurrentUserRoles(userGroup);            
+                return userGroup;
 			}
+            return UserGroup.None;
         }        
 		
 		public string currentIdentity_Name()

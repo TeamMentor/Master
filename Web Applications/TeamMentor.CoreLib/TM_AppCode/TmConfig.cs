@@ -6,8 +6,7 @@ namespace SecurityInnovation.TeamMentor.WebClient
 {
 	//public values 
 	public partial class TMConfig
-	{	
-		public string 		Version 			 { get; set; }		
+	{			
 		public string 		WebSite_Port 		 { get; set; }
 		public string 		WebSite_IP 			 { get; set; }
 		public string 		XmlLibrariesPath 	 { get; set; }
@@ -73,8 +72,7 @@ namespace SecurityInnovation.TeamMentor.WebClient
 	{
 		public static TMConfig setDefaultValues(this TMConfig tmConfig)
 		{
-			tmConfig.Libraries_Disabled = new List<string>();
-			tmConfig.Version = "TM v3.0 Beta";	
+			tmConfig.Libraries_Disabled = new List<string>();				
 			tmConfig.WebSite_IP = "localhost";
 			tmConfig.WebSite_Port = "12345";
 			tmConfig.XmlLibrariesPath = "TM_Library";

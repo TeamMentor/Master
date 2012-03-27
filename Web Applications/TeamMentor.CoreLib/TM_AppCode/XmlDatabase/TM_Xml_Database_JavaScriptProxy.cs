@@ -105,6 +105,8 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		public List<GuidanceItem_V3> GetAllGuidanceItemsInViews_XmlDB()					{ return tmXmlDatabase.getAllGuidanceItemsInViews();} 
 		public List<GuidanceItem_V3> GetAllGuidanceItems_XmlDB()						{ return tmXmlDatabase.tmGuidanceItems();}
 		
+        public Guid resolveMappingToArticleGuid(string mapping)                            { return tmXmlDatabase.xmlBD_resolveMappingToArticleGuid(mapping); }
+
 		
 		// new ones to add to main Webservice
 		public bool RemoveViewFromFolder(Guid libraryId, Guid viewId)	{ return tmXmlDatabase.xmlDB_RemoveViewFromFolder(libraryId, viewId);}
@@ -127,6 +129,8 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		public Schema GetSchemaById(string schemaId)									{ return null; }  	
 		public List<string> GetGuidanceItemKeywords(string itemId)						{ throw new Exception("not implemented"); }  			
 		public void SetGuidanceItemKeywords(string itemId, string[] keywords)			{ throw new Exception("not implemented"); }  			
+
+        
 	}
 	
 }

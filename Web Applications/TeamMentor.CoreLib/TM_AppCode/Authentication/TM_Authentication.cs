@@ -19,11 +19,13 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 
         private Guid _sessionID;	// for unit tests
         public TM_WebServices tmWebServices;
+        private HandleUrlRequest handleUrlRequest;
+        public bool disable_CSRF_Check;
 
         public TM_Authentication(TM_WebServices _tmWebServices)
         {
             tmWebServices = _tmWebServices;
-
+            disable_CSRF_Check = false;
 			try
 			{
 				tmWebServices.javascriptProxy.adminSessionID = this.sessionID;
@@ -34,6 +36,12 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			}				
         }
 
+        public TM_Authentication(HandleUrlRequest handleUrlRequest)
+        {
+            // TODO: Complete member initialization
+            this.handleUrlRequest = handleUrlRequest;
+        }
+
 
         public Guid sessionID
         {
@@ -42,7 +50,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                 try
                 {
                     // first check if there s a session variable already set
-                    if (tmWebServices.Session["sessionID"].notNull())
+                    if (tmWebServices.Session.notNull() && tmWebServices.Session["sessionID"].notNull())
                         return (Guid)tmWebServices.Session["sessionID"];
                     // then check the cookie
                     var sessionCookie = System.Web.HttpContext.Current.Request.Cookies["Session"];
@@ -112,6 +120,8 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 
 		public bool check_CSRF_Token()
 		{
+            if (disable_CSRF_Check)
+                return true;
 			var header_CSRF_Token = tmWebServices.Context.Request.Headers["CSRF_Token"];
 			if (header_CSRF_Token.valid())
 			{
@@ -124,21 +134,21 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 
 		public TM_Authentication mapUserRoles()
 		{
+            var userGroup = UserGroup.None;
 			if (sessionID != Guid.Empty)
 			{
 				if (check_CSRF_Token())		// only map the roles if the CSRF check passed
 				{
-					new UserRoleBaseSecurity().MapRolesBasedOnSessionGuid(sessionID);
-					return this;
+					userGroup = new UserRoleBaseSecurity().MapRolesBasedOnSessionGuid(sessionID);					
 				}
 			}
-			
-			//if (tmWebServices.GetCurrentUserRoles().size() == 0)
-				if (TMConfig.Current.ShowContentToAnonymousUsers)
-					UserGroup.Reader.setThreadPrincipalWithRoles();
-				else
-					UserGroup.Anonymous.setThreadPrincipalWithRoles();
-
+            if (userGroup == UserGroup.None)
+            {
+                if (TMConfig.Current.ShowContentToAnonymousUsers)
+                    UserGroup.Reader.setThreadPrincipalWithRoles();
+                else
+                    UserGroup.Anonymous.setThreadPrincipalWithRoles();
+            }
 			return this;
 		}
 	}

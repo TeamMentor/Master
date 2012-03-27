@@ -290,7 +290,9 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			guidanceItem.update_Cache_GuidanceItems(tmDatabase);			
 			
 			return guidanceXmlPath.fileExists();			
-		}		
+		}
+		
+        [PrincipalPermission(SecurityAction.Demand, Role = "EditArticles")]
 		public static bool xmlDB_Delete_GuidanceItems(this TM_Xml_Database tmDatabase, List<Guid> guidanceItemIds)
 		{
 			var result = true;
@@ -301,7 +303,8 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			}
 			return result;
 		}
-		
+
+		[PrincipalPermission(SecurityAction.Demand, Role = "EditArticles")]
 		public static bool xmlDB_Delete_GuidanceItem(this TM_Xml_Database tmDatabase, Guid guidanceItemId)
 		{
 			var guidanceItemXmlPath = tmDatabase.removeGuidanceItemFileMapping(guidanceItemId);
@@ -315,11 +318,29 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		}
 		
 		
+        [PrincipalPermission(SecurityAction.Demand, Role = "ReadArticles")]
 		public static string xmlDB_guidanceItemXml(this TM_Xml_Database tmDatabase, Guid guidanceItemId)
 		{
 			var guidanceXmlPath = tmDatabase.getXmlFilePathForGuidanceId(guidanceItemId);
 			return guidanceXmlPath.fileContents().xmlFormat();
 		}
-		
+
+        public static Guid xmlBD_resolveMappingToArticleGuid(this TM_Xml_Database tmDatabase, string mapping)
+		{
+            if (mapping.isGuid())
+                return mapping.guid();
+
+            if (mapping.isInt())
+            {   
+                var pos = mapping.toInt();
+                if(pos < TM_Xml_Database.Cached_GuidanceItems.Keys.size())
+                    return TM_Xml_Database.Cached_GuidanceItems.Keys.toList()[pos];            
+            }
+
+            var results = tmDatabase.guidanceItems_SearchTitleAndHtml(mapping);
+            if (results.size() >0)
+                return results.first();
+            return Guid.Empty;
+		}
 	}
 }

@@ -214,7 +214,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		[WebMethod(EnableSession = true)]
 		public Guid getGuidForMapping(string mapping)
 		{
-			return new HandleUrlRequest().resolveMappingToArticleGuid(mapping);
+			return javascriptProxy.resolveMappingToArticleGuid(mapping);
 		}
     }
 
