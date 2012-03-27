@@ -6,3 +6,7 @@
 *.suo
 o2.config
 /Library_Data/XmlDatabase/TM_Library_Zips
+/Web Applications/packages
+bin
+obj
+*.nupkg
