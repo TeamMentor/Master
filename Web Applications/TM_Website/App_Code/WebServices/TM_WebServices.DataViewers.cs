@@ -211,7 +211,13 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		public ChangedPage logPageUserActivity(Guid guidanceItemId, string userActivity)
 		{
             return new PagesHistory().logPageChange(guidanceItemId, tmAuthentication.currentUser.UserName, tmAuthentication.sessionID, "", "", userActivity);			
-		}		
+		}
+
+		[WebMethod(EnableSession = true)]
+		public Guid getGuidForMapping(string mapping)
+		{
+			return new HandleUrlRequest().resolveMappingToArticleGuid(mapping);
+		}
     }
 
 }

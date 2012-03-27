@@ -120,6 +120,35 @@
     <Reference Include="System.Web.Mobile" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Aspx_Pages\images\back_disabled.jpg" />
+    <Content Include="Aspx_Pages\images\back_enabled.jpg" />
+    <Content Include="Aspx_Pages\images\forward_disabled.jpg" />
+    <Content Include="Aspx_Pages\images\forward_enabled.jpg" />
+    <Content Include="Aspx_Pages\images\sortASC.png" />
+    <Content Include="Aspx_Pages\images\sortBlank.png" />
+    <Content Include="Aspx_Pages\images\sortDESC.png" />
+    <Content Include="Aspx_Pages\images\sort_asc.png" />
+    <Content Include="Aspx_Pages\images\sort_asc_disabled.png" />
+    <Content Include="Aspx_Pages\images\sort_both.png" />
+    <Content Include="Aspx_Pages\images\sort_desc.png" />
+    <Content Include="Aspx_Pages\images\sort_desc_disabled.png" />
+    <Content Include="Aspx_Pages\images\spacer.png" />
+    <Content Include="Aspx_Pages\images\ui-bg_flat_55_999999_40x100.png" />
+    <Content Include="Aspx_Pages\images\ui-bg_flat_75_aaaaaa_40x100.png" />
+    <Content Include="Aspx_Pages\images\ui-bg_glass_45_0078ae_1x400.png" />
+    <Content Include="Aspx_Pages\images\ui-bg_glass_55_f8da4e_1x400.png" />
+    <Content Include="Aspx_Pages\images\ui-bg_glass_75_79c9ec_1x400.png" />
+    <Content Include="Aspx_Pages\images\ui-bg_gloss-wave_45_e14f1c_500x100.png" />
+    <Content Include="Aspx_Pages\images\ui-bg_gloss-wave_50_6eac2c_500x100.png" />
+    <Content Include="Aspx_Pages\images\ui-bg_gloss-wave_75_2191c0_500x100.png" />
+    <Content Include="Aspx_Pages\images\ui-bg_inset-hard_100_fcfdfd_1x100.png" />
+    <Content Include="Aspx_Pages\images\ui-icons_0078ae_256x240.png" />
+    <Content Include="Aspx_Pages\images\ui-icons_056b93_256x240.png" />
+    <Content Include="Aspx_Pages\images\ui-icons_d8e7f3_256x240.png" />
+    <Content Include="Aspx_Pages\images\ui-icons_e0fdff_256x240.png" />
+    <Content Include="Aspx_Pages\images\ui-icons_f5e175_256x240.png" />
+    <Content Include="Aspx_Pages\images\ui-icons_f7a50d_256x240.png" />
+    <Content Include="Aspx_Pages\images\ui-icons_fcd113_256x240.png" />
     <Content Include="Css\default.css" />
     <Content Include="Css\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Css\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -152,6 +181,7 @@
     <Content Include="Css\TM_3.0.js" />
     <Content Include="default.htm" />
     <Content Include="favicon.ico" />
+    <Content Include="Global.asax" />
     <Content Include="Html_Pages\ControlPanel\WebServices\Invoke_Javascript.html" />
     <Content Include="Html_Pages\ControlPanel\WebServices\Invoke_WebServices.html" />
     <Content Include="Html_Pages\ControlPanel\WebServices\jsTree_Test.html.txt" />
@@ -556,6 +586,13 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Code\HttpHandlers\FileUpload\FileUpload.ashx.cs" />
+    <Compile Include="App_Code\HttpHandlers\ScriptCombiner\JavaScriptMinifier.cs" />
+    <Compile Include="App_Code\HttpHandlers\ScriptCombiner\ScriptCombiner.ashx.cs" />
+    <Compile Include="App_Code\HttpHandlers\UrlRewrite\HandleUrlRequest.cs" />
+    <Compile Include="App_Code\Schemas\DataViewers\JsDataTable.cs" />
+    <Compile Include="App_Code\Schemas\DataViewers\JsTreeNode.cs" />
+    <Compile Include="App_Code\HttpHandlers\UrlRewrite\UrlRewriter.ashx.cs" />
     <Content Include="Css\__default.css" />
     <Content Include="Images\AllLibraries.png" />
     <Content Include="Images\AppliedFiltersHeader.png" />
@@ -589,8 +626,8 @@
     <Content Include="Images\ViewIcon.png" />
     <Content Include="Images\HeaderImage.jpg" />
     <Compile Include="App_Code\Authentication\TM_Authentication.cs" />
-    <Compile Include="App_Code\FileUpload\FileUpload.cs" />
     <None Include="Aspx_Pages\File_Upload.ashx" />
+    <Content Include="Aspx_Pages\UrlRewriter.ashx" />
     <None Include="Aspx_Pages\ScriptCombiner.ashx" />
     <None Include="Aspx_Pages\TM_3_0.Master" />
     <None Include="Aspx_Pages\TM_WebServices.asmx" />
@@ -613,14 +650,11 @@
     <Compile Include="App_Code\Authentication\UserRoleBaseSecurity.cs" />
     <Compile Include="App_Code\Authentication\UserRoles.cs" />
     <Compile Include="App_Code\Authentication\WindowsAndLDAP.cs" />
-    <Compile Include="App_Code\DataViewers\JsDataTable.cs" />
-    <Compile Include="App_Code\DataViewers\JsTreeNode.cs" />
     <Compile Include="App_Code\ExtensionMethods\TMUser_ExtensionMethods.cs" />
     <Compile Include="App_Code\ExtensionMethods\TM_Xml_Database_ExtensionMethods_GuiHelpers.cs" />
     <Compile Include="App_Code\ExtensionMethods\TM_Xml_Database_JavascriptProxy_ExtensionMethods.cs" />
+    <Compile Include="App_Code\Global.asax.cs" />
     <Compile Include="App_Code\IJavascriptProxy.cs" />
-    <Compile Include="App_Code\JavascriptUtils\JavaScriptMinifier.cs" />
-    <Compile Include="App_Code\JavascriptUtils\ScriptCombiner.cs" />
     <Compile Include="App_Code\MoqObjects.cs" />
     <Compile Include="App_Code\O2_Scripts_APIs\Authentication.cs" />
     <Compile Include="App_Code\O2_Scripts_APIs\LinqDB.cs" />

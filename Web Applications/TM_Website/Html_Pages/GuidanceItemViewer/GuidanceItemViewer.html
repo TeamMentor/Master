@@ -19,25 +19,36 @@
 					}
 			
 				var handleCommand = function(command)
-                			{
+                	{
 
-                          			var splitCommand = command.split(":");
-                          			if(splitCommand.length ==2 && splitCommand[0] == 'ruledisplay')
-										{
-                                  			guidanceId = splitCommand[1];
-											//alert("set guidanceitem to: " + splitCommand[1]);
-											loadGuidanceItem();
-												return false;
-										}
-                          			return true;   // to continue links
-                			}
+                          	var splitCommand = command.split(":");
+                          	if(splitCommand.length ==2 && splitCommand[0] == 'ruledisplay')
+								{
+                                  	guidanceId = splitCommand[1];
+									//alert("set guidanceitem to: " + splitCommand[1]);
+									loadGuidanceItem();
+										return false;
+								}
+                          	return true;   // to continue links
+                	}
 
-						var setGuidanceIdfromUrlHash =  function()
-                    			{							
-                          			handleCommand(window.location.hash.slice(1).split("&")[0]);
-                    			}
-                  
-                
+				var setGuidanceIdfromUrlHash =  function()
+                    {						
+						if (window.location.hash != "")
+                          	handleCommand(window.location.hash.slice(1).split("&")[0]);
+						else
+							getGuidFromUrl();					
+                    }
+						
+                var getGuidFromUrl = function()
+					{
+						var mapping = "{ mapping : '" + document.URL + "' }";
+						TM.WebServices.Helper.invoke_TM_WebService("getGuidForMapping",mapping, function(data)
+							{
+								guidanceId = data;
+								loadGuidanceItem();
+							});						
+					}
 		//                alert(getGuidanceIdfromUrl());
                 
 						var loadGuidanceItem = function()
