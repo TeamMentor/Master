@@ -6,9 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using SecurityInnovation.TeamMentor.WebClient;
 using XssEncoder = Microsoft.Security.Application.Encoder;
-using O2.Kernel.ExtensionMethods;
 using O2.DotNetWrappers.ExtensionMethods;
-using O2.XRules.Database.Utils;
 using O2.XRules.Database.APIs;
 using SecurityInnovation.TeamMentor.WebClient.WebServices;
 //O2Ref:AntiXSSLibrary.dll

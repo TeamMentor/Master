@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using O2.DotNetWrappers.ExtensionMethods;
-using O2.Kernel.ExtensionMethods;
-using O2.XRules.Database.Utils;
+//using O2.XRules.Database.Utils;
 
 namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 {

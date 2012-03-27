@@ -6,7 +6,6 @@ using System.Text;
 using System.Web;
 using XssEncoder = Microsoft.Security.Application.Encoder;
 using SecurityInnovation.TeamMentor.WebClient.WebServices;
-using O2.Kernel.ExtensionMethods;
 using O2.DotNetWrappers.ExtensionMethods;
 //O2Ref:ICSharpCode.SharpZipLib.dll
 //O2File:..\UtilMethods.cs

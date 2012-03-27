@@ -516,8 +516,8 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		
 		public static GuidanceItem_V3 tmGuidanceItemV3(this guidanceItem _guidanceItem) //, Guid guidanceId)
 		{
-			//var phase = "";
-			//var ruleType = "";
+			var phase = "";
+			var ruleType = "";
 
 			//happens on the cases from the original main SI Library (whose metadata is not correct)
 			if (_guidanceItem.Type1.notNull() && _guidanceItem.phase.isNull())

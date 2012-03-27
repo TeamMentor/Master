@@ -553,13 +553,6 @@
     <Content Include="Xslt\TeamMentor_Article.xslt" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Code\HttpHandlers\FileUpload\FileUpload.ashx.cs" />
-    <Compile Include="App_Code\HttpHandlers\ScriptCombiner\JavaScriptMinifier.cs" />
-    <Compile Include="App_Code\HttpHandlers\ScriptCombiner\ScriptCombiner.ashx.cs" />
-    <Compile Include="App_Code\HttpHandlers\UrlRewrite\HandleUrlRequest.cs" />
-    <Compile Include="App_Code\Schemas\DataViewers\JsDataTable.cs" />
-    <Compile Include="App_Code\Schemas\DataViewers\JsTreeNode.cs" />
-    <Compile Include="App_Code\HttpHandlers\UrlRewrite\UrlRewriter.ashx.cs" />
     <Content Include="Css\__default.css" />
     <Content Include="Images\AllLibraries.png" />
     <Content Include="Images\AppliedFiltersHeader.png" />
