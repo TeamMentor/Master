@@ -38,7 +38,11 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
             else if (path.starts("/image/"))
             {
                 handleRequest("image", path.remove("/image/"));                
-            }            
+            }
+            else
+                return;
+            //if we did process it , end the request here
+            endResponse();
 		}
 
         
@@ -110,11 +114,11 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			
 		}
 
-        /*public void flushRequest()
-        /{ 
+        public void endResponse()
+        { 
             context.Response.Flush();
-            //context.Response.End();
-        }*/
+            context.Response.End();
+        }
 
 		public void redirectToArticleViewer()
 		{
