@@ -25,23 +25,19 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		{
             if (path.starts("/article/"))
             {
-                handleRequest("article", path.remove("/article/"));
-                context.Response.End();
+                handleRequest("article", path.remove("/article/"));                
             }
             else if (path.starts("/raw/"))
             {
-                handleRequest("raw", path.remove("/raw/"));
-                context.Response.End();
+                handleRequest("raw", path.remove("/raw/"));                
             }
-            else if (path.starts("/xslt/"))
+            else if (path.starts("/xsl/"))
             {
-                handleRequest("xslt", path.remove("/xslt/"));
-                context.Response.End();
+                handleRequest("xsl", path.remove("/xsl/"));                
             }
             else if (path.starts("/image/"))
             {
-                handleRequest("image", path.remove("/image/"));
-                context.Response.End();
+                handleRequest("image", path.remove("/image/"));                
             }            
 		}
 
@@ -62,12 +58,11 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                             {
                                 context.Response.ContentType = "application/xml";
                                 var xmlContent = tmWebServices.XmlDatabase_GetGuidanceItemXml(guid);                                
-                                context.Response.Write(xmlContent);
-                                context.Response.End();
+                                context.Response.Write(xmlContent);                                
                             }                            
                             break;
                         }
-                    case "xslt":
+                    case "xsl":
                         {
                             var guid = tmWebServices.getGuidForMapping(path);
                             if (guid != Guid.Empty)
@@ -77,15 +72,13 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                                 var xmlSignature = "<?xml version=\"1.0\" encoding=\"utf-8\"?>";
                                 var xsltText = "<?xml-stylesheet type=\"text/xsl\" href=\"/xslt/TeamMentor_Article.xslt\"?>";
                                 xmlContent = xmlContent.replace(xmlSignature, xmlSignature.line().append(xsltText));                
-                                context.Response.Write(xmlContent);
-                                context.Response.End();
+                                context.Response.Write(xmlContent);                                
                             }                            
                             break;
                         }
                     case "article":
                         {
-                            redirectToArticleViewer();
-                            context.Response.End();
+                            redirectToArticleViewer();                            
                             break;
                         }
                     case "image":
@@ -95,24 +88,33 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                             var imagePath = TM_Xml_Database.Path_XmlLibraries.pathCombine("Images").pathCombine(path);
                             //var bytes = imagePath.fileContents_AsByteArray();
                             context.Response.WriteFile(imagePath);
-                            //context.Response.Write("<h1> showing image: {0}</h1>".info(imagePath)); 
-                            context.Response.End();
+                            //context.Response.Write("<h1> showing image: {0}</h1>".info(imagePath));                             
                             break;
                         }
-                    //default:
+                    default:
+                        {
+                            context.Response.Write("<h2>Could not find requested item</h2>");
+                            break;
+                        }
                      //   context.Response.Write("<h1> default action</h1>");                                                
                       //  break;
                 }
-                context.Response.Write("<h2>Could not find requested item</h2>");
-                context.Response.End();
+                
+                
             }
             catch (Exception ex)
             {
                 context.Response.Write("<h2>Error: {0} </h2>".format(ex.Message));
-            }
+            }            
 //			context.Response.Write("<h2>in handleRequest for : {0}</h2>".format(path));
 			
 		}
+
+        /*public void flushRequest()
+        /{ 
+            context.Response.Flush();
+            //context.Response.End();
+        }*/
 
 		public void redirectToArticleViewer()
 		{

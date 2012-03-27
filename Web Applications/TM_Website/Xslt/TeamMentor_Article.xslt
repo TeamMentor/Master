@@ -19,7 +19,6 @@
     <ul>
       <b>Title:</b>
       <xsl:value-of select="Title"/>
-      <br/>
       <b>Technology:</b>
       <xsl:value-of select="Technology"/>
       <br/>
