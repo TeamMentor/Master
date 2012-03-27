@@ -1,0 +1,154 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{87BACB04-640F-44ED-8F01-45224D52A883}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TeamMentor.CoreLib</RootNamespace>
+    <AssemblyName>TeamMentor.CoreLib</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AntiXssLibrary">
+      <HintPath>..\packages\AntiXSS.4.2.1\lib\net40\AntiXssLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlSanitizationLibrary">
+      <HintPath>..\packages\AntiXSS.4.2.1\lib\net40\HtmlSanitizationLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity, Version=2.1.505.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.2.1.505.0\lib\NET35\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Configuration, Version=2.1.505.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.2.1.505.0\lib\NET35\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Moq">
+      <HintPath>..\packages\Moq.4.0.10827\lib\NET40\Moq.dll</HintPath>
+    </Reference>
+    <Reference Include="O2_FluentSharp_CoreLib">
+      <HintPath>..\packages\FluentSharp.CoreLib.4.0.0.1\lib\net40\O2_FluentSharp_CoreLib.dll</HintPath>
+    </Reference>
+    <Reference Include="O2_Misc_Microsoft_MPL_Libs">
+      <HintPath>..\packages\O2.Platform.Misc_Microsoft_MPL_Libs.4.0.0.1\lib\net40\O2_Misc_Microsoft_MPL_Libs.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices.AccountManagement" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="TM_AppCode\Authentication\ExtensionMethods\RoleBaseSecurity_ExtensionMethods.cs" />
+    <Compile Include="TM_AppCode\Authentication\ExtensionMethods\SoapRequestUtils_ExtensionMethods.cs" />
+    <Compile Include="TM_AppCode\Authentication\ExtensionMethods\TeamMentorUserManagement_ExtensionMethods.cs" />
+    <Compile Include="TM_AppCode\Authentication\TM_Authentication.cs" />
+    <Compile Include="TM_AppCode\Authentication\UserRoleBaseSecurity.cs" />
+    <Compile Include="TM_AppCode\Authentication\UserRoles.cs" />
+    <Compile Include="TM_AppCode\Authentication\WindowsAndLDAP.cs" />
+    <Compile Include="TM_AppCode\DataViewers\JsDataTable.cs" />
+    <Compile Include="TM_AppCode\DataViewers\JsTreeNode.cs" />
+    <Compile Include="TM_AppCode\ExtensionMethods\TMUser_ExtensionMethods.cs" />
+    <Compile Include="TM_AppCode\ExtensionMethods\TM_Xml_Database_ExtensionMethods_GuiHelpers.cs" />
+    <Compile Include="TM_AppCode\ExtensionMethods\TM_Xml_Database_JavascriptProxy_ExtensionMethods.cs" />
+    <Compile Include="TM_AppCode\FileUpload\FileUpload.cs" />
+    <Compile Include="TM_AppCode\IJavascriptProxy.cs" />
+    <Compile Include="TM_AppCode\JavascriptUtils\JavaScriptMinifier.cs" />
+    <Compile Include="TM_AppCode\JavascriptUtils\ScriptCombiner.cs" />
+    <Compile Include="TM_AppCode\MoqObjects.cs" />
+    <Compile Include="TM_AppCode\O2_Scripts_APIs\Authentication.cs" />
+    <Compile Include="TM_AppCode\O2_Scripts_APIs\LinqDB.cs" />
+    <Compile Include="TM_AppCode\O2_Scripts_APIs\OnlineStorage.cs" />
+    <Compile Include="TM_AppCode\O2_Scripts_APIs\TeamMentorSecurity.cs" />
+    <Compile Include="TM_AppCode\O2_Scripts_APIs\TM_Gui_Objects.cs" />
+    <Compile Include="TM_AppCode\O2_Scripts_APIs\_O2_Scripts_Files.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TM_AppCode\Schemas\GuidanceItem.cs" />
+    <Compile Include="TM_AppCode\Schemas\library.cs" />
+    <Compile Include="TM_AppCode\Schemas\TeamMentor_Article.cs" />
+    <Compile Include="TM_AppCode\TmConfig.cs" />
+    <Compile Include="TM_AppCode\TrackingDB\ActivityTracking.cs" />
+    <Compile Include="TM_AppCode\TrackingDB\PagesHistory.cs" />
+    <Compile Include="TM_AppCode\UnityInjection.cs" />
+    <Compile Include="TM_AppCode\UtilMethods.cs" />
+    <Compile Include="TM_AppCode\WebServices\TM_WebServices.ActivityTracking.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="TM_AppCode\WebServices\TM_WebServices.asmx.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="TM_AppCode\WebServices\TM_WebServices.Config.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="TM_AppCode\WebServices\TM_WebServices.DataViewers.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="TM_AppCode\WebServices\TM_WebServices.GuiHelpers.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="TM_AppCode\XmlDatabase\TM_Xml_Database.cs" />
+    <Compile Include="TM_AppCode\XmlDatabase\TM_Xml_Database.Library.cs" />
+    <Compile Include="TM_AppCode\XmlDatabase\TM_Xml_Database.Library.GuidanceExplorer.cs" />
+    <Compile Include="TM_AppCode\XmlDatabase\TM_Xml_Database.Library.GuidanceItem.cs" />
+    <Compile Include="TM_AppCode\XmlDatabase\TM_Xml_Database.Library.Load_and_FileCache.cs" />
+    <Compile Include="TM_AppCode\XmlDatabase\TM_Xml_Database.Library.Views_and_Folders.cs" />
+    <Compile Include="TM_AppCode\XmlDatabase\TM_Xml_Database.Users.cs" />
+    <Compile Include="TM_AppCode\XmlDatabase\TM_Xml_Database_JavaScriptProxy.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="TeamMentor.CoreLib.nuspec">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="TM_AppCode\O2_Scripts_APIs\_Extra_methods_Collections.cs.txt" />
+    <None Include="TM_AppCode\O2_Scripts_APIs\_Extra_methods_Items.cs.txt" />
+    <None Include="TM_AppCode\O2_Scripts_APIs\_Extra_methods_Misc.cs.txt" />
+    <None Include="TM_AppCode\O2_Scripts_APIs\_Extra_methods_Zip.cs.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="_External_Dlls\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

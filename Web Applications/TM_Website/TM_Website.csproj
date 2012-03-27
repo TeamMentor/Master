@@ -11,7 +11,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SecurityInnovation.TeamMentor.Website</RootNamespace>
     <AssemblyName>SecurityInnovation.TeamMentor.Website</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <SccProjectName>
     </SccProjectName>
     <SccLocalPath>
@@ -26,6 +26,7 @@
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -47,70 +48,26 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="HtmlSanitizationLibrary">
-      <HintPath>bin\HtmlSanitizationLibrary.dll</HintPath>
-    </Reference>
-    <Reference Include="ICSharpCode.SharpZipLib">
-      <HintPath>bin\ICSharpCode.SharpZipLib.dll</HintPath>
-    </Reference>
-    <Reference Include="Ionic.Zip">
-      <HintPath>bin\Ionic.Zip.dll</HintPath>
-    </Reference>
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.DirectoryServices.AccountManagement">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Web.Abstractions">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="AntiXssLibrary, Version=1.5.0.0, Culture=neutral, PublicKeyToken=5906d2bb3d8a12c4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\3rdPartyProjects\CodePlex\GuidanceExplorerLibs\AntiXssLibrary.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity, Version=2.1.505.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>.\Microsoft.Practices.Unity.dll</HintPath>
-    </Reference>
-    <Reference Include="Moq, Version=4.0.10827.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>.\Moq.dll</HintPath>
-    </Reference>
-    <Reference Include="O2_DotNetWrappers, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>.\O2_DotNetWrappers.dll</HintPath>
-    </Reference>
-    <Reference Include="O2_Interfaces, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>.\O2_Interfaces.dll</HintPath>
-    </Reference>
-    <Reference Include="O2_Kernel, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>.\O2_Kernel.dll</HintPath>
-    </Reference>
-    <Reference Include="O2_Misc_Microsoft_MPL_Libs, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>.\O2_Misc_Microsoft_MPL_Libs.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data.DataSetExtensions">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
     <Reference Include="System.Runtime.Serialization">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.ServiceModel">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Web.Extensions">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml.Linq">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
@@ -118,6 +75,7 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Web.Mobile" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Aspx_Pages\images\back_disabled.jpg" />
@@ -258,6 +216,7 @@
     <Content Include="Html_Pages\Gui\Panels\About_TeamMentor.html" />
     <Content Include="Html_Pages\_UnitTest_Helpers\Tests_For_BrowserBugs\Chrome_CPU_Spike_on_Password_Field_in_JQueryUI_Dialog.htm" />
     <Content Include="Html_Pages\_UnitTest_Helpers\_Javascript_Loaders\FirebugLite_with_TM_WebServices.html" />
+    <Content Include="Irony_Parser\Parsing\Construction\_about_parser_construction.txt" />
     <Content Include="Javascript\TM.ControlPanel\TM.ControlPanel.AdminTasks.js" />
     <Content Include="Javascript\TM.Gui\AppliedFIlters.DataManipulation.js" />
     <Content Include="Javascript\TM.Gui\AppliedFIlters.js" />
@@ -581,9 +540,17 @@
     <Content Include="Javascript\_mappings\HomePage_CSS.txt" />
     <Content Include="Javascript\_mappings\HomePage_JS.txt" />
     <Content Include="Javascript\_mappings\HomePage_JS_TM.txt" />
+    <Content Include="O2_DotNetWrappers\Windows\Mdi.cs.txt" />
+    <Content Include="O2_DotNetWrappers\Windows\RemoteThreadInjection.cs.txt" />
+    <Content Include="O2_Interfaces\Messages\IM_OpenControlInGUI.cs.txt" />
+    <Content Include="O2_Interfaces\O2Tools\ISearchEngine.cs.txt" />
+    <Content Include="O2_Kernel\InterfacesBaseImpl\KM_OpenControlInGUI.cs.txt" />
+    <Content Include="O2_Views_ASCX\ChangeLog.txt" />
+    <Content Include="O2_Views_ASCX\classes\o2FindingsScriptLibrary.xml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Xslt\TeamMentor_Article.xslt" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Code\HttpHandlers\FileUpload\FileUpload.ashx.cs" />
@@ -625,7 +592,6 @@
     <Content Include="Images\Up.png" />
     <Content Include="Images\ViewIcon.png" />
     <Content Include="Images\HeaderImage.jpg" />
-    <Compile Include="App_Code\Authentication\TM_Authentication.cs" />
     <None Include="Aspx_Pages\File_Upload.ashx" />
     <Content Include="Aspx_Pages\UrlRewriter.ashx" />
     <None Include="Aspx_Pages\ScriptCombiner.ashx" />
@@ -636,66 +602,18 @@
     <None Include="Html_Pages\_UnitTest_Helpers\TM_qUnit_Tests\js\TM_Gui\TM.Gui.LibraryTree - with JSON data" />
     <None Include="Javascript\FireBug\skin\xp\roundCorner.svg" />
     <Content Include="TmConfig.config" />
+    <Content Include="packages.config" />
     <None Include="_Customizations\homepage.js" />
-    <None Include="_Customizations\test2.aspx" />
-    <None Include="_Customizations\test2.html" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Code\" />
     <Folder Include="_Customizations\reports\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Code\Authentication\ExtensionMethods\RoleBaseSecurity_ExtensionMethods.cs" />
-    <Compile Include="App_Code\Authentication\ExtensionMethods\SoapRequestUtils_ExtensionMethods.cs" />
-    <Compile Include="App_Code\Authentication\ExtensionMethods\TeamMentorUserManagement_ExtensionMethods.cs" />
-    <Compile Include="App_Code\Authentication\UserRoleBaseSecurity.cs" />
-    <Compile Include="App_Code\Authentication\UserRoles.cs" />
-    <Compile Include="App_Code\Authentication\WindowsAndLDAP.cs" />
-    <Compile Include="App_Code\ExtensionMethods\TMUser_ExtensionMethods.cs" />
-    <Compile Include="App_Code\ExtensionMethods\TM_Xml_Database_ExtensionMethods_GuiHelpers.cs" />
-    <Compile Include="App_Code\ExtensionMethods\TM_Xml_Database_JavascriptProxy_ExtensionMethods.cs" />
-    <Compile Include="App_Code\Global.asax.cs" />
-    <Compile Include="App_Code\IJavascriptProxy.cs" />
-    <Compile Include="App_Code\MoqObjects.cs" />
-    <Compile Include="App_Code\O2_Scripts_APIs\Authentication.cs" />
-    <Compile Include="App_Code\O2_Scripts_APIs\LinqDB.cs" />
-    <Compile Include="App_Code\O2_Scripts_APIs\OnlineStorage.cs" />
-    <Compile Include="App_Code\O2_Scripts_APIs\TeamMentorSecurity.cs" />
-    <Compile Include="App_Code\O2_Scripts_APIs\TM_Gui_Objects.cs" />
-    <Compile Include="App_Code\O2_Scripts_APIs\_Extra_methods_Collections.cs" />
-    <Compile Include="App_Code\O2_Scripts_APIs\_Extra_methods_Items.cs" />
-    <Compile Include="App_Code\O2_Scripts_APIs\_Extra_methods_Misc.cs" />
-    <Compile Include="App_Code\O2_Scripts_APIs\_Extra_methods_Zip.cs" />
-    <Compile Include="App_Code\O2_Scripts_APIs\_O2_Scripts_Files.cs" />
-    <Compile Include="App_Code\Schemas\GuidanceItem.cs" />
-    <Compile Include="App_Code\Schemas\library.cs" />
-    <Compile Include="App_Code\TmConfig.cs" />
-    <Compile Include="App_Code\TrackingDB\ActivityTracking.cs" />
-    <Compile Include="App_Code\TrackingDB\PagesHistory.cs" />
-    <Compile Include="App_Code\UnityInjection.cs" />
-    <Compile Include="App_Code\UtilMethods.cs" />
-    <Compile Include="App_Code\WebServices\TM_WebServices.ActivityTracking.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="App_Code\WebServices\TM_WebServices.asmx.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="App_Code\WebServices\TM_WebServices.Config.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="App_Code\WebServices\TM_WebServices.DataViewers.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="App_Code\WebServices\TM_WebServices.GuiHelpers.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="App_Code\XmlDatabase\TM_Xml_Database.cs" />
-    <Compile Include="App_Code\XmlDatabase\TM_Xml_Database.Library.cs" />
-    <Compile Include="App_Code\XmlDatabase\TM_Xml_Database.Library.GuidanceExplorer.cs" />
-    <Compile Include="App_Code\XmlDatabase\TM_Xml_Database.Library.GuidanceItem.cs" />
-    <Compile Include="App_Code\XmlDatabase\TM_Xml_Database.Library.Load_and_FileCache.cs" />
-    <Compile Include="App_Code\XmlDatabase\TM_Xml_Database.Library.Views_and_Folders.cs" />
-    <Compile Include="App_Code\XmlDatabase\TM_Xml_Database.Users.cs" />
-    <Compile Include="App_Code\XmlDatabase\TM_Xml_Database_JavaScriptProxy.cs" />
+    <ProjectReference Include="..\TeamMentor.CoreLib\TeamMentor.CoreLib.csproj">
+      <Project>{87BACB04-640F-44ED-8F01-45224D52A883}</Project>
+      <Name>TeamMentor.CoreLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
