@@ -92,7 +92,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		public TeamMentor_Article GetGuidanceItemById(string guidanceItemid)					{ return tmXmlDatabase.tmGuidanceItem(guidanceItemid.guid()); }  	
 		public Guid CreateGuidanceItem(GuidanceItem_V3 guidanceItem)						{ return tmXmlDatabase.createGuidanceItem(guidanceItem); }  	
 		public bool UpdateGuidanceItem(GuidanceItem_V3 guidanceItem)						{ return tmXmlDatabase.createGuidanceItem(guidanceItem) != Guid.Empty; }
-        //public bool UpdateGuidanceItem(TeamMentor_Article article, Guid libraryId)          { return article.xmlDB_Save_GuidanceItem(libraryId, tmXmlDatabase); }
+        public bool UpdateGuidanceItem(TeamMentor_Article article)                          { return article.xmlDB_Save_GuidanceItem(tmXmlDatabase); }
 		public bool DeleteGuidanceItem(Guid guidanceItemId)									{ return tmXmlDatabase.xmlDB_Delete_GuidanceItem(guidanceItemId); }
 		public bool DeleteGuidanceItems(List<Guid> guidanceItemIds)							{ return tmXmlDatabase.xmlDB_Delete_GuidanceItems(guidanceItemIds); }
 		public bool RenameFolder(Guid libraryId, Guid folderId,string newFolderName) 		{ return tmXmlDatabase.xmlDB_Rename_Folder(libraryId, folderId,newFolderName ); } 		

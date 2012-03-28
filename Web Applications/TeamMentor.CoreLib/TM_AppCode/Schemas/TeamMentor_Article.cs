@@ -11,6 +11,12 @@ using urn.microsoft.guidanceexplorer.guidanceItem;
 
 namespace SecurityInnovation.TeamMentor.WebClient
 {
+    [Serializable]
+    public class TeamMentor_Article_2
+    { 
+    
+    }
+
 	public class TeamMentor_Article
 	{ 
         [XmlAttribute] 
@@ -20,6 +26,12 @@ namespace SecurityInnovation.TeamMentor.WebClient
 
 		public TeamMentor_Article_Metadata Metadata { get; set; }
         public TeamMentor_Article_Content  Content  { get; set; }
+
+        public TeamMentor_Article()
+        { 
+            //Metadata = new TeamMentor_Article_Metadata();
+            //Content = new TeamMentor_Article_Content();
+        }
     }
 
 	public class TeamMentor_Article_Metadata
@@ -65,7 +77,7 @@ namespace SecurityInnovation.TeamMentor.WebClient
         [XmlElement]
         public List<string> Files { get; set; }
 
-        [XmlElement]
+        [XmlElement][System.Web.Script.Serialization.ScriptIgnore]
         public XmlCDataSection Data
         {
             get

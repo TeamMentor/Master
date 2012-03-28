@@ -299,9 +299,13 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
              */ 
 			guidanceItem.xmlDB_Save_GuidanceItem(libraryId, tmDatabase);			
 			return guidanceItem;
-		} 
-		
-		
+		}
+
+        public static bool xmlDB_Save_GuidanceItem(this TeamMentor_Article article, TM_Xml_Database tmDatabase)
+        { 
+            return article.xmlDB_Save_GuidanceItem(article.Metadata.Library_Id, tmDatabase);
+        }
+
 		[PrincipalPermission(SecurityAction.Demand, Role = "EditArticles")]
 		public static bool xmlDB_Save_GuidanceItem(this TeamMentor_Article guidanceItem, Guid libraryId, TM_Xml_Database tmDatabase)
 		{
@@ -354,8 +358,23 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			return guidanceXmlPath.fileContents().xmlFormat();
 		}
 
+
+        public static Guid xmlBD_resolveDirectMapping(this TM_Xml_Database tmDatabase, string mapping)
+        { 
+            return (from item in TM_Xml_Database.Cached_GuidanceItems
+                    where item.Value.Metadata.DirectLink == mapping
+                          || item.Value.Metadata.Title   == mapping
+                    select item.Key).first();
+        }
+
         public static Guid xmlBD_resolveMappingToArticleGuid(this TM_Xml_Database tmDatabase, string mapping)
 		{
+            //mapping = new HttpServerUtility().UrlDecode(mapping);
+            mapping = HttpContext.Current.Server.UrlDecode(mapping);
+            var directMapping = tmDatabase.xmlBD_resolveDirectMapping(mapping);
+            if (directMapping != Guid.Empty)
+                return directMapping;
+
             if (mapping.isGuid())
                 return mapping.guid();
 

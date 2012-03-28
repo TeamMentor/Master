@@ -97,7 +97,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		TeamMentor_Article GetGuidanceItemById(string guidanceItemid);
 		Guid CreateGuidanceItem(GuidanceItem_V3 guidanceItem);
 		bool UpdateGuidanceItem(GuidanceItem_V3 guidanceItem);
-        //bool UpdateGuidanceItem(TeamMentor_Article article, Guid libraryId);
+        bool UpdateGuidanceItem(TeamMentor_Article article);
 		bool DeleteGuidanceItem(Guid guidanceItemId);
 		bool DeleteGuidanceItems(List<Guid> guidanceItemIds);
 		
