@@ -59,7 +59,11 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                     case "xsl":
                         return handleAction_Xsl(data);
                     case "article":
-                        return redirectToArticleViewer();                                                
+                        return redirectTo_ArticleViewer();
+                    case "edit":
+                        return redirectTo_ArticleEditor();
+                    case "admin":
+                        return redirectTo_ControlPanel();
                     case "images":                        
                     case "image":
                         return handleAction_Image(data);
@@ -143,12 +147,25 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
             context.Response.End();
         }
 
-		public bool redirectToArticleViewer()
+		public bool redirectTo_ArticleViewer()
 		{
 			var articleViewer = "/html_pages/GuidanceItemViewer/GuidanceItemViewer.html?";			
 			context.Server.Transfer(articleViewer);
             return false;    
 		}
+
+        public bool redirectTo_ArticleEditor()
+		{
+			var articleViewer = "/html_pages/GuidanceItemEditor/GuidanceItemEditor.html?";			
+			context.Server.Transfer(articleViewer);
+            return false;    
+		}
+
+        public bool redirectTo_ControlPanel()
+		{			
+			context.Response.Redirect("/html_pages/ControlPanel/controlpanel.html");
+            return false;    
+		}                
 
 	}
 }
