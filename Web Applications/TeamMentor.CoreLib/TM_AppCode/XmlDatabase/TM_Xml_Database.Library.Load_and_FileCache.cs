@@ -156,12 +156,17 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			else
 			{
 				var o2Timer = new O2Timer("loadGuidanceItemsFromCache").start();
-				var loadedGuidanceItems = chacheFile.load<List<GuidanceItem_V3>>();
-				o2Timer.stop();
-				o2Timer = new O2Timer("mapping to memory loadGuidanceItemsFromCache").start();
-				foreach(var loadedGuidanceItem in loadedGuidanceItems)
-					TM_Xml_Database.Cached_GuidanceItems.add(loadedGuidanceItem.guidanceItemId, loadedGuidanceItem);
-				o2Timer.stop();					
+				var loadedGuidanceItems = chacheFile.load<List<TeamMentor_Article>>();
+                o2Timer.stop();
+                if (loadedGuidanceItems.isNull()) //if we couldn't load it , delete it
+                    Files.deleteFile(chacheFile);
+                else
+                {
+                    o2Timer = new O2Timer("mapping to memory loadGuidanceItemsFromCache").start();
+                    foreach (var loadedGuidanceItem in loadedGuidanceItems)
+                        TM_Xml_Database.Cached_GuidanceItems.add(loadedGuidanceItem.Metadata.Id, loadedGuidanceItem);
+                    o2Timer.stop();
+                }
 			}
 			return pathXmlLibraries;
 		}
@@ -181,7 +186,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		public static TM_Xml_Database clear_GuidanceItemsCache(this TM_Xml_Database tmDatabase)
 		{
 			"[TM_Xml_Database] clear_GuidanceItemsCache".info();
-			TM_Xml_Database.Cached_GuidanceItems.Clear();
+			TM_Xml_Database.Cached_GuidanceItems.Clear();            
 			return tmDatabase;
 		}		
 
@@ -223,13 +228,13 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			//return tmDatabase.load_GuidanceItemsCache();			
 		}
 		
-		public static guidanceItem update_Cache_GuidanceItems(this guidanceItem guidanceItem,  TM_Xml_Database tmDatabase)
+		public static TeamMentor_Article update_Cache_GuidanceItems(this TeamMentor_Article guidanceItem,  TM_Xml_Database tmDatabase)
 		{			
-			var guidanceItemGuid = guidanceItem.id.guid();
+			var guidanceItemGuid = guidanceItem.Metadata.Id;
 			if (TM_Xml_Database.Cached_GuidanceItems.hasKey(guidanceItemGuid))
-				TM_Xml_Database.Cached_GuidanceItems[guidanceItemGuid] = guidanceItem.tmGuidanceItemV3();
+				TM_Xml_Database.Cached_GuidanceItems[guidanceItemGuid] = guidanceItem;
 			else
-				TM_Xml_Database.Cached_GuidanceItems.Add(guidanceItem.id.guid(), guidanceItem.tmGuidanceItemV3());
+				TM_Xml_Database.Cached_GuidanceItems.Add(guidanceItem.Metadata.Id, guidanceItem);
 			
 			//TM_Xml_Database.mapGuidanceItemsViews();  		// update views (to make sure they are pointing to the correct GuidanceItem object	
 

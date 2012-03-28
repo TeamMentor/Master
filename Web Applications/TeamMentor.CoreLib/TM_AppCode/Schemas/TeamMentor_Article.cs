@@ -25,30 +25,30 @@ namespace SecurityInnovation.TeamMentor.WebClient
 	public class TeamMentor_Article_Metadata
 	{        
 		//Article ID(s)
-		public string Id                { get; set; }		// Article GUID
-		public string Id_History        { get; set; }		// Previous GUIDs (populated when copying Articles) - [Comma Delimited]
-
+		public Guid     Id                  { get; set; }		// Article GUID
+		public string   Id_History          { get; set; }		// Previous GUIDs (populated when copying Articles) - [Comma Delimited]
+        public Guid     Library_Id          { get; set; }		// Library GUID
 		//Article Title
-		public string Title             { get; set; }		// Article Title
+		public string   Title               { get; set; }		// Article Title
 
 		//4 main MetaData tags
-		public string Category          { get; set; }		// [Comma Delimited]
-		public string Phase             { get; set; }		// [Comma Delimited]
-		public string Technology	    { get; set; }		// [Comma Delimited]
-		public string Type              { get; set; }		// [Comma Delimited]
+		public string   Category            { get; set; }		// [Comma Delimited]
+		public string   Phase               { get; set; }		// [Comma Delimited]
+		public string   Technology	        { get; set; }		// [Comma Delimited]
+		public string   Type                { get; set; }		// [Comma Delimited]
 
 				
 		//MetaData - Used by TM GUI
-		public string DirectLink        { get; set; }		// To enabled direct URL links to this Article
-		public string Tag			    { get; set; }		// To allow articles to have extra Metadata Items [Comma Delimited]
-		public string Security_Demand   { get; set; }		// To allow articles to make special Security Demands [Comma Delimited]
+		public string   DirectLink          { get; set; }		// To enabled direct URL links to this Article
+		public string   Tag			        { get; set; }		// To allow articles to have extra Metadata Items [Comma Delimited]
+		public string   Security_Demand     { get; set; }		// To allow articles to make special Security Demands [Comma Delimited]
 
 		//MetaData - NOT Used by TM GUI		
-		public string Author            { get; set; }		// Not Used in GUI
-		public string Priority          { get; set; }		// Not Used in GUI
-		public string Status            { get; set; }		// Not Used in GUI
-		public string Source            { get; set; }		// Not Used in GUI
-		public string License           { get; set; }		// Not Used in GUI
+		public string   Author              { get; set; }		// Not Used in GUI
+		public string   Priority            { get; set; }		// Not Used in GUI
+		public string   Status              { get; set; }		// Not Used in GUI
+		public string   Source              { get; set; }		// Not Used in GUI
+		public string   License             { get; set; }		// Not Used in GUI
     }
 
 	public class TeamMentor_Article_Content
@@ -87,6 +87,7 @@ namespace SecurityInnovation.TeamMentor.WebClient
         [XmlAttribute] public string Category		{ get; set; }		
 		[XmlAttribute] public string id				{ get; set; }	
 		[XmlAttribute] public string id_Original	{ get; set; }	
+        [XmlAttribute] public string libraryId	    { get; set; }	
 		[XmlAttribute] public string phase			{ get; set; }
 	    [XmlAttribute] public string Priority		{ get; set; }	
 		[XmlAttribute] public string Rule_Type		{ get; set; }
@@ -111,14 +112,14 @@ namespace SecurityInnovation.TeamMentor.WebClient
             var teamMentor_Article = new TeamMentor_Article();
             teamMentor_Article.Metadata = new TeamMentor_Article_Metadata()
 				                                {
-					                                Id			 = this.id,
+					                                Id			 = this.id.guid(),
 					                                Id_History   = this.id_Original,
+                                                    Library_Id   = this.libraryId.guid(),
 					                                Title		 = this.title,
 					                                Category	 = this.Category,
 					                                Phase		 = this.phase,
 					                                Technology   = this.Technology,
-					                                Type		 = this.Rule_Type,
-					                                //Html_Content = this.content,
+					                                Type		 = this.Rule_Type,					                                
 					                                Author		 = this.Author,					
 					                                Priority	 = this.Priority,
 					                                Status		 = this.Status,
@@ -132,8 +133,7 @@ namespace SecurityInnovation.TeamMentor.WebClient
             teamMentor_Article.Content = new TeamMentor_Article_Content()
                                                 {
                                                     Sanitized    = true,
-                                                    DataType     = "Html",        
-                                                    //Data         = this.content
+                                                    DataType     = "Html",                                                            
                                                     Data_Raw     = this.content
                                                 };
             
@@ -158,7 +158,7 @@ namespace SecurityInnovation.TeamMentor.WebClient
                 return null;
             return new guidanceItem()
                     {
-                        id          =   article.Metadata.Id,
+                        id          =   article.Metadata.Id.str(),
                         id_original =   article.Metadata.Id_History,
                         title       =   article.Metadata.Title,
 

@@ -101,7 +101,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 */		
 		//move to  extension methods
 		[PrincipalPermission(SecurityAction.Demand, Role = "ReadArticles")] 
-		public GuidanceItem_V3 getGuidanceItem(Guid guidanceItemId)
+		public TeamMentor_Article getGuidanceItem(Guid guidanceItemId)
 		{
 			if (Cached_GuidanceItems.hasKey(guidanceItemId).isFalse())
 				return null;
@@ -114,7 +114,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		{
 			if (Cached_GuidanceItems.hasKey(guidanceItemId).isFalse())
 				return null;
-			return Cached_GuidanceItems[guidanceItemId].htmlContent
+			return Cached_GuidanceItems[guidanceItemId].Content.Data_Raw
 													   .sanitizeHtmlContent();
 		}				
 	}
@@ -358,25 +358,25 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 					select view).first();					
 		}
 		
-		public static List<GuidanceItem_V3> getGuidanceItemsInViews(this TM_Xml_Database tmDatabase, List<View> views)
+		public static List<TeamMentor_Article> getGuidanceItemsInViews(this TM_Xml_Database tmDatabase, List<View> views)
 		{
 			var viewIds = (from view in views select view.id.guid()).toList();
 			return tmDatabase.getGuidanceItemsInViews(viewIds);
 		}
 		
-		public static List<GuidanceItem_V3> getGuidanceItemsInViews(this TM_Xml_Database tmDatabase, List<Guid> viewIds)
+		public static List<TeamMentor_Article> getGuidanceItemsInViews(this TM_Xml_Database tmDatabase, List<Guid> viewIds)
 		{
 			return (from viewId in viewIds
 					from guidanceItemV3 in tmDatabase.getGuidanceItemsInView(viewId)
 					select guidanceItemV3).toList();
 		}
 		
-		public static List<GuidanceItem_V3> getGuidanceItemsInView(this TM_Xml_Database tmDatabase, Guid viewId)
+		public static List<TeamMentor_Article> getGuidanceItemsInView(this TM_Xml_Database tmDatabase, Guid viewId)
 		{		
 			var tmView = tmDatabase.tmView(viewId);
 			if (tmView.notNull())
 			{
-				var guidanceItems = new List<GuidanceItem_V3>();
+				var guidanceItems = new List<TeamMentor_Article>();
 				foreach(var guidanceItemId in tmView.guidanceItems)
 					if (TM_Xml_Database.Cached_GuidanceItems.hasKey(guidanceItemId))
 						guidanceItems.add(TM_Xml_Database.Cached_GuidanceItems[guidanceItemId]);
@@ -387,15 +387,15 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			//if (TM_Xml_Database.GuidanceItems_InViews.hasKey(viewId))
 			//	return TM_Xml_Database.GuidanceItems_InViews[viewId];
 			"[TM_Xml_Database] getGuidanceItemsInView, requested viewId was not mapped: {0}".error(viewId);
-			return new List<GuidanceItem_V3>();
+			return new List<TeamMentor_Article>();
 		}
 		
-		public static List<GuidanceItem_V3> getAllGuidanceItemsInViews(this TM_Xml_Database tmDatabase)
+		public static List<TeamMentor_Article> getAllGuidanceItemsInViews(this TM_Xml_Database tmDatabase)
 		{
 			//return (from viewId in TM_Xml_Database.GuidanceItems_InViews.Keys
 			//		from guidanceItem in TM_Xml_Database.GuidanceItems_InViews[viewId]
 			//		select guidanceItem).toList();
-			return new List<GuidanceItem_V3>();
+			return new List<TeamMentor_Article>();
 		}
 		
 /*		public static List<GuidanceItem_V3> getAllGuidanceItemsInLibrary(this TM_Xml_Database tmDatabase, GUID tmLibrary)
@@ -412,33 +412,33 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 	{
 		//[PrincipalPermission(SecurityAction.Demand, Role = "ReadArticles")] 	
 		[PrincipalPermission(SecurityAction.Demand, Role = "ReadArticlesTitles")] 			
-		public static List<GuidanceItem_V3> tmGuidanceItems(this TM_Xml_Database tmDatabase)
+		public static List<TeamMentor_Article> tmGuidanceItems(this TM_Xml_Database tmDatabase)
 		{			
 			return tmDatabase.xmlDB_GuidanceItems();						
 		}
 		
 		[PrincipalPermission(SecurityAction.Demand, Role = "ReadArticles")] 
 		//[PrincipalPermission(SecurityAction.Demand, Role = "ReadArticlesTitles")] 	
-		public static GuidanceItem_V3 tmGuidanceItem(this TM_Xml_Database tmDatabase, Guid guidanceItemId)
+		public static TeamMentor_Article tmGuidanceItem(this TM_Xml_Database tmDatabase, Guid guidanceItemId)
 		{			
 			return (from guidanceItem in tmDatabase.tmGuidanceItems()
-					where guidanceItem.guidanceItemId == guidanceItemId
+					where guidanceItem.Metadata.Id == guidanceItemId
 					select guidanceItem).first();				
 		}
 		
-		public static List<GuidanceItem_V3> tmGuidanceItems(this TM_Xml_Database tmDatabase, TM_Library tmLibrary)
+		public static List<TeamMentor_Article> tmGuidanceItems(this TM_Xml_Database tmDatabase, TM_Library tmLibrary)
 		{
 			return tmDatabase.tmGuidanceItems(tmLibrary.Id);
 		}
 		
-		public static List<GuidanceItem_V3> tmGuidanceItems(this TM_Xml_Database tmDatabase, Guid libraryId)
+		public static List<TeamMentor_Article> tmGuidanceItems(this TM_Xml_Database tmDatabase, Guid libraryId)
 		{			
-			return (from guidanceItem in TM_Xml_Database.Cached_GuidanceItems.Values
-					where guidanceItem.libraryId == libraryId
+            return (from guidanceItem in TM_Xml_Database.Cached_GuidanceItems.Values
+					where guidanceItem.Metadata.Library_Id == libraryId
 					select guidanceItem).toList();		
 		}				
 		
-		public static List<GuidanceItem_V3> tmGuidanceItems_InFolder(this TM_Xml_Database tmDatabase, Guid folderId)
+		public static List<TeamMentor_Article> tmGuidanceItems_InFolder(this TM_Xml_Database tmDatabase, Guid folderId)
 		{				
 			var folder = tmDatabase.xmlDB_Folder(folderId);			
 			var foldersToMap = tmDatabase.xmlDB_Folders_All(folder);			
@@ -469,7 +469,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 																guidanceItemV3.phase,
 																guidanceItemV3.htmlContent.sanitizeHtmlContent(),
 																guidanceItemV3.libraryId);
-			return guidanceItem.id.guid();
+			return guidanceItem.Metadata.Id;
 		}
 
 		public static string sanitizeHtmlContent(this string htmlContent)

@@ -38,13 +38,13 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			}
 		}
 	       
-		public static IUnityContainer useEnvironment_Moq()
+/*		public static IUnityContainer useEnvironment_Moq()
 		{
 			container = new UnityContainer();
 			container.RegisterInstance<IJavascriptProxy>(MoqObjects.IJavascriptProxy_Moq());				
 			container.RegisterInstance<Guid>(Guid.Empty);  
 			return container;
-		}
+		}*/
 		
 /*		public static IUnityContainer useEnvironment_LiveWS()
 		{

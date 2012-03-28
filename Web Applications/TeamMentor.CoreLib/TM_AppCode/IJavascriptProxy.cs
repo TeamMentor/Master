@@ -53,12 +53,12 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		List<Folder_V3>  GetFolders();
 		List<View_V3> 	 GetViews();
 		List<Folder_V3> GetFolders(Guid libraryId);
-		List<TM_GuidanceItem> GetGuidanceItemsInFolder(Guid folderId);
-		List<TM_GuidanceItem> GetGuidanceItemsInView(Guid viewId);
-		List<TM_GuidanceItem> GetGuidanceItemsInViews(List<Guid> viewIds);			
+		List<TeamMentor_Article> GetGuidanceItemsInFolder(Guid folderId);
+		List<TeamMentor_Article> GetGuidanceItemsInView(Guid viewId);
+		List<TeamMentor_Article> GetGuidanceItemsInViews(List<Guid> viewIds);			
 		string GetGuidanceItemHtml(Guid GuidanceItemId);
-		List<TM_GuidanceItem> GetAllGuidanceItems();
-		List<TM_GuidanceItem> GetGuidanceItemsInLibrary(Guid libraryId);
+		List<TeamMentor_Article> GetAllGuidanceItems();
+		List<TeamMentor_Article> GetGuidanceItemsInLibrary(Guid libraryId);
 		
 		//OnlineStorage
 		string GetAllUserLogs();
@@ -94,9 +94,10 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		//void CreateGuidanceItem(GuidanceItem item, string content);
 		//Guid CreateGuidanceItem(Guid libraryIdGuid, Guid guidanceType, Guid creatorId, string creatorCaption, string title, string images, DateTime lastUpdate, string topic, string technology, string category, string ruleType, string priority, string status, string author, string htmlContent) ;
 		//bool UpdateGuidanceItem(Guid id, string title, Guid guidanceType, Guid library, Guid creator, string creatorCaption, string content, string images, DateTime lastUpdate, string htmlContent);
-		GuidanceItem_V3 GetGuidanceItemById(string guidanceItemid);
+		TeamMentor_Article GetGuidanceItemById(string guidanceItemid);
 		Guid CreateGuidanceItem(GuidanceItem_V3 guidanceItem);
 		bool UpdateGuidanceItem(GuidanceItem_V3 guidanceItem);
+        //bool UpdateGuidanceItem(TeamMentor_Article article, Guid libraryId);
 		bool DeleteGuidanceItem(Guid guidanceItemId);
 		bool DeleteGuidanceItems(List<Guid> guidanceItemIds);
 		
@@ -107,13 +108,13 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		bool DeleteFolder(Guid libraryId, Guid folderId);
 		//XmlDB V3.0 specific
 		
-		List<GuidanceItem_V3> GetGuidanceItemsInViews_XmlDB(List<Guid> viewIds);		
+		List<TeamMentor_Article> GetGuidanceItemsInViews_XmlDB(List<Guid> viewIds);		
 		
 		
-		List<GuidanceItem_V3> GetAllGuidanceItems_XmlDB();	
-		List<GuidanceItem_V3> GetGuidanceItemsInLibrary_XmlDB(Guid libraryId);	
-		List<GuidanceItem_V3> GetGuidanceItemsInFolder_XmlDB(Guid folderId);	
-		List<GuidanceItem_V3> GetAllGuidanceItemsInViews_XmlDB();
+		List<TeamMentor_Article> GetAllGuidanceItems_XmlDB();	
+		List<TeamMentor_Article> GetGuidanceItemsInLibrary_XmlDB(Guid libraryId);	
+		List<TeamMentor_Article> GetGuidanceItemsInFolder_XmlDB(Guid folderId);	
+		List<TeamMentor_Article> GetAllGuidanceItemsInViews_XmlDB();
 
 
         Guid resolveMappingToArticleGuid(string mapping);

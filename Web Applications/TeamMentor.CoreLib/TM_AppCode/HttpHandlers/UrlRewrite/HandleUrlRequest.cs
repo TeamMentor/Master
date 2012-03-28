@@ -80,6 +80,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
         {            
             var guid = tmWebServices.getGuidForMapping(data);
             var article = tmWebServices.GetGuidanceItemById(guid.str());               
+            
             var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
             var serializedData = serializer.Serialize(article);                       
             var callbackRaw = context.Request["callback"];

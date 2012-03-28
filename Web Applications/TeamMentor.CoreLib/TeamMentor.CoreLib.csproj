@@ -89,7 +89,7 @@
     <Compile Include="TM_AppCode\HttpHandlers\UrlRewrite\HandleUrlRequest.cs" />
     <Compile Include="TM_AppCode\HttpHandlers\UrlRewrite\UrlRewriter.ashx.cs" />
     <Compile Include="TM_AppCode\IJavascriptProxy.cs" />
-    <Compile Include="TM_AppCode\MoqObjects.cs" />
+    <None Include="TM_AppCode\MoqObjects.cs.txt" />
     <Compile Include="TM_AppCode\O2_Scripts_APIs\Authentication.cs" />
     <Compile Include="TM_AppCode\O2_Scripts_APIs\LinqDB.cs" />
     <Compile Include="TM_AppCode\O2_Scripts_APIs\OnlineStorage.cs" />
@@ -104,7 +104,9 @@
     <Compile Include="TM_AppCode\Schemas\TeamMentor_Article.cs" />
     <Compile Include="TM_AppCode\TmConfig.cs" />
     <Compile Include="TM_AppCode\TrackingDB\ActivityTracking.cs" />
-    <Compile Include="TM_AppCode\TrackingDB\PagesHistory.cs" />
+    <None Include="TM_AppCode\TrackingDB\PagesHistory.cs.txt">
+      <SubType>Code</SubType>
+    </None>
     <Compile Include="TM_AppCode\UnityInjection.cs" />
     <Compile Include="TM_AppCode\UtilMethods.cs" />
     <Compile Include="TM_AppCode\WebServices\TM_WebServices.ActivityTracking.cs">
@@ -141,7 +143,9 @@
     <None Include="TM_AppCode\O2_Scripts_APIs\_Extra_methods_Zip.cs.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="_External_Dlls\" />

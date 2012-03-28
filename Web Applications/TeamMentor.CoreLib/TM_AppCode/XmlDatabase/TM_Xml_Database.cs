@@ -44,7 +44,9 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		
 		public static Dictionary<Guid, guidanceExplorer> GuidanceExplorers_XmlFormat { get; set; }	
 		public static Dictionary<Guid, string> GuidanceItems_FileMappings { get; set; }	
-		public static Dictionary<Guid, GuidanceItem_V3> Cached_GuidanceItems { get; set; }	
+		//public static Dictionary<Guid, GuidanceItem_V3> Cached_GuidanceItems { get; set; }	
+        public static Dictionary<Guid, TeamMentor_Article> Cached_GuidanceItems { get; set; }	        
+        
 		
 		//public static Dictionary<Guid, List<GuidanceItem_V3>> GuidanceItems_InViews { get; set; }
 								
@@ -55,14 +57,14 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		public List<TM_Library> Libraries  			{  get { 	return this.tmLibraries(); } }
 		public List<Folder_V3> 	Folders  			{  get { 	return this.tmFolders(); } } 		
 		public List<View_V3> 	Views  				{  get { 	return this.tmViews(); } } 
-		public List<GuidanceItem_V3> GuidanceItems  {  get { 	return this.tmGuidanceItems(); } } 
+		public List<TeamMentor_Article> GuidanceItems  {  get { return this.tmGuidanceItems(); } } 
 		
 		
 		//public static string defaultLibrariesPath = ;
 		 
 		static TM_Xml_Database()
 		{			
-			Cached_GuidanceItems = new Dictionary<Guid, GuidanceItem_V3> ();
+			Cached_GuidanceItems = new Dictionary<Guid, TeamMentor_Article> ();            
 			GuidanceItems_FileMappings = new Dictionary<Guid,string>();
 			GuidanceExplorers_XmlFormat = new Dictionary<Guid, guidanceExplorer>();	
 			

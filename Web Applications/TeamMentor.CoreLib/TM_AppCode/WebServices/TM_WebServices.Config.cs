@@ -29,7 +29,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		[WebMethod(EnableSession = true)] public string GetTime() 						{   return "...Via Proxy:" + javascriptProxy.GetTime(); }
 		[WebMethod(EnableSession = true)] public string Ping(string message)  			{   return "received ping: {0}".format(message); }
 		
-        [WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public string UseEnvironment_Moq()      		{   UnityInjection.useEnvironment_Moq(); 		return "using Moq Environment"; }
+//        [WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public string UseEnvironment_Moq()      		{   UnityInjection.useEnvironment_Moq(); 		return "using Moq Environment"; }
 		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public string UseEnvironment_XmlDatabase()   	{   UnityInjection.useEnvironment_XmlDatabase();return "using XmlDatabase Environment"; }
 		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public string CurrentProxyType()        		{ 	return javascriptProxy.ProxyType; }
 		[WebMethod(EnableSession = true)] 											public string GetPasswordHash(string username, string password)		

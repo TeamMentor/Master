@@ -66,13 +66,13 @@
 					var loadedGuidanceItem = data.d;	
 					if (loadedGuidanceItem != null)
 					{			
-						"#Title".$().html(loadedGuidanceItem.title);
-						"CategoriesLabel".$().html(data.d.category);
-						"PhaseLabel".$().html(loadedGuidanceItem.phase);
-						"TechnologyLabel".$().html(loadedGuidanceItem.technology);
-						"GuidanceTypeLabel".$().html(loadedGuidanceItem.rule_Type);
+						"#Title"            .$().html(loadedGuidanceItem.Metadata.Title);
+						"CategoriesLabel"   .$().html(loadedGuidanceItem.Metadata.Category);
+						"PhaseLabel"        .$().html(loadedGuidanceItem.Metadata.Phase);
+						"TechnologyLabel"   .$().html(loadedGuidanceItem.Metadata.Technology);
+						"GuidanceTypeLabel" .$().html(loadedGuidanceItem.Metadata.Type);
 						//"DateLabel".$().html(loadedGuidanceItem.lastUpdate);
-						showGuidanceItemHtml(loadedGuidanceItem.htmlContent);
+						showGuidanceItemHtml(loadedGuidanceItem.Content.Data_Raw);
 					//.html(data.d.category);;
 			//			checkForActivitys();
 					}

@@ -67,12 +67,12 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		public List<Folder_V3> 	GetFolders()										{ return tmXmlDatabase.tmFolders(); }  	
 		public List<View_V3> 	GetViews()											{ return tmXmlDatabase.tmViews(); }  	
 		public List<Folder_V3> GetFolders(Guid libraryId)							{ return tmXmlDatabase.tmFolders(libraryId); }  			
-		public List<TM_GuidanceItem> GetGuidanceItemsInFolder(Guid folderId)		{ return tmXmlDatabase.tmGuidanceItems_InFolder(folderId).tmGuidanceItems(); }  			
-		public List<TM_GuidanceItem> GetGuidanceItemsInView(Guid viewId)			{ return tmXmlDatabase.getGuidanceItemsInView(viewId).tmGuidanceItems(); }  	
-		public List<TM_GuidanceItem> GetGuidanceItemsInViews(List<Guid> viewIds)	{ return tmXmlDatabase.getGuidanceItemsInViews(viewIds).tmGuidanceItems(); }  	
+		public List<TeamMentor_Article> GetGuidanceItemsInFolder(Guid folderId)		{ return tmXmlDatabase.tmGuidanceItems_InFolder(folderId);}  			
+		public List<TeamMentor_Article> GetGuidanceItemsInView(Guid viewId)			{ return tmXmlDatabase.getGuidanceItemsInView(viewId); }  	
+		public List<TeamMentor_Article> GetGuidanceItemsInViews(List<Guid> viewIds)	{ return tmXmlDatabase.getGuidanceItemsInViews(viewIds); }  	
 		public string GetGuidanceItemHtml(Guid GuidanceItemId)						{ return tmXmlDatabase.getGuidanceItemHtml(GuidanceItemId);  }  	
-		public List<TM_GuidanceItem> GetAllGuidanceItems()							{ return tmXmlDatabase.tmGuidanceItems().tmGuidanceItems();}  	
-		public List<TM_GuidanceItem> GetGuidanceItemsInLibrary(Guid libraryId)		{ return tmXmlDatabase.tmGuidanceItems(libraryId).tmGuidanceItems();}  	
+		public List<TeamMentor_Article> GetAllGuidanceItems()						{ return tmXmlDatabase.tmGuidanceItems(); }  	
+		public List<TeamMentor_Article> GetGuidanceItemsInLibrary(Guid libraryId)	{ return tmXmlDatabase.tmGuidanceItems(libraryId);}  	
 		
 		//OnlineStorage
 		public List<string> GetAllLibraryIds()										{ return tmXmlDatabase.tmLibraries().ids().toStringList(); }  	
@@ -89,23 +89,24 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		public bool UpdateView(View view)													{ return tmXmlDatabase.xmlDB_UpdateView(view).notNull(); }  	
 		public bool AddGuidanceItemsToView(Guid viewId, List<Guid> guidanceItemIds)			{ return tmXmlDatabase.xmlDB_AddGuidanceItemsToView(viewId, guidanceItemIds); }  	
 		public bool RemoveGuidanceItemsFromView(Guid viewId, List<Guid> guidanceItemIds)	{ return tmXmlDatabase.xmlDB_RemoveGuidanceItemsFromView(viewId,guidanceItemIds ); }  			
-		public GuidanceItem_V3 GetGuidanceItemById(string guidanceItemid)					{ return tmXmlDatabase.tmGuidanceItem(guidanceItemid.guid()); }  	
+		public TeamMentor_Article GetGuidanceItemById(string guidanceItemid)					{ return tmXmlDatabase.tmGuidanceItem(guidanceItemid.guid()); }  	
 		public Guid CreateGuidanceItem(GuidanceItem_V3 guidanceItem)						{ return tmXmlDatabase.createGuidanceItem(guidanceItem); }  	
-		public bool UpdateGuidanceItem(GuidanceItem_V3 guidanceItem)						{ return tmXmlDatabase.createGuidanceItem(guidanceItem) != Guid.Empty; }  	
+		public bool UpdateGuidanceItem(GuidanceItem_V3 guidanceItem)						{ return tmXmlDatabase.createGuidanceItem(guidanceItem) != Guid.Empty; }
+        //public bool UpdateGuidanceItem(TeamMentor_Article article, Guid libraryId)          { return article.xmlDB_Save_GuidanceItem(libraryId, tmXmlDatabase); }
 		public bool DeleteGuidanceItem(Guid guidanceItemId)									{ return tmXmlDatabase.xmlDB_Delete_GuidanceItem(guidanceItemId); }
 		public bool DeleteGuidanceItems(List<Guid> guidanceItemIds)							{ return tmXmlDatabase.xmlDB_Delete_GuidanceItems(guidanceItemIds); }
 		public bool RenameFolder(Guid libraryId, Guid folderId,string newFolderName) 		{ return tmXmlDatabase.xmlDB_Rename_Folder(libraryId, folderId,newFolderName ); } 		
 		public Folder_V3 CreateFolder(Guid libraryId, Guid parentFolderId, string newFolderName) 	{ return tmXmlDatabase.xmlDB_Add_Folder(libraryId, parentFolderId, newFolderName ).tmFolder(libraryId, tmXmlDatabase); } 		
 		public bool DeleteFolder(Guid libraryId, Guid folderId)										{ return  tmXmlDatabase.xmlDB_Delete_Folder(libraryId,  folderId); }
 		//XmlDB specific
-		public List<GuidanceItem_V3> GetGuidanceItemsInViews_XmlDB(List<Guid> viewIds)	{ return tmXmlDatabase.getGuidanceItemsInViews(viewIds);}  			
+		public List<TeamMentor_Article> GetGuidanceItemsInViews_XmlDB(List<Guid> viewIds)	{ return tmXmlDatabase.getGuidanceItemsInViews(viewIds);}  			
 		
-		public List<GuidanceItem_V3> GetGuidanceItemsInLibrary_XmlDB(Guid libraryId) 	{ return tmXmlDatabase.tmGuidanceItems(libraryId);}
-		public List<GuidanceItem_V3> GetGuidanceItemsInFolder_XmlDB(Guid folderId)   	{ return tmXmlDatabase.tmGuidanceItems_InFolder(folderId);}				       
-		public List<GuidanceItem_V3> GetAllGuidanceItemsInViews_XmlDB()					{ return tmXmlDatabase.getAllGuidanceItemsInViews();} 
-		public List<GuidanceItem_V3> GetAllGuidanceItems_XmlDB()						{ return tmXmlDatabase.tmGuidanceItems();}
+		public List<TeamMentor_Article> GetGuidanceItemsInLibrary_XmlDB(Guid libraryId) 	{ return tmXmlDatabase.tmGuidanceItems(libraryId);}
+		public List<TeamMentor_Article> GetGuidanceItemsInFolder_XmlDB(Guid folderId)   	{ return tmXmlDatabase.tmGuidanceItems_InFolder(folderId);}				       
+		public List<TeamMentor_Article> GetAllGuidanceItemsInViews_XmlDB()					{ return tmXmlDatabase.getAllGuidanceItemsInViews();} 
+		public List<TeamMentor_Article> GetAllGuidanceItems_XmlDB()						    { return tmXmlDatabase.tmGuidanceItems();}
 		
-        public Guid resolveMappingToArticleGuid(string mapping)                            { return tmXmlDatabase.xmlBD_resolveMappingToArticleGuid(mapping); }
+        public Guid resolveMappingToArticleGuid(string mapping)                             { return tmXmlDatabase.xmlBD_resolveMappingToArticleGuid(mapping); }
 
 		
 		// new ones to add to main Webservice

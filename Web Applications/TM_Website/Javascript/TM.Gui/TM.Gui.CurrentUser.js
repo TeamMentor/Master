@@ -5,7 +5,7 @@ TM.Gui.CurrentUser =
 		,	userRoles 			: []
 		,	htmlPage 			: ""				
 		, 	autoCheckUser	 	: true
-		, 	autoCheckInterval 	: 30 * 1000				// check every 25 sec
+		, 	autoCheckInterval 	: 60 * 1000				// check every 60 sec
 		,	loadUserData  		: function()
 									{													
 										TM.WebServices.WS_Users.currentUser(

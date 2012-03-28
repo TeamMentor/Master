@@ -256,13 +256,13 @@
 					return;
 				}
 				
-				"#Title".$().val(loadedGuidanceItem.title);
-				$("#TechnologyValue_input").val(loadedGuidanceItem.technology);
-				$("#PhaseValue_input").val(loadedGuidanceItem.phase);
-				$("#TypeValue_input").val(loadedGuidanceItem.rule_Type);
-				$("#CategoryValue_input").val(loadedGuidanceItem.category);
+				$("#Title")                 .val(loadedGuidanceItem.Metadata.Title);
+				$("#TechnologyValue_input") .val(loadedGuidanceItem.Metadata.Technology);
+				$("#PhaseValue_input")      .val(loadedGuidanceItem.Metadata.Phase);
+				$("#TypeValue_input")       .val(loadedGuidanceItem.Metadata.Type);
+				$("#CategoryValue_input")   .val(loadedGuidanceItem.Metadata.Category);
 
-				TM.Gui.GuidanceItemEditor.showGuidanceItemHtml(loadedGuidanceItem.htmlContent);
+				TM.Gui.GuidanceItemEditor.showGuidanceItemHtml(loadedGuidanceItem.Content.Data_Raw);
 								
 			}						  		
 
@@ -326,15 +326,15 @@
 														phase : "PhaseValue_input".$().val(), 
 														rule_Type: "TypeValue_input".$().val(), 
 														category: "CategoryValue_input".$().val(), 
-														topic: loadedGuidanceItem.topic,
-														priority : loadedGuidanceItem.priority, 
-														status : loadedGuidanceItem.status, 
-														author :  loadedGuidanceItem.author, 
-														libraryId : loadedGuidanceItem.libraryId , 
-														guidanceType : loadedGuidanceItem.guidanceType , 
-														creatorId : loadedGuidanceItem.creatorId, 
-														creatorCaption: loadedGuidanceItem.creatorCaption, 
-														images : loadedGuidanceItem.images, 
+//														topic: loadedGuidanceItem.topic,
+//														priority : loadedGuidanceItem.priority, 
+														status : loadedGuidanceItem.Metadata.Status, 
+														author :  loadedGuidanceItem.Metadata.Author, 
+														libraryId : loadedGuidanceItem.Metadata.Library_Id , 
+														//guidanceType : loadedGuidanceItem.guidanceType , 
+														//creatorId : loadedGuidanceItem.creatorId, 
+														//creatorCaption: loadedGuidanceItem.creatorCaption, 
+														//images : loadedGuidanceItem.images, 
 														//lastUpdate :  /Date(1309232562210)/ , // BUG: there is a conversion prob // "DateLabel".$().val(), //loadedGuidanceItem.lastUpdate,
 														htmlContent : htmlCode
 												}

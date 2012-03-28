@@ -107,14 +107,14 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		[WebMethod(EnableSession = true)]	public List<Folder_V3> 	GetAllFolders()										{	return javascriptProxy.GetFolders();	}		
 		[WebMethod(EnableSession = true)]	public List<View_V3> 	GetAllViews()										{	return javascriptProxy.GetViews();		}		
 		[WebMethod(EnableSession = true)]	public List<Folder_V3> GetFolders(Guid libraryId)							{	return javascriptProxy.GetFolders(libraryId);	}
-		[WebMethod(EnableSession = true)]	public List<TM_GuidanceItem> GetGuidanceItemsInFolder(Guid folderId)		{	return javascriptProxy.GetGuidanceItemsInFolder(folderId);	}		
-		[WebMethod(EnableSession = true)]	public List<TM_GuidanceItem> GetGuidanceItemsInView(Guid viewId)			{	return javascriptProxy.GetGuidanceItemsInView(viewId);	}		
-		[WebMethod(EnableSession = true)]	public List<TM_GuidanceItem> GetGuidanceItemsInViews(List<Guid> viewIds)	{	return javascriptProxy.GetGuidanceItemsInViews(viewIds);	}
+		[WebMethod(EnableSession = true)]	public List<TeamMentor_Article> GetGuidanceItemsInFolder(Guid folderId)		{	return javascriptProxy.GetGuidanceItemsInFolder(folderId);	}		
+		[WebMethod(EnableSession = true)]	public List<TeamMentor_Article> GetGuidanceItemsInView(Guid viewId)			{	return javascriptProxy.GetGuidanceItemsInView(viewId);	}		
+		[WebMethod(EnableSession = true)]	public List<TeamMentor_Article> GetGuidanceItemsInViews(List<Guid> viewIds)	{	return javascriptProxy.GetGuidanceItemsInViews(viewIds);	}
 		//[WebMethod(EnableSession = true)]	public List<TM_GuidanceItem> GetAllGuidanceItemsInViews()					{ 	return javascriptProxy.getAllGuidanceItemsInViews();}
 		[WebMethod(EnableSession = true)]	public string GetGuidanceItemHtml(Guid GuidanceItemId)						{	return javascriptProxy.GetGuidanceItemHtml(GuidanceItemId);	}				
 		//both methods below will generate a JSON object with more than 1Mb (with the default SI library)
-		[WebMethod(EnableSession = true)]	public List<TM_GuidanceItem> GetAllGuidanceItems()							{	return javascriptProxy.GetAllGuidanceItems();	}
-		[WebMethod(EnableSession = true)]	public List<TM_GuidanceItem> GetGuidanceItemsInLibrary(Guid libraryId)		{	return javascriptProxy.GetGuidanceItemsInLibrary(libraryId); }
+		[WebMethod(EnableSession = true)]	public List<TeamMentor_Article> GetAllGuidanceItems()						{	return javascriptProxy.GetAllGuidanceItems();	}
+		[WebMethod(EnableSession = true)]	public List<TeamMentor_Article> GetGuidanceItemsInLibrary(Guid libraryId)	{	return javascriptProxy.GetGuidanceItemsInLibrary(libraryId); }
 		
 		[WebMethod(EnableSession = true)]	public List<View_V3> GetViewsInLibraryRoot(string libraryID)		 		{	return javascriptProxy.GetViewsInLibraryRoot(libraryID);		}						
 		[WebMethod(EnableSession = true)]	public View_V3 GetViewById(string viewId)		 							{	return javascriptProxy.GetViewById(viewId);		}				
@@ -124,7 +124,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		[WebMethod(EnableSession = true)] 	public List<String> GetAllLibraryIds() 										{ return javascriptProxy.GetAllLibraryIds();  }
 		[WebMethod(EnableSession = true)] 	public Library GetLibraryById  (Guid libraryId) 						    { return javascriptProxy.GetLibraryById	 (libraryId.str()); }		
 		[WebMethod(EnableSession = true)] 	public Library GetLibraryByName(string libraryName) 						{ return javascriptProxy.GetLibraryByName(libraryName); }		
-		[WebMethod(EnableSession = true)]	public GuidanceItem_V3 GetGuidanceItemById(string guidanceItemId)			{ return javascriptProxy.GetGuidanceItemById(guidanceItemId); 	}
+		[WebMethod(EnableSession = true)]	public TeamMentor_Article GetGuidanceItemById(string guidanceItemId)			{ return javascriptProxy.GetGuidanceItemById(guidanceItemId); 	}
 		
 
 		//demand Admin privs
@@ -156,7 +156,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 																						{ 
 																							this.resetCache();
 																							var result = javascriptProxy.UpdateGuidanceItem(guidanceItem); 	
-																							try
+																							/*try
 																							{																								
 																								if (result)
 																								{																									
@@ -173,7 +173,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 																							catch(Exception ex)
 																							{
 																								"Error in new PagesHistory(): {0} \n\n {1}".error(ex.Message, ex.StackTrace);
-																							}
+																							}*/
 																							return result;
 																						}																																
 		[WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public bool DeleteGuidanceItem(Guid guidanceItemId)											{ resetCache(); return javascriptProxy.DeleteGuidanceItem(guidanceItemId); 	}			
@@ -214,7 +214,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		}				
 		
 		
-		[WebMethod(EnableSession = true)]
+/*		[WebMethod(EnableSession = true)]
 		[EditArticles(SecurityAction.Demand)]	
 		public bool RenameGuidanceItemTitle(Guid guidanceItemId, string title)
 		{			
@@ -230,7 +230,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 				return false;
 			}
 		}
-
+        */
 		//not implemented in TM3
 		[WebMethod(EnableSession = true)]	public List<GuidanceType> GetGuidanceTypes() { 		return javascriptProxy.GetGuidanceTypes(); }
 		[WebMethod(EnableSession = true)]	public GuidanceType CreateGuidanceType(GuidanceType guidanceType, string[] columns)	{ return javascriptProxy.CreateGuidanceType(guidanceType,columns) ; }		

@@ -62,13 +62,13 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			{  
 				var guidanceItemMappings = "{0},{1},{2},{3},{4},{5},{6}".format(
 												//guiObjects.add_UniqueString(row.guidanceItemId.str().hash().str()),	// this will shave off another 80k from the request
-												guiObjects.add_UniqueString(row.guidanceItemId.str()),
-												guiObjects.add_UniqueString(row.libraryId.str()),
-												guiObjects.add_UniqueString(row.title),
-												guiObjects.add_UniqueString(row.technology),
-												guiObjects.add_UniqueString(row.phase),
-													guiObjects.add_UniqueString(row.rule_Type),
-												guiObjects.add_UniqueString(row.category));
+												guiObjects.add_UniqueString(row.Metadata.Id.str()),
+												guiObjects.add_UniqueString(""), //row.libraryId.str()),
+												guiObjects.add_UniqueString(row.Metadata.Title),
+												guiObjects.add_UniqueString(row.Metadata.Technology),
+												guiObjects.add_UniqueString(row.Metadata.Phase),
+												guiObjects.add_UniqueString(row.Metadata.Type),
+												guiObjects.add_UniqueString(row.Metadata.Category));
 				
 				guiObjects.GuidanceItemsMappings.Add(guidanceItemMappings);												
 			};

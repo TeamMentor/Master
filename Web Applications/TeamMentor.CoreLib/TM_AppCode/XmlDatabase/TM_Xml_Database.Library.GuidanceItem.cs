@@ -33,19 +33,19 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			return tmDatabase.guidanceItems_SearchTitleAndHtml(tmDatabase.xmlDB_GuidanceItems() , searchText);
 		}
 		
-		public static List<Guid> guidanceItems_SearchTitleAndHtml(this TM_Xml_Database tmDatabase, List<GuidanceItem_V3> guidanceItems, string searchText)
+		public static List<Guid> guidanceItems_SearchTitleAndHtml(this TM_Xml_Database tmDatabase, List<TeamMentor_Article> guidanceItems, string searchText)
 		{
             var searchTextEncoded = HttpUtility.HtmlEncode(searchText).lower();   
             
 			//var maxNumberOfItemsToReturn = 100;			
 			"There are {0} GIs to search".error(guidanceItems.size());
 			return 	(from guidanceItem in guidanceItems
-					 where guidanceItem.title.valid() &&
-                           (guidanceItem.title.lower().contains(searchTextEncoded)       ||
+					 where guidanceItem.Metadata.Title.valid() &&
+                           (guidanceItem.Metadata.Title.lower().contains(searchTextEncoded)       ||
 //					        guidanceItem.title.regEx	   				(searchText) 	 ||
-                            guidanceItem.htmlContent.lower().contains(searchTextEncoded) )
+                            guidanceItem.Content.Data_Raw.lower().contains(searchTextEncoded) )
 //                       || guidanceItem.htmlContent.regEx			(searchText)           )									
-					 select guidanceItem.guidanceItemId
+					 select guidanceItem.Metadata.Id
 					).toList(); 
 		}		
 		
@@ -62,15 +62,15 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 					 .toList(); 
 		}*/				
 		
-		public static List<GuidanceItem_V3> xmlDB_GuidanceItems(this TM_Xml_Database tmDatabase)
+		public static List<TeamMentor_Article> xmlDB_GuidanceItems(this TM_Xml_Database tmDatabase)
 		{
 			return TM_Xml_Database.Cached_GuidanceItems.Values.toList();
 		}		
 		
-		public static List<GuidanceItem_V3> xmlDB_GuidanceItems(this TM_Xml_Database tmDatabase, List<Guid> guidanceItemsIds)
+		public static List<TeamMentor_Article> xmlDB_GuidanceItems(this TM_Xml_Database tmDatabase, List<Guid> guidanceItemsIds)
 		{
 			return (from guidanceItem in TM_Xml_Database.Cached_GuidanceItems.Values
-					where guidanceItemsIds.contains(guidanceItem.guidanceItemId)
+					where guidanceItemsIds.contains(guidanceItem.Metadata.Id)
 					select guidanceItem).toList();
 		}
 	}
@@ -105,12 +105,12 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			return tmDatabase;
 		}
 		
-		public static List<GuidanceItem_V3> xmlDB_Load_GuidanceItemsV3(this TM_Xml_Database tmDatabase, Guid libraryId, List<string> guidanceItemsFullPaths)
+		public static List<TeamMentor_Article> xmlDB_Load_GuidanceItemsV3(this TM_Xml_Database tmDatabase, Guid libraryId, List<string> guidanceItemsFullPaths)
 		{
 			var o2Timer = new O2Timer("xmlDB_GuidanceItems").start();
 			var itemsLoaded = 0;
 			//var maxToLoad = 1000;
-			var guidanceItems = new List<GuidanceItem_V3>();
+			var guidanceItems = new List<TeamMentor_Article>();
 			foreach(var fullPath in guidanceItemsFullPaths)
 			{ 
 				var guidanceItemId = fullPath.fileName().remove(".xml");
@@ -119,8 +119,8 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 					var guidanceItem = tmDatabase.xmlDB_GuidanceItem(guidanceItemId.guid(),fullPath);
 					if (guidanceItem.notNull())
 					{
-						guidanceItems.add(guidanceItem);						
-						guidanceItem.libraryId = libraryId;						
+						guidanceItems.add(guidanceItem);						    
+						guidanceItem.Metadata.Library_Id = libraryId;						
 					}
 					//if (maxToload-- < 1)
 					//	break;
@@ -135,12 +135,12 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			return guidanceItems;
 		}
 		
-		public static GuidanceItem_V3 xmlDB_GuidanceItem(this TM_Xml_Database tmDatabase, Guid guidanceItemId)
+		public static TeamMentor_Article xmlDB_GuidanceItem(this TM_Xml_Database tmDatabase, Guid guidanceItemId)
 		{
 			return tmDatabase.xmlDB_GuidanceItem(guidanceItemId, null);
 		}
 
-		public static GuidanceItem_V3 fixGuidanceItemFileDueToGuidConflict(this TM_Xml_Database tmDatabase, Guid original_Guid, string fullPath)
+		public static TeamMentor_Article fixGuidanceItemFileDueToGuidConflict(this TM_Xml_Database tmDatabase, Guid original_Guid, string fullPath)
 		{			
 			var newGuid = Guid.NewGuid();
 			var newPath = fullPath.replace(original_Guid.str(), newGuid.str());
@@ -151,7 +151,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		}
 		
 		//[PrincipalPermission(SecurityAction.Demand, Role = "EditArticles")]
-		public static GuidanceItem_V3 xmlDB_GuidanceItem(this TM_Xml_Database tmDatabase, Guid guidanceItemId, string fullPath)
+		public static TeamMentor_Article xmlDB_GuidanceItem(this TM_Xml_Database tmDatabase, Guid guidanceItemId, string fullPath)
 		{
 			try
 			{
@@ -178,27 +178,28 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 					{
 						//"loading {0}".info(fullPath);
 
-                        var _guidanceItem = fullPath.load<TeamMentor_Article>().transform_into_guidanceItem();
+                        var _guidanceItem = fullPath.load<TeamMentor_Article>(); //.transform_into_guidanceItem();
                         if (_guidanceItem.isNull())
-						     _guidanceItem = guidanceItem.Load(fullPath);				        
+						    // _guidanceItem = guidanceItem.Load(fullPath).transform();
+                            _guidanceItem = fullPath.load<Guidance_Item_Import>().transform();
 						if (_guidanceItem.notNull())
 						{
-							if(_guidanceItem.id.guid() != guidanceItemId)
+							if(_guidanceItem.Metadata.Id != guidanceItemId)
 							{
 								"FOUND GUID CHANGE".error();
-								_guidanceItem.id_original = _guidanceItem.id;
-								_guidanceItem.id 		  = guidanceItemId.str();
-								_guidanceItem.Save(fullPath);								
+								_guidanceItem.Metadata.Id_History += _guidanceItem.Metadata.Id.str() + ",";
+								_guidanceItem.Metadata.Id 		   = guidanceItemId;
+								_guidanceItem.saveAs(fullPath);								
 							}
 						//guidanceItemV3.guidanceItemId		 = original_Guid;		// this gives us the ability to track its source 
 						//guidanceItemV3.source_guidanceItemId = newGuid;				// also provides support for moving GuidanceItems across libraries
-							var _guidanceItemV3 = _guidanceItem.tmGuidanceItemV3();
+							//var _guidanceItemV3 = _guidanceItem.tmGuidanceItemV3();
 							
-							TM_Xml_Database.Cached_GuidanceItems.Add(guidanceItemId, _guidanceItemV3);
+							TM_Xml_Database.Cached_GuidanceItems.Add(guidanceItemId, _guidanceItem);
 							TM_Xml_Database.GuidanceItems_FileMappings.add(guidanceItemId, fullPath);
 							
 							
-							return _guidanceItemV3;
+							return _guidanceItem;
 						}					
 					}
 					else
@@ -218,7 +219,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 	public static class TM_Xml_Database_ExtensionMethods_XmlDataSources_GuidanceItem
 	{
 		[PrincipalPermission(SecurityAction.Demand, Role = "EditArticles")]
-		public static guidanceItem xmlDB_RandomGuidanceItem(this TM_Xml_Database tmDatabase)
+		public static TeamMentor_Article xmlDB_RandomGuidanceItem(this TM_Xml_Database tmDatabase)
 		{
 			return tmDatabase.xmlDB_NewGuidanceItem(Guid.Empty,
 													"GI title",
@@ -237,17 +238,41 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		}
 		
 		[PrincipalPermission(SecurityAction.Demand, Role = "EditArticles")]
-		public static guidanceItem xmlDB_NewGuidanceItem(this TM_Xml_Database tmDatabase, Guid guidanceItemId, 
-															  string title, string images,
-//															  DateTime lastUpdate, 
-															  string topic, string technology, string category, 
-															  string ruleType, string priority, string status, 
-															  string author,string phase,  string htmlContent, 
-															  Guid libraryId
-															  )
+		public static TeamMentor_Article xmlDB_NewGuidanceItem(this TM_Xml_Database tmDatabase, Guid guidanceItemId, 
+															   string title, string images,
+//															   DateTime lastUpdate, 
+															   string topic, string technology, string category, 
+															   string ruleType, string priority, string status, 
+															   string author,string phase,  string htmlContent, 
+															   Guid libraryId)
 		{			
-						
-			var guidanceItem  = new guidanceItem()
+				
+		    var guidanceItem = new TeamMentor_Article();
+            guidanceItem.Metadata = new TeamMentor_Article_Metadata()
+                					{
+										Id = (guidanceItemId == Guid.Empty) 
+													? Guid.NewGuid()
+													: guidanceItemId,
+                                        Library_Id = libraryId,
+										Author = author,
+										Category = category,
+										Priority = priority,
+										Type = ruleType,
+										//.Source ;
+										Status = status,
+										Technology = technology,
+										Title = title,										
+										Phase = phase, 										
+							//			.Type1;
+							//			.type;
+									};
+            guidanceItem.Content = new TeamMentor_Article_Content()
+                                    {
+                                        Data_Raw  = htmlContent,
+                                        DataType  = "html"//,
+                                        //Sanitized = false
+                                    };
+			/*var guidanceItem  = new guidanceItem()
 									{
 										id = (guidanceItemId == Guid.Empty) 
 													? Guid.NewGuid().str()
@@ -268,22 +293,23 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 							//			.Type1;
 							//			.type;
 									};
+             */ 
 			guidanceItem.xmlDB_Save_GuidanceItem(libraryId, tmDatabase);			
 			return guidanceItem;
 		} 
 		
 		
 		[PrincipalPermission(SecurityAction.Demand, Role = "EditArticles")]
-		public static bool xmlDB_Save_GuidanceItem(this guidanceItem guidanceItem, Guid libraryId, TM_Xml_Database tmDatabase)
+		public static bool xmlDB_Save_GuidanceItem(this TeamMentor_Article guidanceItem, Guid libraryId, TM_Xml_Database tmDatabase)
 		{
 			
 			var xmlLibraries = TM_Xml_Database.Path_XmlLibraries;
-			var guidanceXmlPath = tmDatabase.getXmlFilePathForGuidanceId(guidanceItem.id.guid(), libraryId);
+			var guidanceXmlPath = tmDatabase.getXmlFilePathForGuidanceId(guidanceItem.Metadata.Id, libraryId);
 			
-			"Saving GuidanceItem {0} to {1}".info(guidanceItem.id, guidanceXmlPath);				
+			"Saving GuidanceItem {0} to {1}".info(guidanceItem.Metadata.Id, guidanceXmlPath);				
 			
-			guidanceItem.libraryId = libraryId.str();			
-			guidanceItem.Save(guidanceXmlPath);			
+			//guidanceItem.libraryId = libraryId.str();			
+			guidanceItem.saveAs(guidanceXmlPath);			
 			//add it to in Memory cache
 
 //			tmDatabase.setGuidanceExplorerObjects();

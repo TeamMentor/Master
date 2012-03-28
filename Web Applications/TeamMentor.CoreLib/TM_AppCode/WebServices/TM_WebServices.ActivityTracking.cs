@@ -61,12 +61,12 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			return jsDataTable;
 		}
 		
-		[WebMethod(EnableSession = true)]
+/*		[WebMethod(EnableSession = true)]
 		[Admin(SecurityAction.Demand)]			
 		public List<ChangedPage> GetPagesHistory()
 		{
 			return new PagesHistory().getPages();
-		}
+		}*/
 		
     }	
 }

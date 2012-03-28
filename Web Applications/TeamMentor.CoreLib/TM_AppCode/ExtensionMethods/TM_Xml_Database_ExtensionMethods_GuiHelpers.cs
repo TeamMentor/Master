@@ -101,8 +101,8 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 
 					
 			var guidanceItemsIdsNotInViews = (from guidanceItem in javascriptProxy.GetGuidanceItemsInLibrary(libraryId)
-											where guidanceInViews.contains(guidanceItem.Id).isFalse()
-											select guidanceItem.Id).toList();		
+											where guidanceInViews.contains(guidanceItem.Metadata.Id).isFalse()
+											select guidanceItem.Metadata.Id).toList();		
 			return guidanceItemsIdsNotInViews;
 		}
     }

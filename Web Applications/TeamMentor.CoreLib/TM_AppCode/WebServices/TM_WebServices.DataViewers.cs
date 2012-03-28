@@ -140,9 +140,9 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		}
 		
 		
-		public JsDataTable getDataTableFromGuidanceItems(List<GuidanceItem_V3> rawGuidanceItems)
+		public JsDataTable getDataTableFromGuidanceItems(List<TeamMentor_Article> rawGuidanceItems)
 		{
-			var guidanceItems = rawGuidanceItems.GroupBy((guidanceItem)=>guidanceItem.guidanceItemId)
+			var guidanceItems = rawGuidanceItems.GroupBy((guidanceItem)=>guidanceItem.Metadata.Id)
 												.Select((g)=>g.First())
 												.ToList();											
 								
@@ -150,39 +150,39 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			jsDataTable.add_Columns("Check", "Title",  "Technology", "Phase", "Type", "Category", "Id");
 			foreach(var guidanceItem in guidanceItems)
 					jsDataTable.add_Row("<input type='checkbox' class='GuidanceItemCheckBox' style='text-align: center'/>",
-										guidanceItem.title.trim(), 
-										guidanceItem.technology.trim() , 
-										guidanceItem.phase ?? "", 
-										guidanceItem.rule_Type.trim() , 										
+										guidanceItem.Metadata.Title.trim(), 
+										guidanceItem.Metadata.Technology.trim() , 
+										guidanceItem.Metadata.Phase ?? "", 
+										guidanceItem.Metadata.Type.trim() , 										
 										//guidanceItem.type ?? "(TBD2)", 										
-										guidanceItem.category.trim() , 
-										guidanceItem.guidanceItemId);
+										guidanceItem.Metadata.Category.trim() , 
+										guidanceItem.Metadata.Id);
 			return jsDataTable;
 		}
 		
 		//********  DataEdition
-		[WebMethod(EnableSession= true)]
+/*		[WebMethod(EnableSession= true)]
 		[EditArticles(SecurityAction.Demand)]
 		public bool UpdateGuidanceItemHtml(Guid guidanceItemId, string htmlContent)
 		{
 			var guidanceItem = javascriptProxy.GetGuidanceItemById(guidanceItemId.str());
 
-            new PagesHistory().logPageChange(guidanceItemId, tmAuthentication.currentUser.UserName, tmAuthentication.sessionID, guidanceItem.htmlContent.sanitizeHtmlContent());
+            //new PagesHistory().logPageChange(guidanceItemId, tmAuthentication.currentUser.UserName, tmAuthentication.sessionID, guidanceItem.Content.Data_Raw.sanitizeHtmlContent());
 			
-			guidanceItem.htmlContent = htmlContent.sanitizeHtmlContent();
+			guidanceItem.Content.Data_Raw = htmlContent.sanitizeHtmlContent();
 								
 			return javascriptProxy.UpdateGuidanceItem(guidanceItem);			
-		}
+		}*/
 		
 		//********  UserActivity
 		
-		[WebMethod(EnableSession= true)]
+/*		[WebMethod(EnableSession= true)]
 		public List<ChangedPage> getPagesHistory_by_PageId(Guid guidanceItemId)
 		{
 			return new PagesHistory().getPages_by_PageId(guidanceItemId);
 		}
-		 
-		[WebMethod(EnableSession= true)]
+	*/	 
+/*		[WebMethod(EnableSession= true)]
 		public bool currentUserHasActivityInGuidanceItem(Guid guidanceItemId, string userActivity)
 		{
             return userHasActivityInGuidanceItem(guidanceItemId, tmAuthentication.currentUser.UserName, userActivity);
@@ -210,6 +210,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		{
             return new PagesHistory().logPageChange(guidanceItemId, tmAuthentication.currentUser.UserName, tmAuthentication.sessionID, "", "", userActivity);			
 		}
+        */
 
 		[WebMethod(EnableSession = true)]
 		public Guid getGuidForMapping(string mapping)
