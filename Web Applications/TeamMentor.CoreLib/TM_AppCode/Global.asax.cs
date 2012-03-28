@@ -15,19 +15,17 @@ namespace SecurityInnovation.TeamMentor.Website
 			var lastError = Server.GetLastError();
 			if (lastError is HttpException && (lastError as HttpException).GetHttpCode() == 404)
 			{				
-				new HandleUrlRequest().handleCassini404(Request.Url.PathAndQuery);								
+				new HandleUrlRequest().routeRequestUrl();								
 			}						
 		}
 
 		 
 		protected void Application_Start				(object sender, EventArgs e)		{ }
 		protected void Session_Start					(object sender, EventArgs e)		{ }	
+
 		protected void Application_BeginRequest			(object sender, EventArgs e)		
         {
-            new HandleUrlRequest().handleCassini404(Request.Url.PathAndQuery);
-            
-            //HttpContext.Current.Response.Write(Request.Url);
-            //HttpContext.Current.Response.End();
+            new HandleUrlRequest().routeRequestUrl();            
         }
 		protected void Application_AuthenticateRequest	(object sender, EventArgs e)		{ }
 		protected void Session_End						(object sender, EventArgs e)		{ }
