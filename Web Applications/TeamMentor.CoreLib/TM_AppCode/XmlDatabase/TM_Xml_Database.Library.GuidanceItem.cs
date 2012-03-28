@@ -180,8 +180,11 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 
                         var _guidanceItem = fullPath.load<TeamMentor_Article>(); //.transform_into_guidanceItem();
                         if (_guidanceItem.isNull())
-						    // _guidanceItem = guidanceItem.Load(fullPath).transform();
+                        {
+                            // _guidanceItem = guidanceItem.Load(fullPath).transform();
                             _guidanceItem = fullPath.load<Guidance_Item_Import>().transform();
+                            _guidanceItem.saveAs(fullPath);   // to do an import in place
+                        }  
 						if (_guidanceItem.notNull())
 						{
 							if(_guidanceItem.Metadata.Id != guidanceItemId)
