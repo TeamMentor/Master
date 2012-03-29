@@ -56,6 +56,8 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                     case "xml":
                     case "raw":                        
                         return handleAction_Raw(data);                                                      
+                    case "html":
+                        return handleAction_Html(data);
                     case "xsl":
                         return handleAction_Xsl(data);
                     case "article":
@@ -138,6 +140,20 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
             }
             return true;
         }
+
+        private bool handleAction_Html(string data)
+        {
+            var guid = tmWebServices.getGuidForMapping(data);
+            if (guid != Guid.Empty)
+            {
+                context.Response.ContentType = "text/html";
+                var article = tmWebServices.GetGuidanceItemById(guid.str());
+                context.Response.Write(article.Content.Data.Value);
+            }
+            return true;
+        }
+
+        
 
 
         //utils
