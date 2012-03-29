@@ -6,11 +6,10 @@
 	</head>
 	<body>	
 		<script>		
+            var showLinksToOtherEditors = true;
 
 			//$(function() { TM.Debug.FireBugLite.open() });
-			
-			//TM.Gui.GuidanceItemEditor.popupTest = function() {} ;  	// for the popup tester (not working);
-
+						
 			TM.Gui.GuidanceItemEditor_Page = "";
 			
 			function showEditor_Elrte()
@@ -383,17 +382,16 @@
             $("#topButtons").show();
             $(".ItemDetailTable").show();                      
 						
-/*			
-			$("#linksToEditors").html('');
-			$("#linksToEditors").add_Link("Elrte Editor"  , window.location.hash).click(showEditor_Elrte);
-			$("#linksToEditors").add_Link("RawHtml Editor", window.location.hash).click(showEditor_RawHtml);
-			$("#linksToEditors").add_Link("CLEditor Editor", window.location.hash).click(showEditor_CLEditor);
+            if (showLinksToOtherEditors)
+            {
+			    $("#linksToEditors").html('');
+			    $("#linksToEditors").add_Link("Elrte Editor"  , window.location.hash).click(showEditor_Elrte);
+			    $("#linksToEditors").add_Link("RawHtml Editor", window.location.hash).click(showEditor_RawHtml);
+			    $("#linksToEditors").add_Link("CLEditor Editor", window.location.hash).click(showEditor_CLEditor);
 			
-			$("#linksToEditors a").css('padding',5);
-*/
-//			setEditor();			
-								
-									
+                $("#linksToEditors").absolute().top(8).left(500);
+			    $("#linksToEditors a").css('padding',5);
+            }									
 		}
 		
 		var mapAutoCompleteValues = function()

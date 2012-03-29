@@ -3,7 +3,10 @@
 	<head>	
 		<title>TeamMentor 3.0</title>		
 		<link  href="/aspx_Pages/scriptCombiner.ashx?s=HomePage_CSS&ct=css" 				type="text/css" rel="stylesheet" /> 					
-		<script src="/aspx_Pages/scriptCombiner.ashx?s=WebServices_JS"						type="text/javascript"></script>					
+		<script src="/aspx_Pages/scriptCombiner.ashx?s=WebServices_JS"						type="text/javascript"></script>	
+        
+        <link href="/Javascript/jsPrettify/prettify.css"                                    type="text/css" rel="stylesheet" />
+        <script src="/Javascript/jsPrettify/prettify.js"                                    type="text/javascript" ></script>				
 	</head>
 	<body>	
 			<script type="text/javascript">
@@ -119,6 +122,8 @@
 						fixGuidanceItemLinks();
 				
 						scrollToTopOfPage();
+
+                        prettyPrint();
 					}
                 
 			   showPageChange = function(changeID)
@@ -209,9 +214,6 @@
 						{	
 							$("#itemContent").hide();																
 							$("#notAViewerErrorMessage").show().html("<h2>Access denied.</h2><br/><p>Please close this window or <a href='javascript:TM.Gui.Dialog.loginPage()'>login</a></p>");
-
-
-						//	TM.Gui.Dialog.loginPage();					
 						}
 					
 						if(TM.Gui.CurrentUser.isEditor() )				
@@ -221,19 +223,7 @@
 						else
 							$("#SidePanel").hide();
 
-				
-				
-						//css fixes 
-				
-				
-						//"links".$().height(20);
-						//"previousVersions".$().height(20);
-						//"addCommentBox".$().hide();
-						//"logCommentButton".$().absolute().bottom(10).right(10)
-						//"UserCommentTextBox".$().absolute().top(10).right(20).bottom(40).left(10);
 						"ItemTitle".$().css('padding',10)	
-
-				
 					}
 		
 				$(function()
