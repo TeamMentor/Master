@@ -135,8 +135,6 @@
     <Content Include="Css\jquery.ui.slider.css" />
     <Content Include="Css\jquery.ui.tabs.css" />
     <Content Include="Css\jquery.ui.theme.css" />
-    <Content Include="Css\TM_3.0.css" />
-    <Content Include="Css\TM_3.0.js" />
     <Content Include="default.htm" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -545,7 +543,6 @@
     <Content Include="Xslt\TeamMentor_Article.xslt" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Css\__default.css" />
     <Content Include="Images\AllLibraries.png" />
     <Content Include="Images\AppliedFiltersHeader.png" />
     <Content Include="Images\calendar-icon.png" />

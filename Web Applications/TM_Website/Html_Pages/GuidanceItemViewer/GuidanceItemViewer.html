@@ -69,6 +69,8 @@
 					var loadedGuidanceItem = data.d;	
 					if (loadedGuidanceItem != null)
 					{			
+                        $("#itemContent").show()
+
 						"#Title"            .$().html(loadedGuidanceItem.Metadata.Title);
 						"CategoriesLabel"   .$().html(loadedGuidanceItem.Metadata.Category);
 						"PhaseLabel"        .$().html(loadedGuidanceItem.Metadata.Phase);
@@ -81,7 +83,8 @@
 					}
 					else
 					{
-						"#Title".$().html("(Invalid GUID: No Guidance Item found)");
+                        "ItemContent".$().hide();
+						"#Title".$().html("Sorry, we couldn't find the requested article.");
 						"CategoriesLabel".$().html("");
 						"PhaseLabel".$().html("");
 						"TechnologyLabel".$().html("");
@@ -96,14 +99,14 @@
 					$("a").css('color','#339')			// fix link color
 					if(window.opener ==null)
 						return;
-					$(".ItemContent a[href]").each(function()
+					$(".ItemContent a[href]").each(function()				                         
 						{					
 							var href = $(this).attr('href');
 							if (href.indexOf('http') > -1)
 								$(this).attr('target', '_blank');
 							else
 							{
-								var id =  href.replace("?#ruledisplay:","");				   					
+								var id =  href.replace("/article/","");				   					
 								var giData= window.opener.$.data[id];
 								if (isUndefined(giData))					
 								{
@@ -206,13 +209,11 @@
 								
 						if(TM.Gui.CurrentUser.isViewer())
 						{
-							setGuidanceIdfromUrlHash();
-							$("#itemContent").show()
+							setGuidanceIdfromUrlHash();							
 							$("#notAViewerErrorMessage").show()
 						}
 						else
-						{	
-							$("#itemContent").hide();																
+						{																							
 							$("#notAViewerErrorMessage").show().html("<h2>Access denied.</h2><br/><p>Please close this window or <a href='javascript:TM.Gui.Dialog.loginPage()'>login</a></p>");
 						}
 					
@@ -229,7 +230,8 @@
 				$(function()
 					{
 						$("#loadingMessage").remove();								
-				
+				        $("#itemContent").hide();	
+                        
 						TM.Events.onUserDataLoaded.add(buildGui);
 				
 						loadUserDataAndBuildGui();			

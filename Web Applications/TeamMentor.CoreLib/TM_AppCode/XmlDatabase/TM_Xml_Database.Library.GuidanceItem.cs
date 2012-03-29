@@ -362,8 +362,8 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
         public static Guid xmlBD_resolveDirectMapping(this TM_Xml_Database tmDatabase, string mapping)
         { 
             return (from item in TM_Xml_Database.Cached_GuidanceItems
-                    where item.Value.Metadata.DirectLink == mapping
-                          || item.Value.Metadata.Title   == mapping
+                    where item.Value.Metadata.DirectLink == mapping &&
+                          item.Value.Metadata.Title.contains(mapping)
                     select item.Key).first();
         }
 

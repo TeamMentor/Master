@@ -6,7 +6,7 @@
 	</head>
 	<body>	
 		<script>		
-            var showLinksToOtherEditors = true;
+            var showLinksToOtherEditors = false;
 
 			//$(function() { TM.Debug.FireBugLite.open() });
 						
@@ -373,7 +373,8 @@
 		
 		var openGuidanceItemViewer = function()
 		{			
-			document.location = "/html_pages/GuidanceItemViewer/GuidanceItemViewer.html?#ruledisplay:" + guidanceId;
+			//document.location = "/html_pages/GuidanceItemViewer/GuidanceItemViewer.html?#ruledisplay:" + guidanceId;
+            document.location = "/article/" + guidanceId;
 		}
 		
         var loadEditor = function()
