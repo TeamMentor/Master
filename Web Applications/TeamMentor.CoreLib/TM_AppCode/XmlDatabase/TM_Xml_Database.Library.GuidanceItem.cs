@@ -370,7 +370,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
         public static Guid xmlBD_resolveMappingToArticleGuid(this TM_Xml_Database tmDatabase, string mapping)
 		{
             //mapping = new HttpServerUtility().UrlDecode(mapping);
-            mapping = HttpContext.Current.Server.UrlDecode(mapping);
+            mapping = HttpContext.Current.Server.UrlDecode(mapping).replaceAllWith(" ", "_", "+", "-");
             var directMapping = tmDatabase.xmlBD_resolveDirectMapping(mapping);
             if (directMapping != Guid.Empty)
                 return directMapping;
