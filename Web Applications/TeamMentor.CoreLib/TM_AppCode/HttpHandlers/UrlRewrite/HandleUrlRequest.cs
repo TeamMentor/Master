@@ -35,7 +35,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
             if(path.starts("/"))
                 path = path.removeFirstChar();
             var splitedPath = path.split("/");
-            if (splitedPath.size() > 1)
+            if (splitedPath.size() > 0)
             { 
                 var action = splitedPath.shift();   // extract first element               
                 var data = splitedPath.join("/");   // rejoin the rest
@@ -59,13 +59,17 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                     case "html":
                         return handleAction_Html(data);
                     case "xsl":
-                        return handleAction_Xsl(data);
+                        return handleAction_Xsl(data,"TeamMentor_Article.xslt");
+                    case "notepad":
+                        return handleAction_Xsl(data, "Notepad_Edit.xslt");                        
                     case "article":
                         return redirectTo_ArticleViewer();
                     case "edit":
                         return redirectTo_ArticleEditor();
                     case "admin":
                         return redirectTo_ControlPanel();
+                    case "login":
+                        return redirectTo_Login();                        
                     case "images":                        
                     case "image":
                         return handleAction_Image(data);
@@ -114,7 +118,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
             return false;
         }
 
-        private bool handleAction_Xsl(string data)
+        private bool handleAction_Xsl(string data, string xsltToUse)
         {
             var guid = tmWebServices.getGuidForMapping(data);
             if (guid != Guid.Empty)
@@ -122,7 +126,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                 context.Response.ContentType = "application/xml";
                 var xmlContent = tmWebServices.XmlDatabase_GetGuidanceItemXml(guid);
                 var xmlSignature = "<?xml version=\"1.0\" encoding=\"utf-8\"?>";
-                var xsltText = "<?xml-stylesheet type=\"text/xsl\" href=\"/xslt/TeamMentor_Article.xslt\"?>";
+                var xsltText = "<?xml-stylesheet type=\"text/xsl\" href=\"/xslt/{0}\"?>".format(xsltToUse);
                 xmlContent = xmlContent.replace(xmlSignature, xmlSignature.line().append(xsltText));
                 context.Response.Write(xmlContent);                
             }
@@ -181,7 +185,15 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		{			
 			context.Response.Redirect("/html_pages/ControlPanel/controlpanel.html");
             return false;    
-		}                
+		}
+               
+        public bool redirectTo_Login()
+		{			
+			context.Server.Transfer("/Html_Pages/Gui/Pages/Login.html");
+            return false;    
+		}
+
+        
 
 	}
 }
