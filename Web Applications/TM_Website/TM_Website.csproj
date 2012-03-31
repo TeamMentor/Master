@@ -135,6 +135,13 @@
     <Content Include="Css\jquery.ui.slider.css" />
     <Content Include="Css\jquery.ui.tabs.css" />
     <Content Include="Css\jquery.ui.theme.css" />
+    <Content Include="Css\ThemeForest_ReadyMade\css\buttons.css" />
+    <Content Include="Css\ThemeForest_ReadyMade\css\forms.css" />
+    <Content Include="Css\ThemeForest_ReadyMade\css\login.css" />
+    <Content Include="Css\ThemeForest_ReadyMade\css\reset.css" />
+    <Content Include="Css\ThemeForest_ReadyMade\css\text.css" />
+    <Content Include="Css\ThemeForest_ReadyMade\images\btn-35.png" />
+    <Content Include="Css\ThemeForest_ReadyMade\images\error_stem.png" />
     <Content Include="default.htm" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -211,9 +218,15 @@
     <Content Include="Html_Pages\Gui\Dialogs\Dialog with not a lot of content.html" />
     <Content Include="Html_Pages\Gui\Dialogs\Login.Html" />
     <Content Include="Html_Pages\Gui\Dialogs\Signup.html" />
+    <Content Include="Html_Pages\Gui\Pages\login.html" />
     <Content Include="Html_Pages\Gui\Panels\About_TeamMentor.html" />
     <Content Include="Html_Pages\_UnitTest_Helpers\Tests_For_BrowserBugs\Chrome_CPU_Spike_on_Password_Field_in_JQueryUI_Dialog.htm" />
     <Content Include="Html_Pages\_UnitTest_Helpers\_Javascript_Loaders\FirebugLite_with_TM_WebServices.html" />
+    <Content Include="Javascript\bootstrap\bootstrap.min.css" />
+    <Content Include="Javascript\bootstrap\bootstrap.min.js" />
+    <Content Include="Javascript\bootstrap\glyphicons-halflings-white.png" />
+    <Content Include="Javascript\bootstrap\glyphicons-halflings.png" />
+    <Content Include="Javascript\jQuery\jquery.textarea.js" />
     <Content Include="Javascript\TM.ControlPanel\TM.ControlPanel.AdminTasks.js" />
     <Content Include="Javascript\TM.Gui\AppliedFIlters.DataManipulation.js" />
     <Content Include="Javascript\TM.Gui\AppliedFIlters.js" />
@@ -413,10 +426,7 @@
     <Content Include="Javascript\IE_Fixes.js" />
     <Content Include="Javascript\jLinq\jlinq.jquery.js" />
     <Content Include="Javascript\jLinq\jlinq.js" />
-    <Content Include="Javascript\jO2\jO2_jQueryUI_ExtensionMethods.js" />
     <Content Include="Javascript\jO2\jO2_jQuery_ExtensionMethods.js" />
-    <Content Include="Javascript\jO2\jO2_MiscGuiControls_ExtensionMethods.js" />
-    <Content Include="Javascript\jO2\jO2_Object_ExtensionMethods.js" />
     <Content Include="Javascript\jO2\jO2_String_ExtensionMethods.js" />
     <Content Include="Javascript\jQuery.DataTable\dataTable.ExtraMethods.js" />
     <Content Include="Javascript\jQuery.DataTable\dataTable.PlugIns.js" />
@@ -540,6 +550,7 @@
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Xslt\Notepad_Edit.xslt" />
     <Content Include="Xslt\TeamMentor_Article.xslt" />
   </ItemGroup>
   <ItemGroup>
@@ -572,7 +583,6 @@
     <None Include="Aspx_Pages\File_Upload.ashx" />
     <Content Include="Aspx_Pages\UrlRewriter.ashx" />
     <None Include="Aspx_Pages\ScriptCombiner.ashx" />
-    <None Include="Aspx_Pages\TM_3_0.Master" />
     <None Include="Aspx_Pages\TM_WebServices.asmx" />
     <None Include="Html_Pages\ControlPanel\WebEditor\codeMirror\baboon_vector.svg" />
     <Content Include="Html_Pages\ControlPanel\WebEditor\WebEditorService.ashx" />
@@ -606,8 +616,8 @@
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
-          <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>3186</DevelopmentServerPort>
+          <AutoAssignPort>False</AutoAssignPort>
+          <DevelopmentServerPort>3187</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>
