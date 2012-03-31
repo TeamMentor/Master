@@ -137,10 +137,9 @@
     <None Include="TeamMentor.CoreLib.nuspec">
       <SubType>Designer</SubType>
     </None>
-    <None Include="TM_AppCode\O2_Scripts_APIs\_Extra_methods_Collections.cs.txt" />
-    <None Include="TM_AppCode\O2_Scripts_APIs\_Extra_methods_Items.cs.txt" />
+    <Compile Include="TM_AppCode\O2_Scripts_APIs\_Extra_methods_Xml_Linq.cs" />
     <None Include="TM_AppCode\O2_Scripts_APIs\_Extra_methods_Misc.cs.txt" />
-    <None Include="TM_AppCode\O2_Scripts_APIs\_Extra_methods_Zip.cs.txt" />
+    <Compile Include="TM_AppCode\O2_Scripts_APIs\_Extra_methods_HtmlAgilityPack_ExtensionMethods.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">
