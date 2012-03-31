@@ -97,12 +97,26 @@
 									}
 
 
-	jQuery.fn.center = function () {
+	jQuery.fn.center = function ()  {
 										this.css("position","absolute");
 										this.css("top", (($(window).height() - this.outerHeight()) / 2) + $(window).scrollTop() + "px");
 										this.css("left", (($(window).width() - this.outerWidth()) / 2) + $(window).scrollLeft() + "px");
 										return this;
 									}
+    
+    
+    jQuery.ctrl     = function(key, callback, args)                                       //from http://www.gmarwaha.com/blog/2009/06/16/ctrl-key-combination-simple-jquery-plugin/
+                                    {
+                                        $(document).keydown(function(e) 
+                                            {
+                                                if(!args) args=[];                              // IE barks when args is null
+                                                if(e.keyCode == key.charCodeAt(0) && e.ctrlKey) 
+                                                {
+                                                    callback.apply(this, args);
+                                                    return false;
+                                                }
+                                            });
+                                    };
 
 									
 function reloadEx()
