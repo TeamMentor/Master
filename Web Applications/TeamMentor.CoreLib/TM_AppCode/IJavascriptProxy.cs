@@ -95,6 +95,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		//Guid CreateGuidanceItem(Guid libraryIdGuid, Guid guidanceType, Guid creatorId, string creatorCaption, string title, string images, DateTime lastUpdate, string topic, string technology, string category, string ruleType, string priority, string status, string author, string htmlContent) ;
 		//bool UpdateGuidanceItem(Guid id, string title, Guid guidanceType, Guid library, Guid creator, string creatorCaption, string content, string images, DateTime lastUpdate, string htmlContent);
 		TeamMentor_Article GetGuidanceItemById(string guidanceItemid);
+        Guid CreateArticle(TeamMentor_Article article);
 		Guid CreateGuidanceItem(GuidanceItem_V3 guidanceItem);
 		bool UpdateGuidanceItem(GuidanceItem_V3 guidanceItem);
         bool UpdateGuidanceItem(TeamMentor_Article article);

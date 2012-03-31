@@ -250,8 +250,8 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 															   Guid libraryId)
 		{			
 				
-		    var guidanceItem = new TeamMentor_Article();
-            guidanceItem.Metadata = new TeamMentor_Article_Metadata()
+		    var article = new TeamMentor_Article();
+            article.Metadata = new TeamMentor_Article_Metadata()
                 					{
 										Id = (guidanceItemId == Guid.Empty) 
 													? Guid.NewGuid()
@@ -269,7 +269,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 							//			.Type1;
 							//			.type;
 									};
-            guidanceItem.Content = new TeamMentor_Article_Content()
+            article.Content = new TeamMentor_Article_Content()
                                     {
                                         Data_Raw  = htmlContent,
                                         DataType  = "html"//,
@@ -297,19 +297,31 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 							//			.type;
 									};
              */ 
-			guidanceItem.xmlDB_Save_GuidanceItem(libraryId, tmDatabase);			
-			return guidanceItem;
+			article.xmlDB_Save_Article(libraryId, tmDatabase);			
+			return article;
 		}
 
-        public static bool xmlDB_Save_GuidanceItem(this TeamMentor_Article article, TM_Xml_Database tmDatabase)
+        public static Guid xmlDB_Create_Article(this TM_Xml_Database tmDatabase, TeamMentor_Article article)
+        {             
+            article.Metadata.Id = Guid.NewGuid();
+            if(article.xmlDB_Save_Article(tmDatabase))
+                return article.Metadata.Id;
+            return Guid.Empty;
+        }
+
+        public static bool xmlDB_Save_Article(this TeamMentor_Article article, TM_Xml_Database tmDatabase)
         { 
-            return article.xmlDB_Save_GuidanceItem(article.Metadata.Library_Id, tmDatabase);
+            return article.xmlDB_Save_Article(article.Metadata.Library_Id, tmDatabase);
         }
 
 		[PrincipalPermission(SecurityAction.Demand, Role = "EditArticles")]
-		public static bool xmlDB_Save_GuidanceItem(this TeamMentor_Article article, Guid libraryId, TM_Xml_Database tmDatabase)
+		public static bool xmlDB_Save_Article(this TeamMentor_Article article, Guid libraryId, TM_Xml_Database tmDatabase)
 		{
-			
+            if (libraryId == Guid.Empty)
+            { 
+                "[xmlDB_Save_GuidanceItem] no LibraryId was provided".error();
+                return false;
+            }
 			var xmlLibraries = TM_Xml_Database.Path_XmlLibraries;
 			var guidanceXmlPath = tmDatabase.getXmlFilePathForGuidanceId(article.Metadata.Id, libraryId);
 			
@@ -376,7 +388,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
             if (mapping.isGuid())
                 return mapping.guid();            
 
-            mapping = HttpContext.Current.Server.UrlDecode(mapping).replaceAllWith(" ", new [] {"_", "+"});
+            mapping = mapping.urlDecode().replaceAllWith(" ", new [] {"_", "+"});
             var directMapping = tmDatabase.xmlBD_resolveDirectMapping(mapping);
             if (directMapping != Guid.Empty)
                 return directMapping;            

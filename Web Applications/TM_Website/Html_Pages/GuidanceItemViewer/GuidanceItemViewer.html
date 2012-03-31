@@ -45,8 +45,8 @@
 						
                 var getGuidFromUrl = function()
 					{
-                        var id = document.URL.split('/').pop();
-						var mapping = "{ mapping : '" + id + "' }";                        
+                        mappingText = document.URL.split('/').pop();
+						var mapping = "{ mapping : '" + mappingText + "' }";                        
 						TM.WebServices.Helper.invoke_TM_WebService("getGuidForMapping",mapping, function(data)
 							{
 								guidanceId = data;
@@ -84,7 +84,8 @@
 					else
 					{
                         "ItemContent".$().hide();
-						"#Title".$().html("Sorry, we couldn't find the requested article.");
+						"#Title".$().html("Sorry, we couldn't find the requested article. ")
+                                    .append("You don't you <a href='/create/" + mappingText +"'>create it</a>");
 						"CategoriesLabel".$().html("");
 						"PhaseLabel".$().html("");
 						"TechnologyLabel".$().html("");
@@ -285,8 +286,7 @@
 			<div id="links"></div> 
 		</div>
    
-		<h1><div class="ItemTitle" ID="Title"> </div></h1>
-  
+		<h1><div class="ItemTitle" id="Title"> </div></h1>         
 		 <div class="ItemContent" id="itemContent">
    
   

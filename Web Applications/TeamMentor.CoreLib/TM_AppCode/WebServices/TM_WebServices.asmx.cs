@@ -151,7 +151,18 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		[WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public bool RemoveGuidanceItemsFromView(Guid viewId, List<Guid> guidanceItemIds)	{ this.resetCache(); return javascriptProxy.RemoveGuidanceItemsFromView(viewId, guidanceItemIds);		}		
 		[WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public bool RemoveViewFromFolder(Guid libraryId, Guid viewId)    					{ this.resetCache(); return javascriptProxy.RemoveViewFromFolder(libraryId, viewId); }  	
 		[WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public bool MoveViewToFolder(Guid viewId, Guid folderId) 							{ this.resetCache(); return javascriptProxy.MoveViewToFolder(viewId, folderId); }  	
-		[WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public Guid CreateGuidanceItem(GuidanceItem_V3 guidanceItem)						{ this.resetCache(); return javascriptProxy.CreateGuidanceItem(guidanceItem); 	}		
+		[WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public Guid CreateGuidanceItem(GuidanceItem_V3 guidanceItem)						{ this.resetCache(); return javascriptProxy.CreateGuidanceItem(guidanceItem); 	}
+        [WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public Guid CreateArticle(TeamMentor_Article article)					            { this.resetCache(); return javascriptProxy.CreateArticle(article); 	}
+        [WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public Guid CreateArticle_Simple(Guid libraryId, string title, string htmlCode)					       
+                                                                                        { 
+                                                                                            this.resetCache(); 
+                                                                                            var article = new TeamMentor_Article();
+                                                                                            article.Metadata.Library_Id = libraryId;
+                                                                                            article.Metadata.Title = title;
+                                                                                            article.Content.Data_Raw = htmlCode;
+                                                                                            return javascriptProxy.CreateArticle(article); 
+                                                                                        }
+        
 		[WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public bool UpdateGuidanceItem(TeamMentor_Article guidanceItem)						
 																						{ 
 																							this.resetCache();

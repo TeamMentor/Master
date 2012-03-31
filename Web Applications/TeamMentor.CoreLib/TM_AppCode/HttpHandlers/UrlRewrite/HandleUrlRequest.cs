@@ -66,6 +66,8 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                         return redirectTo_ArticleViewer();
                     case "edit":
                         return redirectTo_ArticleEditor();
+                    case "create":
+                        return handleAction_Create(data);    
                     case "admin":
                         return redirectTo_ControlPanel();
                     case "login":
@@ -124,14 +126,24 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
             if (guid != Guid.Empty)
             {
                 context.Response.ContentType = "application/xml";
-                var xmlContent = tmWebServices.XmlDatabase_GetGuidanceItemXml(guid);
-                var xmlSignature = "<?xml version=\"1.0\" encoding=\"utf-8\"?>";
-                var xsltText = "<?xml-stylesheet type=\"text/xsl\" href=\"/xslt/{0}\"?>".format(xsltToUse);
-                xmlContent = xmlContent.replace(xmlSignature, xmlSignature.line().append(xsltText));
+                var xmlContent = tmWebServices.XmlDatabase_GetGuidanceItemXml(guid)
+                                              .add_Xslt(xsltToUse);                                
                 context.Response.Write(xmlContent);                
             }
             return true;
         }
+
+        private bool handleAction_Create(string data)
+        {
+            var article = new TeamMentor_Article();
+            article.Metadata.Title = data.urlDecode();
+            var xmlContent = article.serialize(false)
+                                    .add_Xslt("Article_Edit.xslt"); 
+            context.Response.ContentType = "application/xml";
+            context.Response.Write(xmlContent);  
+            return true;
+        }
+        //data, );                    
 
         private bool handleAction_Raw(string data)
         {
@@ -193,7 +205,18 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
             return false;    
 		}
 
-        
 
 	}
+
+    public static class HelperExtensionMethods
+    {
+        public static string add_Xslt(this string xmlContent, string xsltToUse)
+        { 
+            //var xmlSignature = "<?xml version=\"1.0\" encoding=\"utf-8\"?>";
+            var signature = "<TeamMentor_Article Metadata_Hash=";
+            var xsltText = "<?xml-stylesheet type=\"text/xsl\" href=\"/xslt/{0}\"?>".format(xsltToUse);
+            xmlContent = xmlContent.replace(signature, xsltText.line().append(signature));
+            return xmlContent;
+        }
+    }
 }
