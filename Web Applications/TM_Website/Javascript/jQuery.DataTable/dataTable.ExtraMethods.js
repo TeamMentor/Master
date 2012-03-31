@@ -163,12 +163,15 @@ var getColumnFromArray = function(arrayData, columnIndex)
 			{
 				var href = $(this).attr('href');
 				
-				var id =  href.replace("/article/","");				   
+                $(this).attr('target', '_blank')
+
+/*				var id =  href.replace("/article/","");				   
 				var giData= $.data[id];
 
-                $(this).attr('target', '_blank')
+                
 				if (isDefined(giData) === false)
 					$(this).removeAttr('href').css("text-decoration" , "underline");
+                    */
 			})
 	};
 				
