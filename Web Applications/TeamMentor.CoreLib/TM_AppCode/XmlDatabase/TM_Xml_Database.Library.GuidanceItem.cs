@@ -307,20 +307,24 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
         }
 
 		[PrincipalPermission(SecurityAction.Demand, Role = "EditArticles")]
-		public static bool xmlDB_Save_GuidanceItem(this TeamMentor_Article guidanceItem, Guid libraryId, TM_Xml_Database tmDatabase)
+		public static bool xmlDB_Save_GuidanceItem(this TeamMentor_Article article, Guid libraryId, TM_Xml_Database tmDatabase)
 		{
 			
 			var xmlLibraries = TM_Xml_Database.Path_XmlLibraries;
-			var guidanceXmlPath = tmDatabase.getXmlFilePathForGuidanceId(guidanceItem.Metadata.Id, libraryId);
+			var guidanceXmlPath = tmDatabase.getXmlFilePathForGuidanceId(article.Metadata.Id, libraryId);
 			
-			"Saving GuidanceItem {0} to {1}".info(guidanceItem.Metadata.Id, guidanceXmlPath);				
+			"Saving GuidanceItem {0} to {1}".info(article.Metadata.Id, guidanceXmlPath);				
 			
-			//guidanceItem.libraryId = libraryId.str();			
-			guidanceItem.saveAs(guidanceXmlPath);			
-			//add it to in Memory cache
+            //tidy the html
+            if(article.Content.DataType.lower() == "html")
+                article.Content.Data_Raw = article.Content.Data_Raw.tidyHtml();
+            
 
-//			tmDatabase.setGuidanceExplorerObjects();
-			guidanceItem.update_Cache_GuidanceItems(tmDatabase);			
+			article.Metadata.Library_Id = libraryId;        //ensure the LibraryID is correct
+			article.saveAs(guidanceXmlPath);			
+
+			//add it to in Memory cache
+			article.update_Cache_GuidanceItems(tmDatabase);			
 			
 			return guidanceXmlPath.fileExists();			
 		}
@@ -360,34 +364,34 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 
 
         public static Guid xmlBD_resolveDirectMapping(this TM_Xml_Database tmDatabase, string mapping)
-        { 
+        {            
             return (from item in TM_Xml_Database.Cached_GuidanceItems
-                    where item.Value.Metadata.DirectLink == mapping &&
-                          item.Value.Metadata.Title.contains(mapping)
+                    where item.Value.Metadata.DirectLink == mapping ||
+                          item.Value.Metadata.Title == mapping
                     select item.Key).first();
         }
 
         public static Guid xmlBD_resolveMappingToArticleGuid(this TM_Xml_Database tmDatabase, string mapping)
 		{
-            //mapping = new HttpServerUtility().UrlDecode(mapping);
-            mapping = HttpContext.Current.Server.UrlDecode(mapping).replaceAllWith(" ", "_", "+", "-");
+            if (mapping.isGuid())
+                return mapping.guid();            
+
+            mapping = HttpContext.Current.Server.UrlDecode(mapping).replaceAllWith(" ", new [] {"_", "+"});
             var directMapping = tmDatabase.xmlBD_resolveDirectMapping(mapping);
             if (directMapping != Guid.Empty)
-                return directMapping;
+                return directMapping;            
 
-            if (mapping.isGuid())
-                return mapping.guid();
-
-            if (mapping.isInt())
+            /*if (mapping.isInt())
             {   
                 var pos = mapping.toInt();
                 if(pos < TM_Xml_Database.Cached_GuidanceItems.Keys.size())
                     return TM_Xml_Database.Cached_GuidanceItems.Keys.toList()[pos];            
-            }
+            }*/
 
-            var results = tmDatabase.guidanceItems_SearchTitleAndHtml(mapping);
+            //this was too dangerous
+            /*var results = tmDatabase.guidanceItems_SearchTitleAndHtml(mapping);
             if (results.size() >0)
-                return results.first();
+                return results.first();*/
             return Guid.Empty;
 		}
 	}

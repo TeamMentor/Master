@@ -156,26 +156,20 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 																						{ 
 																							this.resetCache();
 																							var result = javascriptProxy.UpdateGuidanceItem(guidanceItem); 	
-																							/*try
-																							{																								
-																								if (result)
-																								{																									
-																									new PagesHistory().logPageChange(guidanceItem.guidanceItemId,
-                                                                                                                                     tmAuthentication.currentUser.notNull()
-                                                                                                                                        ? tmAuthentication.currentUser.UserName 
-																																		: "[tm error: no user]",
-                                                                                                                                     tmAuthentication.sessionID, 
-																																	 guidanceItem.htmlContent);
-																									return true;																																	
-																								}
-																								return false;																																															
-																							}
-																							catch(Exception ex)
-																							{
-																								"Error in new PagesHistory(): {0} \n\n {1}".error(ex.Message, ex.StackTrace);
-																							}*/
 																							return result;
-																						}																																
+																						}	
+		[WebMethod(EnableSession = true)]   [EditArticles(SecurityAction.Demand)]   public bool SetGuidanceItemHtml (Guid articleId,string htmlCode)					        
+                                                                                        { 
+                                                                                            resetCache();
+                                                                                            var article = javascriptProxy.GetGuidanceItemById(articleId.str());
+                                                                                            if (article.notNull())
+                                                                                            {
+                                                                                                article.Content.Data_Raw = htmlCode;
+                                                                                                return javascriptProxy.UpdateGuidanceItem(article);                                                                                                
+                                                                                            }
+                                                                                            return false;
+                                                                                        }
+
 		[WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public bool DeleteGuidanceItem(Guid guidanceItemId)											{ resetCache(); return javascriptProxy.DeleteGuidanceItem(guidanceItemId); 	}			
 		[WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public bool DeleteGuidanceItems(List<Guid> guidanceItemIds)									{ resetCache(); return javascriptProxy.DeleteGuidanceItems(guidanceItemIds); 	}			
 		[WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public bool RenameFolder(Guid libraryId, Guid folderId , string newFolderName) 				{ resetCache(); return javascriptProxy.RenameFolder(libraryId, folderId,newFolderName ); } 		
