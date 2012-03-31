@@ -256,6 +256,18 @@ TM.WebServices.WS_Users.getUsers = function(callback, errorHandler)
 //***********************
 //TM.WebServices.WS_Libraries
 //***********************	
+
+
+//GET 
+
+TM.WebServices.WS_Libraries.get_Libraries = function(callback, errorHandler)
+{
+    TM.WebServices.Helper.invoke_TM_WebService("GetLibraries", "{}",callback, errorHandler);
+}
+
+
+//ADD
+
 TM.WebServices.WS_Libraries.add_Library = function(libraryName, callback, errorHandler)
 {	
 	var params = { library : { 
@@ -337,6 +349,26 @@ TM.WebServices.WS_Libraries.add_View = function(libraryId, folderId, viewName, c
 			errorHandler);
 }	
 
+TM.WebServices.WS_Libraries.add_Article_Simple = function(libraryId, title, htmlCode, callback , errorHandler)
+{		
+	var params = { 
+					libraryId : libraryId   , 
+					title: title , 
+					htmlCode : htmlCode 
+				 };     
+	TM.WebServices.Helper.invoke_TM_WebService('CreateArticle_Simple', params, 	callback, 	errorHandler);
+}
+
+
+// SET
+
+TM.WebServices.WS_Libraries.set_Article_Html = function (articleId, htmlCode, callback,errorHandler)
+{
+    var params = { articleId : articleId , htmlCode: htmlCode } ;
+    TM.WebServices.Helper.invoke_TM_WebService("SetGuidanceItemHtml",params, callback,errorHandler);
+}
+
+//RENAME
 
 TM.WebServices.WS_Libraries.rename_Library = function(libraryId, newName, callback , errorHandler)
 {		
@@ -372,6 +404,8 @@ function renameView(libraryId, viewId, parentFolder, viewName, callback)
 	invokeWebService( url, params, callback, defaultErrorHandler);
 }
 
+
+//REMOVE 
 TM.WebServices.WS_Libraries.remove_Library = function(libraryId, callback, errorHandler)
 {	
 	var params = { libraryId : libraryId };	
@@ -402,8 +436,3 @@ TM.WebServices.WS_Libraries.remove_GuidanceItems = function(guidanceItemIds, cal
 	TM.WebServices.Helper.invoke_TM_WebService('DeleteGuidanceItems', params, callback,errorHandler); 			
 }
 
-TM.WebServices.WS_Libraries.set_Article_Html = function (articleId, htmlCode, callback,errorHandler)
-{
-    var params = { articleId : articleId , htmlCode: htmlCode } ;
-    TM.WebServices.Helper.invoke_TM_WebService("SetGuidanceItemHtml",params, callback,errorHandler);
-}

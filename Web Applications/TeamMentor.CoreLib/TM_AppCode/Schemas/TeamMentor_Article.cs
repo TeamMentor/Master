@@ -11,12 +11,6 @@ using urn.microsoft.guidanceexplorer.guidanceItem;
 
 namespace SecurityInnovation.TeamMentor.WebClient
 {
-    [Serializable]
-    public class TeamMentor_Article_2
-    { 
-    
-    }
-
 	public class TeamMentor_Article
 	{ 
         [XmlAttribute] 
@@ -29,8 +23,9 @@ namespace SecurityInnovation.TeamMentor.WebClient
 
         public TeamMentor_Article()
         { 
-            //Metadata = new TeamMentor_Article_Metadata();
-            //Content = new TeamMentor_Article_Content();
+            Metadata = new TeamMentor_Article_Metadata();
+            Content = new TeamMentor_Article_Content();
+            Content.DataType = "Html";
         }
     }
 
