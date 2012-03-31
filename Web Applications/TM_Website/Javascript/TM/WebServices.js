@@ -61,7 +61,7 @@ TM.WebServices.Helper.defaultErrorHandler = function(msg)		// this method should
 			}
 			console.log("TM.WebServices.Helper.defaultErrorHandler: " + msg);
 		}
-		catch(error)
+		catch(error)    
 		{		
 			console.log("TM.WebServices.Helper.defaultErrorHandler: error in defaultErrorHandler: " + error.message);
 		}
@@ -400,4 +400,10 @@ TM.WebServices.WS_Libraries.remove_GuidanceItems = function(guidanceItemIds, cal
 {	
 	var params = { guidanceItemIds : guidanceItemIds };		
 	TM.WebServices.Helper.invoke_TM_WebService('DeleteGuidanceItems', params, callback,errorHandler); 			
+}
+
+TM.WebServices.WS_Libraries.set_Article_Html = function (articleId, htmlCode, callback,errorHandler)
+{
+    var params = { articleId : articleId , htmlCode: htmlCode } ;
+    TM.WebServices.Helper.invoke_TM_WebService("SetGuidanceItemHtml",params, callback,errorHandler);
 }
