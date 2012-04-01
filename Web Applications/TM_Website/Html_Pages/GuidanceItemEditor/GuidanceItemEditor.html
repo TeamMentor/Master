@@ -397,34 +397,41 @@
 		
 		var mapAutoCompleteValues = function()
 			{	
-				if(opener == null)
-					opener=parent;
+                try 
+                {
+				    if(opener == null)
+					    opener=parent;
 					
-				if(opener != null)
-				{					
-					technologies =[];  opener.$("#pivotPanel_Technology input").each(function() { technologies.push($.trim($(this).parent().text()) ) } ); 					
-					phases =[];  opener.$("#pivotPanel_Phase input").each(function()			{ phases.push($.trim($(this).parent().text()) ) } ); 
-					types =[];  opener.$("#pivotPanel_Type input").each(function() 				{ types.push($.trim($(this).parent().text()) ) } ); 
-					categories =[];  opener.$("#pivotPanel_Category input").each(function() 	{ categories.push($.trim($(this).parent().text()) ) } ); 
+				    if(opener != null)
+				    {					
+					    technologies =[];  opener.$("#pivotPanel_Technology input").each(function() { technologies.push($.trim($(this).parent().text()) ) } ); 					
+					    phases =[];  opener.$("#pivotPanel_Phase input").each(function()			{ phases.push($.trim($(this).parent().text()) ) } ); 
+					    types =[];  opener.$("#pivotPanel_Type input").each(function() 				{ types.push($.trim($(this).parent().text()) ) } ); 
+					    categories =[];  opener.$("#pivotPanel_Category input").each(function() 	{ categories.push($.trim($(this).parent().text()) ) } ); 
 					
-					/*$("#TechnologyLabel"	).autocomplete( { source: technologies });					
-					$("#PhaseLabel"			).autocomplete( { source: phases	   	});			
-					$("#GuidanceTypeLabel"	).autocomplete( { source: types		   	});
-					$("#CategoriesLabel"	).autocomplete( { source: categories 	});				
-					*/
+					    /*$("#TechnologyLabel"	).autocomplete( { source: technologies });					
+					    $("#PhaseLabel"			).autocomplete( { source: phases	   	});			
+					    $("#GuidanceTypeLabel"	).autocomplete( { source: types		   	});
+					    $("#CategoriesLabel"	).autocomplete( { source: categories 	});				
+					    */
 					
-					var loadData = function(data, target)
-					{
-						$.each(data, function(index, value)
-							{
-								$(target).append($("<option>").append(value).attr('value', value))
-							});
-					}
-					loadData(technologies,"#TechnologyValue");
-					loadData(phases,"#PhaseValue");
-					loadData(types,"#TypeValue");
-					loadData(categories,"#CategoryValue");
-				}
+					    var loadData = function(data, target)
+					    {
+						    $.each(data, function(index, value)
+							    {
+								    $(target).append($("<option>").append(value).attr('value', value))
+							    });
+					    }
+					    loadData(technologies,"#TechnologyValue");
+					    loadData(phases,"#PhaseValue");
+					    loadData(types,"#TypeValue");
+					    loadData(categories,"#CategoryValue");
+				    }
+                } 
+                catch (e) 
+                {
+    
+                }
 			}
 		
 		var showGuiBasedOnUserPrivileges = function()
@@ -490,7 +497,7 @@
 			});	
 				
 		
-	</script>	
+        </script>	
 	
 		<div id="ScriptLoader"> </div>
 		<div id="guiWithPanels"></div>	
