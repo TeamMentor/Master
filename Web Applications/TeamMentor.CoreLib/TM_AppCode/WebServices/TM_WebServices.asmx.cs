@@ -41,16 +41,17 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
     [System.Web.Script.Services.ScriptService]
     public partial class TM_WebServices : System.Web.Services.WebService 
     {
-        [Dependency]
-        public IJavascriptProxy javascriptProxy { get; set; }
+        //[Dependency]
+        public TM_Xml_Database_JavaScriptProxy javascriptProxy { get; set; }
 
-        public ActivityTracking activityTracking { get; set; }
+        //public ActivityTracking activityTracking { get; set; }
 
         public TM_Authentication tmAuthentication { get; set; }
 		
         public TM_WebServices()
         {			                
-            UnityInjection.resolve(this);
+            //UnityInjection.resolve(this);
+            javascriptProxy = new TM_Xml_Database_JavaScriptProxy(); 
 			tmAuthentication = new TM_Authentication(this);
 			tmAuthentication.mapUserRoles();					
 			
