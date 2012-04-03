@@ -12,11 +12,11 @@
         <script src="/Javascript/jQuery/jquery-1.7.1.min.js"                  type="text/javascript"></script>
         <script src="/Javascript/jQuery/jquery.textarea.js"                   type="text/javascript"></script>
 
-        <script src="/Javascript/TM/GlobalVariables.js/"                      type="text/javascript"></script>
-        <script src="/Javascript/TM/Settings.js/"                             type="text/javascript"></script>
-        <script src="/Javascript/TM/WebServices.js/"                          type="text/javascript"></script>
-        <script src="/Javascript/TM/Events.js/"                               type="text/javascript"></script>
-        <script src="/Javascript/TM.Gui/TM.Gui.CurrentUser.js/"               type="text/javascript"></script>
+        <script src="/Javascript/TM/GlobalVariables.js"                       type="text/javascript"></script>
+        <script src="/Javascript/TM/Settings.js"                              type="text/javascript"></script>
+        <script src="/Javascript/TM/WebServices.js"                           type="text/javascript"></script>
+        <script src="/Javascript/TM/Events.js"                                type="text/javascript"></script>
+        <script src="/Javascript/TM.Gui/TM.Gui.CurrentUser.js"                type="text/javascript"></script>
         <style>
           .Content { width:95%; top:170px;bottom:10px;left:20px; position:Fixed ; }
           .Footer  { position: fixed; left: 0; right: 0; bottom: 0; text-align:center}          

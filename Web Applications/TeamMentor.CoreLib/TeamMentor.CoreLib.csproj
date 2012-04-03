@@ -108,11 +108,11 @@
     <None Include="TM_AppCode\TrackingDB\PagesHistory.cs.txt">
       <SubType>Code</SubType>
     </None>
-    <Compile Include="TM_AppCode\UnityInjection.cs" />
+    <None Include="TM_AppCode\UnityInjection.cs.txt" />
     <Compile Include="TM_AppCode\UtilMethods.cs" />
-    <Compile Include="TM_AppCode\WebServices\TM_WebServices.ActivityTracking.cs">
+    <None Include="TM_AppCode\WebServices\TM_WebServices.ActivityTracking.cs.txt">
       <SubType>Component</SubType>
-    </Compile>
+    </None>
     <Compile Include="TM_AppCode\WebServices\TM_WebServices.asmx.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -125,6 +125,7 @@
     <Compile Include="TM_AppCode\WebServices\TM_WebServices.GuiHelpers.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="TM_AppCode\XmlDatabase\TM_Xml_Database.Library.Files.cs" />
     <Compile Include="TM_AppCode\XmlDatabase\TM_Xml_Database.cs" />
     <Compile Include="TM_AppCode\XmlDatabase\TM_Xml_Database.Library.cs" />
     <Compile Include="TM_AppCode\XmlDatabase\TM_Xml_Database.Library.GuidanceExplorer.cs" />
