@@ -66,16 +66,27 @@
 				showGuidanceItemData = function(data)
 				{	
 			
-					var loadedGuidanceItem = data.d;	
+					loadedGuidanceItem = data.d;	
 					if (loadedGuidanceItem != null)
-					{			
+					{		
                         $("#itemContent").show()
-
-						"#Title"            .$().html(loadedGuidanceItem.Metadata.Title);
-						"CategoriesLabel"   .$().html(loadedGuidanceItem.Metadata.Category);
-						"PhaseLabel"        .$().html(loadedGuidanceItem.Metadata.Phase);
-						"TechnologyLabel"   .$().html(loadedGuidanceItem.Metadata.Technology);
-						"GuidanceTypeLabel" .$().html(loadedGuidanceItem.Metadata.Type);
+						"#Title"            .$().html(loadedGuidanceItem.Metadata.Title);	
+                        
+                        if (loadedGuidanceItem.Metadata.Category    == null &&
+                            loadedGuidanceItem.Metadata.Phase       == null && 
+                            loadedGuidanceItem.Metadata.Technology  == null && 
+                            loadedGuidanceItem.Metadata.Type        == null) 
+                        {
+                            $(".ItemDetailTable").hide();
+                        }
+                        else
+                        {
+                            $(".ItemDetailTable").show();
+						    "CategoriesLabel"   .$().html(loadedGuidanceItem.Metadata.Category);
+						    "PhaseLabel"        .$().html(loadedGuidanceItem.Metadata.Phase);
+						    "TechnologyLabel"   .$().html(loadedGuidanceItem.Metadata.Technology);
+						    "GuidanceTypeLabel" .$().html(loadedGuidanceItem.Metadata.Type);
+                        }
 						//"DateLabel".$().html(loadedGuidanceItem.lastUpdate);
 						showGuidanceItemHtml(loadedGuidanceItem.Content.Data_Raw);
 					//.html(data.d.category);;
@@ -85,7 +96,7 @@
 					{
                         "ItemContent".$().hide();
 						"#Title".$().html("Sorry, we couldn't find the requested article. ")
-                                    .append("You don't you <a href='/create/" + mappingText +"'>create it</a>");
+                                    .append("Why don't you <a href='/create/" + mappingText +"'>create it</a>");
 						"CategoriesLabel".$().html("");
 						"PhaseLabel".$().html("");
 						"TechnologyLabel".$().html("");
@@ -212,7 +223,7 @@
 						if(TM.Gui.CurrentUser.isViewer())
 						{
 							setGuidanceIdfromUrlHash();							
-							$("#notAViewerErrorMessage").show()
+							$("#notAViewerErrorMessage").hide()
 						}
 						else
 						{																							

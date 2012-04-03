@@ -381,6 +381,7 @@
 		{									
 			$("#guidanceItemEditor").load(TM.Gui.GuidanceItemEditor_Page, setGuidanceIdfromUrlHash);
             $("#topButtons").show();
+            $("button").show();	
             $(".ItemDetailTable").show();                      
 						
             if (showLinksToOtherEditors)
@@ -437,7 +438,7 @@
 		var showGuiBasedOnUserPrivileges = function()
 			{				
 				currentUserHasRole('EditArticles', 
-					function(result){										
+					function(result){		                                        							
 										if(result.d)
 											loadEditor();	
 										else
