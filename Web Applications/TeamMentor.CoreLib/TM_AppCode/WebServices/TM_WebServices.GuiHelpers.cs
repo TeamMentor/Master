@@ -8,6 +8,7 @@ using SecurityInnovation.TeamMentor.Authentication.WebServices.AuthorizationRule
 using Microsoft.Practices.Unity;
 using O2.DotNetWrappers.ExtensionMethods;
 using O2.XRules.Database.APIs;
+using System.IO;
 
 //O2File:TM_WebServices.asmx.cs
 //O2File:../ExtensionMethods/TM_Xml_Database_ExtensionMethods_GuiHelpers.cs
@@ -92,5 +93,14 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			var guiObjects = GetGUIObjects();
 			return guiObjects.GuidanceItemsMappings;
 		}
+
+
+        [WebMethod]
+        public bool Upload_File_To_Library(Guid libraryId, string filename, byte[] contents)
+        {
+            return javascriptProxy.tmXmlDatabase.upload_File_to_Library(libraryId, filename, contents);
+            //javascriptProxy.UploadImageToLibrary(filename, contents);
+            //javascriptProxy.tmXmlDatabase.PaUploadImageToLibrary(filename, contents);
+        }
 	}
 }
