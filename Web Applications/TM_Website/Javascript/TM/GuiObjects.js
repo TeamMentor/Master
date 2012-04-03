@@ -256,16 +256,44 @@ TM.WebServices.Data.getGuidanceItems_For_DataTable = function(guidanceItemsIds)
 						//console.log("ERROR FOR: " + value);
 					}
 					else
-						data.push([
-									index,									
-									guidandeItem.title,
-									guidandeItem.technology,
-									guidandeItem.phase,
-									guidandeItem.type,
-									guidandeItem.category,
-									guidandeItem.guidanceItemId, //value variable has the same value									
-//									guidandeItem.libraryId									
-								  ]) ; 						
+                    {
+                        var technology = (guidandeItem.technology    === null) ? "" : guidandeItem.technology;
+                        var phase      = (guidandeItem.phase         === null) ? "" : guidandeItem.phase;
+                        var type       = (guidandeItem.type          === null) ? "" : guidandeItem.type;
+                        var category   = (guidandeItem.category      === null) ? "" : guidandeItem.category;
+                        
+                        //for now hard-code this (need to find a better algorithm
+                        if (technology.split(",").length > 1)
+                        {
+                            $.each(technology.split(","), function()
+                                {
+                                    data.push([
+									    index, guidandeItem.title,
+									    this.trim(),
+                                        phase, type, category, 
+									    guidandeItem.guidanceItemId ]) ; 						
+                                });
+                        }
+                        else if (phase.split(",").length > 1)
+                        {
+                            $.each(phase.split(","), function()
+                                {
+                                    data.push([
+									    index, guidandeItem.title,
+                                        technology,
+									    this.trim(),
+                                        type, category, 
+									    guidandeItem.guidanceItemId ]) ; 						
+                                });
+                        }
+                        else
+                        {
+						    data.push([
+									    index, guidandeItem.title,
+									    technology, phase, type, category, 
+									    guidandeItem.guidanceItemId ]) ; 						
+                        }
+                    }
 				});			
 			return data;				
 		}									
