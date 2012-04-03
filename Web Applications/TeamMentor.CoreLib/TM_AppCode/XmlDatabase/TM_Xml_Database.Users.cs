@@ -393,6 +393,16 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		{
 			return TM_Xml_Database.ActiveSessions.hasKey(sessionID);
 		}
+
+        public static bool invalidateSession(this Guid sessionID)
+		{
+            if (sessionID.validSession())
+            {
+                TM_Xml_Database.ActiveSessions.Remove(sessionID);
+                return true;
+            }
+            return false;
+		}
 		
 		public static TMUser session_TmUser(this Guid sessionID)
 		{
