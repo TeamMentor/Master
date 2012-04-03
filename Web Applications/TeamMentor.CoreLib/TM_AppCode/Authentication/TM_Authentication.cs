@@ -74,18 +74,16 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
             set
             {
                 //	MyContext.Session["sessionID"] = value;
-
+                var previousSessionId = sessionID;
                 try
                 {
-                    //if (Session.notNull())
-                    tmWebServices.Session["sessionID"] = value;
-                    //var sessionCookie = System.Web.HttpContext.Current.Request.Cookies["Session"];
-                    //if (sessionCookie.isNull())
-                    //{
+                    if (tmWebServices.Session.notNull())
+                    {
+                        tmWebServices.Session["sessionID"] = value;
+                    }                    
                     var sessionCookie = new HttpCookie("Session", value.str());
                     sessionCookie.HttpOnly = true;
-                    System.Web.HttpContext.Current.Response.Cookies.Add(sessionCookie);
-                    //}
+                    System.Web.HttpContext.Current.Response.Cookies.Add(sessionCookie);                    
                 }
                 catch//(Exception ex) // this will happen on the unit tests
                 {
@@ -96,6 +94,10 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 				{					
 					new UserRoleBaseSecurity().MapRolesBasedOnSessionGuid(value);
 				}
+                else
+                {
+                    previousSessionId.invalidateSession();
+                }
             }
         }
 
