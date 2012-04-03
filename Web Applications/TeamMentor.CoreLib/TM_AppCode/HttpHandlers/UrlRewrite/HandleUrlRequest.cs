@@ -4,6 +4,9 @@ using System.Linq;
 using System.Web;
 using O2.DotNetWrappers.ExtensionMethods;
 using Microsoft.Security.Application;
+using SecurityInnovation.TeamMentor.Authentication.WebServices.AuthorizationRules;
+using System.IO;
+using System.Security;
 //using O2.XRules.Database.Utils;
 
 namespace SecurityInnovation.TeamMentor.WebClient.WebServices
@@ -50,7 +53,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
             try
             {
                 action = Encoder.HtmlEncode(action);
-                data = Encoder.HtmlEncode(data);
+                data = Encoder.HtmlEncode(data).replace("%20"," ");
                 switch (action.lower())
                 {
                     case "xml":
@@ -62,17 +65,21 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                         return handleAction_Xsl(data,"TeamMentor_Article.xslt");
                     case "notepad":
                         return handleAction_Xsl(data, "Notepad_Edit.xslt");                        
+                    case "viewer":
                     case "article":
-                        return redirectTo_ArticleViewer();
+                        return transfer_ArticleViewer();
                     case "edit":
-                        return redirectTo_ArticleEditor();
+                    case "editor":
+                        return transfer_ArticleEditor(data);
                     case "create":
                         return handleAction_Create(data);    
                     case "admin":
                         return redirectTo_ControlPanel();
                     case "login":
-                        return redirectTo_Login();                        
-                    case "images":                        
+                        return transfer_Login();   
+                    case "logout":
+                        return redirectTo_Logout();                        
+                    //case "images":                        
                     case "image":
                         return handleAction_Image(data);
                     case "jsonp":
@@ -80,11 +87,13 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                     default:                        
                         return false;                                          
                 }                                           
-            }
-            catch //(Exception ex)
-            {
+            }                
+            catch (Exception exception)
+            {                 
+                if (exception is SecurityException)
+                    return redirectTo_Login();
                 //context.Response.Write("<h2>Error: {0} </h2>".format(ex.Message));
-            }            
+            }                                    
             return false;			
 		}
 
@@ -110,7 +119,8 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
         //handlers
         private bool handleAction_Image(string data)
         {            
-            var imagePath = TM_Xml_Database.Path_XmlLibraries.pathCombine("Images").pathCombine(data);
+            
+            var imagePath = tmWebServices.javascriptProxy.tmXmlDatabase.Get_Path_To_File(data);            
             if (imagePath.fileExists())
             {
                 context.Response.ContentType = "image/{0}".format(data.extension().removeFirstChar());
@@ -122,15 +132,38 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 
         private bool handleAction_Xsl(string data, string xsltToUse)
         {
-            var guid = tmWebServices.getGuidForMapping(data);
-            if (guid != Guid.Empty)
+            //if (this.tmWebServices.tmAuthentication.sessionID. UserRole.ReadArticles
+            var xstlFile = context.Server.MapPath("\\xslt\\" + xsltToUse);
+            if (xstlFile.fileExists())
             {
-                context.Response.ContentType = "application/xml";
-                var xmlContent = tmWebServices.XmlDatabase_GetGuidanceItemXml(guid)
-                                              .add_Xslt(xsltToUse);                                
-                context.Response.Write(xmlContent);                
+                var guid = tmWebServices.getGuidForMapping(data);
+                if (guid != Guid.Empty)
+                {
+                    var xmlContent = tmWebServices.XmlDatabase_GetGuidanceItemXml(guid)
+                                                  .add_Xslt(xsltToUse);
+
+                    var xslTransform = new System.Xml.Xsl.XslTransform();
+                    xslTransform.Load(xstlFile);
+
+                    var xmlReader = new System.Xml.XmlTextReader(new StringReader(xmlContent));
+                    var xpathNavigator = new System.Xml.XPath.XPathDocument(xmlReader);
+                    var stringWriter = new StringWriter();
+
+                    xslTransform.Transform(xpathNavigator, new System.Xml.Xsl.XsltArgumentList(), stringWriter);
+
+                    context.Response.ContentType = "text/html";
+                    context.Response.Write(stringWriter.str());
+
+                    //context.Response.ContentType = "application/xml";
+
+                    //context.Response.Write(xmlContent);
+
+                    return true;
+                }
+                else return transfer_ArticleViewer();
+                    
             }
-            return true;
+            return false;
         }
 
         private bool handleAction_Create(string data)
@@ -149,9 +182,9 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
         {
             var guid = tmWebServices.getGuidForMapping(data);
             if (guid != Guid.Empty)
-            {
-                context.Response.ContentType = "application/xml";
+            {                
                 var xmlContent = tmWebServices.XmlDatabase_GetGuidanceItemXml(guid);
+                context.Response.ContentType = "application/xml";
                 context.Response.Write(xmlContent);
             }
             return true;
@@ -169,9 +202,6 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
             return true;
         }
 
-        
-
-
         //utils
         public void endResponse()
         { 
@@ -179,18 +209,41 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
             context.Response.End();
         }
 
-		public bool redirectTo_ArticleViewer()
+		public bool transfer_ArticleViewer()
 		{
-			var articleViewer = "/html_pages/GuidanceItemViewer/GuidanceItemViewer.html?";			
-			context.Server.Transfer(articleViewer);
+			context.Server.Transfer("/html_pages/GuidanceItemViewer/GuidanceItemViewer.html");						
+            return false;    
+		}
+        
+        public bool transfer_ArticleEditor(string data)
+		{         
+            var guid = tmWebServices.getGuidForMapping(data);
+            if (guid == Guid.Empty)
+                return transfer_ArticleViewer();
+
+            tmWebServices.XmlDatabase_GetGuidanceItemXml(guid); // will trigger an Security exception if the user if not authorized
+
+			context.Server.Transfer("/html_pages/GuidanceItemEditor/GuidanceItemEditor.html");						            
             return false;    
 		}
 
-        public bool redirectTo_ArticleEditor()
-		{
-			var articleViewer = "/html_pages/GuidanceItemEditor/GuidanceItemEditor.html?";			
-			context.Server.Transfer(articleViewer);
-            return false;    
+        public bool transfer_Login()
+		{			            
+			context.Server.Transfer("/Html_Pages/Gui/Pages/login.html");            
+            return false; 
+		}
+
+        public bool redirectTo_Login()
+		{	            
+		    context.Response.Redirect("/Login");                        	
+            return false; 
+		}
+        
+        public bool redirectTo_Logout()
+		{	
+            tmWebServices.Logout();
+		    context.Response.Redirect("/");                        	
+            return false; 
 		}
 
         public bool redirectTo_ControlPanel()
@@ -199,11 +252,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
             return false;    
 		}
                
-        public bool redirectTo_Login()
-		{			
-			context.Server.Transfer("/Html_Pages/Gui/Pages/Login.html");
-            return false;    
-		}
+        
 
 
 	}
