@@ -7,14 +7,14 @@ namespace SecurityInnovation.TeamMentor.WebClient
 	//public values 
 	public partial class TMConfig
 	{			
-		public string 		WebSite_Port 		 { get; set; }
-		public string 		WebSite_IP 			 { get; set; }
-		public string 		XmlLibrariesPath 	 { get; set; }
-		public List<string> Libraries_Disabled 	 { get; set; }
-		public string 		DefaultAdminUserName { get; set; }
-		public string 		DefaultAdminPassword { get; set; }	
-		public string 		GitHubPassword		 { get; set; }	
-		public string 		LibrariesZipsFolder	 { get; set; }	
+		public string 		WebSite_Port 		        { get; set; }
+		public string 		WebSite_IP 			        { get; set; }
+		public string 		XmlLibrariesPath 	        { get; set; }
+		public List<string> Libraries_Disabled 	        { get; set; }
+		public string 		DefaultAdminUserName        { get; set; }
+		public string 		DefaultAdminPassword        { get; set; }	
+		public string 		GitHubPassword		        { get; set; }	
+		public string 		LibrariesUploadedFiles	    { get; set; }	
 		public bool 		ShowContentToAnonymousUsers { get; set; }	
 	}
 	
@@ -50,12 +50,17 @@ namespace SecurityInnovation.TeamMentor.WebClient
 		{ 
 			get
 			{				
-				return TMConfig.Location.load<TMConfig>();				
+				return TMConfig.Location.load<TMConfig>() ?? new TMConfig();                
 				/*if (_current.isNull())
 					_current =  TMConfig.Location.load<TMConfig>();
 				return _current;*/
 			}
 		}
+
+        private TMConfig ensureDefaultValues()
+        {
+            throw new NotImplementedException();
+        }
 		
 		public TMConfig()
 		{
@@ -78,6 +83,7 @@ namespace SecurityInnovation.TeamMentor.WebClient
 			tmConfig.XmlLibrariesPath = "TM_Library";
 			tmConfig.DefaultAdminUserName = "admin";
 			tmConfig.DefaultAdminPassword = "!!tmbeta";
+            tmConfig.LibrariesUploadedFiles = "LibrariesUploadedFiles";
 			return tmConfig;
 		}
 	}

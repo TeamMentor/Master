@@ -30,7 +30,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		[WebMethod(EnableSession = true)] public string Ping(string message)  			{   return "received ping: {0}".format(message); }
 		
 //        [WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public string UseEnvironment_Moq()      		{   UnityInjection.useEnvironment_Moq(); 		return "using Moq Environment"; }
-		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public string UseEnvironment_XmlDatabase()   	{   UnityInjection.useEnvironment_XmlDatabase();return "using XmlDatabase Environment"; }
+//		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public string UseEnvironment_XmlDatabase()   	{   UnityInjection.useEnvironment_XmlDatabase();return "using XmlDatabase Environment"; }
 		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public string CurrentProxyType()        		{ 	return javascriptProxy.ProxyType; }
 		[WebMethod(EnableSession = true)] 											public string GetPasswordHash(string username, string password)		
 																																	{	return username.createPasswordHash(password); }
@@ -55,17 +55,15 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 																																		return new TM_Xml_Database().reloadData(libraryPath); 
 																																	}
 
-		[WebMethod(EnableSession = true)] public List<Guid> XmlDatabase_GuidanceItems_SearchTitleAndHtml(List<Guid> guidanceItemsIds, string searchText)		
-																	{	 return new TM_Xml_Database().guidanceItems_SearchTitleAndHtml(guidanceItemsIds,searchText); }																	
+		[WebMethod(EnableSession = true)] public List<Guid> XmlDatabase_GuidanceItems_SearchTitleAndHtml(List<Guid> guidanceItemsIds, string searchText)		{	 return new TM_Xml_Database().guidanceItems_SearchTitleAndHtml(guidanceItemsIds,searchText); }																	
 																	
-		[WebMethod(EnableSession = true)] public string XmlDatabase_GetGuidanceItemXml(Guid guidanceItemId)	
-																	{	return new TM_Xml_Database().xmlDB_guidanceItemXml(guidanceItemId); }
+		[WebMethod(EnableSession = true)] public string XmlDatabase_GetGuidanceItemXml(Guid guidanceItemId)	    {	return new TM_Xml_Database().xmlDB_guidanceItemXml(guidanceItemId); }        
 																	
-		[WebMethod(EnableSession = true)] public string RBAC_CurrentIdentity_Name()				{	return new UserRoleBaseSecurity().currentIdentity_Name(); }
-		[WebMethod(EnableSession = true)] public bool   RBAC_CurrentIdentity_IsAuthenticated()	{	return new UserRoleBaseSecurity().currentIdentity_IsAuthenticated(); }
-		[WebMethod(EnableSession = true)] public List<string>  RBAC_CurrentPrincipal_Roles()		{	return new UserRoleBaseSecurity().currentPrincipal_Roles().toList(); }
-		[WebMethod(EnableSession = true)] public bool  RBAC_HasRole(string role)					{	return RBAC_CurrentPrincipal_Roles().contains(role); }
-		[WebMethod(EnableSession = true)] public string  RBAC_SessionCookie()						{	return HttpContext.Current.Request.Cookies["Session"].notNull() 
+		[WebMethod(EnableSession = true)] public string RBAC_CurrentIdentity_Name()				                {	return new UserRoleBaseSecurity().currentIdentity_Name(); }
+		[WebMethod(EnableSession = true)] public bool   RBAC_CurrentIdentity_IsAuthenticated()	                {	return new UserRoleBaseSecurity().currentIdentity_IsAuthenticated(); }
+		[WebMethod(EnableSession = true)] public List<string>  RBAC_CurrentPrincipal_Roles()		            {	return new UserRoleBaseSecurity().currentPrincipal_Roles().toList(); }
+		[WebMethod(EnableSession = true)] public bool  RBAC_HasRole(string role)					            {	return RBAC_CurrentPrincipal_Roles().contains(role); }
+		[WebMethod(EnableSession = true)] public string  RBAC_SessionCookie()						            {	return HttpContext.Current.Request.Cookies["Session"].notNull() 
 																												? HttpContext.Current.Request.Cookies["Session"].Value : ""; }
 																												
 		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public string SyncWithGitHub(string username, string password)	{	return UtilMethods.syncWithGitHub(username,password);  }
@@ -112,7 +110,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		//Get_Libraries_Zip_Folder
 		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public string Get_Libraries_Zip_Folder()
 																					{
-                                                                                        var librariesZipsFolder = TMConfig.Current.LibrariesZipsFolder;                                                                                        
+                                                                                        var librariesZipsFolder = TMConfig.Current.LibrariesUploadedFiles;                                                                                        
                                                                                         return TM_Xml_Database.Path_XmlDatabase.fullPath().pathCombine(librariesZipsFolder).fullPath();
 																					}
 		//Get_Libraries_Zip_Folder_Files
@@ -124,7 +122,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public string Set_Libraries_Zip_Folder(string folder)
 																					{
 																						var tmConfig = TMConfig.Current;
-																						tmConfig.LibrariesZipsFolder = folder;
+																						tmConfig.LibrariesUploadedFiles = folder;
 																						//folder.createDir();
 																						if (tmConfig.SaveTMConfig())																																										
 																							return "Path set to '{0}' which currently has {1} files".format(folder.fullPath(), folder.files().size());

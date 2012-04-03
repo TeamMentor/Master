@@ -38,7 +38,8 @@ namespace SecurityInnovation.TeamMentor.WebClient
             var result = true;
 
             //calculate target folder
-            var librariesZipsFolder = TMConfig.Current.LibrariesZipsFolder;
+            var librariesZipsFolder = TMConfig.Current.LibrariesUploadedFiles;            
+
             var targetFolder = TM_Xml_Database.Path_XmlDatabase.fullPath().pathCombine(librariesZipsFolder).fullPath();
             
             if (targetFolder.valid())
