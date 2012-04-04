@@ -80,7 +80,9 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                     case "login":
                         return transfer_Login();   
                     case "logout":
-                        return redirectTo_Logout();                        
+                        return redirectTo_Logout();
+                    case "reloadcache":
+                        return reloadCache_and_RedirectToHomePage();
                     //case "images":                        
                     case "image":
                         return handleAction_Image(data);
@@ -201,8 +203,10 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
             if (guid != Guid.Empty)
             {
                 context.Response.ContentType = "text/html";
-                var article = tmWebServices.GetGuidanceItemById(guid.str());
-                context.Response.Write(article.Content.Data.Value);
+                var content = tmWebServices.GetGuidanceItemHtml(guid);
+                context.Response.Write(content);
+                //var article = tmWebServices.GetGuidanceItemById(guid.str());
+                //context.Response.Write(article.Content.Data.Value);
             }
             return true;
         }
@@ -212,6 +216,13 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
         { 
             context.Response.Flush();
             context.Response.End();
+        }
+
+
+        private bool reloadCache_and_RedirectToHomePage()
+        {
+            tmWebServices.XmlDatabase_ReloadData();
+            return redirectTo_HomePage();
         }
 
 		public bool transfer_ArticleViewer()
@@ -235,6 +246,12 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
         public bool transfer_Login()
 		{			            
 			context.Server.Transfer("/Html_Pages/Gui/Pages/login.html");            
+            return false; 
+		}
+
+        public bool redirectTo_HomePage()
+		{	            
+		    context.Response.Redirect("/");                        	
             return false; 
 		}
 
