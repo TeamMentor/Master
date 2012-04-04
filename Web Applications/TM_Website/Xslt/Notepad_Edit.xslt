@@ -64,7 +64,8 @@
               
              var openArticle = function()
               {
-                window.open("/article/"+id);
+                //window.open("/article/"+id);
+                document.location = "/xsl/"+id;
                 return false;
               }
               

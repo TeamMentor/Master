@@ -104,8 +104,8 @@
             
           var editArticle = function()
           {            
-            //window.open ("/notepad/" + title);
-            window.open ("/edit/" + title);
+            document.location = "/notepad/" + title;
+            //window.open ("/edit/" + title);
           }
                     
           $(function()
