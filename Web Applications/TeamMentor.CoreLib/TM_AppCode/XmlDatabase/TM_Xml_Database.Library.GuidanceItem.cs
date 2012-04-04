@@ -328,9 +328,10 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			
             //tidy the html
             if(article.Content.DataType.lower() == "html")
-                article.Content.Data_Raw = article.Content.Data_Raw.tidyHtml();
+                if((article.Content.Data_Raw.contains("{{{") && article.Content.Data_Raw.contains("}}}")).isFalse()) // in case we have Creole html literals
+                    article.Content.Data_Raw = article.Content.Data_Raw.tidyHtml();
             
-
+            article.Content.Data_Raw = article.Content.Data_Raw.replace("]]>", "]] >"); // xmlserialization below will break if there is a ]]>  in the text
 			article.Metadata.Library_Id = libraryId;        //ensure the LibraryID is correct
 			article.saveAs(guidanceXmlPath);			
 
@@ -370,15 +371,25 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		public static string xmlDB_guidanceItemXml(this TM_Xml_Database tmDatabase, Guid guidanceItemId)
 		{
 			var guidanceXmlPath = tmDatabase.getXmlFilePathForGuidanceId(guidanceItemId);
-			return guidanceXmlPath.fileContents().xmlFormat();
+			return guidanceXmlPath.fileContents();//.xmlFormat();
 		}
 
 
         public static Guid xmlBD_resolveDirectMapping(this TM_Xml_Database tmDatabase, string mapping)
-        {            
+        {           
+            if(mapping.inValid())
+                return Guid.Empty;
+
+
+            /*foreach(var item in TM_Xml_Database.Cached_GuidanceItems)
+                if(item.Value.Metadata.DirectLink.lower() == mapping ||item.Value.Metadata.Title.lower() == mapping)
+                    return item.Key;
+            */
+            mapping = mapping.lower();
+
             return (from item in TM_Xml_Database.Cached_GuidanceItems
-                    where item.Value.Metadata.DirectLink == mapping ||
-                          item.Value.Metadata.Title == mapping
+                    where (item.Value.Metadata.DirectLink.notNull() && item.Value.Metadata.DirectLink.lower() == mapping) ||
+                          (item.Value.Metadata.Title.notNull()      && item.Value.Metadata.Title.lower() == mapping)
                     select item.Key).first();
         }
 

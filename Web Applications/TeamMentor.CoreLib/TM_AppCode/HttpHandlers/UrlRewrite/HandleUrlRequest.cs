@@ -141,28 +141,31 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                 var guid = tmWebServices.getGuidForMapping(data);
                 if (guid != Guid.Empty)
                 {
-                    var xmlContent = tmWebServices.XmlDatabase_GetGuidanceItemXml(guid)
-                                                  .add_Xslt(xsltToUse);
+                    var xmlContent = tmWebServices.XmlDatabase_GetGuidanceItemXml(guid);
+                                                  //.add_Xslt(xsltToUse);
+                    if (xmlContent.valid())
+                    {
+                        var xslTransform = new System.Xml.Xsl.XslTransform();
+                        xslTransform.Load(xstlFile);
 
-                    var xslTransform = new System.Xml.Xsl.XslTransform();
-                    xslTransform.Load(xstlFile);
+                        var xmlReader = new System.Xml.XmlTextReader(new StringReader(xmlContent));
+                        var xpathNavigator = new System.Xml.XPath.XPathDocument(xmlReader);
+                        var stringWriter = new StringWriter();
 
-                    var xmlReader = new System.Xml.XmlTextReader(new StringReader(xmlContent));
-                    var xpathNavigator = new System.Xml.XPath.XPathDocument(xmlReader);
-                    var stringWriter = new StringWriter();
+                        xslTransform.Transform(xpathNavigator, new System.Xml.Xsl.XsltArgumentList(), stringWriter);
 
-                    xslTransform.Transform(xpathNavigator, new System.Xml.Xsl.XsltArgumentList(), stringWriter);
+                        context.Response.ContentType = "text/html";
+                        context.Response.Write(stringWriter.str());
 
-                    context.Response.ContentType = "text/html";
-                    context.Response.Write(stringWriter.str());
+                        //context.Response.ContentType = "application/xml";
 
-                    //context.Response.ContentType = "application/xml";
+                        //context.Response.Write(xmlContent);
 
-                    //context.Response.Write(xmlContent);
-
-                    return true;
+                        return true;
+                    }
+                    return false;
                 }
-                else return transfer_ArticleViewer();
+                return transfer_ArticleViewer();
                     
             }
             return false;
