@@ -154,13 +154,14 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		[WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public bool MoveViewToFolder(Guid viewId, Guid folderId) 							{ this.resetCache(); return javascriptProxy.MoveViewToFolder(viewId, folderId); }  	
 		[WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public Guid CreateGuidanceItem(GuidanceItem_V3 guidanceItem)						{ this.resetCache(); return javascriptProxy.CreateGuidanceItem(guidanceItem); 	}
         [WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public Guid CreateArticle(TeamMentor_Article article)					            { this.resetCache(); return javascriptProxy.CreateArticle(article); 	}
-        [WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public Guid CreateArticle_Simple(Guid libraryId, string title, string htmlCode)					       
+        [WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public Guid CreateArticle_Simple(Guid libraryId, string title, string dataType, string htmlCode)					       
                                                                                         { 
                                                                                             this.resetCache(); 
                                                                                             var article = new TeamMentor_Article();
                                                                                             article.Metadata.Library_Id = libraryId;
                                                                                             article.Metadata.Title = title;
-                                                                                            article.Content.Data_Raw = htmlCode;
+                                                                                            article.Content.DataType = dataType;
+                                                                                            article.Content.Data.Value = htmlCode;
                                                                                             return javascriptProxy.CreateArticle(article); 
                                                                                         }
         
@@ -170,13 +171,19 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 																							var result = javascriptProxy.UpdateGuidanceItem(guidanceItem); 	
 																							return result;
 																						}	
-		[WebMethod(EnableSession = true)]   [EditArticles(SecurityAction.Demand)]   public bool SetGuidanceItemHtml (Guid articleId,string htmlCode)					        
+
+        [WebMethod(EnableSession = true)]   [EditArticles(SecurityAction.Demand)]   public bool SetArticleHtml (Guid articleId,string htmlContent)					        
+                                                                                        {
+                                                                                            return SetArticleContent(articleId, "html", htmlContent);
+                                                                                        }
+		[WebMethod(EnableSession = true)]   [EditArticles(SecurityAction.Demand)]   public bool SetArticleContent (Guid articleId, string dataType,  string content)					        
                                                                                         { 
                                                                                             resetCache();
                                                                                             var article = javascriptProxy.GetGuidanceItemById(articleId.str());
                                                                                             if (article.notNull())
                                                                                             {
-                                                                                                article.Content.Data_Raw = htmlCode;
+                                                                                                article.Content.Data.Value = content;
+                                                                                                article.Content.DataType = dataType;
                                                                                                 return javascriptProxy.UpdateGuidanceItem(article);                                                                                                
                                                                                             }
                                                                                             return false;

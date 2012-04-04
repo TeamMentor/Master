@@ -111,11 +111,37 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		
 		[PrincipalPermission(SecurityAction.Demand, Role = "ReadArticles")] 
 		public string getGuidanceItemHtml(Guid guidanceItemId)
-		{
+		{            
+
 			if (Cached_GuidanceItems.hasKey(guidanceItemId).isFalse())
 				return null;
-			return Cached_GuidanceItems[guidanceItemId].Content.Data_Raw
-													   .sanitizeHtmlContent();
+
+            var article = Cached_GuidanceItems[guidanceItemId];
+            var articleContent = article.Content.Data.Value;
+
+            if (articleContent.inValid())
+                return "";
+
+            switch(article.Content.DataType.lower())
+            {
+                case "raw":
+                    return articleContent;
+                case "html":
+                    {
+                        if (TMConfig.Current.SanitizeHtmlContent && article.Content.Sanitized.isFalse())
+                            return articleContent.sanitizeHtmlContent();
+                        else
+                            return articleContent;                            
+                    }
+                case "SafeHtml":
+                    {
+                        return articleContent.sanitizeHtmlContent();
+                    }
+                case "wikitext":
+                    return "<div id ='tm_datatype_wikitext'>{0}</div>".format(articleContent);
+                default:
+                    return articleContent;
+            }			
 		}				
 	}
 
@@ -474,8 +500,11 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 
 		public static string sanitizeHtmlContent(this string htmlContent)
 		{
-			if (htmlContent.valid())
+            return Sanitizer.GetSafeHtmlFragment(htmlContent);;
+
+/*			if (htmlContent.valid())
 			{
+
 				htmlContent = htmlContent.replace("href=\"ruledisplay:", "href=\"?#ruledisplay:"); // hack to make sure the current xrefs don't get removed by GetSafeHtmlFragment
             
                 return htmlContent;
@@ -484,7 +513,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 				var sanitizedContent = Sanitizer.GetSafeHtmlFragment(htmlContent);
 				return sanitizedContent;
 			}
-			return htmlContent;
+			return htmlContent;*/
 		}		
 	}
 	

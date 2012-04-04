@@ -42,7 +42,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 					 where guidanceItem.Metadata.Title.valid() &&
                            (guidanceItem.Metadata.Title.lower().contains(searchTextEncoded)       ||
 //					        guidanceItem.title.regEx	   				(searchText) 	 ||
-                            guidanceItem.Content.Data_Raw.lower().contains(searchTextEncoded) )
+                            guidanceItem.Content.Data.Value.lower().contains(searchTextEncoded) )
 //                       || guidanceItem.htmlContent.regEx			(searchText)           )									
 					 select guidanceItem.Metadata.Id
 					).toList(); 
@@ -269,11 +269,11 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 							//			.type;
 									};
             article.Content = new TeamMentor_Article_Content()
-                                    {
-                                        Data_Raw  = htmlContent,
-                                        DataType  = "html"//,
+                                    {     
+                                        DataType  = "html"
                                         //Sanitized = false
                                     };
+            article.Content.Data.Value  = htmlContent;
 			/*var guidanceItem  = new guidanceItem()
 									{
 										id = (guidanceItemId == Guid.Empty) 
@@ -327,11 +327,11 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			"Saving GuidanceItem {0} to {1}".info(article.Metadata.Id, guidanceXmlPath);				
 			
             //tidy the html
-            if(article.Content.DataType.lower() == "html")
-                if((article.Content.Data_Raw.contains("{{{") && article.Content.Data_Raw.contains("}}}")).isFalse()) // in case we have Creole html literals
-                    article.Content.Data_Raw = article.Content.Data_Raw.tidyHtml();
-            
-            article.Content.Data_Raw = article.Content.Data_Raw.replace("]]>", "]] >"); // xmlserialization below will break if there is a ]]>  in the text
+            if(article.Content.DataType.lower() == "html")     
+            {
+                var cdataContent=  article.Content.Data.Value.replace("]]>", "]] >"); // xmlserialization below will break if there is a ]]>  in the text
+                article.Content.Data.Value = cdataContent.tidyHtml();
+            }            
 			article.Metadata.Library_Id = libraryId;        //ensure the LibraryID is correct
 			article.saveAs(guidanceXmlPath);			
 

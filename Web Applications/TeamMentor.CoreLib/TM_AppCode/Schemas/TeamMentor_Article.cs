@@ -7,6 +7,7 @@ using System.Web;
 using O2.DotNetWrappers.ExtensionMethods;
 
 using urn.microsoft.guidanceexplorer.guidanceItem;
+using System.Web.Script.Serialization;
 //O2File:C:\_WorkDir\O2\O2 Install\_TeamMentor\TeamMentor-Dinis-Dev-Fork\Web Applications\TeamMentor.CoreLib\TM_AppCode\Schemas\GuidanceItem.cs
 
 namespace SecurityInnovation.TeamMentor.WebClient
@@ -24,8 +25,7 @@ namespace SecurityInnovation.TeamMentor.WebClient
         public TeamMentor_Article()
         { 
             Metadata = new TeamMentor_Article_Metadata();
-            Content = new TeamMentor_Article_Content();
-            Content.DataType = "Html";
+            Content = new TeamMentor_Article_Content();            
         }
     }
 
@@ -60,28 +60,41 @@ namespace SecurityInnovation.TeamMentor.WebClient
 
 	public class TeamMentor_Article_Content
 	{ 
-                                                    		            
+           
+                                         		            
 		[XmlAttribute] public bool Sanitized            { get; set; }		            // Flag to indicate if the data (for example Html) was sanitized before saving
         [XmlAttribute] public string DataType           { get; set; }		            // Flag to indicate if the data (for example Html) was sanitized before saving
 
         [XmlElement]   public string Description	    { get; set; }		// Can be used to store a description about the Article Data        
-
-        [XmlIgnore]
-        public String Data_Raw { set; get; }
-
+                
         [XmlElement]
         public List<string> Files { get; set; }
 
-        [XmlElement][System.Web.Script.Serialization.ScriptIgnore]
-        public XmlCDataSection Data
-        {
+        [XmlElement][ScriptIgnore]
+        public XmlCDataSection Data { get; set;}
+
+        [XmlIgnore]                                     // used to send receive data from JSON (since the serializer doen't support XmlCDataSection)
+        public String Data_Json 
+            {
+                set { Data.Value = value;}
+                get { return Data.Value; }
+            }
+
+        /*{
             get
             {
                 XmlDocument _dummyDoc = new XmlDocument();
                 return _dummyDoc.CreateCDataSection(Data_Raw);
             }
             set { Data_Raw = (value != null) ? value.Data : null; }
-        }        
+        } */
+
+        public TeamMentor_Article_Content()
+        { 
+            this.Data = new XmlDocument().CreateCDataSection("");
+            this.DataType = "Html";
+        }
+
 	}
 
 
@@ -140,10 +153,9 @@ namespace SecurityInnovation.TeamMentor.WebClient
             teamMentor_Article.Content = new TeamMentor_Article_Content()
                                                 {
                                                     Sanitized    = true,
-                                                    DataType     = "Html",                                                            
-                                                    Data_Raw     = this.content
+                                                    DataType     = "Html"                                                                                                                
                                                 };
-            
+            teamMentor_Article.Content.Data.Value = this.content;
             teamMentor_Article.setHashes();
             return teamMentor_Article;
 		}
@@ -174,7 +186,7 @@ namespace SecurityInnovation.TeamMentor.WebClient
                         Category    =   article.Metadata.Category,
                         Rule_Type   =   article.Metadata.Type,
 
-                        content     =   article.Content.Data_Raw
+                        content     =   article.Content.Data.Value
                     };
         }
     }
