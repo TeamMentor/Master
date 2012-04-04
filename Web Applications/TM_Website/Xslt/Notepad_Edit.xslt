@@ -128,7 +128,7 @@
         <i class="icon-file icon-white"></i> <text></text>
       </button>
       <span id="OpenArticleMessage" >
-        <a href="" type="submit"  id="OpenArticle">Back to Article</a> (hover to preview)
+        <a href="" type="submit"  id="OpenArticle">Back to Article</a> (hover to see it)
       </span>
     </div>    
     
