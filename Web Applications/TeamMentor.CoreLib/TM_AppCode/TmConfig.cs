@@ -16,6 +16,7 @@ namespace SecurityInnovation.TeamMentor.WebClient
 		public string 		GitHubPassword		        { get; set; }	
 		public string 		LibrariesUploadedFiles	    { get; set; }	
 		public bool 		ShowContentToAnonymousUsers { get; set; }	
+        public bool 		SanitizeHtmlContent         { get; set; }	
 	}
 	
 	
@@ -49,11 +50,11 @@ namespace SecurityInnovation.TeamMentor.WebClient
 		public static TMConfig Current 
 		{ 
 			get
-			{				
-				return TMConfig.Location.load<TMConfig>() ?? new TMConfig();                
-				/*if (_current.isNull())
+			{					
+			    //return TMConfig.Location.load<TMConfig>() ?? new TMConfig();                
+				if (_current.isNull())
 					_current =  TMConfig.Location.load<TMConfig>();
-				return _current;*/
+				return _current;
 			}
 		}
 
