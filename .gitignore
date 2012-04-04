@@ -1,12 +1,19 @@
-/Library_Data/XmlDatabase/TM_Libraries
+#TM specific
+/Library_Data/XmlDatabase
+o2.config
 
 # Visual Studio files # 
-/Web Applications/TeamMentor.CoreLib/bin
-/Web Applications/TM_Website/obj
-*.suo
-o2.config
-/Library_Data/XmlDatabase/TM_Library_Zips
-/Web Applications/packages
+bin
 obj
+*.suo
 *.nupkg
 Web Applications/TM_Website/bin/*.xml
+/Web Applications/packages
+
+
+
+
+
+
+
+
