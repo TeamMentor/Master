@@ -76,8 +76,8 @@
                   $("#SaveButton").click(saveContent);
                   $.ctrl('S', saveContent);
                   $(".Content").keydown(setSaveButtonText);
-                  $("#OpenArticle").css({ left: 10 , top: 2  , position : 'relative'})
-                                   .click(openArticle);
+                  $("#OpenArticleMessage").css({ left: 10 , top: 2  , position : 'relative'});
+                  $("#OpenArticle").click(openArticle);
                   setSaveButtonText();     
                   $("textarea").tabby();
                   $("body").show();                  
@@ -85,10 +85,26 @@
                 else
                   document.location = '/Login';
               }
+            var addPreviewDiv = function()
+              {
+                $("&lt;" + "iframe>").appendTo("body")
+                     .css({ 
+                              position : 'absolute' , 
+                              top : 0 , height : '100%' , width: '70%' , left : '29.7%'  , 
+                              border : 'solid 3px' ,
+                              background : 'white'
+                          } )
+                     .attr('id', 'preview')                 
+                     .hide();
+                     
+                $("#OpenArticle").mouseleave(function() { $("#preview").hide().attr('src','about:blank') });
+                $("#OpenArticle").mouseenter(function() { $("#preview").show().attr('src','/xsl/' + id) });
+              }
               
             $(function() 
                 {
-                  $("body").hide();                  
+                  $("body").hide();                 
+                  addPreviewDiv();
                   TM.Events.onUserDataLoaded.add(setupGui);       
                   TM.Gui.CurrentUser.loadUserData();
                 });
@@ -111,8 +127,9 @@
       <button type="submit" class="btn btn-primary" id="SaveButton">
         <i class="icon-file icon-white"></i> <text></text>
       </button>
-      
-      <a href="" type="submit"  id="OpenArticle">Open Article</a>
+      <span id="OpenArticleMessage" >
+        <a href="" type="submit"  id="OpenArticle">Back to Article</a> (hover to preview)
+      </span>
     </div>    
     
   </xsl:template>
