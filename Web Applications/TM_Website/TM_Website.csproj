@@ -228,6 +228,7 @@
     <Content Include="Javascript\bootstrap\glyphicons-halflings-white.png" />
     <Content Include="Javascript\bootstrap\glyphicons-halflings.png" />
     <Content Include="Javascript\jQuery\jquery.textarea.js" />
+    <Content Include="Javascript\jsCreole\creole.min.js" />
     <Content Include="Javascript\TM.ControlPanel\TM.ControlPanel.AdminTasks.js" />
     <Content Include="Javascript\TM.Gui\AppliedFIlters.DataManipulation.js" />
     <Content Include="Javascript\TM.Gui\AppliedFIlters.js" />
@@ -552,6 +553,8 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Xslt\Article_Edit.xslt" />
+    <Content Include="Xslt\JsCreole_Article.xslt" />
+    <Content Include="Xslt\SimpleView.xslt" />
     <Content Include="Xslt\Notepad_Edit.xslt" />
     <Content Include="Xslt\TeamMentor_Article.xslt" />
   </ItemGroup>

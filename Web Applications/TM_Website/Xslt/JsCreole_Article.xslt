@@ -6,20 +6,19 @@
   <xsl:template match="/">
     <html>
       <head>        
-        <script src="/Javascript/jQuery/jquery-1.7.1.min.js" type="text/javascript"></script>
-        <link rel="stylesheet" href="_/css/default.css" type="text/css"></link>
+        <script src="/Javascript/jQuery/jquery-1.7.1.min.js" type="text/javascript"></script>        
         
         <link rel="stylesheet" href="/Javascript/bootstrap/bootstrap.min.css" type="text/css"></link>        
         
+        <script src="/Javascript/jscreole/creole.min.js" type="text/javascript"></script>        
         
         <style>
-            .HeaderImage  { height  : 75px }
-            .Header       { background : url(/_Customizations/Top_banner_background.jpg) }
+            .HeaderImage  { height  : 75px }              
             .Article      { width : 75% }
         </style>
           
       </head>
-      <body >
+      <body >        
         <script>
            var title = '<xsl:value-of select='//Metadata/Title'/>';
            
@@ -54,21 +53,37 @@
                     
           var handleClick = function()
                   {                
+                  
                     var href = $(this).attr('href');                                
                 
                     if (href.split(':').length  > 1) // javascript call
                       return true;
                   
                     if (href.split('/').length  == 1) // only handle direct links
-                    {
-                        var target = "/html/" + encodeURIComponent(href);
-                        console.log(target);  
+                    {    
+                        var page = encodeURIComponent(href);
+                        var target = "/html/" + page;
+                                                                        
                         $("body").animate({ scrollTop: 0 }, 'fast');
-                        $("#Content").load(target);
-                        var newTitle = $(this).html();
-                        addBreadCrumb(newTitle);     
-                        $("#Title").html(newTitle);                        
-                        history.pushState('', 'New URL: '+href, href);   
+                        $("#Content").load(target, function ()
+                          {
+                            var newTitle = $(this).html();
+                            addBreadCrumb(newTitle);     
+                            $("#Title").html(newTitle);
+                        
+                            if ($("#Content").html() ==="")
+                            {
+                              createItText = "**NOTE: Article doesn't exist**, why don't you [[/create/"+page + "|create it]]?";
+                              $("#Content").html(createItText);
+                              //document.location="/create/"+
+                              //createArticle();
+                            }
+                            
+                            history.pushState('', 'New URL: '+href, href);   
+                        
+                            applyCreole();  
+                          });
+                        
                         
                     }
                     else
@@ -83,18 +98,38 @@
             
           var editArticle = function()
           {            
-            //window.open ("/notepad/" + title);
-            window.open ("/edit/" + title);
+            //window.open ("/notepad/" + title);            
+            var url = "/notepad/" + title;
+            window.open (url,"_blank","menubar=1,resizable=1,width=850,height=450");
           }
+          
+          var createArticle = function()
+          {                        
+            var url = "/create/" + title;
+            window.open (url,"_blank","menubar=1,resizable=1,width=850,height=450");
+          }
+          
+          var applyCreole = function()
+          {
+            $("#CreoleContent").html("");
+            var sourceText = $("#Content").html();
+            var targetDiv = document.getElementById("CreoleContent");            
+            new creole().parse(targetDiv,sourceText)           
+            
+                        
+          }
+          
           $(function()
             {              
-                addBreadCrumb_Current();
-                hookContentLinks();                
+                $("#Content").hide();
+                addBreadCrumb_Current();       
+                hookContentLinks();    
+                applyCreole();
             });
         </script>
         <div >
           <div class="Header">
-            <a href="/xsl/TeamMentor Technology">
+            <a href="Table_of_Contents">
               <img src="/Images/HeaderImage.jpg" class="HeaderImage"/>
             </a>          
           </div>          
@@ -119,12 +154,13 @@
 
   <xsl:template match="Content">
     <div id="ContentArea">
-         
+
+      <div id="CreoleContent"> </div>
       <div id="Content">
         <xsl:value-of select="Data" disable-output-escaping="yes"/>
       </div>
       <hr/>
-      Back to <a href="TeamMentor_Technology">TeamMentor Technology</a>
+      Back to <a href="Table_of_Contents">Table of Contents</a>
       <br/>    
       Edit this <a href="javascript:editArticle()">Article</a>
       </div>

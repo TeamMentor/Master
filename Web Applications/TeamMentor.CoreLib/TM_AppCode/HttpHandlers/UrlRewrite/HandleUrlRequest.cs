@@ -63,6 +63,8 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                         return handleAction_Html(data);
                     case "xsl":
                         return handleAction_Xsl(data,"TeamMentor_Article.xslt");
+                    case "creole":
+                        return handleAction_Xsl(data,"JsCreole_Article.xslt");          
                     case "notepad":
                         return handleAction_Xsl(data, "Notepad_Edit.xslt");                        
                     case "viewer":
