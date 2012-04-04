@@ -13,6 +13,11 @@
         <link rel="stylesheet" href="/Javascript/bootstrap/bootstrap.min.css" type="text/css"></link>        
         
         
+        
+        <link href="/javascript/jsprettify/prettify.css" type="text/css" rel="stylesheet" />
+        <script type="text/javascript" src="/javascript/jsprettify/prettify.js"></script>
+        
+        
         <style>
             .HeaderImage  { height  : 75px }            
             .Article      { width : 75% }
@@ -63,17 +68,37 @@
                   
                     if (href.split('/').length  == 1) // only handle direct links
                     {
-                        var target = "/html/" + encodeURIComponent(href);
+                        var page = encodeURIComponent(href);
+                        var target = "/html/" + page;
                         console.log(target);  
                         $("body").animate({ scrollTop: 0 }, 'fast');
-                        $("#Content").load(target, handleMediaWikiText);
+                        
                         var newTitle = $(this).html();
-                        addBreadCrumb(newTitle);     
-                        $("#Title").html(newTitle);                        
-                        history.pushState('', 'New URL: '+href, href);                           
+                        
+                        $("#Content").load(target,function() 
+                          {
+                            addBreadCrumb(newTitle);     
+                            $("#Title").html(newTitle);
+                        
+                            if ($("#Content").html() ==="")
+                            {
+                              createItText = "**TeamMentor Message: Article doesn't exist**, why don't you [[/create/"+page + "|create it]]?";
+                              $("#Content").html(createItText);                              
+                              dataType = "wikitext";
+                            }
+                            else
+                              dataType = "html";
+                             
+                            history.pushState('', 'New URL: '+href, href);                                 
+                            handleMediaWikiText();
+                            
+                          });
+                          
+                                                
                     }
                     else
                       window.open(href);
+                      
                     return false;
                   }
                 
@@ -95,6 +120,8 @@
               
                 $("#Content").html(html);      
              }
+             $("pre").addClass("prettyprint");
+             prettyPrint();
             };
             
           var hookContentLinks = function()
@@ -113,6 +140,7 @@
                 addBreadCrumb_Current();
                 hookContentLinks();                     
                 handleMediaWikiText();
+                                
             });
         </script>
         <div >

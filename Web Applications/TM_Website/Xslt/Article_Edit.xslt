@@ -43,7 +43,7 @@
             var onCreate = function(result)
               {
                 if (result != TM.Const.emptyGuid)
-                  document.location = "/article/" + result;
+                  document.location = "/xsl/" + result;
                 else
                   $("#SaveButton text").html(' Saved Failed!!!');
               }
