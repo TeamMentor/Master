@@ -349,12 +349,13 @@ TM.WebServices.WS_Libraries.add_View = function(libraryId, folderId, viewName, c
 			errorHandler);
 }	
 
-TM.WebServices.WS_Libraries.add_Article_Simple = function(libraryId, title, htmlCode, callback , errorHandler)
+TM.WebServices.WS_Libraries.add_Article_Simple = function(libraryId, title, dataType, htmlCode, callback , errorHandler)
 {		
 	var params = { 
-					libraryId : libraryId   , 
-					title: title , 
-					htmlCode : htmlCode 
+					libraryId   : libraryId , 
+					title       : title , 
+                    dataType    : dataType,
+					htmlCode    : htmlCode 
 				 };     
 	TM.WebServices.Helper.invoke_TM_WebService('CreateArticle_Simple', params, 	callback, 	errorHandler);
 }
@@ -365,7 +366,13 @@ TM.WebServices.WS_Libraries.add_Article_Simple = function(libraryId, title, html
 TM.WebServices.WS_Libraries.set_Article_Html = function (articleId, htmlCode, callback,errorHandler)
 {
     var params = { articleId : articleId , htmlCode: htmlCode } ;
-    TM.WebServices.Helper.invoke_TM_WebService("SetGuidanceItemHtml",params, callback,errorHandler);
+    TM.WebServices.Helper.invoke_TM_WebService("SetArticleHtml",params, callback,errorHandler);
+}
+
+TM.WebServices.WS_Libraries.set_Article_Content = function (articleId, dataType, content, callback,errorHandler)
+{
+    var params = { articleId : articleId , dataType:dataType , content: content } ;
+    TM.WebServices.Helper.invoke_TM_WebService("SetArticleContent",params, callback,errorHandler);
 }
 
 //RENAME

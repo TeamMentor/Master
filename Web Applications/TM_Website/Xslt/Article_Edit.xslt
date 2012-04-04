@@ -19,8 +19,7 @@
         <script src="/Javascript/TM.Gui/TM.Gui.CurrentUser.js/"></script>
         <style>
           .Content { width:95%; height:300px; }
-          .Footer  { text-align:center}          
-          
+          .Footer  { text-align:center}                    
         </style>
       </head>
       <body>
@@ -39,7 +38,7 @@
                                     };
         </script>
         <script>
-            var title = '<xsl:value-of select='//Metadata/Title'/>';      
+            var title =    '<xsl:value-of select='//Metadata/Title'/>';                   
                         
             var onCreate = function(result)
               {
@@ -54,8 +53,9 @@
                 var libraryId = $("#library").val();                
                 var title = $("#title").val();                
                 var html = $(".Content").val();  
+                var dataType = $("#dataType").val();
                 $("#SaveButton text").html(' Creating Article');
-                TM.WebServices.WS_Libraries.add_Article_Simple(libraryId, title, html,onCreate, function(error) { alert(error.responseText)});
+                TM.WebServices.WS_Libraries.add_Article_Simple(libraryId, title, dataType, html,onCreate, function(error) { alert(error.responseText)});
                 return false;
               }
           
@@ -79,6 +79,7 @@
                   loadLibraries();
                   
                   $("#title").val(title);        
+                  $("#dataType").val('html');
                 }
                 else
                   document.location = '/Login';
@@ -126,6 +127,13 @@
                 <label class="control-label" for="input01">Title</label>
                 <div class="controls">
                   <input type="text" class="input-large" id="title"/>
+                </div>
+              </div>
+              
+                    <div class="control-group">
+                <label class="control-label" for="input01">DataType</label>
+                <div class="controls">
+                  <input type="text" class="input-large span1" id="dataType"/>
                 </div>
               </div>
               <div class="control-group">

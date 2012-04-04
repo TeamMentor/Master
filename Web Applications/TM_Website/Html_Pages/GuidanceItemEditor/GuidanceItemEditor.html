@@ -2,7 +2,8 @@
 <html>	
 	<head>			
 		<link  href="/aspx_Pages/scriptCombiner.ashx?s=HomePage_CSS&ct=css" 				type="text/css" rel="stylesheet" /> 					
-		<script src="/aspx_Pages/scriptCombiner.ashx?s=WebServices_JS"						type="text/javascript"></script>			
+		<script src="/aspx_Pages/scriptCombiner.ashx?s=WebServices_JS"						type="text/javascript"></script>	
+        		
 	</head>
 	<body>	
 		<script>		
@@ -277,7 +278,7 @@
 				$("#TypeValue_input")       .val(loadedGuidanceItem.Metadata.Type);
 				$("#CategoryValue_input")   .val(loadedGuidanceItem.Metadata.Category);
 
-				TM.Gui.GuidanceItemEditor.showGuidanceItemHtml(loadedGuidanceItem.Content.Data_Raw);
+				TM.Gui.GuidanceItemEditor.showGuidanceItemHtml(loadedGuidanceItem.Content.Data_Json);
                 
 			}						  		
 
@@ -285,12 +286,12 @@
 		TM.Gui.GuidanceItemEditor.showGuidanceItemHtml = function(htmlCode)
 			{				
                  //$('#guidanceItem').elrte('val', htmlCode);
-				 TM.Gui.Dialog.alertUser('not implemented: showGuidanceItemHtml');
+				 //TM.Gui.Dialog.alertUser('not implemented: showGuidanceItemHtml');
 			}
                   
         TM.Gui.GuidanceItemEditor.getEditorCode = function()
 			{				
-				TM.Gui.Dialog.alertUser('not implemented: getEditorCode');
+				//TM.Gui.Dialog.alertUser('not implemented: getEditorCode');
 				return null;
 			}
 
@@ -365,7 +366,7 @@
                         loadedGuidanceItem.Metadata.Category     = "CategoryValue_input".$().val(), 
                         loadedGuidanceItem.Metadata.DirectLink    = loadedGuidanceItem.Metadata.Title;
 
-                        loadedGuidanceItem.Content.Data_Raw      = htmlCode                        
+                        loadedGuidanceItem.Content.Data_Json      = htmlCode                        
                         
                         savedGuidanceItem = { guidanceItem: loadedGuidanceItem };
                         updateGuidanceItem(savedGuidanceItem, onSave);                                        

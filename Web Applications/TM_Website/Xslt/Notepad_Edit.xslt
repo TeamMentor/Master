@@ -18,9 +18,8 @@
         <script src="/Javascript/TM/Events.js"                                type="text/javascript"></script>
         <script src="/Javascript/TM.Gui/TM.Gui.CurrentUser.js"                type="text/javascript"></script>
         <style>
-          .Content { width:95%; top:170px;bottom:10px;left:20px; position:Fixed ; }
-          .Footer  { position: fixed; left: 0; right: 0; bottom: 0; text-align:center}          
-          
+          .Content  { position: fixed;    width:95%; top:210px; bottom:10px;  left:20px;  }
+          .Footer   { position: fixed;    left: 0;  right: 0;   bottom: 0;  text-align:center}                                    
         </style>
       </head>
       <body>
@@ -50,10 +49,11 @@
               
             var saveContent = function()
               {                
-                var html = $(".Content").val();                                
+                var html =      $(".Content").val(); 
+                var dataType =  $("#DataType").val(); 
                 $("#SaveButton text").html(' Saving Content');
                 TM.WebServices.WS_Libraries
-                              .set_Article_Html(id, html, onSave , function(error) { alert(error.responseText)});            
+                              .set_Article_Content(id, dataType, html, onSave , function(error) { alert(error.responseText)});            
                 return false;
               }
           
@@ -102,8 +102,7 @@
   <xsl:template match="Metadata">
     <div class="form-actions">
       <h2>
-        <xsl:value-of select='Title'/>
-        
+        <xsl:value-of select='Title'/>        
       </h2>
       id: <xsl:value-of select="Id"/>
     </div>
@@ -118,11 +117,19 @@
   </xsl:template>
 
   <xsl:template match="Content">
-    <br/>    
-      <textarea class="Content">
-        <xsl:value-of select="Data" disable-output-escaping="yes"/>
-      </textarea>
+    <br/>
 
+    <div class="container-fluid">
+      <input type ="input" id="DataType" class="span1">
+        <xsl:attribute name="value">
+          <xsl:value-of select="@DataType"/>
+        </xsl:attribute>
+      </input> DataType
+    </div>
+    
+    <textarea class="Content" id="Content">
+        <xsl:value-of select="Data" disable-output-escaping="yes"/>
+    </textarea>
 
     <footer class="Footer">
       Powered by <a href="http://www.securityinnovation.com/products/secure-development-knowledgebase.html">Team.Mentor </a> 
