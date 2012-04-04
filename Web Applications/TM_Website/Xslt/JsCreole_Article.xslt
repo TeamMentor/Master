@@ -65,9 +65,9 @@
                         var target = "/html/" + page;
                                                                         
                         $("body").animate({ scrollTop: 0 }, 'fast');
+                        var newTitle = $(this).html();
                         $("#Content").load(target, function ()
-                          {
-                            var newTitle = $(this).html();
+                          {                            
                             addBreadCrumb(newTitle);     
                             $("#Title").html(newTitle);
                         
