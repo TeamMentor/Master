@@ -105,19 +105,23 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
         private bool handleAction_JsonP(string data)
         {            
             var guid = tmWebServices.getGuidForMapping(data);
-            var article = tmWebServices.GetGuidanceItemById(guid.str());               
-            
-            var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
-            var serializedData = serializer.Serialize(article);                       
-            var callbackRaw = context.Request["callback"];
-            if (callbackRaw.valid())
+            if (guid != Guid.Empty)
             {
-                var callbackFunction = Encoder.JavaScriptEncode(callbackRaw,false);
-                context.Response.Write("{0}({1})".format(callbackFunction, serializedData));
+                var article = tmWebServices.GetGuidanceItemById(guid.str());
+
+                var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+                var serializedData = serializer.Serialize(article);
+                var callbackRaw = context.Request["callback"];
+                if (callbackRaw.valid())
+                {
+                    var callbackFunction = Encoder.JavaScriptEncode(callbackRaw, false);
+                    context.Response.Write("{0}({1})".format(callbackFunction, serializedData));
+                }
+                else
+                    context.Response.Write(serializedData);
+                return true;
             }
-            else            
-                context.Response.Write(serializedData);
-            return true;
+            return false;
         }
 
 
@@ -159,11 +163,6 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 
                         context.Response.ContentType = "text/html";
                         context.Response.Write(stringWriter.str());
-
-                        //context.Response.ContentType = "application/xml";
-
-                        //context.Response.Write(xmlContent);
-
                         return true;
                     }
                     return false;
@@ -195,6 +194,8 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                 context.Response.ContentType = "application/xml";
                 context.Response.Write(xmlContent);
             }
+            else
+                transfer_ArticleViewer();
             return true;
         }
 
@@ -208,6 +209,8 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                 context.Response.ContentType = "application/xml";
                 context.Response.Write(xmlContent);
             }
+            else
+               transfer_ArticleViewer();
             return true;
         }
 
@@ -222,6 +225,8 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                 //var article = tmWebServices.GetGuidanceItemById(guid.str());
                 //context.Response.Write(article.Content.Data.Value);
             }
+            else
+                transfer_ArticleViewer();
             return true;
         }
 

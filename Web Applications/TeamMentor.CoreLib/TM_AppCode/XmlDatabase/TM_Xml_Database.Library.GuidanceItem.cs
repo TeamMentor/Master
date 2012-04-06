@@ -333,12 +333,15 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                 article.Content.Data.Value = cdataContent.tidyHtml();
             }            
 			article.Metadata.Library_Id = libraryId;        //ensure the LibraryID is correct
-			article.saveAs(guidanceXmlPath);			
 
-			//add it to in Memory cache
-			article.update_Cache_GuidanceItems(tmDatabase);			
-			
-			return guidanceXmlPath.fileExists();			
+            if (article.serialize(false).valid())           // make sure the article can be serilialized  correctly
+            {
+                article.saveAs(guidanceXmlPath);
+                //add it to in Memory cache
+                article.update_Cache_GuidanceItems(tmDatabase);
+                return guidanceXmlPath.fileExists();			
+            }
+			return false;
 		}
 		
         [PrincipalPermission(SecurityAction.Demand, Role = "EditArticles")]
@@ -386,10 +389,12 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                     return item.Key;
             */
             mapping = mapping.lower();
+            var mapping_extra = mapping.Replace(" ", "_");
 
             return (from item in TM_Xml_Database.Cached_GuidanceItems
                     where (item.Value.Metadata.DirectLink.notNull() && item.Value.Metadata.DirectLink.lower() == mapping) ||
-                          (item.Value.Metadata.Title.notNull()      && item.Value.Metadata.Title.lower() == mapping)
+                          (item.Value.Metadata.Title.notNull()      && item.Value.Metadata.Title.lower() == mapping) ||
+                          (item.Value.Metadata.Title.notNull()      && item.Value.Metadata.Title.lower() == mapping_extra)                          
                     select item.Key).first();
         }
 
