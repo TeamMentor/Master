@@ -219,7 +219,6 @@
     <Content Include="Html_Pages\Gui\Dialogs\Login.Html" />
     <Content Include="Html_Pages\Gui\Dialogs\Signup.html" />
     <Content Include="Html_Pages\Gui\Pages\login.html" />
-    <Content Include="Html_Pages\Gui\Pages\_login.html" />
     <Content Include="Html_Pages\Gui\Panels\About_TeamMentor.html" />
     <Content Include="Html_Pages\_UnitTest_Helpers\Tests_For_BrowserBugs\Chrome_CPU_Spike_on_Password_Field_in_JQueryUI_Dialog.htm" />
     <Content Include="Html_Pages\_UnitTest_Helpers\_Javascript_Loaders\FirebugLite_with_TM_WebServices.html" />
@@ -555,8 +554,12 @@
     <Content Include="Xslt\Article_Edit.xslt" />
     <Content Include="Xslt\JsCreole_Article.xslt" />
     <Content Include="Xslt\SimpleView.xslt" />
-    <Content Include="Xslt\Notepad_Edit.xslt" />
-    <Content Include="Xslt\TeamMentor_Article.xslt" />
+    <Content Include="Xslt\Notepad_Edit.xslt">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Xslt\TeamMentor_Article.xslt">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Images\AllLibraries.png" />

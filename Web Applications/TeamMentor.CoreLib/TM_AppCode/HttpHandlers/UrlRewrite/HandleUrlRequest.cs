@@ -56,11 +56,12 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                 data = Encoder.HtmlEncode(data).replace("%20"," ");
                 switch (action.lower())
                 {
-                    case "xml":
                     case "raw":                        
                         return handleAction_Raw(data);                                                      
                     case "html":
                         return handleAction_Html(data);
+                    case "xml":
+                        return handleAction_Xml(data);
                     case "xsl":
                         return handleAction_Xsl(data,"TeamMentor_Article.xslt");
                     case "creole":
@@ -191,6 +192,19 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
             if (guid != Guid.Empty)
             {                
                 var xmlContent = tmWebServices.XmlDatabase_GetGuidanceItemXml(guid);
+                context.Response.ContentType = "application/xml";
+                context.Response.Write(xmlContent);
+            }
+            return true;
+        }
+
+
+        private bool handleAction_Xml(string data)
+        {
+            var guid = tmWebServices.getGuidForMapping(data);
+            if (guid != Guid.Empty)
+            {                
+                var xmlContent = tmWebServices.GetGuidanceItemHtml(guid);
                 context.Response.ContentType = "application/xml";
                 context.Response.Write(xmlContent);
             }

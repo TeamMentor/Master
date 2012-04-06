@@ -58,7 +58,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		public List<Folder_V3> 	Folders  			{  get { 	return this.tmFolders(); } } 		
 		public List<View_V3> 	Views  				{  get { 	return this.tmViews(); } } 
 		public List<TeamMentor_Article> GuidanceItems  {  get { return this.tmGuidanceItems(); } } 
-		
+		        
 		
 		//public static string defaultLibrariesPath = ;
 		 
