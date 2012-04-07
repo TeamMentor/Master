@@ -220,6 +220,7 @@
     <Content Include="Html_Pages\Gui\Dialogs\Signup.html" />
     <Content Include="Html_Pages\Gui\Pages\login.html" />
     <Content Include="Html_Pages\Gui\Panels\About_TeamMentor.html" />
+    <Content Include="Html_Pages\Gui\Panels\AD_Non_Authorized_User.html" />
     <Content Include="Html_Pages\_UnitTest_Helpers\Tests_For_BrowserBugs\Chrome_CPU_Spike_on_Password_Field_in_JQueryUI_Dialog.htm" />
     <Content Include="Html_Pages\_UnitTest_Helpers\_Javascript_Loaders\FirebugLite_with_TM_WebServices.html" />
     <Content Include="Javascript\bootstrap\bootstrap.min.css" />
@@ -508,9 +509,7 @@
     <Content Include="Javascript\jsTrace\trace-src.js" />
     <Content Include="Javascript\jsTrace\trace.html" />
     <Content Include="Javascript\TM.ControlPanel\TM.ControlPanel.WebServices.js" />
-    <Content Include="Javascript\jTemplates\jTemplateTest.css" />
     <Content Include="Javascript\jTemplates\LinksMenu.html" />
-    <Content Include="Javascript\jTemplates\simpleTable.html" />
     <Content Include="Javascript\qunit\qunit-git.css" />
     <Content Include="Javascript\qunit\qunit-git.js" />
     <Content Include="Javascript\slickGrid\arrow_right_spearmint.png" />

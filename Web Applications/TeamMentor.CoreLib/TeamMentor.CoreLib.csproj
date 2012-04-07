@@ -86,7 +86,7 @@
     <Compile Include="TM_AppCode\Authentication\TM_Authentication.cs" />
     <Compile Include="TM_AppCode\Authentication\UserRoleBaseSecurity.cs" />
     <Compile Include="TM_AppCode\Authentication\UserRoles.cs" />
-    <Compile Include="TM_AppCode\Authentication\WindowsAndLDAP.cs" />
+    <Compile Include="TM_AppCode\Authentication\WindowsAuthentication.cs" />
     <Compile Include="TM_AppCode\ExtensionMethods\TMUser_ExtensionMethods.cs" />
     <Compile Include="TM_AppCode\ExtensionMethods\TM_Xml_Database_ExtensionMethods_GuiHelpers.cs" />
     <Compile Include="TM_AppCode\ExtensionMethods\TM_Xml_Database_JavascriptProxy_ExtensionMethods.cs" />

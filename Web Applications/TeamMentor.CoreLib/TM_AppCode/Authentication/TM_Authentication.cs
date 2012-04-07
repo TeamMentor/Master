@@ -7,6 +7,7 @@ using System.Security;
 using SecurityInnovation.TeamMentor.Authentication.ExtensionMethods;
 using SecurityInnovation.TeamMentor.Authentication.AuthorizationRules;
 using SecurityInnovation.TeamMentor.Authentication.WebServices.AuthorizationRules;
+using SecurityInnovation.TeamMentor.Authentication;
 
 //O2File:ExtensionMethods/TeamMentorUserManagement_ExtensionMethods.cs
 //O2File:UserRoleBaseSecurity.cs
@@ -136,6 +137,11 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 
 		public TM_Authentication mapUserRoles()
 		{
+            if (WindowsAuthentication.windowsAuthentication_Enabled)
+				if (sessionID == Guid.Empty || sessionID.validSession() == false)
+					sessionID = new WindowsAuthentication().authenticateUserBaseOnActiveDirectory();
+
+			
             var userGroup = UserGroup.None;
 			if (sessionID != Guid.Empty)
 			{

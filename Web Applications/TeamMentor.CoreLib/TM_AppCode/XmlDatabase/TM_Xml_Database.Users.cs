@@ -365,14 +365,26 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 	}	
 	
 	public static class TM_Xml_Database_ExtensionMethods_ActiveSessions
-	{	
+	{
 		public static Guid registerUserSession(this string userName, Guid userGuid)
 		{
-			var tmUser = userName.tmUser();
-			if (tmUser.notNull())
+			var tmUser = userName.tmUser();			
+			return tmUser.registerUserSession(userGuid);
+		}
+
+		public static Guid registerUserSession(this TMUser tmUser, Guid userGuid)
+		{
+			try
 			{
-				TM_Xml_Database.ActiveSessions.add(userGuid, tmUser);
-				return userGuid;
+				if (tmUser.notNull())
+				{
+					TM_Xml_Database.ActiveSessions.add(userGuid, tmUser);
+					return userGuid;
+				}
+			}
+			catch (Exception ex)
+			{
+				ex.log();
 			}
 			return Guid.Empty;
 		}

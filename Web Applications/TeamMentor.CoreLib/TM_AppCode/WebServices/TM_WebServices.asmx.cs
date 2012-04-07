@@ -87,12 +87,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		
 	 	
 		
-        //********  Session Management (& Login)
-        [WebMethod(EnableSession = true)]	public Guid LoginToWindows(string username, string password)  		{
-																													return tmAuthentication.sessionID = SecurityInnovation.TeamMentor.Authentication.WindowsAndLDAP.loginOnLocalMachine(username,password);
-																												}		
-
-        
+        //********  Session Management (& Login)]
         [WebMethod(EnableSession = true)]	public Guid Login(string username, string passwordHash)      		{   return tmAuthentication.sessionID = javascriptProxy.Login(username, passwordHash); }		
 		[WebMethod(EnableSession = true)]	public Guid Login_PwdInClearText(string username, string password)	{	return tmAuthentication.sessionID = javascriptProxy.Login_PwdInClearText(username, password); }		
 		[WebMethod(EnableSession = true)]	public Guid Logout()      											{																													

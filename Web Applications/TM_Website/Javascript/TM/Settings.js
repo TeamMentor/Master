@@ -1,9 +1,8 @@
 //TM Settings
 TM.tmVersion = "TM 3.0.2";	
 
-TM.tmWebServices = '/Aspx_Pages/TM_WebServices.asmx/';
-
-TM.Gui.windowsLoginEnabled 						= false;
+TM.tmWebServices     = '/Aspx_Pages/TM_WebServices.asmx/';
+TM.NotAuthorizedPage = '/Html_Pages/Gui/Panels/AD_Non_Authorized_User.html';
 
 TM.Debug.gui_LoadLibraryData					= true
 TM.Debug.addTimeStampToLoadedPages 			  	= true;

@@ -16,7 +16,17 @@ namespace SecurityInnovation.TeamMentor.WebClient
 		public string 		GitHubPassword		        { get; set; }	
 		public string 		LibrariesUploadedFiles	    { get; set; }	
 		public bool 		ShowContentToAnonymousUsers { get; set; }	
-        public bool 		SanitizeHtmlContent         { get; set; }	
+        public bool 		SanitizeHtmlContent         { get; set; }	        		
+        public WindowsAuthentication_Config WindowsAuthentication			{ get; set; }
+
+		public class WindowsAuthentication_Config
+		{				
+			public bool		Enabled		{ get; set; }
+			public string	ReaderGroup { get; set; }
+			public string	EditorGroup { get; set; }
+			public string	AdminGroup	{ get; set; }
+		}
+
 	}
 	
 	
@@ -85,6 +95,13 @@ namespace SecurityInnovation.TeamMentor.WebClient
 			tmConfig.DefaultAdminUserName = "admin";
 			tmConfig.DefaultAdminPassword = "!!tmbeta";
             tmConfig.LibrariesUploadedFiles = "LibrariesUploadedFiles";
+
+            tmConfig.WindowsAuthentication	= new TMConfig.WindowsAuthentication_Config();
+			tmConfig.WindowsAuthentication.Enabled = false;
+			tmConfig.WindowsAuthentication.ReaderGroup = "TM_Reader";
+			tmConfig.WindowsAuthentication.EditorGroup = "TM_Editor";
+			tmConfig.WindowsAuthentication.AdminGroup  = "TM_Admin";
+
 			return tmConfig;
 		}
 	}
