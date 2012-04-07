@@ -82,8 +82,10 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                         return transfer_Login();   
                     case "logout":
                         return redirectTo_Logout();
-                    case "reloadcache":
+                    case "reload":
                         return reloadCache_and_RedirectToHomePage();
+                    case "home":
+                        return redirectTo_HomePage();
                     //case "images":                        
                     case "image":
                         return handleAction_Image(data);
