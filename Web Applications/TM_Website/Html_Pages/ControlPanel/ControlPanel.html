@@ -11,7 +11,7 @@
 		<script>		
 			function checkForDeveloperHashTag()	
 				{
-					if (document.location.hash === "#developer")
+					if (location.search === "?extra")
 						TM.Debug.showExperimentalFeatures = true;
 				}
 			

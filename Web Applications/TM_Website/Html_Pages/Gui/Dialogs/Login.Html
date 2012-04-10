@@ -42,16 +42,8 @@
 			var username = $('#UsernameBox').attr('value');
 			var password = $('#PasswordBox').attr('value');			
 			
-			if (typeof("WindowsLogin".$().attr("checked")) == "undefined")
-				TM.WebServices.WS_Users.login(username, password, loginResponse);
-			else
-				{					
-					loginToWindows(username, password, loginResponse);
-				}
-			//if ("WindowsLogin".$().value() == "on")
-			//	
-			//else
-				
+			
+			TM.WebServices.WS_Users.login(username, password, loginResponse);			
 		}
 		
 		if (typeof(loginDialog) != "undefined")
@@ -63,8 +55,6 @@
 			{		
 				$("*").eq(0).css('overflow','hidden')
 				
-				if(TM.Gui.windowsLoginEnabled===false)					
-					$("#windowsLogin").hide();
 				delete (TM.Debug.LastLoginResult);
 				var dialogOptions = { 	
 											title:'Login into TeamMentor'
@@ -103,9 +93,5 @@
 		<br />
 		<span id="passwordLabel" style="display:inline-block;width:130px;">Password:</span><input name="ctl00$ContentPlaceHolder1$PasswordBox" type="password" id="PasswordBox" class="otherTextBox" style="width:200px;" /><br />		
 		<br />		
-		<div id="windowsLogin">		
-			<span id="winpasswordLabel" style="display:inline-block;width:130px;">Windows Login</span><input type="checkbox" id="WindowsLogin"  />
-			<br /><br />
-		</div>		
 		<span class="errorMessageLogin" id ="errorMessageLogin" ></span>
 	</div>

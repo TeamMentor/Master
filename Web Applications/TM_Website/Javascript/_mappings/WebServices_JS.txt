@@ -10,6 +10,8 @@
 
 /javascript/Growl/growl.js
 
+/Javascript/jscreole/creole.min.js
+
 /javascript/TM/GlobalVariables.js
 /javascript/TM/Debug.js
 /javascript/TM/Settings.js

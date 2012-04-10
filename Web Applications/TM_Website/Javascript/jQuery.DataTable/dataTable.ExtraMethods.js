@@ -95,7 +95,8 @@ var getColumnFromArray = function(arrayData, columnIndex)
 		{
 			if (TM.Gui.CurrentUser.isViewer())
 			{
-				window.open('/html_pages/GuidanceItemViewer/GuidanceItemViewer.html?#ruledisplay:' + guidanceId
+				//window.open('/html_pages/GuidanceItemViewer/GuidanceItemViewer.html?#ruledisplay:' + guidanceId
+                window.open('/article/' + guidanceId
 								,'_blank'
 								,'location=1,status=1,scrollbars=1,  width=1020,height=700');
 			}
@@ -161,17 +162,16 @@ var getColumnFromArray = function(arrayData, columnIndex)
 		$("#selectedGuidanceItem a[href]").each(function()
 			{
 				var href = $(this).attr('href');
-				var id =  href.replace("?#ruledisplay:","");				   
 				
+                $(this).attr('target', '_blank')
+
+/*				var id =  href.replace("/article/","");				   
 				var giData= $.data[id];
-				if (isDefined(giData) || href.indexOf('http') > -1)
-				{
-					var popupViewHref = href.replace("?#ruledisplay:","/html_pages/GuidanceItemViewer/GuidanceItemViewer.html?#ruledisplay:");
-					$(this).attr('href',popupViewHref)
-						   .attr('target', '_blank')
-				}
-				else
+
+                
+				if (isDefined(giData) === false)
 					$(this).removeAttr('href').css("text-decoration" , "underline");
+                    */
 			})
 	};
 				

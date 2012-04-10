@@ -264,10 +264,10 @@ TM.Gui.DataTable.addDataTableButtons = function()
 							{
 								//_viewId = TM.Gui.selectedNodeData.viewId;
 								//_selectedGuidanceIds = selectedGuidanceIds;
-								showUserMessage("GuidanceItems successfully removed from view, please refresh view")
+								TM.Gui.Dialog.alertUser("GuidanceItems successfully removed from view, please refresh view")
 							}
 							else
-								showUserMessage("There was an error performing this action")
+								TM.Gui.Dialog.alertUser("There was an error performing this action")
 						});
 			});
 		
@@ -280,10 +280,10 @@ TM.Gui.DataTable.addDataTableButtons = function()
 								{
 									if (result)
 									{								
-										showUserMessage("GuidanceItems successfully deleted, please refresh browser")
+										TM.Gui.Dialog.alertUser("GuidanceItems successfully deleted, please refresh browser")
 									}
 									else
-										showUserMessage("There was an error performing this action")
+										TM.Gui.Dialog.alertUser("There was an error performing this action")
 								});	
 					};
 				var description = "{0} guidanceItems".format(selectedGuidanceIds.length);

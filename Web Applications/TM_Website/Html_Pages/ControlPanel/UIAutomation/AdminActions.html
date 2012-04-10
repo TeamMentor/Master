@@ -1,6 +1,7 @@
 <html>
 	<head>
 		<title>Admin Actions</title>
+        <link  href="/Javascript/bootstrap/bootstrap.min.css"                       type="text/css"  rel="stylesheet" />
 		<script src="/aspx_Pages/scriptCombiner.ashx?s=GlobalVariables"				type="text/javascript"></script>				
 
 		<script>
@@ -28,11 +29,17 @@
 									.add_Link("Login as Reader"						, function() { that.login_as_User("reader") 			})
 									.add_Link("Login as Admin -> Web Services"		, function() { that.login_and_OpenLink("Web Services")	})
 									.add_Link("Login as Admin -> Admin Tasks"		, function() { that.login_and_OpenLink("Admin Tasks")	})
-									.add_Link("Login as Admin -> Install Libraries"	, function() { that.login_and_OpenLink("Install Libraries")	});
+									.add_Link("Login as Admin -> Install Libraries"	, function() { that.login_and_OpenLink("Upload Libraries")	});
 
 							}
 					, 	login			: function(username, password, callback)
-							{							
+							{		
+                                
+                                if (opener.TM.Gui.CurrentUser.userName() === username)
+                                {
+                                    opener.TM.Events.onLoginDialogClose();
+                                    return;
+                                }   			
 								opener.TM.Events.onLoginDialogOpen.add(function()
 									{
 										opener.$("#UsernameBox").val(username)
@@ -53,9 +60,9 @@
 							{		
 								opener.TM.Events.onLoginDialogClose.add(
 									 function () 
-                                        {	                                            										
+                                        {	                                                                   										
 											opener.$("#leftMenu_Links").find("a:contains('"+ linkText+"')").click()
-											opener.TM.Events.onControlPanelGuiLoaded.remove();
+											opener.TM.Events.onLoginDialogClose.remove();
 										});
 								this.login_as_User("admin");									
 							}

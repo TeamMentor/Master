@@ -13,16 +13,17 @@
 				toolbar  : 'complete',
 				cssfiles : ['/Javascript/htmlEditors/elrte-1.3/css/elrte-inner.css']
 			}
+
 			$('#guidanceItem').elrte(opts);
                         elRTE.prototype.save = saveEditorCode;
              }
 				
-		showGuidanceItemHtml = function(htmlCode)
+		TM.Gui.GuidanceItemEditor.showGuidanceItemHtml = function(htmlCode)
 			{				
                  $('#guidanceItem').elrte('val', htmlCode);
 			}
 			
-		getEditorCode = function()
+		TM.Gui.GuidanceItemEditor.getEditorCode = function()
             {
 				return $('#guidanceItem').elrte('val');
 			}

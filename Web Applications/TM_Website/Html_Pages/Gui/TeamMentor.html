@@ -17,9 +17,15 @@
 				
 				if (TM.Debug.load_HomePage)
 				{
-					TM.Gui.ShowProgressBar.open("Loading TeamMentor");							
-					TM.Gui.Main.homePage();					
-				}
+					TM.Events.onUserDataLoaded.add(function() 
+						{
+							TM.Events.onUserDataLoaded.remove()
+							TM.Gui.ShowProgressBar.open("Loading TeamMentor");							
+							TM.Gui.Main.homePage();										
+						});
+				};
+
+				TM.Gui.CurrentUser.loadUserData();
 			}			
 		
 		$(loadTeamMentorGUI);

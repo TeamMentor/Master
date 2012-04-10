@@ -25,17 +25,6 @@ function loadDialog(page, target, callback)
 
 var showMessage_NotEnoughPriviledges = function()
 {
-	showUserMessage("You don't have enough priviledges to make this action");
+	TM.Gui.Dialog.alertUser("You don't have enough priviledges to make this action");
 }
 
-var showUserMessage = function(message)
-{
-	TM.Gui.Dialog.alertUser(message);
-/*		var div = "<div>{0}</div>".format(message).$();
-	return div.dialog(
-		{ 
-			title:'user message...' , 
-			modal:true, 
-			height:150 
-		} )*/
-}

@@ -7,6 +7,7 @@ TM.Gui.Main.Panels =
         ,   div_Center_North            : 'gui_CenterNorth'
         ,   div_Center_North_Top        : 'gui_CenterNorth_top' 
         ,   div_Center_North_Bottom     : 'gui_CenterNorth_bottom'
+		,   div_West                    : 'gui_West'
         ,   div_West_Bottom             : 'gui_West_bottom'
         ,   div_West_Top                : 'gui_West_top'
         ,   div_CenterCenter            : 'gui_CenterCenter'
@@ -15,8 +16,18 @@ TM.Gui.Main.Panels =
 
 		,	panelsDir 					: '/Html_Pages/Gui/Panels/'
 			
+		,	openPanesBasedOnUserRole	: function()
+				{
+                    this.openDefaultPanes();		
+                    /*
+                    //don't do this by default
+					if (TM.Gui.CurrentUser.isViewer())
+						this.openDefaultPanes();		
+					else
+						this.showNotAuthorizedPage();*/
+				}	
 		,	openDefaultPanes 			: function()
-				{	
+				{						
 					loadPage(this.div_North                 , this.panelsDir + 'Top_Banner.html');								
 					loadPage(this.div_Center_North_Top      , this.panelsDir + 'Top_SearchPanel.html');
 					loadPage(this.div_Center_North_Bottom   , this.panelsDir + 'AppliedFilters/PivotPanels.html');		
@@ -25,12 +36,19 @@ TM.Gui.Main.Panels =
 					loadPage(this.div_East                  , this.panelsDir + 'Right_GuidanceItem.html');
                     loadPage(this.div_CenterCenter          , this.panelsDir + 'Middle_GuidanceItems.html');				
 
-///
-
-                    loadPage('TopMenuLinks',			this.panelsDir + 'TopRight_Links.html');
+                    loadPage('TopMenuLinks',				 this.panelsDir + 'TopRight_Links.html');
 					
 				}
-				
+		,	showNotAuthorizedPage		: function()
+				{
+					$("#" + this.div_West).hide();
+					$("#" + this.div_East).width('100%');
+					loadPage(this.div_East, TM.NotAuthorizedPage);
+
+					loadPage(this.div_North                 , this.panelsDir + 'Top_Banner.html');								
+
+					loadPage('TopMenuLinks',				 this.panelsDir + 'TopRight_Links.html');
+				}		
 		,	setHomePageViewFromUrlHash 	: function()
 			{		
 				TM.Gui.Main.Panels.applyHomePageView(window.location.hash.slice(1).split("&"));
@@ -156,8 +174,8 @@ TM.Gui.Main.Panels.buildGui = function()
 		TM.Gui.Main.Panels.createLayout();		
 				
 	TM.Events.raiseProcessBarNextValue("Opening Default View");
-		
-	TM.Gui.Main.Panels.openDefaultPanes();	
+	
+	TM.Gui.Main.Panels.openPanesBasedOnUserRole();		
 		
 	TM.Events.raiseProcessBarNextValue("Opening Default View");
 	TM.Gui.Main.Panels.setHomePageViewFromUrlHash();		

@@ -18,6 +18,8 @@ TM.ControlPanel =
 		,	open_ManageUsers	: function(targetDiv)		{	TM.ControlPanel.open_Page(targetDiv, "../ManageUsers/View_Current_Users.html"			);	}
 		,	open_CreateUsers 	: function(targetDiv)		{	TM.ControlPanel.open_Page(targetDiv, "../ManageUsers/CreateUsers.html"	);	}
 		,	open_AdminTasks		: function(targetDiv)		{	TM.ControlPanel.open_Page(targetDiv, "Admin_Tasks.html"					);	}			
+        ,	open_SetLibraryPath	: function(targetDiv)		{	TM.ControlPanel.open_Page(targetDiv, "Set_Library_Path.html"			);	}			
+        
 				
 		
 		,	open_WebServices	: function(targetDiv)		{	TM.ControlPanel.open_Page(targetDiv, "../WebServices/TM_Webservices.html"	);	}

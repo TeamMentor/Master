@@ -3,7 +3,11 @@
 	<head>	
 		<title>TeamMentor 3.0</title>		
 		<link  href="/aspx_Pages/scriptCombiner.ashx?s=HomePage_CSS&ct=css" 				type="text/css" rel="stylesheet" /> 					
-		<script src="/aspx_Pages/scriptCombiner.ashx?s=WebServices_JS"						type="text/javascript"></script>					
+		<script src="/aspx_Pages/scriptCombiner.ashx?s=WebServices_JS"						type="text/javascript"></script>	
+        
+        <link href="/Javascript/jsPrettify/prettify.css"                                    type="text/css" rel="stylesheet" />
+        <script src="/Javascript/jsPrettify/prettify.js"                                    type="text/javascript" ></script>				
+        
 	</head>
 	<body>	
 			<script type="text/javascript">
@@ -19,25 +23,37 @@
 					}
 			
 				var handleCommand = function(command)
-                			{
+                	{
 
-                          			var splitCommand = command.split(":");
-                          			if(splitCommand.length ==2 && splitCommand[0] == 'ruledisplay')
-										{
-                                  			guidanceId = splitCommand[1];
-											//alert("set guidanceitem to: " + splitCommand[1]);
-											loadGuidanceItem();
-												return false;
-										}
-                          			return true;   // to continue links
-                			}
+                          	var splitCommand = command.split(":");
+                          	if(splitCommand.length ==2 && splitCommand[0] == 'ruledisplay')
+								{
+                                  	guidanceId = splitCommand[1];
+									//alert("set guidanceitem to: " + splitCommand[1]);
+									loadGuidanceItem();
+										return false;
+								}
+                          	return true;   // to continue links
+                	}
 
-						var setGuidanceIdfromUrlHash =  function()
-                    			{							
-                          			handleCommand(window.location.hash.slice(1).split("&")[0]);
-                    			}
-                  
-                
+				var setGuidanceIdfromUrlHash =  function()
+                    {						
+						if (window.location.hash != "")
+                          	handleCommand(window.location.hash.slice(1).split("&")[0]);
+						else
+							getGuidFromUrl();					
+                    }
+						
+                var getGuidFromUrl = function()
+					{
+                        mappingText = document.URL.split('/').pop();
+						var mapping = "{ mapping : '" + mappingText + "' }";                        
+						TM.WebServices.Helper.invoke_TM_WebService("getGuidForMapping",mapping, function(data)
+							{
+								guidanceId = data;
+								loadGuidanceItem();
+							});						
+					}
 		//                alert(getGuidanceIdfromUrl());
                 
 						var loadGuidanceItem = function()
@@ -51,22 +67,38 @@
 				showGuidanceItemData = function(data)
 				{	
 			
-					var loadedGuidanceItem = data.d;	
+					loadedGuidanceItem = data.d;	
 					if (loadedGuidanceItem != null)
-					{			
-						"#Title".$().html(loadedGuidanceItem.title);
-						"CategoriesLabel".$().html(data.d.category);
-						"PhaseLabel".$().html(loadedGuidanceItem.phase);
-						"TechnologyLabel".$().html(loadedGuidanceItem.technology);
-						"GuidanceTypeLabel".$().html(loadedGuidanceItem.rule_Type);
-						//"DateLabel".$().html(loadedGuidanceItem.lastUpdate);
-						showGuidanceItemHtml(loadedGuidanceItem.htmlContent);
-					//.html(data.d.category);;
-			//			checkForActivitys();
+					{		
+                        $("#itemContent").show()
+						"#Title"            .$().html(loadedGuidanceItem.Metadata.Title);	
+                        
+                        if ((loadedGuidanceItem.Metadata.Category    == null || loadedGuidanceItem.Metadata.Category    == "")   &&
+                            (loadedGuidanceItem.Metadata.Phase       == null || loadedGuidanceItem.Metadata.Phase       == "")      &&
+                            (loadedGuidanceItem.Metadata.Technology  == null || loadedGuidanceItem.Metadata.Technology  == "") && 
+                            (loadedGuidanceItem.Metadata.Type        == null || loadedGuidanceItem.Metadata.Type        == "") ) 
+                        {
+                            $(".ItemDetailTable").hide();
+                        }
+                        else
+                        {
+                            $(".ItemDetailTable").show();
+						    "CategoriesLabel"   .$().html(loadedGuidanceItem.Metadata.Category);
+						    "PhaseLabel"        .$().html(loadedGuidanceItem.Metadata.Phase);
+						    "TechnologyLabel"   .$().html(loadedGuidanceItem.Metadata.Technology);
+						    "GuidanceTypeLabel" .$().html(loadedGuidanceItem.Metadata.Type);
+                        }
+						if (loadedGuidanceItem.Content.DataType.toLowerCase() === "wikitext")
+                            showGuidanceItemWikiText(loadedGuidanceItem.Content.Data_Json);
+                        else
+						    showGuidanceItemHtml(loadedGuidanceItem.Content.Data_Json);
+					
 					}
 					else
 					{
-						"#Title".$().html("(Invalid GUID: No Guidance Item found)");
+                        "ItemContent".$().hide();
+						"#Title".$().html("Sorry, we couldn't find the requested article. ")
+                                    .append("Why don't you <a href='/create/" + mappingText +"'>create it</a>");
 						"CategoriesLabel".$().html("");
 						"PhaseLabel".$().html("");
 						"TechnologyLabel".$().html("");
@@ -81,25 +113,34 @@
 					$("a").css('color','#339')			// fix link color
 					if(window.opener ==null)
 						return;
-					$(".ItemContent a[href]").each(function()
+					$(".ItemContent a[href]").each(function()				                         
 						{					
 							var href = $(this).attr('href');
 							if (href.indexOf('http') > -1)
 								$(this).attr('target', '_blank');
-							else
+
+/*							else
 							{
-								var id =  href.replace("?#ruledisplay:","");				   					
+								var id =  href.replace("/article/","");				   					
 								var giData= window.opener.$.data[id];
 								if (isUndefined(giData))					
 								{
 									$(this).removeAttr('href')
 										   .css("text-decoration" , "underline");							
 								}						
-							}
+							}*/
 						})
 				
 				};
 	
+                showGuidanceItemWikiText = function(wikiText)
+                {
+                    var targetDiv = document.createElement('div');        
+                    new creole().parse(targetDiv,wikiText )   
+                    var html = targetDiv.innerHTML ;
+                    showGuidanceItemHtml(html);
+                }
+
 				showGuidanceItemHtml = function(html)
 					{				
 						$("#guidanceItem").html(html);
@@ -107,6 +148,8 @@
 						fixGuidanceItemLinks();
 				
 						scrollToTopOfPage();
+
+                        prettyPrint();
 					}
                 
 			   showPageChange = function(changeID)
@@ -189,17 +232,12 @@
 								
 						if(TM.Gui.CurrentUser.isViewer())
 						{
-							setGuidanceIdfromUrlHash();
-							$("#itemContent").show()
-							$("#notAViewerErrorMessage").show()
+							setGuidanceIdfromUrlHash();							
+							$("#notAViewerErrorMessage").hide()
 						}
 						else
-						{	
-							$("#itemContent").hide();																
+						{																							
 							$("#notAViewerErrorMessage").show().html("<h2>Access denied.</h2><br/><p>Please close this window or <a href='javascript:TM.Gui.Dialog.loginPage()'>login</a></p>");
-
-
-						//	TM.Gui.Dialog.loginPage();					
 						}
 					
 						if(TM.Gui.CurrentUser.isEditor() )				
@@ -209,25 +247,14 @@
 						else
 							$("#SidePanel").hide();
 
-				
-				
-						//css fixes 
-				
-				
-						//"links".$().height(20);
-						//"previousVersions".$().height(20);
-						//"addCommentBox".$().hide();
-						//"logCommentButton".$().absolute().bottom(10).right(10)
-						//"UserCommentTextBox".$().absolute().top(10).right(20).bottom(40).left(10);
 						"ItemTitle".$().css('padding',10)	
-
-				
 					}
 		
 				$(function()
 					{
 						$("#loadingMessage").remove();								
-				
+				        $("#itemContent").hide();	
+                        
 						TM.Events.onUserDataLoaded.add(buildGui);
 				
 						loadUserDataAndBuildGui();			
@@ -280,8 +307,7 @@
 			<div id="links"></div> 
 		</div>
    
-		<h1><div class="ItemTitle" ID="Title"> </div></h1>
-  
+		<h1><div class="ItemTitle" id="Title"> </div></h1>         
 		 <div class="ItemContent" id="itemContent">
    
   
