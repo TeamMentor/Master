@@ -21,29 +21,41 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 {
     public class UtilMethods
     {    	
-        public static string syncWithGitHub(string username, string password)
+        public static string syncWithGitHub_Pull_Origin()
 		{
-			var tmConfig = TMConfig.Current;
-			if (password.valid())
-			{				
-				tmConfig.GitHubPassword = password;
-				tmConfig.SaveTMConfig();				
-			}
-			else
-				password = tmConfig.GitHubPassword;
+            var gitCommand = "pull origin";
+            return executeGitCommand(gitCommand);
+        }
+
+        public static string syncWithGitHub_Push_Origin()
+		{
+            var gitCommand = "push origin";
+            return executeGitCommand(gitCommand);
+        }
+
+        public static string syncWithGitHub_Commit()
+        {
+            return syncWithGitHub_Commit("TeamMentor Commit at: {0}".format(DateTime.Now));
+        }
+
+        public static string syncWithGitHub_Commit(string message)
+		{
+            executeGitCommand("add -A");       
+            var commit = "commit -m '{0}'".format(message);
+            return executeGitCommand(commit);
+        }
+
+        public static string executeGitCommand(string gitCommand)
+        {                   
 			var gitExe = @"C:\Program Files\Git\bin\git.exe";
 			if (gitExe.fileExists().isFalse())
 				gitExe = @"C:\Program Files (x86)\Git\bin\git.exe";
 			if (gitExe.fileExists().isFalse())
 				return "error: could not find git.exe: {0}".format(gitExe);
+
 			var gitLocalProjectFolder = AppDomain.CurrentDomain.BaseDirectory;
-			
-			
-			var gitHubFolder = "https://{0}:{1}@github.com/DinisCruz/TeamMentor-v3.0".format(username, password);
-			//var gitLocalProjectFolder = @"C:\_WorkDir\SI\_PoC\TeamMentor-v3.0";
-			var gitExeParameters = "pull {0}".format(gitHubFolder);
-			 
-			var cmdOutput = Processes.startAsCmdExe(gitExe, gitExeParameters, gitLocalProjectFolder) 
+	 
+			var cmdOutput = Processes.startAsCmdExe(gitExe, gitCommand, gitLocalProjectFolder) 
 									 .fixCRLF();
 			return cmdOutput;
 		}
