@@ -225,9 +225,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
             {
                 context.Response.ContentType = "text/html";
                 var content = tmWebServices.GetGuidanceItemHtml(guid);
-                context.Response.Write(content);
-                //var article = tmWebServices.GetGuidanceItemById(guid.str());
-                //context.Response.Write(article.Content.Data.Value);
+                context.Response.Write(content);                
             }
             else
                 transfer_ArticleViewer();

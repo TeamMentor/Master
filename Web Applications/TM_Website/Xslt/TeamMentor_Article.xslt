@@ -20,7 +20,7 @@
         
         <style>
             .HeaderImage  { height  : 75px }            
-            .Article      { width : 75% }
+            .Article      { width : 75% }            
         </style>
           
       </head>
@@ -122,6 +122,7 @@
              }
              $("pre").addClass("prettyprint");
              prettyPrint();
+             $("#ContentArea img").css("border","1px solid");
             };
             
           var hookContentLinks = function()

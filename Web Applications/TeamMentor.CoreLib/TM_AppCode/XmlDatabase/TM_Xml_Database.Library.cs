@@ -131,7 +131,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                         if (TMConfig.Current.SanitizeHtmlContent && article.Content.Sanitized.isFalse())
                             return articleContent.sanitizeHtmlContent();
                         else
-                            return articleContent;                            
+                            return articleContent.fixXmlDoubleEncodingIssue();                            
                     }
                 case "SafeHtml":
                     {
