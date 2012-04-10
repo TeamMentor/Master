@@ -53,10 +53,11 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			if (gitExe.fileExists().isFalse())
 				return "error: could not find git.exe: {0}".format(gitExe);
 
-			var gitLocalProjectFolder = AppDomain.CurrentDomain.BaseDirectory;
+			var gitLocalProjectFolder = AppDomain.CurrentDomain.BaseDirectory.pathCombine("..//..").fullPath(); // go up to the main git folder
 	 
 			var cmdOutput = Processes.startAsCmdExe(gitExe, gitCommand, gitLocalProjectFolder) 
-									 .fixCRLF();
+									 .fixCRLF()
+                                     .replace("\t", "    ");
 			return cmdOutput;
 		}
     }

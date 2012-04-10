@@ -330,6 +330,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
             if(article.Content.DataType.lower() == "html")     
             {
                 var cdataContent=  article.Content.Data.Value.replace("]]>", "]] >"); // xmlserialization below will break if there is a ]]>  in the text
+                //cdataContent = cdataContent.fixXmlDoubleEncodingIssue();
                 article.Content.Data.Value = cdataContent.tidyHtml();
             }            
 			article.Metadata.Library_Id = libraryId;        //ensure the LibraryID is correct
