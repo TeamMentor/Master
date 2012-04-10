@@ -4,34 +4,47 @@
 				
 				executePull		: function()
 					{		
-						$("#result").html("...starting GitHub Pull");
-						var that = this;						
+						$("#result").html("...starting GitHub Pull");						
 						var params = {};
 						TM.WebServices.Helper.invoke_TM_WebService('GitHub_Pull_Origin',params, TM.ControlPanel.GitHubSync.showResult);						
 					}	
 			,	executePush		: function()
 					{		
-						$("#result").html("...starting GitHub Push");
-						var that = this;						
+						$("#result").html("...starting GitHub Push");										
 						var params = {};
 						TM.WebServices.Helper.invoke_TM_WebService('GitHub_Push_Origin',params, TM.ControlPanel.GitHubSync.showResult);						
-					}		
+					}	
+            ,	executeGitCommand		: function()
+					{		
+                        var gitCommand = $("#gitCommand").val();
+						$("#result").html("...executing Git Command: " + gitCommand);						
+						var params = { gitCommand : gitCommand };
+						TM.WebServices.Helper.invoke_TM_WebService('Git_Execute',params, TM.ControlPanel.GitHubSync.showResult);						
+					}	        
+                    	
 			, 	showResult		: function(result)
 					{								
 						result = result.replace(/\r\n/g, "<br/>");						
 						$("#result").html(JSON.stringify(result));
 					}
 			, 	applyCss		: function() 
-					{						
-						$("input:[type=text]").addClass("ui-widget-content ui-corner-all")
-															 .absolute()
-															 .left(100)
-															 .width(200);
+					{												
 						$("#pull").button().css('font-size',12)
 										   .click(this.executePull);
                         $("#push").button().css('font-size',12)
 										   .click(this.executePush);
-						$("#gitForm").height(100)
+                        
+                        $("#gitCommand").addClass("ui-widget-content ui-corner-all")
+															 .relative()
+															 //.left(10)
+															 .width(200);    
+                        $("#execute").button().css('font-size',12)
+										   .click(this.executeGitCommand);
+                                           
+                        $("#gitCommand").val('status');
+
+                        this.executeGitCommand();
+						//$("#gitForm").height(100)
 					}
 		}
 	$(function()
@@ -57,6 +70,11 @@
             <br />
             <br />
             <input type="button" id="push" value="Push"/> - Push local changes to GitHub
+            <br />
+            <br />
+            <input type="text" id="gitCommand"> 
+            <input type="button" id="execute" value="Execute Git Command"/> 
+            <p>Common commands: remote -v, status, git add . , git add -A , git commit -m '{commit message}'</p>
 		</form>
 	</div>
 	<div>

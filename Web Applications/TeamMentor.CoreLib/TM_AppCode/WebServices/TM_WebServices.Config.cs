@@ -66,9 +66,10 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		[WebMethod(EnableSession = true)] public string  RBAC_SessionCookie()						            {	return HttpContext.Current.Request.Cookies["Session"].notNull() 
 																												? HttpContext.Current.Request.Cookies["Session"].Value : ""; }
 																												
-		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public string GitHub_Pull_Origin()	{	return UtilMethods.syncWithGitHub_Pull_Origin();  }
-        [WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public string GitHub_Push_Origin()	{	return UtilMethods.syncWithGitHub_Push_Origin();  }
-        [WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public string GitHub_Push_Commit()	{	return UtilMethods.syncWithGitHub_Commit();  }
+		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public string GitHub_Pull_Origin()	            {	return UtilMethods.syncWithGitHub_Pull_Origin();  }
+        [WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public string GitHub_Push_Origin()	            {	return UtilMethods.syncWithGitHub_Push_Origin();  }
+        [WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public string GitHub_Push_Commit()	            {	return UtilMethods.syncWithGitHub_Commit();  }
+        [WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public string Git_Execute(string gitCommand)	{	return UtilMethods.executeGitCommand(gitCommand);  }
 		
 		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public string CreateWebEditorSecret()	
 																									{
