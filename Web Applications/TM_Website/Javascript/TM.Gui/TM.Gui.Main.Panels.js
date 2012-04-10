@@ -18,13 +18,15 @@ TM.Gui.Main.Panels =
 			
 		,	openPanesBasedOnUserRole	: function()
 				{
-                    this.openDefaultPanes();		
-                    /*
-                    //don't do this by default
-					if (TM.Gui.CurrentUser.isViewer())
-						this.openDefaultPanes();		
-					else
-						this.showNotAuthorizedPage();*/
+                    if(TM.Gui.showLibraryStructureToAnonymous)
+                        this.openDefaultPanes();		
+                    else
+                    {                        
+					    if (TM.Gui.CurrentUser.isViewer())
+						    this.openDefaultPanes();		
+					    else
+						    this.showNotAuthorizedPage();
+                    }
 				}	
 		,	openDefaultPanes 			: function()
 				{						
@@ -184,7 +186,7 @@ TM.Gui.Main.Panels.buildGui = function()
 	$('#JS_Dialog').html('');
 		
 		
-	if (TM.Debug.gui_LoadLibraryData)
+	if (TM.Gui.LoadLibraryData)
 	{		
 		TM.Events.onFolderStructureLoaded.add(function()
 			{			
