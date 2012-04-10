@@ -77,7 +77,9 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                     case "create":
                         return handleAction_Create(data);    
                     case "admin":
-                        return redirectTo_ControlPanel();
+                        return redirectTo_ControlPanel(false);
+                    case "admin_extra":
+                        return redirectTo_ControlPanel(true);                        
                     case "login":
                         return transfer_Login();   
                     case "logout":
@@ -289,9 +291,10 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
             return false; 
 		}
 
-        public bool redirectTo_ControlPanel()
+        public bool redirectTo_ControlPanel(bool includeExtraTag)
 		{			
-			context.Response.Redirect("/html_pages/ControlPanel/controlpanel.html");
+            var adminUrl = "/html_pages/ControlPanel/controlpanel.html" + ((includeExtraTag) ? "?extra" : "");
+			context.Response.Redirect(adminUrl);
             return false;    
 		}
                
