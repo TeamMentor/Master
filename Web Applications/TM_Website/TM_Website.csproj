@@ -11,7 +11,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SecurityInnovation.TeamMentor.Website</RootNamespace>
     <AssemblyName>SecurityInnovation.TeamMentor.Website</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <SccProjectName>
     </SccProjectName>
     <SccLocalPath>
@@ -26,6 +26,7 @@
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -47,70 +48,26 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="HtmlSanitizationLibrary">
-      <HintPath>bin\HtmlSanitizationLibrary.dll</HintPath>
-    </Reference>
-    <Reference Include="ICSharpCode.SharpZipLib">
-      <HintPath>bin\ICSharpCode.SharpZipLib.dll</HintPath>
-    </Reference>
-    <Reference Include="Ionic.Zip">
-      <HintPath>bin\Ionic.Zip.dll</HintPath>
-    </Reference>
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.DirectoryServices.AccountManagement">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Web.Abstractions">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="AntiXssLibrary, Version=1.5.0.0, Culture=neutral, PublicKeyToken=5906d2bb3d8a12c4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\3rdPartyProjects\CodePlex\GuidanceExplorerLibs\AntiXssLibrary.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity, Version=2.1.505.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>.\Microsoft.Practices.Unity.dll</HintPath>
-    </Reference>
-    <Reference Include="Moq, Version=4.0.10827.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>.\Moq.dll</HintPath>
-    </Reference>
-    <Reference Include="O2_DotNetWrappers, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>.\O2_DotNetWrappers.dll</HintPath>
-    </Reference>
-    <Reference Include="O2_Interfaces, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>.\O2_Interfaces.dll</HintPath>
-    </Reference>
-    <Reference Include="O2_Kernel, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>.\O2_Kernel.dll</HintPath>
-    </Reference>
-    <Reference Include="O2_Misc_Microsoft_MPL_Libs, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>.\O2_Misc_Microsoft_MPL_Libs.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data.DataSetExtensions">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
     <Reference Include="System.Runtime.Serialization">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.ServiceModel">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Web.Extensions">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml.Linq">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
@@ -118,8 +75,38 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Web.Mobile" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Aspx_Pages\images\back_disabled.jpg" />
+    <Content Include="Aspx_Pages\images\back_enabled.jpg" />
+    <Content Include="Aspx_Pages\images\forward_disabled.jpg" />
+    <Content Include="Aspx_Pages\images\forward_enabled.jpg" />
+    <Content Include="Aspx_Pages\images\sortASC.png" />
+    <Content Include="Aspx_Pages\images\sortBlank.png" />
+    <Content Include="Aspx_Pages\images\sortDESC.png" />
+    <Content Include="Aspx_Pages\images\sort_asc.png" />
+    <Content Include="Aspx_Pages\images\sort_asc_disabled.png" />
+    <Content Include="Aspx_Pages\images\sort_both.png" />
+    <Content Include="Aspx_Pages\images\sort_desc.png" />
+    <Content Include="Aspx_Pages\images\sort_desc_disabled.png" />
+    <Content Include="Aspx_Pages\images\spacer.png" />
+    <Content Include="Aspx_Pages\images\ui-bg_flat_55_999999_40x100.png" />
+    <Content Include="Aspx_Pages\images\ui-bg_flat_75_aaaaaa_40x100.png" />
+    <Content Include="Aspx_Pages\images\ui-bg_glass_45_0078ae_1x400.png" />
+    <Content Include="Aspx_Pages\images\ui-bg_glass_55_f8da4e_1x400.png" />
+    <Content Include="Aspx_Pages\images\ui-bg_glass_75_79c9ec_1x400.png" />
+    <Content Include="Aspx_Pages\images\ui-bg_gloss-wave_45_e14f1c_500x100.png" />
+    <Content Include="Aspx_Pages\images\ui-bg_gloss-wave_50_6eac2c_500x100.png" />
+    <Content Include="Aspx_Pages\images\ui-bg_gloss-wave_75_2191c0_500x100.png" />
+    <Content Include="Aspx_Pages\images\ui-bg_inset-hard_100_fcfdfd_1x100.png" />
+    <Content Include="Aspx_Pages\images\ui-icons_0078ae_256x240.png" />
+    <Content Include="Aspx_Pages\images\ui-icons_056b93_256x240.png" />
+    <Content Include="Aspx_Pages\images\ui-icons_d8e7f3_256x240.png" />
+    <Content Include="Aspx_Pages\images\ui-icons_e0fdff_256x240.png" />
+    <Content Include="Aspx_Pages\images\ui-icons_f5e175_256x240.png" />
+    <Content Include="Aspx_Pages\images\ui-icons_f7a50d_256x240.png" />
+    <Content Include="Aspx_Pages\images\ui-icons_fcd113_256x240.png" />
     <Content Include="Css\default.css" />
     <Content Include="Css\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Css\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -148,10 +135,17 @@
     <Content Include="Css\jquery.ui.slider.css" />
     <Content Include="Css\jquery.ui.tabs.css" />
     <Content Include="Css\jquery.ui.theme.css" />
-    <Content Include="Css\TM_3.0.css" />
-    <Content Include="Css\TM_3.0.js" />
+    <Content Include="Css\ThemeForest_ReadyMade\css\buttons.css" />
+    <Content Include="Css\ThemeForest_ReadyMade\css\forms.css" />
+    <Content Include="Css\ThemeForest_ReadyMade\css\login.css" />
+    <Content Include="Css\ThemeForest_ReadyMade\css\reset.css" />
+    <Content Include="Css\ThemeForest_ReadyMade\css\text.css" />
+    <Content Include="Css\ThemeForest_ReadyMade\images\btn-35.png" />
+    <Content Include="Css\ThemeForest_ReadyMade\images\error_stem.png" />
     <Content Include="default.htm" />
     <Content Include="favicon.ico" />
+    <Content Include="Global.asax" />
+    <Content Include="Html_Pages\ControlPanel\Views\Set_Library_Path.html" />
     <Content Include="Html_Pages\ControlPanel\WebServices\Invoke_Javascript.html" />
     <Content Include="Html_Pages\ControlPanel\WebServices\Invoke_WebServices.html" />
     <Content Include="Html_Pages\ControlPanel\WebServices\jsTree_Test.html.txt" />
@@ -225,9 +219,17 @@
     <Content Include="Html_Pages\Gui\Dialogs\Dialog with not a lot of content.html" />
     <Content Include="Html_Pages\Gui\Dialogs\Login.Html" />
     <Content Include="Html_Pages\Gui\Dialogs\Signup.html" />
+    <Content Include="Html_Pages\Gui\Pages\login.html" />
     <Content Include="Html_Pages\Gui\Panels\About_TeamMentor.html" />
+    <Content Include="Html_Pages\Gui\Panels\AD_Non_Authorized_User.html" />
     <Content Include="Html_Pages\_UnitTest_Helpers\Tests_For_BrowserBugs\Chrome_CPU_Spike_on_Password_Field_in_JQueryUI_Dialog.htm" />
     <Content Include="Html_Pages\_UnitTest_Helpers\_Javascript_Loaders\FirebugLite_with_TM_WebServices.html" />
+    <Content Include="Javascript\bootstrap\bootstrap.min.css" />
+    <Content Include="Javascript\bootstrap\bootstrap.min.js" />
+    <Content Include="Javascript\bootstrap\glyphicons-halflings-white.png" />
+    <Content Include="Javascript\bootstrap\glyphicons-halflings.png" />
+    <Content Include="Javascript\jQuery\jquery.textarea.js" />
+    <Content Include="Javascript\jsCreole\creole.min.js" />
     <Content Include="Javascript\TM.ControlPanel\TM.ControlPanel.AdminTasks.js" />
     <Content Include="Javascript\TM.Gui\AppliedFIlters.DataManipulation.js" />
     <Content Include="Javascript\TM.Gui\AppliedFIlters.js" />
@@ -427,10 +429,7 @@
     <Content Include="Javascript\IE_Fixes.js" />
     <Content Include="Javascript\jLinq\jlinq.jquery.js" />
     <Content Include="Javascript\jLinq\jlinq.js" />
-    <Content Include="Javascript\jO2\jO2_jQueryUI_ExtensionMethods.js" />
     <Content Include="Javascript\jO2\jO2_jQuery_ExtensionMethods.js" />
-    <Content Include="Javascript\jO2\jO2_MiscGuiControls_ExtensionMethods.js" />
-    <Content Include="Javascript\jO2\jO2_Object_ExtensionMethods.js" />
     <Content Include="Javascript\jO2\jO2_String_ExtensionMethods.js" />
     <Content Include="Javascript\jQuery.DataTable\dataTable.ExtraMethods.js" />
     <Content Include="Javascript\jQuery.DataTable\dataTable.PlugIns.js" />
@@ -511,9 +510,7 @@
     <Content Include="Javascript\jsTrace\trace-src.js" />
     <Content Include="Javascript\jsTrace\trace.html" />
     <Content Include="Javascript\TM.ControlPanel\TM.ControlPanel.WebServices.js" />
-    <Content Include="Javascript\jTemplates\jTemplateTest.css" />
     <Content Include="Javascript\jTemplates\LinksMenu.html" />
-    <Content Include="Javascript\jTemplates\simpleTable.html" />
     <Content Include="Javascript\qunit\qunit-git.css" />
     <Content Include="Javascript\qunit\qunit-git.js" />
     <Content Include="Javascript\slickGrid\arrow_right_spearmint.png" />
@@ -554,14 +551,21 @@
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Xslt\Article_Edit.xslt" />
+    <Content Include="Xslt\JsCreole_Article.xslt" />
+    <Content Include="Xslt\SimpleView.xslt" />
+    <Content Include="Xslt\Notepad_Edit.xslt">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Xslt\TeamMentor_Article.xslt">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Css\__default.css" />
     <Content Include="Images\AllLibraries.png" />
     <Content Include="Images\AppliedFiltersHeader.png" />
     <Content Include="Images\calendar-icon.png" />
     <Content Include="Images\CollapseOne.png" />
-    <Content Include="Images\default.css" />
     <Content Include="Images\DeleteFilterIcon.png" />
     <Content Include="Images\Down.png" />
     <Content Include="Images\ExpandAll.png" />
@@ -579,88 +583,34 @@
     <Content Include="Images\RemoveAllFilters.png" />
     <Content Include="Images\Search.png" />
     <Content Include="Images\SingleLibrary.png" />
-    <Content Include="Images\sortASC.png" />
-    <Content Include="Images\sortBlank.png" />
-    <Content Include="Images\sortDESC.png" />
-    <Content Include="Images\spacer.png" />
     <Content Include="Images\SpinLeft.png" />
     <Content Include="Images\SpinRight.png" />
     <Content Include="Images\Up.png" />
     <Content Include="Images\ViewIcon.png" />
     <Content Include="Images\HeaderImage.jpg" />
-    <None Include="App_Code\FileUpload\FileUpload.cs" />
     <None Include="Aspx_Pages\File_Upload.ashx" />
+    <Content Include="Aspx_Pages\UrlRewriter.ashx" />
     <None Include="Aspx_Pages\ScriptCombiner.ashx" />
-    <None Include="Aspx_Pages\TM_3_0.Master" />
     <None Include="Aspx_Pages\TM_WebServices.asmx" />
     <None Include="Html_Pages\ControlPanel\WebEditor\codeMirror\baboon_vector.svg" />
     <Content Include="Html_Pages\ControlPanel\WebEditor\WebEditorService.ashx" />
     <None Include="Html_Pages\_UnitTest_Helpers\TM_qUnit_Tests\js\TM_Gui\TM.Gui.LibraryTree - with JSON data" />
     <None Include="Javascript\FireBug\skin\xp\roundCorner.svg" />
-    <Content Include="TmConfig.config" />
+    <Content Include="TmConfig.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="packages.config" />
     <None Include="_Customizations\homepage.js" />
-    <None Include="_Customizations\test2.aspx" />
-    <None Include="_Customizations\test2.html" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Code\" />
     <Folder Include="_Customizations\reports\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Code\Authentication\ExtensionMethods\RoleBaseSecurity_ExtensionMethods.cs" />
-    <Compile Include="App_Code\Authentication\ExtensionMethods\SoapRequestUtils_ExtensionMethods.cs" />
-    <Compile Include="App_Code\Authentication\ExtensionMethods\TeamMentorUserManagement_ExtensionMethods.cs" />
-    <Compile Include="App_Code\Authentication\UserRoleBaseSecurity.cs" />
-    <Compile Include="App_Code\Authentication\UserRoles.cs" />
-    <Compile Include="App_Code\Authentication\WindowsAndLDAP.cs" />
-    <Compile Include="App_Code\DataViewers\JsDataTable.cs" />
-    <Compile Include="App_Code\DataViewers\JsTreeNode.cs" />
-    <Compile Include="App_Code\ExtensionMethods\TMUser_ExtensionMethods.cs" />
-    <Compile Include="App_Code\ExtensionMethods\TM_Xml_Database_ExtensionMethods_GuiHelpers.cs" />
-    <Compile Include="App_Code\ExtensionMethods\TM_Xml_Database_JavascriptProxy_ExtensionMethods.cs" />
-    <Compile Include="App_Code\IJavascriptProxy.cs" />
-    <Compile Include="App_Code\JavascriptUtils\JavaScriptMinifier.cs" />
-    <Compile Include="App_Code\JavascriptUtils\ScriptCombiner.cs" />
-    <Compile Include="App_Code\MoqObjects.cs" />
-    <Compile Include="App_Code\O2_Scripts_APIs\Authentication.cs" />
-    <Compile Include="App_Code\O2_Scripts_APIs\LinqDB.cs" />
-    <Compile Include="App_Code\O2_Scripts_APIs\OnlineStorage.cs" />
-    <Compile Include="App_Code\O2_Scripts_APIs\TeamMentorSecurity.cs" />
-    <Compile Include="App_Code\O2_Scripts_APIs\TM_Gui_Objects.cs" />
-    <Compile Include="App_Code\O2_Scripts_APIs\_Extra_methods_Collections.cs" />
-    <Compile Include="App_Code\O2_Scripts_APIs\_Extra_methods_Items.cs" />
-    <Compile Include="App_Code\O2_Scripts_APIs\_Extra_methods_Misc.cs" />
-    <Compile Include="App_Code\O2_Scripts_APIs\_Extra_methods_Zip.cs" />
-    <Compile Include="App_Code\O2_Scripts_APIs\_O2_Scripts_Files.cs" />
-    <Compile Include="App_Code\Schemas\GuidanceItem.cs" />
-    <Compile Include="App_Code\Schemas\library.cs" />
-    <Compile Include="App_Code\TmConfig.cs" />
-    <Compile Include="App_Code\TrackingDB\ActivityTracking.cs" />
-    <Compile Include="App_Code\TrackingDB\PagesHistory.cs" />
-    <Compile Include="App_Code\UnityInjection.cs" />
-    <Compile Include="App_Code\UtilMethods.cs" />
-    <Compile Include="App_Code\WebServices\TM_WebServices.ActivityTracking.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="App_Code\WebServices\TM_WebServices.asmx.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="App_Code\WebServices\TM_WebServices.Config.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="App_Code\WebServices\TM_WebServices.DataViewers.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="App_Code\WebServices\TM_WebServices.GuiHelpers.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="App_Code\XmlDatabase\TM_Xml_Database.cs" />
-    <Compile Include="App_Code\XmlDatabase\TM_Xml_Database.Library.cs" />
-    <Compile Include="App_Code\XmlDatabase\TM_Xml_Database.Library.GuidanceExplorer.cs" />
-    <Compile Include="App_Code\XmlDatabase\TM_Xml_Database.Library.GuidanceItem.cs" />
-    <Compile Include="App_Code\XmlDatabase\TM_Xml_Database.Library.Load_and_FileCache.cs" />
-    <Compile Include="App_Code\XmlDatabase\TM_Xml_Database.Library.Views_and_Folders.cs" />
-    <Compile Include="App_Code\XmlDatabase\TM_Xml_Database.Users.cs" />
-    <Compile Include="App_Code\XmlDatabase\TM_Xml_Database_JavaScriptProxy.cs" />
+    <ProjectReference Include="..\TeamMentor.CoreLib\TeamMentor.CoreLib.csproj">
+      <Project>{87BACB04-640F-44ED-8F01-45224D52A883}</Project>
+      <Name>TeamMentor.CoreLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
@@ -676,8 +626,8 @@
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
-          <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>3186</DevelopmentServerPort>
+          <AutoAssignPort>False</AutoAssignPort>
+          <DevelopmentServerPort>3187</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

@@ -5,10 +5,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Web;
 using System.Web.Script.Serialization;
-using O2.Kernel.ExtensionMethods;
 using O2.DotNetWrappers.ExtensionMethods;
 using O2.DotNetWrappers.Windows;
-using O2.XRules.Database.Utils;
+
 using O2.XRules.Database.APIs;
 
 public class UserRequest

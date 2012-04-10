@@ -3,6 +3,7 @@
 TM.tmWebServices = '/Aspx_Pages/TM_WebServices.asmx/';
 TM.WebServices.Data.lastDataReceived = {};
 TM.WebServices.Config.Version = "v0.3";
+TM.WebServices.Config.CSRF_Token = "";
 
 //Helpers
 TM.WebServices.Helper.invokeWebService = function(url, params, handleData, handleError)
@@ -16,28 +17,28 @@ TM.WebServices.Helper.invokeWebService = function(url, params, handleData, handl
 		handleError = TM.WebServices.Helper.defaultErrorHandler;		
 	}
     $.ajax( {
-				type: "POST",
-				url: url,
-				data: params,
-				contentType: "application/json; charset=utf-8",
-				dataType: "json",
-				success: function (msg) 
-					{   						
-						//TM.Events.raiseWebServiceReceivedData();
-						TM.WebServices.Data.lastDataReceived = msg;				
-						if(typeof(msg.d) == "undefined")
-							handleError("No data received from call to: " + url);
-						else
-							handleData(msg)			
-					},
-				failure: function (msg) 
-					{						
-						handleError(msg);            
-					},
-				error: function (msg) 
-					{
-						handleError(msg);					
-					}
+					type            : "POST"
+				,   url             : url
+				,	data            : params                
+				,	headers			: { "CSRF_Token" : TM.WebServices.Config.CSRF_Token}
+				,	contentType: "application/json; charset=utf-8"
+				,	dataType: "json"
+				,	success: function (msg) 
+						{   													
+							TM.WebServices.Data.lastDataReceived = msg;				
+							if(typeof(msg.d) == "undefined")
+								handleError("No data received from call to: " + url);
+							else
+								handleData(msg)			
+						}
+				,	failure: function (msg) 
+						{						
+							handleError(msg);            
+						}
+				,	error: function (msg) 
+						{
+							handleError(msg);					
+						}
 			});
 }
 
@@ -60,7 +61,7 @@ TM.WebServices.Helper.defaultErrorHandler = function(msg)		// this method should
 			}
 			console.log("TM.WebServices.Helper.defaultErrorHandler: " + msg);
 		}
-		catch(error)
+		catch(error)    
 		{		
 			console.log("TM.WebServices.Helper.defaultErrorHandler: error in defaultErrorHandler: " + error.message);
 		}
@@ -255,6 +256,18 @@ TM.WebServices.WS_Users.getUsers = function(callback, errorHandler)
 //***********************
 //TM.WebServices.WS_Libraries
 //***********************	
+
+
+//GET 
+
+TM.WebServices.WS_Libraries.get_Libraries = function(callback, errorHandler)
+{
+    TM.WebServices.Helper.invoke_TM_WebService("GetLibraries", "{}",callback, errorHandler);
+}
+
+
+//ADD
+
 TM.WebServices.WS_Libraries.add_Library = function(libraryName, callback, errorHandler)
 {	
 	var params = { library : { 
@@ -336,6 +349,33 @@ TM.WebServices.WS_Libraries.add_View = function(libraryId, folderId, viewName, c
 			errorHandler);
 }	
 
+TM.WebServices.WS_Libraries.add_Article_Simple = function(libraryId, title, dataType, htmlCode, callback , errorHandler)
+{		
+	var params = { 
+					libraryId   : libraryId , 
+					title       : title , 
+                    dataType    : dataType,
+					htmlCode    : htmlCode 
+				 };     
+	TM.WebServices.Helper.invoke_TM_WebService('CreateArticle_Simple', params, 	callback, 	errorHandler);
+}
+
+
+// SET
+
+TM.WebServices.WS_Libraries.set_Article_Html = function (articleId, htmlCode, callback,errorHandler)
+{
+    var params = { articleId : articleId , htmlCode: htmlCode } ;
+    TM.WebServices.Helper.invoke_TM_WebService("SetArticleHtml",params, callback,errorHandler);
+}
+
+TM.WebServices.WS_Libraries.set_Article_Content = function (articleId, dataType, content, callback,errorHandler)
+{
+    var params = { articleId : articleId , dataType:dataType , content: content } ;
+    TM.WebServices.Helper.invoke_TM_WebService("SetArticleContent",params, callback,errorHandler);
+}
+
+//RENAME
 
 TM.WebServices.WS_Libraries.rename_Library = function(libraryId, newName, callback , errorHandler)
 {		
@@ -371,6 +411,8 @@ function renameView(libraryId, viewId, parentFolder, viewName, callback)
 	invokeWebService( url, params, callback, defaultErrorHandler);
 }
 
+
+//REMOVE 
 TM.WebServices.WS_Libraries.remove_Library = function(libraryId, callback, errorHandler)
 {	
 	var params = { libraryId : libraryId };	
@@ -400,3 +442,4 @@ TM.WebServices.WS_Libraries.remove_GuidanceItems = function(guidanceItemIds, cal
 	var params = { guidanceItemIds : guidanceItemIds };		
 	TM.WebServices.Helper.invoke_TM_WebService('DeleteGuidanceItems', params, callback,errorHandler); 			
 }
+

@@ -27,7 +27,8 @@
 														getGuidanceItemHtml(id, function(html) 
 														{ 					
 															var code = "<h1>{0}</h1><hr/><br/>{1}".format(title, html.d);
-															jQuery("#selectedGuidanceItem").html(code);																
+															jQuery("#selectedGuidanceItem").html(code);	
+                                                            TM.Gui.GuidanceItemViewer.handleMediaWikiText();																
 															fixGuidanceItemLinks();
 															$("#selectedGuidanceItemBorder").animate({ scrollTop: 0 }, 'fast');
 																
@@ -40,13 +41,26 @@
 														$("#openGIInNewWindow").hide();
 														if (TM.Gui.GuidanceItemViewer.lastPageLoaded != TM.Gui.GuidanceItemViewer.userNotLoggedInPage)
 														{
-															loadPage("#selectedGuidanceItem", TM.Gui.GuidanceItemViewer.userNotLoggedInPage);
-																
+															loadPage("#selectedGuidanceItem", TM.Gui.GuidanceItemViewer.userNotLoggedInPage);															
 															TM.Gui.GuidanceItemViewer.lastPageLoaded = TM.Gui.GuidanceItemViewer.userNotLoggedInPage
 														}
 													}
 													$("#selectedGuidanceItem").css('color','black');																
 												}
+            ,   handleMediaWikiText         : function()
+                                                {        
+                                                    var dataType = "html";    
+                                                    var wikiTextDiv =  $("#selectedGuidanceItem #tm_datatype_wikitext")
+                                                    if (wikiTextDiv.length ===1)              
+                                                      {                                                                       
+                                                        var wikiText = wikiTextDiv.html();
+                                                        var targetDiv = document.createElement('div');        
+                                                        new creole().parse(targetDiv,wikiText )   
+                                                        var html = targetDiv.innerHTML ;
+              
+                                                        wikiTextDiv.html(html);      
+                                                     }
+                                                }
 			,	addLink_OpenGIInNewWindow	: function()
 												{
 													$("<img>").attr('id','openGIInNewWindow')//.hide()

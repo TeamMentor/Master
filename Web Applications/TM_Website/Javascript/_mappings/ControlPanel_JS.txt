@@ -12,6 +12,6 @@
 /javascript/jQuery.DataTable/jquery.dataTables.min.js
 /javascript/jQuery.DataTable/DataTable.PlugIns.js 		
 
-
 /javascript/jQuery/jquery-jtemplates.js
 
+/javascript/Growl/growl.js

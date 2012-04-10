@@ -687,7 +687,7 @@ TM.Gui.LibraryTree.createContextMenu = function(node)
 			}*/
 	else
 	{
-		showUserMessage('not supported nodeType: ' + nodeType);
+		TM.Gui.Dialog.alertUser('not supported nodeType: ' + nodeType);
 	}
 	items.separator2Item = { label: "-----------",  action: function (obj) { } };
 	items.userMode = { label: "Exit Edit Mode",  action: TM.Gui.showUserMode};

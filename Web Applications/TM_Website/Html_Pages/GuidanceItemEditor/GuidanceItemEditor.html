@@ -2,15 +2,15 @@
 <html>	
 	<head>			
 		<link  href="/aspx_Pages/scriptCombiner.ashx?s=HomePage_CSS&ct=css" 				type="text/css" rel="stylesheet" /> 					
-		<script src="/aspx_Pages/scriptCombiner.ashx?s=WebServices_JS"						type="text/javascript"></script>			
+		<script src="/aspx_Pages/scriptCombiner.ashx?s=WebServices_JS"						type="text/javascript"></script>	
+        		
 	</head>
 	<body>	
 		<script>		
+            var showLinksToOtherEditors = false;
 
 			//$(function() { TM.Debug.FireBugLite.open() });
-			
-			//TM.Gui.GuidanceItemEditor.popupTest = function() {} ;  	// for the popup tester (not working);
-
+						
 			TM.Gui.GuidanceItemEditor_Page = "";
 			
 			function showEditor_Elrte()
@@ -192,9 +192,7 @@
 					$("#Title").addClass('ui-widget-content ui-corner-left ui-corner-rigth')
 										
 				
-					TM.Gui.GuidanceItemEditor.checkIfComboxShouldBeVisible();
-					
-					$("#ItemDetailTable").show();
+					TM.Gui.GuidanceItemEditor.checkIfComboxShouldBeVisible();					
 				}	
 		
 		TM.Gui.GuidanceItemEditor.checkIfComboxShouldBeVisible = function()
@@ -226,29 +224,47 @@
 		}
 
 		var handleCommand = function(command)
-                	{
+                	{                        
                           	var splitCommand = command.split(":");
                           	if(splitCommand.length ==2 && splitCommand[0] == 'id')
                                 {
-                                  	guidanceId = splitCommand[1];
+                                  	guidanceId = splitCommand[1];                                    
 	                                loadGuidanceItem();
-                                        return false;
-                                }
+                                     return false;
+                                }                            
                           	return true;   // to continue links
                 	}
-
-                var setGuidanceIdfromUrlHash =  function()
+            
+            /*var setGuidanceIdfromUrlHash =  function()
                     	{
                           	handleCommand(window.location.hash.slice(1).split("&")[0]);
-                    	}
+                    	}*/
+
+            var setGuidanceIdfromUrlHash =  function()
+                    {						
+						if (window.location.hash == "" || handleCommand(window.location.hash.slice(1).split("&")[0]))						
+							getGuidFromUrl();					
+                    }
+						
+            var getGuidFromUrl = function()
+				{
+                    var id = document.URL.split('/').pop().split("#").shift();
+					var mapping = "{ mapping : '" + id + "' }";                        
+					TM.WebServices.Helper.invoke_TM_WebService("getGuidForMapping",mapping, function(data)
+						{
+							guidanceId = data;
+							loadGuidanceItem();
+						});						
+				}
+            
                     
 			var loadGuidanceItem = function()				
-                        {                                
-                                getGuidanceItemData(guidanceId, showGuidanceItemData);
+                        {                                      
+                            getGuidanceItemData(guidanceId, showGuidanceItemData);
                         }
 				
             var showGuidanceItemData = function(data)
-			{		
+			{		                
 				loadedGuidanceItem = data.d;
 				if(isUndefined(loadedGuidanceItem) || loadedGuidanceItem === null)
 				{
@@ -256,26 +272,26 @@
 					return;
 				}
 				
-				"#Title".$().val(loadedGuidanceItem.title);
-				$("#TechnologyValue_input").val(loadedGuidanceItem.technology);
-				$("#PhaseValue_input").val(loadedGuidanceItem.phase);
-				$("#TypeValue_input").val(loadedGuidanceItem.rule_Type);
-				$("#CategoryValue_input").val(loadedGuidanceItem.category);
+				$("#Title")                 .val(loadedGuidanceItem.Metadata.Title);
+				$("#TechnologyValue_input") .val(loadedGuidanceItem.Metadata.Technology);
+				$("#PhaseValue_input")      .val(loadedGuidanceItem.Metadata.Phase);
+				$("#TypeValue_input")       .val(loadedGuidanceItem.Metadata.Type);
+				$("#CategoryValue_input")   .val(loadedGuidanceItem.Metadata.Category);
 
-				TM.Gui.GuidanceItemEditor.showGuidanceItemHtml(loadedGuidanceItem.htmlContent);
-								
+				TM.Gui.GuidanceItemEditor.showGuidanceItemHtml(loadedGuidanceItem.Content.Data_Json);
+                
 			}						  		
 
 				
 		TM.Gui.GuidanceItemEditor.showGuidanceItemHtml = function(htmlCode)
 			{				
                  //$('#guidanceItem').elrte('val', htmlCode);
-				 TM.Gui.Dialog.alertUser('not implemented: showGuidanceItemHtml');
+				 //TM.Gui.Dialog.alertUser('not implemented: showGuidanceItemHtml');
 			}
                   
         TM.Gui.GuidanceItemEditor.getEditorCode = function()
 			{				
-				TM.Gui.Dialog.alertUser('not implemented: getEditorCode');
+				//TM.Gui.Dialog.alertUser('not implemented: getEditorCode');
 				return null;
 			}
 
@@ -310,7 +326,7 @@
 					objectToUpdate.title = newData.title;
 					objectToUpdate.type = newData.rule_Type;						
 				}	
-				opener.TM.Events.onRefreshGuiData();
+				//opener.TM.Events.onRefreshGuiData();
 			}
 		
 		var saveEditorCode = function()
@@ -318,7 +334,7 @@
 					var htmlCode = TM.Gui.GuidanceItemEditor.getEditorCode()
 					if (htmlCode ===null)
 						return;					
-				    savedGuidanceItem = { guidanceItem: 
+/*				    savedGuidanceItem = { guidanceItem: 
 												{ 
 														guidanceItemId : guidanceId  ,														
 														title : "#Title".$().val(), 
@@ -326,84 +342,122 @@
 														phase : "PhaseValue_input".$().val(), 
 														rule_Type: "TypeValue_input".$().val(), 
 														category: "CategoryValue_input".$().val(), 
-														topic: loadedGuidanceItem.topic,
-														priority : loadedGuidanceItem.priority, 
-														status : loadedGuidanceItem.status, 
-														author :  loadedGuidanceItem.author, 
-														libraryId : loadedGuidanceItem.libraryId , 
-														guidanceType : loadedGuidanceItem.guidanceType , 
-														creatorId : loadedGuidanceItem.creatorId, 
-														creatorCaption: loadedGuidanceItem.creatorCaption, 
-														images : loadedGuidanceItem.images, 
+//														topic: loadedGuidanceItem.topic,
+//														priority : loadedGuidanceItem.priority, 
+														status : loadedGuidanceItem.Metadata.Status, 
+														author :  loadedGuidanceItem.Metadata.Author, 
+														libraryId : loadedGuidanceItem.Metadata.Library_Id , 
+														//guidanceType : loadedGuidanceItem.guidanceType , 
+														//creatorId : loadedGuidanceItem.creatorId, 
+														//creatorCaption: loadedGuidanceItem.creatorCaption, 
+														//images : loadedGuidanceItem.images, 
 														//lastUpdate :  /Date(1309232562210)/ , // BUG: there is a conversion prob // "DateLabel".$().val(), //loadedGuidanceItem.lastUpdate,
 														htmlContent : htmlCode
 												}
 											};    
-                                    
+*/                                    
 //				updateGuidanceItemHtml(guidanceId, htmlCode, onSave)
-				updateGuidanceItem(savedGuidanceItem, onSave)
-                                  
+				
+                        //delete loadedGuidanceItem.__type
+                        loadedGuidanceItem.Metadata.Title        = "#Title".$().val();
+                        loadedGuidanceItem.Metadata.Technology   = "TechnologyValue_input".$().val(), 														
+                        loadedGuidanceItem.Metadata.Phase        = "PhaseValue_input".$().val(), 
+                        loadedGuidanceItem.Metadata.Type         = "TypeValue_input".$().val(), 
+                        loadedGuidanceItem.Metadata.Category     = "CategoryValue_input".$().val(), 
+                        loadedGuidanceItem.Metadata.DirectLink    = loadedGuidanceItem.Metadata.Title;
+
+                        loadedGuidanceItem.Content.Data_Json      = htmlCode                        
+                        
+                        savedGuidanceItem = { guidanceItem: loadedGuidanceItem };
+                        updateGuidanceItem(savedGuidanceItem, onSave);                                        
                   	}
 		
 		var openGuidanceItemViewer = function()
 		{			
-			document.location = "/html_pages/GuidanceItemViewer/GuidanceItemViewer.html?#ruledisplay:" + guidanceId;
+			//document.location = "/html_pages/GuidanceItemViewer/GuidanceItemViewer.html?#ruledisplay:" + guidanceId;
+            document.location = "/article/" + guidanceId;
 		}
 		
         var loadEditor = function()
-		{			
-						
+		{									
 			$("#guidanceItemEditor").load(TM.Gui.GuidanceItemEditor_Page, setGuidanceIdfromUrlHash);
+            $("#topButtons").show();
+            $("button").show();	
+            $(".ItemDetailTable").show();                      
 						
-/*			
-			$("#linksToEditors").html('');
-			$("#linksToEditors").add_Link("Elrte Editor"  , window.location.hash).click(showEditor_Elrte);
-			$("#linksToEditors").add_Link("RawHtml Editor", window.location.hash).click(showEditor_RawHtml);
-			$("#linksToEditors").add_Link("CLEditor Editor", window.location.hash).click(showEditor_CLEditor);
+            if (showLinksToOtherEditors)
+            {
+			    $("#linksToEditors").html('');
+			    $("#linksToEditors").add_Link("Elrte Editor"  , window.location.hash).click(showEditor_Elrte);
+			    $("#linksToEditors").add_Link("RawHtml Editor", window.location.hash).click(showEditor_RawHtml);
+			    $("#linksToEditors").add_Link("CLEditor Editor", window.location.hash).click(showEditor_CLEditor);
 			
-			$("#linksToEditors a").css('padding',5);
-*/
-//			setEditor();			
-								
-									
+                $("#linksToEditors").absolute().top(8).left(500);
+			    $("#linksToEditors a").css('padding',5);
+            }									
 		}
 		
 		var mapAutoCompleteValues = function()
 			{	
-				if(opener == null)
-					opener=parent;
+                try 
+                {
+				    if(opener == null)
+					    opener=parent;
 					
-				if(opener != null)
-				{					
-					technologies =[];  opener.$("#pivotPanel_Technology input").each(function() { technologies.push($.trim($(this).parent().text()) ) } ); 					
-					phases =[];  opener.$("#pivotPanel_Phase input").each(function()			{ phases.push($.trim($(this).parent().text()) ) } ); 
-					types =[];  opener.$("#pivotPanel_Type input").each(function() 				{ types.push($.trim($(this).parent().text()) ) } ); 
-					categories =[];  opener.$("#pivotPanel_Category input").each(function() 	{ categories.push($.trim($(this).parent().text()) ) } ); 
+				    if(opener != null)
+				    {					
+					    technologies =[];  opener.$("#pivotPanel_Technology input").each(function() { technologies.push($.trim($(this).parent().text()) ) } ); 					
+					    phases =[];  opener.$("#pivotPanel_Phase input").each(function()			{ phases.push($.trim($(this).parent().text()) ) } ); 
+					    types =[];  opener.$("#pivotPanel_Type input").each(function() 				{ types.push($.trim($(this).parent().text()) ) } ); 
+					    categories =[];  opener.$("#pivotPanel_Category input").each(function() 	{ categories.push($.trim($(this).parent().text()) ) } ); 
 					
-					/*$("#TechnologyLabel"	).autocomplete( { source: technologies });					
-					$("#PhaseLabel"			).autocomplete( { source: phases	   	});			
-					$("#GuidanceTypeLabel"	).autocomplete( { source: types		   	});
-					$("#CategoriesLabel"	).autocomplete( { source: categories 	});				
-					*/
+					    /*$("#TechnologyLabel"	).autocomplete( { source: technologies });					
+					    $("#PhaseLabel"			).autocomplete( { source: phases	   	});			
+					    $("#GuidanceTypeLabel"	).autocomplete( { source: types		   	});
+					    $("#CategoriesLabel"	).autocomplete( { source: categories 	});				
+					    */
 					
-					var loadData = function(data, target)
-					{
-						$.each(data, function(index, value)
-							{
-								$(target).append($("<option>").append(value).attr('value', value))
-							});
-					}
-					loadData(technologies,"#TechnologyValue");
-					loadData(phases,"#PhaseValue");
-					loadData(types,"#TypeValue");
-					loadData(categories,"#CategoryValue");
-				}
+					    var loadData = function(data, target)
+					    {
+						    $.each(data, function(index, value)
+							    {
+								    $(target).append($("<option>").append(value).attr('value', value))
+							    });
+					    }
+					    loadData(technologies,"#TechnologyValue");
+					    loadData(phases,"#PhaseValue");
+					    loadData(types,"#TypeValue");
+					    loadData(categories,"#CategoryValue");
+				    }
+                } 
+                catch (e) 
+                {
+    
+                }
 			}
 		
+		var showGuiBasedOnUserPrivileges = function()
+			{				
+				currentUserHasRole('EditArticles', 
+					function(result){		                                        							
+										if(result.d)
+											loadEditor();	
+										else
+										{											
+											$("button").hide();
+											"ItemDetailTable".$().hide();
+											showMessage("You don't have privileges to edit this item");											
+                                            $("#guidanceItemEditor").show().html("<h2>Access denied.</h2><br/><p>Please close this window or <a href='javascript:TM.Gui.Dialog.loginPage()'>login</a></p>");
+											//"guidanceItemEditor".$().html("<h1>Access denied.</h1><h2>please close this window</h2>");
+										}													
+									});
+			}		
 		
 		$(function()
-			{								
-				$("#ItemDetailTable").hide();
+			{												                
+                $(".ItemDetailTable").hide();
+                $("#topButtons").hide();
+                
 				loadGuidanceItemEditor();
 				mapAutoCompleteValues();
 				createComboBoxForAutoComplete();
@@ -414,20 +468,9 @@
 				TM.Gui.ShowProgressBar.close();
 				
 				
-				currentUserHasRole('EditArticles', 
-					function(result){										
-										if(result.d)
-											loadEditor();	
-										else
-										{
-											//"saveChanges".$().hide();
-											$("button").hide();
-											"ItemDetailTable".$().hide();
-											showMessage("You don't have privileges to edit this item");
-											//"guidanceItem".$().hide();
-											"guidanceItemEditor".$().html("<h1>Access denied.</h1><h2>please close this window</h2>");
-										}													
-									});
+				TM.Events.onUserDataLoaded	.add(showGuiBasedOnUserPrivileges);
+				TM.Gui.CurrentUser.loadUserData();
+				
 				
 				
 				$("button").button();
@@ -456,7 +499,7 @@
 			});	
 				
 		
-	</script>	
+        </script>	
 	
 		<div id="ScriptLoader"> </div>
 		<div id="guiWithPanels"></div>	

@@ -5,7 +5,7 @@ TM.Gui.CurrentUser =
 		,	userRoles 			: []
 		,	htmlPage 			: ""				
 		, 	autoCheckUser	 	: true
-		, 	autoCheckInterval 	: 30 * 1000				// check every 25 sec
+		, 	autoCheckInterval 	: 60 * 1000				// check every 60 sec
 		,	loadUserData  		: function()
 									{													
 										TM.WebServices.WS_Users.currentUser(
@@ -16,9 +16,11 @@ TM.Gui.CurrentUser =
 														that.userData = {};
 													else
 													{														
-														that.userData = data;
+														that.userData = data;														
 													}
 													
+													TM.WebServices.Config.CSRF_Token = that.userData.CSRF_Token;	// set CSRF token
+
 													if (that.currentUserName === that.userData.UserName)
 														{
 															//console.log("SAME user: " + that.currentUserName);

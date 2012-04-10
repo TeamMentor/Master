@@ -20,7 +20,7 @@
 								  "<option value='1'>Admin</option>" +
 								  "<option value='2'>Reader</option>" +
 								  "<option value='3'>Editor</option>" +
-								  "<option value='4'>Developer</option>" +
+								  //"<option value='4'>Developer</option>" +
 								  "</select>"
 				//'<input type="{0}" id="{1}" name="" value="" size="15" class="textInput"/> '.format(type, inputId) 
 				//+ 
@@ -96,9 +96,6 @@
 	$(function() 
 		{					
 			var fieldsId = "inlineLabels"
-			//alert(fieldsId);
-			//var formId = 
-			//addTextField(fieldsId, "User ID", "userId");
 			addTextField(fieldsId, "User Name", "userName");
 			addTextField(fieldsId, "First Name", "firstName");
 			addTextField(fieldsId, "Last Name", "lastName");			
@@ -106,18 +103,14 @@
 			//addTextField(fieldsId, "Expiration Date", "expirationDate");
 			addTextField(fieldsId, "Title", "title");
 			addTextField(fieldsId, "Company", "company");
-			addTextField(fieldsId, "Email", "email");
-			
-			//addTextField(fieldsId, "Group ID", "groupId");			
-			addGroupsSelect(fieldsId,"Group ID", "groupId")			
-			
-			addTextField(fieldsId, "New Password", "newPassword");
+			addTextField(fieldsId, "Email", "email");								
+			addGroupsSelect(fieldsId,"Group ID", "groupId")						
+			addPasswordField(fieldsId, "New Password", "newPassword");
 			addButton(fieldsId, "Save Changes","saveData");
-			//loadData();
-			cssFixes_UniForm();
+
 			
-			TM.ControlPanel.userEditModalWindow = "userEditDialog".$().hide().modal();
-			
+			cssFixes_UniForm();			
+			TM.ControlPanel.userEditModalWindow = "userEditDialog".$().hide().modal();			
 			TM.Events.onControlPanelViewLoaded();
 		});
 </script>	

@@ -12,7 +12,7 @@
           <AspNetDebugging>True</AspNetDebugging>
           <SilverlightDebugging>False</SilverlightDebugging>
           <NativeDebugging>False</NativeDebugging>
-          <SQLDebugging>True</SQLDebugging>
+          <SQLDebugging>False</SQLDebugging>
           <ExternalProgram>
           </ExternalProgram>
           <StartExternalURL>

@@ -20,3 +20,5 @@
 /javascript/jQueryUI/plugin.jqueryui.framedialog.js
 
 /javascript/Growl/growl.js
+
+/Javascript/jscreole/creole.min.js

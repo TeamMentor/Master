@@ -90,19 +90,18 @@
 														}				
 														
 														if (TM.Gui.CurrentUser.isAdmin())
-														{
-															//add_Link("Home Page", function() { TM.Gui.Main.homePage() } );								
+														{															
 															this.add_Link("Control Panel", this.controlPanel);
-														}
-														//this.add_Link("About", this.aboutTeamMentor);
-														this.add_Link("Logout", TM.WebServices.WS_Users.logout);			
-																		
+														}																								
+														if(TM.Gui.CurrentUser.userName().indexOf('\\') === -1)
+															this.add_Link("Logout", TM.WebServices.WS_Users.logout);				
 													}
 													else
 													{
 														this.add_Link("Login", this.loginPage);
 														this.add_Link("Sign Up", this.signupPage);														
-													}
+													}													
+
 													
 													
 													//"topRightMenu".$().append("<br/>");
@@ -111,7 +110,8 @@
 													
 													if(TM.Gui.CurrentUser.loggedIn())			
 														this.topRightMenuDiv.$()
-															.append("<br/><br/>Logged in as:<b> {0} {1}  ({2}) </b>  ".format(userData.FirstName, userData.LastName, userData.UserName))
+															//.append("<br/><br/>Logged in as:<b> {0} {1}  ({2}) </b>  ".format(userData.FirstName, userData.LastName, userData.UserName))
+															.append("<br/><br/>Logged in as:<b> {0}  </b>  ".format(userData.UserName))
 															.add_Link("About").click(this.aboutTeamMentor);
 													else
 													{
@@ -140,6 +140,7 @@
 												{
 													this.topRightMenuDiv.$()
 															.absolute()
+															.top(5)
 															.right(10).zIndex(10)
 												}			
 		}
@@ -151,8 +152,9 @@
 				TM.Events.onUserChange		.add(TM.Gui.TopRightLinks.refresh);
 				
 				//TM.Gui.CurrentUser.loadUserData();
-				TM.Gui.CurrentUser.start_checkUserLoop()
-				
+				TM.Gui.CurrentUser.start_checkUserLoop();
+
+				TM.Gui.TopRightLinks.showUserLinks();
 				
 /*				if ($.browser.msie)
 				{

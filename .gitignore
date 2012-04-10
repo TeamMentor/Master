@@ -1,7 +1,19 @@
-/Library_Data/XmlDatabase/TM_Libraries
+#TM specific
+/Library_Data/XmlDatabase
+o2.config
 
 # Visual Studio files # 
-/Web Applications/TM_Website/bin
-/Web Applications/TM_Website/obj
+bin
+obj
 *.suo
-o2.config
+*.nupkg
+Web Applications/TM_Website/bin/*.xml
+/Web Applications/packages
+
+
+
+
+
+
+
+
