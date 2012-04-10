@@ -145,6 +145,7 @@
     <Content Include="default.htm" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Html_Pages\ControlPanel\Views\Set_Library_Path.html" />
     <Content Include="Html_Pages\ControlPanel\WebServices\Invoke_Javascript.html" />
     <Content Include="Html_Pages\ControlPanel\WebServices\Invoke_WebServices.html" />
     <Content Include="Html_Pages\ControlPanel\WebServices\jsTree_Test.html.txt" />
@@ -595,7 +596,9 @@
     <Content Include="Html_Pages\ControlPanel\WebEditor\WebEditorService.ashx" />
     <None Include="Html_Pages\_UnitTest_Helpers\TM_qUnit_Tests\js\TM_Gui\TM.Gui.LibraryTree - with JSON data" />
     <None Include="Javascript\FireBug\skin\xp\roundCorner.svg" />
-    <Content Include="TmConfig.config" />
+    <Content Include="TmConfig.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="packages.config" />
     <None Include="_Customizations\homepage.js" />
   </ItemGroup>
