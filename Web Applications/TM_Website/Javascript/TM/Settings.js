@@ -4,14 +4,17 @@ TM.tmVersion = "TM 3.1 Beta 1";
 TM.tmWebServices     = '/Aspx_Pages/TM_WebServices.asmx/';
 TM.NotAuthorizedPage = '/Html_Pages/Gui/Panels/AD_Non_Authorized_User.html';
 
-TM.Debug.gui_LoadLibraryData					= true
+TM.Gui.showLibraryStructureToAnonymous          = false;
+TM.Gui.LoadLibraryData      					= true
+TM.Gui.editMode			   						= false;
+
 TM.Debug.addTimeStampToLoadedPages 			  	= true;
 TM.Debug.reuseLibraryMappingsObject 		  	= true;
 TM.Debug.load_HomePage 						  	= true;
 
 TM.Debug.showExperimentalFeatures				= false;
 
-TM.Gui.editMode			   						= false;
+
 TM.Debug.show_DebugDiv						  	= false;	// show small box with links to open trace view
 TM.Debug.show_TraceView							= false; 	// show call trace popup window
 TM.Debug.callTrace_LoadEnvironment 			  	= false;	// open traceview popup and setup call trace hooks
