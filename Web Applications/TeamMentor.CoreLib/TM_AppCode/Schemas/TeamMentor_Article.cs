@@ -76,8 +76,12 @@ namespace SecurityInnovation.TeamMentor.WebClient
         [XmlIgnore]                                     // used to send receive data from JSON (since the serializer doen't support XmlCDataSection)
         public String Data_Json 
             {
-                set { Data.Value = value;}
-                get { return Data.Value; }
+                set {                        
+                        Data.Value = value.fixXmlDoubleEncodingIssue();
+                    }
+                get {
+                        return Data.Value.fixXmlDoubleEncodingIssue();                        
+                    }
             }
 
         /*{
@@ -188,6 +192,12 @@ namespace SecurityInnovation.TeamMentor.WebClient
 
                         content     =   article.Content.Data.Value
                     };
+        }
+
+        //fix double encoding caused by JSON?CDATA/XML transfer of XML data
+        public static string fixXmlDoubleEncodingIssue(this string htmlContent)
+        { 
+            return htmlContent.replace("&amp;", "&"); 
         }
     }
 
