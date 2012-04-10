@@ -294,33 +294,41 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		
 		public static bool xmlDB_Libraries_ImportFromZip(this TM_Xml_Database tmDatabase, string zipFileToImport)
 		{
-			if (zipFileToImport.isUri())
-			{
-				"[xmlDB_Libraries_ImportFromZip] provided value was an URL so, downloading it: {0}".info(zipFileToImport);
-				zipFileToImport = new Web().downloadBinaryFile(zipFileToImport);
-				//zipFileToImport =  zipFileToImport.uri().download(); 		
-			}
-			"[xmlDB_Libraries_ImportFromZip] importing library from: {0}".info(zipFileToImport);
-			if (zipFileToImport.fileExists().isFalse())
-				"[xmlDB_Libraries_ImportFromZip] could not find file to import".error(zipFileToImport);
-			else
-			{		
-				var currentLibraryPath = TM_Xml_Database.Path_XmlLibraries;
-				var libraryName = Path.GetFileNameWithoutExtension(zipFileToImport);
-				var libraryFilePath	= tmDatabase.xmlDB_LibraryPath(libraryName); 				
-                var guidanceItemsPath = tmDatabase.xmlDB_LibraryPath_GuidanceItems(libraryName);
+            try
+            {
+                if (zipFileToImport.isUri())
+                {
+                    "[xmlDB_Libraries_ImportFromZip] provided value was an URL so, downloading it: {0}".info(zipFileToImport);
+                    zipFileToImport = new Web().downloadBinaryFile(zipFileToImport);
+                    //zipFileToImport =  zipFileToImport.uri().download(); 		
+                }
+                "[xmlDB_Libraries_ImportFromZip] importing library from: {0}".info(zipFileToImport);
+                if (zipFileToImport.fileExists().isFalse())
+                    "[xmlDB_Libraries_ImportFromZip] could not find file to import".error(zipFileToImport);
+                else
+                {
+                    var currentLibraryPath = TM_Xml_Database.Path_XmlLibraries;
+                    var libraryName = Path.GetFileNameWithoutExtension(zipFileToImport);
+                    var libraryFilePath = tmDatabase.xmlDB_LibraryPath(libraryName);
+                    var guidanceItemsPath = tmDatabase.xmlDB_LibraryPath_GuidanceItems(libraryName);
 
-                //Temp Removed since I don't want to add a dependency to the entire O2.FluentSharp.BCL
-                /*
-				if(libraryFilePath.fileExists().isFalse() && guidanceItemsPath.dirExists().isFalse())
-				{							
-					zipFileToImport.unzip_File(currentLibraryPath); 					
-					return true;
-				}
-				else
-					"[xmlDB_Libraries_ImportFromZip] could not import library with name {0} since there was already one with that name".error(libraryName);
-                */ 
-			}
+
+
+                    if (libraryFilePath.fileExists().isFalse() && guidanceItemsPath.dirExists().isFalse())
+                    {
+                        new ICSharpCode.SharpZipLib.Zip.FastZip().ExtractZip(zipFileToImport, currentLibraryPath, "");
+
+                        //zipFileToImport.unzip_File(currentLibraryPath); 					
+                        return true;
+                    }
+                    else
+                        "[xmlDB_Libraries_ImportFromZip] could not import library with name {0} since there was already one with that name".error(libraryName);
+                }
+            }
+            catch (Exception ex)
+            { 
+                ex.log("[xmlDB_Libraries_ImportFromZip]");
+            }
 			return false;
 		}
 		
