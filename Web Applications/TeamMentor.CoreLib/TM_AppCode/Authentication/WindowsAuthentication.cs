@@ -44,7 +44,8 @@ namespace SecurityInnovation.TeamMentor.Authentication
 		{
 			var identity = WindowsIdentity.GetCurrent();
 
-			if (identity.notNull() && identity.IsAuthenticated)
+			if (identity.notNull() && identity.IsAuthenticated && 
+                identity.ImpersonationLevel == TokenImpersonationLevel.Impersonation)
 			{
 				var username = identity.Name;
 				if (username != null)

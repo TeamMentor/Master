@@ -26,7 +26,7 @@
 														$("#openGIInNewWindow").show();												
 														getGuidanceItemHtml(id, function(html) 
 														{ 					
-															var code = "<h1>{0}</h1><hr/><br/>{1}".format(title, html.d);
+															var code = "<h1 id='article_title'>{0}</h1><hr/><br/>{1}".format(title, html.d);
 															jQuery("#selectedGuidanceItem").html(code);	
                                                             TM.Gui.GuidanceItemViewer.handleMediaWikiText();																
 															fixGuidanceItemLinks();
