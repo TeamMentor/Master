@@ -309,23 +309,48 @@
 
 		var updateCacheWithSavedGuidanceItem = function()
 			{						
-				var opener = window.opener;
-				if (opener ==null)					
-					opener = window.parent;
-				if (opener ==null)					
-					return;
+                try
+                {
+				    var opener = window.opener;
+				    if (opener ==null)					
+					    opener = window.parent;
+				    if (opener ==null)					
+					    return;
 				
-				var newData = savedGuidanceItem.guidanceItem;
+				    newData = savedGuidanceItem.guidanceItem;
 				
-				objectToUpdate = opener.$.data[newData.guidanceItemId];
-				if (isDefined(objectToUpdate))
-				{
-					objectToUpdate.category = newData.category;
-					objectToUpdate.phase = newData.phase;
-					objectToUpdate.technology = newData.technology;
-					objectToUpdate.title = newData.title;
-					objectToUpdate.type = newData.rule_Type;						
-				}	
+                    // update data
+				    objectToUpdate = opener.$.data[newData.Metadata.Id];
+				    if (isDefined(objectToUpdate))
+				    {
+					    objectToUpdate.category = newData.Metadata.Category;
+					    objectToUpdate.phase = newData.Metadata.Phase;
+					    objectToUpdate.technology = newData.Metadata.Technology;
+					    objectToUpdate.title = newData.Metadata.Title;
+					    objectToUpdate.type = newData.Metadata.Type;						
+				    }	
+                    //update table cells
+                    cells = $(opener.TM.Gui.DataTableViewer.selectedRowTarget).parent().find("td");
+                    cells.eq(0).html(objectToUpdate.title);
+                    cells.eq(1).html(objectToUpdate.technology);
+                    cells.eq(2).html(objectToUpdate.phase);
+                    cells.eq(3).html(objectToUpdate.type);
+                    cells.eq(4).html(objectToUpdate.category);
+                    //update table data
+                    var rowData = opener.TM.Gui.DataTable.currentDataTable.fnGetData(opener.TM.Gui.DataTableViewer.selectedRowIndex)
+                    rowData[1] = (objectToUpdate.title);
+                    rowData[2] = (objectToUpdate.technology);
+                    rowData[3] = (objectToUpdate.phase);
+                    rowData[4] = (objectToUpdate.type);
+                    rowData[5] = (objectToUpdate.category);
+                    //update preview pane
+                    opener.$("#selectedGuidanceItem #article_title").html(objectToUpdate.title);
+                    
+                }
+                catch (error)
+                {
+                    TM.Gui.Dialog.alertUser(error);
+                }
 				//opener.TM.Events.onRefreshGuiData();
 			}
 		

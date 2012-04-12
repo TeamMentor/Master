@@ -49,7 +49,7 @@
 
 
 
-function buildPivotPanel(pivotPanelData, hostElement)
+function buildPivotPanel(pivotPanelData)
 {		
 	if (typeof("PivotPanelTemplate".$())!= "undefined")
 	{
@@ -115,9 +115,12 @@ function getTempFilterResult(index)
 	}
 	
 var updatingFilters = false
+TM.Gui.AppliedFilters.refresh = function () {};
 
-TM.Gui.AppliedFilters.showFilters = function(arrayWithSelectedItems, arrayWithAllData, arrayWithFilteredData, hostElement)
+TM.Gui.AppliedFilters.showFilters = function(arrayWithSelectedItems, arrayWithAllData, arrayWithFilteredData, raise_onAppliedFieldsEnd)
 	{				
+        TM.Gui.AppliedFilters.refresh = function() { TM.Gui.AppliedFilters.showFilters(arrayWithSelectedItems, arrayWithAllData, arrayWithFilteredData, false); };
+
 		//console.log("-------------showFilters	-------- for: " + arrayWithAllData.length);
 		$("#pivotPanels input").parent().css('opacity', '0.5')
 		
@@ -128,7 +131,7 @@ TM.Gui.AppliedFilters.showFilters = function(arrayWithSelectedItems, arrayWithAl
 			setTimeout(function() 
 				{
 					console.log("after wait: updatingFilters");
-					TM.Gui.AppliedFilters.showFilters(arrayWithSelectedItems, arrayWithAllData, arrayWithFilteredData, hostElement)
+					TM.Gui.AppliedFilters.showFilters(arrayWithSelectedItems, arrayWithAllData, arrayWithFilteredData,raise_onAppliedFieldsEnd)
 				}, 200);;
 			console.log("updatingFilters");
 			return;
@@ -171,10 +174,9 @@ TM.Gui.AppliedFilters.showFilters = function(arrayWithSelectedItems, arrayWithAl
 			//raise event			
 			updatingFilters = false;						
 			TM.Debug.TimeSpan_Gui_AppliedFilters_ShowFilters = startTime.toNow();
-			TM.Events.onAppliedFieldsEnd();					
+            if (raise_onAppliedFieldsEnd)
+			    TM.Events.onAppliedFieldsEnd();					
 			
-			//TM.Events.onDisplayDataTable();
-			//TM.WebServices.Data.filteredDataTable);
 			
 		},timeOutInterval)
 		},timeOutInterval)
@@ -192,7 +194,7 @@ TM.Gui.AppliedFilters.buildFiltersGui = function()
 	
 	var aaData = TM.WebServices.Data.lastDataTableData.aaData;	
 	var filterResult  = TM.Gui.AppliedFilters.applyDataTableFilter_using_PivotPanelFilters(aaData, queryTo_filterDataTable , currentFilters );				
-	TM.Gui.AppliedFilters.showFilters(currentFilters, aaData, filterResult);				
+	TM.Gui.AppliedFilters.showFilters(currentFilters, aaData, filterResult,true);				
 }	
 
 TM.Gui.AppliedFilters.buildFromSelectedNodeId = function()
