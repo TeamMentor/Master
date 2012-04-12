@@ -8,7 +8,7 @@ using SecurityInnovation.TeamMentor.WebClient;
 using SecurityInnovation.TeamMentor.WebClient.WebServices;
 //using SecurityInnovation.TeamMentor.Authentication.AuthorizationRules;
 using SecurityInnovation.TeamMentor.Authentication.WebServices.AuthorizationRules;
-using Moq;
+//using Moq;
 using O2.Kernel;
 using O2.DotNetWrappers.ExtensionMethods;
 using O2.DotNetWrappers.DotNet;

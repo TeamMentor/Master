@@ -4,7 +4,7 @@ TM.tmVersion = "TM 3.1 Beta 1";
 TM.tmWebServices     = '/Aspx_Pages/TM_WebServices.asmx/';
 TM.NotAuthorizedPage = '/Html_Pages/Gui/Panels/AD_Non_Authorized_User.html';
 
-TM.Gui.showLibraryStructureToAnonymous          = false;
+TM.Gui.showLibraryStructureToAnonymous          = true;
 TM.Gui.LoadLibraryData      					= true
 TM.Gui.editMode			   						= false;
 

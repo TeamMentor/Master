@@ -235,8 +235,7 @@ var getColumnFromArray = function(arrayData, columnIndex)
 					});
 					
 				$("#guidanceItemsTable tbody").click(function(event) 
-					{								
-					
+					{													
 						selectedGuidanceIds = [];
 						//_oTable = oTable;																									
 						var inputElement = $(event.target.parentNode).find("input");										
@@ -303,7 +302,9 @@ var getColumnFromArray = function(arrayData, columnIndex)
 			
 					if (typeof(aPos) != "undefined" && aPos != null)
 					{											
-					
+                        TM.Gui.DataTableViewer.selectedRowTarget = event.target;
+                        TM.Gui.DataTableViewer.selectedRowIndex = aPos[0];
+					    TM.Gui.DataTableViewer.selectedRowData = oTable.fnGetData( aPos[0] );
 						var selectedGuidanceId = oTable.fnGetData( aPos[0] )[6];
 						var selectedTitle = oTable.fnGetData( aPos[0] )[1];
 						

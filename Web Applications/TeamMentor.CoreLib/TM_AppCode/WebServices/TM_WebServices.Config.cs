@@ -8,7 +8,7 @@ using System.Security.Permissions;
 using SecurityInnovation.TeamMentor.WebClient;
 using SecurityInnovation.TeamMentor.Authentication.AuthorizationRules;
 using SecurityInnovation.TeamMentor.Authentication.WebServices.AuthorizationRules;
-using Microsoft.Practices.Unity;
+//using Microsoft.Practices.Unity;
 using O2.DotNetWrappers.ExtensionMethods;
 using O2.XRules.Database.APIs;
 //O2File:../IJavascriptProxy.cs
