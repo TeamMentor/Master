@@ -59,6 +59,8 @@
                       
                       if($(".breadcrumb li").size() > 5)
                         $(".breadcrumb li").first().remove()
+                        
+                     my_Gauge.track("breadcrumb",newTitle);   
                   };
                     
           var handleClick = function()
