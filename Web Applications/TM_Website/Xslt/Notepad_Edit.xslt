@@ -39,6 +39,10 @@
         </script>
         <script>
             var id = '<xsl:value-of select='//Metadata/Id'/>';            
+            var title = '<xsl:value-of select='//Metadata/Title'/>';            
+            
+            document.title = "Editing: " + title;
+            
             var onSave = function(result)
               {
                 if (result)
@@ -112,6 +116,7 @@
         
           <xsl:apply-templates select="*"/>
         
+        <script src="/Javascript/Gauges/Gauges_Tracking_Code.js"   type="text/javascript"></script>     
       </body>
     </html>
   </xsl:template>

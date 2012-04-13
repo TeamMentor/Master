@@ -31,3 +31,4 @@
 /javascript/TM.Gui/TM.GUI.Dialog.js
 /javascript/TM.Gui/TM.GUI.ShowProgressBar.js
 
+/Javascript/Gauges/Gauges_Tracking_Code.js

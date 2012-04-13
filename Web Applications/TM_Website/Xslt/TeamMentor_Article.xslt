@@ -8,8 +8,8 @@
       <head>        
         <script src="/Javascript/jQuery/jquery-1.7.1.min.js"       type="text/javascript"></script>
         
-        <script src="/Javascript/jscreole/creole.min.js"           type="text/javascript"></script>           
-        
+        <script src="/Javascript/jscreole/creole.min.js"           type="text/javascript"></script>                   
+
         <link rel="stylesheet" href="/Javascript/bootstrap/bootstrap.min.css" type="text/css"></link>        
         
         
@@ -29,6 +29,8 @@
         <script>
            var title = '<xsl:value-of select='//Metadata/Title'/>';
            var dataType = '<xsl:value-of select='//Content/@DataType'/>';     
+           
+           document.title = "Viewing: " + title;
            
            var addBreadCrumb_Current = function()
                   {
@@ -155,7 +157,8 @@
           <div class="Article container">
             <xsl:apply-templates select="*"/>
           </div>
-          </div>
+          </div>    
+        <script src="/Javascript/Gauges/Gauges_Tracking_Code.js"   type="text/javascript"></script>                                  
       </body>
     </html>
   </xsl:template>
