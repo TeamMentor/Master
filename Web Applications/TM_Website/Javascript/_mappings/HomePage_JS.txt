@@ -22,3 +22,5 @@
 /javascript/Growl/growl.js
 
 /Javascript/jscreole/creole.min.js
+
+/Javascript/Gauges/Gauges_Tracking_Code.js
