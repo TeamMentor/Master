@@ -265,7 +265,8 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		}
 
         public bool transfer_Login()
-		{			            
+		{		
+	        context.Response.ContentType = "text/html";    
 			context.Server.Transfer("/Html_Pages/Gui/Pages/login.html");            
             return false; 
 		}

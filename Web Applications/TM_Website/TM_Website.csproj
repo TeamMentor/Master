@@ -228,6 +228,7 @@
     <Content Include="Javascript\bootstrap\bootstrap.min.js" />
     <Content Include="Javascript\bootstrap\glyphicons-halflings-white.png" />
     <Content Include="Javascript\bootstrap\glyphicons-halflings.png" />
+    <Content Include="Javascript\Gauges\Gauges_Tracking_Code.js" />
     <Content Include="Javascript\jQuery\jquery.textarea.js" />
     <Content Include="Javascript\jsCreole\creole.min.js" />
     <Content Include="Javascript\TM.ControlPanel\TM.ControlPanel.AdminTasks.js" />
