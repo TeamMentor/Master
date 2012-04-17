@@ -3,7 +3,9 @@
 o2.config
 
 # Visual Studio files # 
-bin
+*.pdb
+release
+Web Applications/TeamMentor.CoreLib/bin/Debug/*.xml
 obj
 *.suo
 *.nupkg
