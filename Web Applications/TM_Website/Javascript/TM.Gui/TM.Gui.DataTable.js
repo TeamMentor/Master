@@ -154,6 +154,9 @@ TM.Gui.DataTable.loadDataIntoDataTable_Step1 = function(dataTableData)
 				
 		_currentDataTable.fnClearTable(); 	
 		
+        TM.Gui.DataTableViewer.selectedRowTarget = null;
+        TM.Gui.DataTableViewer.selectedRowIndex = -1;
+
 		var itemsToAdd = dataTableData.aaData.slice() ; 	// create shalow copy of data to load
 		var totalItemstoLoad = itemsToAdd.length;
 		
