@@ -311,10 +311,12 @@
 			{						
                 try
                 {
+                    if (window.opener == window)   
+                        return;
 				    var opener = window.opener;
-				    if (opener ==null)					
+				    if (opener == null)					
 					    opener = window.parent;
-				    if (opener ==null)					
+				    if (opener == null)					
 					    return;
 				
 				    newData = savedGuidanceItem.guidanceItem;
@@ -330,21 +332,35 @@
 					    objectToUpdate.type = newData.Metadata.Type;						
 				    }	
                     //update table cells
-                    cells = $(opener.TM.Gui.DataTableViewer.selectedRowTarget).parent().find("td");
-                    cells.eq(0).html(objectToUpdate.title);
-                    cells.eq(1).html(objectToUpdate.technology);
-                    cells.eq(2).html(objectToUpdate.phase);
-                    cells.eq(3).html(objectToUpdate.type);
-                    cells.eq(4).html(objectToUpdate.category);
-                    //update table data
-                    var rowData = opener.TM.Gui.DataTable.currentDataTable.fnGetData(opener.TM.Gui.DataTableViewer.selectedRowIndex)
-                    rowData[1] = (objectToUpdate.title);
-                    rowData[2] = (objectToUpdate.technology);
-                    rowData[3] = (objectToUpdate.phase);
-                    rowData[4] = (objectToUpdate.type);
-                    rowData[5] = (objectToUpdate.category);
-                    //update preview pane
-                    opener.$("#selectedGuidanceItem #article_title").html(objectToUpdate.title);
+                    if (opener.TM.Gui.DataTableViewer.selectedRowTarget != null)
+                    {                        
+                        var cells = $(opener.TM.Gui.DataTableViewer.selectedRowTarget).parent().find("td");
+                        var size = cells.length;
+                        cells.eq(size-5).html(objectToUpdate.title);
+                        cells.eq(size-4).html(objectToUpdate.technology);
+                        cells.eq(size-3).html(objectToUpdate.phase);
+                        cells.eq(size-2).html(objectToUpdate.type);
+                        cells.eq(size-1).html(objectToUpdate.category);
+                        opener.cells = cells;
+                    }
+                    //update table data and preview pane
+                    if(opener.TM.Gui.DataTableViewer.selectedRowIndex > -1)
+                    {                        
+                        var rowData = opener.TM.Gui.DataTable.currentDataTable.fnGetData(opener.TM.Gui.DataTableViewer.selectedRowIndex)
+                        var size = rowData.length;
+                        rowData[size-6] = (objectToUpdate.title);
+                        rowData[size-5] = (objectToUpdate.technology);
+                        rowData[size-4] = (objectToUpdate.phase);
+                        rowData[size-3] = (objectToUpdate.type);
+                        rowData[size-2] = (objectToUpdate.category);
+                        
+                        //opener.$("#selectedGuidanceItem #article_title").html(objectToUpdate.title);
+                        opener.TM.Gui.selectedGuidanceTitle = objectToUpdate.title;
+                        opener.TM.Gui.GuidanceItemViewer.showSelectedGuidanceId();
+                        opener.rowData = rowData;
+                    }
+                    
+                    
                     
                 }
                 catch (error)

@@ -828,7 +828,10 @@ TM.Gui.LibraryTree.newGuidanceItem = function()
 						$.data[newGuidanceItemId].type 	 		 = "";
 						$.data[newGuidanceItemId].category 		 = "";
 						$.data[contextMenuIdValue.libraryId].guidanceItems.push(newGuidanceItemId);
-												
+
+						TM.Gui.DataTableViewer.selectedRowTarget = null;
+                        TM.Gui.DataTableViewer.selectedRowIndex = -1;						
+
 						openGuidanceItemEditor(newGuidanceItemId);
 					});
 	  } ;			  	  	
