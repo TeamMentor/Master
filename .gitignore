@@ -1,5 +1,6 @@
 #TM specific
-/Library_Data/XmlDatabase
+_/Library_Data/XmlDatabase
+Library_Data/XmlDatabase/TM_Libraries
 o2.config
 
 # Visual Studio files # 
@@ -11,13 +12,4 @@ obj
 *.nupkg
 Web Applications/TM_Website/bin/*.xml
 /Web Applications/packages
-
-
-
-
-
-
-
-
-
 Web Applications/TeamMentor.CoreLib/bin/Debug/TeamMentor.CoreLib.dll
