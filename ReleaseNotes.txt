@@ -1,0 +1,11 @@
+This is the 3.1 release of TeamMentor
+
+REQUIREMENTS
+
+* Windows
+* .NET Framework 4.0
+
+DEFAULT ACCOUNTS
+* admin  : !!tmadmin
+* editor : !!tmeditor
+* reader : !!tmreader
