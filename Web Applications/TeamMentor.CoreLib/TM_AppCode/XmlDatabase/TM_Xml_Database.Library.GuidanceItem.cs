@@ -177,31 +177,31 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 					{
 						//"loading {0}".info(fullPath);
 
-                        var _guidanceItem = fullPath.load<TeamMentor_Article>(); //.transform_into_guidanceItem();
-                        if (_guidanceItem.isNull())
+                        var article = fullPath.teamMentor_Article(); //.transform_into_guidanceItem();
+                        if (article.isNull())
                         {
                             // _guidanceItem = guidanceItem.Load(fullPath).transform();
-                            _guidanceItem = fullPath.load<Guidance_Item_Import>().transform();
-                            _guidanceItem.saveAs(fullPath);   // to do an import in place
+                            article = fullPath.load<Guidance_Item_Import>().transform();
+                            article.saveAs(fullPath);   // to do an import in place
                         }  
-						if (_guidanceItem.notNull())
+						if (article.notNull())
 						{
-							if(_guidanceItem.Metadata.Id != guidanceItemId)
+							if(article.Metadata.Id != guidanceItemId)
 							{
 								"FOUND GUID CHANGE".error();
-								_guidanceItem.Metadata.Id_History += _guidanceItem.Metadata.Id.str() + ",";
-								_guidanceItem.Metadata.Id 		   = guidanceItemId;
-								_guidanceItem.saveAs(fullPath);								
+								article.Metadata.Id_History += article.Metadata.Id.str() + ",";
+								article.Metadata.Id 		 = guidanceItemId;
+								article.saveAs(fullPath);								
 							}
 						//guidanceItemV3.guidanceItemId		 = original_Guid;		// this gives us the ability to track its source 
 						//guidanceItemV3.source_guidanceItemId = newGuid;				// also provides support for moving GuidanceItems across libraries
 							//var _guidanceItemV3 = _guidanceItem.tmGuidanceItemV3();
 							
-							TM_Xml_Database.Cached_GuidanceItems.Add(guidanceItemId, _guidanceItem);
+							TM_Xml_Database.Cached_GuidanceItems.Add(guidanceItemId, article);
 							TM_Xml_Database.GuidanceItems_FileMappings.add(guidanceItemId, fullPath);
 							
 							
-							return _guidanceItem;
+							return article;
 						}					
 					}
 					else
@@ -297,7 +297,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 									};
              */ 
 			article.xmlDB_Save_Article(libraryId, tmDatabase);			
-			return article;
+			return article.htmlEncode();
 		}
 
         public static Guid xmlDB_Create_Article(this TM_Xml_Database tmDatabase, TeamMentor_Article article)
@@ -366,6 +366,9 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			Files.deleteFile(guidanceItemXmlPath);
 			if (TM_Xml_Database.Cached_GuidanceItems.hasKey(guidanceItemId))
 				TM_Xml_Database.Cached_GuidanceItems.Remove(guidanceItemId);
+
+            tmDatabase.queue_Save_GuidanceItemsCache();
+
 			//TM_Xml_Database.mapGuidanceItemsViews();
 			return true;
 		}

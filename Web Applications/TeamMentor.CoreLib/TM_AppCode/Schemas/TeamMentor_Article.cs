@@ -8,6 +8,7 @@ using O2.DotNetWrappers.ExtensionMethods;
 
 using urn.microsoft.guidanceexplorer.guidanceItem;
 using System.Web.Script.Serialization;
+using Microsoft.Security.Application;
 //O2File:C:\_WorkDir\O2\O2 Install\_TeamMentor\TeamMentor-Dinis-Dev-Fork\Web Applications\TeamMentor.CoreLib\TM_AppCode\Schemas\GuidanceItem.cs
 
 namespace SecurityInnovation.TeamMentor.WebClient
@@ -192,6 +193,33 @@ namespace SecurityInnovation.TeamMentor.WebClient
 
                         content     =   article.Content.Data.Value
                     };
+        }
+
+        public static TeamMentor_Article teamMentor_Article(this string pathToXmlFile)
+        { 
+            var article = pathToXmlFile.load<TeamMentor_Article>()
+                                       .htmlEncode();
+            return article;
+        }
+
+        public static TeamMentor_Article htmlEncode(this TeamMentor_Article article)
+        {          
+            var metaData = article.Metadata;
+            foreach(var prop in metaData.type().properties())
+            {
+                if (prop.PropertyType == typeof(string))
+                {
+                    var value = (string)metaData.prop(prop.Name);
+                    metaData.prop(prop.Name, Encoder.HtmlEncode(value)); 
+                }
+            }
+            if (TMConfig.Current.SanitizeHtmlContent)
+            {
+                article.Content.Data.Value = Sanitizer.GetSafeHtmlFragment(article.Content.Data.Value);
+                article.Content.Sanitized = true;
+            }
+
+            return article;
         }
 
         //fix double encoding caused by JSON?CDATA/XML transfer of XML data
