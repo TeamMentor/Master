@@ -9,3 +9,17 @@ DEFAULT ACCOUNTS
 * admin  : !!tmadmin
 * editor : !!tmeditor
 * reader : !!tmreader
+
+CHANGES IN 3.1 
+
+- New Article Schema (with more metadata and better content formating)
+- Active Directory support
+- New Link structure
+- Xml and XSLT support (client and server side)
+- REST API to access articles in multiple formats (raw, xml, jsonp) with ability to find article by GUID or title
+- New C# WebServices API 
+- TM Technology pages providing technical details on TM APIs
+- New WebServices Methods that simplify the creation of TM Content
+- Multiple Gui and Performance fixes
+- Gaug.es support
+- Upgrade to .Net 4.0
