@@ -325,11 +325,11 @@
 				    objectToUpdate = opener.$.data[newData.Metadata.Id];
 				    if (isDefined(objectToUpdate))
 				    {
-					    objectToUpdate.category = newData.Metadata.Category;
-					    objectToUpdate.phase = newData.Metadata.Phase;
-					    objectToUpdate.technology = newData.Metadata.Technology;
-					    objectToUpdate.title = newData.Metadata.Title;
-					    objectToUpdate.type = newData.Metadata.Type;						
+					    objectToUpdate.category     = htmlEscape(newData.Metadata.Category);
+					    objectToUpdate.phase        = htmlEscape(newData.Metadata.Phase);
+					    objectToUpdate.technology   = htmlEscape(newData.Metadata.Technology);
+					    objectToUpdate.title        = htmlEscape(newData.Metadata.Title);
+					    objectToUpdate.type         = htmlEscape(newData.Metadata.Type);
 				    }	
                     //update table cells
                     if (opener.TM.Gui.DataTableViewer.selectedRowTarget != null)
@@ -492,7 +492,17 @@
 											//"guidanceItemEditor".$().html("<h1>Access denied.</h1><h2>please close this window</h2>");
 										}													
 									});
-			}		
+			}
+            
+        var htmlEscape = function(str) 
+            {
+                return String(str)
+                        .replace(/&/g, '&amp;')
+                        .replace(/"/g, '&quot;')
+                        .replace(/'/g, '&#39;')
+                        .replace(/</g, '&lt;')
+                        .replace(/>/g, '&gt;');
+            };	
 		
 		$(function()
 			{												                
