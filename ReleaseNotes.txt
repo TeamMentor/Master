@@ -1,25 +1,44 @@
-This is the 3.1 release of TeamMentor
+TEAMMENTOR 3.1 RELEASE NOTES
+
+The TeamMentor 3.1 release includes both new content and new application code. Major stability and usability improvements have been made to the application. A new content library has been added and numerous content fixes have been made based on feedback by a new editor - the TM content is periodically reviewed by different information security professionals.
+
+
+APPLICATION CHANGES
+
+The TM3.1 release includes the following changes:
++ New article schema (with more metadata and better content formatting).
++ Active Directory support.
++ New Link structure.
++ Xml and XSLT support (client and server side).
++ REST API to access articles in multiple formats (raw, xml, jsonp) with ability to find article by GUID or title.
++ New C# WebServices API.
++ TM Technology pages providing technical details on TM APIs.
++ New WebServices Methods that simplify the creation of TM Content.
++ Multiple GUI and performance fixes.
++ Gaug.es support.
++ Upgrade to .NET 4.0.
+
+
+CONTENT CHANGES
+
+The 2012Q1 TM content release has the following updates:
++ The new "CWE" library. A new library based on the CWE Top 25 Vulnerabilities list has been added. The articles are based heavily on the original CWE text. A few minor changes have been made to the original text by a team of reviewers. Additional material has been added in places where the original CWE content was too short. The CWE library is a stand-alone library and has 110 articles.
++ The updated "PCI DSS Compliance" library. The PCI DSS library has been edited to be clearer and to improve the browsing experience. New articles have been added to have a one-to-one correspondence of Guideline and Checklist items. The content has been reviewed by one more editor and numerous minor fixes have been made. The meta-data tags have been edited to simplify navigation. The new PCI DSS library is a stand-alone library and includes 331 articles.
+
 
 REQUIREMENTS
 
-* Windows
-* .NET Framework 4.0
++ Windows
++ .NET Framework 4.0
+
 
 DEFAULT ACCOUNTS
-* admin  : !!tmadmin
-* editor : !!tmeditor
-* reader : !!tmreader
 
-CHANGES IN 3.1 
++ admin  : !!tmadmin
++ editor : !!tmeditor
++ reader : !!tmreader
 
-- New Article Schema (with more metadata and better content formating)
-- Active Directory support
-- New Link structure
-- Xml and XSLT support (client and server side)
-- REST API to access articles in multiple formats (raw, xml, jsonp) with ability to find article by GUID or title
-- New C# WebServices API 
-- TM Technology pages providing technical details on TM APIs
-- New WebServices Methods that simplify the creation of TM Content
-- Multiple Gui and Performance fixes
-- Gaug.es support
-- Upgrade to .Net 4.0
+
+SUPPORT INFORMATION
+
++ For more information about TeamMentor, please see "TeamMentor Documentation" at http://docs.teammentor.net/_Customizations/TM_Documentation/index.htm
