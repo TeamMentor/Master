@@ -86,7 +86,9 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                     case "admin":
                         return redirectTo_ControlPanel(false);
                     case "admin_extra":
-                        return redirectTo_ControlPanel(true);                        
+                        return redirectTo_ControlPanel(true);
+                    case "reload_config":
+                        return reload_Config();
                     case "login":
                         return transfer_Login();   
                     case "logout":
@@ -112,6 +114,12 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
             }                                    
             return false;			
 		}
+
+        private bool reload_Config()
+        {
+            TMConfig.loadConfig();
+            return redirectTo_HomePage();
+        }
 
         private bool handleAction_JsonP(string data)
         {            
