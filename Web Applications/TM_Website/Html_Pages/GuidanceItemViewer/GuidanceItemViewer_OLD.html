@@ -1,9 +1,8 @@
 <!DOCTYPE HTML>
 <html>	
 	<head>	
-		<title>TeamMentor</title>		
-		<link  href="/aspx_Pages/scriptCombiner.ashx?s=HomePage_CSS&ct=css" 				type="text/css" rel="stylesheet" /> 
-		<link  href="/Css/ArticleViewer.css" type="text/css" rel="stylesheet" /> 		
+		<title>TeamMentor 3.0</title>		
+		<link  href="/aspx_Pages/scriptCombiner.ashx?s=HomePage_CSS&ct=css" 				type="text/css" rel="stylesheet" /> 					
 		<script src="/aspx_Pages/scriptCombiner.ashx?s=WebServices_JS"						type="text/javascript"></script>	
         
         <link href="/Javascript/jsPrettify/prettify.css"                                    type="text/css" rel="stylesheet" />
@@ -111,16 +110,15 @@
 		
 				var fixGuidanceItemLinks = function()
 				{
-					//$("a").css('color','#339')			// fix link color
+					$("a").css('color','#339')			// fix link color
 					if(window.opener ==null)
 						return;
-					$(".ItemContent a[href]").each(function()
+					$(".ItemContent a[href]").each(function()				                         
 						{					
 							var href = $(this).attr('href');
-							$(this).css('color','#339');
 							if (href.indexOf('http') > -1)
 								$(this).attr('target', '_blank');
-							
+
 /*							else
 							{
 								var id =  href.replace("/article/","");				   					
@@ -255,7 +253,7 @@
 						else
 							$("#SidePanel").hide();
 
-						//"ItemTitle".$().css('padding',10)	
+						"ItemTitle".$().css('padding',10)	
 					}
 		
 				$(function()
@@ -267,14 +265,14 @@
 				
 						loadUserDataAndBuildGui();			
 				
-						/*"links".$().add_Link("Edit WYSIWYG", "javascript:openGuidanceItemEditor()");
-						"links".$().append(" ");
-						"links".$().add_Link("Edit Source", "javascript:openGuidanceItemNotepad()");*/								
-						/*"SidePanel".$().css({ border:'solid 2px'}).absolute().right(10).top(10)										   
-									   .width(140).css('padding',8)
+						"links".$().add_Link("Edit Guidance Item", "javascript:openGuidanceItemEditor()");
+						"links".$().append("<br>");
+						"links".$().add_Link("Edit in Notepad", "javascript:openGuidanceItemNotepad()");								
+						"SidePanel".$().css({ border:'solid 2px' , background: '#C0C0C0'}).absolute().right(0).top(0)										   
+									   .width(140).css('padding',10)
 									   .hide();
 						if($.browser.msie)	
-							"SidePanel".$().width(170)*/
+							"SidePanel".$().width(170)
 						TM.Gui.ShowProgressBar.close();
 				
 					});
@@ -307,49 +305,55 @@
 													return true;
                 						});
 			</script>
-		
-   
-		<h1><div class="ItemTitle" id="Title"> </div></h1> 
-
-		<table class="ItemDetailTable" cellpadding="0" cellspacing="0">
-			<tr>
-				<td class="ItemDetailHeader">
-					Technology
-				</td>	
-				<td class="ItemDetailHeader">
-					Category
-				</td>					
-				<td class="ItemDetailHeader">
-					Phase
-				</td>				
-				<td class="ItemDetailHeader">
-					Type
-				</td>			
-			</tr>
-			<tr>
-				<td class="ItemDetailValue">					
-					<div ID="TechnologyLabel"> </div>
-				</td>		
-				<td class="ItemDetailValue">
-					<div ID="CategoriesLabel"> </div>
-				</td>				
-				<td class="ItemDetailValue">
-					<div ID="PhaseLabel"> </div>
-				</td>				
-				<td class="ItemDetailValue">					
-					<div ID="GuidanceTypeLabel"> </div>
-				</td>		
-			</tr>
-		</table>
-		<div id="SidePanel">      
-			<div id="links">
-				<a href="javascript:openGuidanceItemEditor()" class="IVButton">Edit WYSIWYG</a>
-				<a href="javascript:openGuidanceItemNotepad()" class="IVButton">Edit Source</a>
-			</div>					
-		</div>		
-		<div class="ItemContent" id="itemContent">			 	
-			<div id="guidanceItem" class="ArticleContent"></div>
+		<div id="header">	
+			<a href="/">
+			<img src="/Images/HeaderImage.jpg" alt="TeamMentor Enterprise Edition" class="HeaderImage"/>
+			</a>		
 		</div>
-		<div id="notAViewerErrorMessage"></div>	
+		<br/>
+		<div id=SidePanel>      
+			<div id="links"></div> 
+		</div>
+   
+		<h1><div class="ItemTitle" id="Title"> </div></h1>         
+		 <div class="ItemContent" id="itemContent">
+   
+  
+				 <table class="ItemDetailTable" cellpadding="0" cellspacing="0">
+					<tr>
+						<td class="ItemDetailHeader">
+							Technology
+						</td>				
+						<td class="ItemDetailHeader">
+							Phase
+						</td>				
+						<td class="ItemDetailHeader">
+							Type
+						</td>
+						<td class="ItemDetailHeader">
+							Category
+						</td>				
+					</tr>
+					<tr>
+						<td class="ItemDetailValue">					
+							<strong><div ID="TechnologyLabel"> </div></strong>								
+						</td>				
+						<td class="ItemDetailValue">
+							<strong><div ID="PhaseLabel"> </div></strong>				
+						</td>				
+						<td class="ItemDetailValue">					
+							<strong><div ID="GuidanceTypeLabel"> </div></strong>												
+						</td>		
+						<td class="ItemDetailValue">
+							<strong><div ID="CategoriesLabel"> </div></strong>
+						</td>
+					</tr>
+				</table>
+	
+				<div id="guidanceItem"></div>  				
+			</div>
+			<div id="notAViewerErrorMessage"></div>
+
+	
 	</body>
 </html>

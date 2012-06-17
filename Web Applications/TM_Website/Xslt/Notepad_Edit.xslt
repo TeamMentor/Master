@@ -8,7 +8,6 @@
     <html>
       <head>
         <title>TeamMentor 'Notepad' Editor</title>        
-        <link rel="stylesheet" href="/javascript/bootstrap/bootstrap.min.css" type="text/css"></link>
 		<link rel="stylesheet" href="/Css/NotepadEditor.css" type="text/css"></link>
         <script src="/Javascript/jQuery/jquery-1.7.1.min.js"                  type="text/javascript"></script>
         <script src="/Javascript/jQuery/jquery.textarea.js"                   type="text/javascript"></script>
@@ -43,16 +42,16 @@
             var onSave = function(result)
               {
                 if (result)
-                  $("#SaveButton text").html('Saved OK');
+                  $("#SaveButton").html('Saved OK');
                 else
-                  $("#SaveButton text").html('Save Failed');
+                  $("#SaveButton").html('Save Failed');
               }
               
             var saveContent = function()
               {                
                 var html =      $(".Content").val(); 
                 var dataType =  $("#DataType").val(); 
-                $("#SaveButton text").html(' Saving Content');
+                $("#SaveButton").html('Saving Content');
                 TM.WebServices.WS_Libraries
                               .set_Article_Content(id, dataType, html, onSave , function(error) { alert(error.responseText)});            
                 return false;
@@ -60,13 +59,13 @@
           
              var setSaveButtonText = function()
               {
-                $("#SaveButton text").html('Save');
+                $("#SaveButton").html('Save Changes');
               }
               
              var openArticle = function()
               {
                 //window.open("/article/"+id);
-                document.location = "/xsl/"+id;
+                document.location = "/article/"+id;
                 return false;
               }
               
@@ -97,8 +96,8 @@
                      .attr('id', 'preview')                 
                      .hide();
                      
-                $("#OpenArticle").mouseleave(function() { $("#preview").hide().attr('src','about:blank') });
-                $("#OpenArticle").mouseenter(function() { $("#preview").show().attr('src','/xsl/' + id) });
+                /*$("#OpenArticle").mouseleave(function() { $("#preview").hide().attr('src','about:blank') });
+                $("#OpenArticle").mouseenter(function() { $("#preview").show().attr('src','/xsl/' + id) });*/
               }
               
             $(function() 
@@ -122,11 +121,10 @@
       </h2>
       id: <xsl:value-of select="Id"/>
     </div>
-    <span class="NEToolbar">      
-      <button type="submit" class="NEButton" id="SaveButton">
-        <text></text>
-      </button>
-      <a href="" type="submit" class="NEButton" id="OpenArticle">View Article</a>
+    <span class="NEToolbar">
+		<a href="" type="submit" class="NEButton" id="OpenArticle">View Article</a>	
+		<a href="" type="submit" class="NEButton" id="SaveButton">Save Changes
+		</a>
     </span>
   </xsl:template>
 

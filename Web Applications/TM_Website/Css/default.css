@@ -303,11 +303,12 @@ h1.ItemTitle
 	padding-left: 10px;
 	padding-right: 10px;
 	border-bottom: solid 1px #BBB;
+	font-weight: bold;
 }
 
 .ItemDetailValue
 {
-	font-weight: bold;
+	
 	padding: 3px;
 	padding-left: 10px;
 	padding-right: 10px;
