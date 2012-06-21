@@ -7,13 +7,13 @@ h2 {
 	margin: 0px;
 }
 .NEHeader {
-	padding: 0px 0px 10px 20px;
 	/*margin-bottom: 18px;*/
 	/*background-color: #0074CC;*/
 	/*background-color: #05C;*/
 	display: block;
 	font-family: Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif;
-	margin: 0px;
+	margin-left: 4px;
+	margin-bottom: 8px;
 	/*font-size: 14px;*/
 	/*line-height: 18px;*/
 	/*color: white;*/
@@ -29,19 +29,8 @@ h2 {
 }
 
 .NEToolbar {
-	padding-left: 12px;
-	padding-right: 0px;
 	font-family: Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif;
-	color: #333;
-}
-.NEToolbar:before {
-	display: table;
-	content: "";
-}
-.NEToolbar:after {
-	display: table;
-	content: "";
-	clear: both;
+	
 }
 
 .NEButton {
@@ -87,15 +76,15 @@ h2 {
 	-moz-border-radius: 4px;
 	font-family: Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif;
 	font-weight: normal;
-	margin: 0px 0px 0px 0px;
+	margin: 0px 0px 0px 8px;
 }
 
 .NEContent {
 	position: fixed;
 	top: 120px;
-	bottom: 24px;
-	left: 24px;
-	right: 24px;
+	bottom: 30px;
+	left: 8px;
+	right: 30px;
 }
 
 .Content {

@@ -49,9 +49,23 @@ a:visited, a:active
 /*   LAYOUT    */
 #header
 {
-	background-image: url(/Images/HeaderRepeat.jpg);
-	background-repeat:repeat-x;
-	height: 75px;
+
+}
+
+#TMTitle
+{
+	margin-top: 8px;
+	margin-left: 8px;
+	font-family: Impact;
+	font-size: 30px;
+	color: #05C;
+	text-shadow: -2px 0 lightsteelblue, 0 2px lightsteelblue, 2px 0 lightsteelblue, 0 -2px lightsteelblue;
+}
+
+#TMTitle2
+{
+	margin-left: 8px;
+	font-size: 16px;
 }
 
 .footer
