@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-000000809d58</Id>
+    <Library_Id>f798e6e6-1732-4172-9c47-9621d914efcd</Library_Id>
+    <Title>Use a Secure SQL Persistence Framework</Title>
+    <Category>Data Access</Category>
+    <Phase>Implementation</Phase>
+    <Technology>Java</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Use a Secure SQL Persistence Framework</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="WikiText">
+    <Data><![CDATA[==What to Do==
+Use a vetted library or framework that does not allow this weakness to occur or provides constructs that make this weakness easier to avoid. For example, consider using persistence layers such as //Hibernate// or //Enterprise Java Beans//, which can provide significant protection against SQL injection if used properly.
+
+==How==
+Identify secure SQL frameworks available for your platform. These frameworks are most practical for Java applications. Each framework has unique properties and the choice to use one has to be made after careful consideration and study of each option.]]></Data>
+  </Content>
+</TeamMentor_Article>

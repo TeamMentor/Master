@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="667238788" Content_Hash="238070967">
+  <Metadata>
+    <Id>8b8b0ec3-7ad7-4c0f-bcaf-ce30b56b4e50</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Assume All Input Is Malicious</Title>
+    <Category>Input and Data Validation</Category>
+    <Phase>Design</Phase>
+    <Technology> Any</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Assume All Input Is Malicious</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>J.D. Meier, Alex Mackman, Michael Dunner, Srinath Vasireddy, Ray Escamilla and Anandha Murukan</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Do</h1>
+  <p>Applications should assume that all of their input is malicious, and take action accordingly.&amp;nbsp; Input should&amp;nbsp;be validated and either rejected or sanitized immediately, carefully quarantined during use, and encoded appropriately on output.</p>
+  <h1>Why</h1>
+  <p>Malicious input is the single largest cause of vulnerabilities in web applications, and in the most general sense, is the root cause of almost every issue.&amp;nbsp; The only way to ensure safety is by a defense in depth, default deny policy that starts with the fundamental supposition that all input is malicious until proven otherwise. For example, if you call an external Web service that returns strings, how do you know that malicious commands are not present? Also, if several applications write to a shared database, when you read data, how do you know whether it is safe?</p>
+  <h1>When</h1>
+  <p>All applications should assume that all their input is malicious.</p>
+  <h1>How</h1>
+  <p>Getting input validation correct is tricky; there's a reason that it's the number one security problem for web applications.&amp;nbsp; However, when approached systematically, it's not too hard of a&amp;nbsp;problem to solve.&amp;nbsp; Follow these steps:</p>
+  <ol>
+    <li>
+      <p>
+        <b>Determine all inputs.&amp;nbsp;</b>The first step is to determine all the things in the application which can be controlled by the user.&amp;nbsp; There are some surprises here -- a lot of the variables in a normal HTTP server environment are actually taken from the user's request, so make sure you know exactly where everything is coming from.&amp;nbsp; It's a good idea to leave a brief comment in the code where the input comes in mentioning where it comes from (if it isn't obvious from context), the expected format, and where it's validated (again, if it isn't obvious).</p>
+    </li>
+    <li>
+      <p>
+        <b>Determine all trusted data stores.</b>&amp;nbsp;Every application has at least one, usually multiple data stores.&amp;nbsp; It's important to know when a data store can be trusted.&amp;nbsp; The guideline here is simple; if the system in question is the only input into the data store, then you can rely on the semantics enforced by your input validation routines to apply to all data found in the store.&amp;nbsp; If other applications access the data store, then you can't.&amp;nbsp; While it is possible to check the semantics of every validation routine in every other system that accesses the data store, it's simpler and safer to assume that the data store is untrusted, and treat it as a potential source of malicious data, validating all input from it as you would any other input.</p>
+    </li>
+    <li>
+      <p>
+        <b>Determine all crossover points.&amp;nbsp;</b>Crossover points are one of the places where malicious input becomes a bug.&amp;nbsp; They're not necessarily places where output occurs; in fact, they'll often occur many layers further in than that in large applications.&amp;nbsp; A crossover point is anywhere where user input is included textually in some larger body of command text, or where a security-relevant decision is made based on it.&amp;nbsp; A good example of a crossover point is a dynamic SQL query.&amp;nbsp; The risk here is of the user input crossing over into the associated command data, allowing an attacker to execute commands.&amp;nbsp; Xpath and other XML injections are another example here.&amp;nbsp; The worst case here is when user input is evaluated by a languages built-in "eval" command or something similar -- these commands should never be used, even with values that look safe, because of the risks associated.</p>
+      <p>Once the crossover points are found, all inputs should be traced back to make sure that they've been validated appropriately beforehand, and a comment again stating the format, source, and validation point should be made.&amp;nbsp;&amp;nbsp;All crossover points have, depending on the technology involved, different sets of safe characters.&amp;nbsp; Using the whitelist approach described below, the safe set of characters for that crossover point should be compared against what the validator will allow through; the allowed characters must be a subset of the safe ones.</p>
+      <p>Whenever possible, steps should be taken to remove crossover points entirely.&amp;nbsp; Switching from dynamic SQL to stored procedures with bound parameters removes an entire category of crossover points from the system, and greatly reduces risk to an entire class of attacks.&amp;nbsp; Similar things can be done with other types of crossovers.</p>
+    </li>
+    <li>
+      <p>
+        <b>Determine all outputs.&amp;nbsp;</b>The last point of concern is the list of outputs from the system.&amp;nbsp; This will likely have a certain amount of overlap with the list of crossover points, which is fine.&amp;nbsp; Again, we need to determine the allowable format for each output, and look at where the incoming data is being validated.&amp;nbsp; If there's any question of whether the data may contain dangerous characters, it should be encoded in a manner appropriate to the specific output.&amp;nbsp; There are more output contexts than one might think; the contents of HTML attributes, the tags themselves, free text between the tags, and javascript strings all have different safe sets of characters (and a different encoding, in the last case).&amp;nbsp; Comments on the input source, format, validation point, and encoding point&amp;nbsp;are also useful here.</p>
+    </li>
+    <li>
+      <p>
+        <b>Build a centralized validation module.&amp;nbsp;</b>One of the biggest dangers of implementing input validation is inconsistent validation; an attack may be caught on one data path, but not on another.&amp;nbsp; An attacker will try all of them, however.&amp;nbsp; The way to solve this problem is to have a single point of responsibility for input validation.&amp;nbsp; Where this is depends on the design.&amp;nbsp; If every piece of input is an object, then it may be appropriate to have the object constructs and setters perform the validation for that object's input.&amp;nbsp; In a less strictly OO system, a single module with methods for each different input format may be more appropriate.</p>
+      <p>Which ever method is chosen, the input validation routine for a specific data type should be as strict as possible.&amp;nbsp; For example, when validating a US zip code, allow either 5 or 9 numbers, and nothing else.&amp;nbsp; If you're dealing with international postal codes, either validate them seperately with a looser format that also allows letters, or build a more complex validator that understands the postal codes of each nation, if you need to ensure a higher level of integrity.</p>
+    </li>
+    <li>
+      <p>
+        <b>Build a centralized encoding module.&amp;nbsp;</b>In an ideal world, all encoding routines would be done via the same libraries which are used to create output.&amp;nbsp; While many HTML control libraries attempt this, none of them take the whitelist approach.&amp;nbsp; Instead, they try to guess which characters might be harmful, a list which is categorically incomplete.&amp;nbsp; Unless you want to build a new output library (which might be an option on a large enough application), you should build a set of data encoders for each output context which you have.&amp;nbsp; These encoders should be used as close as possible to the actual point of output; this minimizes the chance of an alternate data path skipping the encoding, and ensures that the developer knows exactly what context the output is being used in.&amp;nbsp; Avoid the temptation to store encoded data, because even if it is initially only used in the context you encoded it for, this may change over time.</p>
+    </li>
+    <li>
+      <p>
+        <b>Ensure that all paths through the system preserve validation.</b>&amp;nbsp;Once the validation system is complete, all the paths that data takes through the system should be checked to ensure that they preserve the validation properties that are expected.&amp;nbsp; Input which is sent round-trip through a client or another system must be re-validated, unless a cryptographic signature is used to ensure that it has not been tampered with.&amp;nbsp; Validation which occurs on an untrusted system must also be repeated. Client-side validation in javascript is a nice UI touch, but it is trivially circumvented as&amp;nbsp; a security measure.</p>
+    </li>
+  </ol>
+  <h1>Problem Example</h1>
+  <p>A suite of web applications on an e-commerce site share a common back-end database.&amp;nbsp; The largest application is&amp;nbsp;the&amp;nbsp;order entry system and shopping cart.&amp;nbsp; This was the first application built, and was designed with the assumption that the database was trusted. Later, a lightweight app to allow users to quickly check stock levels was built. Because it was a small "read-only" use of the database, input validation was not built into the application.&amp;nbsp; The application contained a SQL injection, allowing an attacker to alter the database in such a way that they could&amp;nbsp;inject javascript into pages which displayed the shopping cart application, allowing them to steal user's passwords.&amp;nbsp;</p>
+  <h1>Solution Example</h1>
+  <p>A suite of web applications on an e-commerce site share a common back-end database.&amp;nbsp; The largest application is&amp;nbsp;the&amp;nbsp;order entry system and shopping cart.&amp;nbsp; This was the first application built, and was designed with the assumption that the database was trusted.&amp;nbsp; Later, a lightweight app to allow users to quickly check stock levels was built.&amp;nbsp;&amp;nbsp;When the new application was added, the developers realized that the database could no longer be treated as a trusted data store, and added code to the main application to perform data validation on input from the database.&amp;nbsp;&amp;nbsp;&amp;nbsp;Because the new application was a small "read-only" use of the database, the input validation routines written were not properly checked.&amp;nbsp; When an attacker found a SQL injection via the new application and altered the back-end database, they were unable to make that attack chain through to the main application.&amp;nbsp; Furthermore, the logging performed by the main application's data validation routines altered the operations group to the problem, allowing them to fix the smaller application.</p>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>For more information see, "Chapter 4 - Design Guidelines for Secure Web Applications" at <a href="http://msdn2.microsoft.com/en-us/library/aa302420.aspx">http://msdn2.microsoft.com/en-us/library/aa302420.aspx</a></li>
+  </ul>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance.</p>]]></Data>
+  </Content>
+</TeamMentor_Article>

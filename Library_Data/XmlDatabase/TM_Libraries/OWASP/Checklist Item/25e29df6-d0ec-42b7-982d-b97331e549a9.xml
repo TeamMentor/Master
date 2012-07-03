@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="270862001" Content_Hash="1698699814">
+  <Metadata>
+    <Id>25e29df6-d0ec-42b7-982d-b97331e549a9</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Type Safe SQL Parameters Are Used</Title>
+    <Category>Data Access</Category>
+    <Phase>Implementation</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>Type Safe SQL Parameters Are Used</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>1</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Check For</h1>
+  <p>Ensure that type-safe parameters are used when constructing dynamic SQL queries or when passing parameters to stored procedures.</p>
+  <h1>Why</h1>
+  <p>If you use the Parameters collection, SQL treats the input is as a literal value rather then as executable code. The Parameters collection can be used to enforce type and length constraints on input data. Values outside of the range trigger an exception.</p>
+  <p>If type-safe SQL parameters are not used, attackers might be able to execute injection attacks that are embedded in the unfiltered input.</p>
+  <h1>How to Check</h1>
+  <p>To check if parameterized queries are used:</p>
+  <ol>
+    <li>
+      <p>
+        <strong>Identify all database transactions. </strong>Locate all SQL queries throughout your application. Example:</p>
+      <pre>"select user from myappUsers where user = ? and pass = ?;"</pre>
+    </li>
+    <li>
+      <p>
+        <strong>Verify that each transaction uses Stored Procedures where possible. </strong>Verify that your application interacts with the backend database through the use of Stored Procedures. Ensure that SQL queries look like:</p>
+      <pre>SqlCommand myCommand = new SqlCommand("sp_SelectUser", myConnection);<br />//Specify our command is a stored procedure<br />myCommand.CommandType = CommandType.StoredProcedure; </pre>
+      <p>and not like:</p>
+      <pre>string SQLstr = "SELECT * from users<br />   WHERE username = '" + un.Text + "'<br />   AND password = '" + pass.Text + "'";<br />SqlCommand myCommand = new SqlCommand(SQLstr, myConnection);</pre>
+    </li>
+    <li>
+      <p>
+        <strong>Verify that type-safe parameters are used. </strong>Verify that type-safe parameters are used in the dynamic SQL queries or stored procedures by using the SqlParameterCollection class. Example:</p>
+      <pre>using (SqlConnection connection = new SqlConnection(connectionString))<br />{<br />  connection.Open();<br />  SqlDataAdapter myDataAdapter = new SqlDataAdapter(<br />         "SELECT * from users WHERE username = '@uname' AND password = '@pwd'", connection);<br />  myCommand.SelectCommand.Parameters.Add("@uname", SqlDbType.VarChar, 24);<br />  myCommand.SelectCommand.Parameters.Add("@pwd", SqlDbType.VarChar, 16);<br />  myCommand.SelectCommand.Parameters["@uname"].Value = un.Text;<br />  myCommand.SelectCommand.Parameters["@pwd"].Value = pass.Text;<br />  myDataAdapter.Fill(userDataset);  ...  connection.Close();<br />}</pre>
+    </li>
+  </ol>
+  <h1>Problem Example</h1>
+  <p>Consider an ASP.NET application that handles employee payroll functionality for a small company. One of the pages requires retrieving an employee record from a table based on a username and password supplied via a login dialog. The developer of the application created an SQL SELECT query to accomplish said task:</p>
+  <pre>using (SqlConnection myConnection = new SqlConnection(connectionString))<br />{<br />  connection.Open();<br />  string SQLstr = "SELECT * from users WHERE username = '" + un.Text + "'<br />   AND password = '" + pass.Text + "'";<br />  SqlCommand myCommand = new SqlCommand(SQLstr, myConnection);<br />  SqlDataAdapter myDataAdapter = new SqlDataAdapter(myCommand);<br />  myCommand.Connection.Open();<br />  SqlDataReader myReader = myCommand.ExecuteReader();<br />  ...<br />}</pre>
+  <p>In the preceding example, the SELECT statement will work as expected, assuming that the input is perfectly constrained. However, what happens if a user enters unexpected input such as '1234' for a password, and this for a username:</p>
+  <pre>mjones' AND 1=1; -- </pre>
+  <p>This will result in the SQL statement being executed at the database level:</p>
+  <pre>SELECT * from users WHERE username = 'mjones' AND 1=1; --'  AND password = '1234';</pre>
+  <p>This will allow the person entering data into the dialog box to select the account details of mjones without the correct password.</p>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>To learn more about SQL injection, see: <a href="http://en.wikipedia.org/wiki/SQL_injection">SQL Injection</a> in Wikipedia. </li>
+    <li>To learn more about countering SQL injection in ASP.NET, visit: <a href="http://msdn2.microsoft.com/en-us/library/ms998271.aspx">How To: Protect From SQL Injection in ASP.NET</a>. </li>
+    <li>To learn more about countering injection-based attacks in ASP.NET, see: <a href="http://msdn2.microsoft.com/en-us/library/bb355989.aspx">How To: Protect From Injection Attacks in ASP.NET</a>.</li>
+  </ul>
+  <ul>
+  </ul>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance. </p>]]></Data>
+  </Content>
+</TeamMentor_Article>

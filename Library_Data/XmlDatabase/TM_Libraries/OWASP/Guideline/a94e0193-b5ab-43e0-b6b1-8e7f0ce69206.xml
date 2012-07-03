@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-1556035302" Content_Hash="1960955043">
+  <Metadata>
+    <Id>a94e0193-b5ab-43e0-b6b1-8e7f0ce69206</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Protect Sensitive Data Over the Network</Title>
+    <Category>Communication Security</Category>
+    <Phase>Implementation</Phase>
+    <Technology>Java</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Protect Sensitive Data Over the Network</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Do</h1>
+  <p>Use encryption to protect sensitive data that is transmitted over the network. </p>
+  <h1>Why</h1>
+  <p>Because network traffic&amp;nbsp;is easily eavesdropped on or modified by attackers, passing sensitive data as plaintext&amp;nbsp;over the network&amp;nbsp;can lead&amp;nbsp;to a host of attacks, including data theft and data manipulation.</p>
+  <h1>When</h1>
+  <p>Apply this guideline when your application transmits sensitive data over unprotected communication channels.</p>
+  <h1>How</h1>
+  <p>Use the following steps to protect sensitive data over the network:</p>
+  <ol>
+    <li>
+      <p>
+        <strong>Identify sensitive information. </strong>Sensitive data is any information that is kept secret and should be disclosed only to authorized parties. Common examples of sensitive data include, but are not limited to, names of customers, government issued ID numbers, credit card and other financial information, passwords and private keys. Some industries, such as health care and banking, have regulatory standards that define sensitive information. Use regulatory requirements, as they apply to your application, to identify sensitive data. Sensitive data can be defined as follows:</p>
+      <ul>
+        <li>Information that either contains personally identifiable information or can be used to derive personally identifiable information that should not be shared with others. </li>
+        <li>Information that a user provides that they would not want shared with other users of the application. </li>
+        <li>Information that comes from an external trusted source that is not designed to be shared with users.</li>
+      </ul>
+    </li>
+    <li>
+      <p>
+        <strong>Choose an appropriate protection mechanism. </strong>Choosing the appropriate protection mechanism may depend on various conditions: purpose of the sensitive data, role of the other network party, infrastructure and supported technologies. Because sensitive data must be encrypted when in transit, there are two strategies, to encrypt the communication channel or to encrypt the application data:</p>
+      <ul>
+        <li>
+          <p>
+            <strong>Encrypt the communication channel</strong>: Depending on the current infrastructure and the other network party, it is possible to encrypt the connections using Java's crypto library or any technologies supported by the remote party.</p>
+        </li>
+        <li>
+          <p>
+            <strong>Encrypt the application data</strong>: If your application's communication channels cannot be encrypted, encrypt the application data. Hashing or encryption should be used when protecting the application data. Use hashing if the application data will be used only for comparison purposes. Use encryption if the application data will be retrieved at a later stage.</p>
+          <p>If hashing is used, choose a longer salt, 16 or more bits.&amp;nbsp;In the case&amp;nbsp;that the produced hash is compromised, longer salts make it more difficult for an attacker to gain access to the sensitive data. If your application uses randomly generated salt, make sure that your application encrypts the random salt and stores it in a configuration file. Always use <strong>SecureRandom</strong> and not <strong>Random</strong> to generate the salt. Example of using <strong>SecureRandom</strong> to generate a random salt:</p>
+          <blockquote>
+            <pre>public static byte[] generateSalt() throws NoSuchAlgorithmException<br />{<br />      // Note that salt is declared as private static byte[] and is<br />      // initialized to null.<br />      if (salt == null)<br />      {<br />            SecureRandom srand = SecureRandom.getInstance("SHA1PRNG");<br />                          salt = new byte[4];<br />            srand.nextBytes(salt);<br />      }<br />       return salt;<br />}</pre>
+          </blockquote>
+          <p>Choosing a strong hashing algorithm is also important. Stronger algorithms prevent multiple unique pieces of data from producing identical hash values. The current recommendation is to use SHA-256 or stronger.</p>
+          <blockquote>
+            <pre>public String hashCredentials(char[] pass, byte[] salt)<br />      throws GeneralSecurityException, IOException<br />{<br />      MessageDigest md;<br />      byte[] tempPass;<br />      byte[] digest;<br />            md = MessageDigest.getInstance("SHA-512");<br />      //Convert char[] to byte[]<br />      tempPass = new byte[pass.length];<br />      for (int i = 0; i &lt; pass.length; i++)<br />      {<br />            tempPass[i] = (byte)pass[i];<br />      }<br />      md.update(tempPass);<br />      md.update(salt);<br />      digest = md.digest();<br />      md.reset();<br />      //Clean tempPass<br />      for (int i = 0; i &lt; tempPass.length; i++)<br />      {<br />            tempPass[i] = 0;<br />      }<br />       return new String(digest);<br />}</pre>
+          </blockquote>
+          <p>Use encryption if the application data will be retrieved at a later stage.<br /><br />Use symmetric encryption if and only if your application is the only entity that will access the encrypted data. Use a key size of 265-bit or higher and AES for symmetric encryption.<br /><br />Use public/private key encryption if the data will be accessed by two or more parties. Use a key size of 2048-bit or higher and RSA for public/private key encryption. Public/private key encryption allows your application to share sensitive data with multiple entities without disclosing its own encryption key.</p>
+          <pre>// Because the following code generates a new encryption key,<br />// make sure to store it into the application's keystore.<br />KeyGenerator kgen = KeyGenerator.getInstance("AES");<br />kgen.init(256);<br />SecretKey skey = kgen.generateKey();<br />// Set up cipherCipher cipher = Cipher.getInstance("AES");<br />cipher.init(Cipher.ENCRYPT_MODE, skey);<br />// Note that sensitiveData is of type byte[] and contains<br />// data that is sensitive in naturebyte[] encrypted = cipher.doFinal(sensitiveData);</pre>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <p>
+        <strong>Apply the appropriate protection mechanism</strong>. Evaluate the code and determine the places where sensitive data is transmitted. Apply the established protection mechanism at each location.</p>
+      <blockquote>
+        <pre>try<br />{<br />      // The application produces a hash based on the sensitive data<br />      userEmail = MyApp.getEmailForUser(user);<br />      passDigest = encryptCredentials(userEmail, pass, salt);<br />}<br />catch (GeneralSecurityException gse)<br />{<br />      // Add the appropriate logging and exception handling mechanisms<br />      return false;}catch (IOException ioe)<br />{<br />      // Add the appropriate logging and exception handling mechanisms<br />      return false;<br />}<br />// The application stores the hashed sensitive data into the database<br />Connection cn = MyApp.getDBConnection();<br />PreparedStatement st = cn.prepareStatement("select login_attempts from myappUsers"<br />                                        + " where user = ? and pass = ?;");<br />st.setString(1, user);<br />st.setBytes(2, passDigest);<br />ResultSet rs = st.executeQuery();</pre>
+      </blockquote>
+    </li>
+  </ol>
+  <p>
+    <strong>Note:</strong> PCI DSS requirements state that all sensitive data must be encrypted before being sent over the network or be sent over an encrypted channel.</p>
+  <h1>Problem Example</h1>
+  <p>The following code authenticates a user based on a username and password. The supplied credentials are compared to the credentials stored in the backend database. Unfortunately, the credentials are transmitted in plaintext and could be stolen if the network is compromised.</p>
+  <blockquote>
+    <pre>public boolean validateUser(String user, char[] pass)<br />{<br />      // Query the credential store with the provided credentials<br />      ...<br />}</pre>
+  </blockquote>
+  <h1>Solution Example</h1>
+  <p>The following code validates the user based on&amp;nbsp;a given username and password. It uses the user's valid email address and a random salt to encrypt the user's password before comparing&amp;nbsp;the username and the produced digest against the data stored in the backend database. Therefore, the password is encrypted before being transmitted over the network and is protected from being compromised.</p>
+  <blockquote>
+    <pre>public boolean validateUser(String user, char[] pass)<br />{<br />       ...<br />       // Encrypt the credentials<br />      try<br />      {<br />            userEmail = MyApp.getEmailForUser(user);<br />            passDigest = encryptCredentials(userEmail, pass, salt);<br />      }<br />      catch (GeneralSecurityException gse)<br />      {<br />            // Add the appropriate logging and exception handling mechanisms<br />            return false;<br />      }<br />     catch (IOException ioe)<br />      {<br />            // Add the appropriate logging and exception handling mechanisms<br />            return false;<br />      }<br />       // Query the credential store and execute the rest of the authentication steps<br />      ...<br />}<br />public static byte[] encryptCredentials(String email, char[] pass, byte[] salt)<br />      throws GeneralSecurityException, IOException<br />{<br />      MessageDigest md; <br />      byte[] tempPass;<br />      byte[] rawKey;<br />      // Generate encryption key<br />      md = MessageDigest.getInstance("SHA-512");<br />      md.update(email.getBytes("UTF-8"));<br />      md.update(salt);<br />      rawKey = md.digest();<br />      md.reset();<br />      SecretKeySpec skeySpec = new SecretKeySpec(rawKey, "AES");<br />      // Set up cipher<br />      Cipher cipher = Cipher.getInstance("AES");<br />      cipher.init(Cipher.ENCRYPT_MODE, skeySpec);<br />      // Convert char[] to byte[]<br />      tempPass = new byte[pass.length];<br />      for (int i = 0; i &lt; pass.length; i++)<br />      {<br />            tempPass[i] = (byte)pass[i];<br />      }<br />      // Encrypt password<br />      byte[] encrypted = cipher.doFinal(tempPass);<br />            //Clean tempPass<br />      for (int i = 0; i &lt; tempPass.length; i++)<br />      {<br />            tempPass[i] = 0;<br />      }<br />      return encrypted;<br />}</pre>
+  </blockquote>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>To learn more about the JCE API, see: <a href="http://java.sun.com/products/jce/index-14.html">Java Cryptography Extension for the Java 2 SDK, v 1.4</a>. </li>
+    <li>For more information about securely generating random numbers, see: Documentation for <a href="http://download.oracle.com/javase/1.4.2/docs/api/java/security/SecureRandom.html">Class SecureRandom</a> in Java SDK. </li>
+    <li>To learn more about JSSE, see: <a href="http://java.sun.com/j2se/1.4.2/docs/guide/security/jsse/JSSERefGuide.html">Java Secure Socket Extension (JSSE) Reference Guide</a>.</li>
+  </ul>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-0000006171ed</Id>
+    <Library_Id>b6f408c5-6e6e-4bc0-90a5-0bb10becc2ce</Library_Id>
+    <Title>Throttle Authentication Attempts</Title>
+    <Category>Authentication</Category>
+    <Phase>Implementation</Phase>
+    <Technology>iOS</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Throttle Authentication Attempts</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="WikiText">
+    <Data><![CDATA[==Applies To==
+
+*iOS applications that authenticate to a remote server.
+
+==What to Do==
+
+Throttle authentication attempts by making authentication code pause for a few seconds between each authentication request per IP.
+
+==Why==
+
+Throttle authentication attempts to make password guessing attacks less effective. Authentication throttling should be implemented on the server to be effective.
+
+==How==
+
+To throttle authentication attempts:
+
+# **Define authentication throttling requirements.** Define the time-out period between each authentication attempt. A recommended time-out period is three seconds.
+# **Identify authentication code.** Identify server-side code that is responsible for authentication.
+# **Add code that throttles authentication attempts.** Add server-side code to the authentication code identified in the previous step to wait for the required time period before handling another authentication request. Keep track of clients using IPs and session cookies to make it harder to bypass authentication throttling.
+
+==Additional Resources==]]></Data>
+  </Content>
+</TeamMentor_Article>

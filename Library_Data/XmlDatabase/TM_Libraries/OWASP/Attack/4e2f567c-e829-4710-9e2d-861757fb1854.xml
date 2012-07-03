@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="52666007" Content_Hash="-1844136800">
+  <Metadata>
+    <Id>4e2f567c-e829-4710-9e2d-861757fb1854</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>SQL Injection Attack</Title>
+    <Category>Input and Data Validation</Category>
+    <Phase>Any</Phase>
+    <Technology> Any</Technology>
+    <Type>Attack</Type>
+    <DirectLink>SQL Injection Attack</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>1</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>Applies To</h1>
+  <p>
+  </p>
+  <ul>
+    <li>Any application that interacts with a SQL database.</li>
+  </ul>
+  <p />
+  <h1>Description</h1>
+  <p>A SQL injection attack exploits vulnerabilities in input validation to run arbitrary commands in the database. It can occur when your application uses input to construct dynamic SQL statements to access the database. It can also occur if your code uses stored procedures that are passed strings that contain raw user input. Using the SQL injection attack, an attacker can execute arbitrary commands in your database, with all the privileges granted to the process being attacked. The issue is magnified if the application uses an over-privileged account to connect to the database. In this instance it is possible to use the database server to run operating system commands and potentially compromise other servers, in addition to being able to retrieve, manipulate, and destroy data. </p>
+  <h1>Impact</h1>
+  <ul>
+    <li>
+      <strong>Confidentiality</strong>: Since SQL databases generally hold sensitive data, loss of confidentiality is a frequent problem with SQL injection vulnerabilities. </li>
+    <li>
+      <strong>Authentication</strong>: If poor SQL commands are used to check user names and passwords, it may be possible to connect to a system as another user with no previous knowledge of the password. </li>
+    <li>
+      <strong>Authorization</strong>: If authorization information is held in an SQL database, it may be possible to change this information through the successful exploitation of an SQL injection vulnerability. </li>
+    <li>
+      <strong>Integrity</strong>: Just as it may be possible to read sensitive information, it is also possible to make changes or even delete this information with an SQL injection attack. </li>
+  </ul>
+  <p>The capabilities of an attacker are constrained by the permissions of the account you use to connect to the database. For this reason, your application should connect to the database with an account that has the minimum necessary set of privileges. </p>
+  <h1>Vulnerabilities</h1>
+  <ul>
+    <li>Weak input validation. </li>
+    <li>Dynamic construction of SQL statements without the use of type-safe parameters. </li>
+    <li>Use of over-privileged database logins. </li>
+  </ul>
+  <h1>Countermeasures</h1>
+  <ul>
+    <li>
+      <strong>Constrain input.</strong> Use vigorous white-list style checking and type checking on any user input that may be used in an SQL command. Rather than escape meta-characters, it is safest to avoid adding them to your white-list. Later use of data that has been entered in the database may neglect to escape meta-characters before use. </li>
+    <li>
+      <strong>Use Parameterized SQL statements and stored procedures. </strong>Parameterized SQL statements will process characters that have special meaning to SQL (like single quote) without negative security implications. </li>
+    <li>
+      <strong>Use escaping routines</strong>. If you cannot use parameters and must use dynamic SQL, use escaping routines to handle special characters that have meaning to the database. </li>
+    <li>
+      <strong>Use an account with limited permissions in the database</strong>. Ideally the account should only have execute permissions on the set of stored procedures that your application needs to use. It should have no direct table access.&amp;nbsp; </li>
+    <li>
+      <strong>Do not echo database errors</strong>. Catch exceptions on the server and return generic error messages to the client.</li>
+  </ul>
+  <h1>Example</h1>
+  <p>While it is easier and more reliable to fix SQL injection by parameterization, it can be fixed without it. Suppose we have a PHP/MySQL application that has two tables: users and products. Each row in the USER table contains the users ID, name, password, credit card number, and address. Similarly, the product table has a column for the product ID, description, and price. The application contains a SQL Query that retrieves the description of a product given its ID.</p>
+  <pre>$query = "SELECT description FROM products WHERE product_id = " + $prod_id + ";";$result = mysql_query($query);</pre>
+  <p>So, if the value of $prod_id is 5 then $query reads:</p>
+  <pre>SELECT description FROM products WHERE product_id = 5;</pre>
+  <p>An attacker enters the following string where the application asks for the product ID (expecting a number):</p>
+  <pre>5; SELECT * from users</pre>
+  <p>Now $query has the following value which is a perfectly legitimate SQL query:</p>
+  <pre>SELECT description FROM products WHERE product_id = 5; SELECT * from users;</pre>
+  <p>The query is executed and the product description is returned along with every row in the User table and the attacker has all of the confidential information from the database.</p>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>
+      <a href="http://en.wikipedia.org/wiki/SQL_injection">http://en.wikipedia.org/wiki/SQL_injection</a>
+    </li>
+    <li>
+      <a href="http://www.php.net/manual/en/security.database.sql-injection.php">http://www.php.net/manual/en/security.database.sql-injection.php</a>
+    </li>
+    <li>
+      <a href="http://msdn2.microsoft.com/en-us/library/ms998271.aspx">http://msdn2.microsoft.com/en-us/library/ms998271.aspx</a>
+    </li>
+    <li>
+      <a href="http://www.unixwiz.net/techtips/sql-injection.html">http://www.unixwiz.net/techtips/sql-injection.html</a>
+    </li>
+  </ul>
+  <ul>
+  </ul>]]></Data>
+  </Content>
+</TeamMentor_Article>

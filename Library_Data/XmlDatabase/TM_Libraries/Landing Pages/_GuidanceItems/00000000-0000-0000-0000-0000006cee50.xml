@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-0000006cee50</Id>
+    <Library_Id>80a03482-cf8b-4055-82db-1aa09465d30f</Library_Id>
+    <Title>SQL Injection</Title>
+    <Category>Database</Category>
+    <Phase>NA</Phase>
+    <Technology>ASP.NET</Technology>
+    <Type>Vulnerability</Type>
+    <DirectLink>SQL Injection</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="WikiText">
+    <Data><![CDATA[==Description==
+
+SQL injection is a type of vulnerabilities in database access code that allow attacker to execute unauthorized queries on the database.  
+SQL injection typically occurs when an application uses input to construct dynamic SQL statements to access the database. SQL injection may also occur if stored procedures use dynamic queries that include untrusted input.
+
+==Countermeasures==
+
+The following TeamMentor articles describe effective counter-measures against SQL injection vulnerabilities:
+
+* [[Validate All Input Passed to Database]]
+* [[Validate Input for Length, Range, Format, And Type]]
+* [[Use Parameterized APIs for Database Access]]
+* [[Use Type Safe SQL Parameters When Constructing SQL Queries]]
+
+==Checklists==
+
+The following checklist items can help make sure that effective counter-measures against SQL injection vulnerabilities have been implemented:
+
+* [[All Database Input Is Validated]]
+* [[Input Is Validated for Length, Range, Format, And Type]]
+* [[Parameterized APIs Are Used for Database Access]]
+* [[Stored Procedures with Type-safe Parameters Are Used for SQL Queries]]
+
+==Additional Resources==
+
+*For more information about SQL injection attacks, please see http://en.wikipedia.org/wiki/SQL_injection
+]]></Data>
+  </Content>
+</TeamMentor_Article>

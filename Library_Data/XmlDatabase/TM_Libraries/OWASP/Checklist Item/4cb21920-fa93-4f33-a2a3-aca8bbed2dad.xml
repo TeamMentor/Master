@@ -1,0 +1,119 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-175160663" Content_Hash="1533708857">
+  <Metadata>
+    <Id>4cb21920-fa93-4f33-a2a3-aca8bbed2dad</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Input Is Validated for Length, Range, Format And Type</Title>
+    <Category>Input and Data Validation</Category>
+    <Phase>Implementation</Phase>
+    <Technology>Java</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>Input Is Validated for Length, Range, Format And Type</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>1</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Check For</h1>
+  <p>Check that all input is validated and treated as untrusted data. Ensure data is validated using whitelisting techniques to check against known good input.</p>
+  <h1>Why</h1>
+  <p>Unchecked malicious input may lead to integer overflows, injection based attacks, denial of service or information disclosure.</p>
+  <h1>How to Check</h1>
+  <p>To check for this problem, use the following steps: </p>
+  <ol>
+    <li>
+      <p>
+        <strong>Find all input sources. </strong>During design time identify all of the potential input sources to your application. Scour the source code to discover sources of input that may have been missed in the design. Compile a list that you can use in the following steps. The most common sources are:</p>
+      <ul>
+        <li>URL based parameters </li>
+        <li>Form based parameters </li>
+        <li>Hidden fields </li>
+        <li>Cookies </li>
+        <li>HTTP headers (Host, accept types, www authentication, cache settings, encodings, etc) </li>
+        <li>Local filesystem </li>
+        <li>Database </li>
+        <li>Other services running on the system </li>
+        <li>Javascript variables </li>
+        <li>File upload and attributes (filename, size, data, etc) </li>
+        <li>DNS results or host names </li>
+        <li>External component call return values (COM, AJAX, ActiveX)</li>
+      </ul>
+    </li>
+    <li>
+      <p>
+        <strong>Trace data from source to sink. </strong>Trace each source of input through your application until you find its ultimate destination. The final sink may be in memory, on the hard drive, sent over the network or stored in a data store such as a database. </p>
+    </li>
+    <li>
+      <p>
+        <strong>Identify validation routines. </strong>Each input source should have a data validation routine associated with it. Ideally the validation will occur as soon as the input reaches your application. Shared validation routines are better than creating many spread throughout your code base, so check for consolidation of routines to aid testing and reduce the chance of one-off bugs. If an input source does not have a validation routine associated with it, flag it for fixing.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Ensure quality of validation routines. </strong>Validation routines should check for length, range, format and type. </p>
+      <ul>
+        <li>Validation routines should check for known good data and constrain input against each of those four categories. </li>
+        <li>In web applications, look for application-supplied validators, such as a Custom Java Validator, to validate and constrain input after it is received from an input source. </li>
+        <li>Ensure that all numeric fields are validated for type and range. Check for the use of regular expressions and <strong>java.util.regex</strong> or the use of a validator that checks numeric ranges by converting the input value to an integer or double and then performing a range check. </li>
+        <li>Check that validators validate input against the least permissive expression possible that will accept all the input expected for that field. </li>
+        <li>If you know that the field will have a certain internal structure, ensure that is checked for. </li>
+        <li>If the input has an internal checksum, like a credit card number, ensure that is checked. <br /><br />Validation should check first for known valid, safe data and then for malicious, dangerous data. Do not rely on filtering out all malicious data, as it is too easy to miss something. Do not rely on client-side validation alone as it can be easily bypassed. </li>
+      </ul>
+    </li>
+  </ol>
+  <blockquote>
+    <p>
+      <strong>Options for Constraining and Sanitizing Data</strong>
+    </p>
+    <table>
+      <tbody>
+        <tr>
+          <th>Requirement</th>
+          <th>Options</th>
+        </tr>
+        <tr>
+          <td>Type checks</td>
+          <td>Regular expressions (<strong>java.util.regex</strong>) <p>Java type system</p></td>
+        </tr>
+        <tr>
+          <td>Length checks</td>
+          <td>Regular expressions (<strong>java.util.regex</strong>) <p><strong>String.length()</strong> method</p><p>Custom Java <strong>Validator</strong></p></td>
+        </tr>
+        <tr>
+          <td>Format checks</td>
+          <td>Regular expressions for pattern matching (<strong>Pattern</strong>, <strong>Matcher</strong>) <p>Java type system</p></td>
+        </tr>
+        <tr>
+          <td>Range checks</td>
+          <td>Custom Java <strong>Validator</strong><p>Typed data comparisons</p></td>
+        </tr>
+      </tbody>
+    </table>
+  </blockquote>
+  <h1>How to Fix</h1>
+  <p>Input can vary in several ways: length, data type contents. It is recommended to verify that all of these meet your application's expectations regarding its input.</p>
+  <ol>
+    <li>
+      <p />
+      <strong>Validating length</strong>: Validating an input's length suggests that your application should check a string's length or the number of bits in a numeric value. Checking the length can help prevent buffer overflows as well as integer overflows in numeric values. A simple way of validating the numeric value can be done through the use of <em>BigInteger/BigDecimal</em>:<pre>public boolean validateLength(String input)<br />{<br />      if(validateType(input))<br />      {<br />            BigInteger bi = new BigInteger(input);<br /><br />            if(bi.compareTo(BigInteger.valueOf(0)) &gt; -1<br />               &amp;&amp; bi.compareTo(BigInteger.valueOf(Integer.MAX_VALUE)) &lt; 1)<br />            {<br />                  return true;<br />            }<br />            else<br />            {<br />                  return false;<br />            }<br />      }<br />      else<br />      {<br />             return false;<br />      }<br />}</pre></li>
+    <li>
+      <p />
+      <strong>Validating type</strong>: Validating the input's data type is important when your application expects a specific non-string parameter. Difference in data type can trigger unhandled exceptions that would throw your application into an unknown state. Example for validating numeric input:<pre>public boolean validateType(String input)<br />{<br />      String goodPattern = "\\d+";<br />      Pattern p = Pattern.compile(goodPattern);<br />      Matcher m = p.matcher(input);<br />            if(!m.matches())<br />      {<br /><br />            return false;<br />      }<br />      else<br />      {<br />            return true;<br />      }<br />}</pre></li>
+    <li>
+      <p />
+      <strong>Validating contents</strong>: Validating the input's contents can be achieved using whitelist and blacklist techniques. The choice between the use of black and white listing is based upon the constraints that are imposed on the input. If the input follows a tight structure and format, then your application can use whitelisting alone to weed out malicious input. If there are unknowns about the input, then a combination of black and white listing must be used. In general, use blacklisting as a backup to whitelisting. Use a spiral-out approach as input is initially validated using whitelist techniques. When whitelisting cannot validate the input, fall back to blacklisting. If blacklist cannot validate, then discard the input. Whitelisting involves the establishment of what is good input to your application. Once good input is defined, your application must compare all input against the established good input. If the input does not resemble good input, your application should discard it. This technique can be implemented using regular expressions. Example:<pre>public boolean validateData(String input)<br />{<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; String goodPattern = "(\\w|\\d)+";<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; int goodLength = 10;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; if(input.length() &gt; goodLength)<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; {<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; return false;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; }<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Pattern p = Pattern.compile(goodPattern);<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Matcher m = p.matcher(input);<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; if(!m.matches())<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; {<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; return false;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; }<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; else<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; {<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; return true;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; }<br />}</pre><p>Examples of useful regular expressions: </p><p /><table><tbody><tr><td>Use</td><td>Regular Expression</td><td>Java String</td></tr><tr><td>Valid E-Mail Address</td><td>^\w+(\.|_|-){0,1}\w+@(\w+\.)*\w{3,1024}\.([a-zA-Z]{2}\.){0,1}[a-zA-Z]{2,4}$</td><td>^\\w+(\\.|_|-){0,1}\\w+@(\\w+\\.)*\\w{3,}\\.([a-zA-Z]{2}\\.){0,1}[a-zA-Z]{2,4}$</td></tr><tr><td>Alpha-numeric free text</td><td>(\w|\d|\s|;|\?|!|,|\.|-|:)+</td><td>(\\w|\\d|\\s|;|\\?|!|,|\\.|-|:)+</td></tr><tr><td>Word characters</td><td>\w+</td><td>\\w+</td></tr><tr><td>Numbers</td><td>\d+</td><td>\\d+</td></tr></tbody></table><p /><ul></ul></li>
+  </ol>
+  <h1>Problem Example</h1>
+  <p>The following code produces a data analysis based on a financial index. Because the code does not validate its input, the application is vulnerable to SQL injection.</p>
+  <pre>import java.io.*;<br />import java.util.*;<br />import java.lang.*;<br />import javax.servlet.*;<br />import javax.servlet.http.*;<br />import java.util.regex.*;<br /><br />public final class DataAggregator extends HttpServlet<br />{<br />      public void doGet(HttpServletRequest request, HttpServletResponse response)<br />            throws ServletException, IOException<br />      {<br />            PrintWriter out = response.getWriter();<br />            String searchTerm = request.getParameter("index");<br /><br />            String retString;<br /><br />            try<br />            {<br />                  // The application does not validate the user-supplied data<br />                  retString = "The queried index \"";<br />                  retString += encodeHtml(searchTerm); <br />                  retString += "\" produced the following results:&lt;br&gt; ";<br />                  out.println(retString);<br />                  common.aggregateData(out, searchTerm);<br />            }<br /><br />            catch (Exception e)<br />            {<br />                  // Add the appropriate logging and exception handling<br />                  // mechanisms. Consult the Exception Handling and<br />                  // Logging sections<br />                  out.println("We cannot handle your request at the moment."<br />                            + "Please try again later.");<br />            }<br /><br />            out.flush();<br />            out.close();<br />      }<br />  }</pre>
+  <h1>Solution Example</h1>
+  <p>The following code produces a data analysis based on a financial index. Since the code validates the application's input, the application is secured from SQL injection.</p>
+  <pre>import java.io.*;<br />import java.util.*;<br />import java.lang.*;<br />import javax.servlet.*;<br />import javax.servlet.http.*;<br />import java.util.regex.*;<br /><br />public final class DataAggregator extends HttpServlet<br />{<br />      public void doGet(HttpServletRequest request, HttpServletResponse response)<br />            throws ServletException, IOException<br />      {<br />            PrintWriter out = response.getWriter();<br />            String searchTerm = request.getParameter("index");<br /><br />            try<br />            {<br /><br />                  // The application validates the user-supplied data<br />                  if (validateSearchTerm(searchTerm))<br />                  {<br />                        String retString;<br />                        retString = "The queried index \"";<br />                        retString += encodeHtml(searchTerm);<br />                        retString += "\" produced the following results:&lt;br&gt; ";<br />                        out.println(retString);<br />                        common.aggregateData(out, searchTerm);<br />                  }<br />                  else<br />                  {<br />                        // Add the appropriate logging and exception handling<br />                        // mechanisms. Consult the Exception Handling and<br />                        // Logging sections<br />                        out.println("We cannot handle your request at the moment."<br />                                  + "Please try again later.");<br />                  }<br />            }<br /><br />            catch (Exception e)<br />            {<br />                   // Add the appropriate logging and exception handling<br />                   // mechanisms. Consult the Exception Handling and<br />                   // Logging sections<br />                   out.println("We cannot handle your request at the moment."<br />                           + " Please try again later.");<br />            }             out.flush();<br />            out.close();<br />      }<br /><br />      boolean validateSearchTerm(String input)<br />      {<br />            String goodPattern = "(\\w|\\d)+";<br />            int goodLength = 8;<br /><br />            if (input == null)<br />            {<br />                  return false;<br />            }<br /><br />            if(input.length() &gt; goodLength)<br />            {<br />                  return false;<br />            }<br /><br />            Pattern p = Pattern.compile(goodPattern);<br />            Matcher m = p.matcher(input);<br />                        if(!m.matches())<br />            {<br />                  return false;<br />            }<br /><br />            return true;<br />      }<br />}</pre>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>A tutorial on regular expressions is available at <a href="http://www.regular-expressions.info/">Regular-Expressions.info</a>. </li>
+    <li>For more information on using regular expression in Java, see: Documentation for <a href="http://java.sun.com/j2se/1.4.2/docs/api/java/util/regex/Pattern.html">Class Pattern</a> in Java SDK. </li>
+  </ul>]]></Data>
+  </Content>
+</TeamMentor_Article>

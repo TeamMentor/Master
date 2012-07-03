@@ -1,0 +1,225 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-1152373269" Content_Hash="1617189997">
+  <Metadata>
+    <Id>d1220cc3-7aef-472d-92de-182218c05c93</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>How to Protect From SQL Injection in ASP.NET</Title>
+    <Category>Input and Data Validation</Category>
+    <Phase>Implementation</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>How To</Type>
+    <DirectLink>How to Protect From SQL Injection in ASP.NET</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>Summary</h1>
+  <p>This How to shows a number of ways to help protect your ASP.NET application from SQL injection attacks. SQL injection can occur when an application uses input to construct dynamic SQL statements or when it uses stored procedures to connect to the database. Conventional security measures, such as the use of SSL and IPSec, do not protect your application from SQL injection attacks. Successful SQL injection attacks enable malicious users to execute commands in an application's database.</p>
+  <p>Countermeasures include using a list of acceptable characters to constrain input, using parameterized SQL for data access, and using a low privileged account that has restricted permissions in the database. Using stored procedures with parameterized SQL is the recommended approach because SQL parameters are type safe. Type-safe SQL parameters can also be used with dynamic SQL. In situations where parameterized SQL cannot be used, consider using character escaping techniques. </p>
+  <h1>Contents</h1>
+  <ul>
+    <li>
+      <div>Objectives</div>
+    </li>
+    <li>
+      <div>Overview</div>
+    </li>
+    <li>
+      <div>Summary of Steps</div>
+    </li>
+    <li>
+      <div>Step 1. Constrain Input</div>
+    </li>
+    <li>
+      <div>Step 2. Use Parameters with Stored Procedures</div>
+    </li>
+    <li>
+      <div>Step 3. Use Parameters with Dynamic SQL</div>
+    </li>
+    <li>
+      <div>Additional Considerations</div>
+    </li>
+    <li>
+      <div>Additional Resources</div>
+    </li>
+  </ul>
+  <h1>Objectives</h1>
+  <ul>
+    <li>Learn how SQL injection attacks work. </li>
+    <li>Constrain input to prevent SQL injection. </li>
+    <li>Use type safe SQL command parameters to prevent SQL injection. </li>
+    <li>Use a low privileged account to connect to the database.&amp;nbsp; </li>
+    <li>Learn additional countermeasures to further reduce risk. </li>
+  </ul>
+  <h1>Overview</h1>
+  <p>A successful SQL injection attack enables a malicious user to execute commands in your application's database by using the privileges granted to your application's login. The problem is more severe if your application uses an over-privileged account to connect to the database. For example, if your application's login has privileges to eliminate a database, then without adequate safeguards, an attacker might be able to perform this operation.</p>
+  <p>Common vulnerabilities that make your data access code susceptible to SQL injection attacks include: </p>
+  <ul>
+    <li>Weak input validation. </li>
+    <li>Dynamic construction of SQL statements without the use of type-safe parameters. </li>
+    <li>Use of over-privileged database logins. </li>
+  </ul>
+  <h2>SQL Injection Example</h2>
+  <p>Consider what happens when a user types the following string in the <strong>SSN</strong> text box, which is expecting a Social Security number of the form <em>nnn-nn-nnnn</em>.</p>
+  <div>
+    <pre>' ; DROP DATABASE pubs  --  </pre>
+  </div>
+  <p>Using the input, the application executes the following dynamic SQL statement or stored procedure, which internally executes a similar SQL statement. </p>
+  <div>
+    <pre>// Use dynamic SQL<br />SqlDataAdapter myCommand = new SqlDataAdapter(<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; "SELECT au_lname, au_fname FROM authors WHERE au_id = '" + <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; SSN.Text + "'", myConnection);</pre>
+  </div>
+  <pre>// Use stored procedures<br />SqlDataAdapter myCommand = new SqlDataAdapter(<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; "LoginStoredProcedure '" + <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; SSN.Text + "'", myConnection);<br /></pre>
+  <p>The developer's intention was that when the code runs, it inserts the user's input and generates a SQL the following statement.</p>
+  <div>
+    <pre>SELECT au_lname, au_fname FROM authors WHERE au_id = '172-32-9999'  </pre>
+  </div>
+  <p>However, the code inserts the user's malicious input and generates the following query.</p>
+  <div>
+    <pre>SELECT au_lname, au_fname FROM authors WHERE au_id = ''; DROP DATABASE pubs --'  </pre>
+  </div>
+  <p>In this case, the <strong>'</strong> (single quotation mark) character that starts the rogue input terminates the current string literal in the SQL statement. It closes the current statement only if the following parsed token does not make sense as a continuation of the current statement but does make sense as the start of a new statement. As a result, the opening single quotation mark character of the rogue input results in the following statement.</p>
+  <div>
+    <pre>SELECT au_lname, au_fname FROM authors WHERE au_id = ''  </pre>
+  </div>
+  <p>The<strong>;</strong> (semicolon) character tells SQL that this is the end of the current statement, which is then followed by the following malicious SQL code.</p>
+  <div>
+    <div>
+      <div>
+      </div>
+      <div>
+        <a class="copyCode" href="javascript:CopyCode('ctl00_LibFrame_ctl09');">
+        </a>&amp;nbsp;</div>
+    </div>
+    <pre>; DROP DATABASE pubs  </pre>
+  </div>
+  <blockquote>
+    <strong>Note</strong>&amp;nbsp;&amp;nbsp;&amp;nbsp;The semicolon is not necessarily required to separate SQL statements. This is dependent on vendor or implementation, but Microsoft SQL Server does not require them. For example, SQL Server parses the following as two separate statements:</blockquote>
+  <blockquote>SELECT * FROM MyTable DELETE FROM MyTable</blockquote>
+  <blockquote>
+  </blockquote>
+  <p>Finally, the <strong>--</strong> (double dash) sequence of characters is a SQL comment that tells SQL to ignore the rest of the text. In this case, SQL ignores the closing <strong>'</strong> (single quotation mark) character, which would otherwise cause a SQL parser error.</p>
+  <div>
+    <pre>--'  </pre>
+  </div>
+  <h2>Guidelines</h2>
+  <p>To counter SQL injection attacks, you need to: </p>
+  <ul>
+    <li>
+      <strong>Constrain and sanitize input data. </strong>Check for known good data by validating for type, length, format, and range. </li>
+    <li>
+      <strong>Use type-safe SQL parameters for data access.</strong> You can use these parameters with stored procedures or dynamically constructed SQL command strings. Parameter collections such as <strong>SqlParameterCollection</strong> provide type checking and length validation. If you use a parameters collection, input is treated as a literal value, and SQL Server does not treat it as executable code. An additional benefit of using a parameters collection is that you can enforce type and length checks. Values outside of the range trigger an exception. This is a good example of defense in depth. </li>
+    <li>
+      <strong>Use an account that has restricted permissions in the database.</strong> Ideally, you should only grant execute permissions to selected stored procedures in the database and provide no direct table access. </li>
+    <li>
+      <strong>Avoid disclosing database error information. </strong>In the event of database errors, make sure you do not disclose detailed error messages to the user. </li>
+  </ul>
+  <blockquote>
+    <strong>Note</strong>&amp;nbsp;&amp;nbsp;&amp;nbsp;Conventional security measures, such as the use of Secure Socket Layer (SSL) and IP Security (IPSec), do not protect your application from SQL injection attacks. </blockquote>
+  <h1>Summary of Steps</h1>
+  <p>To protect your application from SQL injection, perform the following steps: </p>
+  <ul>
+    <li>Step 1. Constrain input. </li>
+    <li>Step 2. Use parameters with stored procedures. </li>
+    <li>Step 3. Use parameters with dynamic SQL.<strong></strong></li>
+  </ul>
+  <h1>Step 1. Constrain Input</h1>
+  <p>You should validate all input to your ASP.NET applications for type, length, format, and range. By constraining the input used in your data access queries, you can protect your application from SQL injection. </p>
+  <blockquote>
+    <strong>Note</strong>&amp;nbsp;&amp;nbsp;&amp;nbsp;When constraining input, it is a good practice to create a list of acceptable characters and use regular expressions to reject any characters that are not on the list. The potential risk associated with using a list of unacceptable characters is that it is always possible to overlook an unacceptable character when defining the list; also, an unacceptable character can be represented in an alternate format to pass validation. </blockquote>
+  <h2>Constrain Input in ASP.NET Web Pages</h2>
+  <p>Start by constraining input in the server-side code for your ASP.NET Web pages. Do not rely on client-side validation because it can be easily bypassed. Use client-side validation only to reduce round trips and to improve the user experience.</p>
+  <p>If you use server controls, use the ASP.NET validator controls, such as the <strong>RegularExpressionValidator</strong> and <strong>RangeValidator</strong> controls to constrain input. If you use regular HTML input controls, use the <strong>Regex</strong> class in your server-side code to constrain input.</p>
+  <p>If in the previous code example, the SSN value is captured by an ASP.NET <strong>TextBox</strong> control, you can constrain its input by using a <strong>RegularExpressionValidator</strong> control as shown in the following.</p>
+  <div>
+    <pre>&lt;%@ language="C#" %&gt;<br />&lt;form id="form1" runat="server"&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;asp:TextBox ID="SSN" runat="server"/&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;asp:RegularExpressionValidator ID="regexpSSN" runat="server"&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ErrorMessage="Incorrect SSN Number" <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ControlToValidate="SSN"&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ValidationExpression="^\d{3}-\d{2}-\d{4}$" /&gt;<br />&lt;/form&gt;  </pre>
+  </div>
+  <p>If the SSN input is from another source, such as an HTML control, a query string parameter, or a cookie, you can constrain it by using the <strong>Regex</strong> class from the <strong>System.Text.RegularExpressions</strong> namespace. The following example assumes that the input is obtained from a cookie.</p>
+  <p>using System.Text.RegularExpressions;</p>
+  <div>
+    <pre>if (Regex.IsMatch(Request.Cookies["SSN"], "^\d{3}-\d{2}-\d{4}$"))<br />{<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; // access the database<br />}<br />else<br />{<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; // handle the bad input<br />}  </pre>
+  </div>
+  <h2>Constrain Input in Data Access Code</h2>
+  <p>In some situations, you need to provide validation in your data access code, perhaps in addition to your ASP.NET page-level validation. Two common situations where you need to provide validation in your data access code are: </p>
+  <ul>
+    <li>
+      <strong>Untrusted clients.</strong> If the data can come from an untrusted source or you cannot guarantee how well the data has been validated and constrained, add validation logic that constrains input to your data access routines. </li>
+    <li>
+      <strong>Library code. </strong>If your data access code is packaged as a library designed for use by multiple applications, your data access code should perform its own validation, because you can make no safe assumptions about the client applications. </li>
+  </ul>
+  <p>The following example shows how a data access routine can validate its input parameters by using regular expressions prior to using the parameters in a SQL statement.</p>
+  <div>
+    <pre>using System;<br />using System.Text.RegularExpressions;</pre>
+  </div>
+  <pre>public void CreateNewUserAccount(string name, string password)<br />{<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; // Check name contains only lower case or upper case letters, <br />&amp;nbsp;&amp;nbsp;&amp;nbsp; // the apostrophe, a dot, or white space. Also check it is <br />&amp;nbsp;&amp;nbsp;&amp;nbsp; // between 1 and 40 characters long<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; if ( !Regex.IsMatch(userIDTxt.Text, @"^[a-zA-Z'./s]{1,40}$"))<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; throw new FormatException("Invalid name format");</pre>
+  <pre>&amp;nbsp;</pre>
+  <pre>&amp;nbsp;&amp;nbsp;&amp;nbsp; // Check password contains at least one digit, one lower case <br />&amp;nbsp;&amp;nbsp;&amp;nbsp; // letter, one uppercase letter, and is between 8 and 10 <br />&amp;nbsp;&amp;nbsp;&amp;nbsp; // characters long<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; if ( !Regex.IsMatch(passwordTxt.Text, <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; @"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,10}$" ))<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; throw new FormatException("Invalid password format");</pre>
+  <pre>&amp;nbsp;</pre>
+  <pre>&amp;nbsp;&amp;nbsp;&amp;nbsp; // Perform data access logic (using type safe parameters)<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; ...<br />}</pre>
+  <h1>Step 2. Use Parameters with Stored Procedures</h1>
+  <p>Using stored procedures does not necessarily prevent SQL injection. The important thing to do is use parameters with stored procedures. If you do not use parameters, your stored procedures can be susceptible to SQL injection if they use unfiltered input as described in the "Overview" section of this document.</p>
+  <p>The following code shows how to use <strong>SqlParameterCollection</strong> when calling a stored procedure.</p>
+  <div>
+    <pre>using System.Data;<br />using System.Data.SqlClient;</pre>
+    <pre>using (SqlConnection connection = new SqlConnection(connectionString))<br />{<br />&amp;nbsp; DataSet userDataset = new DataSet();<br />&amp;nbsp; SqlDataAdapter myCommand = new SqlDataAdapter( <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; "LoginStoredProcedure", connection);<br />&amp;nbsp; myCommand.SelectCommand.CommandType = CommandType.StoredProcedure;<br />&amp;nbsp; myCommand.SelectCommand.Parameters.Add("@au_id", SqlDbType.VarChar, 11);<br />&amp;nbsp; myCommand.SelectCommand.Parameters["@au_id"].Value = SSN.Text;</pre>
+    <pre>&amp;nbsp; myCommand.Fill(userDataset);<br />}  </pre>
+  </div>
+  <p>In this case, the <strong>@au_id</strong> parameter is treated as a literal value and not as executable code. Also, the parameter is checked for type and length. In the preceding code example, the input value cannot be longer than 11 characters. If the data does not conform to the type or length defined by the parameter, the <strong>SqlParameter</strong> class throws an exception.</p>
+  <h2>Review Your Application's Use of Parameterized Stored Procedures</h2>
+  <p>Because using stored procedures with parameters does not necessarily prevent SQL injection, you should review your application's use of this type of stored procedure. For example, the following parameterized stored procedure has several security vulnerabilities.</p>
+  <div>
+    <pre>CREATE PROCEDURE dbo.RunQuery@var ntextAS<br />        exec sp_executesql @varGO  </pre>
+  </div>
+  <p>An application that uses a stored procedure similar to the one in the preceding code example has the following vulnerabilities: </p>
+  <ul>
+    <li>The stored procedure executes whatever statement is passed to it. Consider the <strong>@var</strong> variable being set to: <div><pre>DROP TABLE ORDERS;  </pre></div><p>In this case, the ORDERS table will be dropped. </p></li>
+    <li>The stored procedure runs with <strong>dbo</strong> privileges. </li>
+    <li>The stored procedure's name (<strong>RunQuery</strong>) is a poor choice. If an attacker is able to probe the database, he or she will see the name of the stored procedure. With a name like <strong>RunQuery</strong>, he can guess that the stored procedure is likely to run the supplied query. </li>
+  </ul>
+  <h1>Step 3. Use Parameters with Dynamic SQL</h1>
+  <p>If you cannot use stored procedures, you should still use parameters when constructing dynamic SQL statements. The following code shows how to use <strong>SqlParametersCollection</strong> with dynamic SQL.</p>
+  <div>
+    <pre>using System.Data;<br />using System.Data.SqlClient;</pre>
+  </div>
+  <pre>using (SqlConnection connection = new SqlConnection(connectionString))<br />{<br />&amp;nbsp; DataSet userDataset = new DataSet();<br />&amp;nbsp; SqlDataAdapter myDataAdapter = new SqlDataAdapter(<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; "SELECT au_lname, au_fname FROM Authors WHERE au_id = @au_id", <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; connection);&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <br />&amp;nbsp; myCommand.SelectCommand.Parameters.Add("@au_id", SqlDbType.VarChar, 11);<br />&amp;nbsp; myCommand.SelectCommand.Parameters["@au_id"].Value = SSN.Text;<br />&amp;nbsp; myDataAdapter.Fill(userDataset);<br />}</pre>
+  <h2>Using Parameter Batching</h2>
+  <p>A common misconception is that if you concatenate several SQL statements to send a batch of statements to the server in a single round trip, you cannot use parameters. However, you can use this technique if you make sure that parameter names are not repeated. You can easily do this by making sure that you use unique parameter names during SQL text concatenation, as shown here.</p>
+  <div>
+    <pre>using System.Data;<br />using System.Data.SqlClient;<br />. . .<br />using (SqlConnection connection = new SqlConnection(connectionString))<br />{<br />&amp;nbsp; SqlDataAdapter dataAdapter = new SqlDataAdapter(<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; "SELECT CustomerID INTO #Temp1 FROM Customers " +<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; "WHERE CustomerID &gt; @custIDParm; SELECT CompanyName FROM Customers " +<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; "WHERE Country = @countryParm and CustomerID IN " +<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; "(SELECT CustomerID FROM #Temp1);",<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; connection);<br />&amp;nbsp; SqlParameter custIDParm = dataAdapter.SelectCommand.Parameters.Add(<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; "@custIDParm", SqlDbType.NChar, 5);<br />&amp;nbsp; custIDParm.Value = customerID.Text;</pre>
+    <pre>&amp;nbsp; SqlParameter countryParm = dataAdapter.SelectCommand.Parameters.Add(<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; "@countryParm", SqlDbType.NVarChar, 15);<br />&amp;nbsp; countryParm.Value = country.Text;</pre>
+    <pre>&amp;nbsp; connection.Open();<br />&amp;nbsp; DataSet dataSet = new DataSet();<br />&amp;nbsp; dataAdapter.Fill(dataSet);<br />}<br />. . .  </pre>
+  </div>
+  <h1>Additional Considerations</h1>
+  <p>Other things to consider when you develop countermeasures to prevent SQL injection include: </p>
+  <ul>
+    <li>Use escape routines to handle special input characters. </li>
+    <li>Use a low privileged database account.&amp;nbsp; </li>
+    <li>Avoid disclosing error information. </li>
+  </ul>
+  <h2>Use Escape Routines to Handle Special Input Characters</h2>
+  <p>In situations where parameterized SQL cannot be used and you are forced to use dynamic SQL instead, you need to safeguard against input characters that have special meaning to SQL Server (such as the single quote character). If not handled, special characters such as the single quote character in the input can be utilized to cause SQL injection. </p>
+  <blockquote>
+    <strong>Note</strong>&amp;nbsp;&amp;nbsp;&amp;nbsp;Special input characters pose a threat only with dynamic SQL and not when using parameterized SQL. </blockquote>
+  <p>Escape routines add an escape character to characters that have special meaning to SQL Server, thereby making them harmless. This is illustrated in the following code fragment:</p>
+  <div>
+    <pre>private string SafeSqlLiteral(string inputSQL){  return inputSQL.Replace("'", "''");</pre>
+  </div>
+  <p>}</p>
+  <h2>Use a Least-Privileged Database Account</h2>
+  <p>Your application should connect to the database by using a least-privileged account. If you use Windows authentication to connect, the Windows account should be least-privileged from an operating system perspective and should have limited privileges and limited ability to access Windows resources. Additionally, whether or not you use Windows authentication or SQL authentication, the corresponding SQL Server login should be restricted by permissions in the database.</p>
+  <p>Consider the example of an ASP.NET application running on Microsoft Windows Server 2003 that accesses a database on a different server in the same domain. By default, the ASP.NET application runs in an application pool that runs under the Network Service account. This account is a low privileged account.</p>
+  <h3>To access SQL Server with the Network Service account </h3>
+  <ol>
+    <li>Create a SQL Server login for the Web server's Network Service account. The Network Service account has network credentials that are presented at the database server as the identity <em>DOMAIN</em>\<em>WEBSERVERNAME</em>$. For example, if your domain is called XYZ and the Web server is called 123, you create a database login for XYZ\123$. </li>
+    <li>Grant the new login access to the required database by creating a database user and adding the user to a database role. </li>
+    <li>Establish permissions to let this database role call the required stored procedures or access the required tables in the database. Only grant access to stored procedures the application needs to use, and only grant sufficient access to tables based on the application's minimum requirements. <p>For example, if the ASP.NET application only performs database lookups and does not update any data, you only need to grant read access to the tables. This limits the damage that an attacker can cause if the attacker succeeds in a SQL injection attack. </p></li>
+  </ol>
+  <h2>Avoid Disclosing Error Information</h2>
+  <p>Use structured exception handling to catch errors and prevent them from propagating back to the client. Log detailed error information locally, but return limited error details to the client. </p>
+  <p>If errors occur while the user is connecting to the database, be sure that you provide only limited information about the nature of the error to the user. If you disclose information related to data access and database errors, you could provide a malicious user with useful information that he or she can use to compromise your database security. Attackers use the information in detailed error messages to help deconstruct a SQL query that they are trying to inject with malicious code. A detailed error message may reveal valuable information such as the connection string, SQL server name, or table and database naming conventions.</p>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance.</p>]]></Data>
+  </Content>
+</TeamMentor_Article>

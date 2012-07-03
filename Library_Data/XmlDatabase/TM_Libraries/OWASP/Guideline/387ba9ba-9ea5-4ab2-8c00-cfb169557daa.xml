@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="394746691" Content_Hash="1233623451">
+  <Metadata>
+    <Id>387ba9ba-9ea5-4ab2-8c00-cfb169557daa</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Use Type Safe SQL Parameters When Constructing SQL Queries</Title>
+    <Category>Data Access</Category>
+    <Phase>Implementation</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Use Type Safe SQL Parameters When Constructing SQL Queries</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>1</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Do</h1>
+  <p>Use type-safe parameters when constructing dynamic SQL queries or when passing parameters to stored procedures. </p>
+  <h1>Why</h1>
+  <p>If you use the Parameters collection, SQL treats the input is as a literal value rather then as executable code. The Parameters collection can be used to enforce type and length constraints on input data. Values outside of the range trigger an exception. If type safe SQL parameters are not used, attackers might be able to execute injection attacks that are embedded in the unfiltered input.</p>
+  <h1>When</h1>
+  <p>This guideline is applicable whenever there is an SQL statement that is built dynamically. It is also appropriate whenever stored procedures are utilized.</p>
+  <h1>How</h1>
+  <p>One way of making the application less susceptible to SQL injection attacks is by using stored procedures. Stored procedures are subroutines stored in the database that are available to applications for accessing the data. </p>
+  <p>Just using stored procedures isn't a complete remedy for SQL injection. The important thing to do is use parameters with stored procedures, else, your stored procedures can be susceptible to SQL injection if they use unfiltered input. Stored procedures provide several security advantages:</p>
+  <ul>
+    <li>By parameterizing input parameters and type enforcing them, user input is effectively filtered </li>
+    <li>Stored procedures are allowed to execute under different security privileges from the database user by most databases, thereby restricting the ability of the application to do anything beyond the actions specified in the stored procedures. For instance, an application would have execute access to a stored procedure, but no access to the base tables.</li>
+  </ul>
+  <p>To use type safe SQL parameters, follow these steps:</p>
+  <ol>
+    <li>
+      <p>
+        <strong>If possible, use stored procedures.</strong> Stored procedures are pre-compiled statements that are stored on the database server. Using stored procedures improves your application's performance and security.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Determine the parameters in the SQL query or stored procedure being constructed.</strong> All parameters that result from user input or another untrusted source should be escaped, by specifying variable names in the query:</p>
+      <pre>SELECT * from books WHERE ISBN = '@isbn'</pre>
+    </li>
+    <li>
+      <p>
+        <strong>Declare the explicit data types for each parameter in the SQL statement.</strong> When executing the SQL statement, specify the data type and length for each parameter in the query:</p>
+      <pre>myCommand.SelectCommand.Parameters.Add("@isbn", SqlDbType.VarChar, 10);</pre>
+    </li>
+    <li>
+      <p>
+        <strong>Specify the value for each parameter.</strong> The untrusted input is then specified, so that it can be properly handled when the SQL statement executes:</p>
+      <pre>myCommand.SelectCommand.Parameters["@isbn"].Value = '0494483923';</pre>
+    </li>
+  </ol>
+  <h1>Problem Example</h1>
+  <p>Consider an ASP.NET application that handles employee payroll functionality for a small company. One of the pages requires retrieving an employee record from a table based on a username and password supplied via a login dialog. The developer of the application created an SQL SELECT query to accomplish said task:</p>
+  <pre>using (SqlConnection myConnection = new SqlConnection(connectionString))<br /><pre>SqlConnection myConnection = new SqlConnection("Data Source=localhost\\sqlexpress;<br />            Initial Catalog=EmployeePayroll;<br />            Integrated Security=True");<br />string SQLstr = "SELECT * from users WHERE username = '" + un.Text + <br />              "' AND password = '" + <br />              pass.Text + "'";</pre><pre>SqlCommand myCommand = new SqlCommand(SQLstr, myConnection);</pre><pre>SqlDataAdapter myDataAdapter = new SqlDataAdapter(myCommand);</pre><pre>myCommand.Connection.Open();</pre><pre>SqlDataReader myReader = myCommand.ExecuteReader();<br /></pre></pre>
+  <p>In the preceding example, the SELECT statement will work as expected, assuming that the input is perfectly constrained. However, what happens if a user enters unexpected input such as '1234' for a password, and this for a username:</p>
+  <pre>mjones' AND 1=1; -- </pre>
+  <p>This will result in the SQL statement being executed at the database level:</p>
+  <pre>SELECT * from users WHERE username = 'mjones' AND 1=1; --'  AND password = '1234';</pre>
+  <p>This will allow the person entering data into the dialog box to select the account details of mjones without the correct password.</p>
+  <h1>Solution Example</h1>
+  <p>Consider an ASP.NET application that handles employee payroll functionality for a small company. One of the pages requires retrieving an employee record from a table based on a username and password supplied via a login dialog. The developer of the application uses the following SQL query to take advantage of type safe parameters with the SqlParameterCollection when constructing the query dynamically:</p>
+  <pre>
+    <pre>using System.Data;<br />using System.Data.SqlClient;    </pre>
+    <pre>using (SqlConnection connection = new SqlConnection(connectionString))<br />{<br />&amp;nbsp; DataSet userDataset = new DataSet();<br />&amp;nbsp; SqlDataAdapter myDataAdapter = new SqlDataAdapter(<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; "SELECT * from users WHERE username = '@uname' AND password = '@pwd'", connection);&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <br />&amp;nbsp; myCommand.SelectCommand.Parameters.Add("@uname", SqlDbType.VarChar, 24);<br />&amp;nbsp; myCommand.SelectCommand.Parameters.Add("@pwd", SqlDbType.VarChar, 16);  
+  myCommand.SelectCommand.Parameters["@uname"].Value = un.Text;  
+  myCommand.SelectCommand.Parameters["@pwd"].Value = pass.Text;
+&amp;nbsp; myDataAdapter.Fill(userDataset);
+}  </pre>
+  </pre>
+  <p>In the preceding code example, the input values are constrained for length and escaped. If the data does not conform to the type or length defined by the parameter, the SqlParameter class throws an exception.</p>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>To learn more about SQL injection, see: <a href="http://en.wikipedia.org/wiki/SQL_injection">SQL Injection</a> in Wikipedia. </li>
+    <li>To learn more about countering SQL injection in ASP.NET, visit: <a href="http://msdn2.microsoft.com/en-us/library/ms998271.aspx">How To: Protect From SQL Injection in ASP.NET</a>. </li>
+    <li>To learn more about countering injection-based attacks in ASP.NET, see: <a href="http://msdn2.microsoft.com/en-us/library/bb355989.aspx">How To: Protect From Injection Attacks in ASP.NET</a>.</li>
+  </ul>
+  <ul>
+  </ul>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance. </p>]]></Data>
+  </Content>
+</TeamMentor_Article>

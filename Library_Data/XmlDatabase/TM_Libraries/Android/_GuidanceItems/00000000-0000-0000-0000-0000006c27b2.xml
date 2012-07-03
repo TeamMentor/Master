@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-0000006c27b2</Id>
+    <Library_Id>f215ceee-9a08-41d9-b2c1-bbcc058a8f32</Library_Id>
+    <Title>Location Data Is Not Logged</Title>
+    <Category>Privacy</Category>
+    <Phase>Implementation</Phase>
+    <Technology>Android</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>Location Data Is Not Logged</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="WikiText">
+    <Data><![CDATA[==What to Check For==
+
+Verify that location data is not logged.
+
+==Why==
+
+Logging location data is likely to raise privacy concerns among users.
+
+==How to Check==
+
+To verify that location data is not logged:
+
+# **Identify whether the application uses location services.**
+# **Determine how location services are used.** Trace location data from source to sink and record each operation performed on it.
+# **Verify that location data is not logged.** Examine the trace of location data from source to sink to make sure that location data is not being logged either on the device or on any remote server.
+
+==How to Fix==
+
+If your application uses location data, do not store it in files and do not send it to remote servers.
+]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-582169001" Content_Hash="-1446662243">
+  <Metadata>
+    <Id>c368e75b-2f2b-4e2f-8014-693826aadb64</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Support Account Management</Title>
+    <Category>Authentication</Category>
+    <Phase>Design</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Support Account Management</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>J.D. Meier, Alex Mackman, Michael Dunner, Srinath Vasireddy, Ray Escamilla and Anandha Murukan</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Do</h1>
+  <p>Ensure that the code enforce password complexity rules and restricts the number of failed logon attempts. </p>
+  <h1>Why</h1>
+  <p>Restricting the number of failed login attempts helps to counter the threat of dictionary attacks. </p>
+  <h1>When</h1>
+  <p>The use of strong passwords, restricted login attempts, and other best practice account management policies can be enforced by Windows security policy if your application uses Windows authentication. Otherwise, the application layer is responsible for this. </p>
+  <h1>How</h1>
+  <h2>Use Account Lockout Policies for End-User Accounts</h2>
+  <p>Disable end-user accounts or write events to a log after a set number of failed logon attempts. If you are using Windows authentication, such as NTLM or the Kerberos protocol, these policies can be configured and applied automatically by the operating system. With Forms authentication, these policies are the responsibility of the application and must be incorporated into the application design.</p>
+  <p>Be careful that account lockout policies cannot be abused in denial of service attacks. For example, well known default service accounts such as IUSR_MACHINENAME should be replaced by custom account names to prevent an attacker who obtains the Internet Information Services (IIS) Web server name from locking out this critical account.</p>
+  <h2>Be Able to Disable Accounts</h2>
+  <p>If the system is compromised, being able to deliberately invalidate credentials or disable accounts can prevent additional attacks.</p>
+  <p>The use of strong passwords, restricted login attempts, and other best practice account management policies can be enforced by Windows security policy if your application uses Windows authentication. Otherwise, the application layer is responsible for this. Review the following aspects of the account management of your application: </p>
+  <ul>
+    <li>
+      <strong>Does your application enforce strong passwords?</strong>
+      <p>For example, do your ASP.NET Web pages use regular expressions to verify password complexity rules?&amp;nbsp;</p>
+    </li>
+    <li>
+      <strong>Do you restrict the number of failed login attempts?</strong>
+      <p>Doing so can help counter the threat of dictionary attacks. </p>
+    </li>
+    <li>
+      <strong>Do you reveal too much information in the event of failure?</strong>
+      <p>Make sure you do not display messages such as "Incorrect password" because this tells malicious users that the user name is correct. This allows them to focus their efforts on cracking passwords. </p>
+    </li>
+    <li>
+      <strong>Do you enforce a periodic change of passwords?</strong>
+      <p>This is recommended because otherwise there is a high probability that a user will not change his or her password, which makes it more vulnerable. </p>
+    </li>
+    <li>
+      <strong>Can you quickly disable accounts in the event of compromise?</strong>
+      <p>If an account is compromised, can you easily disable the account to prevent the attacker from continuing to use the account? </p>
+    </li>
+    <li>
+      <strong>Does your application record login attempts?</strong>
+      <p>Recording failed login attempts is an effective way to detect an attacker who is attempting to break in. </p>
+    </li>
+  </ul>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>Design Guidelines for Secure Web Applications <a href="http://msdn2.microsoft.com/en-us/library/aa302420.aspx">http://msdn2.microsoft.com/en-us/library/aa302420.aspx</a></li>
+    <li>Architecture and Design Review for Security <a href="http://msdn2.microsoft.com/en-us/library/aa302420.aspx">http://msdn2.microsoft.com/en-us/library/aa302420.aspx</a></li>
+    <li>Securing Your ASP.NET Application and Web Services <a href="http://msdn2.microsoft.com/en-us/library/aa302435.aspx">http://msdn2.microsoft.com/en-us/library/aa302435.aspx</a></li>
+  </ul>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance.</p>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-000000066105</Id>
+    <Library_Id>b6f408c5-6e6e-4bc0-90a5-0bb10becc2ce</Library_Id>
+    <Title>File Formats Are Validated</Title>
+    <Category>Data Validation</Category>
+    <Phase>Implementation</Phase>
+    <Technology>iOS</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>File Formats Are Validated</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="WikiText">
+    <Data><![CDATA[==Applies To==
+
+* iOS applications that open saved files or documents.
+
+==What to Check For==
+
+Verify that file formats are validated.
+
+==Why==
+
+Many vulnerabilities are exploited via malformed documents supplied to the application. One particular vector of attack that is frequently used is embedding malformed documents in web pages - some applications are integrated into the web browser and will open malicious documents automatically in that scenario. Making sure that file format is valid before loading files into the application makes it harder to embed exploit code into documents.
+
+==How to Check==
+
+Identify the functions that open data files. Verify that these functions include provisions for validating the input data file format before passing it on to other functions.
+
+==How to Fix==
+
+Perform the following actions to validate file format before loading files into the application:
+
+# **Define the file format.** Specify valid values for all possible fields in all document types used by your applications. This information should be a part of project documentation and the developers may already have it.
+# **Review code.** Search for code that loads saved files into the application. Examine the extents of the validation already being performed by the application. If some validation is already being performed, some code may be recycled for a more thorough validation routine.
+# **Implement validation.** Write validation functions for all fields in all document types supported by the application.
+# **Centralize validation.** Move the validation functions for all document fields to the centralized input and data validation class or library. Write a master file format validation function that calls all individual data field validation functions.
+# **Use validation.** Go back to code that loads data files into the application. Remove any old validation code. Add code that calls the master file format validation function on all files being loaded before loading them into the application.]]></Data>
+  </Content>
+</TeamMentor_Article>

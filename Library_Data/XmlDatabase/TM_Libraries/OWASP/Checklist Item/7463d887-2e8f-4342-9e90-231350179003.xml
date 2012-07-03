@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="1094039853" Content_Hash="1050728080">
+  <Metadata>
+    <Id>7463d887-2e8f-4342-9e90-231350179003</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Account Administration Functionality Is Secured</Title>
+    <Category>Authorization</Category>
+    <Phase>Design</Phase>
+    <Technology>Java</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>Account Administration Functionality Is Secured</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Check For</h1>
+  <p>Ensure that the account administration interface is separate from the main application interface.</p>
+  <h1>Why</h1>
+  <p>Account administration requires higher privileges than the main application interface. Separating the two interfaces decreases the risk of a normal user being able to escalate privileges to that of an administrator.</p>
+  <h1>How to Check</h1>
+  <p>Use the following steps to verify that the&amp;nbsp;account administration interface is separate from the main application interface: </p>
+  <ol>
+    <li>
+      <p>
+        <strong>Verify that your application has a separate administrative interface. </strong>Review your application's design and verify that your application's design specifies separation of administrative and main application interfaces. Verify that your application passes the following checks:</p>
+      <ul>
+        <li>
+          <strong>Administrative Functionality</strong>: Verify that all administrative functionality is clearly identified and separated from the rest of your application's functionality. Exceptions are allowed only when your application allows users to modify their own accounts. </li>
+        <li>
+          <strong>Code Organization</strong>: Ensure all administrative functionality is structured as a single module and not scattered throughout your application. </li>
+        <li>
+          <strong>Code Inheritance</strong>: Verify that all Java classes that handle your application's administrative tasks are declared as final. Example: <p /><blockquote><pre>public final class myappAcctAdmin<br />{<br /> ...<br />}</pre></blockquote></li>
+        <li>
+          <strong>Hosting Container</strong>: Verify that all administrative functionality operates within a Java container or a JVM that is separate from the rest of your application. Depending on the application server that your application uses, it might be necessary to run multiple instances of the application server. Additionally, check if your administrative interface operates on a different port than the rest of your application (e.g. port 3128).</li>
+      </ul>
+    </li>
+    <li>
+      <p>
+        <strong>Ensure that the administrative interface is secure. </strong>Use the following steps to examine the security of your application's administrative interface:</p>
+      <ul>
+        <li>
+          <strong>Security Policy</strong>: Ensure that your application has a security policy regarding its administrative interface. </li>
+        <li>
+          <strong>Separate Authentication</strong>: Verify that privileged users are forced to re-authenticate before accessing the administrative interface. Check if your application's administrative interface uses a separate authentication module&amp;nbsp;from the rest of your application. </li>
+        <li>
+          <strong>Access Controls</strong>: Verify that only valid, privileged users can access your application's administrative interface. </li>
+        <li>
+          <strong>Connection</strong>: Depending on your application's requirements, it may be necessary to check if your application's administrative interface is accessed over SSL. Ensure your application's proper use of SSL.</li>
+      </ul>
+    </li>
+  </ol>
+  <h1>How to Fix</h1>
+  <p>Use the following steps when designing an administrative interface:</p>
+  <ol>
+    <li>
+      <p>
+        <strong>Only privileged users can administer all accounts. </strong>Design your application such that the administrative module is separate from the main application interface. Since the separation requires using separate authentication mechanisms for the application and its administration, there is a reduced risk&amp;nbsp;of escalation-of-privilege attacks. </p>
+    </li>
+    <li>
+      <p>
+        <strong>Users may be allowed to administer their own accounts. </strong>It may be necessary to allow users to administer their own accounts. This involves the ability to change passwords, account details, etc. Such administration can be done through the main application interface. Because the user is modifying sensitive data, extra security precautions must be enforced:</p>
+      <ul>
+        <li>
+          <b>Session management implemented in server side code</b>: The user should always be tracked at the server-side. Store the userID inside a session. The only data the client needs to know is the session identifier. This reduces the risk of an attacker modifying another user's account information. </li>
+        <li>
+          <strong>Force re-authentication</strong>: Enforce re-authentication when modifying the user's password. This helps verify that the user is aware of the password change and is not a victim of a session hijacking.</li>
+        <li>
+          <strong>Modify accounts in sections</strong>: Do not modify all account information at once. For example, group the account information into credentials, personal data, contact information and additional information. Modifying the account information in groups reduces the risk of information leakage when the user is updating his/her account. </li>
+        <li>
+          <strong>Use SSL when modifying&amp;nbsp;accounts</strong>: If SSL is implemented correctly, it can verify the authenticity of the application. It can also encrypt traffic and hence provide confidentiality.</li>
+      </ul>
+    </li>
+  </ol>]]></Data>
+  </Content>
+</TeamMentor_Article>

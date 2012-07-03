@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="1783455875" Content_Hash="-600397558">
+  <Metadata>
+    <Id>cd912611-c89d-44cd-ab4c-831af27b2738</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Protected Resources Are Mapped to HttpForbiddenHandler</Title>
+    <Category>Server Hardening</Category>
+    <Phase>Deployment</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>Protected Resources Are Mapped to HttpForbiddenHandler</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>J.D. Meier, Alex Mackman, Michael Dunner, Srinath Vasireddy, Ray Escamilla and Anandha Murukan</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>Applies to</h1>
+  <ul>
+    <li>
+      <div>Web Application</div>
+    </li>
+  </ul>
+  <h1>What to Check For</h1>
+  <p>Check to ensure that Protected resources are mapped to HttpForbiddenHandler.</p>
+  <br />
+  <h1>How to Fix</h1>
+  <p>HTTP handlers are located in the Machine.config file beneath the <strong>&lt;httpHandlers&gt;
+</strong>element. HTTP handlers are responsible for processing Web requests for specific file&amp;nbsp;extensions. Remoting should not be enabled on front-end Web servers; enable remoting only on middle-tier application servers that are isolated from the Internet.</p>
+  <blockquote>
+    <strong>Note</strong>&amp;nbsp;&amp;nbsp;&amp;nbsp;If you are running .NET 2.0, the &lt; httpHandlers&gt; setting is located in the machine-level Web.config file, located in the same directory as the Machine.config file.</blockquote>
+  <p>The following file extensions are mapped in the Machine.config file to HTTP<strong></strong>handlers: </p>
+  <ul>
+    <li>.aspx is used for ASP.NET pages </li>
+    <li>.rem and .soap are used for Remoting. </li>
+    <li>.asmx is used for Web Services. </li>
+    <li>.asax, .ascx, .config, .cs, .csproj, .vb, .vbproj, .webinfo, .asp, .licx, .resx,&amp;nbsp;and&amp;nbsp;.resources are protected resources and are mapped to
+<strong>System.Web.HttpForbiddenHandler</strong>. </li>
+  </ul>
+  <p>For .NET&amp;nbsp;Framework resources, if you do not use a file extension, then map the extension to
+<strong>System.Web.HttpForbiddenHandler</strong> in the Machine.config file, as shown in the following example:</p>
+  <div>
+    <pre>&lt;add verb="*" path="*.vbproj" type="System.Web.HttpForbiddenHandler" /&gt;</pre>
+  </div>
+  <p>In this case, the .vbproj file extension is mapped to <strong>System.Web.HttpForbiddenHandler</strong>. If a client requests a path that ends with .vbproj, then ASP.NET returns a message that states "This type of page is not served."
+</p>
+  <ul>
+    <li>The following guidelines apply to handling .NET&amp;nbsp;Framework file extensions: </li>
+    <li>
+      <strong>Map extensions you do not use to HttpForbiddenHandler</strong>. If you do not serve ASP.NET pages, then map .aspx to
+<strong>HttpForbiddenHandler</strong>. If you do not use Web Services, then map .asmx to
+<strong>HttpForbiddenHandler</strong>. </li>
+    <li>
+      <strong>Disable Remoting on Internet-facing Web servers</strong>. Map remoting extensions (.soap and .rem) on Internet-facing Web servers to
+<strong>HttpForbiddenHandler</strong>. </li>
+  </ul>
+  <h3>Disable .NET&amp;nbsp;Remoting</h3>
+  <p>To disable .NET&amp;nbsp;Remoting disable requests for .rem and .soap extensions, use the following elements beneath<strong> &lt;httpHandlers&gt;</strong>:</p>
+  <div>
+    <pre>&lt;add verb="*" path="*.rem" type="System.Web.HttpForbiddenHandler"/&gt;<br />&lt;add verb="*" path="*.soap" type="System.Web.HttpForbiddenHandler"/&gt;</pre>
+  </div>
+  <blockquote>
+    <strong>Note</strong>&amp;nbsp;&amp;nbsp;&amp;nbsp;This does not prevent a Web application on the Web server from connecting to a downstream object by using the Remoting infrastructure. However, it prevents clients from connecting to objects on the Web server.</blockquote>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance.</p>]]></Data>
+  </Content>
+</TeamMentor_Article>

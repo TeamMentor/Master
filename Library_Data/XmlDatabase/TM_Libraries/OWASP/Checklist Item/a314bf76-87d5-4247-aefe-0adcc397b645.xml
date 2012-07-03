@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="2139599272" Content_Hash="36488923">
+  <Metadata>
+    <Id>a314bf76-87d5-4247-aefe-0adcc397b645</Id>
+    <Library_Id>00000000-0000-0000-0000-000000000000</Library_Id>
+    <Title>Appropriate ACLs Are Configured on Web Site Files</Title>
+    <Category>Authorization</Category>
+    <Phase>Implementation</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink />
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Check For</h1><p>Check to ensure that your application configures right access control lists (ACLs) for the right identities on its Web site files.</p><h1>How to Fix</h1><p>You need to configure the right access control lists (ACLs) for the right identities on your Web site files so that IIS and also ASP.NET file authorization control access to these files appropriately. You need to grant access to the following identities: </p><ul><li><strong>Your Web application identity.</strong> If you are using a custom service account to run your ASP.NET application, you can grant the appropriate permissions to the IIS metabase and to the file system by running Aspnet_regiis.exe with the -<strong>ga</strong> switch. </li><li><strong>Your application's users.</strong> ASP.NET file authorization performs access checks for file types mapped by IIS to the ASP.NET ISAPI extension (Aspnet_isapi.dll). If you are using Windows authentication, the authenticated user's Windows access token (which may be IUSR_MACHINE for anonymous users) is checked against the ACL attached to the requested ASP.NET file. If you are using forms authentication, access is checked against IUSR_MACHINE. </li></ul><p>File authorization works automatically when using Windows authentication, and there is no need to impersonate the original user. The <strong>FileAuthorizationModule</strong> only performs access checks against the requested file. For example, if you request Default.aspx and it contains an embedded user control (Usercontrol.ascx), which in turn includes an image tag (pointing to Image.gif), the <strong>FileAuthorizationModule</strong> performs an access check for Default.aspx and Usercontrol.ascx, because these file types are mapped by IIS to the ASP.NET ISAPI extension. The <strong>FileAuthorizationModule</strong> does not perform a check for Image.gif, because this is a static file handled internally by IIS. However, because access checks for static files are performed by IIS, the authenticated user must still be granted read permission to the file with an appropriately configured ACL.</p><hr><p>Adapted from Microsoft patterns &amp; practices guidance. </p>]]></Data>
+  </Content>
+</TeamMentor_Article>

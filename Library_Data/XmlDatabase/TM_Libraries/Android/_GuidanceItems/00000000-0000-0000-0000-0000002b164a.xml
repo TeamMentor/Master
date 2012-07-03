@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-0000002b164a</Id>
+    <Library_Id>f215ceee-9a08-41d9-b2c1-bbcc058a8f32</Library_Id>
+    <Title>SSL Is Used to Protect Communications</Title>
+    <Category>Communication Security</Category>
+    <Phase>Implementation</Phase>
+    <Technology>Android</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>SSL Is Used to Protect Communications</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="WikiText">
+    <Data><![CDATA[==What to Check For==
+
+Verify that SSL is used to protect communications.
+
+==Why==
+
+==How to Check==
+
+==How to Fix==
+
+==Related Items==
+]]></Data>
+  </Content>
+</TeamMentor_Article>

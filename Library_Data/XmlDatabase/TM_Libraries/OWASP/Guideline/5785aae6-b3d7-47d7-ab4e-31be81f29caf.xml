@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-1741103882" Content_Hash="-1856361385">
+  <Metadata>
+    <Id>5785aae6-b3d7-47d7-ab4e-31be81f29caf</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Store Passwords Securely</Title>
+    <Category>Authentication</Category>
+    <Phase>Implementation</Phase>
+    <Technology>Java</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Store Passwords Securely</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Do</h1>
+  <p>Store passwords in a secure fashion. Do not store in plain text or use an easy-to-crack encryption or obfuscation scheme.</p>
+  <h1>Why</h1>
+  <p>Storing passwords in plaintext or using weak encryption can aid an attacker when stealing them. Compromised passwords may aid an attacker into accessing, modifying and deleting sensitive data.</p>
+  <h1>How</h1>
+  <p>Use the following steps to store passwords securely:</p>
+  <ol>
+    <li>
+      <p>
+        <strong>Choose user-identifiable data. </strong>User-identifiable data will be used to generate a secure key. This data should be tied to the user's account, and it should be different for every user. For example, a valid email address would fit into this category. If your application uses the email address approach, confirm that the address is real and verify that no&amp;nbsp;two users are sharing an email address.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Generate the&amp;nbsp;key. </strong>Use the user-identifiable data and some random salt to generate the key. Because encryption key sizes need to be 256 bit, it is recommended to generate the key by hashing the user-identifiable data with some random salt. This technique makes it impossible for an attacker to obtain the encryption key&amp;nbsp;unless he also&amp;nbsp;obtains your application's random salt.<br /><br />Make sure that you securely clean-up all instances of the generated encryption key as it can help an attacker compromise the protected password if the key is exposed.&amp;nbsp;Example of generating an encryption key:</p>
+      <blockquote>
+        <pre>byte[] salt = MyApp.generateSalt();<br />String userMail = myapp@example.com;<br />MessageDigest md = MessageDigest.getInstance("SHA-512");<br />md.update(userMail.getBytes("UTF-8"));<br />md.update(salt);<br />byte[] rawKey = md.digest();<br />md.reset();</pre>
+      </blockquote>
+      <p>If your application uses a randomly generated salt, make sure that your application encrypts the random salt and stores it into a configuration file. Always use <strong>SecureRandom</strong> and not <strong>Random</strong> to generate the salt. Example of using <strong>SecureRandom</strong> to generate a random salt:</p>
+      <blockquote>
+        <pre>public static byte[] generateSalt() throws NoSuchAlgorithmException<br />{<br />      // Note that salt is declared as private static byte[] and is<br />      // initialized to null.<br />       if (salt == null)<br />      {<br />            SecureRandom srand = SecureRandom.getInstance("SHA1PRNG");<br />                          salt = new byte[4];<br />            srand.nextBytes(salt);<br />      }<br />       return salt;<br />}</pre>
+      </blockquote>
+    </li>
+    <li>
+      <p>
+        <strong>Choose an&amp;nbsp;appropriate encryption function. </strong>Choose a strong symmetric encryption algorithm that will not be easy for an attacker to break; such as AES.</p>
+      <blockquote>
+        <pre>byte[] salt = MyApp.generateSalt();<br />String userMail = myapp@example.com;<br />MessageDigest md = MessageDigest.getInstance("SHA-512");<br />md.update(userMail.getBytes("UTF-8"));<br />md.update(salt);<br />byte[] rawKey = md.digest();<br />md.reset();<br />SecretKeySpec skeySpec = new SecretKeySpec(rawKey, "AES");<br />// Set up cipherCipher cipher = Cipher.getInstance("AES");<br />cipher.init(Cipher.ENCRYPT_MODE, skeySpec);<br />// Note that pass is declared as byte[] and contains the user's password<br />byte[] encrypted = cipher.doFinal(pass);</pre>
+      </blockquote>
+      <p>Because of import control restrictions, Java initially ships with a limited set of cryptography. To fully utilize Java's crypto strength, it is recommended to install the "Unlimited Strength" Jurisdiction Policy Files.</p>
+    </li>
+  </ol>
+  <p>
+    <strong>Note:</strong> Never store the user credentials or their encrypted values on the client side (e.g. in cookies, hidden fields, etc.). Use sessions when there is a need to track the user or to&amp;nbsp;store their encrypted credentials. For more information, consult the Session Management section.</p>
+  <h1>Problem Example</h1>
+  <p>The following code authenticates a user based on a username and password. The supplied credentials are compared to the credentials stored in the backend database. Unfortunately, the credentials in the database are in plaintext and could be stolen if the database is compromised.</p>
+  <blockquote>
+    <pre>public boolean validateUser(String user, char[] pass)<br />{<br />      // Query the credential store with the provided credentials<br />      ...<br />}</pre>
+  </blockquote>
+  <h1>Solution Example</h1>
+  <p>The following code validates the user based on a&amp;nbsp;given username and password. It uses the user's valid email address and a random salt to encrypt the user's password. Then it compares the username and the produced digest against the data stored in the backend database. Therefore, the password is stored encrypted in the database.</p>
+  <blockquote>
+    <pre>public boolean validateUser(String user, char[] pass)<br />{<br />       ...<br />       // Encrypt the credentials<br />      try<br />      {<br />            userEmail = MyApp.getEmailForUser(user);<br />            passDigest = encryptCredentials(userEmail, pass, salt);<br />      }<br />      catch (GeneralSecurityException gse)<br />      {<br />            // Add the appropriate logging and exception handling mechanisms<br /><br />            return false;<br />      }<br />      catch (IOException ioe)<br />      {<br />            // Add the appropriate logging and exception handling mechanisms<br />            return false;<br />      }<br />       // Query the credential store and execute the rest of the authentication steps<br />      ...<br />}<br />public static byte[] encryptCredentials(String email, char[] pass, byte[] salt)<br />       throws GeneralSecurityException, IOException<br />{<br />      MessageDigest md;<br />      byte[] tempPass;<br />      byte[] rawKey;<br />      // Generate encryption key<br />      md = MessageDigest.getInstance("SHA-512");<br />      md.update(email.getBytes("UTF-8"));<br />      md.update(salt);<br />      rawKey = md.digest();<br />      md.reset();<br />      SecretKeySpec skeySpec = new SecretKeySpec(rawKey, "AES");<br />      // Set up cipher<br />      Cipher cipher = Cipher.getInstance("AES");<br />      cipher.init(Cipher.ENCRYPT_MODE, skeySpec);<br />      // Convert char[] to byte[]<br />      tempPass = new byte[pass.length];<br />      for (int i = 0; i &lt; pass.length; i++)<br />      {<br />            tempPass[i] = (byte)pass[i];<br />      }<br />      // Encrypt password<br />      byte[] encrypted = cipher.doFinal(tempPass);<br />            //Clean tempPass<br />      for (int i = 0; i &lt; tempPass.length; i++)<br />      {<br />            tempPass[i] = 0;<br />      }<br />      return encrypted;<br />}</pre>
+  </blockquote>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>To learn more about the JCE API, see: <a href="http://download.oracle.com/javase/1.4.2/docs/guide/security/jce/JCERefGuide.html">Java Cryptography Extension for the Java 2 SDK, v 1.4</a>. </li>
+    <li>For more information about securely generating random numbers, see: Documentation for <a href="http://download.oracle.com/javase/1.4.2/docs/api/java/security/SecureRandom.html">Class SecureRandom</a> in Java SDK.</li>
+  </ul>
+  <ul>
+  </ul>]]></Data>
+  </Content>
+</TeamMentor_Article>

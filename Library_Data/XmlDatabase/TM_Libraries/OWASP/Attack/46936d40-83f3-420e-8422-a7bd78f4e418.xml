@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-225092352" Content_Hash="1676542906">
+  <Metadata>
+    <Id>46936d40-83f3-420e-8422-a7bd78f4e418</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Sniff Memory for Secrets Attack</Title>
+    <Category>Encryption</Category>
+    <Phase>Any</Phase>
+    <Technology> Any</Technology>
+    <Type>Attack</Type>
+    <DirectLink>Sniff Memory for Secrets Attack</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>Applies To</h1>
+  <p>
+  </p>
+  <ul>
+    <li>Local applications that deal with secret data such as passwords, encryption keys, etc.</li>
+  </ul>
+  <p />
+  <h1>Description</h1>
+  <p>Attackers often scan the memory space of a locally running application if they need to find certain secrets that the application contains. This is because developers are usually lax when dealing with sensitive data securely when the data is inside the application's own memory space.</p>
+  <p>It is common knowledge that in most modern operating systems, an application's memory space is protected and is not accessible by other applications on the same system. However, reading and modifying another application's memory is also essential for debuggers to work. For this purpose, operating systems contain workarounds to accomodate reading and writing to another application's memory. This allows any application on the system to debug another process and read its memory content. Although operating systems do require the debugger process to have special permissions in order to debug another application, this still remains a problem in situations where users have administrative privileges on their local machines.</p>
+  <h1>Impact</h1>
+  <ul>
+    <li>Disclosure of sensitive information to an attacker: This could be a an encryption key, another user's personal information or any other data that an attacker should not have access to.</li>
+  </ul>
+  <h1>Vulnerabilities</h1>
+  <ul>
+    <li>Storing clear-text sensitive information in memory. </li>
+    <li>Using obfuscation techniques instead of stronger protection mechanisms for sensitive information in memory.</li>
+  </ul>
+  <h1>Countermeasures</h1>
+  <ul>
+    <li>
+      <strong>Encrypt secret data</strong>: When sensitive data is present in application memory, it should be encrypted and the clear-text data should be overwritten as soon as possible. Freeing a variable does not clear the data it holds from memory; therefore it is important to remember to explicitly overwrite the memory segment where sensitive information was stored. </li>
+    <li>
+      <strong>Store sensitive data in mutable objects</strong>: Mutable objects allow the data in them to be overwritten. This is especially useful in managed languages as objects are required to be deallocated through the garbage collector. Therefore there is no certainty when the sensitive data will be deallocated from the current process space. </li>
+    <li>
+      <strong>Clear all sensitive data instances</strong>: Make sure that all memory locations, where sensitive data has been stored, are cleared/overwritten after their use. Losing a pointer to a sensitive data instance can result in not cleaning that particular memory and allowing the sensitive data to leak.</li>
+  </ul>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>For more information on secrets in memory, see: <a href="http://msdn2.microsoft.com/en-us/library/aa480477.aspx#pagguidelines0003_sens2">Minimize the exposure of secrets in memory</a></li>
+  </ul>]]></Data>
+  </Content>
+</TeamMentor_Article>

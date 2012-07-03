@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-000000930b93</Id>
+    <Library_Id>b6f408c5-6e6e-4bc0-90a5-0bb10becc2ce</Library_Id>
+    <Title>Do Not Log Location Data</Title>
+    <Category>Privacy</Category>
+    <Phase>Design</Phase>
+    <Technology>iOS</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Do Not Log Location Data</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="WikiText">
+    <Data><![CDATA[==Applies To==
+
+* iOS applications that use location data.
+
+==What to Do==
+
+Do not log location data.
+
+==Why==
+
+Logging location data is likely to raise privacy concerns among users.
+
+==How==
+
+If your application uses location data, do not store it in files and do not send it to remote servers.]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-1052065608" Content_Hash="-209746883">
+  <Metadata>
+    <Id>53748e6e-6cf8-47cd-82bb-1681bf43bc44</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>SSL Is Used When Transmitting Credentials</Title>
+    <Category>Authentication</Category>
+    <Phase>Implementation</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>SSL Is Used When Transmitting Credentials</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Check For</h1>
+  <p>Ensure that credentials are never sent via unencrypted connections. SSL should be used when transmitting credentials.</p>
+  <h1>Why</h1>
+  <p>Using SSL prevents the credentials from being sniffed or tampered with as they are transmitted over the network. If SSL is not used, user credentials may be compromised by attacks such as a Network Credential Sniffing Attack or a Phishing Attack. Additionally, use the Protect Session Cookies guideline to minimize the risk of exposing your application's session cookies to an attacker.</p>
+  <h1>How to Check</h1>
+  <ol>
+    <li>
+      <p>
+        <strong>Verify that a dedicated SSL enabled server is used for the authentication component of your application.</strong> Check that the server uses valid SSLv3 certificates that have been signed by a trusted certification authority. Ensure that your application's authentication component runs on a dedicated subdomain and a server that accepts only HTTPS traffic. Disallowing unencrypted HTTP connections will prevent accidental or malicious unsecured connections. Disallowing lower SSL versions, such as SSLv1 and SSLv2 will ensure that weaker encryption methods can not be exploited by an attacker.</p>
+      <p>The following URL should connect and prompt for login credentials: </p>
+      <pre>https://login.example.com/myapp/login.aspx</pre>
+      <p>An HTTP URL to the same server and component should either be disallowed or redirect to its HTTPS counterpart:</p>
+      <pre>http://login.example.com/myapp/login.aspx</pre>
+    </li>
+    <li>
+      <p>
+        <strong>Identify forms that send credentials.</strong> Forms are defined by a &lt;form&gt; tag in the HTML document, such as the one below: </p>
+      <pre>&lt;form method="POST" action="https://login.example.com/myapp/login.aspx"&gt;</pre>
+      <p>Forms that include credentials usually, but won't always, include an input field with a TYPE attribute set to "password": </p>
+      <pre>&lt;input <strong>type</strong>="<strong>password</strong>" name="pass" size=25&gt;</pre>
+    </li>
+    <li>
+      <p>
+        <strong>Ensure that form data is sent using HTTPS.</strong> Verify that the <strong>requireSSL</strong> attribute inside the &lt;forms&gt; element of your application's <strong>web.config</strong> is set to <strong>true</strong>:</p>
+      <div>
+        <br />
+        <pre>&lt;authentication mode="Forms"&gt;<br />   &lt;forms loginUrl=https://login.example.com/myapp/login.aspx<br />           requireSSL="true"<br />           ... /&gt;<br />&lt;/authentication&gt;</pre>
+        <br />
+      </div>
+    </li>
+  </ol>
+  <h1>Problem Example</h1>
+  <p>The following snippet is part of an application's web.config. The application uses form based authentication and has configured its &lt;forms&gt; element accordingly. Unfortunately, the &lt;forms&gt; element does not have the requireSSL attribute set to true. Therefore the application fails to enforce the use of SSL when performing form-based authentication.</p>
+  <pre>&lt;!-- The forms element does not have a requireSSL attribute --&gt;<br />&lt;forms loginUrl="Secure/Login.aspx"<br />       protection="All"<br />       timeout="00:30:00"<br />        slidingExpiration="true"<br />       name="MyApp"<br />       path="/Secure"<br /> /&gt;</pre>
+  <ul>
+  </ul>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance. </p>]]></Data>
+  </Content>
+</TeamMentor_Article>

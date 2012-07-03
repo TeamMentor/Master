@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="245575185" Content_Hash="-1570501964">
+  <Metadata>
+    <Id>aabf1365-8bcc-49bb-887b-272bf54520de</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Statistical Analysis Attack</Title>
+    <Category>Encryption</Category>
+    <Phase>Any</Phase>
+    <Technology> Any</Technology>
+    <Type>Attack</Type>
+    <DirectLink>Statistical Analysis Attack</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1 class="section">Applies To</h1>
+  <p>
+  </p>
+  <ul>
+    <li>Applications that use encryption.</li>
+  </ul>
+  <p />
+  <h1 class="section">Description</h1>
+  <p>Given large sets of encrypted data an attacker may be able to discover sensitive data by comparing large sets of encrypted packets. An attacker will attempt to gather large amounts of packets to discern some information about a network or software system. The attacker may be able to do this by artificially injecting packets into the system to see how they are dealt with by the system or by passively listening to network traffic for interesting packets. </p>
+  <h1 class="section">Impact</h1>
+  <ul>
+    <li>Discovery of encryption keys (WEP Key Attack) 
+</li>
+    <li>Discovery of packet meta-data such as origin, destination, time stamp, traffic patterns, physical location, network topology, and more 
+</li>
+    <li>Unencrypted data – an attack listening to all encrypted e-mail would still recover all unencrypted header information such as to, from, cc, timestamp, subject, etc.</li>
+  </ul>
+  <h1 class="section">Vulnerabilities</h1>
+  <ul>
+    <li>False sense of security when using encryption libraries</li>
+  </ul>
+  <h1 class="section">Countermeasures</h1>
+  <ul>
+    <li>Always be sure you know what is and what is not being encrypted 
+</li>
+    <li>Understand what bits of information can be discovered by analyzing packets or information being sent on the network 
+</li>
+    <li>Consider using a tool that will help hide some information commonly gathered by statistical analysis attacks</li>
+  </ul>
+  <ul>
+  </ul>]]></Data>
+  </Content>
+</TeamMentor_Article>

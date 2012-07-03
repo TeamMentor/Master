@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-1299302906" Content_Hash="174229457">
+  <Metadata>
+    <Id>834db5af-d3ce-4fe5-a546-7b5af56f840c</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Use IPSsec to Encrypt Traffic Between Servers</Title>
+    <Category>Communication Security</Category>
+    <Phase>Implementation</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Use IPSsec to Encrypt Traffic Between Servers</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Do</h1>
+  <p>Internet Protocol security (IPSec)&amp;nbsp;provides encryption, integrity, and authentication services for IP-based network traffic.&amp;nbsp;Use&amp;nbsp;IPSec to provide server-to-server protection&amp;nbsp;against internal network threats, including eavesdropping, tampering, man in the middle attacks, IP spoofing, and other password-based attacks by restricting which computers can communicate with each other, and limit the protocols they can communicate with.</p>
+  <h1>Why</h1>
+  <p>Servers&amp;nbsp;do not usually co-exist in a secure environment. Eavesdropping and spoofing are threats when two or more entities must communicate over&amp;nbsp;typical untrusted mediums such as the public internet&amp;nbsp;or a company intranet. Failure to use IPSec&amp;nbsp;increases the likleihood&amp;nbsp;that data traveling on the network will be intercepted, modified, or&amp;nbsp;stolen.</p>
+  <h1>When</h1>
+  <p>IPSec can be used&amp;nbsp;for the following tasks:</p>
+  <ul>
+    <li>Provide message confidentiality by encrypting all of the data sent between two computers. </li>
+    <li>Provide message integrity between two computers (without encrypting data). </li>
+    <li>Provide mutual authentication between two computers. For example, you can help secure a database server by establishing a policy that permits requests only from a specific client computer (for example, an application or Web server). </li>
+    <li>Restrict which computers can communicate with one another. You can also restrict communication to specific IP protocols and TCP/UDP ports.</li>
+  </ul>
+  <p>&amp;nbsp;Using IPSec is not a a possibility when the two servers are not using static ip addresses.</p>
+  <h1>How</h1>
+  <p>To secure traffic between two servers, follow these steps:</p>
+  <ol>
+    <li>
+      <p>
+        <strong>Create an IP Filter.</strong> This&amp;nbsp;restricts&amp;nbsp;what computers can communicate with each other, and require that&amp;nbsp;specific&amp;nbsp;communication protocols are used.&amp;nbsp;A filter consists of:</p>
+      <ul>
+        <li>A source IP address or range of addresses. </li>
+        <li>A destination IP address or range of addresses. </li>
+        <li>An IP protocol, such as TCP, UDP, or "any." </li>
+        <li>Source and destination ports (for TCP or UDP only).</li>
+      </ul>
+    </li>
+    <li>
+      <p>
+        <strong>Create Filter Actions.</strong> This procedure creates two filter actions. The first will be used to block all communications from specified computers and the second will be used to enforce the use of encryption between application server and database server computers. </p>
+    </li>
+    <li>
+      <p>
+        <strong>Create Rules.</strong> This procedure creates two new rules that will be used to associate the filter that you created in Procedure 1, with the two filter actions you created in Procedure 2. </p>
+    </li>
+    <li>
+      <p>
+        <strong>Export the IPSec Policy to the Remote Computer.</strong> The IPSec policy that you have created on the database server must now be exported and copied to the application server computer. </p>
+    </li>
+    <li>
+      <p>
+        <strong>Assign Policies.</strong> An IPSec policy must be assigned before it becomes active. Note that only one policy may be active at any one time on a particular computer. </p>
+    </li>
+    <li>
+      <p>
+        <strong>Verify that it Works.</strong> Use Network Monitor (netmon.exe) to verify that data sent between the two servers&amp;nbsp;is encrypted. </p>
+    </li>
+  </ol>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>How To: Use IPSec to Provide Secure Communication Between Two Servers&amp;nbsp;<a href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dnnetsec/html/SecNetHT18.asp">http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dnnetsec/html/SecNetHT18.asp</a></li>
+    <li>How To: Use IPSec for Filtering Ports and Authentication <a href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dnnetsec/html/HTUseIPSec.asp">http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dnnetsec/html/HTUseIPSec.asp</a></li>
+    <li>How To: Use IPSec Policy to Secure Terminal Services Communications in Windows Server 2003 <a href="http://support.microsoft.com/kb/816521">http://support.microsoft.com/kb/816521</a></li>
+  </ul>
+  <ul>
+  </ul>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance. </p>]]></Data>
+  </Content>
+</TeamMentor_Article>

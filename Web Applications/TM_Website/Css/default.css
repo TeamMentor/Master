@@ -59,7 +59,7 @@ a:visited, a:active
 	font-family: Impact;
 	font-size: 30px;
 	color: #05C;
-	text-shadow: -2px 0 lightsteelblue, 0 2px lightsteelblue, 2px 0 lightsteelblue, 0 -2px lightsteelblue;
+	text-shadow: -2px -2px 0 lightsteelblue, 2px -2px 0 lightsteelblue, -2px 2px 0 lightsteelblue, 2px 2px 0 lightsteelblue;
 }
 
 #TMTitle2

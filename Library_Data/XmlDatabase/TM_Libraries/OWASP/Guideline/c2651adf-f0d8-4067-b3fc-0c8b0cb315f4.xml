@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-1970449752" Content_Hash="1495454086">
+  <Metadata>
+    <Id>c2651adf-f0d8-4067-b3fc-0c8b0cb315f4</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Validate Input from All Sources For Type, Length, Format, And Range</Title>
+    <Category>Input and Data Validation</Category>
+    <Phase>Implementation</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Validate Input from All Sources For Type, Length, Format, And Range</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Do</h1>
+  <p>Do not trust input. Instead, validate on the server that it matches the expected input, be careful which contexts you allow it to be used in, and encode it appropriately on output.</p>
+  <h1>Why</h1>
+  <p>An attacker passing malicious input can attempt SQL injection, cross-site scripting, and other injection attacks that aim to exploit your application's vulnerabilities. Validating input helps to reduce these risks by ensuring that the input received matches the expected format. Input validation on its own is not sufficient; output encoding is also needed to fully prevent these attacks, but it is an important step for both security and reliability.</p>
+  <h1>When</h1>
+  <p>All input should always be validated, regardless of source. Unless data is actually static within the scope of the local code base, it could be modified by a malicious user—even data in a database which is supposed to be static.</p>
+  <h1>How</h1>
+  <p>Perform the following actions to validate input from all sources:</p>
+  <ol>
+    <li>
+      <p>
+        <strong>Identify data to validate.</strong> Input must be validated on the server for security checks.&amp;nbsp; While it can be useful for user experience reasons to check the input on the client side, especially on things like web applications with high round-trip latencies, this client-side validation is not sufficient to provide security guarantees, as it can be circumvented by the attacker. Check for known good data and constrain input by validating it for type, length, format, and range. For Web form applications that obtain input through server controls, use the ASP.NET validator controls, such as the RegularExpressionValidator, RangeValidator, and CustomValidator, to validate and constrain input. All input not under control of the system should be validated, but input coming directly from users must be validated and should receive the most attention. Most Web applications accept input from various sources, including HTML controls, server controls, query strings, and cookies. Validate input from all of these sources to help prevent injection attacks. </p>
+    </li>
+    <li>
+      <p>
+        <strong>Use regular expressions.</strong> Use regular expressions to help validate input. In general, validate your input against the least permissive expression possible that will accept all the input you expect for that field. If you know that the field will have certain internal structure, check for it. If there is a range of standard formats which your users may enter data in, but these formats are easily converted to a single internal format, do so.&amp;nbsp;The following example shows how to use the Regex class. </p>
+      <pre>using System.Text.RegularExpressions;<br />// Instance method:<br />Regex reg = new Regex(@"^[a-zA-Z'.\s]{1,40}$");<br />Response.Write(reg.IsMatch(Request.QueryString["Name"]));<br />// Static method:<br />if (!Regex.IsMatch(Request.QueryString["Name"],@"^[a-zA-Z'.\s]{1,40}$"))<br />{<br />&amp;nbsp;&amp;nbsp; // Name does not match expression<br />}</pre>
+      <p>If you cannot cache your regular expression for frequent use, you should use the static IsMatch method where possible for performance reasons, to avoid unnecessary object creation. </p>
+    </li>
+    <li>
+      <p>
+        <strong>Validate numeric data.</strong> Check all numeric fields for type and range. If you are not using server controls, you can use regular expressions and the Regex class, and you can validate numeric ranges by converting the input value to an integer or double, ensuring the conversion was valid, and then performing a range check. If your input has an internal checksum, like a credit card number, check that too.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Validate address data.</strong> Address data has a fairly rich internal structure; the more of this structure your validation routine understands, the better you'll be able to validate the information. Phone numbers can be validated as a string of ten digits, or a variable number of digits beginning with the character '+' if international numbers are allowed. If needed, the country code can be determined and the exact number format looked up. While phone numbers are written several different ways, a canonical representation can be created by stripping all non-numeric characters before validation, something which will save your users time and frustration as they enter data into your site. Street addresses require a little bit more care; if the input is taken in divided into street, city, etc., each field can have a seperate safe character set defined--city names don't need numbers, for instance. Names are fairly straightforward, but are one of the cases where the "'" character is valid input, and thus they must be handled appropriately (as all input should be) at the database level. Also, don't forget to allow accented characters in names and addresses, depending on your current code page.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Validate reference data.</strong> Data that refers to other things can go through one final step of validation, namely looking up what it refers to insure that the reference is valid. For instance, postal codes can be validated against a canonical list to ensure correctness, and other aspects of the street address cross-checked with that. In an order management system, item IDs can be checked against a list of valid IDs.</p>
+    </li>
+  </ol>
+  <p>
+    <strong>Note:</strong> Validating input does not remove the need to format output, parametrize queries, or otherwise handle user input carefully.</p>
+  <h1>Problem Example</h1>
+  <p>An order form for a web store has several fields, specifically, a name, address, phone number, item number, and quantity. Each item is simply added to the database with no data validation and all typecasting handled by the database. Typecasting in the database does not prevent SQL injection and has little effect on out of range data. An attacker can perform numerous attacks, from something as benign as filling the database with garbage data to more actively destructive SQL injection and cross-site scripting attacks.</p>
+  <h1>Solution Example</h1>
+  <p>An ASP.NET application contains an order for for a web store. Each of the forms fields are validated, giving stronger guarantees about the data gathered. The phone number is validated as a string of ten digits (after stripping all non-numeric characters), or a variable number of digits beginning with the character '+' if international numbers are allowed. </p>
+  <p>Validating a name, address, and item number can all be a bit more complicated. The first order of business is determining the legal character set for each case. For names, spaces, upper and lower case letters (including the accented forms for your current codepage), and possible numbers and periods are enough. Addresses need to add commas, hyphens, and number signs, at a minimum. Validating item numbers may be as simple as casting to an integer and checking that the result is in the right range, or it may mean a more complicated regular expression that checks for internal formatting in a string. </p>
+  <p>The last, optional step of data validation is to ensure that the data refers to a valid things. The data should be validated for format first, especially as further checks may require database queries. Item numbers are an obvious thing to check for existence in the DB, and this would normally happen as part of the stored procedure which creates a new order, but names, addresses, and phone numbers can be similarly checked, some times. For example, if the address field is broken up into components, state or province information, zip/post codes, and city names, at a minimum, can all be validated against existing lists.</p>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance. </p>]]></Data>
+  </Content>
+</TeamMentor_Article>

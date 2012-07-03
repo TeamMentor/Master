@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-000000396c19</Id>
+    <Library_Id>b6f408c5-6e6e-4bc0-90a5-0bb10becc2ce</Library_Id>
+    <Title>All Input Is Validated</Title>
+    <Category>Data Validation</Category>
+    <Phase>Implementation</Phase>
+    <Technology>iOS</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>All Input Is Validated</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="WikiText">
+    <Data><![CDATA[==What to Check For==
+
+Verify that all input is validated.
+
+==Why==
+
+Properly implemented input validation is effective at preventing many types of injection vulnerabilities, such as Cross-Site Scripting and SQL injection.
+
+==How to Check==
+
+To verify that all input is validated:
+
+# **Identify all entry points for user input.** Make a list of all possible sources of user input in your application.
+# **Identify all types on input accepted by the application.** For each source of user input on the list, define valid characters, length, format, and range (for numerical values).
+# **Trace data from source to sink.** Trace each source of input through your application until you find its ultimate destination.  The final sink may be in memory, on the hard drive, sent over the network or stored in a database.
+# **Inspect the input validation subsystem.** Each input source should have a data validation routine associated with it. Ideally the validation will occur as soon after the input reaches your application as possible. Shared validation routines are better than creating many spread throughout your code base, check for consolidation of routines to aid testing and reduce the chance of one-off bugs. If an input source does not have a validation routine associated with it, flag it for fixing. 
+# **Ensure quality of validation routines.** Make sure that each validator verifies the characters, length, format, and range (for numerical values) of the respective type of input. Validation should check first for known valid and safe data and then for malicious, dangerous data. Do not rely on filtering out all malicious data, it is too easy to miss something.
+
+==How to Fix==
+
+To validate all user input using white-list input validation:
+
+# **Identify all entry points for user input.** Make a list of all possible sources of user input in your application.
+# **Identify all types on input accepted by the application.** For each source of user input on the list, define valid characters, length, format, and range (for numerical values).
+# **Define an input validation subsystem.** Define a set of validator functions that should be used to validate each type of input handled by the application. Input should be validated on the server.
+# **Validate characters.** Restrict the acceptable range of characters in text input by using regular expressions.
+# **Validate length.** Add code to check that the length of the user input is valid.
+# **Validate format.** If the input type has a specific pattern, such as a date or a phone number, add code to use regular expressions to make sure user input matches the input type specified by the application. Use regular expressions to enforce strong password requirements.
+# **Validate range.** Restrict the acceptable range of numerical input by comparing the input to the maximum and minimum acceptable values.
+# **(Optional) Reject and respond to known bad input.** This step does not add much actual security, but it is included here to let you know that such an option exists. The input validation subsystem may check for known attack strings and respond to these likely attacks by alerting the user. The options for responding to invalid input are: reject invalid input, log invalid input, take evasive action.
+# **(Optional) Encode input.** If the input is going to be displayed back through the web application, consider adding code to encode it to prevent Cross-Site Scripting attacks.]]></Data>
+  </Content>
+</TeamMentor_Article>

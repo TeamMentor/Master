@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-000000467952</Id>
+    <Library_Id>b6f408c5-6e6e-4bc0-90a5-0bb10becc2ce</Library_Id>
+    <Title>Store Cached Authentication Data in the Keychain</Title>
+    <Category>Cryptographic Storage</Category>
+    <Phase>Implementation</Phase>
+    <Technology>iOS</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Store Cached Authentication Data in the Keychain</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="WikiText">
+    <Data><![CDATA[==What to Do==
+
+Store sensitive data such as encryption keys and cached authentication credentials in the //keychain//.
+
+==Why==
+
+Authentication credentials and encryption keys should be stored in the //keychain//, because the //keychain// encrypts data that is stored in it and is designed for storing such information. The //keychain// is also suitable for storing application configuration settings.
+
+==How==
+
+To use the //keychain// to store cached authentication data and encryption keys:
+
+# **Identify cached authentication data.** Make a list of types of cached authentication data used by your application. Some examples are:
+#* Passwords
+#* Certificates
+#* Encryption keys
+#* Authentication tokens
+# **Define encryption requirements for sensitive data that is stored in files.** Choose the level of protection that is the most appropriate for each type of sensitive data handled by the application that is stored in files. The iOS Data Protection API provides the following protection levels:
+#* //FileProtectionNone// - no encryption.
+#* //FileProtectionComplete// - encrypt the file and deny access when the device is locked.
+#* //FileProtectionCompleteUnlessOpen// - encrypt the file until it is open, leave it decrypted while it is open even if the device is locked.
+#* //FileProtectionCompleteUntilFirstUserAuthentication// - encrypt the file until the device is unlocked for the first time after a reboot.
+# **Define encryption requirements for sensitive data that is stored in the keychain.** Choose the level of protection that is the most appropriate for each type of sensitive data handled by the application that is stored in the keychain. The keychain provides the following protection levels:
+#* //kSecAttrAccessibleAlways// - the item is always available.
+#* //kSecAttrAccessibleWhenUnlocked// - the item is only available when the device is unlocked.
+#* //kSecAttrAccessibleAfterFirstUnlock// - the item is only available after the device is unlocked for the first time after a reboot.
+#* //kSecAttrAccessibleAlwaysThisDeviceOnly// - the item is always available, but is not moved to other devices.
+#* //kSecAttrAccessibleWhenUnlockedThisDeviceOnly// - the item is only available when the device is unlocked and is not moved to other devices.
+#* //kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly// - the item is only available after the device is unlocked for the first time after a reboot and is not moved to other devices.
+# **Identify the code that caches authenticaton data.** Review the application code to find all code that handles data that should be stored in the //keychain//.
+# **Store cached authentication credentials in the keychain.** Add code that uses the //keychain// to store cached authentication data to all code that handles such data or rewrite existing code as necessary.
+
+]]></Data>
+  </Content>
+</TeamMentor_Article>

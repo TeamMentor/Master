@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-000000842659</Id>
+    <Library_Id>b6f408c5-6e6e-4bc0-90a5-0bb10becc2ce</Library_Id>
+    <Title>Freed Objects Are Not Referenced</Title>
+    <Category>Memory Management</Category>
+    <Phase>Implementation</Phase>
+    <Technology>iOS</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>Freed Objects Are Not Referenced</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="WikiText">
+    <Data><![CDATA[==What to Check For==
+
+Verify that freed objects are not referenced.
+
+==Why==
+
+Accessing memory that has been deallocated may result in an exploitable vulnerability. This type of vulnerability is called a "dangling pointer vulnerability". The unallocated memory is accessed via a pointer that has been used to free the memory earlier - this pointer is the "dangling pointer".
+
+==How to Check==
+
+To verify that freed objects are not referenced:
+
+# **Search for deallocation code.** Review code to find all places where memory is being deallocated.
+# **Verify that deallocation code is close to exit points.** Make sure that deallocation code is close to the end of the respective functions - this makes it easier to manage deallocation and prevent double-free vulnerabilities.
+# **Review deallocation code.** Examine deallocation code to make sure that objects are only freed once.
+
+==How to Fix==
+
+Write code in such a way that guarantees that pointers are not used after memory that they point to has been deallocated. One way to do this is to deallocate memory at the end of functions, so that there is no code that accesses memory after it has been deallocated. Perform the following actions to assure that unallocated memory is not accessed:
+
+# **Search for deallocation code.** Review code to find all places where memory is being deallocated.
+# **Move deallocation code.** Place deallocation code right before exit points of the function. Set pointers to null. Make sure that deallocated pointers are not being used elsewhere in the application.]]></Data>
+  </Content>
+</TeamMentor_Article>

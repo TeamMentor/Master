@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-1373719704" Content_Hash="763854212">
+  <Metadata>
+    <Id>65a24726-461b-452d-ac91-cfbfad841419</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Encrypt Communication Links</Title>
+    <Category>Communication Security</Category>
+    <Phase>Implementation</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Encrypt Communication Links</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Do</h1>
+  <p>Encrypt the communication channels when interacting with other software across the network.</p>
+  <h1>Why</h1>
+  <p>Encrypting the communication links allows the application to preserve confidentiality and integrity of the transmitted data.</p>
+  <h1>When</h1>
+  <p>If sensitive data must be transmitted between two hosts. The transmission could be between servers or between a client and a server.</p>
+  <h1>How</h1>
+  <p>To encrypt the communication links:</p>
+  <ol>
+    <li>
+      <p>
+        <strong>Identify the connections used for transmitting sensitive data.</strong> Enumerate all connections between the different entities. Identify the sensitive data that is sent over the network and the respective connections that are used for such communication. </p>
+    </li>
+    <li>
+      <p>
+        <strong>Choose the appropriate encryption mechanism.</strong> Depending on the infrastructure, you may consider using IPSec or TLS/SSL.</p>
+      <ul>
+        <li>
+          <p>
+            <strong>IPSec.</strong> IPSec is used when the encryption needs to be applied across all involved parties. Because IPSec is designed to secure connections between static hosts that are "always on", use IPSec to secure the network connections between your application's servers.</p>
+        </li>
+        <li>
+          <p>
+            <strong>TLS/SSL.</strong> TLS/SSL provides granular protection. This allows the traffic containing sensitive data only to be encrypted. Because TLS/SSL has a certificate based design, it allows the protection of data between mobile hosts. Use TLS/SSL to secure the communication channel between your application and its users. While .NET provides APIs for handling SSL encrypted traffic, it is recommended to follow the manuals associated with any third party software that is being used. If your application uses SSL, ensure that you use SSL 3.0 and disable the cryptographically weak SSL 2.0 protocols.</p>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <p>
+        <strong>Apply the appropriate encryption mechanism. </strong>Apply the encryption mechanism of choice at the appropriate locations in the code. Such locations include all functionality that establishes a connection between your application and another entity.</p>
+    </li>
+  </ol>
+  <h1>Problem Example</h1>
+  <p>The following code establishes a connection between two servers. Unfortunately, the communication is not encrypted and it is possible for an attacker to eavesdrop on the connection.</p>
+  <pre>public Stream Connect(string remoteHost, int remotePort)<br />{<br />    TcpClient client = new TcpClient(remoteHost, remotePort);<br />    NetworkStream netStream = client.GetStream();<br />    return netStream;<br />}</pre>
+  <h1>Solution Example</h1>
+  <p>The following code establishes a connection between two servers. Because the communication is encrypted the confidentiality of the data in transit is preserved and it is impossible for an attacker to eavesdrop on the connection.</p>
+  <pre>public Stream Connect(string remoteHost, int remotePort)<br />{<br />    TcpClient client = new TcpClient(remoteHost, remotePort);<br />    SslStream netStream = new SslStream(client.GetStream(), false,<br />               new RemoteCertificateValidationCallback(this.ValidateSSLCertificate));<br />    try<br />    {<br />        netStream.AuthenticateAsClient(remoteHost);<br />    }<br />    catch (AuthenticationException ae)<br />    {<br />        client.Close();<br />        throw ae;<br />    }<br />    return netStream;<br />}</pre>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>For more information about TLS, see: RFC for <a href="http://www.faqs.org/rfcs/rfc2246.html">Transport Layer Security</a>. </li>
+    <li>For a quick overview on IPSec, see: A publication on <a href="http://www.digisafe.com/products/pdf/IPSec_Primer.pdf">IPSec Primer</a>. </li>
+    <li>To learn more about using IPSec in a server farm, see: <a href="http://msdn2.microsoft.com/en-us/library/aa302413.aspx">How To: Use IPSec to Provide Secure Communication Between Two Servers</a>. </li>
+    <li>For more information about uses of IPSec, see: <a href="http://msdn2.microsoft.com/en-us/library/aa302366.aspx">How To: Use IPSec for Filtering Ports and Authentication</a>. </li>
+    <li>For more information about using IPSec for managing your server farm, see: <a href="http://support.microsoft.com/kb/816521">How To: Use IPSec Policy to Secure Terminal Services Communications in Windows Server 2003</a>.</li>
+  </ul>
+  <ul>
+  </ul>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance.</p>]]></Data>
+  </Content>
+</TeamMentor_Article>

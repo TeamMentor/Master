@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-0000006b19fc</Id>
+    <Library_Id>b6f408c5-6e6e-4bc0-90a5-0bb10becc2ce</Library_Id>
+    <Title>A Secure Password Reset Function Is Implemented</Title>
+    <Category>Authentication</Category>
+    <Phase>Implementation</Phase>
+    <Technology>iOS</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>A Secure Password Reset Function Is Implemented</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="WikiText">
+    <Data><![CDATA[==What to Check For==
+
+Verify that a secure password reset function is implemented.
+
+==Why==
+
+Password reset and recovery features are important to prevent locking out of users that forgot their passwords, however they also present a security challenge. An attacker might try to compromise user passwords by abusing the password recovery or reset functions and these functions by definition need to be accessible to unauthenticated users, so they require particular diligence in being protected. 
+
+==How to Check==
+
+To verify that a secure password reset function has been implemented:
+
+# **Make sure that password resetting is implemented.** Review the application authentication mechanism to make sure that password resetting is implemented. Password reset is preferable to recovery - if an attacker manages to change the user's password, the user should be able to notice that a compromise has taken place.
+# **Check if password resetting is implemented on the server.** Examine the code that implements password resetting to make sure that security controls guarding it are implemented on the server.
+# **Check if user identity is verified during the reset.** Test the password reset functionality to make sure that the user's identity is verified sufficiently during the reset.
+# **Verify that a side channel is used to send password reset tokens.** Test the password reset functionality to make sure that the password reset tokens are sent using a side channel, such as the e-mail address associated with the username for which the password reset is requested. A side channel is a way to communicate information other than the one that is used to request the password reset, so if the password reset is requested via a web page, an e-mail message would be a side channel.
+
+==How to Fix==
+
+To implement a secure password reset function:
+
+# **Implement password resetting on the server.** Most of the password resetting functionality should be implemented on the server. The iOS application might need a button on the login page for requesting a password reset.
+# **Verify user identity.** The exact method for verifying user identity should be specific to the application and  based on the types of information available about the user and the security requirements. User identity is often established by asking security questions that are associated with the account and proceeding with the reset only if the correct answer is provided. At the very least, the application should ask for the e-mail address associated with the user account for which the password reset is requested.
+# **Use a side channel to send a password reset token.** The most common and effective solution is to send a difficult to predict token to the e-mail address associated with the user account for which the password reset is requested.
+# **Provide a control for changing the password.** Once the user has the password reset token, there should be a way for the user to submit that token and to then be able to change the password. One way is to provide a web page that does this, another is to provide a Web Service to the iOS application that accepts the password reset token and allows the user to change the password; both methods may be used in combination.
+# **Log the password reset event.** Both failed and successful password reset requests should be logged on the server. A large amount of password reset requests may indicate an attack.
+
+==Additional Resources==
+
+* For a guide on implementing a password reset function, please see https://www.owasp.org/index.php/Forgot_Password_Cheat_Sheet]]></Data>
+  </Content>
+</TeamMentor_Article>

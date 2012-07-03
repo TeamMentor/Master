@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-0000006598ea</Id>
+    <Library_Id>b6f408c5-6e6e-4bc0-90a5-0bb10becc2ce</Library_Id>
+    <Title>Implement a Secure Password Reset Function</Title>
+    <Category>Authentication</Category>
+    <Phase>Implementation</Phase>
+    <Technology>iOS</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Implement a Secure Password Reset Function</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="WikiText">
+    <Data><![CDATA[==Applies To==
+
+* iOS applications that authenticate to a remote server.
+
+==What to Do==
+
+Implement a secure password reset function.
+
+==Why==
+
+Password reset and recovery features are important to prevent locking out of users that forgot their passwords, however they also present a security challenge. An attacker might try to compromise user passwords by abusing the password recovery or reset functions and these functions by definition need to be accessible to unauthenticated users, so they require particular diligence in being protected. Password reset is preferable to recovery - if an attacker manages to change the user's password, the user should be able to notice that a compromise has taken place.
+
+==How==
+
+To implement a secure password reset function:
+
+# **Implement password resetting on the server.** Most of the password resetting functionality should be implemented on the server. The iOS application might need a button on the login page for requesting a password reset.
+# **Verify user identity.** The exact method for verifying user identity should be specific to the application and  based on the types of information available about the user and the security requirements. User identity is often established by asking security questions that are associated with the account and proceeding with the reset only if the correct answer is provided. At the very least, the application should ask for the e-mail address associated with the user account for which the password reset is requested.
+# **Use a side channel to send a password reset token.** The most common and effective solution is to send a difficult to predict token to the e-mail address associated with the user account for which the password reset is requested.
+# **Provide a control for changing the password.** Once the user has the password reset token, there should be a way for the user to submit that token and to then be able to change the password. One way is to provide a web page that does this, another is to provide a Web Service to the iOS application that accepts the password reset token and allows the user to change the password; both methods may be used in combination.
+# **Log the password reset event.** Both failed and successful password reset requests should be logged on the server. A large amount of password reset requests may indicate an attack.
+
+==Additional Resources==
+
+* For a guide on implementing a password reset function, please see https://www.owasp.org/index.php/Forgot_Password_Cheat_Sheet]]></Data>
+  </Content>
+</TeamMentor_Article>

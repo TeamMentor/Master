@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-1921146325" Content_Hash="484327814">
+  <Metadata>
+    <Id>47e03443-3e6b-4187-ad9a-843ad1ecdf5d</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Use SSL Between Untrusted Server Applications</Title>
+    <Category>Communication Security</Category>
+    <Phase>Implementation</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Use SSL Between Untrusted Server Applications</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Do</h1>
+  <p>Use an encrypted communication channel to protect data sent between servers.&amp;nbsp;The Secure Sockets Layer (SSL) protocol can be used to secure the communication link between&amp;nbsp;servers.&amp;nbsp;&amp;nbsp; </p>
+  <h1>Why</h1>
+  <p>Servers rarely co-exist in a secure environment.&amp;nbsp;Eavesdropping and spoofing are threats when two or more entities must communicate over an untrusted medium such as the public internet, or even&amp;nbsp;a LAN. Using SSL&amp;nbsp;prevents&amp;nbsp;attackers from&amp;nbsp;monitoring the network connection to obtain authentication credentials in plain text. Not using SSL could allow an attacker&amp;nbsp;to capture the authentication cookies&amp;nbsp;and gain spoofed access to&amp;nbsp;any applications that transmit data over the network.</p>
+  <h1>When</h1>
+  <p>If&amp;nbsp;communicating&amp;nbsp;servers are not inside a physically secure data center where the network eavesdropping threat is negligible,&amp;nbsp;it&amp;nbsp;is important to use an encrypted communication channel to protect data sent between servers. SSL is used when an application does not trust other applications on a server. Use SSL when granular channel protection for a particular application running on a server is needed&amp;nbsp;rather than&amp;nbsp;for all applications and services. It is also an appropriate choice when fixed ip addresses are not available. SSL only works with TCP/IP communication&amp;nbsp;protocol as well as named pipes.</p>
+  <p>Use IPSec to help protect the communication channel between two servers and to restrict which computers can communicate with one another. For example, you can help protect a database server by establishing a policy that permits requests only from a trusted client computer such as an application or Web server. You can also restrict communication to specific IP protocols and TCP/UDP ports.</p>
+  <h1>How</h1>
+  <p>Here is how to use SSL&amp;nbsp;to&amp;nbsp;protect communication between servers:</p>
+  <ol>
+    <li>
+      <p>Install a Server Authentication Certificate on the server. </p>
+    </li>
+    <li>
+      <p>Install the Issuing CA's certificate&amp;nbsp;so the&amp;nbsp;two communicating applications may negotiate an SSL connection.&amp;nbsp;</p>
+    </li>
+    <li>
+      <p>Use the "https://" connection protocol in the code to ensure traffic between the 2 server applications are encrypted.</p>
+    </li>
+    <li>
+      <p>Verify that Communication Is Encrypted. Use Network Monitor to verify that data sent between the application server and database server is encrypted. Start by sending data in clear text form and then enable encryption first by configuring the server and then by configuring the client.</p>
+    </li>
+  </ol>
+  <h1>Problem Example</h1>
+  <p>An e-commerce application written in ASP.NET enables customers to pay their bills online through a unified broker. The application's web component&amp;nbsp;relies on an independant&amp;nbsp;account management system that resides on another server. The web&amp;nbsp;component communicates with the account management system using a SQL&amp;nbsp;socket connection.&amp;nbsp; The two servers&amp;nbsp;are located in a competitively priced data center that houses a number of other customers, all of which are able&amp;nbsp;to access the building&amp;nbsp;at all times. A malicious user&amp;nbsp;purchases hosting services at the same company, and&amp;nbsp;after exploring the hosting environment, learns that the hosted accounts are networked using a shared&amp;nbsp;bus topology&amp;nbsp;that allows for network snooping. The attacker is able to setup a sniffer, and captures all of the communication between the account management component and the web component, since SQL connections are not encrypted by default. The attacker can now log in as a legitimate user&amp;nbsp;on the account management server and make changes at will.&amp;nbsp;&amp;nbsp;</p>
+  <h1>Solution Example</h1>
+  <p>An e-commerce application written in ASP.NET enables customers to pay their bills online through a unified broker. The application's web component&amp;nbsp;relies on an independant&amp;nbsp;account management system that resides on another server. The web&amp;nbsp;component communicates with the account management system using a SQL&amp;nbsp;socket connection. The two servers&amp;nbsp;are located in a competitively priced data center that houses a number of other customers, all of which are able&amp;nbsp;to access the building&amp;nbsp;at all times. The Developer of the application setup encrypted SSL traffic by installing a Server Authenticaion Certificate on the machine hosting the account management component, and installed the issuing CA's certificate on the&amp;nbsp;server hosting the web component. &amp;nbsp;The components use OLE-DB to communicate, so the developer inserted the following configuration directives in the web.config file:</p>
+  <pre>"Provider=SQLOLEDB.1;Integrated Security=SSPI;Persist Security <br />&amp;nbsp; Info=False;Initial Catalog=Northwind;Data Source=sql01;Use <br />&amp;nbsp; Encryption for Data=True"</pre>
+  <p>The developer then uses the following call to connect to the database using the SSL tunnel for data encryption:</p>
+  <pre>// Replace the server name in the following connection string with the name of your database <br />serverSqlConnection conn = new SqlConnection("server='sql01';<br />  database=NorthWind;IntegratedSecurity='SSPI'");</pre>
+  <p>Because&amp;nbsp;traffic between the two components is encrypted, the transmission medium&amp;nbsp;is&amp;nbsp;less&amp;nbsp;likely to affect the ability of the two components to communicate securely.</p>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>Using Secure Sockets Layer <a href="http://msdn2.microsoft.com/en-us/library/ds8bxk2a.aspx">http://msdn2.microsoft.com/en-us/library/ds8bxk2a.aspx</a></li>
+    <li>Internet Protocol Version 6 <a href="http://msdn2.microsoft.com/en-us/library/3x7ak53z(VS.80).aspx">http://msdn2.microsoft.com/en-us/library/3x7ak53z(VS.80).aspx</a>&amp;nbsp; </li>
+    <li>Wikipedia SSL encyclopedia entry <a href="http://en.wikipedia.org/wiki/Secure_Sockets_Layer">http://en.wikipedia.org/wiki/Secure_Sockets_Layer</a></li>
+  </ul>
+  <ul>
+  </ul>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance. </p>]]></Data>
+  </Content>
+</TeamMentor_Article>

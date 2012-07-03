@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-0000004446d0</Id>
+    <Library_Id>b6f408c5-6e6e-4bc0-90a5-0bb10becc2ce</Library_Id>
+    <Title>File Paths and Names Are Checked for Null Bytes</Title>
+    <Category>Data Validation</Category>
+    <Phase>Implementation</Phase>
+    <Technology>iOS</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>File Paths and Names Are Checked for Null Bytes</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="WikiText">
+    <Data><![CDATA[==Applies To==
+
+* iOS applications where Obj-C code passes file names and paths to C code.
+
+==What to Check For==
+
+Verify that file paths and names are checked for null bytes.
+
+==Why==
+
+Checking file names and paths for null bytes helps prevent unauthorized file access. Code written in C uses null bytes to terminate strings. If a string containing null bytes is passed to C code, the C code will only usually see the part until the first null byte. Attackers often use this quality to be able to access unintended files by inserting null bytes in file names. Objective-C //NSString// objects are not terminated by null bytes, so an attacker may use them to pass paths and names containing null bytes to native C code.
+
+==How to Check==
+
+To verify that file paths and names are checked for null bytes:
+
+# **Identify all input used for file access.** Enumerate all file access performed by the application. Examine code responsible for accessing each file. Take note of any input used to form path or file names for file access.
+# **Verify that null bytes are removed from paths.** If a //NSString// object contains a file name or path and includes a null byte, an incorrect resource may be accessed. Make sure there is code that checks //NSString// objects for null bytes before passing them to native C code.
+
+
+==How to Fix==
+
+To check file paths and names for null bytes:
+# **Identify all input used for file access.** Enumerate all file access performed by the application. Examine code responsible for accessing each file. Take note of any input used to form path or file names for file access.
+# **Remove null bytes from paths.** If a //NSString// object contains a file name or path and includes a null byte, an incorrect resource may be accessed. Verify that there are no null bytes in strings that are used for file names or paths. If null bytes are detected, it is safer to abort the operation than to strip the null bytes, because the presence of null bytes almost certainly indicates an attack.]]></Data>
+  </Content>
+</TeamMentor_Article>

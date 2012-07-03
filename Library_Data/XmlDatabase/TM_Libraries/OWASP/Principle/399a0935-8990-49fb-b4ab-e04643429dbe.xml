@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-177320928" Content_Hash="1723727406">
+  <Metadata>
+    <Id>399a0935-8990-49fb-b4ab-e04643429dbe</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Encrypt the Data Or Secure the Communication Channel</Title>
+    <Category>Communication Security</Category>
+    <Phase>Design</Phase>
+    <Technology> Any</Technology>
+    <Type>Principle</Type>
+    <DirectLink>Encrypt the Data Or Secure the Communication Channel</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<br />
+  <h1>Description</h1>
+  <p>If you are sending sensitive data over the network to the client, encrypt the data or secure the channel. A common practice is to use SSL between the client and Web server. Between servers, an increasingly common approach is to use IPSec. For securing sensitive data that flows through several intermediaries, for example, Web service Simple Object Access Protocol (SOAP) messages, use message level encryption.</p>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,109 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="1924693421" Content_Hash="14321161">
+  <Metadata>
+    <Id>73777936-5891-48b0-a3e8-71663e3429a1</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>XML Injection Attack</Title>
+    <Category>Input and Data Validation</Category>
+    <Phase>Any</Phase>
+    <Technology> Any</Technology>
+    <Type>Attack</Type>
+    <DirectLink>XML Injection Attack</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>1</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>Applies To</h1>
+  <p>
+    <ul>
+      <li>Any application that writes user input to an XML file on a server.</li>
+    </ul>
+  </p>
+  <h1>Description</h1>
+  <p>An XML injection vulnerability will allow an attacker to insert malicious data into XML which resides on the server. Depending on the type of XML parser used (SAX or DOM), this malicious data could be used to either overwrite the values in previous nodes or cause the XML parser to consume an excessive amount of memory on the server.</p>
+  <h1>Impact</h1>
+  <ul>
+    <li>Modification of previous node values in the XML </li>
+    <li>Denial of Service on the server </li>
+    <li>Exposure of entire XML document to unauthorized users. </li>
+    <li>Addition of new nodes or even entire documents. </li>
+    <li>Ability to modify or remove data that should not be accessed.</li>
+  </ul>
+  <h1>Vulnerabilities</h1>
+  <ul>
+    <li>Dynamic XML generation using untrusted input </li>
+    <li>Incorrectly defined schema </li>
+    <li>Lack of schema validation </li>
+    <li>Failure to validate input and properly encode any dangerous meta characters according to the context</li>
+  </ul>
+  <a name="Countermeasures">
+  </a>
+  <h1>Countermeasures</h1>
+  <ul>
+    <li>
+      <p>
+        <strong>When loading an XML file on the server validate it against a defined XSD</strong>.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Perform context-sensitive encoding of untrusted input</strong>. As with encoding data to be output in HTML, a whitelist approach should be taken. For each context which data is going to be inserted in (element, attribute value, etc.) a set of known-safe characters should be constructed. The data to be added should be checked against the whitelist, and any characters not specifically listed should be encoded. CDATA sections should be used to further ensure that the parser ignores special characters. Ideally, only non-XML values should be accepted from untrusted sources. If an XML blob must be accepted from an untrusted source, it should be manually reassembled from values parsed out and encoded after checking the received blob against an XSD.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Untrusted input should be validated against an inclusion list before use</strong>. For example, use a RegEx pattern, primitive type casting, a domain constraint, or another validator. See the Additional Resources for more information on data validation.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Trim XML documents to include only the data that is necessary to the application</strong>.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Use XML processing pipelines to make the flow of data clear and threats easier to identify</strong>.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Remove DOCTYPE element from user input before creating XML objects</strong>.</p>
+    </li>
+  </ul>
+  <h1>Example</h1>
+  <p>Let us assume that a valid node in our server side XML looks like this:</p>
+  <pre>&lt;UserRecord&gt;   &lt;UniqueID&gt;5&lt;/UniqueID&gt;   &lt;Name&gt;Gandalf&lt;/Name&gt;   &lt;Email&gt;Gandalf@MiddleEarth.com&lt;/Email&gt;   &lt;Address&gt;One Middle Earth Way, ME&lt;/Address&gt;   &lt;ZipCode&gt;10000&lt;/ZipCode&gt;   &lt;PhoneNumber&gt;123-456-7890&lt;/PhoneNumber&gt;&lt;/UserRecord&gt;</pre>
+  <p>The UniqueID field here is assigned by the server. Now, if web server accepts input from the user and stores it in the XML file, what is the outcome of the parser when a user enters the following data for the Email field:</p>
+  <pre>Gandalf@MiddleEarth.com&lt;/Email&gt;&lt;UniqueID&gt;0&lt;/UniqueID&gt;&lt;Name&gt;Gandalf&lt;/Name&gt;&lt;Email&gt;Gandalf@MiddleEarth.com</pre>
+  <p>The resulting XML on the server will look like this:</p>
+  <pre>&lt;UserRecord&gt;   &lt;UniqueID&gt;5&lt;/UniqueID&gt;   &lt;Name&gt;Gandalf&lt;/Name&gt;   &lt;Email&gt;Gandalf@MiddleEarth.com&lt;/Email&gt;&lt;UniqueID&gt;0&lt;/UniqueID&gt;               &lt;Name&gt;Gandalf&lt;/Name&gt;&lt;Email&gt;Gandalf@MiddleEarth.com&lt;/Email&gt;   &lt;Address&gt;One Middle Earth Way, ME&lt;/Address&gt;   &lt;ZipCode&gt;10000&lt;/ZipCode&gt;   &lt;PhoneNumber&gt;123-456-7890&lt;/PhoneNumber&gt;&lt;/UserRecord&gt;</pre>
+  <p>We now have two fields and values for UniqueID, Name and Email. The outcome of parsing such data will depend upon the type of XML parser used:</p>
+  <ul>
+    <li>If a SAX parser is used, it will report the UniqueID for this node to be 0, so an attacker would have essentially overwritten the field value. </li>
+    <li>If a DOM parser is used, it will report an error. However, the DOM parser can be abused by inserting additional nodes in the XML while still matching the schema, which will lead to excessive memory consumption by the parser and could potentially result in a Denial of Service.</li>
+  </ul>
+  <p>Also note that this is a simple example. It is possible to insert an entire new record among other issues. To fix the example above we can escape the markup delimiters to prevent the users input from being interpreted, replacing &amp; with &amp;, &lt; with &lt;, and so on as described in the Countermeasures section. This will prevent the users data from being interpreted in this case. In general, though, we don't know exactly what the input might look like, so the best plan is to have a white-list acceptable characters and do type checking as much as possible. Where type checking is not possible consider using CDATA to enforce that the string be treated strictly as data. For example:</p>
+  <pre>$evil_input = "Gandalf@MiddleEarth.com&lt;/Email&gt;   &lt;UniqueID&gt;0&lt;/UniqueID&gt;&lt;Name&gt;Gandalf&lt;/Name&gt;&lt;Email&gt;Gandalf@MiddleEarth.com";$data = "&lt;![CDATA[" + $evil_input + "]]&gt;";</pre>
+  <p>After we insert $data into the email field above the result will be the following acceptable XML:</p>
+  <pre>&lt;UserRecord&gt;   &lt;UniqueID&gt;5&lt;/UniqueID&gt;   &lt;Name&gt;Gandalf&lt;/Name&gt;   &lt;Email&gt;&lt;![CDATA[Gandalf@MiddleEarth.com&lt;/Email&gt;&lt;UniqueID&gt;0&lt;/UniqueID&gt;             &lt;Name&gt;Gandalf&lt;/Name&gt;&lt;Email&gt;Gandalf@MiddleEarth.com]]&gt;   &lt;/Email&gt;   &lt;Address&gt;One Middle Earth Way, ME&lt;/Address&gt;   &lt;ZipCode&gt;10000&lt;/ZipCode&gt;   &lt;PhoneNumber&gt;123-456-7890&lt;/PhoneNumber&gt;&lt;/UserRecord&gt;</pre>
+  <p>CDATA is very useful when used correctly but it has the same generic problem as we had before. An attacker can create a malicious string that uses "]]&gt;" to end the CDATA and insert malicious XML. Therefore, wherever we use CDATA we must also remove or escape ]]&gt; from the input string—at a certain point, it's easier to simply give up and encode everything by whitelist.</p>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>
+      <a href="http://www.w3.org/XML/Processing/">http://www.w3.org/XML/Processing/</a>
+    </li>
+    <li>
+      <a href="http://www-128.ibm.com/developerworks/xml/library/x-think37/index.html">http://www-128.ibm.com/developerworks/xml/library/x-think37/index.html</a>
+    </li>
+    <li>
+      <a href="http://www.owasp.org/index.php/Data_Validation">http://www.owasp.org/index.php/Data_Validation</a>
+    </li>
+    <li>
+      <a href="http://www-128.ibm.com/developerworks/xml/library/x-tipcfsx.html">http://www-128.ibm.com/developerworks/xml/library/x-tipcfsx.html</a>
+    </li>
+    <li>
+      <a href="http://www.w3schools.com/xml/xml_cdata.asp">http://www.w3schools.com/xml/xml_cdata.asp</a>
+    </li>
+  </ul>
+  <ul>
+  </ul>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="286734119" Content_Hash="-408039722">
+  <Metadata>
+    <Id>21887be9-a2c6-4d6d-89e9-ea8c20daaf4e</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Authentication Cookies Are Not Persisted</Title>
+    <Category>Authentication</Category>
+    <Phase>Implementation</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>Authentication Cookies Are Not Persisted</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Check For</h1>
+  <p>Ensure that&amp;nbsp;authentication cookies are not stored in the user's profile.</p>
+  <h1>Why</h1>
+  <p>Stored authentication cookies&amp;nbsp;can be stolen if an attacker gets physical access to the user's computer. </p>
+  <h1>How to Fix</h1>
+  <p>To ensure a non-persistent cookie, set the <strong>DisplayRememberMe</strong> property of the <strong>Login</strong> control to <strong>false</strong>.</p>
+  <p>If you are not using the login controls, you can specify a non-persistent cookie when you call either the <strong>RedirectFromLoginPage</strong> or <strong>SetAuthCookie</strong> methods of the <strong>FormsAuthentication</strong> class having validated the user's credentials, as shown here:</p>
+  <pre>public void Login_Click(object sender, EventArgs e)</pre>
+  <pre>{<br />   // Is the user valid?<br />   if (Membership.ValidateUser(userName.Text, password.Text))<br />   {<br />        // Parameter two set to false indicates non-persistent cookie<br />        FormsAuthentication.RedirectFromLoginPage(username.Text, false);<br />    }<br />    else<br />    {<br />        Status.Text = "Invalid credentials. Please try again.";<br />    }<br />}</pre>
+  <br />
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance. </p>]]></Data>
+  </Content>
+</TeamMentor_Article>

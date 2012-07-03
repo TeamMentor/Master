@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-0000001a0c7b</Id>
+    <Library_Id>b6f408c5-6e6e-4bc0-90a5-0bb10becc2ce</Library_Id>
+    <Title>Do Not Cache Sensitive Data</Title>
+    <Category>Privacy</Category>
+    <Phase>Design</Phase>
+    <Technology>iOS</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Do Not Cache Sensitive Data</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="WikiText">
+    <Data><![CDATA[==What to Do==
+
+Do not cache sensitive data as temporary files.
+
+==Why==
+
+Data from temporary files may be recovered by an attacker if the device is lost or compromised.
+
+==How==
+
+To prevent caching of sensitive data:
+
+# **Identify sensitive data.** Make a list of types of sensitive information handled by your application. Some examples are:
+#* Passwords
+#* Encryption keys
+#* Personal information
+# **Identify code that creates temporary files used by the application.** Review the application source code to find functions that are responsible for creating the temporary files to find ones that write sensitive data.
+# **Remove code that writes sensitive data to temporary files.** Edit the functions that write sensitive data to temporary files to prevent caching of sensitive data.]]></Data>
+  </Content>
+</TeamMentor_Article>

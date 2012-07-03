@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-539372229" Content_Hash="1554891582">
+  <Metadata>
+    <Id>04f887c2-3d04-4e9b-99e2-74b18bbd6f2b</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Lock Accounts After Consecutive Failed Login Attempts</Title>
+    <Category>Authentication</Category>
+    <Phase>Design</Phase>
+    <Technology>Java</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Lock Accounts After Consecutive Failed Login Attempts</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Do</h1>
+  <p>Lock users' accounts after consecutive failed login attempts.</p>
+  <h1>Why</h1>
+  <p>Multiple consecutive failed authentication attempts over a short period of time are a symptom that is used to detect when an account is under attack. Locking out the account can prevent&amp;nbsp;an attacker from compromising and accessing the account.</p>
+  <h1>When</h1>
+  <p>Your application should lock an account if the user has unsuccessfully tried to authenticate multiple times within a small period of time.</p>
+  <h1>How</h1>
+  <p>Use the following steps to successfully lock accounts after consecutive failed login attempts:</p>
+  <ol>
+    <li>
+      <p>
+        <strong>Determine a lockout policy. </strong>There are two variables to consider when determining a lockout policy:</p>
+      <ul>
+        <li>Number of allowed consecutive failed login attempts </li>
+        <li>Amount of time that a locked account will remain locked</li>
+      </ul>
+      <p>A simple policy would be to lock an account after&amp;nbsp;five failed login attempts for the duration of 15 minutes. Although this is an effective method for blocking a brute force attack, it exposes your application to denial of service as an attacker can easily keep an account locked through a small stream of authentication requests.<br /><br />When determining the lockout policy, it is important to evaluate the risk of attacks against the user and the support costs associated with reactivating a locked account. For example, requiring the user to contact your organization's support staff&amp;nbsp;to reactivate a locked account will have a direct impact on support costs and would add general user frustration.&amp;nbsp;However, it is important to use extra care when designing more sophisticated variations of your application's lockout policy, such as correlating a single or multiple user login attempts with a source IP. When adding extra levels of complexity, carefully consider and evaluate the scenarios where your application's lockout policy can be circumvented or can harm your business. For instance, consider scenarios where an attacker would attempt to compromise a user through the use of multiple hosts, or multiple users would authenticate using a shared office IP.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Track login attempts. </strong>Login attempts can be tracked with the use of a login counter. Increment the counter once a user tries to authenticate. Reset the counter to 0 after the user successfully authenticates. Example:</p>
+      <pre>-- Authenticate the user<br />sql&gt; select login_attempts from users<br />      where user = {{username}} and pass = {{passDigest}};<br /> -- Reset the login counter<br />sql&gt; update users set login_attempts = 0 where user = {{username}};</pre>
+    </li>
+    <li>
+      <p>
+        <strong>Enforce the lockout policy. </strong>The lockout policy should be enforced at all points in the application where authentication is necessary. Example:</p>
+      <pre>String dbStatement = "select login_attempts from users"<br />                   + "where user = ? and pass = ?;";<br />PreparedStatement st = dbConnection.prepareStatement(dbStatement);<br />st.setString(1, user);st.setString(2, passDigest);<br />ResultSet rs = st.executeQuery();<br /><br />if (rs.first())<br />{      <br />userIsValid = true;<br />      loginCount = rs.getInt(1);<br />}<br />else<br />{<br />      userIsValid = false;<br />}<br /><br />rs.close();<br /><br />if(userIsValid)<br />{<br />      if(loginCount &gt; 3)<br />      {<br />            throw new AccountIsLockedException();<br />      }<br /><br />      // The application checks the password's maturity<br />      checkPasswordMaturity(user);<br />}<br />else<br />{<br />      updateLastLoginAttempt(user);<br />}</pre>
+    </li>
+    <li>
+      <p>
+        <strong>Set an unlocking mechanism. </strong>Keep track of the lockout period. Based on your application's lockout policy, unlock the account after the lockout period has expired. Example:</p>
+      <pre>-- Unlock all locked accounts whose 45 minute lockout period has expired<br />sql&gt; update users set login_attempts = 0<br />      where last_login &lt; (current_timestamp - interval '45' minute);</pre>
+    </li>
+  </ol>
+  <p>
+    <strong>Note:</strong> PCI DSS requirements state that an account should be locked out for at least 30 minutes after no more than six failed login attempts.</p>
+  <h1>Problem Example</h1>
+  <p>The following code executes the database transaction that is required during authentication. Because the transaction fails to check the login attempts counter, it is possible for an attacker to compromise an account through the use of brute force or a dictionary attack.</p>
+  <pre>// The application fails to check the number of login attempts<br />String dbStatement = "select user from users where user = ? and pass = ?;";<br />st = dbConnection.prepareStatement(dbStatement);<br />st.setString(1, user);<br />st.setString(2, passDigest);<br />rs = st.executeQuery();</pre>
+  <h1>Solution Example</h1>
+  <p>The following code executes the database transaction that is required during authentication. Because the transaction checks the login attempts counter, it would be very expensive for an attacker to compromise an account through the use of brute force or a dictionary attack.</p>
+  <pre>// The application checks the number of login attempts<br />String dbStatement = "select login_attempts from users where user = ? and pass = ?;";<br />PreparedStatement st = dbConnection.prepareStatement(dbStatement);<br />st.setString(1, user);<br />st.setString(2, passDigest);<br />ResultSet rs = st.executeQuery();<br /><br />if (rs.first())<br />{<br />      userIsValid = true;<br />      loginCount = rs.getInt(1);<br />}<br />else<br />{<br />      userIsValid = false;<br />}<br /><br />rs.close();<br /><br />if(userIsValid)<br />{<br />      if(loginCount &gt; 3)<br />      {<br />            throw new AccountIsLockedException();<br />      }<br />      checkPasswordMaturity(user);<br />}<br />else<br />{<br />      updateLastLoginAttempt(user);<br />}</pre>]]></Data>
+  </Content>
+</TeamMentor_Article>

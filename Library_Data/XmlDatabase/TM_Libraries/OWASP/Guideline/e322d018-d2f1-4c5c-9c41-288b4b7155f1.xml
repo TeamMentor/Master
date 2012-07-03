@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="2019359695" Content_Hash="1463852557">
+  <Metadata>
+    <Id>e322d018-d2f1-4c5c-9c41-288b4b7155f1</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Use SSL When Transmitting Credentials</Title>
+    <Category>Authentication</Category>
+    <Phase>Implementation</Phase>
+    <Technology>Java</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Use SSL When Transmitting Credentials</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Do</h1>
+  <p>Do not send credentials via unencrypted connections. Use SSL when transmitting credentials.</p>
+  <h1>Why</h1>
+  <p>Using SSL prevents the credentials from being sniffed or tampered with as they are transmitted over the network.</p>
+  <h1>When</h1>
+  <p>If your application sends credentials on the Internet.</p>
+  <h1>How</h1>
+  <p>Using Secure Socket Layer (SSL) over HTTP requires the following steps:</p>
+  <ol>
+    <li>
+      <p>
+        <strong>Create a certificate request.</strong> Using your hosting server or OpenSSL, generate an SSL certificate request. Example:</p>
+      <pre># Generate private key<br />openssl genrsa -des3 -out privkey.pem 2048 <br /># Generate certificate request using private key<br />openssl req -new -key privkey.pem -out cert.csr</pre>
+    </li>
+    <li>
+      <p>
+        <strong>Present the request to a Certification Authority (CA).</strong> If all conditions for obtaining an SSL certificate are met, the CA will produce a new SSL certificate based on the certificate request. Because the requirements for obtaining an SSL certificate depend on the Certification Authority, consult with the Certification Authority in regards to the administrative steps necessary for obtaining such certificate.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Install the certificate.</strong> Consult with the hosting server's documentation on how to install the SSL certificate.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Ensure credentials are sent over SSL.</strong> Place the authentication portion of your application on a dedicated subdomain. Configure the server to accept only HTTPS traffic for the authentication subdomain. Ensure that form posts containing credentials are sent over HTTPS. This is accomplished by using absolute URL paths in the action field. Example:</p>
+      <pre>&lt;form method="POST" action="https://login.example.com/myapp/login"&gt;</pre>
+    </li>
+  </ol>
+  <h1>Problem Example</h1>
+  <p>In the following snippet, the credentials are transmitted over unprotected HTTP. This allows an attacker to easily steal credentials from sniffed traffic.</p>
+  <pre>&lt;html&gt;<br />  &lt;head&gt;<br />    &lt;title&gt;login form&lt;/title&gt;<br />  &lt;/head&gt;<br />  &lt;body&gt;<br />    &lt;form method="POST" action="http://login.example.com/myapp/login"&gt;<br />    &lt;input type="text" name="user" size=25&gt;&lt;br&gt;<br />    &lt;input type="password" name="pass" size=25&gt;&lt;br&gt;<br />    &lt;input type="submit" name="submit" value="log in"&gt;<br />    &lt;/form&gt;<br />  &lt;/body&gt;<br />&lt;/html&gt;</pre>
+  <h1>Solution Example</h1>
+  <p>In the following snippet, the credentials are transmitted over HTTPS. This makes it difficult for an attacker to steal credentials from sniffed traffic:</p>
+  <pre>&lt;html&gt;<br />  &lt;head&gt;<br />    &lt;title&gt;login form&lt;/title&gt;<br />  &lt;/head&gt;<br />  &lt;body&gt;<br />    &lt;form method="POST" action="https://login.example.com/myapp/login"&gt;<br />    &lt;input type="text" name="user" size=25&gt;&lt;br&gt;<br />    &lt;input type="password" name="pass" size=25&gt;&lt;br&gt;<br />    &lt;input type="submit" name="submit" value="log in"&gt;<br />    &lt;/form&gt;<br />  &lt;/body&gt;<br />&lt;/html&gt;</pre>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>For more information about using SSL in the J2EE, see: <a href="http://www.cs.uccs.edu/~cs301/j2ee/j2eetutorial14/doc/Security6.html">Installing and Configuring SSL Support</a>. </li>
+    <li>To learn more about generating certificate requests, see: <a href="http://support.microsoft.com/default.aspx?scid=KB;en-us;q228821">Generating a Certificate Request File Using the Certificate Wizard in IIS 5.0</a>. </li>
+    <li>To learn more about creating SSL certificates, see: <a href="http://www.openssl.org/docs/HOWTO/certificates.txt">OpenSSL HOWTO certificates</a>. </li>
+    <li>For more information about using SSL with Tomcat, see: <a href="http://tomcat.apache.org/tomcat-4.0-doc/ssl-howto.html">SSL Configuration HOW-TO</a>. </li>
+    <li>For more information about safely configuring SSL, see: <a href="https://www.owasp.org/index.php/Transport_Layer_Protection_Cheat_Sheet">https://www.owasp.org/index.php/Transport_Layer_Protection_Cheat_Sheet</a>.</li>
+  </ul>]]></Data>
+  </Content>
+</TeamMentor_Article>

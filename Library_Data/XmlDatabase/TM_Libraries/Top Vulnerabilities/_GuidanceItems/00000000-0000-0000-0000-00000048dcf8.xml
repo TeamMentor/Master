@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-00000048dcf8</Id>
+    <Library_Id>f798e6e6-1732-4172-9c47-9621d914efcd</Library_Id>
+    <Title>Cross-Site Request Forgery</Title>
+    <Category>Session Management</Category>
+    <Phase>NA</Phase>
+    <Technology> Any</Technology>
+    <Type>Attack</Type>
+    <DirectLink>Cross-Site Request Forgery</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="WikiText">
+    <Data><![CDATA[==Description==
+
+A Cross Site Request Forgery attack occurs when an attacker tricks a victim into loading a page that contains a malicious request. This request may be able to change the state of the web application and is possible because the request is sent in the context of the logged in victim. For many sites each request automatically sends the victim's credentials such as the session cookie or authentication credentials. Due to this fact there is no way to distinguish the false request from a legitimate request.
+
+Cross Site Request Forgery attacks are known by other names including XSRF, Session Riding, One-Click and Zero-Click attacks.
+
+A One-Click attack refers to a link that causes a malicious action to be performed when a victim clicks on it. A Zero-Click attack is automatically executed upon page load. A common way to perform a zero-click attack is to embed the request in the source of an image.
+
+==Impact==
+
+*Elevation of Privilege]]></Data>
+  </Content>
+</TeamMentor_Article>

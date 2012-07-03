@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-00000081c795</Id>
+    <Library_Id>f215ceee-9a08-41d9-b2c1-bbcc058a8f32</Library_Id>
+    <Title>Use Server-side Authentication</Title>
+    <Category>Authentication</Category>
+    <Phase>Implementation</Phase>
+    <Technology>Android</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Use Server-side Authentication</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="WikiText">
+    <Data><![CDATA[==Applies To==
+
+* Android applications that authenticate to a remote server.
+
+==What to Do==
+
+Use server-side authentication.
+
+==Why==
+
+Server-side authentication should be used because client-side authentication is trivial to bypass.
+
+==How==
+
+# **Define authentication requirements.** Consider the following aspects of authentication controls as pertaining to your application:
+#* Enforcing password strength requirements.
+#* Allowing secure password reset or recovery.
+#* Requiring re-authentication for sensitive operations.
+#* Using multi-factor authentication.
+#* Using simple error messages that don't give away information to the attacker.
+#* Using SSL/TLS to secure communications.
+#* Throttling repeated authentication attempts.
+#* Locking inactive authentication accounts.
+# **Implement authentication on the server.** It is important to implement security controls, such as authentication on the server, because client-side security controls can be tampered with or disabled altogether on the client. Implement authentication controls that match the requirements defined in the previous step on the server back-end. 
+# **Add client-side code that authenticates to the server.** Once authentication is implemented in accordance with the requirements, add client-side code that authenticates to the server. The client-side code will need an interface for managing authentication credentials, network code that communicates with the server using SSL/TLS, a token or some other means to maintain a session state on the server, and possibly secure storage for cached authentication credentials.
+
+==Additional Resources==
+
+* For more information about authentication requirements, please see https://www.owasp.org/index.php/Authentication_Cheat_Sheet]]></Data>
+  </Content>
+</TeamMentor_Article>

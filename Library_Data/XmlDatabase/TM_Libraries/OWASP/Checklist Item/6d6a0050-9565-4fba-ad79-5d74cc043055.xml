@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-92798983" Content_Hash="-36950758">
+  <Metadata>
+    <Id>6d6a0050-9565-4fba-ad79-5d74cc043055</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Log Files Are Configured with an Appropriate Size Depending on the Application Security Requirement</Title>
+    <Category>Server Hardening</Category>
+    <Phase>Deployment</Phase>
+    <Technology> Any</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>Log Files Are Configured with an Appropriate Size Depending on the Application Security Requirement</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>J.D. Meier, Alex Mackman, Michael Dunner, Srinath Vasireddy, Ray Escamilla and Anandha Murukan</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Check For</h1>
+  <p>Ensure that log files are large enough depending on the application security requirement.</p>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance.</p>]]></Data>
+  </Content>
+</TeamMentor_Article>

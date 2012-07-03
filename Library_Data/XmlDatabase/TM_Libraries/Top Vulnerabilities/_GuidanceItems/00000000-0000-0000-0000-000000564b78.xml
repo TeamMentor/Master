@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-000000564b78</Id>
+    <Library_Id>f798e6e6-1732-4172-9c47-9621d914efcd</Library_Id>
+    <Title>Use Server-side Authentication</Title>
+    <Category>Authentication</Category>
+    <Phase>Implementation</Phase>
+    <Technology>PHP</Technology>
+    <Type>Principle</Type>
+    <DirectLink>Use Server-side Authentication</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Applies to</h1>
+  <ul>
+    <li>PHP</li>
+  </ul>
+  <h1>What to Do</h1>
+  <p>Implement authentication on the server-side.</p>
+  <h1>Why</h1>
+  <p>Server-side authentication should be used, because client-side authentication is easy to bypass.</p>
+  <h1>How</h1>
+  <p>Most PHP developers write their own authentication functions. The typical solution is to use MySQL to store password hashes in a table, but there are other options. The important part is performing authentication on the server.</p>
+  <ul>
+  </ul>]]></Data>
+  </Content>
+</TeamMentor_Article>

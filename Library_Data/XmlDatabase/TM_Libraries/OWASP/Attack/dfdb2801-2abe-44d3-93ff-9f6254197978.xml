@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-101763803" Content_Hash="-1909224310">
+  <Metadata>
+    <Id>dfdb2801-2abe-44d3-93ff-9f6254197978</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Xpath-XQuery Attack</Title>
+    <Category>Input and Data Validation</Category>
+    <Phase>Any</Phase>
+    <Technology> Any</Technology>
+    <Type>Attack</Type>
+    <DirectLink>Xpath-XQuery Attack</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>1</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>Applies To</h1>
+  <p>Any application that can manipulate XML documents through Xpath/XQuery </p>
+  <h1>Description</h1>
+  <p>An Xpath/XQuery attack exploits vulnerabilities in input validation to run arbitrary commands in XML databases. This attack works in much the same way as a SQL injection attack but with an XML target instead of a SQL target. This attack can occur when your application uses input directly from a user to construct an Xpath/XQuery statement to access XML tables. Using the Xpath/XQuery attack the attacker can execute arbitrary Xpath/XQuery statements on an XML database. This attack is often more damaging than a SQL injection attack as permissions are not enforced and the attacker’s query can access every part of the XML document. With an Xpath/XQuery attack it is possible to retrieve, manipulate, and destroy any data stored in the XML document.</p>
+  <h1>Impact</h1>
+  <ul>
+    <li>
+      <strong>Confidentiality:</strong> Since XML generally holds sensitive data, loss of confidentiality is a frequent problem with XPath/XQuery injection vulnerabilities. </li>
+    <li>
+      <strong>Authentication:</strong> If poor XPath/XQuery commands are used to check user names and passwords, it may be possible to connect to a system as another user with no previous knowledge of the password. </li>
+    <li>
+      <strong>Authorization:</strong> If authorization information is held in an XML document, it may be possible to change this information through the successful exploitation of an XPath/XQuery injection vulnerability. </li>
+    <li>
+      <strong>Integrity:</strong> Just as it may be possible to read sensitive information, it is also possible to make changes or even delete this information with an XPath/XQuery injection attack. </li>
+  </ul>
+  <h1>Vulnerabilities</h1>
+  <ul>
+    <li>Weak input validation. </li>
+    <li>Generating XPath expressions by dynamically concatenating strings with user supplied data. </li>
+    <li>Failure to escape single quotes, double quotes, and other potentially dangerous characters.</li>
+  </ul>
+  <h1>Countermeasures</h1>
+  <ul>
+    <li>
+      <strong>Constrain input.</strong> Use vigorous white-list style checking on any user input that may be used as part of an XQuery command. This will also help prevent meta characters from being added to your stored data set which will be used again. </li>
+    <li>
+      <strong>Use parameterized and precompiled XPath expressions in your XQuery instead of concatinating strings with user input.</strong> Parameterized Xpath statements will accept characters that have special meaning to Xpath (like single quote) without problems because they are strongly typed. </li>
+    <li>
+      <strong>Use escaping routines.</strong> If you cannot use parameters and must generate XPath expressions dynamically, use escaping routines to handle special characters that have meaning to the database. </li>
+    <li>
+      <strong>Do not echo XQuery errors.</strong> Catch any exceptions on the server and return generic error messages to the client.</li>
+  </ul>
+  <h1>Example</h1>
+  <p>Consider the following XML file, being used by an application to log users into the application</p>
+  <pre>&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt; &lt;users&gt;    &lt;user&gt;       &lt;username&gt;admin&lt;/username&gt;       &lt;password&gt;8af2&amp;&lt;/password&gt;       &lt;account&gt;admin&lt;/account&gt;    &lt;/user&gt;    &lt;user&gt;       &lt;username&gt;user1&lt;/username&gt;       &lt;password&gt;password&lt;/password&gt;       &lt;account&gt;guest&lt;/account&gt;    &lt;/user&gt;    &lt;user&gt;       &lt;username&gt;user2&lt;/username&gt;       &lt;password&gt;1234&lt;/password&gt;       &lt;account&gt;guest&lt;/account&gt;    &lt;/user&gt; &lt;/users&gt;</pre>
+  <p>A developer could use the following Xpath command to return all the users with the username</p>
+  <pre>‘user1’ and password ‘password’string(//user[username/text()='user1'        and password/text()='password']/account/text())</pre>
+  <p>However, without proper input validation the attacker could easily input a logic statement to manipulate the output of the query. An attacker could provide the following string to the Xpath statement above.</p>
+  <pre>Username: user1Password: ' or '1' = '1</pre>
+  <p>This will change the Xpath statement to look like this:</p>
+  <pre>string(//user[username/text()='user1' and password/text()=''        or '1' = '1']/account/text())</pre>
+  <p>The password portion of the query will always resolve to true which means that the application will authenticate the attacker as user1 even though no password was provided.</p>
+  <p>A good way to fix this example is to use a parameterized query. The idea here is to create a precompiled query that gets values from parameters instead of dynamically creating an XPath expression by concatenation at run time. Let $username and $password be string variables that hold the users input. Then construct a query in the following way:</p>
+  <pre>"//user[user[username/text()=$username and password/text()=$password]"</pre>
+  <p>If you are using .NET see the Additional Resources below for another example of how this works.</p>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>
+      <a href="http://www.tkachenko.com/blog/archives/000385.html">http://www.tkachenko.com/blog/archives/000385.html</a>
+    </li>
+    <li>
+      <a href="http://www.owasp.org/index.php/XML_Injection">http://www.owasp.org/index.php/XML_Injection</a>
+    </li>
+    <li>
+      <a href="http://palisade.plynt.com/issues/2005Jul/xpath-injection/index.php">http://palisade.plynt.com/issues/2005Jul/xpath-injection/index.php</a>
+    </li>
+    <li>
+      <a href="http://secureitalliance.org/blogs/watchfire/archive/2006/02/10/660.aspx">http://secureitalliance.org/blogs/watchfire/archive/2006/02/10/660.aspx</a>
+    </li>
+  </ul>]]></Data>
+  </Content>
+</TeamMentor_Article>

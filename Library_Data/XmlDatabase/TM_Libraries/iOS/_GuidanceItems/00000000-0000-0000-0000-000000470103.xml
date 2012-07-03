@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-000000470103</Id>
+    <Library_Id>b6f408c5-6e6e-4bc0-90a5-0bb10becc2ce</Library_Id>
+    <Title>Sign iOS Application Updates</Title>
+    <Category>Code Integrity</Category>
+    <Phase>Implementation</Phase>
+    <Technology>iOS</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Sign iOS Application Updates</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="WikiText">
+    <Data><![CDATA[==What to Do==
+
+Sign application updates.
+
+==Why==
+
+Application updates should be signed to verify that they came from a trusted source. In practice, updates to iOS applications are distributed as full new versions rather than patches. iOS application updates have to be signed to run, just like entirely new applications have to be signed. 
+
+==How==
+
+The procedure for signing iOS application updates is the same as the procedure for signing iOS applications in general.
+
+==Related Items==
+
+* [[Sign iOS Applications]]]]></Data>
+  </Content>
+</TeamMentor_Article>

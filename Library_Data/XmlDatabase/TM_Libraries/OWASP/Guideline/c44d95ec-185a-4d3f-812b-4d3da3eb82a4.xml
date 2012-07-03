@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="256239718" Content_Hash="-568755984">
+  <Metadata>
+    <Id>c44d95ec-185a-4d3f-812b-4d3da3eb82a4</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Use SSL Between the Web Browser And Web Server When Pages Need to Be Encrypted</Title>
+    <Category>Communication Security</Category>
+    <Phase>Implementation</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Use SSL Between the Web Browser And Web Server When Pages Need to Be Encrypted</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Do</h1>
+  <p>Use SSL as an encrypted communication channel to protect data sent between servers and web browsers. SSL can be used to help protect communication by encrypting traffic such as account information, billing data, etc.&amp;nbsp;&amp;nbsp; </p>
+  <h1>Why</h1>
+  <p>If sensitive data is sent between client and server unprotected it may be stolen or modified.&amp;nbsp; SSL can be used to help protect communication between client and server by encrypting network traffic.&amp;nbsp; Encryption will protect against eavesdropping (theft) but an attacker may still blindly modify the data for malicious purposes.&amp;nbsp; Use integrity checking (HMAC) to ensure the data has not been modified.</p>
+  <h1>When</h1>
+  <p>Use&amp;nbsp;SSL for communication between web browser and web server, when page content&amp;nbsp;needs to be encrypted on the network and the&amp;nbsp;identity&amp;nbsp;of the server needs to be guaranteed. </p>
+  <p>
+    <strong>Note</strong>: SSL does carry a significant performance penalty in terms of latency that is introduced due to encryption/decryption of pages, so it is important to optimize the number of pages that use SSL. Please see "Guideline: Performance:Use SSL Only for Pages That Require It" for more information.</p>
+  <h1>How</h1>
+  <p>Use SSL to create a secure encrypted communication channel between browser clients and Web server.</p>
+  <p>To use SSL:</p>
+  <p>&amp;nbsp;&amp;nbsp; 1. Install a server certificate on the Web server.<br />&amp;nbsp;&amp;nbsp; 2. Install the root certificate authority (CA) certificate from the same authority into the local computer's Trusted Root Certification Authorities certificate store.<br />&amp;nbsp;&amp;nbsp; 3. Use IIS to configure the server to force the use of encryption while accessing Web pages.<br />&amp;nbsp;&amp;nbsp; 4. Design pages with SSL in mind to minimize performance overhead. Optimize pages that use SSL by including less text and simple graphics and partition&amp;nbsp;the site and ensure that only those pages than contain sensitive data use SSL.&amp;nbsp;</p>
+  <h1>Problem Example</h1>
+  <p>An ASP.NET application allows users to login and maintain their contacts in an online database that is accesible via a web browser. The login&amp;nbsp;credentials are sent in plain text, which allows someone on the network to modify&amp;nbsp;the&amp;nbsp;data sent between&amp;nbsp;a browser and a server or view the contents. The lack of integrity and privacy means that the identity of the user and the identity of the web&amp;nbsp;entity serving out the pages can not be verified.&amp;nbsp;&amp;nbsp;&amp;nbsp;</p>
+  <h1>Solution Example</h1>
+  <p>An ASP.NET application allows users to login and maintain their contacts in an online database that is accesible via a web browser. When the application is deployed, an SSL certificate is installed on the Web Server. The server is then setup to force users to use encryption while visiting pages containing sensitive information.</p>
+  <h1>Additional Resources&amp;nbsp;</h1>
+  <ul>
+    <li>How To: Use SSL to Secure Communication with SQL Server&amp;nbsp;<a href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dnnetsec/html/SecNetHT19.asp">http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dnnetsec/html/SecNetHT19.asp</a></li>
+    <li>Using Secure Sockets Layer <a href="http://msdn2.microsoft.com/en-us/library/ds8bxk2a.aspx">http://msdn2.microsoft.com/en-us/library/ds8bxk2a.aspx</a></li>
+    <li>Internet Protocol Version 6 <a href="http://msdn2.microsoft.com/en-us/library/3x7ak53z(VS.80).aspx">http://msdn2.microsoft.com/en-us/library/3x7ak53z(VS.80).aspx</a></li>
+  </ul>
+  <ul>
+  </ul>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance. </p>]]></Data>
+  </Content>
+</TeamMentor_Article>

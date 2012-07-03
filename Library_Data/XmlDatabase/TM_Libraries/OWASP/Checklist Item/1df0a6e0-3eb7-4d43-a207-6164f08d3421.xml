@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="701561458" Content_Hash="-490772209">
+  <Metadata>
+    <Id>1df0a6e0-3eb7-4d43-a207-6164f08d3421</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Users And Administrators Do Not Share Accounts</Title>
+    <Category>Server Hardening</Category>
+    <Phase>Deployment</Phase>
+    <Technology> Any</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>Users And Administrators Do Not Share Accounts</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>J.D. Meier, Alex Mackman, Michael Dunner, Srinath Vasireddy, Ray Escamilla and Anandha Murukan</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Check For</h1>
+  <p>Check to ensure that no shared accounts are created for use by multiple individuals. Make sure that authorized individuals&amp;nbsp;use their own accounts.</p>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance.</p>]]></Data>
+  </Content>
+</TeamMentor_Article>

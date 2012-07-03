@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="286184972" Content_Hash="-291139050">
+  <Metadata>
+    <Id>0ba54c5c-7064-4224-8d6d-b4906db5da59</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Use Type Safe SQL Parameters When Constructing SQL Queries</Title>
+    <Category>Data Access</Category>
+    <Phase>Implementation</Phase>
+    <Technology>Java</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Use Type Safe SQL Parameters When Constructing SQL Queries</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Do</h1>
+  <p>Use Prepared Statements to execute SQL statements. Do not generate SQL statements directly from user input.</p>
+  <h1>Why</h1>
+  <p>Parameterized Queries mitigate the number one risk for database-facing Web applications: SQL injection. This powerful attack is language independent, as it depends on the algorithm used to generate SQL strings passed to the database and affects the database engine, not the actual application.</p>
+  <p>It exploits the creation of the SQL string, in which user input is embedded manually with escape sequences (such as the single quote (<strong>'</strong>) or double quote (<strong>"</strong>) characters). Using this method, an attacker inserts valid SQL statement fragments as part of user input so they, in turn, are embedded within the SQL query that is submitted to the database engine for execution. Successful exploitation allows an attacker to potentially compromise the entire database and often the underlying operating system. </p>
+  <p>Parameterized Queries offer a simple yet efficient mitigation since they automatically contain user-input in a non-escaped form, "compiling" the query and passing the input as parameters, much like a function call. There is no known method of injecting custom SQL over Parameterized Queries.</p>
+  <p>Additionally, using Parameterized queries offers two significant advantages:</p>
+  <ul>
+    <li>
+      <strong>Greater Efficiency</strong>: The database engine needs to "compile" the statement only once, allowing for greater efficiency in query invocation. </li>
+    <li>
+      <strong>Greater Security</strong>: The database engine automatically handles the parsing and embedding of user input, effectively negating any potential for SQL injection due to attackers taking advantage of delimiter characters such as a single quote (<strong>'</strong>) or a double quote (<strong>"</strong>). </li>
+  </ul>
+  <h1>When</h1>
+  <p>Type-safe SQL parameters should be used whenever SQL statements need to be executed by the database. </p>
+  <h1>How</h1>
+  <p>One way of making the application less susceptible to SQL injection attacks is by using stored procedures. Stored procedures are subroutines stored in the database that are available to applications for accessing the data. </p>
+  <p>Just using stored procedures isn't a complete remedy for SQL injection. The important thing to do is use parameters with stored procedures, or else your stored procedures can be susceptible to SQL injection if they use unfiltered input. Stored procedures provide several security advantages: </p>
+  <ul>
+    <li>By parameterizing input parameters and type-enforcing them, user input is effectively filtered. </li>
+    <li>Stored procedures are allowed by most databases&amp;nbsp;to execute under different security privileges than&amp;nbsp;from the database user, thereby restricting the ability of the application to do anything beyond the actions specified in the stored procedures. For instance, an application would have execute access to a stored procedure but no access to the base tables. </li>
+  </ul>
+  <p>To use type-safe SQL parameters, follow these steps:</p>
+  <ol>
+    <li>
+      <p>
+        <strong>If possible, use stored procedures. </strong>Stored procedures are pre-compiled statements that are stored on the database server. Using stored procedures improves your application's performance and security.&amp;nbsp;</p>
+    </li>
+    <li>
+      <p>
+        <strong>Identify the SQL queries. </strong>Locate all SQL queries throughout your application. Example:</p>
+      <blockquote>
+        <pre>Connection cn = MyApp.getDBConnection();<br />Statement st = cn.createStatement();<br />String query = "select login_attempts from myappUsers where user = \"" + user<br />             + "\" and pass = \"" + new String(passDigest) + "\";";<br />ResultSet rs = st.executeQuery(query);</pre>
+      </blockquote>
+    </li>
+    <li>
+      <p>
+        <strong>Identify the parameters in each SQL query. </strong>After locating all SQL queries, identify the parameters in each query. Understand the format and type of each parameter's data.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Use PreparedStatement. </strong>Java supports parameterized queries via its <strong>PreparedStatement</strong> class. <strong>PreparedStatement</strong> is mapped by most databases to a parameterized query or a stored procedure. Although the implementation may differ&amp;nbsp;among databases, the functionality is the same. Turn all SQL queries into parameterized queries. To accomplish this, turn all <strong>Statement</strong> objects into <strong>PreparedStatement</strong> objects. For example, the SQL query from Step 1 would be:</p>
+      <blockquote>
+        <pre>Connection cn = MyApp.getDBConnection();<br />PreparedStatement st = cn.prepareStatement("select login_attempts from myappUsers"<br />                     + " where user = ? and pass = ?;");<br />st.setString(1, user);<br />st.setString(2, new String(passDigest));<br />ResultSet rs = st.executeQuery();.</pre>
+      </blockquote>
+    </li>
+  </ol>
+  <h1>Problem Example</h1>
+  <p>The following code validates the user based on a given username and password. It hashes the password with a random salt, then it compares the username and the produced hash against the data stored in the backend database. Unfortunately, the SQL query is dynamically crafted by using the user's input. If there is no proper input validation, an attacker can access the application's database server through the use of SQL injection.</p>
+  <blockquote>
+    <pre>public boolean validateUser(String user, char[] pass)<br />{<br />      // Hash the credentials before querying the credential store<br />      // The application crafts the SQL query based on user's input<br />      Connection cn = MyApp.getDBConnection();<br />      Statement st = cn.createStatement();<br />      String query = "select login_attempts from myappUsers where user = \""<br />                    + user + "\" and pass = \"" + passHash + "\";";<br />      ResultSet rs = st.executeQuery(query);<br />       // Execute the rest of the authentication steps<br />}</pre>
+  </blockquote>
+  <h1>Solution Example</h1>
+  <p>The following code validates the user based on given username and password. It hashes the password with a random salt, then it compares the username and the produced hash against the data stored in the backend database. Because the application uses <strong>PreparedStatement</strong>, it is much more difficult for an attacker to gain access to the application's database server through the use of SQL injection. </p>
+  <blockquote>
+    <pre>public boolean validateUser(String user, char[] pass)<br />{<br />      // Hash the credentials before querying the credential store<br />      // The application uses parameterized queries<br />      Connection cn = MyApp.getDBConnection();<br />      PreparedStatement st = cn.prepareStatement("select user from myappUsers"<br />                            + " where user = ? and pass = ?;");<br />      st.setString(1, user);<br />      st.setString(2, passHash);<br />      ResultSet rs = st.executeQuery();<br />       // Execute the rest of the authentication steps<br />}</pre>
+  </blockquote>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>To learn more about using parameterized queries in Java, see: Documentation for <a href="http://java.sun.com/j2se/1.4.2/docs/api/java/sql/PreparedStatement.html">Interface PreparedStatement</a>. </li>
+    <li>For more information about preventing SQL injection attacks, visit: <a href="http://www.owasp.org/index.php/Reviewing_Code_for_SQL_Injection">Reviewing Code for SQL Injection</a> from OWASP. </li>
+    <li>To learn more about SQL server security, visit: <a href="http://www.sqlsecurity.com/">SQLSecurity.com</a>.</li>
+  </ul>
+  <ul>
+  </ul>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-66624287" Content_Hash="911682039">
+  <Metadata>
+    <Id>bae35023-258d-40f5-8c36-22f562c83c36</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Encrypt Configuration Sections That Store Sensitive Data</Title>
+    <Category>Data Access</Category>
+    <Phase>Deployment</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Encrypt Configuration Sections That Store Sensitive Data</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Do</h1>
+  <p>Encrypt configuration sections containing sensitive data such as passwords or usernames. </p>
+  <h1>Why</h1>
+  <p>Configuration sections typically contain privacy sensitive resource access credentials (e.g., a connection string for a SQL server resource includes a username and password.) As a precautionary measure, they should not be stored in plaintext, because an attacker that can compromise a server will be able to read those values if they are not adequately protected. </p>
+  <h1>When</h1>
+  <p>This guideline is applicable whenever configuration sections are utilized. </p>
+  <h1>How</h1>
+  <p>In ASP.NET, you can use either the DPAPI or RSA protected configuration providers to encrypt specific sections that contain sensitive data. The sections that usually contain sensitive information that you need to encrypt include <i>&lt;appSettings&gt;, &lt;connectionStrings&gt;, &lt;identity&gt;,</i> and <i>&lt;sessionState&gt;</i>. To encrypt the <i>&lt;connectionStrings&gt;</i> section by using the DPAPI provider with the machine-key store (the default configuration), run the following command from a command window:</p>
+  <div>
+    <br />
+    <pre>aspnet_regiis -pe "connectionStrings" -app "/MachineDPAPI" -prov "DataProtectionConfigurationProvider" </pre>
+    <br />
+  </div>
+  <ul>
+    <li>
+      <strong>-pe</strong>: Specifies the configuration section to encrypt. </li>
+    <li>
+      <strong>-app</strong>: Specifies your Web application's virtual path. If your application is nested, you need to specify the nested path from the root directory; for example, "/test/aspnet/MachineDPAPI". </li>
+    <li>
+      <strong>-prov</strong>: Specifies the provider name.</li>
+  </ul>
+  <p>If you need to encrypt configuration file data on multiple servers in a Web farm, you should use RSA protected configuration provider because of the ease with which you can export RSA key containers.&amp;nbsp;</p>
+  <ul>
+  </ul>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance. </p>]]></Data>
+  </Content>
+</TeamMentor_Article>

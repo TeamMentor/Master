@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-1016741123" Content_Hash="1915369995">
+  <Metadata>
+    <Id>ca0d92eb-25a5-4904-923f-02eb9af3b1a4</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Write Access Only on Folders That Support Content Authoring And Are Configured for Authentication</Title>
+    <Category>Server Hardening</Category>
+    <Phase>Deployment</Phase>
+    <Technology> Any</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>Write Access Only on Folders That Support Content Authoring And Are Configured for Authentication</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>J.D. Meier, Alex Mackman, Michael Dunner, Srinath Vasireddy, Ray Escamilla and Anandha Murukan</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Check For</h1>
+  <p>Check to ensure that write permissions are configured&amp;nbsp;only on folders that allow content authoring. Grant write access only to content authors. Also the folders that support content authoring should be configured to require authentication and SSL for encryption. </p>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance.</p>]]></Data>
+  </Content>
+</TeamMentor_Article>

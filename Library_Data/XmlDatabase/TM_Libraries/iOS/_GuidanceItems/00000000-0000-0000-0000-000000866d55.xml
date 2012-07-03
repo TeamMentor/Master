@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-000000866d55</Id>
+    <Library_Id>b6f408c5-6e6e-4bc0-90a5-0bb10becc2ce</Library_Id>
+    <Title>Canonicalize File Names and Paths</Title>
+    <Category>Data Validation</Category>
+    <Phase>Implementation</Phase>
+    <Technology>iOS</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Canonicalize File Names and Paths</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="WikiText">
+    <Data><![CDATA[==What to Do==
+
+Canonizalize and validate all file paths that include input data. Use the //stringByStandardizingPath// function to canonicalize file paths before validating them.
+
+==Why==
+
+Canonicalizing file paths before validating them helps prevent unauthorized access. If a file path is not canonicalized, an attacker may use special characters to access resources outside of what is allowed by the application.
+
+==How==
+
+To canonicalize file names and paths:
+
+# **Identify all input used for file access.** Enumerate all file access performed by the application. Examine code responsible for accessing each file. Take note of any input used to form path or file names for file access.
+# **Remove null bytes from paths.** If a file name or path includes a null byte, an incorrect resource may be accessed. Verify that there are no null bytes in strings that are used for file names or paths. If null bytes are detected, it is safer to abort the operation than to strip the null bytes, because the presence of null bytes almost certainly indicates an attack.
+# **Canonicalize all input data used for file access.** The exact approach for canonicalization is different for different applications. One common scenario is appending a user-specified file name to a predefined path. In that case, the //lastPathComponent// method of the //NSString// class should be used on the file name to get just the file name. After that, the file name should be added to the predefined path.
+# **Validate file paths.** Verify that the user or application are authorized to access the specified resource.]]></Data>
+  </Content>
+</TeamMentor_Article>

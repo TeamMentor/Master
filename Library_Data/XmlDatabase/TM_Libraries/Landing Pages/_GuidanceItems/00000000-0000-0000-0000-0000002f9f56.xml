@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-0000002f9f56</Id>
+    <Library_Id>80a03482-cf8b-4055-82db-1aa09465d30f</Library_Id>
+    <Title>Command Execution</Title>
+    <Category />
+    <Phase>NA</Phase>
+    <Technology>ASP.NET</Technology>
+    <Type>Vulnerability</Type>
+    <DirectLink>Command Execution</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="WikiText">
+    <Data><![CDATA[==Description==
+
+Command injection (command execution) is a type of vulnerabilities that allows an attacker to execute arbitrary code or external processes by injecting control information into the data stream.
+
+==Countermeasures==
+
+The following TeamMentor articles describe effective counter-measures against command injection vulnerabilities:
+
+* [[Validate All Input]]
+* [[Validate Input for Length, Range, Format, And Type]]
+
+==Checklists==
+
+The following checklist items can help make sure that effective counter-measures against command injection vulnerabilities have been implemented:
+
+* [[All Input Is Validated]]
+* [[Input Is Validated for Length, Range, Format, And Type]]
+
+==Additional Resources==
+
+* For more information about command injection, please see https://www.owasp.org/index.php/Command_Injection 
+* For more information about command injection, please see http://software.e-articles.info/Command-Injection]]></Data>
+  </Content>
+</TeamMentor_Article>

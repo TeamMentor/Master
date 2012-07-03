@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="1953811006" Content_Hash="472215520">
+  <Metadata>
+    <Id>bddea980-c4cd-41b1-a807-4cd2efe3957f</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>All Database Input Is Validated</Title>
+    <Category>Data Access</Category>
+    <Phase>Implementation</Phase>
+    <Technology>Java</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>All Database Input Is Validated</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Check For</h1>
+  <p>Ensure that all input passed to the database is validated.</p>
+  <h1>Why</h1>
+  <p>Unvalidated input can lead to persistent cross-site scripting, SQL injection and other vulnerabilities&amp;nbsp;that would allow an attacker to gain unauthorized access to sensitive data.</p>
+  <h1>How to Check</h1>
+  <p>Use the following steps to check if all input passed to database is validated:</p>
+  <ol>
+    <li>
+      <p>
+        <strong>Identify database entry points. </strong>Identify all locations within your application that interface with the database servers. Potential sources of input include:</p>
+      <ul>
+        <li>URL based parameters </li>
+        <li>Form based parameters </li>
+        <li>Hidden fields </li>
+        <li>Cookies </li>
+        <li>Local filesystem </li>
+        <li>Javascript variables</li>
+      </ul>
+    </li>
+    <li>
+      <p>
+        <strong>Trace data from source to sink. </strong>Trace each source of input from the immediate source, through your application and&amp;nbsp;to the backend database.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Identify validation routines. </strong>Each input source should have a validation routine associated with it. Ideally the validation will occur as soon as the input reaches your application. Shared validation routines are better than creating many throughout the code base, so check for consolidation of routines to aid testing and reduce the chance of one-off bugs. If any input source does not have a validation routine associated with it, flag it for fixing.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Ensure quality of validators. </strong>Validation routines should check for length, range, format and type.&amp;nbsp;The validator&amp;nbsp;should first check for good data&amp;nbsp;via whitelisting and then for known malicious data&amp;nbsp;via blacklisting. Do not rely on client-side validation alone as it can be bypassed easily.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Ensure that parameterized queries are used. </strong>Verify that all database transactions are handled using <em>PreparedStatement</em> objects.</p>
+    </li>
+  </ol>
+  <h1>How to Fix</h1>
+  <p>To properly validate input passed to database:</p>
+  <ol>
+    <li>
+      <strong>Identify database entry points. </strong>Identify all locations within your application that interface with the database servers. Potential sources of input include: <ul><li>URL-based parameters </li><li>Form-based parameters </li><li>Hidden fields </li><li>Cookies </li><li>Local filesystem </li><li>Javascript variables</li></ul></li>
+    <li>
+      <p>
+        <strong>Create a set of validators. </strong>Determine the appropriate validation at each validator. Centralize the validators as it helps strengthen your code by limiting the amount of scattered validation code throughout the component. Place the validators along the database entry points. All data should pass through the validators before transmitted to the database servers.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Use type safe SQL parameters in queries. </strong>Stored procedures and parameterized queries improve your application's robustness against SQL injection based attacks.</p>
+    </li>
+  </ol>
+  <h1>Problem Example</h1>
+  <p>The following code allows the user to query a database. Unfortunately, the application fails to validate the user's input; therefore, an attacker can access the backend database on behalf of the application through the use of SQL injection. </p>
+  <pre>public void doGet(HttpServletRequest request,<br />     HttpServletResponse response) throws ServletException, IOException{<br />     PrintWriter out = response.getWriter();<br />     String query = request.getParameter("query");<br />     String retData = "";<br /><br />     // The application fails to validate the user-supplied<br />     // query before submitting it to the database server<br />     retData = queryDB(query);<br /><br />     ...<br /><br />     out.flush();<br />     out.close();<br />}</pre>
+  <h1>Solution Example</h1>
+  <p>The following code allows the user to query a database. Because the application validates the user's input, it is much more difficult for an attacker to access the backend database through a SQL injection attack.</p>
+  <pre>public void doGet(HttpServletRequest request,<br />     HttpServletResponse response) throws ServletException, IOException{<br />     PrintWriter out = response.getWriter();<br />     String query = request.getParameter("query");<br />     String retData = "";<br /><br />     // The application validates the user-supplied query<br />     // before submitting it to the database server<br />     if (validateQuery(query))<br />     {<br />          retData = queryDB(query);<br /><br />          ...<br /><br />     }<br /><br />     out.flush();<br />     out.close();<br />}<br /><br /><br />public boolean validateQuery(String input){<br /><br />      // The input can be only of numeric characters<br />      String goodPattern = "[0-9]++";<br /><br />      Pattern p = Pattern.compile(goodPattern);<br />      Matcher m = p.matcher(input);<br /><br />      if(!m.matches())<br />      {<br />            return false;<br />      }<br /><br />      return true;<br />}</pre>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>A tutorial on regular expressions is available at: <a href="http://www.regular-expressions.info/">Regular-Expressions.info</a>. </li>
+    <li>For more information on using regular expression in Java, see: <a href="http://java.sun.com/j2se/1.4.2/docs/api/java/util/regex/Pattern.html">Class Pattern</a> in Java SDK. </li>
+  </ul>]]></Data>
+  </Content>
+</TeamMentor_Article>

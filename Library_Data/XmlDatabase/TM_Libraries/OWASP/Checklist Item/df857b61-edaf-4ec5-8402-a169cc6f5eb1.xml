@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="774308299" Content_Hash="2129668446">
+  <Metadata>
+    <Id>df857b61-edaf-4ec5-8402-a169cc6f5eb1</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Remote Administration of the Server Is Secured</Title>
+    <Category>Server Hardening</Category>
+    <Phase>Deployment</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>Remote Administration of the Server Is Secured</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>J.D. Meier, Alex Mackman, Michael Dunner, Srinath Vasireddy, Ray Escamilla and Anandha Murukan</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>Applies to</h1>
+  <ul>
+    <li>
+      <div>Web Application</div>
+    </li>
+  </ul>
+  <h1>What to Check For</h1>
+  <p>Ensure that all remote administrative sessions take place over an encrypted channel, sessions timed out quickly and accounts locked out when suspicious behavior is detected.</p>
+  <br />
+  <h1>How to Fix</h1>
+  <p>Administrators often need to be able to administer multiple servers. Make sure the requirements of your remote administration solution do not compromise security. If you need remote administration capabilities, then the following recommendations help improve
+ security: </p>
+  <ul>
+    <li>
+      <strong>Restrict the number of administration accounts</strong>. This includes restricting the number of administration accounts as well as restricting which accounts are allowed to log on remotely.
+</li>
+    <li>
+      <strong>Restrict the tools</strong>. The main options include Internet Services Manager and Terminal Services. Another option is Web administration (using the IISAdmin virtual directory), but this is not recommended and this option is removed by IISLockdown.exe.
+ Both Internet Services Manager and Terminal Services use Windows security. The main considerations here are restricting the Windows accounts and the ports you use.
+</li>
+    <li>
+      <strong>Restrict the computers that are allowed to administer the server</strong>. IPSec can be used to restrict which computers can connect to your Web server.
+</li>
+  </ul>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance.</p>]]></Data>
+  </Content>
+</TeamMentor_Article>

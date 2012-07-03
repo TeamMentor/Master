@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-296666045" Content_Hash="279882685">
+  <Metadata>
+    <Id>74b457be-5d2c-41ac-84dd-863d465a8511</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Don't Trust User Input</Title>
+    <Category>Input and Data Validation</Category>
+    <Phase>Design</Phase>
+    <Technology> Any</Technology>
+    <Type>Principle</Type>
+    <DirectLink>Don't Trust User Input</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>Description</h1>
+  <p>Applications should thoroughly validate all user input before performing operations with that input. The validation may include filtering out special characters. This preventive measure protects the application against accidental misuse or deliberate attacks by people who are attempting to inject malicious commands into the system. Common examples include SQL injection attacks, cross-site scripting attacks, and buffer overflow. </p>]]></Data>
+  </Content>
+</TeamMentor_Article>

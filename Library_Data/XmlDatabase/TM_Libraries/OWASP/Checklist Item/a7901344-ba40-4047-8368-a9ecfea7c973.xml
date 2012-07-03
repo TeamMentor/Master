@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-1651774376" Content_Hash="-503200626">
+  <Metadata>
+    <Id>a7901344-ba40-4047-8368-a9ecfea7c973</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Intranet Traffic Is Encrypted Or Restricted</Title>
+    <Category>Server Hardening</Category>
+    <Phase>Deployment</Phase>
+    <Technology> Any</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>Intranet Traffic Is Encrypted Or Restricted</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>J.D. Meier, Alex Mackman, Michael Dunner, Srinath Vasireddy, Ray Escamilla and Anandha Murukan</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Check For</h1>
+  <p>Check to ensure that intranet traffic is encrypted (for example, with SSL) or restricted if you do not have a secure data center infrastructure.</p>
+  <h1>How to Fix</h1>
+  <p>For inside (intranet-facing) NICs, if you do not have a secure data center and you have sensitive information passing between computers, you need to consider whether to encrypt the traffic and whether to restrict communications between the Web server and
+ downstream servers (such as an application server or database server). Encrypting network traffic addresses the threat posed by network eavesdropping. If the risk is deemed sufficiently small you may choose not to encrypt&amp;nbsp;the traffic.</p>
+  <p>The type of encryption used also affects the types of threats that it addresses. For&amp;nbsp;example, SSL is application-level encryption, whereas IPSec is transport layer encryption. As a result, SSL counters the threat of data tampering or information disclosure
+ from another process on the same machine, particularly one running under a different account in addition to the network eavesdropping threat.</p>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance.</p>]]></Data>
+  </Content>
+</TeamMentor_Article>

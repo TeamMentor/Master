@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="1439541324" Content_Hash="584929486">
+  <Metadata>
+    <Id>742e2a98-1175-4456-93b3-3b5b8de9c4e8</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>A Secure Key Storage Location Is Used</Title>
+    <Category>Encryption</Category>
+    <Phase>Implementation</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>A Secure Key Storage Location Is Used</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Check For</h1>
+  <p>Ensure that application keys are stored in a well defined location, such as the encrypted sections of the application's <i>web.config</i> or encrypted in the Windows Registry. Verify that they are not hard coded into the application or stored as plaintext inside configuration files.</p>
+  <h1>Why</h1>
+  <p>When faced with encryption, intruders attack the most vulnerable aspect: key management. Because keys are used to encrypt sensitive data, the keys themselves become sensitive data that need to be protected. </p>
+  <h1>How to Check</h1>
+  <p>Use the following steps to verify a secure key storage location is used.</p>
+  <ol>
+    <li>
+      <p>
+        <strong>Identify the mechanism used for handling encryption keys.</strong> The mechanism used should be either the Windows Registry or the application's web.config file. Ensure that your application is using the most appropriate mechanism. If the storage locations for keys are not properly documented, look for encryption functions in the code and trace the key material back to see where it is stored, both temporarily and permanently. If you do have documentation, check that the code conforms to the documentation. When tracing through code, ensure that you look at the entire lifetime of the key in the system; keys may be written out insecurely after they are used, even if the path from a secure initial source to use is correct.</p>
+      <p>If you store your application's encryption keys into the Windows Registry, ensure that DPAPI is used to protect them. The following code gives an example of how this can be done:</p>
+      <pre>encKey = ProtectedData.Protect(encKey, salt, DataProtectionScope.CurrentUser);<br />RegistryKey rk = Registry.LocalMachine.OpenSubKey("SOFTWARE\\MyApp\\KeyStore", true);<br />rk.SetValue("encKey", wBuff, RegistryValueKind.Binary);</pre>
+      <p>If you store your application's encryption keys in web.config, ensure that they are stored into the <strong>appSettings</strong> section. Use the <strong>aspnet_regiis</strong> utility to check that the <strong>appSettings</strong> section is encrypted. </p>
+    </li>
+    <li>
+      <p>
+        <strong>Ensure the key store is protected.&amp;nbsp;</strong>Ensure that either DPAPI or ASP.NET protected configuration files are being used.&amp;nbsp;Verify that the appropriate permissions are set on the configuration files and registry keys so they can be only accessed by your application and its administrators.&amp;nbsp;Verify that only the application and its administrators can access the IIS metabase.&amp;nbsp;Access to the metabase is controlled with ACLs, similar to normal files or registry keys. Verify that only authorized accounts are listed in the <i>BUILTIN\Administrators</i> group and that other ACLs are properly set up.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Verify the application securely handles keys.&amp;nbsp;</strong>Ensure that keys are not hard coded into the source code. When tracing back from an encryption or signing operation, if you see private key material included literally in the body of an application's source code, you have&amp;nbsp;found a hard-coded key&amp;nbsp;that needs to be moved to a protected keystore.&amp;nbsp;Ensure that keys are not placed into unprotected configuration files. If a private key is read from a configuration file and the<i> aspnet_regiis</i> utility (or manual inspection) show that it is not encrypted, the key needs to be moved to a protected key store.&amp;nbsp;Ensure that keys are unloaded from memory after use. If keys are left in memory instead of being cleared out when no longer needed, or if they are written to any form of temporary storage without protection, they are vulnerable to theft from memory or the temporary storage location.&amp;nbsp;</p>
+    </li>
+  </ol>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>For more information about securing the IIS Metabase, see <a href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/iissdk/html/3b227030-f79d-4426-b1c0-b5b72e49c9fd.asp">Metabase Security</a>&amp;nbsp;on MSDN.</li>
+  </ul>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance. </p>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-000000402966</Id>
+    <Library_Id>f215ceee-9a08-41d9-b2c1-bbcc058a8f32</Library_Id>
+    <Title>File Sharing Is Disabled in Applications by Default</Title>
+    <Category>Authorization</Category>
+    <Phase>Implementation</Phase>
+    <Technology>Android</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>File Sharing Is Disabled in Applications by Default</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="WikiText">
+    <Data><![CDATA[==What to Check For==
+
+Verify that file sharing is disabled in applications by default.
+
+==Why==
+
+Disable file sharing to prevent unauthorized access. If file sharing is necessary, it should only be enabled when it is being used.
+
+==How to Check==
+
+To verify that file sharing is disabled:
+
+# **Identify file sharing functionality.** Determine whether the application implements file sharing and if so, find the code that implements it.
+# **Verify that file sharing is disabled by default.** Check the default settings to make sure that file sharing is disabled by default.
+
+==How to Fix==
+
+To disable file sharing by default.
+
+# **Identify file sharing functionality.** Determine whether the application implements file sharing and if so, find the code that implements it.
+# **Disable file sharing by default.** Edit the code that implements file sharing to disable file sharing by default. Provide controls to the user to enable file sharing when needed. It is recommended to encrypt network connections used for file sharing. It is also recommended to protect file sharing with usernames and passwords and to allow the user to set the usernames and passwords that are allowed to access shared files.
+
+==Related Items==
+]]></Data>
+  </Content>
+</TeamMentor_Article>

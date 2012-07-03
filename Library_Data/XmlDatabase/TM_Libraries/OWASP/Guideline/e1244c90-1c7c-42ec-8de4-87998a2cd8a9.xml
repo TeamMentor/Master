@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-1469054624" Content_Hash="-897414510">
+  <Metadata>
+    <Id>e1244c90-1c7c-42ec-8de4-87998a2cd8a9</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Validate Destinations of Redirects And Forwards</Title>
+    <Category>Input and Data Validation</Category>
+    <Phase>Implementation</Phase>
+    <Technology> Any</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Validate Destinations of Redirects And Forwards</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Do</h1>
+  <p>Validate destinations of redirects or forwards.</p>
+  <h1>Why</h1>
+  <p>If destinations of redirects or forwards are not validated, an attacker may create hyperlinks that appear to point to legitimate sites, but actually point to malicious pages controlled by the attacker. This technique is often used by phishers to trick people into visiting fake sites that steal authentication credentials. In some cases, a user may gain unauthorized access by manipulating redirect or forward parameters, if destinations are not validated.</p>
+  <h1>When</h1>
+  <p>Use this guideline when writing a web application that uses redirects or forwards. Avoid using redirects or forwards in web applications, if possible.</p>
+  <h1>How</h1>
+  <p>Perform the following actions to assure validation of redirects and forwards:</p>
+  <ol>
+    <li>
+      <p>
+        <strong>Identify redirects and forwards.</strong> Review code to find all redirects and forwards.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Map destinations.</strong> Make a list of all destinations for each redirect and forward. Define mapping values for all destinations used by redirects and forwards. A mapping value is a short identifying string that symbolically represents a resource.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Define access permissions.</strong> Determine circumstances under which it is acceptable for each user role to access each destination.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Validate redirects.</strong> Rewrite redirects and forwards to use mapping values as input to calculate the final destinations of redirects or forwards. Add validation routines to verify that the user has permissions to access the resource, which is the destination of the redirect or forward.</p>
+    </li>
+  </ol>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>For more information about unvalidated redirects and forwards, please see <a href="http://www.owasp.org/index.php/Top_10_2010-A10-Unvalidated_Redirects_and_Forwards">http://www.owasp.org/index.php/Top_10_2010-A10-Unvalidated_Redirects_and_Forwards</a></li>
+  </ul>]]></Data>
+  </Content>
+</TeamMentor_Article>

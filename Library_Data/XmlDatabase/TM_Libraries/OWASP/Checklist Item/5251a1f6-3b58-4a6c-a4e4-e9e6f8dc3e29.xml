@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="699047278" Content_Hash="-171814527">
+  <Metadata>
+    <Id>5251a1f6-3b58-4a6c-a4e4-e9e6f8dc3e29</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Internet-facing Interfaces Are Restricted</Title>
+    <Category>Server Hardening</Category>
+    <Phase>Deployment</Phase>
+    <Technology> Any</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>Internet-facing Interfaces Are Restricted</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>J.D. Meier, Alex Mackman, Michael Dunner, Srinath Vasireddy, Ray Escamilla and Anandha Murukan</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Check For</h1>
+  <p>Check to ensure that access to Internet-facing interfaces are restricted to port 80 for HTTP and port 443 for HTTPS (SSL).</p>
+  <h1>How to Fix</h1>
+  <p>Limit inbound traffic to port 80 for HTTP and port 443 for HTTPS (SSL).</p>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance.</p>]]></Data>
+  </Content>
+</TeamMentor_Article>

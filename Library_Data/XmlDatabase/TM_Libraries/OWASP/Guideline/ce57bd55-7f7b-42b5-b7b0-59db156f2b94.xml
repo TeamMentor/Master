@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-1776097046" Content_Hash="-1093170276">
+  <Metadata>
+    <Id>ce57bd55-7f7b-42b5-b7b0-59db156f2b94</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Use SSL Or IPSec for Secure Communication Between Entities</Title>
+    <Category>Communication Security</Category>
+    <Phase>Design</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Use SSL Or IPSec for Secure Communication Between Entities</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Do</h1>
+  <p>Use an encrypted communication channel to protect data sent between servers. SSL and IPSec can both be used under different circumstances to protect the communication traffic between servers.&amp;nbsp;&amp;nbsp;</p>
+  <h1>Why</h1>
+  <p>Servers may not necessarily co-exist in a secure environment. If the communication between&amp;nbsp;two or more servers&amp;nbsp;is not protected, the data sent between them could be compromised via eavesdropping or data manipulation.</p>
+  <h1>When</h1>
+  <p>If your servers are not inside a physically secure data center where the network eavesdropping threat is considered insignificant. </p>
+  <h1>How</h1>
+  <p>Determine the level of desired granularity for the given server/application suite. If the protection needs to be applied across all applications, use IPSec. If the protection is granular and only a certain portion of the information exchanged between servers is sensitive use SSL. SSL and IPSec can both be used to help protect communication between servers by encrypting traffic. There are benefits to using a mixed approach consisting of both SSL and IPSec. See the related guidelines for specific details. </p>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>How To: Use IPSec to Provide Secure Communication Between Two Servers&amp;nbsp;<a href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dnnetsec/html/SecNetHT18.asp">http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dnnetsec/html/SecNetHT18.asp</a></li>
+    <li>How To: Use SSL to Secure Communication with SQL Server&amp;nbsp;<a href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dnnetsec/html/SecNetHT19.asp">http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dnnetsec/html/SecNetHT19.asp</a></li>
+    <li>How To: Use IPSec for Filtering Ports and Authentication <a href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dnnetsec/html/HTUseIPSec.asp">http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dnnetsec/html/HTUseIPSec.asp</a></li>
+    <li>How To: Use IPSec Policy to Secure Terminal Services Communications in Windows Server 2003 <a href="http://support.microsoft.com/kb/816521">http://support.microsoft.com/kb/816521</a></li>
+    <li>Using Secure Sockets Layer <a href="http://msdn2.microsoft.com/en-us/library/ds8bxk2a.aspx">http://msdn2.microsoft.com/en-us/library/ds8bxk2a.aspx</a></li>
+    <li>Internet Protocol Version 6 <a href="http://msdn2.microsoft.com/en-us/library/3x7ak53z(VS.80).aspx">http://msdn2.microsoft.com/en-us/library/3x7ak53z(VS.80).aspx</a></li>
+  </ul>
+  <ul>
+  </ul>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance. </p>]]></Data>
+  </Content>
+</TeamMentor_Article>

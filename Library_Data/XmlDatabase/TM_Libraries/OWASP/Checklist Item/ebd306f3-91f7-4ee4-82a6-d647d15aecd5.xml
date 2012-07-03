@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-1213197793" Content_Hash="-753327192">
+  <Metadata>
+    <Id>ebd306f3-91f7-4ee4-82a6-d647d15aecd5</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Unused Services Are Disabled</Title>
+    <Category>Server Hardening</Category>
+    <Phase>Deployment</Phase>
+    <Technology> Any</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>Unused Services Are Disabled</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>J.D. Meier, Alex Mackman, Michael Dunner, Srinath Vasireddy, Ray Escamilla and Anandha Murukan</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Check For</h1>
+  <p>Check to ensure that&amp;nbsp;all unused services are disabled. Also make sure that Trivial File Transfer Protocol (TFTP) is disabled, Internet-facing administration points are removed, and ACLs configured to limit administrative access.</p>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance.</p>]]></Data>
+  </Content>
+</TeamMentor_Article>

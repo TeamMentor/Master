@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-585490819" Content_Hash="-1734164144">
+  <Metadata>
+    <Id>ce32cef6-e386-4348-b294-a562f7cd995b</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Latest Patches And Updates Are Installed</Title>
+    <Category>Server Hardening</Category>
+    <Phase>Deployment</Phase>
+    <Technology> Any</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>Latest Patches And Updates Are Installed</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>J.D. Meier, Alex Mackman, Michael Dunner, Srinath Vasireddy, Ray Escamilla and Anandha Murukan</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Check For</h1>
+  <p>Check to ensure that the latest patches and updates are installed for your network firewall.</p>
+  <h1>How to Fix</h1>
+  <p>Subscribe to alert services provided by the manufacturer of your firewall and operating system to stay current with both security issues and service patches.</p>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance.</p>]]></Data>
+  </Content>
+</TeamMentor_Article>

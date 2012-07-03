@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="1062648365" Content_Hash="2035136502">
+  <Metadata>
+    <Id>de9d7b57-067f-46c9-9709-aebbb40f69da</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Encrypt the Contents of the Authentication Cookies</Title>
+    <Category>Session Management</Category>
+    <Phase>Design</Phase>
+    <Technology> Any</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Encrypt the Contents of the Authentication Cookies</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>J.D. Meier, Alex Mackman, Michael Dunner, Srinath Vasireddy, Ray Escamilla and Anandha Murukan</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Do</h1>
+  <p>Cookies should be encrypted and checked for integrity to detect tampering even over an SSL channel because cookies can be stolen through cross-site scripting (XSS) attacks.</p>
+  <h1>Why</h1>
+  <p>To ensure that cookie contents are not read and not tampered with, because&amp;nbsp;cookies can be stolen, even over a Secure Sockets Layer (SSL) channel using cross-site scripting attacks.</p>
+  <h1>When</h1>
+  <p>This guideline should be used for all applications that use Forms Authentication should have their cookies encrypted.</p>
+  <h1>How</h1>
+  <p>Encrypt the cookie contents even if you are using SSL. This prevents an attacker viewing or modifying the cookie if he manages to steal it through an XSS attack. In this event, the attacker could still use the cookie to access your application, but only while the cookie remains valid.</p>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>For more information see, "Chapter 4 - Design Guidelines for Secure Web Applications" at <a href="http://msdn2.microsoft.com/en-us/library/aa302420.aspx">http://msdn2.microsoft.com/en-us/library/aa302420.aspx</a>&amp;nbsp; </li>
+  </ul>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance.</p>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-0000005faaf0</Id>
+    <Library_Id>b6f408c5-6e6e-4bc0-90a5-0bb10becc2ce</Library_Id>
+    <Title>SSL Is Used to Protect Communications</Title>
+    <Category>Communication Security</Category>
+    <Phase>Implementation</Phase>
+    <Technology>iOS</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>SSL Is Used to Protect Communications</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="WikiText">
+    <Data><![CDATA[==Applies To==
+
+* iOS applications that send or receive sensitive data over the network.
+
+==What to Check For==
+
+Verify that SSL is used to protect network connections.
+
+==Why==
+
+Properly using SSL to encrypt network communications prevents eavesdropping attacks. Other types of Man-in-the-middle attacks may also be prevented by using SSL.
+
+==How to Check==
+
+To verify that SSL is used to protect network connections:
+
+# **Identify all communications performed by the application.** Review the application design to identify all network communications that are performed by the application.
+# **Review communication security requirements.** Examine which network communications need to be encrypted. All transmissions that include sensitive data should be encrypted. In some cases, it might be practical to encrypt all network connections.
+# **Identify code that uses the network.** Identify code that is responsible for each network communication that needs to be encrypted.
+# **Verify that SSL is used to protect network connections.** Examine code that is responsible for network connections that need to be encrypted and make sure that it uses SSL.
+
+==How to Fix==
+
+To use SSL to protect network connections:
+
+# **Identify all communications performed by the application.** Review the application design to identify all network communications that are performed by the application.
+# **Define communication security requirements.** Define which network communications need to be encrypted. All transmissions that include sensitive data should be encrypted. In some cases, it might be practical to encrypt all network connections.
+# **Identify code that uses the network.** Identify code that is responsible for each network communication that needs to be encrypted.
+# **Add code that uses SSL.** Add code that uses SSL to code that performs network communications that need to be encrypted. The //NSURLRequest// and //NSURLConnection// classes support SSL with an acceptably secure default configuration starting with iOS 5 - this is the most practical way to use SSL on iOS and should be sufficient for most applications. 
+
+==Related Articles==
+
+==Additional Resources==
+
+* For more information about the //NSURLRequest// class, please see http://developer.apple.com/library/ios/#DOCUMENTATION/Cocoa/Reference/Foundation/Classes/NSURLRequest_Class/Reference/Reference.html
+* For more information about the //NSURLConnection// class, please see https://developer.apple.com/library/mac/#documentation/Cocoa/Reference/Foundation/Classes/nsurlconnection_Class/Reference/Reference.html
+* For the "URL Loading System Programming Guide", please see http://developer.apple.com/library/ios/#DOCUMENTATION/Cocoa/Conceptual/URLLoadingSystem/URLLoadingSystem.html]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="1713111659" Content_Hash="-1670071902">
+  <Metadata>
+    <Id>eb4c2562-d306-4aa0-a86c-630c5cdff1c6</Id>
+    <Library_Id>00000000-0000-0000-0000-000000000000</Library_Id>
+    <Title>Restrict Authentication Cookies to HTTPS Connections</Title>
+    <Category>Authentication</Category>
+    <Phase>Implementation</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>Guideline</Type>
+    <DirectLink />
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Do</h1><p>Use the <strong>requireSSL</strong> attribute to restrict authentication cookies to HTTPS connections only. </p><h1>Why</h1><p>Sending cookies out exclusively over SSL makes it much harder for an attacker to sniff the cookie values off the wire.&nbsp; If an attacker can get a copy of an authentication cookie, they can potentially emulate that user, compromising their account. </p><h1>When</h1><p>All systems which use authentication cookies should use SSL for those cookies if possible.&nbsp; Systems which deal with any personally identifiable information or monetary transaction should use SSL in all circumstances without exception. </p><h1>How</h1><p>Set the <strong>secure</strong> property of the authentication cookie to ensure that browsers only send authentication cookies over HTTPS connections.&nbsp; By using SSL, you prevent an attacker from capturing the authentication cookie to gain spoofed access to your application.&nbsp; Set the <strong>secure</strong> property by using <strong>requireSSL="true"</strong> on the <strong>&lt;forms&gt;</strong> element as shown here. </p><pre>&lt;forms loginUrl="Secure\Login.aspx"<br>        requireSSL="true" ... /&gt;</pre><h1>Problem Example</h1><p>An online brokerage provides a large amount of reference content.&nbsp; As this content is not specific to any user and is publicly available, it is not protected by SSL for performance reasons like the trading interface is.&nbsp; However, the site is not configured to restrict authentication cookies to SSL only, so they're sent with all requests.&nbsp; An attacker positions themself on the same network segment as a user (someone using the public network in an internet cafe), sniffs the user's traffic, steals their cookie, and uses it to access their accounts.</p><h1>Solution Example</h1><p>An online brokerage provides a large amount of reference content.&nbsp; As this content is not specific to any user and is publicly available, it is not protected by SSL for performance reasons like the trading interface is.&nbsp; The site is&nbsp;correctly configured to restrict authentication cookies to SSL only, so they're only sent with requests protected by SSL.&nbsp; An attacker positions themself on the same network segment as a user (someone using the public network in an internet cafe) and sniffs the user's traffic, but because the cookies are only sent via SSL, they cannot retrieve them.</p><hr><p>Adapted from Microsoft patterns &amp; practices guidance. </p>]]></Data>
+  </Content>
+</TeamMentor_Article>

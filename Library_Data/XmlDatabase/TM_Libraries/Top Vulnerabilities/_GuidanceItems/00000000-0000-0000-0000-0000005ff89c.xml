@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-0000005ff89c</Id>
+    <Library_Id>f798e6e6-1732-4172-9c47-9621d914efcd</Library_Id>
+    <Title>Give only Administrators Write Access to Configuration Files</Title>
+    <Category>Authorization</Category>
+    <Phase>Implementation</Phase>
+    <Technology> Any</Technology>
+    <Type>Principle</Type>
+    <DirectLink>Give only Administrators Write Access to Configuration Files</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h2>What to Do</h2>
+  <p>For all configuration files, executables, and libraries, make sure that they are only readable and writable by the software's administrator.</p>]]></Data>
+  </Content>
+</TeamMentor_Article>

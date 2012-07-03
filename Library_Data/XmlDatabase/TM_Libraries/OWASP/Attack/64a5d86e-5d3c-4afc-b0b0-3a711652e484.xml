@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="133192392" Content_Hash="-1652802402">
+  <Metadata>
+    <Id>64a5d86e-5d3c-4afc-b0b0-3a711652e484</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Weak Keystore Protection Attack</Title>
+    <Category>Encryption</Category>
+    <Phase>Any</Phase>
+    <Technology> Any</Technology>
+    <Type>Attack</Type>
+    <DirectLink>Weak Keystore Protection Attack</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>Applies To</h1>
+  <p>
+  </p>
+  <ul>
+    <li>Applications using cryptography.</li>
+  </ul>
+  <p />
+  <h1>Description</h1>
+  <p>A keystore is a secure location on disk or in memory that can be used to store cryptographic keys or trusted certificates. Typically, these keys are bound to the machine and only available to a certain application. If the application uses a weak keystore, it may be possible to recover the keys and certificates from the keystore without proper credentials.</p>
+  <h1>Impact</h1>
+  <ul>
+    <li>
+      <strong>Information Disclosure:</strong> The attacker can gain access to the keys used by the application, allowing them to decrypt data the application attempts to protect with encryption, and to spoof the application to itself or other systems which trust data encrypted with those keys. </li>
+    <li>
+      <strong>Elevation of Privilege:</strong> The attacker may also be able to add new keys to the keystore or modify existing ones. This can result in the application trusting keys controlled by the attacker for sensitive operations or communicating with other systems.</li>
+  </ul>
+  <h1>Vulnerabilities</h1>
+  <ul>
+    <li>
+      <strong>Using a Weak Keystore:</strong> Many operating environments provide a variety of key stores, some of which exist only for legacy reasons. Using an older version of a key store or a poorly implemented third party key store is likely to result in a key store compromise. </li>
+    <li>
+      <strong>Improperly Configuring a Strong Keystore:</strong> Many keystores support a variety of configuration options which allow for a wide range of security choices. Understanding the properties of your key store is essential to using it securely. </li>
+    <li>
+      <strong>Implementing a Custom or Homegrown Keystore:</strong> Strong keystores are both very tricky to write and require support from the operating environment. Attempting to write one should be considered on the same level as implementing a custom encryption algorithm or protocol, and should be avoided. </li>
+    <li>
+      <strong>Poor Key Handling:</strong> If the application isn't careful with how it manages keys when it adds them to the store or reads them out from the store for use, both key compromise and key disclosure are possible, even if the key store itself is strong.</li>
+  </ul>
+  <h1>Countermeasures</h1>
+  <ul>
+    <li>
+      <p>
+        <strong>Use a Strong Keystore:</strong> Which key store to use will vary by your platform. In Java, use the <strong>KeyStore</strong> class. On Windows, use DPAPI. Ensure that you are using the current version of the key store for your platform, including any patches.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Configure Your Keystore Correctly:</strong> Ensure that you know how to properly configure the key store in your environment. Ensure that any ACLs on the key store are locked down as tightly as possible while still allowing your system to function. For instance, after the initial install, it is unlikely that your application will need rights to add keys to the key store, nor rights to change the permissions on the key store; if possible, make sure the application gives these up after installation. Ensure that, if possible, all cryptographic operations occur within the scope of the protected keystore, instead of manually exporting keys from the store or reading the bits out; if you can do this and you can lock your key store down even further, ensure that these operations cannot be performed on the key store. If you have a choice of keys or algorithms used to protect keys in the key store, ensure that they are appropriately strong.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Ensure Proper Key Handling:</strong> Handle your key material very carefully. Place keys in the key store as soon as possible and read them out as late as possible. Do not leave keys in memory when you do not need them, and ensure that the memory that you load them into is properly zeroed out. Be careful with immutable objects and garbage collection when handling key data. Under no circumstances should cleartext keys be written out to disk; among other things, make sure that you pin memory with sensitive data so that it will not be written out to swap.</p>
+    </li>
+  </ul>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>
+      <a href="http://java.sun.com/j2se/1.4.2/docs/api/java/security/KeyStore.html">http://java.sun.com/j2se/1.4.2/docs/api/java/security/KeyStore.html</a>
+    </li>
+    <li>
+      <a href="http://msdn2.microsoft.com/en-us/library/ms995355.aspx">http://msdn2.microsoft.com/en-us/library/ms995355.aspx</a>
+    </li>
+  </ul>
+  <ul>
+  </ul>]]></Data>
+  </Content>
+</TeamMentor_Article>

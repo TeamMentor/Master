@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="1211791601" Content_Hash="-193147458">
+  <Metadata>
+    <Id>fb83e483-3a9b-424c-8288-a66900d3a738</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Application Does Not Rely Only on Request Validation</Title>
+    <Category>Input and Data Validation</Category>
+    <Phase>Implementation</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>Application Does Not Rely Only on Request Validation</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Check For</h1>
+  <p>Ensure that your application does not rely solely upon ASP.NET request validation to protect against malicious input.</p>
+  <h1>Why</h1>
+  <p>Request validation will catch some attacks; however, it provides only basic input validation. Do not rely on it. Use it as an extra precautionary measure in addition to your own input validation. Only you can define what represents good input for your application. </p>
+  <h1>How to Check</h1>
+  <p>To check for this problem, you must determine if your application is relying solely upon request validation to provide input and data validation. Use the following steps:&amp;nbsp;</p>
+  <ol>
+    <li>
+      <p>
+        <strong>Find all sources of input in your application.</strong> During design time identify all of the potential sources of input to your application. Scour the source code to discover sources of input that may have been missed in the design. Compile a list that you can use in the following steps. </p>
+    </li>
+    <li>
+      <p>
+        <strong>Identify validation routines.</strong> Each input source should have a data validation routine associated with it.&amp;nbsp;Ideally the validation will occur as soon after the input reaches your application as possible. Shared validation routines are better than creating many spread throughout your code base, so check for consolidation of routines to aid testing and reduce the chance of one-off bugs. If an input source does not have a validation routine associated with it, flag it for fixing.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Ensure quality of validation routines.</strong> Validation routines&amp;nbsp;should check for length, range, format, and type. Validation should check first&amp;nbsp;for known valid and safe data and then for malicious, dangerous data. Do not rely on filtering out all malicious data because&amp;nbsp;it is too easy to miss something. Do not rely on client-side validation alone as it can be easily bypassed.</p>
+    </li>
+  </ol>
+  <h1>How to Fix</h1>
+  <p>Check for known good data and constrain input by validating it for type, length, format, and range.&amp;nbsp;</p>
+  <p>
+    <strong>Note</strong>: Validating input does not remove the need to format output, parameterize queries, or otherwise handle user input carefully.</p>
+  <h1>Problem Example</h1>
+  <p>An ASP.NET application uses forms authentication; however, it relies upon request validation to validate the form of the username and password entered by the user.&amp;nbsp;The application does not contain any validation routines to check input for length, range, format and type.</p>
+  <h1>Solution Example</h1>
+  <p>An ASP.NET application uses forms authentication and has a variety of other input fields for user interaction.&amp;nbsp; Request validation has been left on as a precautionary measure; however, it is not the sole defense mechanism against malicious input. The application authors have included validation routines through which all untrusted input and data is passed before it is used by the application.</p>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance. </p>]]></Data>
+  </Content>
+</TeamMentor_Article>
