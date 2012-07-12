@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="2135796287" Content_Hash="1195528289">
+  <Metadata>
+    <Id>57b928e2-5bc1-4d98-b3df-c7cca05dc5a8</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>All Data Passed Between Native And Java Code Is Validated</Title>
+    <Category>Input and Data Validation</Category>
+    <Phase>Implementation</Phase>
+    <Technology>Java</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>All Data Passed Between Native And Java Code Is Validated</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Check For</h1>
+  <p>Verify that your application validates all data that is passed between Java code and native code.</p>
+  <h1>Why</h1>
+  <p>Unchecked input and/or output can lead to buffer overflows, injection based attacks such as SQL injection, cross-site scripting, etc., that exploit weaknesses in the application.</p>
+  <h1>How to Check</h1>
+  <p>Due to the security risk posed by the use of native code, verify that your application validates data that is passed between native code and Java:</p>
+  <ol>
+    <li>
+      <p>
+        <strong>Check if language boundaries are clearly defined. </strong>If your Java application needs to use native code, ensure that you have identified all the locations where the Java code interacts with native code. As your application moves between Java code and native code, special attention needs to be given to error handling routines, so that no security holes are introduced in your application by its native component.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Verify the quality of your application's validators. </strong>Verify that your application's data is properly validated for length, range, format and type.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Verify that all data is validated. </strong>Verify that all data passing through the locations identified in Step 1 is validated.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Ensure that data validation code is centralized. </strong>It is better that all validation routines in your application are centralized for cleaner and better control. Shared validation routines are better than creating many routines spread throughout your application's code base. Every time your application accepts external data as input, it should first pass through this set of validation routines.</p>
+    </li>
+  </ol>
+  <h1>How to Fix</h1>
+  <p>There are several things to consider when validating input/output between native and Java code: </p>
+  <ol>
+    <li>
+      <p>
+        <strong>Check language barriers. </strong>Distinguishing&amp;nbsp;the boundaries between native and Java code is very important. Because the Java sandbox provides multiple security checks to its code, it is important to know the boundary&amp;nbsp;between&amp;nbsp;where the Java sandbox ends and the compiled code begins&amp;nbsp;to interact&amp;nbsp;directly with the CPU, so you can&amp;nbsp;compensate for&amp;nbsp;the lack of such checks inside the native code.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Validate for length, range, format and type. </strong>After discovering the language boundaries, determine the type, format and structure of the data that is passed between Java and native code. Build a validator for each type of data that is passed between the two environments. </p>
+    </li>
+    <li>
+      <p>
+        <strong>Construct a set of validators. </strong>Centralize your application's validators as it helps strengthen the code by limiting the amount of scattered validation code throughout your application. Place the set of validators on the language barriers. Your application should pass data between native and Java code only through its set of validators.</p>
+    </li>
+  </ol>
+  <h1>Problem Example</h1>
+  <p>The following segment shows JNI code that utilizes a COM object. Making the assumption that the Java code will handle data validation, the JNI segment does not verify that the passed input is a valid GUID. Since invalid GUIDs may cause unhandled exceptions, an attacker can force the application to disclose its call stack and possibly its source filenames.</p>
+  <pre>#include &lt;jni.h&gt;<br />#include &lt;sys/types.h&gt;<br />#include &lt;fcntl.h&gt;<br />#include &lt;stdio.h&gt;<br />#include &lt;atlbase.h&gt;<br />#include &lt;windows.h&gt;<br />#include &lt;wtypes.h&gt;<br />JNIEXPORT jboolean<br />JNICALL Java_Identifier_invokeObject<br />      (JNIEnv * env, jobject jobj, jstring jguid)<br />{<br />      HRESULT result;<br />      CLSID clsid;<br />      IUnknown *pIunkn;<br />      LPWSTR guid;<br />      jboolean iscopy;<br />      jboolean ret = false;<br />      char* temp_guid = (*env)-&gt;GetStringUTFChars(env, jguid, &amp;iscopy);<br />      //The application fails to verify that the GUID is valid<br />      guid = SysAllocStringLen(0, 38);<br />      MultiByteToWideChar(CP_ACP, 0, temp_guid, -1, guid, 38);<br />      result = GUIDFromString(guid, &amp;clsid);<br />      ...<br />      return ret;<br />}</pre>
+  <h1>Solution Example</h1>
+  <p>The following segment shows a JNI code that utilizes a COM object. Because the passed input is accepted only if it is a GUID, the application reduces the risk of unhandled exceptions.</p>
+  <pre>#include &lt;jni.h&gt;<br />#include &lt;sys/types.h&gt;<br />#include &lt;fcntl.h&gt;<br />#include &lt;stdio.h&gt;<br />#include &lt;atlbase.h&gt;<br />#include &lt;windows.h&gt;<br />#include &lt;wtypes.h&gt;  <br />JNIEXPORT jboolean <br />JNICALL Java_Identifier_invokeObject<br />      (JNIEnv * env, jobject jobj, jstring jguid)<br />{<br />      HRESULT result;<br />      CLSID clsid;<br />      IUnknown *pIunkn;<br />      LPWSTR guid;<br />      jboolean iscopy;<br />      jboolean ret = false;<br />      char* temp_guid = (*env)-&gt;GetStringUTFChars(env, jguid, &amp;iscopy);<br />      // The application verifies that the input matches the criteria for a GUID<br />      if(!validGUID(temp_guid))<br />      {<br />            return ret;<br />      }<br />      guid = SysAllocStringLen(0, 38);<br />      MultiByteToWideChar(CP_ACP, 0, temp_guid, -1, guid, 38);<br />      result = GUIDFromString(guid, &amp;clsid);<br />       ...<br />      return ret;<br />}<br /><br />bool validGUID(char *guid)<br />{<br />      // Check that GUID is of right length<br />      if(strlen(guid) != 38) return false;<br />      // Sample GUID: {1EF4A023-143A-4e0e-AD72-69C2C68C2D70<br />}<br />      if(guid[0]  != '{') return false;<br />      if(guid[9]  != '-') return false;<br />      if(guid[14] != '-') return false;<br />      if(guid[19] != '-') return false;<br />      if(guid[24] != '-') return false;<br />      if(guid[37] != '}') return false;<br />      int i=1;<br />      while(i&lt;37)<br />      {<br />            if((guid[i] &gt;= 'a' &amp;&amp; guid[i] &lt;= 'f')<br />                  || (guid[i] &gt;= 'A' &amp;&amp; guid[i] &lt;= 'F')<br />                  || (guid[i] &gt;= '0' &amp;&amp; guid[i] &lt;= '9')<br />            {<br />                  // GUID is valid<br />            }<br />            else<br />            {<br />                  return false;<br />            }<br />            i++;<br />            if(i == 9 || i == 14 || i == 19 || i == 24)<br />            {<br />                  i++;<br />            }<br />      }<br /><br />      return true;<br />}</pre>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>For more information about the security issues that JNI introduces, see: <a href="http://www.owasp.org/index.php/Unsafe_JNI">Unsafe JNI</a> from OWASP. </li>
+  </ul>]]></Data>
+  </Content>
+</TeamMentor_Article>

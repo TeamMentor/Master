@@ -19,7 +19,7 @@ var _gauges = _gauges || [];
 
 //from https://secure.gaug.es/track.js on 4/13/12
 
-GauguesID = null;                   // set to GaugesID to enabled it
+GauguesID = null;                   // set to GaugesID to enable it
 
 if (GauguesID === null)
 {

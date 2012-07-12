@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-0000005ba7d8</Id>
+    <Library_Id>f798e6e6-1732-4172-9c47-9621d914efcd</Library_Id>
+    <Title>Use Parameterized APIs for Database Access</Title>
+    <Category>Parameterization</Category>
+    <Phase>Implementation</Phase>
+    <Technology>ASP.NET</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Use Parameterized APIs for Database Access</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Applies to</h1>
+  <ul>
+    <li>ASP.NET 4.0</li>
+  </ul>
+  <h1>What to Do</h1>
+  <p>Avoid constructing SQL queries in code that include user input; instead, prefer parameterized stored procedures that use type safe SQL parameters. If stored procedures cannot be used, use parameterized dynamic SQL statements.</p>
+  <h1>Why</h1>
+  <p>Database queries constructed dynamically from user input are susceptible to SQL injection. A successful SQL injection attack enables a malicious user to execute commands on the application's database instance by using the privileges granted to the application's login. Using stored procedures with parameterized SQL is recommended because SQL parameters are type safe and treated as literal values by the database, not as executable code. Parameters are also checked for type and length.</p>
+  <h1>When</h1>
+  <p>Always use parameterized SQL queries. Avoid constructing SQL queries directly from any input, including form fields, query string parameters, and cookies.</p>
+  <h1>How</h1>
+  <p>You have two options for avoiding user input in dynamic SQL queries:</p>
+  <ol>
+    <li>
+      <p>
+        <strong>Use parameters with stored procedures.</strong> Stored procedures alone will not prevent SQL injection. Lack of parameter usage means that stored procedures will be susceptible to SQL injection, especially if they use unfiltered input. The following code shows how to use <em>SqlParameterCollection</em> when calling a stored procedure:</p>
+      <pre>using System.Data;<br />using System.Data.SqlClient;</pre>
+      <pre>using (SqlConnection connection = new SqlConnection(connectionString))<br />{<br />&amp;nbsp; DataSet userDataset = new DataSet();<br />&amp;nbsp; SqlDataAdapter myCommand = new SqlDataAdapter( <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; "LoginStoredProcedure", connection);<br />&amp;nbsp; myCommand.SelectCommand.CommandType = CommandType.StoredProcedure;<br />&amp;nbsp; myCommand.SelectCommand.Parameters.Add("@au_id", SqlDbType.VarChar, 11);<br />&amp;nbsp; myCommand.SelectCommand.Parameters["@au_id"].Value = AuthId.Text;</pre>
+      <pre>&amp;nbsp; myCommand.Fill(userDataset);<br />}</pre>
+      <p>In this case, the @au_id parameter is treated as a literal value and not as executable code. Also, the parameter is checked for type and length. In the preceding code example, the input value cannot be longer than 11 characters. If the data does not conform to the type or length defined by the parameter, the <em>SqlParameter</em> class throws an exception.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Use parameters with dynamic SQL.</strong> If stored procedures are unavailable, use parameters when constructing dynamic SQL statements. The following code shows how to use <em>SqlParametersCollection</em> with dynamic SQL:</p>
+      <pre>using System.Data;<br />using System.Data.SqlClient;</pre>
+      <pre>using (SqlConnection connection = new SqlConnection(connectionString))<br />{<br />&amp;nbsp; DataSet userDataset = new DataSet();<br />&amp;nbsp; SqlDataAdapter myDataAdapter = new SqlDataAdapter(<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; "SELECT au_lname, au_fname FROM Authors WHERE au_id = @au_id", <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; connection);&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <br />&amp;nbsp; myCommand.SelectCommand.Parameters.Add("@au_id", SqlDbType.VarChar, 11);<br />&amp;nbsp; myCommand.SelectCommand.Parameters["@au_id"].Value = AuthId.Text;<br />&amp;nbsp; myDataAdapter.Fill(userDataset);<br />}</pre>
+    </li>
+  </ol>
+  <h1>Problem Example</h1>
+  <p>An ASP.NET book purchasing application has a query interface that allows book titles and authors to be de retrieved by submitting an ISBN. The application developer writes a SQL query to accomplish this task:</p>
+  <pre>string SQLstr = "SELECT book_name, author_name<br />  FROM book WHERE book_ISBN = '" + ISBN.Text + "'";</pre>
+  <p>The ISBN input is from a textfield in the web form which is used to directly generate the SQL statement. For example:</p>
+  <pre>SELECT book_name, author_name<br />FROM book<br />WHERE book_ISBN = '0321194330'</pre>
+  <p>Consider what happens when a user types the following string in the ISBN text box, which is expecting an ISBN in the form nnnnnnnnnn:</p>
+  <pre>' ; DROP DATABASE pubs&amp;nbsp; --</pre>
+  <p>The code inserts the user's malicious input and generates the following query.</p>
+  <pre>SELECT book_name, author_name <br />FROM book <br />WHERE book_ISBN = ''; DROP DATABASE pubs --'</pre>
+  <p>In this case, the ' (single quotation mark) character that starts the rogue input terminates the current string literal in the SQL statement. The ; (semicolon) character tells SQL that this is the end of the current statement, which is then followed by the following malicious SQL code. Finally, the -- (double dash) sequence of characters is a SQL comment that tells SQL to ignore the rest of the text. In this case, SQL ignores the closing ' (single quotation mark) character, which would otherwise cause a SQL parser error.</p>
+  <h1>Solution Example</h1>
+  <p>An ASP.NET book purchasing application has a query interface that allows book titles and authors to be de retrieved by submitting an ISBN. The application developer writes a SQL query to accomplish this task:</p>
+  <pre>string SQLstr = "book_name, author_name <br />  FROM book WHERE book_ISBN = '" + ISBN.Text + "'";</pre>
+  <p>The ISBN input is from a textfield in the web form which is used to directly generate the SQL statement. For example:</p>
+  <pre>SELECTbook_name, author_name <br />FROM book <br />WHERE book_ISBN = '0321194330'</pre>
+  <p>The SQL statement can be made safer by re-writing it as a parameterized, stored procedure:</p>
+  <pre>using System.Data;<br />using System.Data.SqlClient;</pre>
+  <pre>using (SqlConnection connection = new SqlConnection(connectionString))<br />{<br />&amp;nbsp; DataSet userDataset = new DataSet();<br />&amp;nbsp; SqlDataAdapter myDataAdapter = new SqlDataAdapter(<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; "'0321194330'= @isbn", <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; connection);&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <br />&amp;nbsp; myCommand.SelectCommand.Parameters.Add("@isbn", SqlDbType.VarChar, 11);<br />&amp;nbsp; myCommand.SelectCommand.Parameters["@isbn"].Value = ISBN.Text;<br />&amp;nbsp; myDataAdapter.Fill(userDataset);<br />}</pre>
+  <p>The SQL query statement is constructed similarly to the first SQL statement, except that the ISBN column selection criteria is represented as a placeholder rather than directly concatenated into the SQL query. The next two lines specify the variable type, the expected length, and the value of the ISBN field used in this particular query.&amp;nbsp; This protects against SQL injection attacks because @isbn is specified as a VarChar, which means it can't possibly be an executable SQL statement. Consequently, it will be interpreted by the database driver as a String literal.&amp;nbsp; </p>
+  <p>It is important to note that while parameterized, stored procedures will help reduce the risk of SQL injection, there are other script injection vulnerabilities that will be possible. For more information see the related guideline, "Validate Untrusted Input Passed to Data Access Methods". </p>]]></Data>
+  </Content>
+</TeamMentor_Article>

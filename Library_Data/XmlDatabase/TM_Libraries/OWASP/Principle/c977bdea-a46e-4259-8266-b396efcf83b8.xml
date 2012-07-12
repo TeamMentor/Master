@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-1722677719" Content_Hash="355285596">
+  <Metadata>
+    <Id>c977bdea-a46e-4259-8266-b396efcf83b8</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Protect Authentication Cookies</Title>
+    <Category>Authentication</Category>
+    <Phase>Design</Phase>
+    <Technology> Any</Technology>
+    <Type>Principle</Type>
+    <DirectLink>Protect Authentication Cookies</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>Description</h1>
+  <p>A stolen authentication cookie is a stolen logon. Protect authentication tickets using encryption and secure communication channels. Also limit the time interval in which an authentication ticket remains valid, to counter the spoofing threat that can result from replay attacks, where an attacker captures the cookie and uses it to gain illicit access to your site. Reducing the cookie timeout does not prevent replay attacks but it does limit the amount of time the attacker has to access the site using the stolen cookie.</p>]]></Data>
+  </Content>
+</TeamMentor_Article>

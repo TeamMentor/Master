@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-0000007e38aa</Id>
+    <Library_Id>f215ceee-9a08-41d9-b2c1-bbcc058a8f32</Library_Id>
+    <Title>Parameterized Methods Are Used for Database Access</Title>
+    <Category>Database Security</Category>
+    <Phase>Implementation</Phase>
+    <Technology>Android</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>Parameterized Methods Are Used for Database Access</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="WikiText">
+    <Data><![CDATA[==Applies To==
+
+* Android applications that use SQL databases.
+
+==What to Check For==
+
+Verify that parameterized methods are used for database access.
+
+==Why==
+
+Using parameterized query methods for database access prevents SQL injection vulnerabilities.
+
+==How to Check==
+
+To verify that parameterized methods are used for database access:
+
+# **Identify all code that executes SQL queries.** Review application code to find all queries that are executed by the application and the code that executes them.
+# **Verify that parameterized APIs are used to execute SQL queries.** Make sure that data is passed to queries as parameters. Make sure that data, especially untrusted data, is never concatenated with the query strings and then executed.
+
+==How to Fix==
+
+The Android API includes parameterized functions for querying SQLite databases. Avoid using the rawQuery method, because it may be used in a manner that introduces SQL injection vulnerabilities, by including untrusted input in the SQL query string.
+
+Use the following method for SELECT statements:
+
+*//query//
+
+Use the following methods for INSERT statements:
+
+*//insert//
+*//insertOrThrow//
+*//insertWithOnConflict//
+
+Use the following methods for UPDATE statements:
+
+*//update//
+*//updateWithOnConflict//
+
+Use the following method for DELETE statements:
+
+*//delete//
+
+If your application uses some other API, please make sure that it uses parameterized methods for database access.
+
+==Additional Resources==
+
+*For more information about the Android SQLite API, please see http://developer.android.com/reference/android/database/sqlite/SQLiteDatabase.html
+]]></Data>
+  </Content>
+</TeamMentor_Article>

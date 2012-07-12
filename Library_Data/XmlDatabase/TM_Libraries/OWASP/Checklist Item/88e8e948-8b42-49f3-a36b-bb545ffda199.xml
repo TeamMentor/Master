@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-2024764811" Content_Hash="-138481418">
+  <Metadata>
+    <Id>88e8e948-8b42-49f3-a36b-bb545ffda199</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Mapping Values Are Used for Redirects And Forwards</Title>
+    <Category>Input and Data Validation</Category>
+    <Phase>Implementation</Phase>
+    <Technology> Any</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>Mapping Values Are Used for Redirects And Forwards</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Check For</h1>
+  <p>Verify that mapping values are used to determine destinations of redirects and forwards.</p>
+  <h1>Why</h1>
+  <p>Using mapping values when performing redirects or forwards prevents malicious users from creating hyperlinks that use the redirects or forwards to point to pages other than those intended by the application design.</p>
+  <h1>How to Check</h1>
+  <p>Use the following steps to make sure that mapping values are used for redirects and forwards:</p>
+  <ol>
+    <li>
+      <p>
+        <strong>Identify redirects and forwards.</strong> Review code to find all redirects and forwards.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Examine redirects and forwards.</strong> Look for code that handles parameters. Verify that this code does not accept fully qualified URLs as input for calculating destinations of redirects or forwards. If the code uses parameters to calculate destinations of redirects or forwards, verify that only short-hand keywords defined by the application are accepted as input to map to valid and authorized destinations.</p>
+    </li>
+  </ol>
+  <h1>How to Fix</h1>
+  <p>Perform the following actions to calculate destinations of redirects and forwards based on mapping values:</p>
+  <ol>
+    <li>
+      <p>
+        <strong>Identify redirects and forwards.</strong> Review code to find all redirects and forwards.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Enumerate destinations.</strong> Make a list of all destinations pointed to by redirects and forwards.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Define mapping values.</strong> Define mapping values for all destinations used by redirects and forwards. A mapping value is a short identifying string that symbolically represents a resource.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Rewrite redirects and forwards.</strong> Rewrite redirects and forwards to use mapping values as input to calculate the final destinations of redirects or forwards.</p>
+    </li>
+  </ol>
+  <h1>Problem Example</h1>
+  <p>Consider an on-line banking application that has an insecure redirect:</p>
+  <pre>http://www.onlinebank.com/redirect.asp?url=[destination]</pre>
+  <p>A phisher may create the following hyperlink to point to his own site and send it in spam messages to millions of people:</p>
+  <pre>http://www.onlinebank.com/redirect.asp?url=www.phisher.com</pre>
+  <p>When a user sees a link that appears to point to his bank at onlinebank.com in an e-mail message, he clicks that link and sees a web site that looks exactly like the bank's, but is actually a phishing web site used to steal authentication credentials. The user enters his account number and PIN into the web page, receives an error message telling him to try again, and is redirected to the bank's real site. After entering his credentials again, the user successfuly views his account. However, the phisher now has the user's online banking information.</p>
+  <h1>Solution Example</h1>
+  <p>The simplest solution&amp;nbsp;is to get rid of the redirect altogether, but if it is necessary for application design, then mapping values may be used to mitigate this vulnerability. For example, if redirect.asp is used by the application to redirect to balance.asp, a mapping value called "balance" may be created to signify balance.asp. The page redirect.asp should then be rewritten to accept mapping values as input, instead of urls. The following url should then redirect to balance.asp:</p>
+  <pre>http://www.onlinebank.com/redirect.asp?map=balance</pre>
+  <p>However, the following malicious hyperlink will no longer work, because supplied input will not match any mapping value defined in the application:</p>
+  <pre>http://www.onlinebank.com/redirect.asp?url=www.phisher.com</pre>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>For more information about unvalidated redirects and forwards, please see <a href="http://www.owasp.org/index.php/Top_10_2010-A10-Unvalidated_Redirects_and_Forwards">http://www.owasp.org/index.php/Top_10_2010-A10-Unvalidated_Redirects_and_Forwards</a></li>
+  </ul>]]></Data>
+  </Content>
+</TeamMentor_Article>

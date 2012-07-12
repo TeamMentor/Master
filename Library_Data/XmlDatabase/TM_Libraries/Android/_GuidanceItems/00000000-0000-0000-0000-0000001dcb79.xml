@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-0000001dcb79</Id>
+    <Library_Id>f215ceee-9a08-41d9-b2c1-bbcc058a8f32</Library_Id>
+    <Title>Do Not Log Sensitive Data</Title>
+    <Category>Privacy</Category>
+    <Phase>Implementation</Phase>
+    <Technology>Android</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Do Not Log Sensitive Data</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="WikiText">
+    <Data><![CDATA[==What to Do==
+
+Do not log sensitive data.
+
+==Why==
+
+If sensitive data is logged, it may be recovered by an attacker if the device is lost or compromised.
+
+==How==
+
+To prevent logging of sensitive data:
+
+# **Identify sensitive data.** Make a list of types of sensitive information handled by your application. Some examples are:
+#* Passwords
+#* Encryption keys
+#* Personal information
+# **Identify logging code.** Find all code that uses the //Log// class. 
+# **Review logging code.** Examine logging code to make sure that it never includes sensitive data in log entries.
+
+==Additional Resources==
+
+* For more information about logging on Android, please see http://developer.android.com/tools/debugging/debugging-log.html
+* For more information about the //Log// class, please see http://developer.android.com/reference/android/util/Log.html
+* For a tutorial on Android logging, please see http://mobile.tutsplus.com/tutorials/android/logcat_android-sdk/]]></Data>
+  </Content>
+</TeamMentor_Article>

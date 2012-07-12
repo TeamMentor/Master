@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-0000007db8fe</Id>
+    <Library_Id>b6f408c5-6e6e-4bc0-90a5-0bb10becc2ce</Library_Id>
+    <Title>Use Strong SSL Configurations</Title>
+    <Category>Communication Security</Category>
+    <Phase>Implementation</Phase>
+    <Technology>iOS</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Use Strong SSL Configurations</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="WikiText">
+    <Data><![CDATA[==Applies To==
+
+* iOS applications that send or receive sensitive data over the network.
+
+==What to Do==
+
+Use strong SSL configurations for protecting network traffic.
+
+==Why==
+
+Using strong SSL configurations prevents eavesdropping and other man-in-the-middle attacks. iOS SSL configurations are relatively strong by default, depending on the SDK version, and need to be intentionally degraded to be unsafe. Unfortunately, many developers degrade iOS SSL strength for compatibility with the development environments and subsequently do not restore the SSL configuration to the secure defaults in the production releases.
+
+==How==
+
+To use strong SSL configurations:
+
+# **Disable self-signed certificates.** Self-signed certificates are disabled by default by the iOS SDK. Developers have to intentionally enable self-signed certificates for them to be acceptable by the application. Self-signed certificates are often enabled for testing in the development environment. It is important to disable self-signed certificates in production releases, because self-signed certificates allow man-in-the-middle attacks, which largely negate the use of SSL.
+# **Identify the available SDK version.** Identify the iOS SDK version used by the application.
+# **Use strong cypher suites.** The cypher suites used by SSL implementations in iOS SDKs vary by version. Versions 5 and higher of the iOS SDK may be considered to use strong SSL cypher suites. There are no practical ways to control which cypher suites are used by iOS applications. If strength of SSL cyphers is a critical requirement, use version 5 or higher of the iOS SDK.
+
+==Communication Security Guidelines==
+* [[Disable Self-signed SSL Certificates]]
+* [[Use SSL to Protect Communications]]
+* [[Use Strong SSL Configurations]]
+
+==Communication Security Checklists==
+* [[Self-signed SSL Certificates Are Disabled]]
+* [[SSL Is Used to Protect Communications]]
+* [[Strong SSL Configurations Are Used]]]]></Data>
+  </Content>
+</TeamMentor_Article>

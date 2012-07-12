@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-0000008d7241</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Include Unique Tokens in HTTP Requests</Title>
+    <Category>Session Management</Category>
+    <Phase>Design</Phase>
+    <Technology>Java</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Include Unique Tokens in HTTP Requests</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>What to Do</h1>
+  <p>Include unique tokens in HTTP requests when performing sensitive operations to prevent Cross-Site Request Forgery (CSRF).</p>
+  <h1>Why</h1>
+  <p>CSRF may be possible when an attacker can form a URL, which performs an action on the behalf of an authenticated user. Forming such URLs becomes much more difficult, if unique tokens are included in HTTP requests. </p>
+  <h1>How</h1>
+  <p>To include unique tokens in HTTP requests:</p>
+  <ol>
+    <li>
+      <p>
+        <strong>Identify sensitive operations.</strong> Review application design and code to identify all operations that require authorization.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Identify code that performs sensitive operations.</strong> Identify all pages that are involved in performing sensitive operations - this includes both the pages that link to sensitive operations and the code that actually carries out the sensitive operations.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Choose a method for generating unique tokens. </strong>There are different ways to generate unique tokens. One approach is to generate random tokens for each request. Another approach is to use <em>javax.faces.ViewState</em>. A third approach is to use an API designed specifically for mitigating CSRF, such as ESAPI. Do not use session IDs as anti-CSRF tokens.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Add unique tokens to HTTP requests.</strong> Add code that uses the chosen method of generating unique tokens. Add code that adds the generated unique tokens to the pages that link to sensitive operations in hidden fields.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Add token validation code.</strong> Add code to the pages that carry out sensitive operations that validates the unique tokens to make sure that they have been generated on the server-side.</p>
+    </li>
+  </ol>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>For more information about preveting Cross-Site Request Forgery vulnerabilities, please see <a href="https://www.owasp.org/index.php/Cross-Site_Request_Forgery_%28CSRF%29_Prevention_Cheat_Sheet">https://www.owasp.org/index.php/Cross-Site_Request_Forgery_%28CSRF%29_Prevention_Cheat_Sheet</a></li>
+    <li>For more information about OWASP CSRFGuard, please see <a href="https://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project">https://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project</a></li>
+  </ul>]]></Data>
+  </Content>
+</TeamMentor_Article>

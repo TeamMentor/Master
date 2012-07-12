@@ -1,0 +1,343 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="714443521" Content_Hash="1711132889">
+  <Metadata>
+    <Id>7729f9db-bfae-4606-acab-4b80ec099a2f</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>How to Prevent Cross-Site Scripting in ASP.NET</Title>
+    <Category>Input and Data Validation</Category>
+    <Phase>Implementation</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>How To</Type>
+    <DirectLink>How to Prevent Cross-Site Scripting in ASP.NET</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>Summary</h1>
+  <p>This How to shows how you can help protect your ASP.NET applications from cross-site scripting attacks by using proper input validation techniques and by encoding the output. It also describes a number of other protection mechanisms that you can use in addition to these two main countermeasures.</p>
+  <p>Cross-site scripting (XSS) attacks exploit vulnerabilities in Web page validation by injecting client-side script code. Common vulnerabilities that make your Web applications susceptible to cross-site scripting attacks include failing to properly validate input, failing to encode output, and trusting the data retrieved from a shared database. To protect your application against cross-site scripting attacks, assume that all input is malicious. Constrain and validate all input. Encode all output that could, potentially, include HTML characters. This includes data read from files and databases.</p>
+  <h1>Contents</h1>
+  <ul>
+    <li>
+      <div>Objectives</div>
+    </li>
+    <li>
+      <div>Overview</div>
+    </li>
+    <li>
+      <div>Summary of Steps</div>
+    </li>
+    <li>
+      <div>Step 1. Check That ASP.NET Request Validation Is Enabled</div>
+    </li>
+    <li>
+      <div>Step 2. Review ASP.NET Code That Generates HTML Output</div>
+    </li>
+    <li>
+      <div>Step 3. Determine Whether HTML Output Includes Input Parameters</div>
+    </li>
+    <li>
+      <div>Step 4. Review Potentially Dangerous HTML Tags and Attributes</div>
+    </li>
+    <li>
+      <div>Step 5. Evaluate Countermeasures</div>
+    </li>
+    <li>
+      <div>Additional Considerations</div>
+    </li>
+    <li>
+      <div>Additional Resources</div>
+    </li>
+  </ul>
+  <h1>Objectives</h1>
+  <ul>
+    <li>Understand the common cross-site scripting vulnerabilities in Web page validation. </li>
+    <li>Apply countermeasures for cross-site scripting attacks. </li>
+    <li>Constrain input by using regular expressions, type checks, and ASP.NET validator controls. </li>
+    <li>Constrain output to ensure the browser does not execute HTML tags that contain script code. </li>
+    <li>Review potentially dangerous HTML tags and attributes and evaluate countermeasures. </li>
+  </ul>
+  <h1>Overview</h1>
+  <p>Cross-site scripting attacks exploit vulnerabilities in Web page validation by injecting client-side script code. The script code embeds itself in response data, which is sent back to an unsuspecting user. The user's browser then runs the script code. Because the browser downloads the script code from a trusted site, the browser has no way of recognizing that the code is not legitimate, and Microsoft Internet Explorer security zones provide no defense. Cross-site scripting attacks work over HTTP and HTTPS (SSL) connections.&amp;nbsp; </p>
+  <p>One of the most serious examples of a cross-site scripting attack occurs when an attacker writes script to retrieve the authentication cookie that provides access to a trusted site and then posts the cookie to a Web address known to the attacker. This enables the attacker to spoof the legitimate user's identity and gain illicit access to the Web site.</p>
+  <p>Common vulnerabilities that make your Web application susceptible to cross-site scripting attacks include: </p>
+  <ul>
+    <li>Failing to constrain and validate input. </li>
+    <li>Failing to encode output. </li>
+    <li>Trusting data retrieved from a shared database. </li>
+  </ul>
+  <h2>Guidelines</h2>
+  <p>The two most important countermeasures to prevent cross-site scripting attacks are to: </p>
+  <ul>
+    <li>
+      <strong>Constrain input</strong>.<strong></strong></li>
+    <li>
+      <strong>Encode output</strong>. </li>
+  </ul>
+  <h3>Constrain Input</h3>
+  <p>Start by assuming that all input is malicious. Validate input type, length, format, and range. </p>
+  <ul>
+    <li>To constrain input supplied through server controls, use ASP.NET validator controls such as <strong>RegularExpressionValidator</strong> and <strong>RangeValidator</strong>. </li>
+    <li>To constrain input supplied through client-side HTML input controls or input from other sources such as query strings or cookies, use the <strong>System.Text.RegularExpressions.Regex</strong> class in your server-side code to check for expected using regular expressions. </li>
+    <li>To validate types such as integers, doubles, dates, and currency amounts, convert the input data to the equivalent .NET Framework data type and handle any resulting conversion errors. </li>
+  </ul>
+  <h3>Encode Output</h3>
+  <p>Use the <strong>AntiXSSLibrary.HtmlEncode</strong> method to encode output if it contains input from the user or from other sources such as databases. <strong>HtmlEncode</strong> replaces characters that have special meaning in HTML-to-HTML variables that represent those characters. For example, &lt; is replaced with <strong>&lt;</strong> and <strong>"</strong> is replaced with <strong>"</strong>. Encoded data does not cause the browser to execute code. Instead, the data is rendered as harmless HTML.</p>
+  <p>Similarly, use <strong>AntiXSSLibrary.UrlEncode</strong> to encode output URLs if they are constructed from input.</p>
+  <h1>Summary of Steps</h1>
+  <p>To prevent cross-site scripting, perform the following steps: </p>
+  <ul>
+    <li>Step 1. Check that ASP.NET request validation is enabled. </li>
+    <li>Step 2. Review ASP.NET code that generates HTML output. </li>
+    <li>Step 3. Determine whether HTML output includes input parameters. </li>
+    <li>Step 4. Review potentially dangerous HTML tags and attributes. </li>
+    <li>Step 5. Evaluate countermeasures. </li>
+  </ul>
+  <h1>Step 1. Check That ASP.NET Request Validation Is Enabled</h1>
+  <p>By default, request validation is enabled in Machine.config. Verify that request validation is currently enabled in your server's Machine.config file and that your application does not override this setting in its Web.config file. Check that <strong>validateRequest</strong> is set to <strong>true </strong>as shown in the following code example.</p>
+  <div>
+    <pre>&lt;system.web&gt;<br />&amp;nbsp; &lt;pages buffer="true" validateRequest="true" /&gt;<br />&lt;/system.web&gt;  </pre>
+  </div>
+  <p>You can disable request validation on a page-by-page basis. Check that your pages do not disable this feature unless necessary. For example, you may need to disable this feature for a page if it contains a free-format, rich-text entry field designed to accept a range of HTML characters as input. </p>
+  <h2>To test that ASP.NET request validation is enabled </h2>
+  <ol>
+    <li>Create an ASP.NET page that disables request validation. To do this, set <strong>ValidateRequest="false"</strong>, as shown in the following code example. <div><pre>&lt;%@ Page Language="C#" ValidateRequest="false" %&gt;<br />&lt;html&gt;<br />&amp;nbsp;&lt;script runat="server"&gt;<br />&amp;nbsp; void btnSubmit_Click(Object sender, EventArgs e)<br />&amp;nbsp; {<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; // If ValidateRequest is false, then 'hello' is displayed<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; // If ValidateRequest is true, then ASP.NET returns an exception<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; Response.Write(txtString.Text);<br />&amp;nbsp; }<br />&amp;nbsp;&lt;/script&gt;<br />&amp;nbsp;&lt;body&gt;<br />&amp;nbsp; &lt;form id="form1" runat="server"&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;asp:TextBox id="txtString" runat="server" <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Text="&lt;script&gt;alert('hello');&lt;/script&gt;" /&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;asp:Button id="btnSubmit" runat="server"&amp;nbsp;&amp;nbsp; <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; OnClick="btnSubmit_Click" <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Text="Submit" /&gt;<br />&amp;nbsp; &lt;/form&gt;<br />&amp;nbsp;&lt;/body&gt;<br />&lt;/html&gt;  </pre></div></li>
+    <li>Run the page. It displays <strong>Hello</strong> in a message box&amp;nbsp;because the script in txtString is passed through and rendered as a client-side script in your browser.&amp;nbsp;</li>
+    <li>Set <strong>ValidateRequest="true"</strong> or remove the <strong>ValidateRequest</strong> page attribute and browse to the page again. Verify that the following error message is displayed. <div><pre>A potentially dangerous Request.Form value was detected from the client (txtString="&lt;script&gt;alert('hello...").  </pre></div><p>This indicates that ASP.NET request validation is active and has rejected the input because it includes potentially dangerous HTML characters. </p><blockquote><strong>Note</strong>&amp;nbsp;&amp;nbsp;&amp;nbsp;Do not rely on ASP.NET request validation. Treat it as an extra precautionary measure in addition to your own input validation.</blockquote></li>
+  </ol>
+  <h1>
+    <br />Step 2. Review ASP.NET Code That Generates HTML Output</h1>
+  <p>ASP.NET writes HTML as output in two ways, as shown in the following code examples.</p>
+  <div>
+    <pre>Response.Write<br />&lt;% = </pre>
+  </div>
+  <p>Search your pages to locate where HTML and URL output is returned to the client.</p>
+  <h1>Step 3. Determine Whether HTML Output Includes Input Parameters</h1>
+  <p>Analyze your design and your page code to determine whether the output includes any input parameters. These parameters can come from a variety of sources. The following list includes common input sources: </p>
+  <ul>
+    <li>
+      <strong>Form fields</strong>, such as the following. <div><pre>Response.Write(name.Text);<br />Response.Write(Request.Form["name"]);<br />Query Strings<br />Response.Write(Request.QueryString["name"]);  </pre></div></li>
+    <li>
+      <strong>Query strings</strong>, such as the following: <div><pre>Response.Write(Request.QueryString["username"]);  </pre></div></li>
+    <li>
+      <strong>Databases and data access methods</strong>, such as the following: <div><pre>SqlDataReader reader = cmd.ExecuteReader();<br />Response.Write(reader.GetString(1));  </pre></div><p>Be particularly careful with data read from a database if it is shared by other applications. </p></li>
+    <li>
+      <strong>Cookie collection</strong>, such as the following: <div><pre>Response.Write(<br />Request.Cookies["name"].Values["name"]);  </pre></div></li>
+    <li>
+      <strong>Session and application variables</strong>, such as the following: <div><pre>Response.Write(Session["name"]);<br />Response.Write(Application["name"]);  </pre></div></li>
+  </ul>
+  <p>In addition to source code analysis, you can also perform a simple test by typing text such as "<strong>XYZ</strong>" in form fields and testing the output. If the browser displays "<strong>XYZ</strong>" or if you see "<strong>XYZ</strong>" when you view the source of the HTML, your Web application is vulnerable to cross-site scripting. </p>
+  <p>To see something more dynamic, inject &lt;<strong>script</strong>&gt;<strong>alert('hello');</strong>&lt;<strong>/script</strong>&gt; through an input field. This technique might not work in all cases because it depends on how the input is used to generate the output.</p>
+  <h1>Step 4. Review Potentially Dangerous HTML Tags and Attributes</h1>
+  <p>If you dynamically create HTML tags and construct tag attributes with potentially unsafe input, make sure you HTML-encode the tag attributes before writing them out. </p>
+  <p>The following .aspx page shows how you can write HTML directly to the return page by using the &lt;<strong>asp:Literal</strong>&gt; control. The code takes user input of a color name, inserts it into the HTML sent back, and displays text in the color entered. The page uses <strong>HtmlEncode</strong> to ensure the inserted text is safe.</p>
+  <div>
+    <pre>&lt;%@ Page Language="C#" AutoEventWireup="true"%&gt;</pre>
+    <pre>&lt;html&gt;<br />&amp;nbsp; &lt;form id="form1" runat="server"&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;div&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Color:&amp;nbsp;&lt;asp:TextBox ID="TextBox1" runat="server"&gt;&lt;/asp:TextBox&gt;&lt;br /&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;asp:Button ID="Button1" runat="server" Text="Show color" <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; OnClick="Button1_Click" /&gt;&lt;br /&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;asp:Literal ID="Literal1" runat="server"&gt;&lt;/asp:Literal&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;/div&gt;<br />&amp;nbsp; &lt;/form&gt;<br />&lt;/html&gt;</pre>
+  </div>
+  <pre>&lt;script runat="server"&gt;<br />&amp;nbsp; private void Page_Load(Object Src, EventArgs e)<br />&amp;nbsp; {<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; protected void Button1_Click(object sender, EventArgs e)<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; {<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Literal1.Text = @"&lt;span style=""color:" <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; + Server.HtmlEncode(TextBox1.Text)<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; + @"""&gt;Color example&lt;/span&gt;";<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; }&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <br />&amp;nbsp; }<br />&lt;/Script&gt;</pre>
+  <h2>Potentially Dangerous HTML Tags</h2>
+  <p>While not an exhaustive list, the following commonly used HTML tags could allow a malicious user to inject script code: </p>
+  <ul>
+    <li>&lt;<strong>applet</strong>&gt; </li>
+    <li>&lt;<strong>body</strong>&gt; </li>
+    <li>&lt;<strong>embed</strong>&gt; </li>
+    <li>&lt;<strong>frame</strong>&gt; </li>
+    <li>&lt;<strong>script</strong>&gt; </li>
+    <li>&lt;<strong>frameset</strong>&gt; </li>
+    <li>&lt;<strong>html</strong>&gt; </li>
+    <li>&lt;<strong>iframe</strong>&gt; </li>
+    <li>&lt;<strong>img</strong>&gt; </li>
+    <li>&lt;<strong>style</strong>&gt; </li>
+    <li>&lt;<strong>layer</strong>&gt; </li>
+    <li>&lt;<strong>link</strong>&gt; </li>
+    <li>&lt;<strong>ilayer</strong>&gt; </li>
+    <li>&lt;<strong>meta</strong>&gt; </li>
+    <li>&lt;<strong>object</strong>&gt; </li>
+  </ul>
+  <p>An attacker can use HTML attributes such as <strong>src</strong>, <strong>lowsrc</strong>, <strong>style</strong>, and <strong>href</strong> in conjunction with the preceding tags to inject cross-site scripting. For example, the <strong>src</strong> attribute of the &lt;<strong>img</strong>&gt; tag can be a source of injection, as shown in the following examples.</p>
+  <div>
+    <pre>&lt;img src="javascript:alert('hello');"&gt;<br />&lt;img src="java
+script:alert('hello');"&gt;<br />&lt;img src="java
+script:alert('hello');"&gt;  </pre>
+  </div>
+  <p>An attacker can also use the &lt;<strong>style</strong>&gt; tag to inject a script by changing the MIME type as shown in the following.</p>
+  <div>
+    <pre>&lt;style TYPE="text/javascript"&gt;<br />&amp;nbsp; alert('hello');<br />&lt;/style&gt;  </pre>
+  </div>
+  <h1>Step 5. Evaluate Countermeasures</h1>
+  <p>When you find ASP.NET code that generates HTML using some input, you need to evaluate appropriate countermeasures for your specific application. Countermeasures include: </p>
+  <ul>
+    <li>Encode HTML output. </li>
+    <li>Encode URL output. </li>
+    <li>Filter user input. </li>
+  </ul>
+  <h2>Encode HTML Output</h2>
+  <p>If you write text output to a Web page and you do not know if the text contains HTML special characters (such as &lt;, &gt;, and <strong>&amp;</strong>), pre-process the text by using the <strong>AntiXSSLibrary.HtmlEncode</strong> method as shown in the following code example. Do this if the text came from user input, a database, or a local file.</p>
+  <div>
+    <pre>Response.Write(AntiXSSLibrary.HtmlEncode(Request.Form["name"]));  </pre>
+  </div>
+  <p>Do not substitute encoding output for checking that input is well-formed and correct. Use it as an additional security precaution.</p>
+  <h2>Encode URL Output</h2>
+  <p>If you return URL strings that contain input to the client, use the <strong>AntiXSSLibrary.UrlEncode</strong> method to encode these URL strings as shown in the following code example.</p>
+  <div>
+    <pre>Response.Write(AntiXSSLibrary.UrlEncode(urlString));  </pre>
+  </div>
+  <h2>Filter User Input</h2>
+  <p>If you have pages that need to accept a range of HTML elements, for example through some kind of rich text input field, you must disable ASP.NET request validation for the page. If you have several pages that do this, create a filter that allows only the HTML elements that you want to accept. A common practice is to restrict formatting to safe HTML elements such as bold (&lt;<strong>b</strong>&gt;) and italic (&lt;<strong>i</strong>&gt;).</p>
+  <h3>To safely allow restricted HTML input </h3>
+  <ol>
+    <li>Disable ASP.NET request validation by the adding the <strong>ValidateRequest="false"</strong> attribute to the <strong>@ Page</strong> directive. </li>
+    <li>Encode the string input with the <strong>HtmlEncode</strong> method. </li>
+    <li>Use a <strong>StringBuilder</strong> and call its <strong>Replace</strong> method to selectively remove the encoding on the HTML elements that you want to permit. </li>
+  </ol>
+  <p>The following .aspx page code shows this approach. The page disables ASP.NET request validation by setting <strong>ValidateRequest="false"</strong>. It HTML-encodes the input and then selectively allows the &lt;<strong>b</strong>&gt; and &lt;<strong>i</strong>&gt; HTML elements to support simple text formatting. </p>
+  <div>
+    <pre>&lt;%@ Page Language="C#" ValidateRequest="false"%&gt;</pre>
+    <pre>&lt;script runat="server"&gt;</pre>
+    <pre>&amp;nbsp; void submitBtn_Click(object sender, EventArgs e)<br />&amp;nbsp; {<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; // Encode the string input<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; StringBuilder sb = new StringBuilder(<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; AntiXSSLibrary.HtmlEncode(htmlInputTxt.Text));<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; // Selectively allow&amp;nbsp; &lt;b&gt; and &lt;i&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; sb.Replace("&lt;b&gt;", "&lt;b&gt;");<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; sb.Replace("&lt;/b&gt;", "");<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; sb.Replace("&lt;i&gt;", "&lt;i&gt;");<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; sb.Replace("&lt;/i&gt;", "");<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; Response.Write(sb.ToString());<br />&amp;nbsp; }<br />&lt;/script&gt;</pre>
+  </div>
+  <pre>&lt;html&gt;<br />&amp;nbsp; &lt;body&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;form id="form1" runat="server"&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;div&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;asp:TextBox ID="htmlInputTxt" Runat="server" <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; TextMode="MultiLine" Width="318px"<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Height="168px"&gt;&lt;/asp:TextBox&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;asp:Button ID="submitBtn" Runat="server" <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Text="Submit" OnClick="submitBtn_Click" /&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;/div&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;/form&gt;<br />&amp;nbsp; &lt;/body&gt;<br />&lt;/html&gt;</pre>
+  <h1>Additional Considerations</h1>
+  <p>In addition to the techniques discussed previously in this How to, use the following countermeasures as further safe guards to prevent cross-site scripting: </p>
+  <ul>
+    <li>Set the correct character encoding. </li>
+    <li>Do not rely on input sanitization. </li>
+    <li>Use the HttpOnly cookie option. </li>
+    <li>Use the &lt;frame&gt; security attribute. </li>
+    <li>Use the innerText property instead of innerHTML. </li>
+  </ul>
+  <h2>Set the Correct Character Encoding</h2>
+  <p>To successfully restrict valid data for your Web pages, you should limit the ways in which the input data can be represented. This prevents malicious users from using canonicalization and multi-byte escape sequences to trick your input validation routines. A multi-byte escape sequence attack is a subtle manipulation that uses the fact that character encodings, such as uniform translation format-8 (UTF-8), use multi-byte sequences to represent non-ASCII characters. Some byte sequences are not legitimate UTF-8, but they may be accepted by some UTF-8 decoders, thus providing an exploitable security hole.</p>
+  <p>ASP.NET allows you to specify the character set at the page level or at the application level by using the &lt;<strong>globalization</strong>&gt; element in the Web.config file. The following code examples show both approaches and use the ISO-8859-1 character encoding, which is the default in early versions of HTML and HTTP.</p>
+  <p>To set the character encoding at the page level, use the &lt;<strong>meta</strong>&gt; element or the <strong>ResponseEncoding</strong> page-level attribute as follows: </p>
+  <div>
+    <pre>&lt;meta http-equiv="Content Type" <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; content="text/html; charset=ISO-8859-1" /&gt;</pre>
+    <pre>OR<br />&lt;% @ Page ResponseEncoding="iso-8859-1" %&gt;  </pre>
+  </div>
+  <p>To set the character encoding in the Web.config file, use the following configuration.</p>
+  <div>
+    <pre>&lt;configuration&gt;<br />&amp;nbsp;&amp;nbsp; &lt;system.web&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;globalization <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; requestEncoding="iso-8859-1"<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; responseEncoding="iso-8859-1"/&gt;<br />&amp;nbsp;&amp;nbsp; &lt;/system.web&gt;<br />&lt;/configuration&gt;  </pre>
+  </div>
+  <h2>Validating Unicode Characters</h2>
+  <p>Use the following code to validate Unicode characters in a page.</p>
+  <div>
+    <pre>using System.Text.RegularExpressions;<br />. . .</pre>
+    <pre>public class WebForm1 : System.Web.UI.Page<br />{<br />&amp;nbsp; private void Page_Load(object sender, System.EventArgs e)<br />&amp;nbsp; {<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; // Name must contain between 1 and 40 alphanumeric characters<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; // and (optionally) special characters such as apostrophes&amp;nbsp; <br />&amp;nbsp;&amp;nbsp;&amp;nbsp; // for names such as O'Dell</pre>
+    <pre>&amp;nbsp;&amp;nbsp;&amp;nbsp; if (!Regex.IsMatch(Request.Form["name"],<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; @"^[\p{L}\p{Zs}\p{Lu}\p{Ll}\']{1,40}$"))<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; throw new ArgumentException("Invalid name parameter");</pre>
+    <pre>&amp;nbsp;&amp;nbsp;&amp;nbsp; // Use individual regular expressions to validate other parameters<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; . . .<br />&amp;nbsp; }<br />}  </pre>
+  </div>
+  <p>The following explains the regular expression shown in the preceding code: </p>
+  <ul>
+    <li>
+      <strong>^</strong> means start looking at this position. </li>
+    <li>
+      <strong>\p{ ..}</strong> matches any character in the named character class specified by <strong>{..}</strong>. </li>
+    <li>
+      <strong>{L}</strong> performs a left-to-right match. </li>
+    <li>
+      <strong>{Lu}</strong> performs a match of uppercase. </li>
+    <li>
+      <strong>{Ll}</strong> performs a match of lowercase. </li>
+    <li>
+      <strong>{Zs}</strong> matches separator and space. </li>
+    <li>
+      <strong>'</strong>matches apostrophe. </li>
+    <li>
+      <strong>{1,40}</strong> specifies the number of characters: no less than 1 and no more than 40. </li>
+    <li>$ means stop looking at this position. </li>
+  </ul>
+  <h2>Do Not Rely on Input Sanitization</h2>
+  <p>A common practice is for code to attempt to sanitize input by filtering out known unsafe characters. Do not rely on this approach because malicious users can usually find an alternative means of bypassing your validation. Instead, your code should check for known secure, safe input. Table 1 shows various safe ways to represent some common characters.</p>
+  <p>
+    <strong>Table 1: Character Representation</strong>
+  </p>
+  <div>
+    <table>
+      <tbody>
+        <tr>
+          <th>Characters</th>
+          <th>Decimal</th>
+          <th>Hexadecimal</th>
+          <th>HTML Character Set</th>
+          <th>Unicode</th>
+        </tr>
+        <tr>
+          <td>
+            <strong>" </strong>(double quotation marks)</td>
+          <td>"</td>
+          <td>"</td>
+          <td>"</td>
+          <td>\u0022</td>
+        </tr>
+        <tr>
+          <td>
+            <strong>' </strong>(single quotation mark)</td>
+          <td>'</td>
+          <td>'</td>
+          <td>'</td>
+          <td>\u0027</td>
+        </tr>
+        <tr>
+          <td>
+            <strong>&amp;</strong> (ampersand)</td>
+          <td>&amp;</td>
+          <td>&amp;</td>
+          <td>&amp;</td>
+          <td>\u0026</td>
+        </tr>
+        <tr>
+          <td>&lt; (less than)</td>
+          <td>&lt;</td>
+          <td>&lt;</td>
+          <td>&lt;</td>
+          <td>\u003c</td>
+        </tr>
+        <tr>
+          <td>&gt; (greater than)</td>
+          <td>&gt;</td>
+          <td>&gt;</td>
+          <td>&gt;</td>
+          <td>\u003e</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <br />
+  <h2>Use the HttpOnly Cookie Option</h2>
+  <p>Internet Explorer 6 Service Pack 1 and later supports an <strong>HttpOnly</strong> cookie attribute, which prevents client-side scripts from accessing a cookie from the <strong>document.cookie</strong> property. Instead, the script returns an empty string. The cookie is still sent to the server whenever the user browses to a Web site in the current domain.</p>
+  <blockquote>
+    <strong>Note</strong>&amp;nbsp;&amp;nbsp;&amp;nbsp;Web browsers that do not support the <strong>HttpOnly</strong> cookie attribute either ignore the cookie or ignore the attribute, which means that it is still subject to cross-site scripting attacks.<strong></strong></blockquote>
+  <p>The <strong>System.Net.Cookie</strong> class in Microsoft .NET Framework version 2.0 supports an <strong>HttpOnly</strong> property. The <strong>HttpOnly</strong> property is always set to true by Forms authentication. </p>
+  <p>Earlier versions of the .NET Framework (versions 1.0 and 1.1) require that you add code similar to the following to the <strong>Application</strong>_<strong>EndRequest</strong> event handler in your application Global.asax file to explicitly set the <strong>HttpOnly</strong> attribute.</p>
+  <div>
+    <pre>protected void Application_EndRequest(Object sender, EventArgs e) <br />{<br />&amp;nbsp; string authCookie = FormsAuthentication.FormsCookieName;<br />&amp;nbsp; foreach (string sCookie in Response.Cookies) <br />&amp;nbsp; {<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; // Just set the HttpOnly attribute on the Forms <br />&amp;nbsp;&amp;nbsp;&amp;nbsp; // authentication cookie. Skip this check to set the attribute <br />&amp;nbsp;&amp;nbsp;&amp;nbsp; // on all cookies in the collection</pre>
+  </div>
+  <pre>&amp;nbsp;&amp;nbsp;&amp;nbsp; if (sCookie.Equals(authCookie))<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; { <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; // Force HttpOnly to be added to the cookie header<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Response.Cookies[sCookie].Path += ";HttpOnly";<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; }<br />&amp;nbsp; }<br />}</pre>
+  <h2>Use the &lt;frame&gt; Security Attribute</h2>
+  <p>Internet Explorer 6 and later support a new <strong>security</strong> attribute for the &lt;<strong>frame</strong>&gt; and &lt;<strong>iframe</strong>&gt; elements. You can use the <strong>security</strong> attribute to apply the user's Restricted Sites Internet Explorer security zone settings to an individual frame or iframe. By default, the Restricted Sites zone does not support script execution. </p>
+  <p>If you use the <strong>security</strong> attribute, it must be set to <strong>"restricted"</strong> as shown in the following.</p>
+  <div>
+    <div>
+      <div>
+      </div>
+      <div>&amp;nbsp;</div>
+    </div>
+    <pre>&lt;frame security="restricted" src="http://www.somesite.com/somepage.htm"&gt;&lt;/frame&gt;  </pre>
+  </div>
+  <h2>Use the innerText Property Instead of innerHTML</h2>
+  <p>If you use the <strong>innerHTML</strong> property to build a page and the HTML is based on potentially untrusted input, you must use <strong>HtmlEncode</strong> to make it safe. To avoid having to remember to do this, use <strong>innerText</strong> instead. The <strong>innerText</strong> property renders content safe and ensures that scripts are not executed.</p>
+  <p>The following example shows this approach for two HTML &lt;<strong>span</strong>&gt; controls. The code in the <strong>Page_Load</strong> method sets the text displayed in the <strong>Welcome1</strong> &lt;<strong>span</strong>&gt; element using the <strong>innerText</strong> property, so HTML-encoding is unnecessary. The code sets the text in the <strong>Welcome2</strong> &lt;<strong>span</strong>&gt; element by using the <strong>innerHtml</strong> property; therefore, you must <strong>HtmlEncode</strong> it first to make it safe.</p>
+  <div>
+    <pre>&lt;%@ Page Language="C#" AutoEventWireup="true"%&gt;</pre>
+    <pre>&lt;html&gt;<br />&amp;nbsp; &lt;body&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;span id="Welcome1" runat="server"&gt; &lt;/span&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;span id="Welcome2" runat="server"&gt; &lt;/span&gt;<br />&amp;nbsp; &lt;/body&gt;<br />&lt;/html&gt;</pre>
+  </div>
+  <pre>&lt;script runat="server"&gt;<br />&amp;nbsp; private void Page_Load(Object Src, EventArgs e)<br />&amp;nbsp; {<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; // Using InnerText renders the content safe-no need to HtmlEncode<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; Welcome1.InnerText = "Hello, " + User.Identity.Name;</pre>
+  <pre>&amp;nbsp;&amp;nbsp;&amp;nbsp; // Using InnerHtml requires the use of HtmlEncode to make it safe<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; Welcome2.InnerHtml = "Hello, " + <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Server.HtmlEncode(User.Identity.Name);<br />&amp;nbsp; }<br />&lt;/Script&gt;</pre>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance.</p>]]></Data>
+  </Content>
+</TeamMentor_Article>

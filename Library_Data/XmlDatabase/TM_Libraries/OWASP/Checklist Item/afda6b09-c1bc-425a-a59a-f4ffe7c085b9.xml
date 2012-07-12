@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-692889882" Content_Hash="1214015303">
+  <Metadata>
+    <Id>afda6b09-c1bc-425a-a59a-f4ffe7c085b9</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Application Is Partitioned into Public And Private Domains</Title>
+    <Category>Authorization</Category>
+    <Phase>Deployment</Phase>
+    <Technology>Java</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>Application Is Partitioned into Public And Private Domains</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Check For</h1>
+  <p>Ensure that your application clearly defines the boundaries between its protected and unprotected resources.</p>
+  <h1>Why</h1>
+  <p>Defining a boundary between public and restricted content helps establish the check points that will allow access to the restricted content.</p>
+  <h1>How to Check</h1>Follow these steps to ensure your application is partitioned into public and protected (restricted) domains: <ol><li><p><strong>Enumerate all web accessible resources. </strong>Identify the protected resources from the public resources. Common protected resources include but are not limited to:</p><ul><li>Resources that require authentication </li><li>Critical application resources </li><li>Sensitive/confidential data</li></ul></li><li><p><strong>Ensure that protected resources have the appropriate access controls. </strong>Determine if all protected resources have the appropriate access controls assigned to them.</p></li><li><p><strong>Check if there is separation on disk between public and protected resources. </strong>Examine the local filesystem structure. Check if a protected resource is located inside a public directory and vice versa.</p></li><li><p><strong>Verify the local system permissions for all resources. </strong>For each resource, check that the local system permissions are set accordingly. If the resource is public, verify that anonymous users can access it. If the resource is protected, verify that only authorized users can access it.</p></li></ol><h1>Problem Example</h1><p>MyApp is a financial tool that generates reports based on sensitive data. It allows the user to upload the financial data and download the report. Since the application is small, all of its content is located within the same directory. The access control is enforced by the web application through checking the required permissions before a given call is executed.</p><p>Since both data and code is within the same directory, it may be possible for an attacker to gain access to the raw financial data.</p>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-000000183134</Id>
+    <Library_Id>f798e6e6-1732-4172-9c47-9621d914efcd</Library_Id>
+    <Title>Protect Against Format String Problems</Title>
+    <Category>Dangerous APIs</Category>
+    <Phase>Implementation</Phase>
+    <Technology>Native Code</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Protect Against Format String Problems</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>What to Do</h1>
+  <p>Do not pass user input or any other external untrusted input to a printf statement or any other statement that takes a format string.</p>
+  <h1>Why</h1>
+  <p>C and C++ use string functions, like printf(), that allow users to pass a format for the input string. Attackers can manipulate the input parameters passed to these functions to make the function work differently. Attackers can use format string bugs to overwrite parts of the stack, corrupt memory, and crash the system. They can use this vulnerability to execute different kind of attacks such as elevation of privileges, authentication bypass, information disclosure, and denial of services.</p>
+  <h1>When</h1>
+  <p>Guard against format string problems whenever a dangerous string manipulation function is used (see list below) or any other function that accepts a format string. </p>
+  <h1>How</h1>
+  <p>Do not allow user data to pass directly to a vulnerable function. This is especially dangerous if your code does not already define the format of the string since the attacker then has free reign add format characters to their input that can be used to directly read or manipulate memory. The following Win32 APIs accept format strings and can be vulnerable to format string attacks:</p>
+  <li>printf </li>
+  <li>wprintf </li>
+  <li>sprintf </li>
+  <li>swprintf </li>
+  <li>fprintf </li>
+  <li>fwprintf </li>
+  <li>vprintf </li>
+  <li>scanf </li>
+  <li>fscanf </li>
+  <li>sscanf </li>
+  <li>fwscanf </li>
+  <li>wscanf </li>
+  <li>swscanf </li>
+  <li>snprintf<p>The following functions can be used as safer alternatives:</p></li>
+  <li>StringCbPrintf </li>
+  <li>StringCbPrintfEx </li>
+  <li>StringCchPrintf&amp;nbsp;<h1>Problem Example</h1><p>The following code demonstrates the simplest example of a format string vulnerability. In this case an attacker could add their own format characters such as %n or %s to attack your application.</p><pre>int func (char * buffer)<br />{<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; printf(buffer);<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; return 0;<br />}</pre><p>In the following example an attacker could input a formatted string such as&amp;nbsp;"%.30dAAAAAAAAAAAAAAAA" to cause a&amp;nbsp;buffer overflow in the code.</p><pre>void func(char * input) <br />{&amp;nbsp;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;char&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; buffer[16];<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; char&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; message[16];<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; sprintf (buffer, "Name: %.8s", input);<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; sprintf (message, buffer);<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; printf(message);&amp;nbsp;<br />}&amp;nbsp;</pre><h1>Solution Example</h1><p>You should not pass user input to a printf function, however if it is necessary ensure that your code is supplying the format string instead of the user input. In the following code, the printf statement uses %s so that the input is interpreted as a string.</p><pre>int func (char * buffer)<br />{<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; printf("%s", buffer);<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; return 0;<br />}</pre></li>]]></Data>
+  </Content>
+</TeamMentor_Article>

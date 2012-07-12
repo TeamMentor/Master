@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-1890938551" Content_Hash="812952716">
+  <Metadata>
+    <Id>fbcc8a28-01fb-4fdf-a0e8-e4704be8d4ec</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Protect Sensitive Data Over the Network</Title>
+    <Category>Sensitive Data</Category>
+    <Phase>Implementation</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Protect Sensitive Data Over the Network</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Do</h1>
+  <p>Use a protocol that allows adequate encryption to protect sensitive data, such as credentials and application-specific data.</p>
+  <h1>Why</h1>
+  <p>When data is sent over the network, it typically passes through several intermediate relays on its way towards some final destination. Using a safe protocol to transmit information is important because it adds protection against&amp;nbsp;the Network Eavesdropping Attack or the&amp;nbsp;Man in the Middle Attack during transport.</p>
+  <h1>When</h1>
+  <p>This is required whenever sensitive data needs to be sent between two hosts.</p>
+  <h1>How</h1>
+  <p>Use the following steps to protect sensitive data over the network:</p>
+  <ol>
+    <li>
+      <p>
+        <strong>Identify sensitive information.</strong> Sensitive data is any information that is kept secret and should be disclosed only to authorized parties. Common examples of sensitive data include, but are not limited to, names of customers, government issued ID numbers, credit card and other financial information, passwords, and private keys. Some industries, such as health care and banking, have regulatory standards that define sensitive information. Use regulatory requirements, as they apply to your application, to identify sensitive data. Sensitive data can be defined as follows:</p>
+      <ul>
+        <li>Information that either contains personally identifiable information or can be used to derive personally identifiable information that should not be shared with others. </li>
+        <li>Information that a user provides that they would not want shared with other users of the application. </li>
+        <li>Information that comes from an external trusted source that is not designed to be shared with users.</li>
+      </ul>
+    </li>
+    <li>
+      <p>
+        <strong>Choose an appropriate protection mechanism.</strong> Choosing the appropriate protection mechanism may depend on various conditions: purpose of the sensitive data, role of the other network party, infrastructure, and supported technologies. Because sensitive data must be encrypted when in transit, there are two potential strategies — Encrypt the application data or Encrypt the communication channel:</p>
+      <ul>
+        <li>
+          <p>
+            <strong>Encrypt the communication channel.</strong> Depending on the current infrastructure and the other network party, it is possible to encrypt the connections using SSL, IPSec, or any technologies supported by the remote party. </p>
+        </li>
+        <li>
+          <p>
+            <strong>Encrypt the application data.</strong> If your application's communication channels cannot be encrypted, encrypt the application data. Hashing or encryption should be used when protecting the application data. Use hashing if the sensitive data will be used only for comparison purposes and the actual contents of the data will never need to be recovered. Use encryption if the sensitive data will need be retrieved at a later stage.</p>
+          <ul>
+            <li>
+              <p>
+                <strong>Hashing</strong>: If hashing is used, choose a longer salt, 16 or more bits. The salt is random data that is known only by the application; to guess the value of the original data given the hash, an attacker also has to guess the salt. It is recommended to have a longer salt because it provides a bigger input to the hash function. Assuming that the produced hash is compromised, longer salts makes it more difficult for an attacker to gain access to the sensitive data. If your application uses randomly generated salt, make sure that your application encrypts the random salt and stores it into a configuration file. Use RNGCryptoServiceProvider to generate the salt. Example:</p>
+              <pre>public static byte[] GenerateSalt()<br />{<br />    byte[] randBytes = new byte[4];<br />    RNGCryptoServiceProvider gen =<br />     new RNGCryptoServiceProvider();<br />    gen.GetNonZeroBytes(randBytes);<br />    return randBytes;<br />}</pre>
+              <p>Choosing a strong hashing algorithm is also important. Stronger algorithms prevent multiple unique pieces of data from producing identical hash values. The current recommendation is to use SHA-256 or stronger.</p>
+              <pre>public byte[] HashCredentials(byte[] pass, byte[] salt)<br />{<br />    HMACSHA512 md;<br />    byte[] digest; <br />    md = new HMACSHA256(salt);<br />    md.Initialize();<br />    digest = md.ComputeHash(pass);<br />    md.Clear();<br />    return digest;<br />}</pre>
+            </li>
+            <li>
+              <p>
+                <strong>Encrypting</strong>: If encryption is used, use a key size of 256-bit or higher for symmetric encryption and 2048-bit or higher for public/private key encryption. Use AES for symmetric encryption or RSA for public/private key encryption. You should use symmetric encryption if and only if your application is the only entity that will access the encrypted data. If the data will be accessed by more than one parties, use public/private key encryption. Public/private key encryption allows your application to share sensitive data with multiple entities without disclosing its own encryption key. The following example demonstrates the use of the Rijndael symmetric key encryption algorithm:</p>
+              <pre>Rijndael encMD;<br />ICryptoTransform encCT;<br />byte[] digest;<br />// The following code obtains the encryption<br />// key and initialization vector<br />// from the application's key repository. <br />encMD = Rijndael.Create();<br />encMD.Key = MyApp.Crypto.GetEncryptionKey();<br />encMD.IV = MyApp.Crypto.GetEncryptionIV();<br />encCT = encMD.CreateEncryptor(); <br />// Note that sensitiveData is of type byte[] and contains<br />// data that is sensitive in nature<br />digest =<br /> encCT.TransformFinalBlock(sensitiveData, 0, sensitiveData.Length);<br />encMD.Clear();</pre>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <p>
+        <strong>Apply the appropriate protection mechanism</strong>: Evaluate the code and determine the places where sensitive data is transmitted. Apply the established protection mechanism at each location. For instance, if your application processes credit card transactions across a hostile network environment, encrypt the credit card information before transmitting it to the appropriate network entity:</p>
+      <pre>void ProcessPayment(byte[] ccInfo, float amount)<br />{<br />    byte[] ccDigest = MyApp.Crypto.EncryptCCInfo(ccInfo);<br />    SqlConnection connection;<br />    SqlCommand command;<br />    SqlDataReader result;<br />    string query = "execute QueuePayment @ccDigest @amount;";<br />    connection = MyApp.DBManager.GetDBConnection();<br />    command = new SqlCommand(query, connection);<br />    command.Parameters.Add("@ccDigest", System.Data.SqlDbType.Binary);<br />    command.Parameters["@ccDigest"].Value = ccDigest;<br />    command.Parameters.Add("@amount", System.Data.SqlDbType.Float);<br />    command.Parameters["@amount"].Value = amount;<br />    ...<br />}</pre>
+    </li>
+  </ol>
+  <h1>Problem Example</h1>
+  <p>An e-commerce application written in ASP.NET enables customers to pay their bills online through a unified broker. The application's web component relies on an independent account management system that resides on another server. The web component communicates with the account management system using a SQL socket connection. The two servers are located in a competitively priced data center that houses a number of other customers, all of which are able to access the building at all times. A malicious user purchases hosting services at the same company, and after exploring the hosting environment, learns that the hosted accounts are networked using a shared bus topology that allows for network snooping. Because SQL connections are not encrypted by default, the attacker is able to setup a sniffer and capture all of the communication between the account management component and the web component. This enabled the attacker to login as a legitimate user on the account management server and make changes at will.</p>
+  <h1>Solution Example</h1>
+  <p>An e-commerce application written in ASP.NET enables customers to pay their bills online through a unified broker. The application's web component relies on an independent account management system that resides on another server. The web component communicates with the account management system using a SQL socket connection. The two servers are located in a competitively priced data center that houses a number of other customers, all of which are able to access the building at all times. The application's developers encrypt the payment information before transmitting it to the other network entity.</p>
+  <pre>void ProcessPayment(byte[] ccInfo, float amount)<br />{<br />    byte[] ccDigest = MyApp.Crypto.EncryptCCInfo(ccInfo);<br />    SqlConnection connection;<br />    SqlCommand command;<br />    SqlDataReader result; <br />    string query = "execute QueuePayment @ccDigest @amount;";<br />    connection = MyApp.DBManager.GetDBConnection();<br />    command = new SqlCommand(query, connection);<br />    command.Parameters.Add("@ccDigest", System.Data.SqlDbType.Binary);<br />    command.Parameters["@ccDigest"].Value = ccDigest;<br />    command.Parameters.Add("@amount", System.Data.SqlDbType.Float);<br />    command.Parameters["@amount"].Value = amount;<br />    ...<br />} <br />... <br />public byte[] EncryptCCInfo(byte[] ccInfo)<br />{<br />    Rijndael encMD;<br />    ICryptoTransform encCT;<br />    byte[] digest;<br />    encMD = Rijndael.Create();<br />    encMD.Key = MyApp.Crypto.GetEncryptionKey();<br />    encMD.IV = MyApp.Crypto.GetEncryptionIV();<br />    encCT = encMD.CreateEncryptor();<br />    digest = encCT.TransformFinalBlock(ccInfo, 0, ccInfo.Length);<br />    encMD.Clear();<br />    return digest;<br />}</pre>
+  <p>Because data between the two components is encrypted, the transmission medium is less likely to affect the application's ability to securely transmit payment information.</p>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance. </p>]]></Data>
+  </Content>
+</TeamMentor_Article>

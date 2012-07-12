@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-704644251" Content_Hash="-18548869">
+  <Metadata>
+    <Id>f527a834-7f1b-41dd-9383-d386de47b9da</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Page ViewStateUserKey Is Used to Counter One-click Attacks</Title>
+    <Category>Session Management</Category>
+    <Phase>Implementation</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>Page ViewStateUserKey Is Used to Counter One-click Attacks</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Check For</h1>
+  <p>Check to ensure that all forms that require authentication or can be used to trigger important functionality are protected with ViewStateUserKey.</p>
+  <h1>Why</h1>
+  <p>A one-click attack consists of posting a malicious HTTP form to a known, vulnerable Web site. It is called "one-click" because it usually begins with an unaware victim clicking on an alluring link received through e-mail or found when navigating a crowded forum.&amp;nbsp; By following the link, the user inadvertently triggers a remote process that ends up submitting the malicious form to a site.&amp;nbsp; This allows an attacker to perform any action caused by the vulnerable form with the credentials of the victim.</p>
+  <p>
+    <strong>ViewStateUserKey</strong> makes it much harder for hackers to use the content of the client-side view state to prepare malicious posts against the site.&amp;nbsp; Each time a form is invoked, a unique key is generated.&amp;nbsp; The key contains encrypted time and session information, and the form submission is rejected if it is used in another session or after the session timeout has expired. </p>
+  <h1>How to Check</h1>
+  <p>Use the following steps to check whether ViewStateUserKey is used properly:</p>
+  <ol>
+    <li>
+      <p>
+        <strong>Identify pages that should be protected. </strong>Review your application and make a list of all the forms that should be protected with ViewStateUserKey.&amp;nbsp; Forms that meet either of the following criteria should be protected:</p>
+      <ul>
+        <li>The form requires authentication </li>
+        <li>The form triggers important application behavior or a write operation to a persistent store (eg. SQL database)</li>
+      </ul>
+    </li>
+    <li>
+      <p>
+        <strong>Check to see if the pages are protected. </strong>ViewStateUserKey can be set per page or in the <strong>OnInit</strong> virtual method of the page-derived class.&amp;nbsp; </p>
+      <ol>
+        <li>First check <strong>OnInit</strong>, if you find protection there, then all of your pages are covered.<br /><br /><pre>protected override OnInit(EventArgs e) {<br />&amp;nbsp;&amp;nbsp; base.OnInit(e); <br />&amp;nbsp;&amp;nbsp; ViewStateUserKey = Session.SessionID;<br />}</pre></li>
+        <li>Next check the individual pages, for instance:<br /><br /><pre>void Page_Init (object sender, EventArgs e) {<br />&amp;nbsp;&amp;nbsp; ViewStateUserKey = Session.SessionID;<br />}</pre></li>
+      </ol>
+    </li>
+  </ol>
+  <h1>How to Fix</h1>
+  <p>The&amp;nbsp;following code added to each&amp;nbsp;of your pages will set the key based on SessionID.</p>
+  <pre>void Page_Init (object sender, EventArgs e) {<br />   ViewStateUserKey = Session.SessionID;<br />}</pre>
+  <p>Alternatively, you can add this code to the <strong>OnInit</strong> virtual method of the <strong>Page</strong>-derived class.&amp;nbsp; (Note that you must set this property in the <strong>Page.Init</strong> event).&amp;nbsp; This will allow you to write the code once rather than per page.</p>
+  <pre>protected override OnInit(EventArgs e) {<br />   base.OnInit(e); <br />   ViewStateUserKey = Session.SessionID;<br />}</pre>
+  <h1>Related Items</h1>
+  <ul>
+    <li>
+      <a href="aa797ec2-627d-4b17-8c17-5a8405415344">Use Page ViewState User Key to Counter One-Click Attacks</a>
+    </li>
+  </ul>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance. </p>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="588349834" Content_Hash="-880744850">
+  <Metadata>
+    <Id>d4ae5fa9-2156-42d1-8718-754a7df4e1f5</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>The ViewStateUserKey Is Used to Counter Cross-site Request Forgery Attacks</Title>
+    <Category>Session Management</Category>
+    <Phase>Implementation</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>The ViewStateUserKey Is Used to Counter Cross-site Request Forgery Attacks</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Check For</h1>
+  <p>Ensure that an unique key is assigned to each user's ViewState.</p>
+  <h1>Why</h1>
+  <p>A ViewState is the mechanism used by ASP.NET to keep track of server control state values. It is a hidden form field managed by the ASP.NET page framework and is an encoded aggregate of values of controls on a page. View state is enabled by default in ASP.NET and can be disabled or re-enabled at the machine, application, page, and control level by setting the <strong>EnableViewState</strong> property to <strong>false</strong> or <strong>true</strong> in config files.</p>
+  <p>By default, there's nothing in the ViewState that ties its content to a particular user. The attacker can easily reuse the ViewState he obtained making legal access to the page to build a bogus request on behalf of another user. This is where <strong>ViewStateUserKey</strong> is useful.</p>
+  <p>The <strong>ViewStateUserKey</strong> property adds user-specific information to the view state. Setting the <strong>ViewStateUserKey</strong> property of the page in the <strong>Page_Init</strong> event handler helps ensuring that any form information submitted came from the same user who requested the original page. It binds the content of the <strong>ViewState</strong> variable to individual users so that the malicious users cannot use the variable to generate an attack.</p>
+  <p>This prevents Cross Site Request Forgery attacks, where attackers attempt to use their ViewState in the context of another user or to otherwise post form data as though they were another user. These attacks are also called One-Click Attacks.</p>
+  <h1>How to Check</h1>
+  <ol>
+    <li>
+      <p>
+        <strong>Verify that your application's ASP.NET pages have Page_Init methods. </strong>Look for <strong>Page_Init</strong> methods in your application's ASP.NET. The declaration for <strong>Page_Init</strong> is:</p>
+      <pre>protected void Page_Init(object sender, EventArgs e)</pre>
+    </li>
+    <li>
+      <p>
+        <strong>Verify that Page.ViewStateUserKey is set during page initialization. </strong>Ensure <strong>Page.ViewStateUserKey</strong> is initialized during page initialization. Example:</p>
+      <pre>protected void Page_Init(object sender, EventArgs e<br />{<br />    Page.ViewStateUserKey = Session.SessionID;<br />}</pre>
+    </li>
+  </ol>
+  <h1>Problem Example</h1>
+  <p>Suppose that a&amp;nbsp;web application does not set the <strong>ViewStateUserKey</strong> property in the Page_Init event handler, and this application allows a user to change the state of the application in a single request. This combination means the&amp;nbsp;application is susceptible to a Cross Site Request Forgery Attack. </p>
+  <p>For example, consider a web application that allows a logged-in administrator to create a new user sending a single GET request.</p>
+  <p>This GET request looks like this:</p>
+  <pre>GET http://teammentorexample.com/adduser.aspx?username=joe&amp;password=1234&amp;usertype=user HTTP/1.1</pre>
+  <p>The attacker discovers that this request will create a new user and creates his own request which he embeds in an e-mail with the following image tag:</p>
+  <pre>&lt;img src=”http://teammentorexample.com/adduser.aspx?username=HACKER&amp;password=TEST&amp;usertype=admin” /&gt;</pre>
+  <p>When the victim’s (the administrator in this case) e-mail client attempts to download the image located at the above source, the request is made without the knowledge of the victim. </p>
+  <p>The Web page contains a hidden form field named __VIEWSTATE that is already filled with ViewState data. The ViewState can be re-used from a valid request that the attacker had previously made to the application. The ViewState content is not checked on the server or is only checked against tampering. The attacker lures the unsuspecting user into opening the email containing the malicious URL, causing the request to be sent to the server where the ViewState is valid. The server has no way of knowing that the ViewState originated from the attacker. ViewState validation does not counter this attack because the ViewState is valid and the page is executed under the security context of the victim user.</p>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance. </p>]]></Data>
+  </Content>
+</TeamMentor_Article>

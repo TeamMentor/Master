@@ -1,0 +1,112 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-1040823223" Content_Hash="-186093094">
+  <Metadata>
+    <Id>7d576466-a454-4cc1-838b-06e1359f53f8</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Session Cookies Are Protected</Title>
+    <Category>Session Management</Category>
+    <Phase>Implementation</Phase>
+    <Technology>Java</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>Session Cookies Are Protected</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Check For</h1>
+  <p>Ensure that the confidentiality of session cookies is protected.</p>
+  <h1>Why</h1>
+  <p>Session cookies are used by an application to identify the session associated with a particular user. Protecting session cookies can help prevent an attacker from hijacking the session and using the application posing as a legitimate user.</p>
+  <h1>How to Check</h1>
+  <p>Use the following steps to verify that your application's session cookies are handled securely:</p>
+  <ol>
+    <li>
+      <p>
+        <strong>Verify that session identifiers cannot be guessed. </strong>Ensure that your application's session identifiers cannot be guessed by an attacker. Verify that your application's session IDs meet the following requirements:</p>
+      <ul>
+        <li>
+          <strong>Length</strong>: Your application uses long session identifiers (e.g. string of length 32). </li>
+        <li>
+          <strong>Triviality</strong>: Your application uses randomly generated session identifiers. </li>
+        <li>
+          <strong>Lifetime</strong>: Your application uses <em>HttpSession.setMaxInactiveInterval</em> to expire inactive <span>sessions or that the timeout has been set via a configuration in web.xml.</span></li>
+        <li>
+          <strong>Recycling</strong>: Your application does not reuse previously used sessions.</li>
+      </ul>
+    </li>
+    <li>
+      <p>
+        <strong>Verify that users can invalidate their own sessions. </strong>Ensure that your application uses <em>HttpSession.invalidate</em> to allow its users to invalidate their own sessions.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Verify that session cookies are sent over encrypted channels. </strong>Ensure your application transmits session cookies over encrypted channels. Although this is not required for non-sensitive transactions, it is mandatory for any transactions that are sensitive in nature.</p>
+    </li>
+    <li>
+      <span>
+        <p>
+          <strong>Verify that session cookies have the <em>HttpOnly</em> flag set</strong>. This prevents client side scripts from gaining access to the cookie.</p>
+      </span>
+    </li>
+    <li>
+      <span>
+        <p>
+          <strong>Verify that session cookies have the <em>Secure</em> flag set.</strong> The <em>Secure</em>&amp;nbsp;flag forces sessions cookies to be sent only over SSL.</p>
+      </span>
+    </li>
+    <li>
+      <span>
+        <span>
+          <p>
+            <strong>Verify that sessions are invalidated on login</strong>. This can help prevent session fixation (or hijacking).</p>
+        </span>
+      </span>
+    </li>
+  </ol>
+  <h1>How to Fix</h1>
+  <p>Use the following steps to secure session cookies:</p>
+  <ol>
+    <li>
+      <p>
+        <strong>Do not allow users to choose their own session identifiers. </strong>Java automatically assigns random IDs to its sessions which minimizes the risk of an attacker hijacking another user's session by using the same session ID. To use sessions in Java, invoke <em>HttpServletRequest.getSession</em>:</p>
+      <pre>HttpSession session = request.getSession();</pre>
+    </li>
+    <li>
+      <span>
+        <p>
+          <strong>Invalidate the session identifier on login (as well as logout) to ensure session identifiers are not reused.</strong> This is a portion of the approach necessary to prevent session hijacking. Use <em>HttpSession.invalidate</em> to accomplish this. After the session has been invalidated, the call below will generate a new session identifier.</p>
+      </span>
+      <pre>HttpSession session = request.getSession(true);</pre>
+    </li>
+    <li>
+      <p />
+      <strong>Time-out sessions. </strong>
+      <span>Set an expiration time for sessions. This helps minimize the threat of session hijacking by giving an attacker a smaller window of opportunity. Depending on your application, an appropriate timeout can be anywhere from 10 to 20 minutes. Setting when sessions should expire can be done through <em>HttpSession.setMaxInactiveInterval</em> in code, or via the <em>session-timeout</em> configuration in the web.xml file.<p /></span>
+    </li>
+    <li>
+      <p>
+        <strong>Allow users to terminate their sessions. </strong>Allowing users to invalidate their sessions reduces the risk of session being hijacked. Use <em>HttpSession.invalidate</em> to accomplish this.</p>
+    </li>
+    <li>
+      <p />
+      <strong>Ensure cookies are sent over encrypted channels. </strong>
+      <span>Mark cookies sent over SSL as <em>Secure</em>. Use <em>Cookie.setSecure</em> to require SSL when sending out the given cookie. It is recommended to avoid sending session cookies over unencrypted channels as session hijacking is made much easier. Use <em>ServletRequest.isSecure</em> to verify whether SSL is being used.&amp;nbsp;There is a cookie-secure attribute that can be set for the session id cookie in the web.xml file.<p /></span>
+    </li>
+  </ol>
+  <p>
+    <strong>Note:</strong> PCI DSS requirements state that sessions that are idle for 15 minutes should be locked automatically and require the user's password to unlock.</p>
+  <h1>Problem Example</h1>
+  <p>The following code shows the logout function of the <em>LoginModule</em> used when relying on JAAS for authentication. The code removes all authentication tokens associated with the current session but fails to invalidate the session. </p>
+  <pre>public boolean logout() throws LoginException{<br />      subject.getPrincipals().remove(userToken);<br /><br />      clearCredentials();<br />      userToken = null;<br /><br />      // The application should have invalidated the session here.<br />      // Log the logout event. Consult the Logging section for more details<br />      return true;<br />}</pre>
+  <h1>Solution Example</h1>
+  <p>The following code shows the logout function of the <em>LoginModule</em> used when relying on JAAS for authentication. The code removes all authentication tokens associated with the current session and invalidates the session.</p>
+  <pre>public boolean logout() throws LoginException{<br />      subject.getPrincipals().remove(userToken);<br /><br />      clearCredentials();<br />      userToken = null;<br /><br />      // The application invalidates the session when<br />      // the user is logging out<br />      HttpSession session = common.getCurrentSession();<br />      session.invalidate();<br /><br />      // Log the logout event. Consult the Logging section for more details<br />      return true;<br />}</pre>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>To learn more about session prediction attacks, see: <a href="http://www.webappsec.org/projects/threat/classes/credential_session_prediction.shtml">Credential and Session Prediction</a>.</li>
+  </ul>]]></Data>
+  </Content>
+</TeamMentor_Article>

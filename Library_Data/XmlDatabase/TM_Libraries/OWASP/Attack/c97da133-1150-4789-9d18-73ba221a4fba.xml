@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-524600873" Content_Hash="-271722634">
+  <Metadata>
+    <Id>c97da133-1150-4789-9d18-73ba221a4fba</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Command Injection Attack</Title>
+    <Category>Input and Data Validation</Category>
+    <Phase>Any</Phase>
+    <Technology> Any</Technology>
+    <Type>Attack</Type>
+    <DirectLink>Command Injection Attack</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>1</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>Applies To</h1>
+  <p>
+  </p>
+  <ul>
+    <li>All applications.</li>
+  </ul>
+  <p />
+  <h1>Description</h1>
+  <p>Command injection problems are a subset of injection problems in which the process is tricked into either executing code or calling external processes of the attacker's choice through the injection of control information into the data stream.</p>
+  <h1>Impact</h1>
+  <ul>
+    <li>
+      <strong>Elevation of Privilege:</strong> Command injection can allow for the execution of arbitrary commands and code by the attacker. </li>
+  </ul>
+  <h1>Vulnerabilities</h1>
+  <ul>
+    <li>
+      <strong>Failure to Validate User Input:</strong> Situations where control information and data are mixed create opportunities for command injection.</li>
+  </ul>
+  <h1>Countermeasures</h1>
+  <ul>
+    <li>
+      <strong>Validate user input</strong>. Prevent commands from being included in data by validating input for type, length, range, and format. Whitelist acceptable input and reject everything else. Escape meta characters and be aware of canonicalization issues. Remember that data may be changed as it flows through the program, so validating at multiple stages is often appropriate. </li>
+    <li>
+      <strong>Do not use input data in commands directly</strong>. Clever formatting may be used so that the user's input is treated as its own separate command instead of as data. Therefore, validate the input and explicitly type it as data so that it cannot be interpreted as a command even if it contains one. </li>
+    <li>
+      <strong>Avoid using command interpreters</strong>. Although not always practical, using a well maintained API will have better results than invoking commands through an interpreter or external process.</li>
+  </ul>
+  <h1>Example</h1>
+  <p>The following code is a web wrapper around the ImageMagick command "convert":</p>
+  <pre>&lt;?php
+$filename=$_GET['file'];
+$old_fmt=$_GET['old'];
+$new_fmt=$_GET['new'];
+
+$cmd = 'convert $filename.$old_fmt $filename.$new_fmt 2&gt;&amp;1';
+echo `$cmd`;
+?&gt;
+</pre>
+  <br />
+  <br />This could be used as part of an image upload page where a user posts an image, it is saved to the file system, then this call is performed asynchronously. There are multiple issues with such a flow, but the most critical is the command injection vulnerability it introduces. Consider what a URL might look like under normal operation:<br /><br /><pre>http://example.com/convert.php?file=kittycat&amp;old=png&amp;new=jpg</pre><br /><br />This would construct a command that would look like the following:<br /><br /><pre>convert kittycat.png kittycat.jpg 2&gt;&amp;1</pre><br /><br />If the file exists the page would return nothing; if the file does not exist or there is another problem lack of error handling would disclose sensitive information about how the script works back to the user. Even worse than the information that an attacker could obtain through this is the fact that she can now execute arbitrary commands. Consider the following URL:<br /><br /><br /><pre>http://example.com/convert.php?file=kittycat&amp;old=png&amp;new=jpg%3bcat+%2fetc%2fpasswd</pre><br />This would construct a much more dangerous command:<br /><br /><pre>convert kittycat.png kittycat.jpg; cat /etc/passwd 2&gt;&amp;1</pre><br /><br />The <font face="Courier New">convert</font> command would likely silently succeed followed by the <font face="Courier New">cat</font> command which would dump the contents of <font face="Courier New">/etc/passwd</font> back to the attacker. Note that even though in this example the attacker sees feedback from the injection, methods exist for exploiting scenarios where injection displays no output. In such cases an attacker could, for example, use the <font face="Courier New">sleep</font> command to detect the existence of a blind injection issue. Once found, such a vulnerability is easily exploited. <br /><br />
+Another example of this type of behavior can be seen with XSL, the style sheet language for XML. The primary purpose of XSL is to provide an easy and modular way to transform XML documents into other XML documents such as HTML. In particular, different XSL styles can be attached to the same XML and are sometimes supplied by the user. Microsoft extended the functionality of XSL to allow scripting code to be embedded in the style sheets with the &lt;msxsl:script&gt; tag. If an attacker has the ability to modify or replace the XSL style sheet in use, they can therefore inject any command to the system running the application simply by including it in the style sheet.
+  <p>In many programming languages there is an eval() function that, as the name suggests, evaluates a string as an expression. Among the members of this list are the commonly used JavaScript, ASP, Python, Perl, Ruby, and PHP. Blurring the distinction between data and code presents a huge security risk; this case is no different. User input is sometimes used in eval() expressions allowing arbitrary code to be executed. Consider an example where eval() is used in a php to set variables equal to one based on GET parameters:</p><pre>$turn_on=explode('|', $_GET['var']);
+
+foreach ($turn_on as $var){
+    eval('$var = 1');
+}
+</pre><p>The developer may expect a URL that looks like the following:</p><pre>http://example.com/set.php?turn_on=foo|bar|baz</pre><br /><br /><font face="Arial">This would result in evaluations that could be represented with the following code:<br /><br /></font><pre>foo=1;
+bar=1;
+baz=1;
+</pre><p>However, imagine instead that the user tried a different URL:</p><pre>http://example.com/set.php?turn_on=foo%3d1%3bphpinfo()%3bbar|baz</pre><p>The evaluated code would look a little different:</p><pre>foo=1; <br />phpinfo();<br />bar=1;<br />baz=1;<br /></pre><p>Rather than simply set variables to 1, the script now outputs to an attacker information about the installation and configuration of PHP on the system he is attacking. Any system command or external program in the path could be run in this fashion.</p><h1>Additional Resources</h1><ul><li>For more information on Command Injection, see the <a href="http://www.e-articles.info/e/a/title/Command-Injection/">Command Injection </a>article at e-articles.info. </li><li>For more information on the Javascript Eval function, see the Wikipedia Eval article at <a href="http://en.wikipedia.org/wiki/Eval">http://en.wikipedia.org/wiki/Eval</a>.</li></ul><ul></ul>]]></Data>
+  </Content>
+</TeamMentor_Article>

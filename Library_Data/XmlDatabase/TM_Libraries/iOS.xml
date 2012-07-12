@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<guidanceExplorer xmlns="urn:microsoft:guidanceexplorer">
+  <library name="b6f408c5-6e6e-4bc0-90a5-0bb10becc2ce" caption="iOS">
+    <libraryStructure>
+      <folder caption="Top iOS Threats" folderId="6ddf69f2-71b0-49ce-9218-b9372d7fc1cb">
+        <view caption="Cross-Site Scripting" id="ad24fda7-bbe9-486c-a968-d77ea462c300" creationDate="0001-01-01T00:00:00" />
+        <view caption="Unsecure Data Storage" id="fea91584-1aca-4c75-823b-337e00f70a98" creationDate="0001-01-01T00:00:00" />
+        <view caption="Eavesdropping" id="1081f191-0a20-472d-88e1-881fb26f59f4" creationDate="0001-01-01T00:00:00" />
+        <view caption="Misc Injection" id="2e71e646-7c21-4c25-81cf-41413af4e34e" creationDate="0001-01-01T00:00:00" />
+      </folder>
+    </libraryStructure>
+    <items />
+  </library>
+</guidanceExplorer>

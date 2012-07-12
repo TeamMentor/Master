@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-422710163" Content_Hash="1656032446">
+  <Metadata>
+    <Id>d8a09762-4ca7-4cdb-ba5f-5e60708ba73e</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Administrator Account Is Renamed And Has a Strong Password</Title>
+    <Category>Server Hardening</Category>
+    <Phase>Deployment</Phase>
+    <Technology> Any</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>Administrator Account Is Renamed And Has a Strong Password</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>J.D. Meier, Alex Mackman, Michael Dunner, Srinath Vasireddy, Ray Escamilla and Anandha Murukan</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Check For</h1>
+  <p>Check to ensure that administrator account is renamed and has a strong password to improve security.</p>
+  <h1>How to Fix</h1>
+  <p>The default local Administrator account is a target for malicious use because of its elevated privileges on the computer. To improve security, rename the default Administrator account and assign it a strong password.</p>
+  <p>If you intend to perform local administration, configure the account to deny network logon rights and require the administrator to log on interactively. By doing so, you prevent users (well intentioned or otherwise) from using the Administrator account to
+ log on to the server from a remote location. If a policy of local administration is too inflexible, implement a secure remote administration solution.
+</p>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance.</p>]]></Data>
+  </Content>
+</TeamMentor_Article>

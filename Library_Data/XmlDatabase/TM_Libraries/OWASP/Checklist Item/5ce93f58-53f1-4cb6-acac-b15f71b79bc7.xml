@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="1676204695" Content_Hash="642580630">
+  <Metadata>
+    <Id>5ce93f58-53f1-4cb6-acac-b15f71b79bc7</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Access to the Credential Store is Limited</Title>
+    <Category>Authentication</Category>
+    <Phase>Implementation</Phase>
+    <Technology>Java</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>Access to the Credential Store is Limited</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Check For</h1>
+  <p>Ensure that access to the credential store is limited to administrators with the correct privileges. </p>
+  <h1>Why</h1>
+  <p>Unauthorized access to the credential store can lead to users' credentials being overwritten; therefore, allowing the attacker to gain access to application resources without obtaining valid credentials.</p>
+  <h1>How to Check</h1>
+  <p>Follow these steps to ensure that the credential store is properly secured: </p>
+  <ol>
+    <li>
+      <p>
+        <strong>Identify all routines that access the store. </strong>Locate all routines within your application that access the credential store. Such routines include:</p>
+      <ul>
+        <li>Authenticating users </li>
+        <li>Creating users </li>
+        <li>Modifying users </li>
+        <li>Changing user passwords</li>
+      </ul>
+    </li>
+    <li>
+      <p>
+        <strong>Verify that credentials for accessing the store are secured. </strong>Ensure that your application's access credentials and connection strings are not hard-coded into your application's code base. </p>
+      <ul>
+        <li>If your application <strong>uses a database</strong> as its credential repository, ensure that access credentials and connection strings are secured properly. </li>
+        <li>If your application <strong>does not use a database</strong> for its credential repository, verify that only the appropriate components of your application are able to access the credential store.<br /><br />Example of how <strong>not</strong> to handle access to the credential store: </li>
+      </ul>
+      <p />
+      <blockquote>
+        <pre>// The application discloses the credentials necessary for accessing the user database<br />DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());<br />Connection cn = DriverManager.getConnection("jdbc:oracle:thin:@testbox:1521:orcl2", "myapp", "pass"); </pre>
+      </blockquote>
+    </li>
+    <li>
+      <p>
+        <strong>Check the access controls for your credential store.</strong> Ensure that your application's credential store has the appropriate security in place. For instance, if your application uses a database for its credential store, verify that the database server is secured properly.</p>
+    </li>
+  </ol>
+  <ol>
+  </ol>
+  <h1>How to Fix</h1>
+  <p>Follow these steps to limit the access to the credential store: </p>
+  <ol>
+    <li>
+      <p>
+        <strong>Avoid disclosing the location of the store. </strong>Do not disclose the location of the store within your application. Do not let&amp;nbsp;regular application users know where the store is located. </p>
+    </li>
+    <li>
+      <p>
+        <strong>Secure credentials required for accessing the store. </strong>Store your credentials within a configuration file and encrypt them. Place the encryption key within a keystore that is encrypted using a local account password.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Restrict access to repository. </strong>Limit the number of users that can access the store. If it is a file on the local file system, set the appropriate permissions to restrict the read/write access. If it is a database, restrict the accounts that can access the database server.</p>
+    </li>
+  </ol>
+  <h1>Problem Example</h1>
+  <p>The following code authenticates a user based on their credentials. Because the code discloses the credentials to the user database, anybody with access to the code also has access to the credential store. </p>
+  <pre>public boolean validateUser(String user, char[] pass)<br />{<br />      boolean valid;<br />      Connection cn;<br /><br />      // Prepare credentials before querying the credential store<br />      ...<br />      try<br />      {<br />            // The application discloses the credentials necessary for<br />            // accessing the user database<br />            DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());<br />            cn = DriverManager.getConnection("jdbc:oracle:thin:@testbox:1521:orcl2",<br />                                             "myapp", "pass");<br />            // Query the credential store and perform the rest<br />            // of the authentication steps<br />            ...<br />      }<br />      catch (SQLException se)<br />      {<br />            // Add the appropriate logging and exception handling mechanisms<br />            return false;<br />      }<br /><br />      return valid;<br />}</pre>
+  <h1>Solution Example</h1>
+  <p>The following code authenticates a user based on their credentials. The code relies on other parts of the application to handle database connectivity. Therefore, the code does not reveal the application's credentials to the credential store. </p>
+  <pre>public boolean validateUser(String user, char[] pass)<br />{<br />      boolean valid;<br />      // Prepare credentials before querying the credential store<br />      ...<br />      try<br />      {<br />            // The credentials to the application's user database<br />            // are not hard-coded in the authentication routine<br />            cn = MyApp.getDBConnection();<br />            // Query the credential store and perform the rest<br />            // of the authentication steps<br />            ...<br />      }<br />      catch (SQLException se)<br />      {<br />            // Add the appropriate logging and exception handling mechanisms<br />            return false;<br />      }<br />      return valid;<br />}</pre>]]></Data>
+  </Content>
+</TeamMentor_Article>

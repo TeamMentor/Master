@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-000000801ce1</Id>
+    <Library_Id>80a03482-cf8b-4055-82db-1aa09465d30f</Library_Id>
+    <Title>LDAP Injection</Title>
+    <Category>Database</Category>
+    <Phase>NA</Phase>
+    <Technology>ASP.NET</Technology>
+    <Type>Vulnerability</Type>
+    <DirectLink>LDAP Injection</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="WikiText">
+    <Data><![CDATA[==Description==
+
+LDAP injection is a type of vulnerabilities that allows attackers to view, modify, or remove information from LDAP directories. Lightweight Directory Access Protocol (LDAP) is a widely used protocol for accessing directory services. Directories provide a set of attributes about people that are organized in a hierarchal manner, for example the phone directory. LDAP injection vulnerabilities typically occur as a result of concatenating user input with LDAP query strings.
+
+==Countermeasures==
+
+The following TeamMentor articles describe effective counter-measures against LDAP injection vulnerabilities:
+
+* [[Validate Input for Length, Range, Format, And Type]]
+
+==Checklists==
+
+The following checklist items can help make sure that effective counter-measures against LDAP injection vulnerabilities have been implemented:
+
+* [[Input Is Validated for Length, Range, Format, And Type]]
+
+==Additional Resources==
+
+* For more information about LDAP injection, please see https://www.owasp.org/index.php/LDAP_injection]]></Data>
+  </Content>
+</TeamMentor_Article>

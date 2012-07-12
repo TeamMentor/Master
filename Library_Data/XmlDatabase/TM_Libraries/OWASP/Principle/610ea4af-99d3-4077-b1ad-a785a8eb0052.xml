@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-2113264258" Content_Hash="648007361">
+  <Metadata>
+    <Id>610ea4af-99d3-4077-b1ad-a785a8eb0052</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Use SSL to Protect Session Authentication Cookies</Title>
+    <Category>Session Management</Category>
+    <Phase>Design</Phase>
+    <Technology> Any</Technology>
+    <Type>Principle</Type>
+    <DirectLink>Use SSL to Protect Session Authentication Cookies</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>Description</h1>
+  <p>Do not pass authentication cookies over HTTP connections. Set the secure cookie property within authentication cookies, which instructs browsers to send cookies back to the server only over HTTPS connections. </p>]]></Data>
+  </Content>
+</TeamMentor_Article>

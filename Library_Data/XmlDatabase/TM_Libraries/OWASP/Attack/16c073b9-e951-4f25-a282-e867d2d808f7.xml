@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-1692031576" Content_Hash="-1297638131">
+  <Metadata>
+    <Id>16c073b9-e951-4f25-a282-e867d2d808f7</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>AJAX Injection Attack</Title>
+    <Category>Input and Data Validation</Category>
+    <Phase>Any</Phase>
+    <Technology> Any</Technology>
+    <Type>Attack</Type>
+    <DirectLink>AJAX Injection Attack</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>1</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>Applies To</h1>
+  <p>
+  </p>
+  <ul>
+    <li>Web Applications that use an AJAX implementation</li>
+  </ul>
+  <p />
+  <h1>Description</h1>
+  <p>AJAX (Asynchronous Javascript and XML) technology allows web pages to dynamically update specific content behind the scenes without the need to refresh the whole page. The ability to continually update the content of an AJAX page is done by calling an XmlHttpRequest
+ (XHR) object with JavaScript to send HTTP requests to web servers. These requests typically send data in the form of XML or JSON (JavaScript Object Notation).
+</p>
+  <p>AJAX injection is a type of 
+Cross Site Scripting Attack (XSS) that leverages the XML or JSON format of the input to the client browser. JSON is particularly popular because it is easy to parse JSON objects by simply passing them to the eval() function. Unfortunately, the use of eval()
+ makes the application equivalently easy to exploit. Cleverly formatted strings containing malicious JavaScript may be stored as content on servers with weak validation or sent directly to the client browser using a spoofing or man in the middle attack. This JavaScript
+ is then parsed and execute by the client's browser without their knowledge. Ultimately, this attack may be used to steal session cookies, send email on behalf of the victim.</p>
+  <h1>Impact</h1>
+  <ul>
+    <li>
+      <strong>Confidentiality:</strong> Since the code runs in the same domain as the trusted site any cookies or other confidential site data can be read by the malicious AJAX code.
+</li>
+    <li>
+      <strong>JavaScript code injection:</strong> By using the XMLHttpRequest object attackers can download and install JavaScript code modules to be run on the local browser dynamically and send information from the computer to the attacker without the victim's knowledge.</li>
+  </ul>
+  <h1>Vulnerabilities</h1>
+  <ul>
+    <li>Failure to validate user input for script tags when that input is echoed back into a web page.&amp;nbsp;
+</li>
+    <li>Failure to encode user supplied input upon display of the data</li>
+  </ul>
+  <h1>Countermeasures</h1>
+  <p>
+    <strong>Constrain input:</strong> Use vigorous white-list style checking on any user input that may be reflected to a user's browser.
+</p>
+  <p>
+    <strong>HTMLEncode all user input on display:</strong> Use white-list style HTMLEncoding libraries to ensure all possibly malicious characters are encoded before being echoed back to the user, regardless of whether they're loaded as part of the original
+ page load or through later XMLHttpRequests.</p>
+  <h1>Example</h1>
+  <p>Suppose you use an AJAX based web mail client. Because these are the days of Web 2.0, your mail client displays a list of your favorite contacts and lets you know their status. By default this status is set to "Online" or "Away," but a custom message may also be set by each contact that is reflected in your client. In order for this to work, the web page periodically updates this status list by requesting the list of contacts from the server. The server returns this information to the client as the following
+ JSON object:</p>
+  <pre>{<br />   "numberOnline": "3",<br />   "nameAndStatus": [<br />   "Alice, Online",<br />   "Bob, Online",<br />   "Mallory, Away" ]<br />}</pre>
+  <p>The following code shows the client JavaScript code which is called periodically to request the above object and update the DOM.</p>
+  <pre>var contactStatusList;<br />var http_request = new XMLHttpRequest();<br />http_request.open("GET", url, true);<br />http_request.onreadystatechange = function ()<br /> {<br />    if (http_request.readyState == 4)<br /> {<br />        if (http_request.status == 200)<br /> {<br />            contactStatusList = eval("(" + http_request.responseText + ")");<br />        }        http_request = null;    }};http_request.send(null);</pre>
+  <p>Now suppose that Mallory's status is set to a custom value. This may have been changed by Mallory herself or by a third party attacker. Either way, because the server providing the data to the mail client has poor validation, this status value is changed
+ to include cleverly formatted malicious JavaScript. Suppose that instead of "Away" the value is changed to the following:</p>
+  <pre>Away" ]};alert("Gotcha!");//</pre>
+  <p>The first thing to notice is that the JSON object, which represents a the contact status list, is valid JavaScript. Because of this the eval() can be used to evaluate it. The above code completes the status object, inserts additional JavaScript, and comments
+ out the rest of the line. When the code is passed as to the eval() function the additional JavaScript is run. Note that "alert("Gotcha!")" can be replaced with any malicious JavaScript and it will be run in the client's browser. Because the above code is an
+ example, an alert message window will be displayed. In general, however, JavaScript could be downloaded and executed without the user's knowledge.</p>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>For more information on AJAX including common vulnerabilities that are associated with the technology, see "Ajax Security Basics":
+<a href="http://www.securityfocus.com/infocus/1868">http://www.securityfocus.com/infocus/1868</a></li>
+  </ul>
+  <ul>
+    <li>For information on AJAX attacks and JavaScript Hijacking, see "JavaScript Hijacking":<span style="color:rgb(17,17,17); font-family:Calibri,Arial,Helvetica,sans-serif; font-size:small">&amp;nbsp;</span><a href="http://www.net-security.org/dl/articles/JavaScript_Hijacking.pdf" style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; padding-top:0px; padding-right:0px; padding-bottom:0px; padding-left:0px; color:rgb(51,51,153); font-weight:bold; font-family:Calibri,Arial,Helvetica,sans-serif; font-size:small">http://www.net-security.org/dl/articles/JavaScript_Hijacking.pdf</a></li>
+  </ul>
+  <ul>
+  </ul>]]></Data>
+  </Content>
+</TeamMentor_Article>

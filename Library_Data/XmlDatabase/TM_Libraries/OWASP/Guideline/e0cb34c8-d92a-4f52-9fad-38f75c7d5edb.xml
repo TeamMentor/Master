@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="1892160705" Content_Hash="-1288051384">
+  <Metadata>
+    <Id>e0cb34c8-d92a-4f52-9fad-38f75c7d5edb</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Use SSL to Protect Session Authentication Cookies</Title>
+    <Category>Session Management</Category>
+    <Phase>Design</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Use SSL to Protect Session Authentication Cookies</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>J.D. Meier, Alex Mackman, Michael Dunner, Srinath Vasireddy, Ray Escamilla and Anandha Murukan</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Do</h1>
+  <p>You must protect the authentication cookie&amp;nbsp;with SSL. </p>
+  <h1>Why</h1>
+  <p>To prevent session hijacking and cookie replay attacks, secure the cookie by making sure that it is only passed over SSL connections using the HTTPS protocol. For additional risk mitigation, encrypt the cookie before sending it to the client and limit the period for which the cookie is valid. </p>
+  <h1>When</h1>
+  <p>When&amp;nbsp;you use Forms authentication, make sure your application encrypts the authentication cookies using the <strong>protection="All"</strong> attribute on the <strong>&lt;forms&gt; </strong>element. This practice is recommended in addition to SSL to mitigate the risk of an XSS attack that manages to steal the authentication cookie of a user.&amp;nbsp; </p>
+  <h1>How</h1>
+  <p>Do not pass authentication cookies over HTTP connections. Set the secure cookie property within authentication cookies, which instructs browsers to send cookies back to the server only over HTTPS connections. For more information, see Chapter&amp;nbsp;10, "Building Secure ASP.NET Web Pages and Controls."</p>
+  <p>Set the secure property by using <strong>requireSSL="true"</strong> on the <strong>&lt;forms&gt;</strong> element as follows:</p>
+  <div>
+    <div>
+    </div>
+    <div>
+      <pre>&lt;forms loginUrl="Secure\Login.aspx"<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; requireSSL="true" . . . /&gt;</pre>
+    </div>
+  </div>
+  <ul>
+  </ul>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance.</p>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-1682710464" Content_Hash="85297018">
+  <Metadata>
+    <Id>9d0ec95a-7749-4bb2-9822-bc909b496d20</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Constrain, Reject, And Sanitize Input</Title>
+    <Category>Input and Data Validation</Category>
+    <Phase>Design</Phase>
+    <Technology> Any</Technology>
+    <Type>Principle</Type>
+    <DirectLink>Constrain, Reject, And Sanitize Input</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>Description</h1>
+  <p>The preferred approach to validating input is to constrain what you allow from the beginning. It is much easier to validate data for known valid types, patterns, and ranges than it is to validate data by looking for known bad characters. When you design your application, you know what your application expects. The range of valid data is generally a more finite set than potentially malicious input. However, for defense in depth you may also want to reject known bad input and then sanitize the input.</p>
+  <p>To create an effective input validation strategy, be aware of the following approaches and their tradeoffs: </p>
+  <ul>
+    <li>Constrain input. </li>
+    <li>Validate data for type, length, format, and range. </li>
+    <li>Reject known bad input. </li>
+    <li>Sanitize input. </li>
+  </ul>
+  <h3>Constrain Input</h3>
+  <p>Constraining input is about allowing good data. This is the preferred approach. The idea here is to define a filter of acceptable input by using type, length, format, and range. Define what is acceptable input for your application fields and enforce it. Reject everything else as bad data.</p>
+  <p>Constraining input may involve setting character sets on the server so that you can establish the canonical form of the input in a localized way.</p>
+  <h3>Validate Data for Type, Length, Format, and Range</h3>
+  <p>Use strong type checking on input data wherever possible, for example, in the classes used to manipulate and process the input data and in data access routines. For example, use parameterized stored procedures for data access to benefit from strong type checking of input fields.</p>
+  <p>String fields should also be length checked and in many cases checked for appropriate format. For example, ZIP codes, personal identification numbers, and so on have well defined formats that can be validated using regular expressions. Thorough checking is not only good programming practice; it makes it more difficult for an attacker to exploit your code. The attacker may get through your type check, but the length check may make executing his favorite attack more difficult.</p>
+  <h3>Reject Known Bad Input</h3>
+  <p>Deny "bad" data; although do not rely completely on this approach. This approach is generally less effective than using the "allow" approach described earlier and it is best used in combination. To deny bad data assumes your application knows all the variations of malicious input. Remember that there are multiple ways to represent characters. This is another reason why "allow" is the preferred approach.</p>
+  <p>While useful for applications that are already deployed and when you cannot afford to make significant changes, the "deny" approach is not as robust as the "allow" approach because bad data, such as patterns that can be used to identify common attacks, do not remain constant. Valid data remains constant while the range of bad data may change over time.</p>
+  <h3>Sanitize Input</h3>
+  <p>Sanitizing is about making potentially malicious data safe. It can be helpful when the range of input that is allowed cannot guarantee that the input is safe. This includes anything from stripping a null from the end of a user-supplied string to escaping out values so they are treated as literals.</p>
+  <p>Another common example of sanitizing input in Web applications is using URL encoding or HTML encoding to wrap data and treat it as literal text rather than an executable script. HtmlEncode methods escape out HTML characters, and UrlEncode methods encode a URL so that it is a valid URI request.</p>
+  <h3>In Practice</h3>
+  <p>The following are examples applied to common input fields, using the preceding approaches: </p>
+  <ul>
+    <li>
+      <strong>Last Name field</strong>. This is a good example where constraining input is appropriate In this case, you might allow string data in the range ASCII A-Z and a-z, and also hyphens and curly apostrophes (curly apostrophes have no significance to SQL) to handle names such as O'Dell. You would also limit the length to your longest expected value. </li>
+    <li>
+      <strong>Quantity field</strong>. This is another case where constraining input works well. In this example, you might use a simple type and range restriction. For example, the input data may need to be a positive integer between 0 and 1000. </li>
+    <li>
+      <strong>Free-text field</strong>. Examples include comment fields on discussion boards. In this case, you might allow letters and spaces, and also common characters such as apostrophes, commas, and hyphens. The set that is allowed does not include less than and greater than signs, brackets, and braces. </li>
+  </ul>
+  <p>Some applications might allow users to mark up their text using a finite set of script characters, such as bold "&lt;b&gt;", italic "&lt;i&gt;", or even include a link to their favorite URL. In the case of a URL, your validation should encode the value so that it is treated as a URL. </p>
+  <p>An existing Web application that does not validate user input. In an ideal scenario, the application checks for acceptable input for each field or entry point. However, if you have an existing Web application that does not validate user input, you need a stopgap approach to mitigate risk until you can improve your application's input validation strategy. While neither of the following approaches ensures safe handling of input, because that is dependent on where the input comes from and how it is used in your application, they are in practice today as quick fixes for short-term security improvement: </p>
+  <ul>
+    <li>HTML-encoding and URL-encoding user input when writing back to the client. In this case, the assumption is that no input is treated as HTML and all output is written back in a protected form. This is sanitization in action. </li>
+    <li>Rejecting malicious script characters. This is a case of rejecting known bad input. In this case, a configurable set of malicious characters is used to reject the input. As described earlier, the problem with this approach is that bad data is a matter of context. </li>
+  </ul>]]></Data>
+  </Content>
+</TeamMentor_Article>

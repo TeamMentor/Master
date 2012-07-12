@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="801033805" Content_Hash="-803092292">
+  <Metadata>
+    <Id>6e6f83a6-404b-441d-be4c-71f2726a7960</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Separate Public And Restricted Areas</Title>
+    <Category>Authentication</Category>
+    <Phase>Design</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Separate Public And Restricted Areas</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author>J.D. Meier, Alex Mackman, Michael Dunner, Srinath Vasireddy, Ray Escamilla and Anandha Murukan</Author>
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Do</h1>
+  <p>You should Partition your Web Site so that secure pages that require authenticated access are placed in a subdirectory that is separate from the anonymously accessible pages.</p>
+  <h1>Why</h1>
+  <p>To prevent unauthenticated users from accessing the restricted pages.</p>
+  <h1>When</h1>
+  <p>If your Web application requires users to complete authentication before they can access specific pages, make sure that the restricted pages are placed in a separate directory away from publicly accessible pages. </p>
+  <h1>How</h1>
+  <h3>Separate Public and Restricted Areas</h3>
+  <p>A public area of your site can be accessed by any user anonymously. Restricted areas can be accessed only by specific individuals and the users must authenticate with the site. Consider a typical retail Web site. You can browse the product catalog anonymously. When you add items to a shopping cart, the application identifies you with a session identifier. Finally, when you place an order, you perform a secure transaction. This requires you to log in to authenticate your transaction over SSL.</p>
+  <p>By partitioning your site into public and restricted access areas, you can apply separate authentication and authorization rules across the site and limit the use of SSL. To avoid the unnecessary performance overhead associated with SSL, design your site to limit the use of SSL to the areas that require authenticated access.</p>
+  <p>
+    <strong>Note</strong> If you are using <strong>Server.Transfer</strong> in your application to transfer from an anonymous page to a secure page, the .NET Framework bypasses authentication checks, so code that uses <strong>Server.Transfer</strong> should be verified to ensure that it does not transfer to a secure directory.</p>
+  <p>
+    <strong>Consider Partitioning Your Web Site</strong>
+  </p>
+  <p>To avoid having to use SSL across your entire site, structure your Web site so that the secure pages that require authenticated access are placed in a subdirectory that is separate from the anonymously accessible pages. This approach is shown in following Figure 1</p>
+  <p>
+    <img src="http://msdn2.microsoft.com/en-us/library/ms998310.f01paght00001201(en-us,MSDN.10).gif" style="border:1px solid #000" />
+  </p>
+  <p>
+    <strong>Figure - Visual Studio.NET Solution Explorer showing a partitioned Web site</strong>
+  </p>
+  <p>In Figure 1, secure pages, including the application's login page, are placed in the <strong>Secure</strong> folder beneath the application's virtual root directory. </p>
+  <p>
+    <strong>To secure pages in a separate subfolder</strong>
+  </p>
+  <ol>
+    <li>In Microsoft Internet Information Services (IIS), configure the secure folder to require SSL. This sets the <strong>AccessSSL=true</strong> attribute for the folder in the IIS Metabase. Requests for pages in the secured folders are successful only if HTTPS is used for the request URL. </li>
+    <li>Use an &lt;<strong>authorization</strong>&gt; element to ensure that only authenticated users can access secure pages. Place this element beneath the closing &lt;<strong>/system.web</strong>&gt; tag, as shown here. <div><pre>&lt;!-- The secure folder is for authenticated and SSL access only. --&gt;<br />&lt;location path="Secure" &gt;<br />  &lt;system.web&gt;<br />    &lt;authorization&gt;<br />      &lt;deny users="?" /&gt;<br />    &lt;/authorization&gt;<br />  &lt;/system.web&gt;<br />&lt;/location&gt;  </pre></div><p>Additionally, the following configuration ensures that unauthenticated users are allowed to access pages in the application's root directory. Place this configuration in the main &lt;<strong>system.web</strong>&gt; element. </p><pre>&lt;system.web&gt;<br />&amp;nbsp; &lt;!-- The virtual directory root folder contains general pages.<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Unauthenticated users can view them and they do not need <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; to be secured with SSL. --&gt;<br />&amp;nbsp; &lt;authorization&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;allow users="*" /&gt;<br />&amp;nbsp; &lt;/authorization&gt;<br />&lt;/system.web&gt;&amp;nbsp; </pre></li>
+  </ol>
+  <blockquote>
+    <strong>Note</strong>&amp;nbsp;&amp;nbsp;&amp;nbsp;If you use this type of site structure, your application must not rely on the user's identity on the non-SSL pages. In the preceding configuration, no forms authentication ticket is sent for requests for non-SSL pages. As a result, the user is considered anonymous. This has implications for related features, such as personalization, that require the user name.<strong></strong></blockquote>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>For more information see, "Chapter 4 - Design Guidelines for Secure Web Applications" at <a href="http://msdn2.microsoft.com/en-us/library/aa302420.aspx">http://msdn2.microsoft.com/en-us/library/aa302420.aspx</a></li>
+  </ul>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance.</p>]]></Data>
+  </Content>
+</TeamMentor_Article>

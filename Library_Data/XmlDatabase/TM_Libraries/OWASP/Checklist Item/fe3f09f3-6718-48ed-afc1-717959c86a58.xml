@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="807602496" Content_Hash="-1385664248">
+  <Metadata>
+    <Id>fe3f09f3-6718-48ed-afc1-717959c86a58</Id>
+    <Library_Id>00000000-0000-0000-0000-000000000000</Library_Id>
+    <Title>Untrusted Input Passed to Data Access Methods Is Validated</Title>
+    <Category>Data Access</Category>
+    <Phase>Implementation</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink />
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Check For</h1><p>Check to ensure that your application validates untrusted input that is&nbsp;passed to data access methods.</p><h1>How to Fix</h1><p>If your data access methods receive input parameters from outside the trust boundary of your data access code, make sure you validate them for type, length, format, and range. You can use regular expressions for text input and perform type and range checks on numeric data. If you do not do this, your data access code is potentially susceptible to SQL injection. </p><p>Only omit input parameter validation in your data access methods if you know for certain that data can only be supplied by trusted code, such as your application's business logic, which you know has thoroughly validated the data passed to it.</p><blockquote><strong>Note</strong>&nbsp;&nbsp;&nbsp;Avoid storing encoded data; instead, encode the data as close as possible to the output.</blockquote><hr><p>Adapted from Microsoft patterns &amp; practices guidance. </p>]]></Data>
+  </Content>
+</TeamMentor_Article>

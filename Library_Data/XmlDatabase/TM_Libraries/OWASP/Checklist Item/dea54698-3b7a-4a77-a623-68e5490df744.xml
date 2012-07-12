@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-661591742" Content_Hash="-1278694099">
+  <Metadata>
+    <Id>dea54698-3b7a-4a77-a623-68e5490df744</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>SSL Is Used When Transmitting Credentials</Title>
+    <Category>Authentication</Category>
+    <Phase>Implementation</Phase>
+    <Technology>Java</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>SSL Is Used When Transmitting Credentials</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Check For</h1>
+  <p>Ensure that SSL&amp;nbsp;is used when transmitting credentials and never unencrypted connections.</p>
+  <h1>Why</h1>
+  <p>Using SSL prevents the credentials from being&amp;nbsp;identified or tampered with as they are transmitted over the network.</p>
+  <h1>How to Check</h1>
+  <ol>
+    <li>
+      <p>
+        <strong>Verify that a dedicated SSL-enabled server is used for the authentication component of your application. </strong>Ensure that your application's authentication component runs on a dedicated subdomain and a server that accepts only HTTPS traffic. Disallowing unencrypted HTTP connections will prevent accidental or malicious unsecured connections. Check that the server uses valid SSLv3 certificates that have been signed by a trusted certification authority. Disallowing lower SSL versions, such as SSLv1 and SSLv2 will ensure that weaker encryption methods can not be exploited by an attacker.<br /><br />The following URL should connect and prompt for login credentials:</p>
+      <pre>https://login.example.com/myapp/login</pre>
+      <p>An HTTP URL to the same server and component should either be disallowed or redirect to its HTTPS counterpart:</p>
+      <pre>http://login.example.com/myapp/login</pre>
+    </li>
+    <li>
+      <p>
+        <strong>Identify forms that send credentials. </strong>Forms are defined by a <em>&lt;form&gt;</em> tag in the HTML document, such as the one below:</p>
+      <pre>&lt;form method="POST" action="https://login.example.com/myapp/login"&gt;</pre>
+      <p>Forms that include credentials usually, but won't always, include an input field with a <em>TYPE</em> attribute set to <em>password</em>:</p>
+      <pre>&lt;input <strong>type</strong>="<strong>password</strong>" name="pass" size=25&gt;</pre>
+    </li>
+    <li>
+      <p>
+        <strong>Ensure that form data is sent using HTTPS. </strong>Examine the <em>ACTION</em> attribute of the <em>&lt;form&gt;</em> tag and ensure it posts to an absolute URL path and includes HTTPS in the URL, as shown below: </p>
+      <pre>&lt;form method="POST" <strong>action</strong>="<strong>https</strong>://login.example.com/myapp/login"&gt;</pre>
+    </li>
+  </ol>
+  <h1>How to Fix</h1>
+  <p>Using Secure Socket Layer (SSL) over HTTP requires the following steps:</p>
+  <ol>
+    <li>
+      <p>
+        <strong>Create a certificate request.</strong> Using your hosting server or OpenSSL, generate an SSL certificate request. Example:</p>
+      <pre># Generate private key<br />openssl genrsa -des3 -out privkey.pem 2048 <br /># Generate certificate request using private key<br />openssl req -new -key privkey.pem -out cert.csr</pre>
+    </li>
+    <li>
+      <p>
+        <strong>Present the request to a Certification Authority (CA).</strong> If all conditions for obtaining an SSL certificate are met, the CA will produce a new SSL certificate based on the certificate request. Because the requirements for obtaining an SSL certificate depend on the Certification Authority, consult with the Certification Authority in regards to the administrative steps necessary for obtaining such certificate.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Install the certificate.</strong> Consult with the hosting server's documentation on how to install the SSL certificate.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Ensure credentials are sent over SSL.</strong> Place the authentication portion of your application on a dedicated subdomain. Configure the server to accept only HTTPS traffic for the authentication subdomain. Ensure that form posts containing credentials are sent over HTTPS. This is accomplished by using absolute URL paths in the action field. Example:</p>
+      <pre>&lt;form method="POST" action="https://login.example.com/myapp/login"&gt;</pre>
+    </li>
+  </ol>
+  <h1>Problem Example</h1>
+  <p>In the following snippet, the credentials are transmitted over unprotected HTTP. This allows an attacker to easily steal credentials from sniffed traffic.</p>
+  <pre>&lt;html&gt;<br />  &lt;head&gt;<br />    &lt;title&gt;login form&lt;/title&gt;<br />  &lt;/head&gt;<br />  &lt;body&gt;<br />    &lt;form method="POST" action="http://login.example.com/myapp/login"&gt;<br />    &lt;input type="text" name="user" size=25&gt;&lt;br&gt;<br />    &lt;input type="password" name="pass" size=25&gt;&lt;br&gt;<br />    &lt;input type="submit" name="submit" value="log in"&gt;<br />    &lt;/form&gt;<br />  &lt;/body&gt;<br />&lt;/html&gt;</pre>
+  <h1>Solution Example</h1>
+  <p>In the following snippet, the credentials are transmitted over HTTPS. This makes it difficult for an attacker to steal credentials from sniffed traffic:</p>
+  <pre>&lt;html&gt;<br />  &lt;head&gt;<br />    &lt;title&gt;login form&lt;/title&gt;<br />  &lt;/head&gt;<br />  &lt;body&gt;<br />    &lt;form method="POST" action="https://login.example.com/myapp/login"&gt;<br />    &lt;input type="text" name="user" size=25&gt;&lt;br&gt;<br />    &lt;input type="password" name="pass" size=25&gt;&lt;br&gt;<br />    &lt;input type="submit" name="submit" value="log in"&gt;<br />    &lt;/form&gt;<br />  &lt;/body&gt;<br />&lt;/html&gt;</pre>]]></Data>
+  </Content>
+</TeamMentor_Article>

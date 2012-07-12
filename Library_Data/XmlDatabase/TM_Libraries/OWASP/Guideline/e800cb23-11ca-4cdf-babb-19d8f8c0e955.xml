@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-544731038" Content_Hash="100732046">
+  <Metadata>
+    <Id>e800cb23-11ca-4cdf-babb-19d8f8c0e955</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Partition the Application Between Public And Private Domains</Title>
+    <Category>Authentication</Category>
+    <Phase>Deployment</Phase>
+    <Technology>Java</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Partition the Application Between Public And Private Domains</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Do</h1>
+  <p>Define a boundary between public and restricted content.</p>
+  <h1>Why</h1>
+  <p>Defining a boundary between public and restricted content helps establish the check points&amp;nbsp;where access will be allowed&amp;nbsp;to the restricted content.</p>
+  <h1>When</h1>
+  <p>If your application has access control that&amp;nbsp;restricts certain users to specific resources, then define a boundary between those resources. For instance, anonymous users are restricted&amp;nbsp;to one part of the application, while&amp;nbsp;authenticated users can access both parts.</p>
+  <h1>How</h1>
+  <p>Defining the boundary requires:</p>
+  <ol>
+    <li>
+      <p>
+        <strong>Determine roles. </strong>Define the various types of users and their rights. Build a security policy for the restricted content and base the user groups' privileges around it. </p>
+    </li>
+    <li>
+      <p>
+        <strong>Define the boundary. </strong>Structure the content according to access and logical orders. Try to use a modular approach when establishing the boundary. </p>
+    </li>
+    <li>
+      <p>
+        <strong>Separate on disk. </strong>Once the boundaries have been established, reflect these boundaries onto the local file system. Separate the restricted content from the public content on disk. </p>
+    </li>
+    <li>
+      <p>
+        <strong>Set proper permissions. </strong>Set proper permissions to the restricted content. Dedicate a special directory for the restricted content and require valid access before accessing content within this directory. These permissions can be enforced at the application, server and operating system levels, depending on the environment in use.</p>
+    </li>
+  </ol>]]></Data>
+  </Content>
+</TeamMentor_Article>

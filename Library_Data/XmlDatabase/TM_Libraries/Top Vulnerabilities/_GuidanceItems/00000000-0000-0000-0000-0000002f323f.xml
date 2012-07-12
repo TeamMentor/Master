@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-0000002f323f</Id>
+    <Library_Id>f798e6e6-1732-4172-9c47-9621d914efcd</Library_Id>
+    <Title>Change Session IDs During Authentication</Title>
+    <Category>Session Management</Category>
+    <Phase>Implementation</Phase>
+    <Technology> Any</Technology>
+    <Type>Principle</Type>
+    <DirectLink>Change Session IDs During Authentication</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>What to Do</h1>
+  <p>Change the user's session ID when he logs in.</p>
+  <h1>Why</h1>
+  <p>Change session IDs during login to make sure that the session state corresponds to the authenticated user.</p>
+  <h1>How</h1>
+  <p>To change session IDs during login:</p>
+  <ol>
+    <li>
+      <p>
+        <strong>Find login functionality.</strong> Find the code that is responsible for authentication.</p>
+    </li>
+    <li>
+      <p />
+      <strong>Change session IDs during login.</strong> Add code that invalidates the current session ID and creates a new one.&amp;nbsp;<br /></li>
+  </ol>
+  <ul>
+  </ul>]]></Data>
+  </Content>
+</TeamMentor_Article>

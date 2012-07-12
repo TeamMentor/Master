@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-2017424498" Content_Hash="878683617">
+  <Metadata>
+    <Id>b0bbf434-dc63-49ac-a400-b6dc0c766316</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Chosen Ciphertext Attack</Title>
+    <Category>Encryption</Category>
+    <Phase>Any</Phase>
+    <Technology> Any</Technology>
+    <Type>Attack</Type>
+    <DirectLink>Chosen Ciphertext Attack</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>Applies To</h1>
+  <p>
+  </p>
+  <ul>
+    <li>Applications that use encryption.</li>
+  </ul>
+  <p />
+  <h1>Description</h1>
+  <p>In this attack the goal is to discover the key of a crypto system by controlling what ciphertext is decrypted. The attacker usually has access to a large number of encrypted messages and the equivalent of a tamperproof box that can do decryption. This type of attack is primarily applicable to asymmetric encryption algorithms but can also be applied to symmetric encryption algorithms as well. Another variant of this attack is the Adaptive chosen-ciphertext attack in which the attacker sends a number of ciphertexts to be decrypted then based on the plaintext that is returned the attacker chooses different ciphertext to be decrypted in the next round.</p>
+  <h1>Impact</h1>
+  <ul>
+    <li>Discovery of the private key used in the system.</li>
+  </ul>
+  <h1>Vulnerabilities</h1>
+  <ul>
+    <li>Allowing anonymous users to decrypt chosen ciphertext. </li>
+    <li>Using an encryption algorithm that does not protect against this type of attack.</li>
+  </ul>
+  <h1>Countermeasures</h1>
+  <ul>
+    <li>For RSA encryption use Optimal Asymmetric Encryption Padding. </li>
+    <li>Deny anonymous users the ability to decrypt arbitrary ciphertext.</li>
+  </ul>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>For more information on chosen ciphertext attacks, see: <a href="http://en.wikipedia.org/wiki/Chosen_ciphertext_attack">http://en.wikipedia.org/wiki/Chosen_ciphertext_attack</a></li>
+  </ul>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-1115555087" Content_Hash="-1673629613">
+  <Metadata>
+    <Id>81d3f64a-9741-43a0-948e-69b42be00efc</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Failed Logon Attempts Are Audited</Title>
+    <Category>Logging</Category>
+    <Phase>Deployment</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>Failed Logon Attempts Are Audited</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>J.D. Meier, Alex Mackman, Michael Dunner, Srinath Vasireddy, Ray Escamilla and Anandha Murukan</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Check For</h1>
+  <p>Check to ensure that failed logon attempts are audited to detect and trace suspicious behavior.</p>
+  <br />
+  <h1>How to Fix</h1>
+  <p>You must log failed logon attempts to be able to detect and trace suspicious behavior.</p>
+  <p>
+    <strong>To audit failed logon attempts</strong>
+  </p>
+  <ol>
+    <li>Start the Local Security Policy tool from the Administrative Tools program group.
+</li>
+    <li>Expand <strong>Local Policies</strong> and then select <strong>Audit Policy</strong></li>
+    <li>Double-click <strong>Audit account logon events</strong>. </li>
+    <li>Click <strong>Failure</strong> and then <strong>OK</strong>. </li>
+  </ol>
+  <p>Logon failures are recorded as events in the Windows security event log. The following event IDs are suspicious:
+</p>
+  <ul>
+    <li>
+      <strong>531</strong>. This means an attempt was made to log on using a disabled account.
+</li>
+    <li>
+      <strong>529</strong>. This means an attempt was made to log on using an unknown user account or using a valid user account but with an invalid password. An unexpected increase in the number of these audit events might indicate an attempt to guess passwords.
+</li>
+  </ul>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance.</p>]]></Data>
+  </Content>
+</TeamMentor_Article>

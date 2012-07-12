@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="1245108050" Content_Hash="935317294">
+  <Metadata>
+    <Id>2b2a09fd-a10d-479f-a3df-8e28870319b6</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>File Name And Path Manipulation Attack</Title>
+    <Category>Input and Data Validation</Category>
+    <Phase>Any</Phase>
+    <Technology> Any</Technology>
+    <Type>Attack</Type>
+    <DirectLink>File Name And Path Manipulation Attack</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>1</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>Applies To</h1>
+  <p>
+  </p>
+  <ul>
+    <li>All applications which use user input to construct the file name or path before accessing a file resource.</li>
+  </ul>
+  <p />
+  <h1>Description</h1>
+  <p>If user input is used to construct a filename or path it is possible for that input to be format so that an unintended or protected file is read, modified, or executed instead. This is commonly accomplished by exploiting canonicalization issues or alternate data streams. Command injection may also be possible and would allow the attacker to execute arbitrary commands. The impact of such vulnerabilities is compounded if the application is running with elevated privileges.</p>
+  <h1>Impact</h1>
+  <ul>
+    <li>Command execution via command injection</li>
+    <li>Reading data from or writing to protected files. Some examples: <ul><li>Making the application load/overwrite another user's configuration or data file. </li><li>Reading from or writing to protected application or system log files.</li></ul></li>
+  </ul>
+  <h1>Vulnerabilities</h1>
+  <ul>
+    <li>Lack of or improper validation of user supplied input.</li>
+  </ul>
+  <h1>Countermeasures</h1>
+  <ul>
+    <li>Use proper file permissions to ensure that only authorized users can access sensitive files. </li>
+    <li>If granular file permissions is not an option, then resolve file names and paths completely and verify them for access. </li>
+    <li>Avoid the problem by designing software that does not need user input for filenames. One simple solution is to generate unique random filenames and use a dictionary to associate them with a user supplied label.</li>
+  </ul>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>For more inofrmation on path manipulation, see the <a href="http://www.owasp.org/index.php/Path_Manipulation">OWASP Path Manipulation</a> article.</li>
+  </ul>
+  <ul>
+  </ul>]]></Data>
+  </Content>
+</TeamMentor_Article>

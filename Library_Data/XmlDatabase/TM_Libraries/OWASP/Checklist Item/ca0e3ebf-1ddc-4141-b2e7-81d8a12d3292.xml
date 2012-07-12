@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-1548521529" Content_Hash="-1068016732">
+  <Metadata>
+    <Id>ca0e3ebf-1ddc-4141-b2e7-81d8a12d3292</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Application Avoids File Name And Path Input</Title>
+    <Category>Input and Data Validation</Category>
+    <Phase>Implementation</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>Application Avoids File Name And Path Input</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Do</h1>
+  <p>Do not accept file names or paths from users.</p>
+  <h1>Why</h1>
+  <p>Accepting file names or paths from users can result in attackers coercing your application into accessing arbitrary files and resources.</p>
+  <h1>When</h1>
+  <p>You should never accept a file name or path from a user under any circumstances.</p>
+  <h1>How</h1>
+  <p>If user control over file paths or file names is not absolutely necessary, remove the responsible code from the application. If you need to store a file from a user, store it in a database or other non-filesystem data store.&amp;nbsp;Keep the name the user provided as a reference to the file, but do not use it as any form of canonical name.</p>
+  <p />
+  <p>If the functionality is critical to the proper working of the application, then validate the input for directory traversal and canonicalization attacks:</p>
+  <ol>
+    <li>
+      <p>
+        <strong>Check File Names. </strong>Ensure that file paths only refer to files within your application's virtual directory hierarchy if that is appropriate. When checking file names, obtain the full name of the file by using the <em>System.IO.Path.GetFullPath</em> method. </p>
+    </li>
+    <li>
+      <p>
+        <strong>Check File Paths. </strong>If you use <em>MapPath</em> to map a supplied virtual path to a physical path on the server, use the overloaded <em>Request.MapPath</em> method that accepts a <em>bool</em> parameter so that you can prevent cross-application mapping: </p>
+      <pre>try<br />{<br />  string mappedPath = Request.MapPath( inputPath.Text,<br />                         Request.ApplicationPath, false);<br />}<br />catch (HttpException)<br />{<br />  // Cross-application mapping attempted<br />}</pre>
+      <p>The final <em>false</em> parameter prevents cross-application mapping. This means that a user cannot successfully supply a path that contains ".." to traverse outside of your application's virtual directory hierarchy. Any attempt to do this results in an exception of type <em>HttpException</em>. </p>
+    </li>
+  </ol>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance. </p>]]></Data>
+  </Content>
+</TeamMentor_Article>

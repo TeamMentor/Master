@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-645960511" Content_Hash="-1563309835">
+  <Metadata>
+    <Id>69cae495-2512-4216-b5d5-4e701ad6b65f</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Use ASP.NET Role Manager for Roles Authorization</Title>
+    <Category>Authorization</Category>
+    <Phase>Implementation</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Use ASP.NET Role Manager for Roles Authorization</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Do</h1>
+  <p>Use the ASP.NET role manager for role-based authorization instead of writing custom code. </p>
+  <h1>Why</h1>
+  <p>ASP.NET provides a role manager feature that automatically allows you to create, manage, and look up roles for the currently authenticated user.&amp;nbsp; Role managers reduce possibilities for serious security issues from programmer errors and reduce the amount of custom code needed for an application. </p>
+  <h1>When</h1>
+  <p>If your application uses windows authentication&amp;nbsp;or stores roles in SQL server you&amp;nbsp;should use ASP.NET role managers.&amp;nbsp; If you need an authorization scheme or a feature not present in the provided role managers, write a custom role manager instead of an entirely custom authorization scheme so you can leverage the existing interfaces. </p>
+  <h1>How</h1>
+  <p>Roles are accessed from the configured role store by the <strong>RoleManager</strong> HTTP module by using the configured role provider.&amp;nbsp; This occurs after the user is authenticated but before URL authorization and file authorization access checks occur and before programmatic role checks can occur. </p>
+  <p>To use the role manager feature in an ASP.NET application, you need to do the following: </p>
+  <ol>
+    <li>Add a &lt;<strong>roleManager</strong>&gt; element beneath the &lt;<strong>system.web</strong>&gt; section of your application's Web.config file and enable role manager by setting its <strong>enabled</strong> attribute to <strong>true</strong>. </li>
+    <li>Add a connection string to the &lt;<strong>connectionStrings</strong>&gt; section to point to your roles store. If you are using the <strong>AuthorizationStoreRoleProvider</strong>, this is an LDAP query string pointing to your Authorization Manager Policy store in Active Directory or ADAM. If you are using the <strong>SqlRoleProvider</strong>, this is a database connection string that points to your role store database. </li>
+    <li>Configure the specific provider in the &lt;<strong>roleManager</strong>&gt;<strong></strong>element in your application's Web.config file. The role manager system supports the following providers: </li>
+    <li>If your application roles are in an Authorization Manager Policy store in Active Directory or ADAM, use the <strong>AuthorizationStoreRoleProvider</strong>. </li>
+    <li>If your application roles are in a SQL Server database, use the <strong>SqlRoleProvider.</strong></li>
+    <li>If your application uses Windows groups as roles, use the <strong>WindowsTokenRoleProvider</strong>. Note that this is recommended to be used with Windows Authentication only. </li>
+    <li>If your application roles are in a store other than those previously listed, create a custom roles provider inheriting <strong>RoleProvider</strong> base class. </li>
+    <li>Set the <strong>defaultProvider</strong> attribute on the &lt;<strong>roleManager</strong>&gt; element to the chosen role provider. </li>
+  </ol>
+  <p>To check roles and manage roles, use the Role Manager API (for example <strong>Roles.IsUserInRole </strong>and <strong>Roles.CreateRole</strong>). </p>
+  <p>If your application needs role-based authorization, use the following guidelines: </p>
+  <ul>
+    <li>
+      <p>
+        <strong>Use role providers to perform role authorization.</strong>&amp;nbsp; Role providers allow you to load the roles for users without writing and maintaining code.&amp;nbsp; Additionally, the role providers offer a consistent way for you to check the role membership of your users, regardless of the underlying data store.&amp;nbsp; Where possible, use one of the supplied roles providers; these include <strong>SqlRoleProvider</strong>, <strong>WindowsTokenRoleProvider</strong>, and <strong>AuthorizationStoreRoleProvider</strong>.&amp;nbsp; If you already have a custom role store in a non-SQL Server database or in a non-Active Directory LDAP store, consider implementing your own custom role provider. </p>
+      <p>The following code shows how to use the role manager API and specifically <strong>Roles.IsUserInRole</strong>. </p>
+      <pre>// Tests whether the currently authenticated user is a member<br />// of a particular role.<br />if(Roles.IsUserInRole("Manager"))<br />   // Perform restricted operation else<br />   // Return unauthorized access error.<br />// Tests whether any given user is a member of a role:<br />if(Roles.IsUserInRole("Bob","Manager"))<br />   // Perform restricted operation<br />else<br />   // Return unauthorized access error.</pre>
+    </li>
+    <li>
+      <p>
+        <strong>Use the SqlRoleProvider when your roles are in SQL Server.</strong>&amp;nbsp; If you store role information in SQL Server, configure your application to use the <strong>SqlRoleProvider</strong>.&amp;nbsp; You can also configure forms authentication with the <strong>SqlMembershipProvider</strong> to use the same database for authentication and authorization, although this is not required. </p>
+    </li>
+    <li>
+      <p>
+        <strong>Use the WindowsTokenRoleProvider when you use Windows groups as roles.</strong>&amp;nbsp; If your application uses Windows authentication and you use Windows groups as roles, configure your application to use the <strong>WindowsTokenRoleProvider</strong>. </p>
+    </li>
+    <li>
+      <p>
+        <strong>Use the AuthorizationStoreRoleProvider when your application roles are in ADAM.</strong>&amp;nbsp; If your application uses Windows authentication against Active Directory, and you need application specific roles instead of using your domain Windows group membership, you can store role information in SQL Server or in an Authorization Manager (AzMan) policy store in ADAM.&amp;nbsp; Authorization Manager provides a Microsoft Management Console (MMC) snap-in, to create and manage roles, and to manage role membership for users. </p>
+      <p>If your user accounts are in Active Directory, but you cannot use Windows authentication and must use forms authentication, a good solution for roles management is to use the <strong>AuthorizationStoreRoleProvider</strong> with an AzMan policy store in ADAM. </p>
+    </li>
+  </ul>
+  <p>
+    <strong>Note:</strong>&amp;nbsp;&amp;nbsp;The <strong>AuthorizationStoreRoleProvider</strong> does not directly support Authorization Manager business logic such as operations and tasks. To do this, you must use P/Invoke and call the Authorization Manager API directly. &amp;nbsp;</p>
+  <ul>
+  </ul>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance. </p>]]></Data>
+  </Content>
+</TeamMentor_Article>

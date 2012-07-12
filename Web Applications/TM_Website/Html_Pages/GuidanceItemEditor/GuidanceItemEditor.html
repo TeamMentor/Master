@@ -1,7 +1,8 @@
 <!DOCTYPE HTML>
 <html>	
 	<head>			
-		<link  href="/aspx_Pages/scriptCombiner.ashx?s=HomePage_CSS&ct=css" 				type="text/css" rel="stylesheet" /> 					
+		<link  href="/aspx_Pages/scriptCombiner.ashx?s=HomePage_CSS&ct=css" 				type="text/css" rel="stylesheet" /> 
+		<link  href="/Css/ArticleEditor.css" type="text/css" rel="stylesheet" />		
 		<script src="/aspx_Pages/scriptCombiner.ashx?s=WebServices_JS"						type="text/javascript"></script>	
         		
 	</head>
@@ -182,12 +183,12 @@
 						}
 					}
 					
-					$("#topButtons").css({ 'padding'  : '2px'});
-					$("#topButtons button").css({ 'font-size':'13px'})					
+					/*$("#topButtons").css({ 'padding'  : '2px'});
+					$("#topButtons button").css({ 'font-size':'13px'})*/					
 					$(".ui-autocomplete").css('font-size','11px')
-					$("input").css('font-size', '13px')
+					$("input").css('font-size', '12px')
 							  .css('padding','2px')
-							  .css('font-family','Calibri, Arial, Helvetica, sans-serif');
+							  .css('font-family','Segoe UI, Arial, Helvetica, sans-serif');
 					
 					$("#Title").addClass('ui-widget-content ui-corner-left ui-corner-rigth')
 										
@@ -268,7 +269,7 @@
 				loadedGuidanceItem = data.d;
 				if(isUndefined(loadedGuidanceItem) || loadedGuidanceItem === null)
 				{
-					TM.Gui.Dialog.alertUser("Error: There was a problem loading selected Guidance Item data");
+					TM.Gui.Dialog.alertUser("Error loading article.");
 					return;
 				}
 				
@@ -299,12 +300,12 @@
 			{
 				if(data.d == true)
                                 {
-                                  	showMessage("GuidanceItem Saved Ok");
+                                  	showMessage("Article saved.");
 									updateCacheWithSavedGuidanceItem();
                                 }
 
                          	else
-                                  	TM.Gui.Dialog.alertUser('Error: problems saving data');
+                                  	TM.Gui.Dialog.alertUser('Error saving article.');
 			}
 
 		var updateCacheWithSavedGuidanceItem = function()
@@ -487,7 +488,7 @@
 										{											
 											$("button").hide();
 											"ItemDetailTable".$().hide();
-											showMessage("You don't have privileges to edit this item");											
+											showMessage("Editing access denied.");											
                                             $("#guidanceItemEditor").show().html("<h2>Access denied.</h2><br/><p>Please close this window or <a href='javascript:TM.Gui.Dialog.loginPage()'>login</a></p>");
 											//"guidanceItemEditor".$().html("<h1>Access denied.</h1><h2>please close this window</h2>");
 										}													
@@ -556,8 +557,8 @@
 		<div id="guiWithPanels"></div>	
 
 		<div id="topButtons">
-			<button id="backToViewer">Back to Guidance Item View Mode</button>            
-			<button id="saveChanges">Save Changes</button>  
+			<span id="backToViewer" class="IEButton">View Article</span>
+			<span id="saveChanges" class="IEButton">Save Changes</span>
 		</div>
 	<span id="linksToEditors"></span>
         <br/>	

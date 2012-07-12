@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="1028181746" Content_Hash="1389796859">
+  <Metadata>
+    <Id>8029ca0c-2bc3-436f-a288-5b10cc2bb80a</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>RSA-protected Configuration Provider Is Used to Protect Connection Strings in a Web Farm Environment</Title>
+    <Category>Data Access</Category>
+    <Phase>Implementation</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>RSA-protected Configuration Provider Is Used to Protect Connection Strings in a Web Farm Environment</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Check For</h1>
+  <p>Ensure that your application uses RSA Protected Configuration provider to&amp;nbsp;protect connection strings in a Web farm environment.</p>
+  <h1>How to Fix</h1>
+  <p>To protect credentials in configuration files, encrypt them. Place your database connection strings inside the &lt;<strong>connectionStrings</strong>&gt; element of the Web.config file and then encrypt that element by using the Aspnet_regiis utility. You can use DPAPI or RSA encryption. Use RSA in Web farms because you can easily export and import RSA keys across servers. Protecting connection strings is particularly important for connection strings that use SQL authentication because they contain clear text user IDs and passwords.</p>
+  <strong>Note:</strong>&amp;nbsp;You should also encrypt connection strings if you use Windows authentication. Although this form of connection string does not contain credentials, you should aim to keep server and database names private. <hr /><p>Adapted from Microsoft patterns &amp; practices guidance. </p>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-0000007c7b9d</Id>
+    <Library_Id>f798e6e6-1732-4172-9c47-9621d914efcd</Library_Id>
+    <Title>Use Valid SSL Certificates</Title>
+    <Category>Communication Security</Category>
+    <Phase>Implementation</Phase>
+    <Technology> Any</Technology>
+    <Type>Principle</Type>
+    <DirectLink>Use Valid SSL Certificates</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>What to Do</h1>
+  <p>Use valid SSL certificates.</p>
+  <h1>Why</h1>
+  <p>Using valid SSL certificates helps prevent phishing attacks by assuring visitors that your site is secure and trusted. </p>
+  <h1>How</h1>
+  <p>To use a valid SSL certificate:</p>
+  <ol>
+    <li>
+      <p>
+        <strong>Purchase a valid SSL certificate.</strong> You may purchase a valid SSL key from VeriSign, Thawte, or your web hosting provider. Follow the vendor's instructions for purchasing the SSL certificate. The certificate is usually a .cer file. Make sure the certificate matches all domains used by the application.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Import the valid SSL certificate.</strong> The exact instructions for importing SSL certificates are different for different application servers. Please, refer to your application server's documentation or technical support for detailed instructions on how to install SSL certificates.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Configure the web application server to use SSL.</strong> The exact instructions for configuring web application servers to use SSL are different for different platforms. Please, refer to your application server's documentation or technical support for detailed instructions on how to install SSL certificates.</p>
+    </li>
+  </ol>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>For more information about importing SSL certificates into common Web Servers, please see <a href="http://www.directnic.com/help/guides/index.php?guide_id=7">http://www.directnic.com/help/guides/index.php?guide_id=7</a></li>
+  </ul>
+  <ul>
+  </ul>]]></Data>
+  </Content>
+</TeamMentor_Article>

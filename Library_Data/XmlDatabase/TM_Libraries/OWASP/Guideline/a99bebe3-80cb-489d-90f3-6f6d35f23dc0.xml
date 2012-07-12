@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-229649483" Content_Hash="-1913041490">
+  <Metadata>
+    <Id>a99bebe3-80cb-489d-90f3-6f6d35f23dc0</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Use the Correct Algorithm And Correct Key Size</Title>
+    <Category>Encryption</Category>
+    <Phase>Design</Phase>
+    <Technology> Any</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Use the Correct Algorithm And Correct Key Size</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>J.D. Meier, Alex Mackman, Michael Dunner, Srinath Vasireddy, Ray Escamilla and Anandha Murukan</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Do</h1>
+  <p>Examine what algorithms your application uses and for what purpose and ensure that correct algorithm and correct key sizes are being used.</p>
+  <h1>Why</h1>
+  <p>Cryptography only provides real security if it is used appropriately and the right algorithms are used for the right job. The strength of the algorithm is also important.&amp;nbsp; Larger key sizes result in improved security, but performance suffers. Stronger encryption is most important for persisted data that is retained in data stores for prolonged periods of time.</p>
+  <h1>When</h1>
+  <p>If your application uses cryptography to provide security, examine what algorithm and key size it uses and the way it is used.</p>
+  <h1>How</h1>
+  <p>It is important to make sure you choose the right algorithm for the right job and to make sure you use a key size that provides a sufficient degree of security. Larger key sizes generally increase security. The following list summarizes the major algorithms together with the key sizes that each uses: </p>
+  <ul>
+    <li>Data Encryption Standard (DES) 64-bit key (8 bytes) </li>
+    <li>TripleDES 128-bit key or 192-bit key (16 or 24 bytes) </li>
+    <li>Rijndael 128-256 bit keys (16-32 bytes) </li>
+    <li>RSA 384-16,384 bit keys (48-2,048 bytes) </li>
+  </ul>
+  <p>For large data encryption, use the TripleDES symmetric encryption algorithm (also&amp;nbsp;called Triple Data Encryption Algorithm, TDEA) . For slower and stronger encryption of large data, use Rijndael,&amp;nbsp;also known as Advanced Encryption Standard(AES). As per NIST&amp;nbsp;recomendations, 192-256-bit AES&amp;nbsp;keys are required for highly sensitive data.&amp;nbsp;&amp;nbsp;To encrypt data that is to be stored for short periods of time, you can consider using a faster but weaker algorithm such as DES. For digital signatures, use Rivest, Shamir, and Adleman (RSA) or Digital Signature Algorithm (DSA). NIST guidelines suggest that 15360-bit RSA keys are equivalent&amp;nbsp;to 256-bit symmetric keys in strength. For hashing, use the Secure Hash Algorithm (SHA)1.0. For keyed hashes, use the Hash-based Message Authentication Code (HMAC) SHA1.0.</p>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>For more information see, "Chapter 4 - Design Guidelines for Secure Web Applications" at <a href="http://msdn2.microsoft.com/en-us/library/aa302420.aspx">http://msdn2.microsoft.com/en-us/library/aa302420.aspx</a></li>
+  </ul>
+  <h1>&amp;nbsp;</h1>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance.</p>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-0000004fbe32</Id>
+    <Library_Id>f798e6e6-1732-4172-9c47-9621d914efcd</Library_Id>
+    <Title>Protect Your Encryption Keys</Title>
+    <Category>Cryptography</Category>
+    <Phase>Design</Phase>
+    <Technology> Any</Technology>
+    <Type>Principle</Type>
+    <DirectLink>Protect Your Encryption Keys</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Description</h1>
+  <p>An encryption key is a secret number used as input to the encryption and decryption processes. For encrypted data to remain secure, the key must be protected. If an attacker compromises the decryption key, your encrypted data is no longer secure.</p>
+  <p>The following practices help secure your encryption keys:</p>
+  <ol>
+    <li>
+      <p>
+        <strong>Use&amp;nbsp;Platform Provided&amp;nbsp;Key Management.&amp;nbsp;</strong>One of the major advantages of using platform provided key management is that the key management issue is handled by the operating system. For example, if you are using the .NET framework, you can use DPAPI to handle key management. The key that DPAPI uses is derived from the password that is associated with the process account that calls the DPAPI functions. You can use DPAPI to pass the burden of key management to the operating system.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Cycle Your Keys Periodically.&amp;nbsp;</strong>Generally, a static secret is more likely to be discovered over time. Questions to keep in mind are: Did you write it down somewhere? Did Bob, the administrator with the secrets, change positions in your company or leave the company? Do not overuse keys.</p>
+    </li>
+  </ol>]]></Data>
+  </Content>
+</TeamMentor_Article>

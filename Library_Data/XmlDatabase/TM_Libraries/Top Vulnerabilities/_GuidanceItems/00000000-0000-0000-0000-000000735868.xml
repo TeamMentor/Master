@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-000000735868</Id>
+    <Library_Id>f798e6e6-1732-4172-9c47-9621d914efcd</Library_Id>
+    <Title>Pay Attention to the Warnings of Compilers and Linkers</Title>
+    <Category>Dangerous APIs</Category>
+    <Phase>Implementation</Phase>
+    <Technology> Any</Technology>
+    <Type>Principle</Type>
+    <DirectLink>Pay Attention to the Warnings of Compilers and Linkers</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h2>What to Do</h2>
+  <p>Heed the warnings of compilers and linkers, since they may alert you to improper usage.
+</p>
+  <p>Examine compiler warnings closely and eliminate problems with potential security implications, such as signed / unsigned mismatch in memory operations, or the use of uninitialized variables. Even if the weakness is rarely exploitable, a single failure may
+ lead to the compromise of the entire system.</p>]]></Data>
+  </Content>
+</TeamMentor_Article>

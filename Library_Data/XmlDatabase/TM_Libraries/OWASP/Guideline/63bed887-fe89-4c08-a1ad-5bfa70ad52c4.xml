@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-458620630" Content_Hash="1827996794">
+  <Metadata>
+    <Id>63bed887-fe89-4c08-a1ad-5bfa70ad52c4</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Disable the Session State Service If Unused</Title>
+    <Category>Session Management</Category>
+    <Phase>Implementation</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Disable the Session State Service If Unused</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Do</h1>
+  <p>If the session state service is not used by your application, it should be disabled. </p>
+  <h1>Why</h1>
+  <p>By turning the service off, you eliminate the redundant session processing performed by ASP.NET.&amp;nbsp;</p>
+  <h1>How</h1>
+  <p>The session state can be&amp;nbsp;turned off&amp;nbsp;for an individual application by setting the <strong>mode</strong> attribute to "off" on the <strong>&lt;sessionState&gt;</strong> element in Web.config as follows.</p>
+  <pre>&lt;sessionstate mode="off" /&gt;<br /></pre>
+  <h1>See Also</h1>
+  <ul>
+    <li>"Disable ASP Session State in ASP.NET" at <a href="http://support.microsoft.com/default.aspx?scid=kb;en-us;306996">http://support.microsoft.com/default.aspx?scid=kb;en-us;306996</a></li>
+    <li>"Configure SQL Server to Store ASP.NET Session State" at <a href="http://support.microsoft.com/default.aspx?scid=kb;en-us;317604">http://support.microsoft.com/default.aspx?scid=kb;en-us;317604</a></li>
+  </ul>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance. </p>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-527768430" Content_Hash="-2115145468">
+  <Metadata>
+    <Id>0fa22cfd-0303-4b23-ad2c-1754ea368c7c</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>All Input Parameters Are Validated for Length, Range, Format, And Type</Title>
+    <Category>Input and Data Validation</Category>
+    <Phase>Implementation</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>All Input Parameters Are Validated for Length, Range, Format, And Type</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Check For</h1>
+  <p>Ensure that all input parameters from form fields, query strings, cookies, and HTTP headers are&amp;nbsp;validated.&amp;nbsp;Validation routines should check for length, range, format, and type. Validation should check first&amp;nbsp;for known valid and safe data and then for malicious, dangerous data.&amp;nbsp; </p>
+  <h1>Why</h1>
+  <p>An attacker passing malicious input can attempt SQL injection, cross-site scripting, and other injection attacks that aim to exploit your application's vulnerabilities. &amp;nbsp;</p>
+  <h1>How to Check</h1>
+  <p>To check for this problem, use the following steps:&amp;nbsp;</p>
+  <ol>
+    <li>
+      <p>
+        <strong>Find all input parameter sources.</strong> During design time identify all of the potential sources of input parameters to your application. Scour the source code to discover sources of input that may have been missed in the design.&amp;nbsp; Compile a list that you can use in the following steps. The most common sources are:</p>
+    </li>
+    <ul>
+      <li>Form Fields </li>
+      <li>Query Strings </li>
+      <li>Cookies </li>
+      <li>HTTP Headers</li>
+    </ul>
+    <li>
+      <p>
+        <strong>Trace data from source to sink.</strong> Trace each of source of input through your application until you find its ultimate destination.&amp;nbsp; The final sink may be in memory, on the hard drive, sent over the network or stored in a database.&amp;nbsp; </p>
+    </li>
+    <li>
+      <p>
+        <strong>Identify validation routines.</strong> Each input source should have a data validation routine associated with it.&amp;nbsp; Ideally the validation will occur as soon after the input reaches your application as possible.&amp;nbsp; Shared validation routines are better than creating many spread throughout your code base, check for consolidation of routines to aid testing and reduce the chance of one-off bugs.&amp;nbsp; If an input source does not have a validation routine associated with it, flag it for fixing.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Ensure quality of validation routines.</strong> Validation routines&amp;nbsp;should check for length, range, format, and type. Validation should check first&amp;nbsp;for known valid and safe data and then for malicious, dangerous data.&amp;nbsp;Do not rely on filtering out all malicious data, it is too easy to miss something. Do not rely on client-side validation alone as it can be easily bypassed.</p>
+    </li>
+  </ol>
+  <h1>How to Fix</h1>
+  <p>Check for known good data and constrain input by validating it for type, length, format, and range.&amp;nbsp; For Web form applications that obtain input through server controls, use the ASP.NET validator controls, such as the RegularExpressionValidator, RangeValidator, and CustomValidator, to validate and constrain input.&amp;nbsp; Check all numeric fields for type and range. If you are not using server controls, you can use regular expressions and the Regex class, and you can validate numeric ranges by converting the input value to an integer or double and then performing a range check.&amp;nbsp; Validate your input against the least permissive expression possible that will accept all the input you expect for that field.&amp;nbsp; If you know that the field will have certain internal structure, check for it.&amp;nbsp; If your input has an internal checksum, like a credit card number, check that too. </p>
+  <p>Most Web applications accept input from various sources, including HTML controls, server controls, query strings, and cookies.&amp;nbsp; Validate input from all of these sources to help prevent injection attacks.&amp;nbsp; Use regular expressions to help validate input.&amp;nbsp; The following example shows how to use the Regex class. </p>
+  <pre>using System.Text.RegularExpressions;<br />...
+// Instance method:
+Regex reg = new Regex(@"^[a-zA-Z'.\s]{1,40}$");<br />Response.Write(reg.IsMatch(Request.QueryString["Name"]));<br />// Static method:<br />if (!Regex.IsMatch(Request.QueryString["Name"],@"^[a-zA-Z'.\s]{1,40}$"))<br />{<br />   // Name does not match expression<br />}</pre>
+  <p>If you cannot cache your regular expression for frequent use, you should use the static IsMatch method where possible for performance reasons, to avoid unnecessary object creation. </p>
+  <p>Remember that validating input does not remove the need to format output, parameterize queries, or otherwise handle user input carefully. </p>
+  <h1>Problem Example</h1>
+  <p>An ASP.NET application contains an order form for a web store which has several fields, specifically, a name, address, phone number, item number, and quantity.&amp;nbsp; Each item is simply added to the database, with any typecasting handled by the database.&amp;nbsp; While casting to the appropriate type helps a little, it happens too late to prevent SQL injection issues.&amp;nbsp; Furthermore, there are no guarantees about the quality of the data. </p>
+  <h1>Solution Example</h1>
+  <p>An ASP.NET application contains an order for a web store. Each of the form's fields are validated, giving stronger guarantees about the data gathered.&amp;nbsp; The phone number&amp;nbsp;is validated as a string of ten digits (after stripping all non-numeric characters), or a variable number of digits beginning with the character '+' if international numbers are allowed.&amp;nbsp; </p>
+  <p>Validating a name, address, and item number can all be a bit more complicated.&amp;nbsp; The first order of business is determining the legal character set for each case.&amp;nbsp; For names, spaces, upper and lower case letters (including the accented forms for your current codepage), and possible numbers and periods are enough.&amp;nbsp; Addresses need to add commas, hyphens, and number signs, at a minimum.&amp;nbsp; Validating item numbers may be as simple as casting to an integer and checking that the result is in the right range, or it may mean a more complicated regular expression that checks for internal formatting in a string. </p>
+  <p>The last, optional step of data validation is to ensure that the data refers to a valid things.&amp;nbsp; The data should be validated for format first, especially as further checks may require database queries.&amp;nbsp; Item numbers are an obvious thing to check for existence in the DB, and this would normally happen as part of the stored procedure which creates a new order, but names, addresses, and phone numbers can be similarly checked, some times.&amp;nbsp; For example, if the address field is broken up into components, state or province information, zip/post codes, and city names, at a minimum, can all be validated against existing lists.</p>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance. </p>]]></Data>
+  </Content>
+</TeamMentor_Article>

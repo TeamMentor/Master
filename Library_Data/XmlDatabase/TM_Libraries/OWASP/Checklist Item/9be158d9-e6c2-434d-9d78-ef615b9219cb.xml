@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="951980908" Content_Hash="2008124488">
+  <Metadata>
+    <Id>9be158d9-e6c2-434d-9d78-ef615b9219cb</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>SAM Is Secured</Title>
+    <Category>Server Hardening</Category>
+    <Phase>Deployment</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>SAM Is Secured</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>J.D. Meier, Alex Mackman, Michael Dunner, Srinath Vasireddy, Ray Escamilla and Anandha Murukan</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>Applies to</h1>
+  <ul>
+    <li>
+      <div>Web Application</div>
+    </li>
+  </ul>
+  <h1>What to Check For</h1>
+  <p>Check to ensure that the Security Account Manager (SAM) database in the registry is secured for standalone servers.</p>
+  <br />
+  <h1>How to Fix</h1>
+  <p>Stand-alone servers store account names and one-way (non-reversible) password hashes (LMHash) in the local Security Account Manager (SAM) database. The SAM is part of the registry. Typically, only members of the Administrators group have access to the account
+ information.</p>
+  <p>Although the passwords are not actually stored in the SAM and password hashes are not reversible, if an attacker obtains a copy of the SAM database, the attacker can use brute force password techniques to obtain valid user names and passwords.</p>
+  <p>Restrict LMHash storage in the SAM by creating the key (not value) <strong>NoLMHash</strong> in the registry as follows:</p>
+  <p>
+    <strong>HKLM\System\CurrentControlSet\Control\LSA\NoLMHash</strong>
+  </p>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>For more information, see Microsoft Knowledge Base article 299656, "New Registry Key to Remove LM Hashes from Active Directory and Security Account Manager."</li>
+  </ul>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance.</p>]]></Data>
+  </Content>
+</TeamMentor_Article>

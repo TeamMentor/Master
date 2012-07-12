@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-1626329431" Content_Hash="-42739680">
+  <Metadata>
+    <Id>d8748c6c-60cc-47e7-b07c-6becf5f993df</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Inactive User Accounts Are Automatically Locked</Title>
+    <Category>Authorization</Category>
+    <Phase>Design</Phase>
+    <Technology>Java</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>Inactive User Accounts Are Automatically Locked</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Check For</h1>
+  <p>Ensure the application automatically locks inactive user accounts. Verify that all instances of locking inactive accounts are logged.</p>
+  <h1>Why</h1>
+  <p>Inactive user accounts increase the attack surface of the application and can be used by an attacker as a means of entry.</p>
+  <h1>How to Check</h1>
+  <p>Follow these steps during the design phase to make sure your application has the capability to lock its inactive user accounts:</p>
+  <ol>
+    <li>
+      <p>
+        <strong>Verify your application stores the user's last login/inactivity information. </strong>Check if your application has the necessary procedures in place to store and retrieve last login and lockout information about its users. Common locations for storing such information are:</p>
+      <ul>
+        <li>Database that stores user account information </li>
+        <li>Data structures (e.g. Java class) that represent user accounts </li>
+        <li>Routines that handle user login </li>
+        <li>Routines that retrieve and update user account information</li>
+      </ul>
+    </li>
+    <li>
+      <p>
+        <strong>Verify your application has a lockout policy. </strong>An account lockout policy is typically application specific. Review your application's requirements and design specifications. Check for the following functionality:</p>
+      <ul>
+        <li>A mechanism for determining user inactivity </li>
+        <li>A mechanism for locking inactive accounts </li>
+        <li>A mechanism for unlocking disabled accounts </li>
+        <li>Verify that the last-login timestamp is reset to the current timestamp upon a successful authentication attempt</li>
+      </ul>
+    </li>
+    <li>
+      <p>
+        <strong>Verify the lockout policy is enforced by default. </strong>Make sure the functionality that enforces the lockout policy is enabled by default during deployment. </p>
+      <ul>
+        <li>Ensure that only users with administrative privileges can amend your application's lockout policy. </li>
+        <li>Verify that all instances of modifying the lockout policy are logged. </li>
+        <li>Check the following locations in the code to determine if the lockout policy is fully enforced: <ul><li>Account administration routines </li><li>Background database processes that perform user account maintenance </li><li>Authentication routines</li></ul></li>
+      </ul>
+    </li>
+  </ol>
+  <h1>How to Fix</h1>
+  <p>Use the following steps when locking inactive user accounts:</p>
+  <ol>
+    <li>
+      <p>
+        <strong>Set a lockout policy. </strong>Create the application's lockout policy. Determine the necessary duration of inactivity before an account can be locked/disabled. This policy can vary depending on whether the account is of a normal user or an administrator. For example, disable normal accounts after 45 days of inactivity and administrative accounts after 30 days of inactivity.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Keep track of user inactivity. </strong>Establish a mechanism to keep track of the last successful authentication. Successful authentication can be tracked via logs or a timestamp, which resides in the user database. Example: </p>
+      <pre>sql&gt; select username, last_login_date from users;<br />+----------+-----------------+<br />| username | last_login_date |<br />+----------+-----------------+<br />| adam     |      2006-10-11 |<br />| sue      |      2006-10-11 |<br />| jim      |      2006-10-01 |<br />| richard  |      2006-10-01 |<br />| julie    |      2006-09-23 |<br />| sam      |      2006-06-23 |<br />+----------+-----------------+</pre>
+    </li>
+    <li>
+      <p>
+        <strong>Set a lockout mechanism. </strong>Establish a mechanism to verify the current period of inactivity and automatically set the disabled bit for inactive accounts. Using the application or database server's scheduler, activate such functionality to run during the hours with least user activity. Keep in mind that inactive accounts should be disabled, but not removed until it is confirmed that they should be completely removed. Create a log entry when an account has been disabled.</p>
+      <p>For example, the following database transaction would lock all user accounts that have been inactive for more than 30 days. Such transactions should be scheduled to run once a day:</p>
+      <pre>sql&gt; update users set locked = 1<br />      where (current_date - 30) &gt; last_login_date</pre>
+      <p>
+        <strong>Note:</strong> The statement above uses Oracle syntax. Please consult your database manual if you use a&amp;nbsp;different database engine.</p>
+    </li>
+  </ol>
+  <h1>Problem Example</h1>
+  <p>The following segment illustrates the user database of a multi-user application. In its current state, the application logs the last time the user has logged in but does not enforce a lockout policy for its inactive users; therefore, an attacker can gain unauthorized access to the application by compromising an inactive account.</p>
+  <pre>sql&gt; select username, locked, last_login_date from users;<br />+----------+--------+-----------------+<br />| username | locked | last_login_date |<br />+----------+--------+-----------------+<br />| adam     |      0 |      2006-10-11 |<br />| sue      |      0 |      2006-10-11 |<br />| jim      |      0 |      2006-10-01 |<br />| richard  |      0 |      2006-10-01 |<br />| julie    |      0 |      2006-09-23 |<br />| sam      |      0 |      2006-06-23 |<br />+----------+--------+-----------------+</pre>
+  <h1>Solution Example</h1>
+  <p>The following segment illustrates the user database of a multi-user application. Because the application enforces a lockout policy, all of its inactive users have been locked and denied access to the application. Therefore, an attacker cannot compromise the application through its inactive users.</p>
+  <pre>sql&gt; select username, locked, last_login_date from users;<br />+----------+--------+-----------------+<br />| username | locked | last_login_date |<br />+----------+--------+-----------------+<br />| adam     |      0 |      2006-10-11 |<br />| sue      |      0 |      2006-10-11 |<br />| jim      |      0 |      2006-10-01 |<br />| richard  |      0 |      2006-10-01 |<br />| julie    |      0 |      2006-09-23 |<br />| sam      |      1 |      2006-06-23 |<br />+----------+--------+-----------------+</pre>]]></Data>
+  </Content>
+</TeamMentor_Article>

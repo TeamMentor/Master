@@ -1,0 +1,262 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-1355003207" Content_Hash="-441246089">
+  <Metadata>
+    <Id>a2511b7b-71ce-4d38-b4d5-5f877aaeb13d</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>How to Use Role Manager in ASP.NET</Title>
+    <Category>Authorization</Category>
+    <Phase>Implementation</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>How To</Type>
+    <DirectLink>How to Use Role Manager in ASP.NET</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>Applies to</h1>
+  <ul>
+    <li>Microsoft Windows Server 2003 operating system or later&amp;nbsp;operating system</li>
+    <li>Microsoft Windows XP Professional Service Pack 1 or later operating system </li>
+  </ul>
+  <h1>Summary</h1>
+  <p>This How to shows you how to use the ASP.NET role manager. The role manager eases the task of managing roles and performing role-based authorization in your application. It shows how to configure the various role providers for use with your Web application, how to create new roles, how to add a user to a role, and how to use the role management API for roles-based authorization.</p>
+  <h1>Contents</h1>
+  <ul>
+    <li>
+      <div>Objectives</div>
+    </li>
+    <li>
+      <div>Overview</div>
+    </li>
+    <li>
+      <div>Summary of Steps</div>
+    </li>
+    <li>
+      <div>Step 1. Configure Your Role Store</div>
+    </li>
+    <li>
+      <div>Step 2. Configure Your Role Provider in Web.config</div>
+    </li>
+    <li>
+      <div>Step 3. Create and Assign Roles</div>
+    </li>
+    <li>
+      <div>Step 4. Perform Role-Based Authorization</div>
+    </li>
+    <li>
+      <div>Additional Considerations</div>
+    </li>
+    <li>
+      <div>Additional Resources</div>
+    </li>
+  </ul>
+  <h1>Objectives</h1>
+  <ul>
+    <li>Configure an ASP.NET Web application to use role management. </li>
+    <li>Learn how to configure the <strong>SqlRoleProvider</strong>, <strong>WindowsTokenRoleProvider</strong>, and <strong>AuthorizationStoreRoleProvider</strong>. </li>
+    <li>Create and assign roles by using ASP.NET configuration tools, SQL scripts, and the role management APIs. </li>
+    <li>Perform role based authorization in an ASP.NET Web application. </li>
+  </ul>
+  <h1>Overview</h1>
+  <p>ASP.NET&amp;nbsp;includes a role manager feature that includes a roles management API that allows you to create and delete roles and assign and remove users from roles. The role manager stores its data in an underlying data store that it accesses through an appropriate role provider for that data store.</p>
+  <p>The main benefits of using role manager are that it allows you to look up users' roles without writing and maintaining code. Additionally, the role providers offer a consistent way for you to check the role membership of your users, regardless of the underlying data store. Therefore, if your role store were to change tomorrow, you would only need to change the configuration settings to make your code work.</p>
+  <p>Supplied role providers include: </p>
+  <ul>
+    <li>
+      <strong>SqlRoleProvider.</strong> This is used where the role store is kept in SQL Server. </li>
+    <li>
+      <strong>WindowsTokenRoleProvider.</strong> This is a read-only provider that retrieves role information for a Windows user account based on the account's Windows security group membership. You cannot create, add to, or delete roles with this provider. </li>
+    <li>
+      <strong>AuthorizationStoreRoleProvider.</strong> This is used if your application uses Authorization Manager (AzMan). It uses an AzMan policy store in an XML file, in Active Directory, or in Active Directory Application Mode (ADAM) as its role store. It is typically used in an intranet or extranet scenario where Windows authentication and Active Directory is used for authentication. </li>
+  </ul>
+  <p>To perform role management, your ASP.NET application must be able to identify and authenticate its users in some way. For example, it might use Windows authentication or Forms authentication.</p>
+  <p>This How to shows you how to set up and configure a role store and a role provider and use role-based authorization in your ASP.NET applications. Additionally, it demonstrates some of the basic roles API calls available to work with roles programmatically.</p>
+  <h1>Summary of Steps</h1>
+  <p>To use the role manager in your application, perform the following steps: </p>
+  <ul>
+    <li>Step 1. Configure your role store. </li>
+    <li>Step 2. Configure your role provider in Web.config. </li>
+    <li>Step 3. Create and assign roles. </li>
+    <li>Step 4. Perform role-based authorization. </li>
+  </ul>
+  <h1>Step 1. Configure Your Role Store </h1>
+  <p>In this step, you prepare the role store used to maintain role details. The setup details vary according to the store and associated provider that you choose to use.</p>
+  <h2>Using SqlRoleProvider</h2>
+  <p>If you want to store roles in SQL Server, you use the <strong>SqlRoleProvider</strong>. By default, roles are stored in a database named Aspnetdb in a SQL Express database instance in the \app_data folder beneath your application's virtual directory root folder. You can also configure the <strong>SqlRoleProvider</strong> to use a local or remote instance of SQL Server.</p>
+  <h3>To use a SQL Express database role store in the Website \app_data folder</h3>
+  <p>You do not have to create or configure this database. The first time you perform an operation that uses the role management API, ASP.NET automatically creates a database named Aspnetdb, configures it, and sets appropriate permissions on it. </p>
+  <p>ASP.NET configures the SQL Express database with a database login for the default accounts used to run ASP.NET applications (Network Service on Windows Server 2003 or later&amp;nbsp;and ASPNET on Windows 2000) and grants them full access to the Aspnetdb database. </p>
+  <p>If you have configured ASP.NET to run using a custom service account, you must create a SQL login for that account, and add the login to the <strong>aspnet_Roles_FullAccess</strong> role in the Aspnetdb database. </p>
+  <p>
+    <strong>To install the role management database in SQL Server</strong>
+  </p>
+  <ol>
+    <li>Log on to Windows using an account that has administration rights for your SQL Server instance. </li>
+    <li>Open a command prompt window and execute the following command to install the role management database. <p><strong>Aspnet_regsql.exe</strong>-<strong>E</strong>-<strong>S</strong><em>sqlinstance</em>-<strong>A r</strong></p><p>Note that this program is located in the <strong>%windir%\Microsoft.NET\Framework\{version}</strong> folder. </p><p>When you type the command, replace <em>version</em> with the version of the .NET Framework that you are using and <em>sqlinstance</em> with the name of the SQL Server instance you want to install the role management database in. </p><p>You will see the following output: </p><div><pre>Start adding the following features:<br />Rolemanager<br />............<br />Finished.  </pre></div><blockquote><strong>Note</strong>&amp;nbsp;&amp;nbsp;&amp;nbsp;For information about the switches for Aspnet_regsql.exe, type <strong>Aspnet_regsql.exe -?</strong> at the command prompt.</blockquote></li>
+  </ol>
+  <p>
+    <strong>To grant permissions in the database</strong>
+  </p>
+  <p>You need to create a database login for your Web application's process account; by default, this is the Network Service account. If you have configured a custom account to run ASP.NET, you must grant permissions to that account. </p>
+  <blockquote>
+    <strong>Note</strong>&amp;nbsp;&amp;nbsp;&amp;nbsp;If you have configured your ASP.NET application to use impersonation, your ASP.NET application executes using the security context of the original caller. To access data in a SQL Server database, you must usually create a database login for the original caller and grant access to the required data.</blockquote>
+  <blockquote>However, the role management system accesses the Aspnetdb database by using the process identity regardless of whether your application uses impersonation. </blockquote>
+  <ol>
+    <li>Open SQL Server Enterprise Manager, expand <strong>Security</strong>, and then expand <strong>Logins</strong> for the server hosting the role management database. Create a new login for your Web application's process account (for example, <strong>NT AUTHORITY/Network Service</strong>). </li>
+    <li>Set the default database to <strong>Aspnetdb</strong>. </li>
+    <li>Under the <strong>Databases</strong> node in Enterprise Manager, expand the <strong>Aspnetdb</strong> database entry, and then click <strong>Roles</strong>. Right-click <strong>aspnet_Roles_FullAccess</strong>, and then click <strong>Properties</strong>. In the <strong>Database Role Properties</strong> dialog box, click <strong>Add</strong>, and then select the database login you created in the previous step to add the login to that role. <blockquote><strong>Note</strong>&amp;nbsp;&amp;nbsp;&amp;nbsp;Aspnet_regsql.exe creates three database roles with differing levels of access to the role management database: </blockquote><ul><li><strong>FullAccess</strong> gives rights to create and delete roles, and add and remove users from those roles. </li><li><strong>BasicAccess</strong> allows role membership checks for the current user only. </li><li><strong>ReportingAccess</strong> allows a page to check which roles exist and which users belong to them. </li></ul></li>
+  </ol>
+  <h2>Using WindowsTokenRoleProvider</h2>
+  <p>You use the <strong>WindowsTokenRoleProvider</strong> with ASP.NET applications that use Windows authentication. It is a read-only provider that retrieves role information for a Windows user based on Windows security groups. You cannot create, add to, or delete roles with this provider. Instead, you must use the Windows Computer Management or Active Directory Users and Computers administration tools.</p>
+  <p>The Windows security system acts as role store for this provider, so no additional configuration is required to set up the role store.</p>
+  <h2>Using AuthorizationStoreRoleProvider</h2>
+  <p>Use the <strong>AuthorizationStoreRoleProvider</strong> to store roles data in an AzMan policy store in an XML file, in Active Directory, or ADAM. </p>
+  <p>AzMan is supported on Windows 2000 Server or later and on Windows XP Professional.&amp;nbsp; </p>
+  <h1>Step 2. Configure Your Role Provider in Web.config</h1>
+  <p>In this step, you configure the appropriate role provider in your application's Web.config file.</p>
+  <h2>Using SqlRoleProvider</h2>
+  <p>To use the role store in the default SQL Express instance in a database in your Web site's \app_dir folder, add the following configuration to your application's Web.config file.</p>
+  <div>
+    <pre>&lt;system.web&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;roleManager enabled="true" /&gt;<br />&lt;/system.web&gt;  </pre>
+  </div>
+  <p>This configuration enables role management and causes your application to use the default provider named <strong>AspNetSqlRoleProvider</strong> defined in the Machine.config file. This uses the local SQL Express instance.</p>
+  <p>To use a role store in SQL Server, add a connection string to point to your role database and add a role provider definition in the Web.config file, as shown here.</p>
+  <div>
+    <pre>&lt;configuration&gt;<br />&amp;nbsp; &lt;connectionStrings&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;add name="SqlRoleManagerConnection" <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; connectionString="Data Source=sqlinstance;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Initial Catalog=aspnetdb;Integrated Security=SSPI;"&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;/add&gt;<br />&amp;nbsp; &lt;/connectionStrings&gt;<br />&lt;/configuration&gt;</pre>
+  </div>
+  <pre>&lt;roleManager enabled="true" defaultProvider="SqlRoleManager"&gt;<br />&amp;nbsp; &lt;providers&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;add name="SqlRoleManager" <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; type="System.Web.Security.SqlRoleProvider"<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; connectionStringName="SqlRoleManagerConnection"<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; applicationName="MyApplication" /&gt;<br />&amp;nbsp; &lt;/providers&gt;<br />&lt;/roleManager&gt;</pre>
+  <h2>Using WindowsTokenRoleProvider</h2>
+  <p>The Windows security system acts as role store for this provider, and Windows groups represent roles. You can use this provider when you use Windows authentication. To do this, add the following configuration to your application's Web.config file.</p>
+  <div>
+    <pre>&lt;authentication mode="Windows" /&gt;<br />&lt;roleManager enabled="true" <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; defaultProvider="AspNetWindowsTokenRoleProvider" /&gt;  </pre>
+  </div>
+  <p>This configuration enables role management and uses the role provider named <strong>AspNetWindowsTokenRoleProvider</strong>, which is defined in the Machine.config file.</p>
+  <h2>Using AuthorizationStoreRoleProvider</h2>
+  <p>The <strong>AuthorizationStoreRoleProvider</strong> is used to store roles data in an AzMan policy store in an XML file, in Active Directory, or in ADAM. To configure this provider, add a connection string to point to the relevant policy store and then add a role provider definition in the Web.config file.</p>
+  <p>The following connection string refers to an XML-based policy store contained in a file named Azmanstore.xml.</p>
+  <div>
+    <pre>&lt;configuration&gt; <br />&amp;nbsp; &lt;connectionStrings&gt; <br />&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;add name="AzManPolicyStoreConnectionString" <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; connectionString="msxml://c:/RolesData/azmanstore.xml" /&gt;<br />&amp;nbsp; &lt;/connectionStrings&gt; <br />&lt;/configuration&gt;  </pre>
+  </div>
+  <p>The following connection string refers to an ADAM-based policy store.</p>
+  <div>
+    <pre>&lt;configuration&gt; <br />&amp;nbsp; &lt;connectionStrings&gt; <br />&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;add name="AzManPolicyStoreConnectionString" <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; connectionString= "msldap://servername:port/CN=AzManADAMStore,<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; OU=SecNetPartition,O=SecNet,C=US"/&gt;<br />&amp;nbsp; &lt;/connectionStrings&gt; <br />&lt;/configuration&gt;  </pre>
+  </div>
+  <p>The following configuration shows how to enable role management and use the provider named <strong>RoleManagerAzManADAMProvider</strong>. This uses the connection string shown earlier to connect to an ADAM policy store.</p>
+  <div>
+    <pre>&lt;roleManager <br />&amp;nbsp;&amp;nbsp;&amp;nbsp; enabled="true" <br />&amp;nbsp;&amp;nbsp;&amp;nbsp; cacheRolesInCookie="true" <br />&amp;nbsp;&amp;nbsp;&amp;nbsp; defaultProvider="RoleManagerAzManADAMProvider"<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; cookieName=".ASPXROLES" <br />&amp;nbsp;&amp;nbsp;&amp;nbsp; cookiePath="/" <br />&amp;nbsp;&amp;nbsp;&amp;nbsp; cookieTimeout="30" <br />&amp;nbsp;&amp;nbsp;&amp;nbsp; cookieRequireSSL="false" <br />&amp;nbsp;&amp;nbsp;&amp;nbsp; cookieSlidingExpiration="true"<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; createPersistentCookie="false" <br />&amp;nbsp;&amp;nbsp;&amp;nbsp; cookieProtection="All"&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;providers&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;add name="RoleManagerAzManADAMProvider"<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; type="System.Web.Security.AuthorizationStoreRoleProvider, System.Web,<br />     Version=3.5.0.0, Culture=neutral, publicKeyToken=b03f5f7f11d50a3a"<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; connectionStringName="AzManPolicyStoreConnectionString" <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; applicationName="AzManDemo"/&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;/providers&gt;<br />&lt;/roleManager&gt;  </pre>
+  </div>
+  <h1>Step 3. Create and Assign Roles</h1>
+  <p>In this step, you create roles for your application and assign users to those roles. There are several methods you can use to create and assign roles. Using them depends on how your application authenticates its users and which role provider it uses. The various methods for creating and assigning users to roles include: </p>
+  <ul>
+    <li>At development time, you can use the ASP.NET configuration tool. </li>
+    <li>If you are using the <strong>AuthorizationStoreRoleProvider</strong>, you can use the AzMan administrator Microsoft Management Console (MMC) snap-in. </li>
+    <li>You can create roles programmatically by using either the role management APIs or, if you are using the <strong>SqlRoleProvider</strong>, by executing SQL scripts to add them to the database directly. </li>
+    <li>If you are using the <strong>WindowsTokenRoleProvider</strong>, you use the Windows Computer Management tool or Active Directory Users and Computers to create Windows groups which are used as roles. </li>
+  </ul>
+  <h2>Using the ASP.NET Web Site Configuration Tool</h2>
+  <p>You can use the ASP.NET Web Site Configuration tool from Visual Studio .NET at development time if your application uses Forms authentication and you have configured your application to use the ASP.NET membership feature. If your application uses Windows authentication, you cannot use this tool and you must use either the Roles API or the AzMan administrator MMC snap-in as described in the next section. </p>
+  <h3>To assign users to roles by using the ASP.NET Web Site Configuration tool </h3>
+  <ol>
+    <li>Create roles by using the ASP.NET configuration tool by performing the following steps: <ol><li>Start Visual Studio. </li><li>On the <strong>Website</strong> menu, click <strong>ASP.NET Configuration</strong>. </li><li>On the <strong>Home</strong> tab, click <strong>Security</strong>. </li><li>Click <strong>Create or</strong><strong>Manage Roles</strong>. </li><li>Use the form to add your application roles. </li></ol></li>
+    <li>Assign users to roles as follows: <ol><li>In Visual Studio .NET, click <strong>ASP.NET Configuration </strong>on the <strong>Website</strong> menu. </li><li>On the <strong>Home</strong> tab, click <strong>Security</strong>. </li><li>Click <strong>Create or</strong><strong>Manage Roles</strong>. </li><li>In the <strong>Add/Remove Users</strong> column, click <strong>Manage</strong> for a role you have created. This opens a form where you can add or remove users from the role. </li></ol></li>
+  </ol>
+  <h2>Using the AzMan Administrator MMC Snap-In</h2>
+  <p>This tool is provided for applications that use an AzMan store to manage its users and roles. It is particularly convenient for applications using Windows authentication that cannot use the ASP.NET configuration tool to assign users to roles. </p>
+  <h2>Using SQL Scripts</h2>
+  <p>If you have suitable permissions on the role management database, you can run a SQL script to call the various stored procedures provided with the Aspnetdb database. For example, the following script creates a new role in an application and adds a user to it.</p>
+  <div>
+    <pre>EXEC aspnet_Roles_CreateRole 'ThisApplication', 'NewRole'<br />EXEC aspnet_UsersInRoles_AddUsersToRoles 'ThisApplication', 'ThisUser', 'NewRole', 8  </pre>
+  </div>
+  <p>There are 19 role-managing stored procedures created inside the role management database. Most of these stored procedures have purposes analogous to calls in the role management API. </p>
+  <h2>Using the Role Management APIs</h2>
+  <p>You can assign users to roles or remove users from roles by using methods of the <strong>System.Web.Security.Roles</strong> class. You can also check for the user's role membership and authorize as appropriate.</p>
+  <blockquote>
+    <strong>Note</strong>&amp;nbsp;&amp;nbsp;&amp;nbsp;Because the <strong>WindowsTokenRoleProvider</strong> is read-only, it supports only the <strong>IsUserInRole</strong> and <strong>GetRolesForUser </strong>methods.<strong></strong></blockquote>
+  <p>The following code shows how to create new roles.</p>
+  <div>
+    <pre>using System.Web.Security;</pre>
+    <pre>if (!Roles.RoleExists("TestRole"))<br />{<br />&amp;nbsp; Roles.CreateRole("TestRole");<br />}  </pre>
+  </div>
+  <blockquote>
+    <strong>Note</strong>&amp;nbsp;&amp;nbsp;&amp;nbsp;Role names are not case sensitive. If you attempt to create the same role twice, an exception is thrown.</blockquote>
+  <p>The following code shows how to add users to roles.</p>
+  <div>
+    <pre>// Example 1 - Add one user to one role<br />Roles.AddUserToRole("TestOne", "ExampleRole1");</pre>
+    <pre>// Example 2 - Add one user to several roles<br />Roles.AddUserToRoles("TestTwo", <br />&amp;nbsp; new string[] { "ExampleRole1", "ExampleRole2" });</pre>
+    <pre>// Example 3 - Add several users to one roles<br />Roles.AddUsersToRole(<br />&amp;nbsp; new string[] { "TestTwo", "TestThree" }, "ExampleRole3");</pre>
+    <pre>// Example 4 - Add several users to several roles<br />Roles.AddUsersToRoles(<br />&amp;nbsp; new string[] { "TestThree", "TestFour" }, <br />&amp;nbsp; new string[] { "ExampleRole4" }); </pre>
+  </div>
+  <p>The following code shows how to remove users from roles.</p>
+  <div>
+    <pre>// Example 1 - Add one user to one role<br />Roles.RemoveUserFromRole("TestOne", "ExampleRole1");</pre>
+    <pre>// Example 2 - Add one user to several roles<br />Roles.RemoveUserFromRoles("TestTwo", <br />&amp;nbsp; new string[] { "ExampleRole1", "ExampleRole2" });</pre>
+    <pre>// Example 3 - Add several users to one roles<br />Roles.RemoveUsersFromRole(<br />&amp;nbsp; new string[] { "TestTwo", "TestThree" }, "ExampleRole3");</pre>
+    <pre>// Example 4 - Add several users to several roles<br />Roles.RemoveUsersFromRoles(<br />&amp;nbsp; new string[] { "TestThree", "TestFour" }, <br />&amp;nbsp; new string[] { "ExampleRole4" }); </pre>
+  </div>
+  <blockquote>
+    <strong>Note</strong>&amp;nbsp;&amp;nbsp;&amp;nbsp;Both the <strong>AddUser</strong> and <strong>RemoveUser</strong> methods throw a <strong>TargetInvocationException</strong> if you specify a role that does not exist or if you specify an invalid Windows user account name. The inner exception gives the reason for the failure. None of the methods mentioned earlier can be used against a <strong>WindowsTokenRoleProvider</strong>.</blockquote>
+  <h1>Step 4. Perform Role-Based Authorization </h1>
+  <p>In this step, you create test applications that use role management. This step provides two samples: </p>
+  <ul>
+    <li>The first sample uses the <strong>SqlRoleProvider</strong> or <strong>AuthorizationStoreRoleProvider</strong>, in which the application assigns a role to a user, removes a role from a user, and tests for role membership. </li>
+    <li>The second sample uses the <strong>WindowsTokenRoleProvider</strong> to check which Windows groups (roles) the current user is a member of. The <strong>WindowsTokenRoleProvider</strong> supports only the<strong> IsUserInRole </strong>and <strong>GetRolesForUser </strong>methods of the role management API, and it does not allow you to create, assign to, or remove users from Windows groups. </li>
+  </ul>
+  <p>Both of these sample applications use Integrated Windows authentication in Microsoft Internet Information Services (IIS) to authenticate callers. This is a requirement when using the <strong>WindowsTokenRoleProvider</strong>, but if you are using the <strong>SqlRoleProvider</strong> or <strong>AuthorizationStoreRoleProvider</strong>, you could use alternative authentication such as forms authentication.</p>
+  <h2>Sample: Using SqlRoleProvider or AuthorizationStoreRoleProvider</h2>
+  <p>This sample uses the <strong>SqlRoleProvider</strong> or <strong>AuthorizationStoreRoleProvider</strong>.</p>
+  <h3>To test role management with SqlRoleProvider or AuthorizationStoreRoleProvider </h3>
+  <ol>
+    <li>Use Visual Studio to create a Web site, add a Web.config file, and configure the role store and <strong>SqlRoleProvider</strong> or <strong>AuthorizationStoreRoleProvider</strong> as described in steps 1 and 2 of this How to. </li>
+    <li>Using the Internet Information Services MMC snap-in, edit the properties of the Web site. Edit the <strong>Anonymous access and authentication control</strong> on the <strong>Directory</strong><strong>security</strong> tab. Clear the <strong>Anonymous access</strong> check box and select the <strong>Integrated Windows authentication</strong> check box. </li>
+    <li>In the Web.config file, enable Windows authentication. <div><pre>&lt;system.web&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; ...<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;authentication mode="Windows"/&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; ...<br />&lt;/system.web&gt;  </pre></div></li>
+    <li>Add the following code to the Default.aspx file. <div><pre>&lt;%@ Page Language="C#" %&gt;<br />&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "<a href="http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd</a>"&gt;<br />&lt;script runat="server"&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; protected void Page_Load(object sender, EventArgs e)<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; {<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; if (!Roles.RoleExists("TestRole"))<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; {<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Roles.CreateRole("TestRole");<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; }<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ShowRoleMembership();<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; }<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; private void ShowRoleMembership()<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; {<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; if (Roles.IsUserInRole("TestRole"))<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; {<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Label1.Text = User.Identity.Name + " is in role TestRole";<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; }<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; else<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; {<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Label1.Text = User.Identity.Name + " is NOT in role TestRole";<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; }<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; }<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; protected void Button1_Click(object sender, EventArgs e)<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; {<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Roles.AddUserToRole(User.Identity.Name, "TestRole");<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ShowRoleMembership();<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; }<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; protected void Button2_Click(object sender, EventArgs e)<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; {<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Roles.RemoveUserFromRole(User.Identity.Name, "TestRole");<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ShowRoleMembership();<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; }<br />&lt;/script&gt;<br />&lt;html&amp;nbsp; &gt;<br />&lt;head runat="server"&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;title&gt;Untitled Page&lt;/title&gt;<br />&lt;/head&gt;<br />&lt;body&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;form id="form1" runat="server"&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;div&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;asp:Button ID="Button1" runat="server" Text="Add to role" <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; OnClick="Button1_Click" /&gt;&lt;br /&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;br /&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;asp:Button ID="Button2" runat="server" Text="Remove from role" <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; OnClick="Button2_Click" /&gt;&lt;br /&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;br /&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;asp:Label ID="Label1" runat="server" /&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;/div&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;/form&gt;<br />&lt;/body&gt;<br />&lt;/html  </pre></div></li>
+    <li>Run the application. Note the following features about this application: <ol><li>When you browse to the application, the code in the <strong>Page_Load</strong> event handler creates the role <strong>TestRole</strong> if it does not already exist. <ul><li>The text of <strong>Label1</strong> shows whether the current authenticated user is a member of the <strong>TestRole</strong> role. </li><li>When you click the <strong>Add to role</strong> button, the code in the <strong>Button1_Click</strong> event handler uses the role management API to add the current authenticated user to the <strong>TestRole</strong> role. </li><li>If you click the <strong>Add to role</strong> button again before clicking the <strong>Remove from role</strong> button, the call to <strong>Roles.AddUserToRole</strong> throws an exception because the user is already in the role <strong>TestUser</strong>. You must code for this condition in your applications. </li><li>When you click the <strong>Remove from role</strong> button, the current authenticated user is removed from the role <strong>TestRole</strong>. </li><li>If you click the <strong>Remove from role</strong> button again before clicking the <strong>Add to role</strong> button, the call to <strong>Roles.RemoveUserFromRole</strong> throws an exception because the user is already not in the role <strong>TestUser</strong> and cannot be removed twice. You must code for this condition in your applications. </li></ul></li></ol></li>
+  </ol>
+  <p>
+    <strong>To control access to pages and folders using roles</strong>
+  </p>
+  <p>A typical use for roles is to establish rules that allow or deny access to pages or folders. You can set up such access rules in the &lt;<strong>authorization</strong>&gt; section of the Web.config file. The following example allows users in the role of members to view pages in the folder named <strong>memberPages</strong> and denies access to anyone else.</p>
+  <div>
+    <pre>&lt;configuration&gt;<br />&amp;nbsp;&amp;nbsp; &lt;location path="memberPages"&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;system.web&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;authorization&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;allow roles="Manager" /&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;deny users="*" /&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;/authorization&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;/system.web&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;/location&gt;<br />&amp;nbsp;&amp;nbsp; &lt;!-- other configuration settings here --&gt;<br />&lt;configuration&gt;  </pre>
+  </div>
+  <h2>Sample: Using WindowsTokenRoleProvider</h2>
+  <p>This sample uses the <strong>WindowsTokenRoleProvider</strong>.</p>
+  <h3>To test role management with WindowsTokenRoleProvider </h3>
+  <ol>
+    <li>Use Visual Studio&amp;nbsp;to create a Web site, add a Web.config file, and configure the <strong>WindowsTokenRoleProvider</strong> as described in step 2 of this How to. </li>
+    <li>Using the Internet Information Services MMC snap-in, edit the properties of the Web site. Edit the <strong>Anonymous access and authentication control</strong> on the <strong>Directory security</strong> tab. Clear the <strong>Anonymous access</strong> check box and select the <strong>Integrated Windows Authentication</strong> check box. </li>
+    <li>In the Web.config file, enable Windows authentication. <div><pre>&lt;system.web&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; ...<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;authentication mode="Windows"/&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; ...<br />&lt;/system.web&gt;  </pre></div></li>
+    <li>Add the following code to Default.aspx. <div><div><div></div></div><pre>&lt;%@ Page Language="C#" %&gt;<br />&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "<a href="http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd</a>"&gt;<br />&lt;script runat="server"&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; protected void Page_Load(object sender, EventArgs e)<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; {<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; string[] members = Roles.GetRolesForUser();<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; foreach (string role in members)<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; {<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Label1.Text += role + "&lt;br /&gt;";<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; }<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <br />&amp;nbsp;&amp;nbsp;&amp;nbsp; } <br />&lt;/script&gt;<br />&lt;html&amp;nbsp; &gt;<br />&lt;head runat="server"&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;title&gt;Untitled Page&lt;/title&gt;<br />&lt;/head&gt;<br />&lt;body&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;form id="form1" runat="server"&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;div&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;asp:Label ID="Label1" runat="server" /&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;/div&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;/form&gt;<br />&lt;/body&gt;<br />&lt;/html&gt;  </pre></div></li>
+    <li>Run the application. A list of roles that correspond to the Windows groups that the authenticated user is a member of is displayed. Note the following features about this application: <ol><li>Because <strong>WindowsTokenRoleProvider</strong> is read-only, you cannot create, assign to, or remove users from roles. The <strong>WindowsTokenRoleProvider</strong> supports only the <strong>IsUserInRole </strong>and <strong>GetRolesForUser</strong> methods of the role management API. </li></ol></li>
+  </ol>
+  <ul>
+    <li>The text of <strong>Label1</strong> shows which Windows groups the currently logged on user is a member of. </li>
+    <li>The <strong>WindowsPrincipal </strong>class supports an override of the <strong>IsInRole</strong> method that accepts a <strong>WindowsBuiltinRole</strong> enumeration. This method allows you to test against membership of common Windows groups. The <strong>WindowsBuiltInRole</strong> enumeration contains members representing common groups such as Administrators, Guest, PowerUser, and User as shown here. <div><div><div></div><div>&amp;nbsp;</div></div><pre>WindowsPrincipal User = new <br />&amp;nbsp; WindowsPrincipal((WindowsIdentity)HttpContext.Current.User.Identity);<br />if (User.IsInRole(WindowsBuiltInRole.PowerUser))<br />{<br />&amp;nbsp; ...<br />}  </pre></div></li>
+  </ul>
+  <p>
+    <strong>To control access to pages and folders using built-in roles with the WindowsTokenRoleProvider</strong>
+  </p>
+  <p>You can control access to pages or folders to members of one of the built-in Windows groups by specifying the role in the format <strong>BUILTIN\<em>groupName</em></strong>. The following example allows users in the built-in administrators group to view pages in the folder named memberPages and denies access to anyone else.</p>
+  <div>
+    <pre>&lt;configuration&gt;<br />&amp;nbsp;&amp;nbsp; &lt;location path="memberPages"&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;system.web&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;authorization&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;allow roles="BUILTIN\Administrators" /&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;deny users="*" /&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;/authorization&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;/system.web&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;/location&gt;<br />&amp;nbsp;&amp;nbsp; &lt;!-- other configuration settings here --&gt;<br />&lt;/configuration  </pre>
+  </div>
+  <h1>Additional Considerations</h1>
+  <p>If a user's browser accepts cookies, you can store role information for that user in a cookie on the user's computer. On each page request, ASP.NET reads the role information for that user from the cookie. This can improve application performance by reducing the amount of communication required with the roles data store. </p>
+  <p>To configure and enable role caching, set <strong>cacheRolesInCookie = true</strong> as shown here.</p>
+  <div>
+    <pre>&lt;roleManager enabled="true" <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; cacheRolesInCookie="true" <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; cookieName=".ASPXROLES"&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; cookieTimeout="30" <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; cookiePath="/" <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; cookieRequireSSL="false" <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; cookieSlidingExpiration="true"&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; cookieProtection="All" <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; defaultProvider="AspNetSqlRoleProvider"&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; createPersistentCookie="false" <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; maxCachedResults="25"/&gt;  </pre>
+  </div>
+  <p>If the role information for a user is too long to store in a cookie, ASP.NET stores only the most recently used role information in the cookie, and then it looks up additional role information in the data source as required. </p>
+  <p>To secure the role cookie: </p>
+  <ul>
+    <li>Set <strong>cookieRequireSSL</strong> to <strong>true</strong> to ensure the cookie is only used over an SSL protected channel. </li>
+    <li>Set <strong>createPersistentCookie</strong> to <strong>false</strong> to prevent the cookie from being stored on the client computer, in which case the cookie is only used to protect the current session. </li>
+    <li>Set <strong>cookieTimeout</strong> to the number of minutes for which the cookie is valid.</li>
+  </ul>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance.</p>]]></Data>
+  </Content>
+</TeamMentor_Article>

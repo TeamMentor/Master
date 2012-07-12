@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-1117185868" Content_Hash="-69504881">
+  <Metadata>
+    <Id>cfb27b01-2baa-476e-8d80-207548c6facc</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Do Not Rely on Client-Side Validation</Title>
+    <Category>Input and Data Validation</Category>
+    <Phase>Design</Phase>
+    <Technology>Java</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Do Not Rely on Client-Side Validation</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Do</h1>
+  <p>Avoid placing the validation procedures only on the client side. All input should be validated server side.</p>
+  <h1>Why</h1>
+  <p>Client-side validation is executed by the client and can be easily bypassed. Client-side validation is a major design problem when it appears in web applications. It places trust in the browser, an entity that should never be trusted.</p>
+  <h1>When</h1>
+  <p>If your application accepts input from the client, always validate for length, range and type on the server.</p>
+  <h1>How</h1>
+  <p>Client-side validation should only be used to improve user experience, never for security purposes. A client-side input validation check can improve application performance by catching malformed input on the client and, therefore, saving a roundtrip to the server. However, client side validation can be easily bypassed and should never be used for security purposes. Always use server-side validation to protect your application from malicious attacks.</p>
+  <p>Use the following steps when developing client side validation: </p>
+  <ol>
+    <li>
+      <p>
+        <strong>Never trust the browser.</strong> Because the browser is running on the user's machine, it can be fully controlled by the user. Therefore, any client-side validation code can be controlled and bypassed by an attacker.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Use JavaScript only to enhance your pages.</strong> JavaScript is useful for enhancing your application's presentation. However, it has no mechanism to protect the integrity of its code. Do not rely on JavaScript to enforce security decisions. </p>
+    </li>
+    <li>
+      <p>
+        <strong>Place a server-side validator for all input. </strong>Input validation should be executed on the server side. Use the following steps to properly set the validation routines: </p>
+      <ul>
+        <li>
+          <p>
+            <strong>Identify input.</strong> Determine the data that is to be passed from the client to your application. Input can take the following forms on the client-side:</p>
+          <ul>
+            <li>URL-based parameters </li>
+            <li>Form-based parameters </li>
+            <li>Hidden fields </li>
+            <li>Cookies</li>
+          </ul>
+        </li>
+        <li>
+          <p>
+            <strong>Understand the input.</strong> Understand the use and constraints associated with each input. Be clear how each input is used. Define the format and type of each input. Build a server-side validator for each format and type of expected input.</p>
+        </li>
+        <li>
+          <p>
+            <strong>Create a set of validators.</strong> Build a validator for each type of input. Place the set of validators on the server-side of your application. If there are validators on the client-side, make sure the same validators are implemented on the server-side as well.</p>
+        </li>
+      </ul>
+      <p>Once developed, it is important to place the validation routines at your application's trust boundary. Because your application's trust boundary extends only to your application's process space, the user's browser should not be considered&amp;nbsp;a part of your application's trust boundary.</p>
+      <p>Example of correctly set validation:</p>
+      <blockquote>
+        <pre>&lt;%-- Filename: sample.jsp --%&gt;<br />&lt;%boolean validateJSP(String input)<br />{<br />      // Validation routine<br />}<br />String idx = request.getParameter("index");<br />if(idx != null &amp;&amp; validateJSP(idx))<br />{<br />      ...<br />}<br />else<br />{<br />      //Display a generic error message (e.g. "Invalid query.")<br />}<br />%&gt;<br /> ...<br />&lt;form method="post" action="sample.jsp"&gt;<br />  &lt;input name="index" type="text" size="50"&gt;<br />  &lt;input name="submit" value="submit" type="submit"&gt;<br />&lt;/form&gt;</pre>
+      </blockquote>
+    </li>
+  </ol>
+  <h1>Problem Example</h1>
+  <p>The following code produces a data analysis based on a financial index. Unfortunately, the user's input is validated only on the client side via a JavaScript routine. Since there is no validation on the server, an attacker can bypass all validation and exploit cross-site scripting and SQL injection vulnerabilities.</p>
+  <blockquote>
+    <pre>&lt;!-- Filename: idv01.html --&gt;<br />&lt;html&gt;<br />  &lt;head&gt;<br />    &lt;!-- The page uses client-side validation only --&gt;<br />    &lt;script language="JavaScript"&gt;<br />&lt;!--function validate()<br />{<br />   var idx = document.forms[0].elements[0].value;<br />   var regex = new RegExp("[a-zA-Z0-9]+");<br />   var match = regex.exec(idx);<br />   var ret = false;<br />    if(idx.length &lt; 9 &amp;&amp; match != null)<br />    {<br />      ret = true;<br />    }<br />   else<br />   {<br />      alert("Invalid index!");<br />   }<br />    return ret;<br />}<br />// --&gt;<br />    &lt;/script&gt;<br />    &lt;title&gt;Query for index&lt;/title&gt;<br />  &lt;/head&gt;<br />  &lt;body&gt;<br />    &lt;!-- The application relies on client side validation --&gt;<br />    &lt;form method="post" action="/myapp/aggregate" onsubmit="return validate()"&gt;<br />      index:&amp;nbsp;&lt;input name="index" type="text" size="10"&gt;<br />      &lt;input name="submit" value="query" type="submit"&gt;<br />    &lt;/form&gt;<br />  &lt;/body&gt;<br />&lt;/html&gt;<br />// Filename: /myapp/aggregate<br />import java.io.*;<br />import java.util.*;<br />import java.lang.*;<br />import javax.servlet.*;<br />import javax.servlet.http.*;<br />import java.util.regex.*;<br /> public final class DataAggregator extends HttpServlet<br />{<br />      public void doGet(HttpServletRequest request, HttpServletResponse response)<br />            throws ServletException, IOException<br />      {<br />            PrintWriter out = response.getWriter();<br />            String searchTerm = request.getParameter("index");<br />             try<br />            {<br />                  String retString;<br />                  retString = "The queried index \"";<br />                  retString += encodeHtml(searchTerm);<br />                  retString += "\" produced the following results:&lt;br&gt; ";<br />                  out.println(retString);<br />                   // The application does not provide a server-side validation<br />                  aggregateData(out, searchTerm);<br />            }<br />             catch (Exception e)<br />            {<br />                  // Add the appropriate logging and exception handling<br />                  // mechanisms. Consult the Exception Handling and<br />                  // Logging sections<br />                  out.println("We cannot handle your request at the moment."<br />                           +  "Please try again later.");<br />            }<br />             out.flush();<br />            out.close();<br />      }<br />}</pre>
+  </blockquote>
+  <h1>Solution Example</h1>
+  <p>The following code produces a data analysis based on a financial index. Because the application uses server-side validation, it is impossible for an attacker to bypass the validation routines and exploit any cross-site scripting and/or SQL injection vulnerabilities.</p>
+  <blockquote>
+    <pre>&lt;!-- Filename: idv01.html --&gt;<br />&lt;html&gt;<br />  &lt;head&gt;<br />    &lt;!-- The page uses server-side validation only --&gt;<br />    &lt;title&gt;Query for index&lt;/title&gt;<br />  &lt;/head&gt;<br />  &lt;body&gt;<br />    &lt;!-- The application uses no client-side validation --&gt;<br />    &lt;form method="post" action="/myapp/aggregate"&gt;<br />      index:&amp;nbsp;&lt;input name="index" type="text" size="10"&gt;<br />      &lt;input name="submit" value="query" type="submit"&gt;<br />    &lt;/form&gt;<br />  &lt;/body&gt;<br />&lt;/html&gt;<br />// Filename: /myapp/aggregate<br />import java.io.*;<br />import java.util.*;<br />import java.lang.*;<br />import javax.servlet.*;<br />import javax.servlet.http.*;<br />import java.util.regex.*;<br /> public final class DataAggregator extends HttpServlet<br />{<br />      public void doGet(HttpServletRequest request, HttpServletResponse response)<br />            throws ServletException, IOException<br />      {<br />            PrintWriter out = response.getWriter();<br />            String searchTerm = request.getParameter("index");<br />             try<br />            {<br />                  // The application uses only server-side validation<br />                  if (validateSearchTerm(searchTerm))<br />                  {<br />                        String retString;<br />                        retString = "The queried index \"";<br />                        retString += encodeHtml(searchTerm);<br />                        retString += "\" produced the following results:&lt;br&gt; ";<br />                        out.println(retString);<br />                        aggregateData(out, searchTerm);<br />                  }<br />                  else<br />                  {<br />                        // Add the appropriate logging and exception handling<br />                        // mechanisms. Consult the Exception Handling and<br />                        // Logging sections<br />                        out.println("We cannot handle your request at the moment."<br />                                 +  "Please try again later.");<br />                  }<br />            }<br />            catch (Exception e)<br />            {<br />                  // Add the appropriate logging and exception handling<br />                  // mechanisms. Consult the Exception Handling and<br />                  // Logging sections<br />                  out.println("We cannot handle your request at the moment."<br />                           +  "Please try again later.");<br />            }<br />             out.flush();<br />             out.close();<br />      }<br />       boolean validateSearchTerm(String input)<br />      {<br />            String goodPattern = "(\\w|\\d)+";<br />            int goodLength = 8;<br />             if (input == null)<br />            {<br />                  return false;<br />            }<br />             if(input.length() &gt; goodLength)<br />            {<br />                  return false;<br />            }<br />                        Pattern p = Pattern.compile(goodPattern);<br />            Matcher m = p.matcher(input);<br />                        if(!m.matches())<br />            {<br />                  return false;<br />            }<br />                        return true;<br />      }<br />}</pre>
+  </blockquote>
+  <ul>
+  </ul>]]></Data>
+  </Content>
+</TeamMentor_Article>

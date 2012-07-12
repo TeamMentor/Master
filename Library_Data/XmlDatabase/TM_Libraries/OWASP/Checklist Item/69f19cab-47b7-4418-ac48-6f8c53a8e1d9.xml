@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="1630597899" Content_Hash="-1184254169">
+  <Metadata>
+    <Id>69f19cab-47b7-4418-ac48-6f8c53a8e1d9</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Include Directories Do Not Have Read Web Permission</Title>
+    <Category>Server Hardening</Category>
+    <Phase>Deployment</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>Include Directories Do Not Have Read Web Permission</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>J.D. Meier, Alex Mackman, Michael Dunner, Srinath Vasireddy, Ray Escamilla and Anandha Murukan</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>Applies to</h1>
+  <ul>
+    <li>
+      <div>Web Application</div>
+    </li>
+  </ul>
+  <h1>What to Check For</h1>
+  <p>Check to ensure that the include directories do not have the Read Web permission.</p>
+  <br />
+  <h1>How to Fix</h1>
+  <p>Web permissions are configured through the IIS snap-in and are maintained in the IIS metabase. They are not NTFS permissions.</p>
+  <p>Use the following Web permissions: </p>
+  <ul>
+    <li>
+      <strong>Read Permissions</strong>. Restrict Read permissions on include directories.
+</li>
+    <li>
+      <strong>Write and Execute Permissions</strong>. Restrict Write and Execute permissions on virtual directories that allow anonymous access.
+</li>
+    <li>
+      <strong>Script source access</strong>. Configure Script source access permissions only on folders that allow content authoring.
+</li>
+    <li>
+      <strong>Write</strong>. Configure Write permissions only on folders that allow content authoring. Grant write access only to content authors.
+<blockquote><strong>Note</strong>&amp;nbsp;&amp;nbsp;&amp;nbsp;Folders that support content authoring should be configured to require authentication and SSL for encryption.</blockquote></li>
+  </ul>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance.</p>]]></Data>
+  </Content>
+</TeamMentor_Article>

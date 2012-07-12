@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-1020094340" Content_Hash="1005251255">
+  <Metadata>
+    <Id>ef0a7a3d-5739-47d8-9e46-0c733e158311</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Resource Kit Tools, Utilities, And SDKs Are Removed</Title>
+    <Category>Server Hardening</Category>
+    <Phase>Deployment</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>Resource Kit Tools, Utilities, And SDKs Are Removed</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>J.D. Meier, Alex Mackman, Michael Dunner, Srinath Vasireddy, Ray Escamilla and Anandha Murukan</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>Applies to</h1>
+  <ul>
+    <li>
+      <div>Web Application</div>
+    </li>
+  </ul>
+  <h1>What to Check For</h1>
+  <p>Check to ensure that resource kit tools, utilities, and SDKs are removed from the Web Server if they are installed.</p>
+  <br />
+  <h1>How to Fix</h1>
+  <p>SDKs and resource kits should not be installed on a production Web server. Remove them if they are present.
+</p>
+  <ul>
+    <li>Ensure that only the .NET Framework Redistributable package is installed on the server and no SDK utilities are installed. Do not install Visual Studio&amp;nbsp;.NET on production servers.
+</li>
+    <li>Ensure that access to powerful system tools and utilities, such as those contained in the \Program Files directory, is restricted. IISLockdown does this for you.
+</li>
+    <li>Debugging tools should not be available on the Web server. If production debugging is necessary, then you should create a CD that contains the necessary debugging tools.
+</li>
+  </ul>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance.</p>]]></Data>
+  </Content>
+</TeamMentor_Article>

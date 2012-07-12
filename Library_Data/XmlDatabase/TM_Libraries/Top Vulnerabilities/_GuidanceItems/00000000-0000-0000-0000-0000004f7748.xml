@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-0000004f7748</Id>
+    <Library_Id>f798e6e6-1732-4172-9c47-9621d914efcd</Library_Id>
+    <Title>Stack Buffer Overflow Attack</Title>
+    <Category>Memory Management</Category>
+    <Phase>NA</Phase>
+    <Technology>Native Code</Technology>
+    <Type>Attack</Type>
+    <DirectLink>Stack Buffer Overflow Attack</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Description</h1>
+  <p>A buffer overflow occurs when a program tries to copy more data than a buffer can fit, thus overwriting adjacent memory. There are two types of buffer overflows: stack buffer overflows and heap buffer overflows. In the case of stack buffer overflows, a buffer on the stack is being overflowed and adjacent memory on the stack is overwritten - because the stack typically contains processor register values that control program flow, an attacker may use this vulnerability to redirect program flow and execute arbitrary code. Heap buffer overflows are discussed in detail in a separate article.</p>
+  <h1>Impact</h1>
+  <p>A stack buffer overflow allows an attacker to crash the program and possibly execute aribitrary code. Stack buffer overflows are some of the most dangerous vulnerabilities - they can often be used to give an attacker full control over a target machine.</p>
+  <h1>Vulnerabilities</h1>
+  <p>Exploiting buffer overflows is difficult, but a successful exploitation of this vulnerability leads to execution of arbitrary code on the local machine. If the buffer overflow exists in code that handles input from remote computers, such as network parsing code, the buffer overflow may be exploited by a remote user.</p>
+  <h1>Countermeasures</h1>
+  <p>Make sure that the following rules are followed: </p>
+  <ol>
+    <li>
+      <p>
+        <strong>Avoid dangerous APIs.</strong> Replace unsafe functions with their safe alternatives, such as:</p>
+      <ul>
+        <li>
+          <p>CRT string functions, such as strcpy_s, sprintf_s, and strcat_s.</p>
+        </li>
+        <li>
+          <p>CRT memory functions, such as memcpy_s and memmove_s.</p>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <p>
+        <strong>Allocate correct memory amounts.</strong> When calculating size, make sure your math is correct:</p>
+      <ul>
+        <li>
+          <p>Don’t assume anything about the size of input data.</p>
+        </li>
+        <li>
+          <p>Don’t forget to count the NULL terminator.</p>
+        </li>
+        <li>
+          <p>Pay attention to byte counts vs. character counts, especially when dealing with other encoding types such as UNICODE.</p>
+        </li>
+        <li>
+          <p>When copying data into a buffer, check the length of the buffer against the length of data being passed in, to ensure there is enough room.</p>
+        </li>
+        <li>
+          <p>When appending data into a buffer, ensure that the target buffer has enough room to contain the copied data.</p>
+        </li>
+        <li>
+          <p>When modifying the data in an array, ensure that the array index is within the bounds of the array allocation. Be careful of off by one errors in arrays since 0 based array indexing means that the largest array index will be one less than the allocated size. </p>
+        </li>
+        <li>
+          <p>If you are using a function that copies variable-length data into a buffer and uses a maximum length parameter properly, be sure to pass the correct value into this parameter. Be careful about confusing target length with source length.</p>
+        </li>
+        <li>
+          <p>Make sure that the code does not rely on another layer or tier for data truncation. </p>
+        </li>
+        <li>
+          <p>If you see a problem, make sure the code truncates the data instead of expanding the buffer to fit it. Buffer expansion may just move the problem downstream. </p>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <p>
+        <strong>Use stack canaries.</strong> Enable compiler-provided protections against stack overflows: /GS for Microsoft VS compiler, and StackGuard for GCC. Both compiler protections add a process-specific random value (canary) to the stack, right before the return address. Before returning from a function call, the canary is compared with the process-specific value. If the canary was altered, the process is terminated.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Be aware of DEP.</strong> In addition, the latest versions of Windows support Data Execution Prevention (DEP), aimed at detecting tampering with frame-based exception handlers.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Be aware of ASLR.</strong> Address Space Layout Randomization (ASLR) is an operating system feature introduced in Windows Vista to randomize the application address space. Buffer overflow exploits are strings of opcodes injected into running processes. Without a proper linking and loading phase, exploit code must guess a few fixed addresses in order to reference system functions and work properly. Windows Vista provides ASLR, which involves randomization of the positions of data areas and libraries, preventing exploit code from being able to easily predict target addresses.</p>
+    </li>
+  </ol>
+  <h1>Example</h1>
+  <p>The application should not contain code similar to the following example. </p>
+  <pre>public void ProcessInput(){<br />   char[] data = new char[255];<br />&amp;nbsp;&amp;nbsp; GetData(data);<br />}<br /><br />public void GetData(char[] buffer){<br />   int ch = 0;<br />   fixed (char* pBuf = buffer){<br />   &amp;nbsp; do<br />   &amp;nbsp; {<br />   &amp;nbsp;&amp;nbsp;&amp;nbsp; ch = System.Console.Read();<br />   &amp;nbsp;&amp;nbsp;&amp;nbsp; *(pBuf++) = (char)ch;<br />   &amp;nbsp; }<br />     while(ch != '\n');<br />   }<br />}</pre>
+  <p>In this code example, an overflow occurs whenever a single line is more than 255 characters long. There are two problems in this code: </p>
+  <ol>
+    <li>The ProcessInput function allocates only enough space for 255 characters. </li>
+    <li>The GetData function does not check the size of the array as it fills it. </li>
+  </ol>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>For more information about buffer overflows, please see <a href="http://en.wikipedia.org/wiki/Buffer_overflow">http://en.wikipedia.org/wiki/Buffer_overflow</a></li>
+  </ul>
+  <ul>
+  </ul>]]></Data>
+  </Content>
+</TeamMentor_Article>

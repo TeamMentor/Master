@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-1740773254" Content_Hash="-1788311526">
+  <Metadata>
+    <Id>f44f4bc9-fb33-41f0-b356-ca73feb44176</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Partition the Application Between Public And Private Domains</Title>
+    <Category>Authentication</Category>
+    <Phase>Deployment</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Partition the Application Between Public And Private Domains</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Do</h1>
+  <p>Define a boundary between public and restricted content in both the URL namespace and the filesystem namespace.</p>
+  <h1>Why</h1>
+  <p>Defining a boundary between public and restricted content simplifies the task of user authorization and is generally less prone to error. When the content is separated, server configuration can be used to automatically apply authorization rules without relying on the developer to explicitly add checks in the code.</p>
+  <h1>When</h1>
+  <p>Consider using this guideline when your application restricts access to specific resources. For instance, anonymous users are granted access to some, but not all of the application while authenticated users are granted access based on their role.</p>
+  <h1>How</h1>
+  <p>Defining the boundary requires: </p>
+  <ol>
+    <li>
+      <p>
+        <strong>Determine roles</strong>: Define the various types of users and their rights. Build a security policy that documents the rights required to access each page of your application.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Determine pages that should require SSL</strong>: This would include pages that transmit credentials, unprotected authentication cookies, or sensitive user information such as credit card or social security numbers. Such pages should be transmitted over SSL only.</p>
+      <p>It should be noted that the Forms Authentication cookie is unprotected in the sense that it is vulnerable to HTTP Replay Attacks. As such, any page in a Forms Auth ASP.Net application that requires an authenticated user should only be accessible over SSL.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Structure the URL namespace</strong>: Structure the application URL namespace to first separate the pages that require SSL from those that do not. Then define separate directories according to the various roles defined for your application. For instance you might have the following directories under your application root:</p>
+      <pre>//secure/usr/secure/admin</pre>
+    </li>
+    <li>
+      <p>
+        <strong>Configure IIS to require SSL on the appropriate portions of your application</strong>:</p>
+      <ol>
+        <li>Right-click on 'My Computer' and select 'Manage </li>
+        <li>Under the 'Services and Applications' node, expand 'Internet Information Services' and locate your website </li>
+        <li>Right click on the restricted folder and choose 'Properties' </li>
+        <li>Click on 'Edit' under the 'Secure Communications' section to require SSL connections. (NOTE: If you have not installed configured a certificate for this server, see the related section for steps to setup SSL on your IIS website)</li>
+      </ol>
+    </li>
+    <li>
+      <p>
+        <strong>Use absolute URLs to transition to or from the sensitive portion of the namespace</strong>: Relative links use the same protocol (HTTP or HTTPS) as the current page. This can result in broken links that point to pages within your application that require SSL. It can also lead to unnecessary use of SSL, which does have an associated performance hit.</p>
+      <p>The fix for both of these issues is to use absolute URLs that explicitly specify the protocol instead of relative URLs. An example redirection using an absolute URL is shown below.</p>
+      <pre>private void btnLogon_Click( object sender, System.EventArgs e ){// Form an absolute path using the server name and v-dir namestring serverName = HttpUtility.UrlEncode(Request.ServerVariables["SERVER_NAME"]);string vdirName = Request.ApplicationPath;Response.Redirect("https://" + serverName + vdirName + "/Restricted/Login.aspx");}</pre>
+    </li>
+    <li>
+      <p>
+        <strong>Use URL Authorization Restrict Access</strong>: Use an <strong>&lt;authorization&gt;</strong> element to ensure that only authenticated users can access secure pages. Place this element beneath the closing <strong>&lt;/system.web&gt;</strong> tag, as shown here.</p>
+      <pre>&lt;!-- The secure folder is for authenticated and SSL access only. --&gt;&lt;location path="Secure" &gt;  &lt;system.web&gt;    &lt;authorization&gt;      &lt;deny users="?" /&gt;    &lt;/authorization&gt;  &lt;/system.web&gt;&lt;/location&gt;</pre>
+      <p>Additionally, the following configuration ensures that unauthenticated users are allowed to access pages in the application's root directory. Place this configuration in the main <strong>&lt;system.web&gt;</strong> element.</p>
+      <pre>&lt;system.web&gt;  &lt;!-- The virtual directory root folder contains general pages.       Unauthenticated users can view them and they do not need        to be secured with SSL. --&gt;  &lt;authorization&gt;    &lt;allow users="*" /&gt;  &lt;/authorization&gt;&lt;/system.web&gt;</pre>
+      <p>
+        <strong>Note:</strong> If you use this type of site structure, your application must not rely on the user's identity on the non-SSL pages. In the preceding configuration, no forms authentication ticket is sent for requests for non-SSL pages. As a result, the user is considered anonymous. This has implications for related features, such as personalization, that require the user name.</p>
+    </li>
+  </ol>
+  <h1>Problem Example</h1>
+  <p>MyApp is a financial tool that generates reports based on sensitive data. It allows the user to upload the financial data and download the report. Since the application is small, all of its content is located within the same directory. The access control is enforced by the web application through checking the required permissions before a given call is executed.</p>
+  <p>Since both data and code is within the same directory, it may be possible for an attacker to gain access to the raw financial data.</p>
+  <h1>Solution Example</h1>
+  <p>MyApp is a financial tool that generates reports based on some sensitive data. It allows the user to upload the financial data and download the report. The application has a dedicated /data/ directory for the financial data. Access to contents within the /data/ directory is handled by the server hosting MyApp, making it much more difficult for an unauthorized user to gain access.</p>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance. </p>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="1432157249" Content_Hash="162045547">
+  <Metadata>
+    <Id>92f8ce2b-9290-4b24-ab01-24bc0766fd26</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Calculate Destinations of Redirects And Forwards Without User Input</Title>
+    <Category>Input and Data Validation</Category>
+    <Phase>Design</Phase>
+    <Technology> Any</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Calculate Destinations of Redirects And Forwards Without User Input</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Do</h1>
+  <p>Calculate destinations of redirects and forwards without user input.</p>
+  <h1>Why</h1>
+  <p>Using input to calculate destinations of redirects or forwards may allow an attacker to create hyperlinks that appears to point to legitimate sites but redirect to malicious pages controlled by the attacker. This technique is often used by phishers to trick people into visiting fake sites that steal authentication credentials.</p>
+  <h1>When</h1>
+  <p>Use this guideline when writing a web application that uses redirects or forwards. Avoid using redirects or forwards in web applications, if possible.</p>
+  <h1>How</h1>
+  <p>Perform the following actions to calculate destinations of redirects and forwards without user input:</p>
+  <ol>
+    <li>
+      <p>
+        <strong>Find redirects and forwards.</strong> Find all pages that perform redirects or forwards. Redirects are also known as "transfers" in .NET.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Identify dangerous redirects and forwards.</strong> Find all redirects and forwards that rely on user input to calculate their destinations.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Rewrite redirects and forwards.</strong> Consider making design or code changes to get rid of each redirect or forward, if possible. If a redirect or forward is absolutely necessary, consider how it may be rewritten to operate without user input - this is usually possible based on assumptions made in the application design.</p>
+    </li>
+  </ol>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>For more information about unvalidated redirects and forwards, please see <a href="http://www.owasp.org/index.php/Top_10_2010-A10-Unvalidated_Redirects_and_Forwards">http://www.owasp.org/index.php/Top_10_2010-A10-Unvalidated_Redirects_and_Forwards</a></li>
+  </ul>
+  <ul>
+  </ul>]]></Data>
+  </Content>
+</TeamMentor_Article>

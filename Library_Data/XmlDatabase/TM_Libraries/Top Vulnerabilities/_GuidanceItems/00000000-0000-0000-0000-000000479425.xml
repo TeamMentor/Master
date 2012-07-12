@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-000000479425</Id>
+    <Library_Id>f798e6e6-1732-4172-9c47-9621d914efcd</Library_Id>
+    <Title>Use Reference Maps</Title>
+    <Category>Validation</Category>
+    <Phase>Implementation</Phase>
+    <Technology> Any</Technology>
+    <Type>Principle</Type>
+    <DirectLink>Use Reference Maps</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="WikiText">
+    <Data><![CDATA[==What to Do==
+
+When the set of acceptable objects, such as filenames or URLs, is limited or known, create a mapping from a set of fixed input values (such as numeric IDs) to the actual filenames or URLs, and reject all other inputs. For example, ID 1 could map to //inbox.txt// and ID 2 could map to //profile.txt//. Features such as the //ESAPI AccessReferenceMap// provide this capability.
+
+==Why==
+
+Using reference maps helps make sure that only valid input is handled by the application. Reference maps are one of the most effective implementations of white-list input validation.
+
+==How==
+
+To use reference maps:
+
+# **Identify all known acceptable objects, such as filenames or URLs.** Make a list of all objects that should be available to the user. This is the critical requirement for using reference maps - if it is too difficult to enumerate valid objects, then reference maps probably should not be used.
+# **Assign a unique reference ID to each known acceptable object.** It is common to assign numeric IDs to objects to be used as references. Another common approach is to assign short-hand names to objects, such as pages or filenames.
+# **Accept only valid reference IDs.** Add functions that accept only valid reference IDs defined in the previous step for accessing the objects and rejects all other input. This applies only to code that deals with the objects that have reference IDs defined. It may also be prudent to perform authorization checks in these functions.
+# **Resolve reference IDs.** Add functions that replace reference IDs with handles to the acceptable objects. It may also be prudent to perform authorization checks in these functions.
+# **Use reference IDs.** Replace all code that references the objects directly with code that uses functions that validate and resolve reference IDs.]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-1276381450" Content_Hash="-652097810">
+  <Metadata>
+    <Id>b797adfa-93bf-4f6e-9b30-70a0758ecd3d</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Do Not Rely on Client-Side Validation</Title>
+    <Category>Input and Data Validation</Category>
+    <Phase>Design</Phase>
+    <Technology> Any</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Do Not Rely on Client-Side Validation</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>J.D. Meier, Alex Mackman, Michael Dunner, Srinath Vasireddy, Ray Escamilla and Anandha Murukan</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Do</h1>
+  <p>Client-side validation can reduce the number of round trips to the server, but do not rely on it for security because it is easy to bypass. Validate all input at the server. </p>
+  <h1>Why</h1>
+  <p>It is easy to modify the behavior of the client or just write a new client that does not observe the same data validation rules.</p>
+  <h1>When</h1>
+  <p>All applications should only use Server-side validation when the code relys on security.</p>
+  <h1>How</h1>
+  <p>Server-side code should perform its own validation. What if an attacker bypasses your client, or shuts off your client-side script routines, for example, by disabling JavaScript? Use client-side validation to help reduce the number of round trips to the server but do not rely on it for security. This is an example of defense in depth.</p>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>For more information see, "Chapter 4 - Design Guidelines for Secure Web Applications" at <a href="http://msdn2.microsoft.com/en-us/library/aa302420.aspx">http://msdn2.microsoft.com/en-us/library/aa302420.aspx</a>&amp;nbsp;&amp;nbsp;&amp;nbsp;</li>
+  </ul>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance.</p>]]></Data>
+  </Content>
+</TeamMentor_Article>

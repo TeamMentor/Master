@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-2032736227" Content_Hash="44334822">
+  <Metadata>
+    <Id>abaaab64-540f-4535-b249-3c9295b7b1d0</Id>
+    <Library_Id>00000000-0000-0000-0000-000000000000</Library_Id>
+    <Title>Authentication Cookies Are Restricted to Only HTTPS Connections by Using the RequireSSL Attribute</Title>
+    <Category>Authentication</Category>
+    <Phase>Implementation</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink />
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Check For</h1><p>Ensure that your application restricts authentication cookies&nbsp;to only&nbsp;HTTPS connections by using the requireSSL attribute.</p><h1>Why</h1><p>By using SSL, you prevent an attacker from reading a captured authentication cookie&nbsp;and gaining spoofed access to your application.</p><h1>How to Fix</h1><p>Set the <strong>secure</strong> property of the authentication cookie to ensure that browsers only send authentication cookies over HTTPS connections. </p><p>Set the <strong>secure</strong> property by using <strong>requireSSL="true"</strong> on the &lt;<strong>forms</strong>&gt; element as shown here:</p><div><pre>&lt;forms loginUrl="Secure\Login.aspx"<br>        requireSSL="true" ... /&gt;</pre></div><hr><p>Adapted from Microsoft patterns &amp; practices guidance. </p>]]></Data>
+  </Content>
+</TeamMentor_Article>

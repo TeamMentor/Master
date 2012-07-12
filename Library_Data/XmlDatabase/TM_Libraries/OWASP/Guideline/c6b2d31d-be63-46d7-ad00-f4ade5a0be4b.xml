@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-1317913049" Content_Hash="-1014565994">
+  <Metadata>
+    <Id>c6b2d31d-be63-46d7-ad00-f4ade5a0be4b</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Do Not Echo Untrusted Data Back to the User</Title>
+    <Category>Input and Data Validation</Category>
+    <Phase>Implementation</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Do Not Echo Untrusted Data Back to the User</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Do</h1>
+  <p>Do not echo input back to the user without first validating and/or encoding the data.&amp;nbsp; Data which can be modified by a user must be treated as untrusted data, regardless of whether or not the user is expected to modify it during normal application use. </p>
+  <h1>Why</h1>
+  <p>Echoing input directly back to the user makes your application susceptible to malicious input attacks, such as cross-site scripting.&amp;nbsp; If a malicious user can trick someone else into submitting dangerous input in such a way that it will be returned to the victim, or cause the site to store the malicious input they give it so it will be returned to other users, they can exploit vulnerabilities of this class.&amp;nbsp; What constitutes bad input varies widely depending on the system in question.&amp;nbsp; On the web, it normally means some kind of javascript. </p>
+  <h1>When</h1>
+  <p>Applications should never echo untrusted or user modifiable data back to the user without appropriate encoding. </p>
+  <h1>How</h1>
+  <p>If you write output that includes user input or data from a shared database or a local file that you do not trust, encode it.&amp;nbsp; Echoing input directly back to the user makes your application vulnerable to cross-site scripting attacks, among other problems.&amp;nbsp; Encoding the data ensures that it is treated as literal text and not as script.&amp;nbsp; ASP.NET's Server.HtmlEncode function is often used to protect against cross-site scripting attacks. However, this function only encodes &lt;&gt;"&amp; characters. This is not sufficient to protect against all possible attacks. For instance, the following ASP.NET code would be vulnerable. </p>
+  <pre>&lt;img id='img&lt;%=Server.HtmlEncode(Request.QueryString["userId"]) %&gt;'&amp;nbsp;&amp;nbsp; src='/image.gif' /&gt;</pre>
+  <p>An attacker could inject client-side script here by setting <strong>userId </strong>to </p>
+  <pre>' onload=alert('xss') alt='</pre>
+  <p>The safest solution is to encode all non-alphanumeric characters. Only this type of whitelist solution will catch all possible XSS attacks, regardless of context.&amp;nbsp; This&amp;nbsp;requires more overhead in terms of processing time and size of the resulting HTML, but it is the safest encoding mechanism for all HTML contexts:</p>
+  <pre>public static string HtmlEncode(string x)<br />{<br />   if (x == null)<br />   {<br />   &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;return x;<br />   }<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;return Regex.Replace(x, "[^a-zA-Z0-9]+", new MatchEvaluator(WebUtility.EncodeMatch));<br />}</pre>
+  <p>This is also the approach that the Microsoft Anti-Cross Site Scripting Library&amp;nbsp;takes.&amp;nbsp; If you are using the Anti-Cross Site Scripting Library, you can use the <strong>Microsoft.Security.ApplicationAntiXSSLibrary.HtmlEncode</strong> method.&amp;nbsp; Similarly, if you write URLs that might contain unsafe characters because they have been constructed from input data or data from a shared database, use <strong>Microsoft.Security.ApplicationAntiXSSLibrary.UrlEncode</strong> to make them safe.&amp;nbsp; </p>
+  <p>
+    <strong>Note</strong> &amp;nbsp; &amp;nbsp; Make sure that you encode data at the last possible opportunity before the data is returned to the client.&amp;nbsp; If you encode any earlier than this, you may not know the exact context that the data will be used in, and hence the format you need to encode into.&amp;nbsp; Also, early encoding of some data can result in double encoding problems. </p>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance. </p>]]></Data>
+  </Content>
+</TeamMentor_Article>

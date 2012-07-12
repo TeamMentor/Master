@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-00000081d237</Id>
+    <Library_Id>f798e6e6-1732-4172-9c47-9621d914efcd</Library_Id>
+    <Title>Heap Buffer Overflow Attack</Title>
+    <Category>Memory Management</Category>
+    <Phase>Implementation</Phase>
+    <Technology>Native Code</Technology>
+    <Type>Attack</Type>
+    <DirectLink>Heap Buffer Overflow Attack</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Description</h1>
+  <p>A heap-based buffer overflow overwrites buffers allocated from the heap, overflowing into the heap management data structures.</p>
+  <h1>Impact</h1>
+  <p>A heap buffer overflow may allow an attacker to execute arbitrary code. A heap buffer overflow allows an attacker to overwrite an arbitrary 32-bit memory location with an arbitrary 32-bit value. When the memory location is a function pointer, for example, an entry in a v-table, and the value is the address of malicious opcodes, then an attacker can run arbitrary code.</p>
+  <h1>Vulnerabilities</h1>
+  <p>A heap buffer overflow occurs for the same reasons as a stack buffer overflow, but takes places on the heap, instead of on the stack. Because of this, exploitation of heap-based buffer overflows is different that exploitation of stack-based buffer-overflows. On the Windows platform, the following pointer exchange is executed whenever memory is allocated or freed from the heap:</p>
+  <pre>mov dword ptr ds:[eax], ecx<br />mov dword ptr ds:[ecx+4], eax</pre>
+  <p>An attacker can create, and supply to a vulnerable application, meticulously-crafted overflow data. The eax and ecx registers can be populated with values out of the overflow data. When the pointer exchange occurs, an arbitrary 32-bit memory location can be overwritten with an arbitrary 32-bit value. When the memory location is a function pointer, for example, an entry in a v-table, and the value is the address of malicious opcodes, then an attacker can run arbitrary code.</p>
+  <h1>Countermeasures</h1>
+  <p>Use the following techniques to defend from heap based buffer overflows:</p>
+  <ol>
+    <li>
+      <p>
+        <strong>Allocate correct memory amounts.</strong> When calculating size, make sure your math is correct:</p>
+      <ul>
+        <li>
+          <p>Don’t assume anything about the size of input data.</p>
+        </li>
+        <li>
+          <p>Don’t forget to count the NULL terminator.</p>
+        </li>
+        <li>
+          <p>Pay attention to byte counts vs. character counts, especially when dealing with other encoding types such as UNICODE.</p>
+        </li>
+        <li>
+          <p>When copying data into a buffer, check the length of the buffer against the length of data being passed in, to ensure there is enough room.</p>
+        </li>
+        <li>
+          <p>When appending data into a buffer, ensure that the target buffer has enough room to contain the copied data.</p>
+        </li>
+        <li>
+          <p>When modifying the data in an array, ensure that the array index is within the bounds of the array allocation. Be careful of off by one errors in arrays since 0 based array indexing means that the largest array index will be one less than the allocated size. </p>
+        </li>
+        <li>
+          <p>If you are using a function that copies variable-length data into a buffer and uses a maximum length parameter properly, be sure to pass the correct value into this parameter. Be careful about confusing target length with source length.</p>
+        </li>
+        <li>
+          <p>Make sure that the code does not rely on another layer or tier for data truncation. </p>
+        </li>
+        <li>
+          <p>If you see a problem, make sure the code truncates the data instead of expanding the buffer to fit it. Buffer expansion may just move the problem downstream. </p>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <p>
+        <strong>Be aware of DEP.</strong> In addition, the latest versions of Windows support Data Execution Prevention (DEP), aimed at detecting tampering with frame-based exception handlers. </p>
+    </li>
+    <li>
+      <p>
+        <strong>Be aware of ASLR.</strong> Address Space Layout Randomization (ASLR) is an operating system feature introduced in Windows Vista to randomize the application address space. Buffer overflow exploits are strings of opcodes injected into running processes. Without a proper linking and loading phase, exploit code must guess a few fixed addresses in order to reference system functions and work properly. Windows Vista provides ASLR, which involves randomization of the positions of data areas and libraries, preventing exploit code from being able to easily predict target addresses.</p>
+    </li>
+  </ol>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>For more information about heap-based buffer overflows, please see <a href="http://en.wikipedia.org/wiki/Heap_overflow">http://en.wikipedia.org/wiki/Heap_overflow</a></li>
+    <li>For a very detailed article that explains heap-based buffer overflows, please see <a href="http://www.h-online.com/security/features/A-Heap-of-Risk-747161.html">http://www.h-online.com/security/features/A-Heap-of-Risk-747161.html</a></li>
+  </ul>
+  <h1>Related Items</h1>
+  <ul>
+    <li>
+      <a href="/article/b119d5b9-bb51-4ea8-b6b2-e034e92c17be">Protect Against Buffer Overflows</a>
+    </li>
+  </ul>]]></Data>
+  </Content>
+</TeamMentor_Article>
