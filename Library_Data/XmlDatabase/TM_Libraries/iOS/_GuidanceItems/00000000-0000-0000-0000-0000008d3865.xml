@@ -27,6 +27,16 @@ Accessing memory that has been deallocated may result in an exploitable vulnerab
 Write code in such a way that guarantees that pointers are not used after memory that they point to has been deallocated. One way to do this is to deallocate memory at the end of functions, so that there is no code that accesses memory after it has been deallocated. Perform the following actions to assure that unallocated memory is not accessed:
 
 # **Search for deallocation code.** Review code to find all places where memory is being deallocated.
-# **Move deallocation code.** Place deallocation code right before exit points of the function. Set pointers to null. Make sure that deallocated pointers are not being used elsewhere in the application.]]></Data>
+# **Move deallocation code.** Place deallocation code right before exit points of the function. Set pointers to null. Make sure that deallocated pointers are not being used elsewhere in the application.
+
+==Memory Management Guidelines==
+* [[Compile Applications with Stack Cookies Enabled]]
+* [[Do Not Reference Freed Objects]]
+* [[Use Automatic Reference Counting]]
+
+==Memory Management Checklists==
+* [[Applications Are Compiled with Stack Cookies Enabled]]
+* [[Freed Objects Are Not Referenced]]
+* [[Automatic Reference Counting Is Used]]]]></Data>
   </Content>
 </TeamMentor_Article>

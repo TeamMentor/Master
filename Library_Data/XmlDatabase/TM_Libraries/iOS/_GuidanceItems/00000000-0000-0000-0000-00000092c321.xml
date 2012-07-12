@@ -35,6 +35,16 @@ To verify that self-signed SSL certificates are disabled:
 
 ==How to Fix==
 
-Self-signed SSL certificates are not allowed by default. Do not allow them. Avoid using the //allowsAnyHTTPSCertificateForHost// method in production releases, because it allows self-signed SSL certificates. Do not use the //continueWithoutCredentialForAuthenticationChallenge// selector within the //didReceiveAuthenticationChallenge// delegate method of //NSURLConnection// objects, because it enables self-signed SSL certificates.]]></Data>
+Self-signed SSL certificates are not allowed by default. Do not allow them. Avoid using the //allowsAnyHTTPSCertificateForHost// method in production releases, because it allows self-signed SSL certificates. Do not use the //continueWithoutCredentialForAuthenticationChallenge// selector within the //didReceiveAuthenticationChallenge// delegate method of //NSURLConnection// objects, because it enables self-signed SSL certificates.
+
+==Communication Security Guidelines==
+* [[Disable Self-signed SSL Certificates]]
+* [[Use SSL to Protect Communications]]
+* [[Use Strong SSL Configurations]]
+
+==Communication Security Checklists==
+* [[Self-signed SSL Certificates Are Disabled]]
+* [[SSL Is Used to Protect Communications]]
+* [[Strong SSL Configurations Are Used]]]]></Data>
   </Content>
 </TeamMentor_Article>

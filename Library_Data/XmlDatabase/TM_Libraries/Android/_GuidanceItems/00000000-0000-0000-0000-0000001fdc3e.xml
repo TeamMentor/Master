@@ -28,6 +28,11 @@ Allowing the use of self-signed SSL certificates enables some types of man-in-th
 
 ==How to Check==
 
+Self-signed SSL certificates are disabled on Android by default. To verify that self-signed SSL certificates are disabled:
+
+# **Search for code that allows self-signed SSL certificates.** Search application code for the presence of the //setDefaultHostnameVerifier// method call - the presence of this method call indicates that self-signed SSL certificates may be allowed.
+# **Verify that self-signed SSL certificates are not allowed in production releases.** If self-signed SSL certificates are allowed for development purposes, make sure that they are disabled in production releases. The recommended way to disable development code in production releases is by using //#define// and //#ifdef// compiler directives.
+
 ==How to Fix==
 
 Self-signed SSL certificates are disabled on Android by default. Do not allow them in production releases.

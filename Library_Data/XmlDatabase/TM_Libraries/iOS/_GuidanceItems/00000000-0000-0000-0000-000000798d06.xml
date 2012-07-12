@@ -29,6 +29,15 @@ To enable Automatic Reference Counting(ARC):
 # **Use a compatible SDK.** Use iOS SDK 5.0 or higher to be able to use Automatic Reference Counting.
 # **Launch XCode.** Open the XCode environment.
 # **Enable Automatic Reference Counting.** Set the compiler option //Objective-C Automatic Reference Counting// to //yes//.
-]]></Data>
+
+==Memory Management Guidelines==
+* [[Compile Applications with Stack Cookies Enabled]]
+* [[Do Not Reference Freed Objects]]
+* [[Use Automatic Reference Counting]]
+
+==Memory Management Checklists==
+* [[Applications Are Compiled with Stack Cookies Enabled]]
+* [[Freed Objects Are Not Referenced]]
+* [[Automatic Reference Counting Is Used]]]]></Data>
   </Content>
 </TeamMentor_Article>

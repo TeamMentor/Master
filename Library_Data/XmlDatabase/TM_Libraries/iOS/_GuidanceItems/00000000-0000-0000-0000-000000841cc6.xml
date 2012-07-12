@@ -33,6 +33,16 @@ To verify that stack cookies are enabled:
 
 To use stack cookies:
 # **Open XCode.** Launch the XCode IDE.
-# **Add compiler flags.** Add the //-fstack-protector-all// flag to each file that is to be compiled in the XCode "Compile Sources" window in the "Compiler Flags" column.]]></Data>
+# **Add compiler flags.** Add the //-fstack-protector-all// flag to each file that is to be compiled in the XCode "Compile Sources" window in the "Compiler Flags" column.
+
+==Memory Management Guidelines==
+* [[Compile Applications with Stack Cookies Enabled]]
+* [[Do Not Reference Freed Objects]]
+* [[Use Automatic Reference Counting]]
+
+==Memory Management Checklists==
+* [[Applications Are Compiled with Stack Cookies Enabled]]
+* [[Freed Objects Are Not Referenced]]
+* [[Automatic Reference Counting Is Used]]]]></Data>
   </Content>
 </TeamMentor_Article>

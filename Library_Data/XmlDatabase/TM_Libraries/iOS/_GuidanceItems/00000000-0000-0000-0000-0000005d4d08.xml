@@ -42,6 +42,20 @@ To use server-side authentication:
 # **Implement authentication on the server.** It is important to implement security controls, such as authentication on the server, because client-side security controls can be tampered with or disabled altogether on the client. Implement authentication controls that match the requirements defined in the previous step on the server back-end. 
 # **Add client-side code that authenticates to the server.** Once authentication is implemented in accordance with the requirements, add client-side code that authenticates to the server. The client-side code will need an interface for managing authentication credentials, network code that communicates with the server using SSL/TLS, a token or some other means to maintain a session state on the server, and possibly secure storage for cached authentication credentials.
 
+==Authentication Guidelines==
+* [[Change Root Passwords on Jailbroken Devices]]
+* [[Encrypt Authentication Credentials Sent over the Network]]
+* [[Implement a Secure Password Reset Function]]
+* [[Throttle Authentication Attempts]]
+* [[Use Server-side Authentication]]
+
+==Authentication Checklists==
+* [[Root Passwords Have Been Changed on Jailbroken Devices]]
+* [[Authentication Credentials Sent over the Network Are Encrypted]]
+* [[A Secure Password Reset Function Is Implemented]]
+* [[Authentication Attempts Are Throttled]]
+* [[Authentication Is Implemented on the Server-side]]
+
 ==Additional Resources==
 
 * For more information about authentication requirements, please see https://www.owasp.org/index.php/Authentication_Cheat_Sheet]]></Data>

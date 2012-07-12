@@ -65,6 +65,11 @@ Parsing external entities in XML documents may result in injection vulnerabiliti
 
 ==How to Check==
 
+To verify that parsing of external XML entities is disabled:
+
+# **Identify the XML parser used by the application.** Find out which XML parser is used by the application. Some common Android XML parsers are: //SAXParser//, //XmlPullParser// and //DocumentBuilder//.
+# **Verify that parsing of external XML entities is disabled.** //DocumentBuilder// and //XmlPullParser// don't support external XML entities. If //SAXParser// is used, make sure that //external-general-entities// and //external-parameter-entities// feature flags have not been enabled.
+
 ==How to Fix==
 
 There are multiple parsing packages built into the Android SDK: //SAXParser//, //XmlPullParser// and //DocumentBuilder//.
@@ -104,12 +109,28 @@ Verify that applications are signed.
 
 ==Why==
 
+Signing the application binary helps verify that the application came from a trusted source.
+
 ==How to Check==
+
+If applications are not signed properly, they will not run. To verify that an application is signed:
+
+# **Install the application.** Follow the standard procedure to install the application.
+# **Run the application.** Once the application is installed, launch it. If the application runs, then it has been signed successfully.
 
 ==How to Fix==
 
-==Related Items==
-]]></Data>
+To sign Android applications:
+
+# **Generate a private key.** Use the //keytool// command to generate a suitable private key. The key has to represent the entity responsible for the application. The key has to have a validity period that ends after 22 October 2033. The key should be different from the debug key. It is okay for the key to be self-signed. More information about using the //keytool// command is available at the link in the Additional Resources section.
+# **Protect the private key.** The private key should be kept secret to prevent attackers from signing malicious applications with it. Applications that are signed with the same private key appear to come from the same source and a crafty attacker may take advantage of that by passing malicious applications off as yours.
+# **Build the application.** Build the application in release mode. The application is not signed automatically. Export the unsigned APK package.
+# **Sign the application.** Use the //Jarsigner// tool to sign the application package.  More information about using the //Jarsigner// command is available at the link in the Additional Resources section.
+# **Align the package.** Use the //zipalign// command to align the signed APK. More information about using the //zipalign// command is available at the link in the Additional Resources section.
+
+==Additional Resources==
+
+* For more information about signing Android applications, please see http://developer.android.com/tools/publishing/app-signing.html]]></Data>
     </Content>
   </TeamMentor_Article>
   <TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
@@ -436,11 +457,32 @@ Verify that SSL is used to protect communications.
 
 ==Why==
 
+Using SSL to secure network communications prevents eavesdropping attacks.
+
 ==How to Check==
+
+To verify that SSL is used to protect network connections:
+
+# **Identify all communications performed by the application.** Review the application design to identify all network communications that are performed by the application.
+# **Review communication security requirements.** Examine which network communications need to be encrypted. All transmissions that include sensitive data should be encrypted. In some cases, it might be practical to encrypt all network connections.
+# **Identify code that uses the network.** Identify code that is responsible for each network communication that needs to be encrypted.
+# **Verify that SSL is used to protect network connections.** Examine code that is responsible for network connections that need to be encrypted and make sure that it uses SSL.
 
 ==How to Fix==
 
-==Related Items==
+To use SSL to protect network connections:
+
+# **Identify all communications performed by the application.** Review the application design to identify all network communications that are performed by the application.
+# **Define communication security requirements.** Define which network communications need to be encrypted. All transmissions that include sensitive data should be encrypted. In some cases, it might be practical to encrypt all network connections.
+# **Identify code that uses the network.** Identify code that is responsible for each network communication that needs to be encrypted.
+# **Add code that uses SSL.** There are multiple methods for using SSL in Android to choose from based on application requirements. Using the //SSLSocketFactory// class is one of the most common solutions.
+
+==Additional Resources==
+
+* For information about the Android SSL API, see http://developer.android.com/reference/javax/net/ssl/package-summary.html
+* For information about the //SSLEngine// class, see http://developer.android.com/reference/javax/net/ssl/SSLEngine.html
+* For information about the //SSLSocketFactory// class, see http://developer.android.com/reference/org/apache/http/conn/ssl/SSLSocketFactory.html
+* For information about the //javax.net.ssl// package, see http://developer.android.com/reference/javax/net/ssl/package-summary.html
 ]]></Data>
     </Content>
   </TeamMentor_Article>
@@ -542,6 +584,11 @@ Verify that self-signed SSL certificates are disabled.
 Allowing the use of self-signed SSL certificates enables some types of man-in-the-middle attacks.
 
 ==How to Check==
+
+Self-signed SSL certificates are disabled on Android by default. To verify that self-signed SSL certificates are disabled:
+
+# **Search for code that allows self-signed SSL certificates.** Search application code for the presence of the //setDefaultHostnameVerifier// method call - the presence of this method call indicates that self-signed SSL certificates may be allowed.
+# **Verify that self-signed SSL certificates are not allowed in production releases.** If self-signed SSL certificates are allowed for development purposes, make sure that they are disabled in production releases. The recommended way to disable development code in production releases is by using //#define// and //#ifdef// compiler directives.
 
 ==How to Fix==
 
@@ -659,6 +706,13 @@ Verify that code is obfuscated with //ProGuard//.
 Obfuscate the application binary with //ProGuard// to make it more difficult to reverse engineer.
 
 ==How to Check==
+
+To verify that code is obfuscated with //ProGuard//:
+
+# **Verify that //ProGuard// is configured.**
+# **Verify that //ProGuard// is enabled.**
+# **Verify that the application is built in release mode.**
+
 
 ==How to Fix==
 
@@ -846,7 +900,17 @@ Stack cookies help mitigate buffer overflow vulnerabilities.
 
 To use stack cookies:
 # **Open XCode.** Launch the XCode IDE.
-# **Add compiler flags.** Add the //-fstack-protector-all// flag to each file that is to be compiled in the XCode "Compile Sources" window in the "Compiler Flags" column.]]></Data>
+# **Add compiler flags.** Add the //-fstack-protector-all// flag to each file that is to be compiled in the XCode "Compile Sources" window in the "Compiler Flags" column.
+
+==Memory Management Guidelines==
+* [[Compile Applications with Stack Cookies Enabled]]
+* [[Do Not Reference Freed Objects]]
+* [[Use Automatic Reference Counting]]
+
+==Memory Management Checklists==
+* [[Applications Are Compiled with Stack Cookies Enabled]]
+* [[Freed Objects Are Not Referenced]]
+* [[Automatic Reference Counting Is Used]]]]></Data>
     </Content>
   </TeamMentor_Article>
   <TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
@@ -893,6 +957,16 @@ To enable Automatic Reference Counting(ARC):
 # **Use a compatible SDK.** Use iOS SDK 5.0 or higher to be able to use Automatic Reference Counting.
 # **Launch XCode.** Open the XCode environment.
 # **Enable Automatic Reference Counting.** Set the compiler option //Objective-C Automatic Reference Counting// to //yes//.
+
+==Memory Management Guidelines==
+* [[Compile Applications with Stack Cookies Enabled]]
+* [[Do Not Reference Freed Objects]]
+* [[Use Automatic Reference Counting]]
+
+==Memory Management Checklists==
+* [[Applications Are Compiled with Stack Cookies Enabled]]
+* [[Freed Objects Are Not Referenced]]
+* [[Automatic Reference Counting Is Used]]
 ]]></Data>
     </Content>
   </TeamMentor_Article>
@@ -928,7 +1002,17 @@ To prevent caching of sensitive data:
 #* Encryption keys
 #* Personal information
 # **Identify code that creates temporary files used by the application.** Review the application source code to find functions that are responsible for creating the temporary files to find ones that write sensitive data.
-# **Remove code that writes sensitive data to temporary files.** Edit the functions that write sensitive data to temporary files to prevent caching of sensitive data.]]></Data>
+# **Remove code that writes sensitive data to temporary files.** Edit the functions that write sensitive data to temporary files to prevent caching of sensitive data.
+
+==Privacy Guidelines==
+* [[Do Not Cache Sensitive Data]]
+* [[Do Not Log Location Data]]
+* [[Do Not Log Sensitive Data]]
+
+==Privacy Checklists==
+* [[Sensitive Data Is Not Cached]]
+* [[Location Data Is Not Logged]]
+* [[Sensitive Data Is Not Logged]]]]></Data>
     </Content>
   </TeamMentor_Article>
   <TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
@@ -985,7 +1069,13 @@ To encrypt sensitive data stored in files:
 #* //kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly// - the item is only available after the device is unlocked for the first time after a reboot and is not moved to other devices.
 # **Encrypt sensitive files.** Use the appropriate APIs to encrypt stored sensitive data. Data stored in the keychain is always encrypted.
 
-==Additional Resources==]]></Data>
+==Cryptographic Storage Guidelines==
+* [[Encrypt Stored Sensitive Data]]
+* [[Store Cached Authentication Data in the Keychain]]
+
+==Cryptographic Storage Checklists==
+* [[Stored Sensitive Data Is Encrypted]]
+* [[Cached Authentication Data Is Stored in the Keychain]]]]></Data>
     </Content>
   </TeamMentor_Article>
   <TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
@@ -1019,6 +1109,16 @@ To check code for integrity:
 # **Write integrity check functions.** The most common ways for implementing code integrity checks are by checking classes for expected addresses or checksums. The //class_getMethodImplementation// method returns a pointer a method; checking the value of this pointer against the expected value provides reasonable assurance that the method has not been modified during runtime.
 # **Define integrity check functions as inline.** The integrity check functions written in the previous step should be defined as //inline// so that the compiler inserts the full integrity checking code wherever it is invoked.
 # **Scatter integrity check functions throughout the application.** Multiple integrity checking functions spread out throughout the application make it harder for an attacker to find them all and patch them.
+
+==Code Integrity Guidelines==
+* [[Implement Code Integrity Checks]]
+* [[Sign iOS Application Updates]]
+* [[Sign iOS Applications]]
+
+==Code Integrity Checklists==
+* [[Code Integrity Checks Are Implemented]]
+* [[iOS Application Updates Are Signed]]
+* [[iOS Applications Are Signed]]
 
 ==Additional Resources==
 
@@ -1058,7 +1158,15 @@ To prevent logging of sensitive data:
 #* Personal information
 # **Review logging code.** Identify code that generates log entries by searching for //NSLog()// function calls. Review this code to verify that it does not include sensitive information in log entries. If necessary, rewrite this code in a way that does not log sensitive data. If //NSLog()// calls are necessary for debugging, they can be conditionally commented out using //#define// directives.
 
-==Related Items==]]></Data>
+==Privacy Guidelines==
+* [[Do Not Cache Sensitive Data]]
+* [[Do Not Log Location Data]]
+* [[Do Not Log Sensitive Data]]
+
+==Privacy Checklists==
+* [[Sensitive Data Is Not Cached]]
+* [[Location Data Is Not Logged]]
+* [[Sensitive Data Is Not Logged]]]]></Data>
     </Content>
   </TeamMentor_Article>
   <TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
@@ -1092,9 +1200,24 @@ Changing the root password prevents unauthorized parties from being able to conn
 
 There are multiple ways for changing the root passwords on jailbroken devices, but they usually require a command line interface. One common approach is to use the MobileTerminal program, which is available from Cydia. MobileTerminal is not installed by default, however. SSH is usually installed by default and enabled on jailbroken devices. To use SSH to change the root password on a jailbroken device:
 
-# **Identify the IP of the jailbroken device.** There are many different ways to identify the IP of a jailbroken device. One of the simplest ways is to connect the device to a WiFi network and check its IP from the Settings application. After the device is connected to a WiFi network, go to //Settings -&gt; Wi-Fi -&gt; [name of your network here]// and you will see the IP Address assigned to the device.
+# **Identify the IP of the jailbroken device.** There are many different ways to identify the IP of a jailbroken device. One of the simplest ways is to connect the device to a WiFi network and check its IP from the Settings application. After the device is connected to a WiFi network, go to //Settings -> Wi-Fi -> [name of your network here]// and you will see the IP Address assigned to the device.
 # **SSH into the jailbroken device.** Use your SSH client of choice to connect to the iDevice using the IP identified in the earlier step. The username is //root//. The password is //alpine//.
-# **Change the root password.** Issue the following command to change the root password: {{{passwd}}}. You will be asked to enter the new password twice.]]></Data>
+# **Change the root password.** Issue the following command to change the root password: {{{passwd}}}. You will be asked to enter the new password twice.
+
+==Authentication Guidelines==
+* [[Change Root Passwords on Jailbroken Devices]]
+* [[Encrypt Authentication Credentials Sent over the Network]]
+* [[Implement a Secure Password Reset Function]]
+* [[Throttle Authentication Attempts]]
+* [[Use Server-side Authentication]]
+
+==Authentication Checklists==
+* [[Root Passwords Have Been Changed on Jailbroken Devices]]
+* [[Authentication Credentials Sent over the Network Are Encrypted]]
+* [[A Secure Password Reset Function Is Implemented]]
+* [[Authentication Attempts Are Throttled]]
+* [[Authentication Is Implemented on the Server-side]]
+]]></Data>
     </Content>
   </TeamMentor_Article>
   <TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
@@ -1129,6 +1252,22 @@ To validate data passed to //UIWebView// controls:
 # **Write validation code for data passed to //UIWebView// controls.** Add data validation methods to the application that validate all data types sent to //UIWebView// controls used by the application. Pay particular attention to any data that may include JavaScript.
 # **Write encoding code for data passed to //UIWebView// controls.** Write encoding routines that handle all the types of data that are passed to //UIWebView// controls. Unfortunately, there appear to be no standard libraries that handle encoding for iOS. Things to watch out for are: converting data to the same character-encoding before validating or encoding, escaping HTML entities, escaping JavaScript entities, and escaping XML entities, depending on context.
 # **Validate and encode data passed to //UIWebView// controls.** Use the respective validation and encoding functions for each respective type of data before passing it to //UIWebView// controls.
+
+==Data Validation Guidelines==
+* [[Canonicalize File Names and Paths]]
+* [[Check File Paths and Names for Null Bytes]]
+* [[Validate All Input]]
+* [[Validate and Encode Data Inserted into XML Documents]]
+* [[Validate and Encode Data Passed to UIWebView Controls]]
+* [[Validate File Formats]]
+
+==Data Validation Checklists==
+* [[File Names and Paths Are Canonicalized]]
+* [[File Paths and Names Are Checked for Null Bytes]]
+* [[All Input Is Validated]]
+* [[Data Inserted into XML Documents Is Validated and Encoded]]
+* [[Data Passed to UIWebView Controls Is Validated and Encoded]]
+* [[File Formats Are Validated]]
 
 ==Additional Resources==
 
@@ -1183,6 +1322,14 @@ To use the //keychain// to store cached authentication data and encryption keys:
 # **Identify the code that caches authenticaton data.** Review the application code to find all code that handles data that should be stored in the //keychain//.
 # **Store cached authentication credentials in the keychain.** Add code that uses the //keychain// to store cached authentication data to all code that handles such data or rewrite existing code as necessary.
 
+==Cryptographic Storage Guidelines==
+* [[Encrypt Stored Sensitive Data]]
+* [[Store Cached Authentication Data in the Keychain]]
+
+==Cryptographic Storage Checklists==
+* [[Stored Sensitive Data Is Encrypted]]
+* [[Cached Authentication Data Is Stored in the Keychain]]
+
 ]]></Data>
     </Content>
   </TeamMentor_Article>
@@ -1213,9 +1360,15 @@ Application updates should be signed to verify that they came from a trusted sou
 
 The procedure for signing iOS application updates is the same as the procedure for signing iOS applications in general.
 
-==Related Items==
+==Code Integrity Guidelines==
+* [[Implement Code Integrity Checks]]
+* [[Sign iOS Application Updates]]
+* [[Sign iOS Applications]]
 
-* [[Sign iOS Applications]]]]></Data>
+==Code Integrity Checklists==
+* [[Code Integrity Checks Are Implemented]]
+* [[iOS Application Updates Are Signed]]
+* [[iOS Applications Are Signed]]]]></Data>
     </Content>
   </TeamMentor_Article>
   <TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
@@ -1253,7 +1406,23 @@ Perform the following actions to validate file format before loading files into 
 # **Review code.** Search for code that loads saved files into the application. Examine the extents of the validation already being performed by the application. If some validation is already being performed, some code may be recycled for a more thorough validation routine.
 # **Implement validation.** Write validation functions for all fields in all document types supported by the application.
 # **Centralize validation.** Move the validation functions for all document fields to the centralized input and data validation class or library. Write a master file format validation function that calls all individual data field validation functions.
-# **Use validation.** Go back to code that loads data files into the application. Remove any old validation code. Add code that calls the master file format validation function on all files being loaded before loading them into the application.]]></Data>
+# **Use validation.** Go back to code that loads data files into the application. Remove any old validation code. Add code that calls the master file format validation function on all files being loaded before loading them into the application.
+
+==Data Validation Guidelines==
+* [[Canonicalize File Names and Paths]]
+* [[Check File Paths and Names for Null Bytes]]
+* [[Validate All Input]]
+* [[Validate and Encode Data Inserted into XML Documents]]
+* [[Validate and Encode Data Passed to UIWebView Controls]]
+* [[Validate File Formats]]
+
+==Data Validation Checklists==
+* [[File Names and Paths Are Canonicalized]]
+* [[File Paths and Names Are Checked for Null Bytes]]
+* [[All Input Is Validated]]
+* [[Data Inserted into XML Documents Is Validated and Encoded]]
+* [[Data Passed to UIWebView Controls Is Validated and Encoded]]
+* [[File Formats Are Validated]]]]></Data>
     </Content>
   </TeamMentor_Article>
   <TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
@@ -1284,7 +1453,17 @@ Parsing external entities in XML documents may result in injection vulnerabiliti
 There are two common ways to parse XML in iOS: //NSXMLParser// and //LibXML2//. 
 
 # **NSXMLParser.** Parsing of external entities is disabled by default in //NSXMLParser//. Don't explicitly enable parsing of external entities - avoid using the //setShouldResolveExternalEntities// option. 
-# **LibXML2**. Parsing of external entitites needs to be manually disabled in //LibXML2//. To disable parsing of external entities, use the //xmlSetExternalEntityLoader// method of the //parser// class to set the external entity loader to be a function that doesn't do anything.]]></Data>
+# **LibXML2**. Parsing of external entitites needs to be manually disabled in //LibXML2//. To disable parsing of external entities, use the //xmlSetExternalEntityLoader// method of the //parser// class to set the external entity loader to be a function that doesn't do anything.
+
+==Dangerous API Guidelines==
+* [[Avoid Using URL Handlers for Sensitive Operations]]
+* [[Disable Parsing of External XML Entities]]
+* [[Use Static Format Strings]]
+
+==Dangerous API Checklists==
+* [[URL Handlers Are Not Used for Sensitive Operations]]
+* [[Parsing of External XML Entities Is Disabled]]
+* [[Static Format Strings Are Used]]]]></Data>
     </Content>
   </TeamMentor_Article>
   <TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
@@ -1322,7 +1501,23 @@ To validate all user input using white-list input validation:
 # **Validate format.** If the input type has a specific pattern, such as a date or a phone number, add code to use regular expressions to make sure user input matches the input type specified by the application. Use regular expressions to enforce strong password requirements.
 # **Validate range.** Restrict the acceptable range of numerical input by comparing the input to the maximum and minimum acceptable values.
 # **(Optional) Reject and respond to known bad input.** This step does not add much actual security, but it is included here to let you know that such an option exists. The input validation subsystem may check for known attack strings and respond to these likely attacks by alerting the user. The options for responding to invalid input are: reject invalid input, log invalid input, take evasive action.
-# **(Optional) Encode input.** If the input is going to be displayed back through the web application, consider adding code to encode it to prevent Cross-Site Scripting attacks.]]></Data>
+# **(Optional) Encode input.** If the input is going to be displayed back through the web application, consider adding code to encode it to prevent Cross-Site Scripting attacks.
+
+==Data Validation Guidelines==
+* [[Canonicalize File Names and Paths]]
+* [[Check File Paths and Names for Null Bytes]]
+* [[Validate All Input]]
+* [[Validate and Encode Data Inserted into XML Documents]]
+* [[Validate and Encode Data Passed to UIWebView Controls]]
+* [[Validate File Formats]]
+
+==Data Validation Checklists==
+* [[File Names and Paths Are Canonicalized]]
+* [[File Paths and Names Are Checked for Null Bytes]]
+* [[All Input Is Validated]]
+* [[Data Inserted into XML Documents Is Validated and Encoded]]
+* [[Data Passed to UIWebView Controls Is Validated and Encoded]]
+* [[File Formats Are Validated]]]]></Data>
     </Content>
   </TeamMentor_Article>
   <TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
@@ -1368,6 +1563,12 @@ There is no practical way to access remote SQL databases using native iOS API ca
 # **Use parameterized APIs to execute SQL queries.** When implementing the Web Services, make sure to use parameterized APIs for database access to prevent SQL injection vulnerabilities.
 # **Connect the application to the back-end.** Add code to the iOS application to interact with the back-end. It might be necessary to add some pages for configuring the connection to the back-end, such as setting the URL of the Web Services and the authentication credentials.
 
+==Database Security Guidelines==
+* [[Use Parameterized Methods for Database Access]]
+
+==Database Security Checklists==
+* [[Parameterized Methods Are Used for Database Access]]
+
 ==Additional Resources==
 
 * For a detailed guide on integrating SQLite functionality into iOS applications, please see http://www.techotopia.com/index.php/IOS_4_iPhone_Database_Implementation_using_SQLite
@@ -1409,7 +1610,21 @@ To validate and encode data inserted into XML documents:
 # **Add encoding code.** Add methods that escape XML entities. Unfortunately, there are no stable libraries available for escaping XML entities for iOS. When writing code that escapes XML entities, consider the following: data has to be converted to a uniform character encoding first, XML entities have to be escaped properly, and code that loads XML documents should be able to restore the original data from the encoded data.
 # **Use encoding code.** Add code that encodes data to code that uses XML documents. 
 
-==Additional Resources==
+==Data Validation Guidelines==
+* [[Canonicalize File Names and Paths]]
+* [[Check File Paths and Names for Null Bytes]]
+* [[Validate All Input]]
+* [[Validate and Encode Data Inserted into XML Documents]]
+* [[Validate and Encode Data Passed to UIWebView Controls]]
+* [[Validate File Formats]]
+
+==Data Validation Checklists==
+* [[File Names and Paths Are Canonicalized]]
+* [[File Paths and Names Are Checked for Null Bytes]]
+* [[All Input Is Validated]]
+* [[Data Inserted into XML Documents Is Validated and Encoded]]
+* [[Data Passed to UIWebView Controls Is Validated and Encoded]]
+* [[File Formats Are Validated]]
 
 ]]></Data>
     </Content>
@@ -1445,7 +1660,23 @@ Checking file names and paths for null bytes helps prevent unauthorized file acc
 
 To check file paths and names for null bytes:
 # **Identify all input used for file access.** Enumerate all file access performed by the application. Examine code responsible for accessing each file. Take note of any input used to form path or file names for file access.
-# **Remove null bytes from paths.** If a //NSString// object contains a file name or path and includes a null byte, an incorrect resource may be accessed. Verify that there are no null bytes in strings that are used for file names or paths. If null bytes are detected, it is safer to abort the operation than to strip the null bytes, because the presence of null bytes almost certainly indicates an attack.]]></Data>
+# **Remove null bytes from paths.** If a //NSString// object contains a file name or path and includes a null byte, an incorrect resource may be accessed. Verify that there are no null bytes in strings that are used for file names or paths. If null bytes are detected, it is safer to abort the operation than to strip the null bytes, because the presence of null bytes almost certainly indicates an attack.
+
+==Data Validation Guidelines==
+* [[Canonicalize File Names and Paths]]
+* [[Check File Paths and Names for Null Bytes]]
+* [[Validate All Input]]
+* [[Validate and Encode Data Inserted into XML Documents]]
+* [[Validate and Encode Data Passed to UIWebView Controls]]
+* [[Validate File Formats]]
+
+==Data Validation Checklists==
+* [[File Names and Paths Are Canonicalized]]
+* [[File Paths and Names Are Checked for Null Bytes]]
+* [[All Input Is Validated]]
+* [[Data Inserted into XML Documents Is Validated and Encoded]]
+* [[Data Passed to UIWebView Controls Is Validated and Encoded]]
+* [[File Formats Are Validated]]]]></Data>
     </Content>
   </TeamMentor_Article>
   <TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
@@ -1491,6 +1722,20 @@ To use server-side authentication:
 # **Implement authentication on the server.** It is important to implement security controls, such as authentication on the server, because client-side security controls can be tampered with or disabled altogether on the client. Implement authentication controls that match the requirements defined in the previous step on the server back-end. 
 # **Add client-side code that authenticates to the server.** Once authentication is implemented in accordance with the requirements, add client-side code that authenticates to the server. The client-side code will need an interface for managing authentication credentials, network code that communicates with the server using SSL/TLS, a token or some other means to maintain a session state on the server, and possibly secure storage for cached authentication credentials.
 
+==Authentication Guidelines==
+* [[Change Root Passwords on Jailbroken Devices]]
+* [[Encrypt Authentication Credentials Sent over the Network]]
+* [[Implement a Secure Password Reset Function]]
+* [[Throttle Authentication Attempts]]
+* [[Use Server-side Authentication]]
+
+==Authentication Checklists==
+* [[Root Passwords Have Been Changed on Jailbroken Devices]]
+* [[Authentication Credentials Sent over the Network Are Encrypted]]
+* [[A Secure Password Reset Function Is Implemented]]
+* [[Authentication Attempts Are Throttled]]
+* [[Authentication Is Implemented on the Server-side]]
+
 ==Additional Resources==
 
 * For more information about authentication requirements, please see https://www.owasp.org/index.php/Authentication_Cheat_Sheet]]></Data>
@@ -1532,7 +1777,15 @@ To use SSL to protect communications:
 # **Identify code that uses the network.** Identify code that is responsible for each network communication that needs to be encrypted.
 # **Add code that uses SSL.** Add code that uses SSL to code that performs network communications that need to be encrypted. The //NSURLRequest// and //NSURLConnection// classes support SSL with an acceptably secure default configuration starting with iOS 5 - this is the most practical way to use SSL on iOS and should be sufficient for most applications. 
 
-==Related Articles==
+==Communication Security Guidelines==
+* [[Disable Self-signed SSL Certificates]]
+* [[Use SSL to Protect Communications]]
+* [[Use Strong SSL Configurations]]
+
+==Communication Security Checklists==
+* [[Self-signed SSL Certificates Are Disabled]]
+* [[SSL Is Used to Protect Communications]]
+* [[Strong SSL Configurations Are Used]]
 
 ==Additional Resources==
 
@@ -1576,7 +1829,20 @@ To throttle authentication attempts:
 # **Identify authentication code.** Identify server-side code that is responsible for authentication.
 # **Add code that throttles authentication attempts.** Add server-side code to the authentication code identified in the previous step to wait for the required time period before handling another authentication request. Keep track of clients using IPs and session cookies to make it harder to bypass authentication throttling.
 
-==Additional Resources==]]></Data>
+==Authentication Guidelines==
+* [[Change Root Passwords on Jailbroken Devices]]
+* [[Encrypt Authentication Credentials Sent over the Network]]
+* [[Implement a Secure Password Reset Function]]
+* [[Throttle Authentication Attempts]]
+* [[Use Server-side Authentication]]
+
+==Authentication Checklists==
+* [[Root Passwords Have Been Changed on Jailbroken Devices]]
+* [[Authentication Credentials Sent over the Network Are Encrypted]]
+* [[A Secure Password Reset Function Is Implemented]]
+* [[Authentication Attempts Are Throttled]]
+* [[Authentication Is Implemented on the Server-side]]
+]]></Data>
     </Content>
   </TeamMentor_Article>
   <TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
@@ -1615,6 +1881,20 @@ To implement a secure password reset function:
 # **Use a side channel to send a password reset token.** The most common and effective solution is to send a difficult to predict token to the e-mail address associated with the user account for which the password reset is requested.
 # **Provide a control for changing the password.** Once the user has the password reset token, there should be a way for the user to submit that token and to then be able to change the password. One way is to provide a web page that does this, another is to provide a Web Service to the iOS application that accepts the password reset token and allows the user to change the password; both methods may be used in combination.
 # **Log the password reset event.** Both failed and successful password reset requests should be logged on the server. A large amount of password reset requests may indicate an attack.
+
+==Authentication Guidelines==
+* [[Change Root Passwords on Jailbroken Devices]]
+* [[Encrypt Authentication Credentials Sent over the Network]]
+* [[Implement a Secure Password Reset Function]]
+* [[Throttle Authentication Attempts]]
+* [[Use Server-side Authentication]]
+
+==Authentication Checklists==
+* [[Root Passwords Have Been Changed on Jailbroken Devices]]
+* [[Authentication Credentials Sent over the Network Are Encrypted]]
+* [[A Secure Password Reset Function Is Implemented]]
+* [[Authentication Attempts Are Throttled]]
+* [[Authentication Is Implemented on the Server-side]]
 
 ==Additional Resources==
 
@@ -1656,6 +1936,19 @@ To encrypt authentication credentials sent over the network:
 # **Identify the authentication code.** Identify the code that is responsible for authentication both on the iOS device and on the remote server. The authentication itself should be implemented on the server. To protect authentication credentials in transit, both end points need to support SSL. 
 # **Encrypt authentication credentials in transit.** Add code that uses SSL to protect authentication credentials in transit. The server should be configured to only accept authentication credentials via SSL. The iOS //NSURLRequest// and //NSURLConnection// classes support SSL and should be sufficient for many common authentication scenarios.
 
+==Authentication Guidelines==
+* [[Change Root Passwords on Jailbroken Devices]]
+* [[Encrypt Authentication Credentials Sent over the Network]]
+* [[Implement a Secure Password Reset Function]]
+* [[Throttle Authentication Attempts]]
+* [[Use Server-side Authentication]]
+
+==Authentication Checklists==
+* [[Root Passwords Have Been Changed on Jailbroken Devices]]
+* [[Authentication Credentials Sent over the Network Are Encrypted]]
+* [[A Secure Password Reset Function Is Implemented]]
+* [[Authentication Attempts Are Throttled]]
+* [[Authentication Is Implemented on the Server-side]]
 
 ==Additional Resources==
 
@@ -1693,7 +1986,17 @@ Allowing the use of self-signed SSL certificates enables some types of man-in-th
 
 ==How==
 
-Self-signed SSL certificates are not allowed by default. Do not allow them. Avoid using the //allowsAnyHTTPSCertificateForHost// method in production releases, because it allows self-signed SSL certificates. Do not use the //continueWithoutCredentialForAuthenticationChallenge// selector within the //didReceiveAuthenticationChallenge// delegate method of //NSURLConnection// objects, because it enables self-signed SSL certificates.]]></Data>
+Self-signed SSL certificates are not allowed by default. Do not allow them. Avoid using the //allowsAnyHTTPSCertificateForHost// method in production releases, because it allows self-signed SSL certificates. Do not use the //continueWithoutCredentialForAuthenticationChallenge// selector within the //didReceiveAuthenticationChallenge// delegate method of //NSURLConnection// objects, because it enables self-signed SSL certificates.
+
+==Communication Security Guidelines==
+* [[Disable Self-signed SSL Certificates]]
+* [[Use SSL to Protect Communications]]
+* [[Use Strong SSL Configurations]]
+
+==Communication Security Checklists==
+* [[Self-signed SSL Certificates Are Disabled]]
+* [[SSL Is Used to Protect Communications]]
+* [[Strong SSL Configurations Are Used]]]]></Data>
     </Content>
   </TeamMentor_Article>
   <TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
@@ -1757,7 +2060,17 @@ Perform the following actions to assure that user input is not used in format st
 #* //wscanf//
 #* //swscanf//
 # **Avoid using formatted functions.** Consider replacing formatted input-output functions with other functions, which are not prone to format string vulnerabilities.
-# **(Re-)Write code to exclude user input from format strings.** Place user input in separate variables and pass it as variadic arguments to the formatted input-output functions, instead of placing it in a format strings.]]></Data>
+# **(Re-)Write code to exclude user input from format strings.** Place user input in separate variables and pass it as variadic arguments to the formatted input-output functions, instead of placing it in a format strings.
+
+==Dangerous API Guidelines==
+* [[Avoid Using URL Handlers for Sensitive Operations]]
+* [[Disable Parsing of External XML Entities]]
+* [[Use Static Format Strings]]
+
+==Dangerous API Checklists==
+* [[URL Handlers Are Not Used for Sensitive Operations]]
+* [[Parsing of External XML Entities Is Disabled]]
+* [[Static Format Strings Are Used]]]]></Data>
     </Content>
   </TeamMentor_Article>
   <TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
@@ -1790,7 +2103,16 @@ To enable Automatic Reference Counting(ARC):
 # **Use a compatible SDK.** Use iOS SDK 5.0 or higher to be able to use Automatic Reference Counting.
 # **Launch XCode.** Open the XCode environment.
 # **Enable Automatic Reference Counting.** Set the compiler option //Objective-C Automatic Reference Counting// to //yes//.
-]]></Data>
+
+==Memory Management Guidelines==
+* [[Compile Applications with Stack Cookies Enabled]]
+* [[Do Not Reference Freed Objects]]
+* [[Use Automatic Reference Counting]]
+
+==Memory Management Checklists==
+* [[Applications Are Compiled with Stack Cookies Enabled]]
+* [[Freed Objects Are Not Referenced]]
+* [[Automatic Reference Counting Is Used]]]]></Data>
     </Content>
   </TeamMentor_Article>
   <TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
@@ -1822,7 +2144,16 @@ To disable file sharing in applications that support it:
 
 # **Identify applications with file sharing capabilities.** Enumerate all the installed applications. Check each application to see if it supports file sharing.
 # **Disable or secure file sharing.** Disable file sharing for each application that enables such functionality when file sharing is not being used. If the application offers security features to protect file sharing, such as password protection, use these features to protect file sharing. Even if security features are available for file sharing, file sharing should be disabled when it is not being used.
-# **Disable file sharing by default.** When developing applications, disable file sharing by default in your applications.]]></Data>
+# **Disable file sharing by default.** When developing applications, disable file sharing by default in your applications.
+
+==Authorization Guidelines==
+* [[Disable File Sharing in Applications that Support It]]
+* [[Use Role-based Access Control]]
+
+==Authorization Checklists==
+* [[File Sharing Is Disabled in Applications that Support It]]
+* [[Role-based Access Control Is Used]]
+]]></Data>
     </Content>
   </TeamMentor_Article>
   <TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
@@ -1858,7 +2189,17 @@ To use strong SSL configurations:
 
 # **Disable self-signed certificates.** Self-signed certificates are disabled by default by the iOS SDK. Developers have to intentionally enable self-signed certificates for them to be acceptable by the application. Self-signed certificates are often enabled for testing in the development environment. It is important to disable self-signed certificates in production releases, because self-signed certificates allow man-in-the-middle attacks, which largely negate the use of SSL.
 # **Identify the available SDK version.** Identify the iOS SDK version used by the application.
-# **Use strong cypher suites.** The cypher suites used by SSL implementations in iOS SDKs vary by version. Versions 5 and higher of the iOS SDK may be considered to use strong SSL cypher suites. There are no practical ways to control which cypher suites are used by iOS applications. If strength of SSL cyphers is a critical requirement, use version 5 or higher of the iOS SDK.]]></Data>
+# **Use strong cypher suites.** The cypher suites used by SSL implementations in iOS SDKs vary by version. Versions 5 and higher of the iOS SDK may be considered to use strong SSL cypher suites. There are no practical ways to control which cypher suites are used by iOS applications. If strength of SSL cyphers is a critical requirement, use version 5 or higher of the iOS SDK.
+
+==Communication Security Guidelines==
+* [[Disable Self-signed SSL Certificates]]
+* [[Use SSL to Protect Communications]]
+* [[Use Strong SSL Configurations]]
+
+==Communication Security Checklists==
+* [[Self-signed SSL Certificates Are Disabled]]
+* [[SSL Is Used to Protect Communications]]
+* [[Strong SSL Configurations Are Used]]]]></Data>
     </Content>
   </TeamMentor_Article>
   <TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
@@ -1896,7 +2237,15 @@ Use the following steps when designing role-based security:
 # **Establish the roles.** Define which resources can be accessed by each role. There are two approaches when enforcing role-based security - programmatic and declarative.
 #* **The programmatic approach.** The programmatic approach to role-based security is written inside the code and provides additional runtime flexibility. It allows your application to dynamically create and assign roles so that user privileges can be granted and revoked without the need of restarting your application. When using the programmatic approach to role-based security, place access control checks at the appropriate locations in your application.
 #* **The declarative approach.** The declarative approach to role-based security is done via the configuration files. It allows easy manageability as the declarations can be modified without having to recompile. By using the declarative approach, you can easily manage the security settings for large portions of the application without changing the source code.
-# **Manage the users.** Assign the users into their respective user roles. The application should enforce the security policy according to the user roles instead of the actual user.]]></Data>
+# **Manage the users.** Assign the users into their respective user roles. The application should enforce the security policy according to the user roles instead of the actual user.
+
+==Authorization Guidelines==
+* [[Disable File Sharing in Applications that Support It]]
+* [[Use Role-based Access Control]]
+
+==Authorization Checklists==
+* [[File Sharing Is Disabled in Applications that Support It]]
+* [[Role-based Access Control Is Used]]]]></Data>
     </Content>
   </TeamMentor_Article>
   <TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
@@ -1930,6 +2279,16 @@ To avoid using URL handlers for sensitive operations:
 # **Identify the operations associated with the URL handlers.** The developers should know what each //URL Type// is responsible for. Consider each one and decide if it is safe to keep.
 # **Remove dangerous URL handlers.** Sometimes URL handlers are used for testing. Remove any URL handlers that may be too dangerous from the production release.
 # **Verify the origin of the URL request**. Use the //openURL// method to make sure the URL request came from within the application itself or from a trusted application for any remaining URL handlers.
+
+==Dangerous API Guidelines==
+* [[Avoid Using URL Handlers for Sensitive Operations]]
+* [[Disable Parsing of External XML Entities]]
+* [[Use Static Format Strings]]
+
+==Dangerous API Checklists==
+* [[URL Handlers Are Not Used for Sensitive Operations]]
+* [[Parsing of External XML Entities Is Disabled]]
+* [[Static Format Strings Are Used]]
 
 ==Additional Resources==
 
@@ -1966,7 +2325,23 @@ To canonicalize file names and paths:
 # **Identify all input used for file access.** Enumerate all file access performed by the application. Examine code responsible for accessing each file. Take note of any input used to form path or file names for file access.
 # **Remove null bytes from paths.** If a file name or path includes a null byte, an incorrect resource may be accessed. Verify that there are no null bytes in strings that are used for file names or paths. If null bytes are detected, it is safer to abort the operation than to strip the null bytes, because the presence of null bytes almost certainly indicates an attack.
 # **Canonicalize all input data used for file access.** The exact approach for canonicalization is different for different applications. One common scenario is appending a user-specified file name to a predefined path. In that case, the //lastPathComponent// method of the //NSString// class should be used on the file name to get just the file name. After that, the file name should be added to the predefined path.
-# **Validate file paths.** Verify that the user or application are authorized to access the specified resource.]]></Data>
+# **Validate file paths.** Verify that the user or application are authorized to access the specified resource.
+
+==Data Validation Guidelines==
+* [[Canonicalize File Names and Paths]]
+* [[Check File Paths and Names for Null Bytes]]
+* [[Validate All Input]]
+* [[Validate and Encode Data Inserted into XML Documents]]
+* [[Validate and Encode Data Passed to UIWebView Controls]]
+* [[Validate File Formats]]
+
+==Data Validation Checklists==
+* [[File Names and Paths Are Canonicalized]]
+* [[File Paths and Names Are Checked for Null Bytes]]
+* [[All Input Is Validated]]
+* [[Data Inserted into XML Documents Is Validated and Encoded]]
+* [[Data Passed to UIWebView Controls Is Validated and Encoded]]
+* [[File Formats Are Validated]]]]></Data>
     </Content>
   </TeamMentor_Article>
   <TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
@@ -1997,7 +2372,17 @@ Accessing memory that has been deallocated may result in an exploitable vulnerab
 Write code in such a way that guarantees that pointers are not used after memory that they point to has been deallocated. One way to do this is to deallocate memory at the end of functions, so that there is no code that accesses memory after it has been deallocated. Perform the following actions to assure that unallocated memory is not accessed:
 
 # **Search for deallocation code.** Review code to find all places where memory is being deallocated.
-# **Move deallocation code.** Place deallocation code right before exit points of the function. Set pointers to null. Make sure that deallocated pointers are not being used elsewhere in the application.]]></Data>
+# **Move deallocation code.** Place deallocation code right before exit points of the function. Set pointers to null. Make sure that deallocated pointers are not being used elsewhere in the application.
+
+==Memory Management Guidelines==
+* [[Compile Applications with Stack Cookies Enabled]]
+* [[Do Not Reference Freed Objects]]
+* [[Use Automatic Reference Counting]]
+
+==Memory Management Checklists==
+* [[Applications Are Compiled with Stack Cookies Enabled]]
+* [[Freed Objects Are Not Referenced]]
+* [[Automatic Reference Counting Is Used]]]]></Data>
     </Content>
   </TeamMentor_Article>
   <TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
@@ -2029,7 +2414,17 @@ Logging location data is likely to raise privacy concerns among users.
 
 ==How==
 
-If your application uses location data, do not store it in files and do not send it to remote servers.]]></Data>
+If your application uses location data, do not store it in files and do not send it to remote servers.
+
+==Privacy Guidelines==
+* [[Do Not Cache Sensitive Data]]
+* [[Do Not Log Location Data]]
+* [[Do Not Log Sensitive Data]]
+
+==Privacy Checklists==
+* [[Sensitive Data Is Not Cached]]
+* [[Location Data Is Not Logged]]
+* [[Sensitive Data Is Not Logged]]]]></Data>
     </Content>
   </TeamMentor_Article>
   <TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
@@ -2066,6 +2461,16 @@ The iOS application signing process is complicated, but it is also well document
 # **Examine the application record in iTunes Connect.** Go to iTunes connect and fill out the forms to create the application record, if necessary.
 # **Submit the application for publication.** Go to //Product//, //Archive// in XCode and follow on-screen instructions to submit the application for approval.
 # **Wait for approval notification.** The e-mail account associated with the iOS Developer Program account should receive a notification regarding the status of the approval process. This might take a week or more, but after it is finished, the application should be signed and ready for distribution.
+
+==Code Integrity Guidelines==
+* [[Implement Code Integrity Checks]]
+* [[Sign iOS Application Updates]]
+* [[Sign iOS Applications]]
+
+==Code Integrity Checklists==
+* [[Code Integrity Checks Are Implemented]]
+* [[iOS Application Updates Are Signed]]
+* [[iOS Applications Are Signed]]
 
 ==Additional Resources==
 
@@ -17667,7 +18072,23 @@ Perform the following actions to validate file format before loading files into 
 # **Review code.** Search for code that loads saved files into the application. Examine the extents of the validation already being performed by the application. If some validation is already being performed, some code may be recycled for a more thorough validation routine.
 # **Implement validation.** Write validation functions for all fields in all document types supported by the application.
 # **Centralize validation.** Move the validation functions for all document fields to the centralized input and data validation class or library. Write a master file format validation function that calls all individual data field validation functions.
-# **Use validation.** Go back to code that loads data files into the application. Remove any old validation code. Add code that calls the master file format validation function on all files being loaded before loading them into the application.]]></Data>
+# **Use validation.** Go back to code that loads data files into the application. Remove any old validation code. Add code that calls the master file format validation function on all files being loaded before loading them into the application.
+
+==Data Validation Guidelines==
+* [[Canonicalize File Names and Paths]]
+* [[Check File Paths and Names for Null Bytes]]
+* [[Validate All Input]]
+* [[Validate and Encode Data Inserted into XML Documents]]
+* [[Validate and Encode Data Passed to UIWebView Controls]]
+* [[Validate File Formats]]
+
+==Data Validation Checklists==
+* [[File Names and Paths Are Canonicalized]]
+* [[File Paths and Names Are Checked for Null Bytes]]
+* [[All Input Is Validated]]
+* [[Data Inserted into XML Documents Is Validated and Encoded]]
+* [[Data Passed to UIWebView Controls Is Validated and Encoded]]
+* [[File Formats Are Validated]]]]></Data>
     </Content>
   </TeamMentor_Article>
   <TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
@@ -17712,6 +18133,22 @@ To validate data passed to //UIWebView// controls:
 # **Write validation code for data passed to //UIWebView// controls.** Add data validation methods to the application that validate all data types sent to //UIWebView// controls used by the application. Pay particular attention to any data that may include JavaScript.
 # **Write encoding code for data passed to //UIWebView// controls.** Write encoding routines that handle all the types of data that are passed to //UIWebView// controls. Unfortunately, there appear to be no standard libraries that handle encoding for iOS. Things to watch out for are: converting data to the same character-encoding before validating or encoding, escaping HTML entities, escaping JavaScript entities, and escaping XML entities, depending on context.
 # **Validate and encode data passed to //UIWebView// controls.** Use the respective validation and encoding functions for each respective type of data before passing it to //UIWebView// controls.
+
+==Data Validation Guidelines==
+* [[Canonicalize File Names and Paths]]
+* [[Check File Paths and Names for Null Bytes]]
+* [[Validate All Input]]
+* [[Validate and Encode Data Inserted into XML Documents]]
+* [[Validate and Encode Data Passed to UIWebView Controls]]
+* [[Validate File Formats]]
+
+==Data Validation Checklists==
+* [[File Names and Paths Are Canonicalized]]
+* [[File Paths and Names Are Checked for Null Bytes]]
+* [[All Input Is Validated]]
+* [[Data Inserted into XML Documents Is Validated and Encoded]]
+* [[Data Passed to UIWebView Controls Is Validated and Encoded]]
+* [[File Formats Are Validated]]
 
 ==Additional Resources==
 
@@ -17763,9 +18200,21 @@ To validate and encode data inserted into XML documents:
 # **Add encoding code.** Add methods that escape XML entities. Unfortunately, there are no stable libraries available for escaping XML entities for iOS. When writing code that escapes XML entities, consider the following: data has to be converted to a uniform character encoding first, XML entities have to be escaped properly, and code that loads XML documents should be able to restore the original data from the encoded data.
 # **Use encoding code.** Add code that encodes data to code that uses XML documents. 
 
-==Related Items==
-
+==Data Validation Guidelines==
+* [[Canonicalize File Names and Paths]]
+* [[Check File Paths and Names for Null Bytes]]
 * [[Validate All Input]]
+* [[Validate and Encode Data Inserted into XML Documents]]
+* [[Validate and Encode Data Passed to UIWebView Controls]]
+* [[Validate File Formats]]
+
+==Data Validation Checklists==
+* [[File Names and Paths Are Canonicalized]]
+* [[File Paths and Names Are Checked for Null Bytes]]
+* [[All Input Is Validated]]
+* [[Data Inserted into XML Documents Is Validated and Encoded]]
+* [[Data Passed to UIWebView Controls Is Validated and Encoded]]
+* [[File Formats Are Validated]]
 ]]></Data>
     </Content>
   </TeamMentor_Article>
@@ -17814,7 +18263,23 @@ To validate all user input using white-list input validation:
 # **Validate format.** If the input type has a specific pattern, such as a date or a phone number, add code to use regular expressions to make sure user input matches the input type specified by the application. Use regular expressions to enforce strong password requirements.
 # **Validate range.** Restrict the acceptable range of numerical input by comparing the input to the maximum and minimum acceptable values.
 # **(Optional) Reject and respond to known bad input.** This step does not add much actual security, but it is included here to let you know that such an option exists. The input validation subsystem may check for known attack strings and respond to these likely attacks by alerting the user. The options for responding to invalid input are: reject invalid input, log invalid input, take evasive action.
-# **(Optional) Encode input.** If the input is going to be displayed back through the web application, consider adding code to encode it to prevent Cross-Site Scripting attacks.]]></Data>
+# **(Optional) Encode input.** If the input is going to be displayed back through the web application, consider adding code to encode it to prevent Cross-Site Scripting attacks.
+
+==Data Validation Guidelines==
+* [[Canonicalize File Names and Paths]]
+* [[Check File Paths and Names for Null Bytes]]
+* [[Validate All Input]]
+* [[Validate and Encode Data Inserted into XML Documents]]
+* [[Validate and Encode Data Passed to UIWebView Controls]]
+* [[Validate File Formats]]
+
+==Data Validation Checklists==
+* [[File Names and Paths Are Canonicalized]]
+* [[File Paths and Names Are Checked for Null Bytes]]
+* [[All Input Is Validated]]
+* [[Data Inserted into XML Documents Is Validated and Encoded]]
+* [[Data Passed to UIWebView Controls Is Validated and Encoded]]
+* [[File Formats Are Validated]]]]></Data>
     </Content>
   </TeamMentor_Article>
   <TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
@@ -17857,7 +18322,17 @@ To use strong SSL configurations:
 
 # **Disable self-signed certificates.** Self-signed certificates are disabled by default by the iOS SDK. Developers have to intentionally enable self-signed certificates for them to be acceptable by the application. Self-signed certificates are often enabled for testing in the development environment. It is important to disable self-signed certificates in production releases, because self-signed certificates allow man-in-the-middle attacks, which largely negate the use of SSL.
 # **Identify the available SDK version.** Identify the iOS SDK version used by the application.
-# **Use strong cypher suites.** The cypher suites used by SSL implementations in iOS SDKs vary by version. Versions 5 and higher of the iOS SDK may be considered to use strong SSL cypher suites. There are no practical ways to control which cypher suites are used by iOS applications. If strength of SSL cyphers is a critical requirement, use version 5 or higher of the iOS SDK.]]></Data>
+# **Use strong cypher suites.** The cypher suites used by SSL implementations in iOS SDKs vary by version. Versions 5 and higher of the iOS SDK may be considered to use strong SSL cypher suites. There are no practical ways to control which cypher suites are used by iOS applications. If strength of SSL cyphers is a critical requirement, use version 5 or higher of the iOS SDK.
+
+==Communication Security Guidelines==
+* [[Disable Self-signed SSL Certificates]]
+* [[Use SSL to Protect Communications]]
+* [[Use Strong SSL Configurations]]
+
+==Communication Security Checklists==
+* [[Self-signed SSL Certificates Are Disabled]]
+* [[SSL Is Used to Protect Communications]]
+* [[Strong SSL Configurations Are Used]]]]></Data>
     </Content>
   </TeamMentor_Article>
   <TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
@@ -17961,7 +18436,17 @@ Perform the following actions to assure that user input is not used in format st
 #* //wscanf//
 #* //swscanf//
 # **Avoid using formatted functions.** Consider replacing formatted input-output functions with other functions, which are not prone to format string vulnerabilities.
-# **(Re-)Write code to exclude user input from format strings.** Place user input in separate variables and pass it as variadic arguments to the formatted input-output functions, instead of placing it in a format strings.]]></Data>
+# **(Re-)Write code to exclude user input from format strings.** Place user input in separate variables and pass it as variadic arguments to the formatted input-output functions, instead of placing it in a format strings.
+
+==Dangerous API Guidelines==
+* [[Avoid Using URL Handlers for Sensitive Operations]]
+* [[Disable Parsing of External XML Entities]]
+* [[Use Static Format Strings]]
+
+==Dangerous API Checklists==
+* [[URL Handlers Are Not Used for Sensitive Operations]]
+* [[Parsing of External XML Entities Is Disabled]]
+* [[Static Format Strings Are Used]]]]></Data>
     </Content>
   </TeamMentor_Article>
   <TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
@@ -18009,7 +18494,15 @@ To use SSL to protect network connections:
 # **Identify code that uses the network.** Identify code that is responsible for each network communication that needs to be encrypted.
 # **Add code that uses SSL.** Add code that uses SSL to code that performs network communications that need to be encrypted. The //NSURLRequest// and //NSURLConnection// classes support SSL with an acceptably secure default configuration starting with iOS 5 - this is the most practical way to use SSL on iOS and should be sufficient for most applications. 
 
-==Related Articles==
+==Communication Security Guidelines==
+* [[Disable Self-signed SSL Certificates]]
+* [[Use SSL to Protect Communications]]
+* [[Use Strong SSL Configurations]]
+
+==Communication Security Checklists==
+* [[Self-signed SSL Certificates Are Disabled]]
+* [[SSL Is Used to Protect Communications]]
+* [[Strong SSL Configurations Are Used]]
 
 ==Additional Resources==
 
@@ -18078,6 +18571,20 @@ To implement authentication on the server-side:
 # **Implement authentication on the server.** It is important to implement security controls, such as authentication on the server, because client-side security controls can be tampered with or disabled altogether on the client. Implement authentication controls that match the requirements defined in the previous step on the server back-end. 
 # **Add client-side code that authenticates to the server.** Once authentication is implemented in accordance with the requirements, add client-side code that authenticates to the server. The client-side code will need an interface for managing authentication credentials, network code that communicates with the server using SSL/TLS, a token or some other means to maintain a session state on the server, and possibly secure storage for cached authentication credentials.
 
+==Authentication Guidelines==
+* [[Change Root Passwords on Jailbroken Devices]]
+* [[Encrypt Authentication Credentials Sent over the Network]]
+* [[Implement a Secure Password Reset Function]]
+* [[Throttle Authentication Attempts]]
+* [[Use Server-side Authentication]]
+
+==Authentication Checklists==
+* [[Root Passwords Have Been Changed on Jailbroken Devices]]
+* [[Authentication Credentials Sent over the Network Are Encrypted]]
+* [[A Secure Password Reset Function Is Implemented]]
+* [[Authentication Attempts Are Throttled]]
+* [[Authentication Is Implemented on the Server-side]]
+
 ==Additional Resources==
 
 * For more information about authentication requirements, please see https://www.owasp.org/index.php/Authentication_Cheat_Sheet]]></Data>
@@ -18127,7 +18634,15 @@ Use the following steps when designing role-based security:
 # **Establish the roles.** Define which resources can be accessed by each role. There are two approaches when enforcing role-based security - programmatic and declarative.
 #* **The programmatic approach.** The programmatic approach to role-based security is written inside the code and provides additional runtime flexibility. It allows your application to dynamically create and assign roles so that user privileges can be granted and revoked without the need of restarting your application. When using the programmatic approach to role-based security, place access control checks at the appropriate locations in your application.
 #* **The declarative approach.** The declarative approach to role-based security is done via the configuration files. It allows easy manageability as the declarations can be modified without having to recompile. By using the declarative approach, you can easily manage the security settings for large portions of the application without changing the source code.
-# **Manage the users.** Assign the users into their respective user roles. The application should enforce the security policy according to the user roles instead of the actual user.]]></Data>
+# **Manage the users.** Assign the users into their respective user roles. The application should enforce the security policy according to the user roles instead of the actual user.
+
+==Authorization Guidelines==
+* [[Disable File Sharing in Applications that Support It]]
+* [[Use Role-based Access Control]]
+
+==Authorization Checklists==
+* [[File Sharing Is Disabled in Applications that Support It]]
+* [[Role-based Access Control Is Used]]]]></Data>
     </Content>
   </TeamMentor_Article>
   <TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
@@ -18180,6 +18695,12 @@ There is no practical way to access remote SQL databases using native iOS API ca
 # **Use parameterized APIs to execute SQL queries.** When implementing the Web Services, make sure to use parameterized APIs for database access to prevent SQL injection vulnerabilities.
 # **Connect the application to the back-end.** Add code to the iOS application to interact with the back-end. It might be necessary to add some pages for configuring the connection to the back-end, such as setting the URL of the Web Services and the authentication credentials.
 
+==Database Security Guidelines==
+* [[Use Parameterized Methods for Database Access]]
+
+==Database Security Checklists==
+* [[Parameterized Methods Are Used for Database Access]]
+
 ==Additional Resources==
 
 * For a detailed guide on integrating SQLite functionality into iOS applications, please see http://www.techotopia.com/index.php/IOS_4_iPhone_Database_Implementation_using_SQLite
@@ -18230,7 +18751,22 @@ To throttle authentication attempts:
 
 # **Define authentication throttling requirements.** Define the time-out period between each authentication attempt. A recommended time-out period is three seconds.
 # **Identify authentication code.** Identify server-side code that is responsible for authentication.
-# **Add code that throttles authentication attempts.** Add server-side code to the authentication code identified in the previous step to wait for the required time period before handling another authentication request. Keep track of clients using IPs and session cookies to make it harder to bypass authentication throttling.]]></Data>
+# **Add code that throttles authentication attempts.** Add server-side code to the authentication code identified in the previous step to wait for the required time period before handling another authentication request. Keep track of clients using IPs and session cookies to make it harder to bypass authentication throttling.
+
+==Authentication Guidelines==
+* [[Change Root Passwords on Jailbroken Devices]]
+* [[Encrypt Authentication Credentials Sent over the Network]]
+* [[Implement a Secure Password Reset Function]]
+* [[Throttle Authentication Attempts]]
+* [[Use Server-side Authentication]]
+
+==Authentication Checklists==
+* [[Root Passwords Have Been Changed on Jailbroken Devices]]
+* [[Authentication Credentials Sent over the Network Are Encrypted]]
+* [[A Secure Password Reset Function Is Implemented]]
+* [[Authentication Attempts Are Throttled]]
+* [[Authentication Is Implemented on the Server-side]]
+]]></Data>
     </Content>
   </TeamMentor_Article>
   <TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
@@ -18291,6 +18827,14 @@ To use the //keychain// to store cached authentication data and encryption keys:
 #* //kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly// - the item is only available after the device is unlocked for the first time after a reboot and is not moved to other devices.
 # **Identify the code that caches authenticaton data.** Review the application code to find all code that handles data that should be stored in the //keychain//.
 # **Store cached authentication credentials in the keychain.** Add code that uses the //keychain// to store cached authentication data to all code that handles such data or rewrite existing code as necessary.
+
+==Cryptographic Storage Guidelines==
+* [[Encrypt Stored Sensitive Data]]
+* [[Store Cached Authentication Data in the Keychain]]
+
+==Cryptographic Storage Checklists==
+* [[Stored Sensitive Data Is Encrypted]]
+* [[Cached Authentication Data Is Stored in the Keychain]]
 ]]></Data>
     </Content>
   </TeamMentor_Article>
@@ -18336,6 +18880,16 @@ The iOS application signing process is complicated, but it is also well document
 # **Submit the application for publication.** Go to //Product//, //Archive// in XCode and follow on-screen instructions to submit the application for approval.
 # **Wait for approval notification.** The e-mail account associated with the iOS Developer Program account should receive a notification regarding the status of the approval process. This might take a week or more, but after it is finished, the application should be signed and ready for distribution.
 
+==Code Integrity Guidelines==
+* [[Implement Code Integrity Checks]]
+* [[Sign iOS Application Updates]]
+* [[Sign iOS Applications]]
+
+==Code Integrity Checklists==
+* [[Code Integrity Checks Are Implemented]]
+* [[iOS Application Updates Are Signed]]
+* [[iOS Applications Are Signed]]
+
 ==Additional Resources==
 
 * For the "iOS Code Signing Setup, Process, and Troubleshooting" guide, please see http://developer.apple.com/library/ios/#technotes/tn2250/_index.html
@@ -18377,14 +18931,19 @@ Updated applications will not run if they are not signed properly. To verify tha
 # **Install the application update.** Follow the standard procedure to install the application update. Usually, this means installing the application update via iTunes.
 # **Run the application.** Once the application update is installed, launch the application from the Springboard. If the application runs, then the update has been signed successfully.
 
-
 ==How to Fix==
 
 The procedure for signing iOS application updates is the same as the procedure for signing iOS applications in general.
 
-==Related Items==
+==Code Integrity Guidelines==
+* [[Implement Code Integrity Checks]]
+* [[Sign iOS Application Updates]]
+* [[Sign iOS Applications]]
 
-* [[Sign iOS Applications]]]]></Data>
+==Code Integrity Checklists==
+* [[Code Integrity Checks Are Implemented]]
+* [[iOS Application Updates Are Signed]]
+* [[iOS Applications Are Signed]]]]></Data>
     </Content>
   </TeamMentor_Article>
   <TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
@@ -18428,6 +18987,20 @@ To implement a secure password reset function:
 # **Use a side channel to send a password reset token.** The most common and effective solution is to send a difficult to predict token to the e-mail address associated with the user account for which the password reset is requested.
 # **Provide a control for changing the password.** Once the user has the password reset token, there should be a way for the user to submit that token and to then be able to change the password. One way is to provide a web page that does this, another is to provide a Web Service to the iOS application that accepts the password reset token and allows the user to change the password; both methods may be used in combination.
 # **Log the password reset event.** Both failed and successful password reset requests should be logged on the server. A large amount of password reset requests may indicate an attack.
+
+==Authentication Guidelines==
+* [[Change Root Passwords on Jailbroken Devices]]
+* [[Encrypt Authentication Credentials Sent over the Network]]
+* [[Implement a Secure Password Reset Function]]
+* [[Throttle Authentication Attempts]]
+* [[Use Server-side Authentication]]
+
+==Authentication Checklists==
+* [[Root Passwords Have Been Changed on Jailbroken Devices]]
+* [[Authentication Credentials Sent over the Network Are Encrypted]]
+* [[A Secure Password Reset Function Is Implemented]]
+* [[Authentication Attempts Are Throttled]]
+* [[Authentication Is Implemented on the Server-side]]
 
 ==Additional Resources==
 
@@ -18510,7 +19083,13 @@ To encrypt sensitive data stored in files:
 #* //kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly// - the item is only available after the device is unlocked for the first time after a reboot and is not moved to other devices.
 # **Encrypt sensitive files.** Use the appropriate APIs to encrypt stored sensitive data. Data stored in the keychain is always encrypted.
 
-==Additional Resources==]]></Data>
+==Cryptographic Storage Guidelines==
+* [[Encrypt Stored Sensitive Data]]
+* [[Store Cached Authentication Data in the Keychain]]
+
+==Cryptographic Storage Checklists==
+* [[Stored Sensitive Data Is Encrypted]]
+* [[Cached Authentication Data Is Stored in the Keychain]]]]></Data>
     </Content>
   </TeamMentor_Article>
   <TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
@@ -18553,6 +19132,19 @@ To encrypt authentication credentials sent over the network:
 # **Identify the authentication code.** Identify the code that is responsible for authentication both on the iOS device and on the remote server. The authentication itself should be implemented on the server. To protect authentication credentials in transit, both end points need to support SSL. 
 # **Encrypt authentication credentials in transit.** Add code that uses SSL to protect authentication credentials in transit. The server should be configured to only accept authentication credentials via SSL. The iOS //NSURLRequest// and //NSURLConnection// classes support SSL and should be sufficient for many common authentication scenarios.
 
+==Authentication Guidelines==
+* [[Change Root Passwords on Jailbroken Devices]]
+* [[Encrypt Authentication Credentials Sent over the Network]]
+* [[Implement a Secure Password Reset Function]]
+* [[Throttle Authentication Attempts]]
+* [[Use Server-side Authentication]]
+
+==Authentication Checklists==
+* [[Root Passwords Have Been Changed on Jailbroken Devices]]
+* [[Authentication Credentials Sent over the Network Are Encrypted]]
+* [[A Secure Password Reset Function Is Implemented]]
+* [[Authentication Attempts Are Throttled]]
+* [[Authentication Is Implemented on the Server-side]]
 
 ==Additional Resources==
 
@@ -18597,7 +19189,17 @@ To verify that freed objects are not referenced:
 Write code in such a way that guarantees that pointers are not used after memory that they point to has been deallocated. One way to do this is to deallocate memory at the end of functions, so that there is no code that accesses memory after it has been deallocated. Perform the following actions to assure that unallocated memory is not accessed:
 
 # **Search for deallocation code.** Review code to find all places where memory is being deallocated.
-# **Move deallocation code.** Place deallocation code right before exit points of the function. Set pointers to null. Make sure that deallocated pointers are not being used elsewhere in the application.]]></Data>
+# **Move deallocation code.** Place deallocation code right before exit points of the function. Set pointers to null. Make sure that deallocated pointers are not being used elsewhere in the application.
+
+==Memory Management Guidelines==
+* [[Compile Applications with Stack Cookies Enabled]]
+* [[Do Not Reference Freed Objects]]
+* [[Use Automatic Reference Counting]]
+
+==Memory Management Checklists==
+* [[Applications Are Compiled with Stack Cookies Enabled]]
+* [[Freed Objects Are Not Referenced]]
+* [[Automatic Reference Counting Is Used]]]]></Data>
     </Content>
   </TeamMentor_Article>
   <TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
@@ -18643,7 +19245,15 @@ To prevent logging of sensitive data:
 #* Personal information
 # **Review logging code.** Identify code that generates log entries by searching for //NSLog()// function calls. Review this code to verify that it does not include sensitive information in log entries. If necessary, rewrite this code in a way that does not log sensitive data. If //NSLog()// calls are necessary for debugging, they can be conditionally commented out using //#define// directives.
 
-==Related Items==]]></Data>
+==Privacy Guidelines==
+* [[Do Not Cache Sensitive Data]]
+* [[Do Not Log Location Data]]
+* [[Do Not Log Sensitive Data]]
+
+==Privacy Checklists==
+* [[Sensitive Data Is Not Cached]]
+* [[Location Data Is Not Logged]]
+* [[Sensitive Data Is Not Logged]]]]></Data>
     </Content>
   </TeamMentor_Article>
   <TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
@@ -18683,7 +19293,17 @@ To verify that location data is not logged:
 
 ==How to Fix==
 
-If your application uses location data, do not store it in files and do not send it to remote servers.]]></Data>
+If your application uses location data, do not store it in files and do not send it to remote servers.
+
+==Privacy Guidelines==
+* [[Do Not Cache Sensitive Data]]
+* [[Do Not Log Location Data]]
+* [[Do Not Log Sensitive Data]]
+
+==Privacy Checklists==
+* [[Sensitive Data Is Not Cached]]
+* [[Location Data Is Not Logged]]
+* [[Sensitive Data Is Not Logged]]]]></Data>
     </Content>
   </TeamMentor_Article>
   <TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
@@ -18729,7 +19349,17 @@ To prevent caching of sensitive data:
 #* Encryption keys
 #* Personal information
 # **Identify code that creates temporary files used by the application.** Review the application source code to find functions that are responsible for creating the temporary files to find ones that write sensitive data.
-# **Remove code that writes sensitive data to temporary files.** Edit the functions that write sensitive data to temporary files to prevent caching of sensitive data.]]></Data>
+# **Remove code that writes sensitive data to temporary files.** Edit the functions that write sensitive data to temporary files to prevent caching of sensitive data.
+
+==Privacy Guidelines==
+* [[Do Not Cache Sensitive Data]]
+* [[Do Not Log Location Data]]
+* [[Do Not Log Sensitive Data]]
+
+==Privacy Checklists==
+* [[Sensitive Data Is Not Cached]]
+* [[Location Data Is Not Logged]]
+* [[Sensitive Data Is Not Logged]]]]></Data>
     </Content>
   </TeamMentor_Article>
   <TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
@@ -18768,7 +19398,17 @@ To verify that self-signed SSL certificates are disabled:
 
 ==How to Fix==
 
-Self-signed SSL certificates are not allowed by default. Do not allow them. Avoid using the //allowsAnyHTTPSCertificateForHost// method in production releases, because it allows self-signed SSL certificates. Do not use the //continueWithoutCredentialForAuthenticationChallenge// selector within the //didReceiveAuthenticationChallenge// delegate method of //NSURLConnection// objects, because it enables self-signed SSL certificates.]]></Data>
+Self-signed SSL certificates are not allowed by default. Do not allow them. Avoid using the //allowsAnyHTTPSCertificateForHost// method in production releases, because it allows self-signed SSL certificates. Do not use the //continueWithoutCredentialForAuthenticationChallenge// selector within the //didReceiveAuthenticationChallenge// delegate method of //NSURLConnection// objects, because it enables self-signed SSL certificates.
+
+==Communication Security Guidelines==
+* [[Disable Self-signed SSL Certificates]]
+* [[Use SSL to Protect Communications]]
+* [[Use Strong SSL Configurations]]
+
+==Communication Security Checklists==
+* [[Self-signed SSL Certificates Are Disabled]]
+* [[SSL Is Used to Protect Communications]]
+* [[Strong SSL Configurations Are Used]]]]></Data>
     </Content>
   </TeamMentor_Article>
   <TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
@@ -18811,7 +19451,17 @@ To verify that parsing of external XML entities is disabled:
 There are two common ways to parse XML in iOS: //NSXMLParser// and //LibXML2//. 
 
 # **//NSXMLParser//.** Parsing of external entities is disabled by default in //NSXMLParser//. Don't explicitly enable parsing of external entities - avoid using the //setShouldResolveExternalEntities// option. 
-# **//LibXML2//.** Parsing of external entitites needs to be manually disabled in //LibXML2//. To disable parsing of external entities, use the //xmlSetExternalEntityLoader// method of the //parser// class to set the external entity loader to be a function that doesn't do anything.]]></Data>
+# **//LibXML2//.** Parsing of external entitites needs to be manually disabled in //LibXML2//. To disable parsing of external entities, use the //xmlSetExternalEntityLoader// method of the //parser// class to set the external entity loader to be a function that doesn't do anything.
+
+==Dangerous API Guidelines==
+* [[Avoid Using URL Handlers for Sensitive Operations]]
+* [[Disable Parsing of External XML Entities]]
+* [[Use Static Format Strings]]
+
+==Dangerous API Checklists==
+* [[URL Handlers Are Not Used for Sensitive Operations]]
+* [[Parsing of External XML Entities Is Disabled]]
+* [[Static Format Strings Are Used]]]]></Data>
     </Content>
   </TeamMentor_Article>
   <TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
@@ -18851,7 +19501,15 @@ To disable file sharing in applications that support it:
 
 # **Identify applications with file sharing capabilities.** Enumerate all the installed applications. Check each application to see if it supports file sharing.
 # **Disable or secure file sharing.** Disable file sharing for each application that enables such functionality when file sharing is not being used. If the application offers security features to protect file sharing, such as password protection, use these features to protect file sharing. Even if security features are available for file sharing, file sharing should be disabled when it is not being used.
-# **Disable file sharing by default.** When developing applications, disable file sharing by default in your applications.]]></Data>
+# **Disable file sharing by default.** When developing applications, disable file sharing by default in your applications.
+
+==Authorization Guidelines==
+* [[Disable File Sharing in Applications that Support It]]
+* [[Use Role-based Access Control]]
+
+==Authorization Checklists==
+* [[File Sharing Is Disabled in Applications that Support It]]
+* [[Role-based Access Control Is Used]]]]></Data>
     </Content>
   </TeamMentor_Article>
   <TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
@@ -18888,7 +19546,17 @@ To verify that stack cookies are enabled:
 
 To use stack cookies:
 # **Open XCode.** Launch the XCode IDE.
-# **Add compiler flags.** Add the //-fstack-protector-all// flag to each file that is to be compiled in the XCode "Compile Sources" window in the "Compiler Flags" column.]]></Data>
+# **Add compiler flags.** Add the //-fstack-protector-all// flag to each file that is to be compiled in the XCode "Compile Sources" window in the "Compiler Flags" column.
+
+==Memory Management Guidelines==
+* [[Compile Applications with Stack Cookies Enabled]]
+* [[Do Not Reference Freed Objects]]
+* [[Use Automatic Reference Counting]]
+
+==Memory Management Checklists==
+* [[Applications Are Compiled with Stack Cookies Enabled]]
+* [[Freed Objects Are Not Referenced]]
+* [[Automatic Reference Counting Is Used]]]]></Data>
     </Content>
   </TeamMentor_Article>
   <TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
@@ -18930,7 +19598,23 @@ To verify that file paths and names are checked for null bytes:
 
 To check file paths and names for null bytes:
 # **Identify all input used for file access.** Enumerate all file access performed by the application. Examine code responsible for accessing each file. Take note of any input used to form path or file names for file access.
-# **Remove null bytes from paths.** If a //NSString// object contains a file name or path and includes a null byte, an incorrect resource may be accessed. Verify that there are no null bytes in strings that are used for file names or paths. If null bytes are detected, it is safer to abort the operation than to strip the null bytes, because the presence of null bytes almost certainly indicates an attack.]]></Data>
+# **Remove null bytes from paths.** If a //NSString// object contains a file name or path and includes a null byte, an incorrect resource may be accessed. Verify that there are no null bytes in strings that are used for file names or paths. If null bytes are detected, it is safer to abort the operation than to strip the null bytes, because the presence of null bytes almost certainly indicates an attack.
+
+==Data Validation Guidelines==
+* [[Canonicalize File Names and Paths]]
+* [[Check File Paths and Names for Null Bytes]]
+* [[Validate All Input]]
+* [[Validate and Encode Data Inserted into XML Documents]]
+* [[Validate and Encode Data Passed to UIWebView Controls]]
+* [[Validate File Formats]]
+
+==Data Validation Checklists==
+* [[File Names and Paths Are Canonicalized]]
+* [[File Paths and Names Are Checked for Null Bytes]]
+* [[All Input Is Validated]]
+* [[Data Inserted into XML Documents Is Validated and Encoded]]
+* [[Data Passed to UIWebView Controls Is Validated and Encoded]]
+* [[File Formats Are Validated]]]]></Data>
     </Content>
   </TeamMentor_Article>
   <TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
@@ -18975,6 +19659,16 @@ To check code for integrity:
 # **Define integrity check functions as inline.** The integrity check functions written in the previous step should be defined as //inline// so that the compiler inserts the full integrity checking code wherever it is invoked.
 # **Scatter integrity check functions throughout the application.** Multiple integrity checking functions spread out throughout the application make it harder for an attacker to find them all and patch them.
 
+==Code Integrity Guidelines==
+* [[Implement Code Integrity Checks]]
+* [[Sign iOS Application Updates]]
+* [[Sign iOS Applications]]
+
+==Code Integrity Checklists==
+* [[Code Integrity Checks Are Implemented]]
+* [[iOS Application Updates Are Signed]]
+* [[iOS Applications Are Signed]]
+
 ==Additional Resources==
 
 * For more information about the //class_getMethodImplementation// method, please see https://developer.apple.com/library/mac/#documentation/Cocoa/Reference/ObjCRuntimeRef/Reference/reference.html]]></Data>
@@ -19007,16 +19701,31 @@ Changing the root password prevents unauthorized parties from being able to conn
 
 To verify that root passwords have been changed on jailbroken devices:
 
-# **Identify the IP of the jailbroken device.** There are many different ways to identify the IP of a jailbroken device. One of the simplest ways is to connect the device to a WiFi network and check its IP from the Settings application. After the device is connected to a WiFi network, go to //Settings -&gt; Wi-Fi -&gt; [name of your network here]// and you will see the IP Address assigned to the device.
+# **Identify the IP of the jailbroken device.** There are many different ways to identify the IP of a jailbroken device. One of the simplest ways is to connect the device to a WiFi network and check its IP from the Settings application. After the device is connected to a WiFi network, go to //Settings -> Wi-Fi -> [name of your network here]// and you will see the IP Address assigned to the device.
 # **SSH into the jailbroken device.** Use your SSH client of choice to connect to the iDevice using the IP identified in the earlier step. Attempt authenticating using the username //root// and the password //alpine//. If authentication is successful with these credentials, the default root password has not been changed.
 
 ==How to Fix==
 
 There are multiple ways for changing the root passwords on jailbroken devices, but they usually require a command line interface. One common approach is to use the MobileTerminal program, which is available from Cydia. MobileTerminal is not installed by default, however. SSH is usually installed by default and enabled on jailbroken devices. To use SSH to change the root password on a jailbroken device:
 
-# **Identify the IP of the jailbroken device.** There are many different ways to identify the IP of a jailbroken device. One of the simplest ways is to connect the device to a WiFi network and check its IP from the Settings application. After the device is connected to a WiFi network, go to //Settings -&gt; Wi-Fi -&gt; [name of your network here]// and you will see the IP Address assigned to the device.
+# **Identify the IP of the jailbroken device.** There are many different ways to identify the IP of a jailbroken device. One of the simplest ways is to connect the device to a WiFi network and check its IP from the Settings application. After the device is connected to a WiFi network, go to //Settings -> Wi-Fi -> [name of your network here]// and you will see the IP Address assigned to the device.
 # **SSH into the jailbroken device.** Use your SSH client of choice to connect to the iDevice using the IP identified in the earlier step. The username is //root//. The password is //alpine//.
-# **Change the root password.** Issue the following command to change the root password: {{{passwd}}}. You will be asked to enter the new password twice.]]></Data>
+# **Change the root password.** Issue the following command to change the root password: {{{passwd}}}. You will be asked to enter the new password twice.
+
+==Authentication Guidelines==
+* [[Change Root Passwords on Jailbroken Devices]]
+* [[Encrypt Authentication Credentials Sent over the Network]]
+* [[Implement a Secure Password Reset Function]]
+* [[Throttle Authentication Attempts]]
+* [[Use Server-side Authentication]]
+
+==Authentication Checklists==
+* [[Root Passwords Have Been Changed on Jailbroken Devices]]
+* [[Authentication Credentials Sent over the Network Are Encrypted]]
+* [[A Secure Password Reset Function Is Implemented]]
+* [[Authentication Attempts Are Throttled]]
+* [[Authentication Is Implemented on the Server-side]]
+]]></Data>
     </Content>
   </TeamMentor_Article>
   <TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
@@ -19059,7 +19768,23 @@ To canonicalize file names and paths:
 # **Identify all input used for file access.** Enumerate all file access performed by the application. Examine code responsible for accessing each file. Take note of any input used to form path or file names for file access.
 # **Remove null bytes from paths.** If a file name or path includes a null byte, an incorrect resource may be accessed. Verify that there are no null bytes in strings that are used for file names or paths. If null bytes are detected, it is safer to abort the operation than to strip the null bytes, because the presence of null bytes almost certainly indicates an attack.
 # **Canonicalize all input data used for file paths.** The exact approach for canonicalization is different for different applications. One common scenario is appending a user-specified file name to a predefined path. In that case, the //lastPathComponent// method of the //NSString// class should be used on the file name to get just the file name. After that, the file name should be added to the predefined path.
-# **Validate file paths.** Verify that the user or application are authorized to access the specified resource.]]></Data>
+# **Validate file paths.** Verify that the user or application are authorized to access the specified resource.
+
+==Data Validation Guidelines==
+* [[Canonicalize File Names and Paths]]
+* [[Check File Paths and Names for Null Bytes]]
+* [[Validate All Input]]
+* [[Validate and Encode Data Inserted into XML Documents]]
+* [[Validate and Encode Data Passed to UIWebView Controls]]
+* [[Validate File Formats]]
+
+==Data Validation Checklists==
+* [[File Names and Paths Are Canonicalized]]
+* [[File Paths and Names Are Checked for Null Bytes]]
+* [[All Input Is Validated]]
+* [[Data Inserted into XML Documents Is Validated and Encoded]]
+* [[Data Passed to UIWebView Controls Is Validated and Encoded]]
+* [[File Formats Are Validated]]]]></Data>
     </Content>
   </TeamMentor_Article>
   <TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
@@ -19103,6 +19828,16 @@ To avoid using URL handlers for sensitive operations:
 # **Identify the operations associated with the URL handlers.** The developers should know what each //URL Type// is responsible for. Consider each one and decide if it is safe to keep.
 # **Remove dangerous URL handlers.** Sometimes URL handlers are used for testing. Remove any URL handlers that may be too dangerous from the production release.
 # **Verify the origin of the URL request**. Use the //openURL// method to make sure the URL request came from within the application itself or from a trusted application for any remaining URL handlers.
+
+==Dangerous API Guidelines==
+* [[Avoid Using URL Handlers for Sensitive Operations]]
+* [[Disable Parsing of External XML Entities]]
+* [[Use Static Format Strings]]
+
+==Dangerous API Checklists==
+* [[URL Handlers Are Not Used for Sensitive Operations]]
+* [[Parsing of External XML Entities Is Disabled]]
+* [[Static Format Strings Are Used]]
 
 ==Additional Resources==
 
@@ -19577,12 +20312,22 @@ Verify that application updates are signed.
 
 ==Why==
 
+Sign updates to the application to help verify that the updates came from a trusted party.
+
 ==How to Check==
+
+Updated applications will not run if they are not signed properly. To verify that an application update is signed:
+
+# **Install the application update.** Follow the standard procedure to install the application update. 
+# **Run the application.** Once the application update is installed, launch the application. If the application runs, then the update has been signed successfully.
 
 ==How to Fix==
 
+Signing updates is an important principle in software development to prevent malicious software from masquerading as updates to legitimate software. In practice, updates to mobile software are usually distributed as complete new versions, rather than as patches to the already installed software. The updated software package is usually signed because otherwise it won't be allowed on the most popular distribution channels. Therefore, the process for signing mobile software and updates is usually already established by software developers. It is still important to be aware of the importance of signing software and software updates.
+
 ==Related Items==
-]]></Data>
+
+* [[Sign Android Applications]]]]></Data>
     </Content>
   </TeamMentor_Article>
   <TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
@@ -19942,7 +20687,11 @@ Perform the following actions to validate file format before loading files into 
       <Status />
     </Metadata>
     <Content Sanitized="false" DataType="WikiText">
-      <Data><![CDATA[==What to Check For==
+      <Data><![CDATA[==Applies To==
+
+* Android applications that use SQL databases.
+
+==What to Check For==
 
 Verify that parameterized methods are used for database access.
 
@@ -19951,6 +20700,11 @@ Verify that parameterized methods are used for database access.
 Using parameterized query methods for database access prevents SQL injection vulnerabilities.
 
 ==How to Check==
+
+To verify that parameterized methods are used for database access:
+
+# **Identify all code that executes SQL queries.** Review application code to find all queries that are executed by the application and the code that executes them.
+# **Verify that parameterized APIs are used to execute SQL queries.** Make sure that data is passed to queries as parameters. Make sure that data, especially untrusted data, is never concatenated with the query strings and then executed.
 
 ==How to Fix==
 
@@ -20007,6 +20761,8 @@ Verify that native code is not used unless necessary.
 Using native code increases the risk of memory management vulnerabilities, such as buffer overflows and format string vulnerabilities.
 
 ==How to Check==
+
+Examine application source code files to detect any code that is not written in Java. Java files typically have //.java// file extensions and C files usually have //.c// file extensions. The presence of file names ending with //.c// indicates that native code is present.
 
 ==How to Fix==
 
@@ -20178,6 +20934,11 @@ Verify that cached data is deleted after use.
 If the device is lost or compromised, cached data may be recovered by attackers.
 
 ==How to Check==
+
+To verify that cached data is deleted after use:
+
+# **Identify cached data.** Make a list of all data cached by the application. Find code that is responsible for each peace of data that is cached.
+# **Verify that sensitive data is not cached.** Examine code that caches data to verify that sensitive data is not cached.
 
 ==How to Fix==
 

@@ -43,9 +43,21 @@ To validate and encode data inserted into XML documents:
 # **Add encoding code.** Add methods that escape XML entities. Unfortunately, there are no stable libraries available for escaping XML entities for iOS. When writing code that escapes XML entities, consider the following: data has to be converted to a uniform character encoding first, XML entities have to be escaped properly, and code that loads XML documents should be able to restore the original data from the encoded data.
 # **Use encoding code.** Add code that encodes data to code that uses XML documents. 
 
-==Related Items==
-
+==Data Validation Guidelines==
+* [[Canonicalize File Names and Paths]]
+* [[Check File Paths and Names for Null Bytes]]
 * [[Validate All Input]]
+* [[Validate and Encode Data Inserted into XML Documents]]
+* [[Validate and Encode Data Passed to UIWebView Controls]]
+* [[Validate File Formats]]
+
+==Data Validation Checklists==
+* [[File Names and Paths Are Canonicalized]]
+* [[File Paths and Names Are Checked for Null Bytes]]
+* [[All Input Is Validated]]
+* [[Data Inserted into XML Documents Is Validated and Encoded]]
+* [[Data Passed to UIWebView Controls Is Validated and Encoded]]
+* [[File Formats Are Validated]]
 ]]></Data>
   </Content>
 </TeamMentor_Article>

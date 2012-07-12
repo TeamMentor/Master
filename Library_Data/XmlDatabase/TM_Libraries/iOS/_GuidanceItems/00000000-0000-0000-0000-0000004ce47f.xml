@@ -39,6 +39,19 @@ To encrypt authentication credentials sent over the network:
 # **Identify the authentication code.** Identify the code that is responsible for authentication both on the iOS device and on the remote server. The authentication itself should be implemented on the server. To protect authentication credentials in transit, both end points need to support SSL. 
 # **Encrypt authentication credentials in transit.** Add code that uses SSL to protect authentication credentials in transit. The server should be configured to only accept authentication credentials via SSL. The iOS //NSURLRequest// and //NSURLConnection// classes support SSL and should be sufficient for many common authentication scenarios.
 
+==Authentication Guidelines==
+* [[Change Root Passwords on Jailbroken Devices]]
+* [[Encrypt Authentication Credentials Sent over the Network]]
+* [[Implement a Secure Password Reset Function]]
+* [[Throttle Authentication Attempts]]
+* [[Use Server-side Authentication]]
+
+==Authentication Checklists==
+* [[Root Passwords Have Been Changed on Jailbroken Devices]]
+* [[Authentication Credentials Sent over the Network Are Encrypted]]
+* [[A Secure Password Reset Function Is Implemented]]
+* [[Authentication Attempts Are Throttled]]
+* [[Authentication Is Implemented on the Server-side]]
 
 ==Additional Resources==
 

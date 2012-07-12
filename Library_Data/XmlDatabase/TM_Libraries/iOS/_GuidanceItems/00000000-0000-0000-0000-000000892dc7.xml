@@ -29,13 +29,18 @@ Updated applications will not run if they are not signed properly. To verify tha
 # **Install the application update.** Follow the standard procedure to install the application update. Usually, this means installing the application update via iTunes.
 # **Run the application.** Once the application update is installed, launch the application from the Springboard. If the application runs, then the update has been signed successfully.
 
-
 ==How to Fix==
 
 The procedure for signing iOS application updates is the same as the procedure for signing iOS applications in general.
 
-==Related Items==
+==Code Integrity Guidelines==
+* [[Implement Code Integrity Checks]]
+* [[Sign iOS Application Updates]]
+* [[Sign iOS Applications]]
 
-* [[Sign iOS Applications]]]]></Data>
+==Code Integrity Checklists==
+* [[Code Integrity Checks Are Implemented]]
+* [[iOS Application Updates Are Signed]]
+* [[iOS Applications Are Signed]]]]></Data>
   </Content>
 </TeamMentor_Article>

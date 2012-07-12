@@ -42,6 +42,12 @@ There is no practical way to access remote SQL databases using native iOS API ca
 # **Use parameterized APIs to execute SQL queries.** When implementing the Web Services, make sure to use parameterized APIs for database access to prevent SQL injection vulnerabilities.
 # **Connect the application to the back-end.** Add code to the iOS application to interact with the back-end. It might be necessary to add some pages for configuring the connection to the back-end, such as setting the URL of the Web Services and the authentication credentials.
 
+==Database Security Guidelines==
+* [[Use Parameterized Methods for Database Access]]
+
+==Database Security Checklists==
+* [[Parameterized Methods Are Used for Database Access]]
+
 ==Additional Resources==
 
 * For a detailed guide on integrating SQLite functionality into iOS applications, please see http://www.techotopia.com/index.php/IOS_4_iPhone_Database_Implementation_using_SQLite

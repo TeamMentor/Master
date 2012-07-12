@@ -41,6 +41,16 @@ To check code for integrity:
 # **Define integrity check functions as inline.** The integrity check functions written in the previous step should be defined as //inline// so that the compiler inserts the full integrity checking code wherever it is invoked.
 # **Scatter integrity check functions throughout the application.** Multiple integrity checking functions spread out throughout the application make it harder for an attacker to find them all and patch them.
 
+==Code Integrity Guidelines==
+* [[Implement Code Integrity Checks]]
+* [[Sign iOS Application Updates]]
+* [[Sign iOS Applications]]
+
+==Code Integrity Checklists==
+* [[Code Integrity Checks Are Implemented]]
+* [[iOS Application Updates Are Signed]]
+* [[iOS Applications Are Signed]]
+
 ==Additional Resources==
 
 * For more information about the //class_getMethodImplementation// method, please see https://developer.apple.com/library/mac/#documentation/Cocoa/Reference/ObjCRuntimeRef/Reference/reference.html]]></Data>

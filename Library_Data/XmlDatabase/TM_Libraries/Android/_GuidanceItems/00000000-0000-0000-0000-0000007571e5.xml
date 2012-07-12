@@ -20,11 +20,21 @@ Verify that application updates are signed.
 
 ==Why==
 
+Sign updates to the application to help verify that the updates came from a trusted party.
+
 ==How to Check==
+
+Updated applications will not run if they are not signed properly. To verify that an application update is signed:
+
+# **Install the application update.** Follow the standard procedure to install the application update. 
+# **Run the application.** Once the application update is installed, launch the application. If the application runs, then the update has been signed successfully.
 
 ==How to Fix==
 
+Signing updates is an important principle in software development to prevent malicious software from masquerading as updates to legitimate software. In practice, updates to mobile software are usually distributed as complete new versions, rather than as patches to the already installed software. The updated software package is usually signed because otherwise it won't be allowed on the most popular distribution channels. Therefore, the process for signing mobile software and updates is usually already established by software developers. It is still important to be aware of the importance of signing software and software updates.
+
 ==Related Items==
-]]></Data>
+
+* [[Sign Android Applications]]]]></Data>
   </Content>
 </TeamMentor_Article>

@@ -34,6 +34,16 @@ The iOS application signing process is complicated, but it is also well document
 # **Submit the application for publication.** Go to //Product//, //Archive// in XCode and follow on-screen instructions to submit the application for approval.
 # **Wait for approval notification.** The e-mail account associated with the iOS Developer Program account should receive a notification regarding the status of the approval process. This might take a week or more, but after it is finished, the application should be signed and ready for distribution.
 
+==Code Integrity Guidelines==
+* [[Implement Code Integrity Checks]]
+* [[Sign iOS Application Updates]]
+* [[Sign iOS Applications]]
+
+==Code Integrity Checklists==
+* [[Code Integrity Checks Are Implemented]]
+* [[iOS Application Updates Are Signed]]
+* [[iOS Applications Are Signed]]
+
 ==Additional Resources==
 
 * For the "iOS Code Signing Setup, Process, and Troubleshooting" guide, please see http://developer.apple.com/library/ios/#technotes/tn2250/_index.html

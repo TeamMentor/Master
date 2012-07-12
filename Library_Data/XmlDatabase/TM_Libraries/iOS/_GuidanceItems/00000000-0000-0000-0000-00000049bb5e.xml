@@ -34,6 +34,22 @@ Perform the following actions to validate file format before loading files into 
 # **Review code.** Search for code that loads saved files into the application. Examine the extents of the validation already being performed by the application. If some validation is already being performed, some code may be recycled for a more thorough validation routine.
 # **Implement validation.** Write validation functions for all fields in all document types supported by the application.
 # **Centralize validation.** Move the validation functions for all document fields to the centralized input and data validation class or library. Write a master file format validation function that calls all individual data field validation functions.
-# **Use validation.** Go back to code that loads data files into the application. Remove any old validation code. Add code that calls the master file format validation function on all files being loaded before loading them into the application.]]></Data>
+# **Use validation.** Go back to code that loads data files into the application. Remove any old validation code. Add code that calls the master file format validation function on all files being loaded before loading them into the application.
+
+==Data Validation Guidelines==
+* [[Canonicalize File Names and Paths]]
+* [[Check File Paths and Names for Null Bytes]]
+* [[Validate All Input]]
+* [[Validate and Encode Data Inserted into XML Documents]]
+* [[Validate and Encode Data Passed to UIWebView Controls]]
+* [[Validate File Formats]]
+
+==Data Validation Checklists==
+* [[File Names and Paths Are Canonicalized]]
+* [[File Paths and Names Are Checked for Null Bytes]]
+* [[All Input Is Validated]]
+* [[Data Inserted into XML Documents Is Validated and Encoded]]
+* [[Data Passed to UIWebView Controls Is Validated and Encoded]]
+* [[File Formats Are Validated]]]]></Data>
   </Content>
 </TeamMentor_Article>

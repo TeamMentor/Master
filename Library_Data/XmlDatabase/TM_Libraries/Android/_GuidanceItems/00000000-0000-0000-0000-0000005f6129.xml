@@ -24,6 +24,11 @@ Parsing external entities in XML documents may result in injection vulnerabiliti
 
 ==How to Check==
 
+To verify that parsing of external XML entities is disabled:
+
+# **Identify the XML parser used by the application.** Find out which XML parser is used by the application. Some common Android XML parsers are: //SAXParser//, //XmlPullParser// and //DocumentBuilder//.
+# **Verify that parsing of external XML entities is disabled.** //DocumentBuilder// and //XmlPullParser// don't support external XML entities. If //SAXParser// is used, make sure that //external-general-entities// and //external-parameter-entities// feature flags have not been enabled.
+
 ==How to Fix==
 
 There are multiple parsing packages built into the Android SDK: //SAXParser//, //XmlPullParser// and //DocumentBuilder//.

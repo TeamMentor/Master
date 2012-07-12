@@ -28,6 +28,16 @@ Logging location data is likely to raise privacy concerns among users.
 
 ==How==
 
-If your application uses location data, do not store it in files and do not send it to remote servers.]]></Data>
+If your application uses location data, do not store it in files and do not send it to remote servers.
+
+==Privacy Guidelines==
+* [[Do Not Cache Sensitive Data]]
+* [[Do Not Log Location Data]]
+* [[Do Not Log Sensitive Data]]
+
+==Privacy Checklists==
+* [[Sensitive Data Is Not Cached]]
+* [[Location Data Is Not Logged]]
+* [[Sensitive Data Is Not Logged]]]]></Data>
   </Content>
 </TeamMentor_Article>

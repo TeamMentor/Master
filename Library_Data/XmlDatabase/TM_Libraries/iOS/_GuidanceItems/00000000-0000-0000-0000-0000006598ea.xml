@@ -36,6 +36,20 @@ To implement a secure password reset function:
 # **Provide a control for changing the password.** Once the user has the password reset token, there should be a way for the user to submit that token and to then be able to change the password. One way is to provide a web page that does this, another is to provide a Web Service to the iOS application that accepts the password reset token and allows the user to change the password; both methods may be used in combination.
 # **Log the password reset event.** Both failed and successful password reset requests should be logged on the server. A large amount of password reset requests may indicate an attack.
 
+==Authentication Guidelines==
+* [[Change Root Passwords on Jailbroken Devices]]
+* [[Encrypt Authentication Credentials Sent over the Network]]
+* [[Implement a Secure Password Reset Function]]
+* [[Throttle Authentication Attempts]]
+* [[Use Server-side Authentication]]
+
+==Authentication Checklists==
+* [[Root Passwords Have Been Changed on Jailbroken Devices]]
+* [[Authentication Credentials Sent over the Network Are Encrypted]]
+* [[A Secure Password Reset Function Is Implemented]]
+* [[Authentication Attempts Are Throttled]]
+* [[Authentication Is Implemented on the Server-side]]
+
 ==Additional Resources==
 
 * For a guide on implementing a password reset function, please see https://www.owasp.org/index.php/Forgot_Password_Cheat_Sheet]]></Data>

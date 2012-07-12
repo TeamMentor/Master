@@ -42,6 +42,21 @@ To throttle authentication attempts:
 
 # **Define authentication throttling requirements.** Define the time-out period between each authentication attempt. A recommended time-out period is three seconds.
 # **Identify authentication code.** Identify server-side code that is responsible for authentication.
-# **Add code that throttles authentication attempts.** Add server-side code to the authentication code identified in the previous step to wait for the required time period before handling another authentication request. Keep track of clients using IPs and session cookies to make it harder to bypass authentication throttling.]]></Data>
+# **Add code that throttles authentication attempts.** Add server-side code to the authentication code identified in the previous step to wait for the required time period before handling another authentication request. Keep track of clients using IPs and session cookies to make it harder to bypass authentication throttling.
+
+==Authentication Guidelines==
+* [[Change Root Passwords on Jailbroken Devices]]
+* [[Encrypt Authentication Credentials Sent over the Network]]
+* [[Implement a Secure Password Reset Function]]
+* [[Throttle Authentication Attempts]]
+* [[Use Server-side Authentication]]
+
+==Authentication Checklists==
+* [[Root Passwords Have Been Changed on Jailbroken Devices]]
+* [[Authentication Credentials Sent over the Network Are Encrypted]]
+* [[A Secure Password Reset Function Is Implemented]]
+* [[Authentication Attempts Are Throttled]]
+* [[Authentication Is Implemented on the Server-side]]
+]]></Data>
   </Content>
 </TeamMentor_Article>

@@ -26,8 +26,14 @@ Application updates should be signed to verify that they came from a trusted sou
 
 The procedure for signing iOS application updates is the same as the procedure for signing iOS applications in general.
 
-==Related Items==
+==Code Integrity Guidelines==
+* [[Implement Code Integrity Checks]]
+* [[Sign iOS Application Updates]]
+* [[Sign iOS Applications]]
 
-* [[Sign iOS Applications]]]]></Data>
+==Code Integrity Checklists==
+* [[Code Integrity Checks Are Implemented]]
+* [[iOS Application Updates Are Signed]]
+* [[iOS Applications Are Signed]]]]></Data>
   </Content>
 </TeamMentor_Article>

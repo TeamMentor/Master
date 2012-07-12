@@ -32,6 +32,22 @@ To validate data passed to //UIWebView// controls:
 # **Write encoding code for data passed to //UIWebView// controls.** Write encoding routines that handle all the types of data that are passed to //UIWebView// controls. Unfortunately, there appear to be no standard libraries that handle encoding for iOS. Things to watch out for are: converting data to the same character-encoding before validating or encoding, escaping HTML entities, escaping JavaScript entities, and escaping XML entities, depending on context.
 # **Validate and encode data passed to //UIWebView// controls.** Use the respective validation and encoding functions for each respective type of data before passing it to //UIWebView// controls.
 
+==Data Validation Guidelines==
+* [[Canonicalize File Names and Paths]]
+* [[Check File Paths and Names for Null Bytes]]
+* [[Validate All Input]]
+* [[Validate and Encode Data Inserted into XML Documents]]
+* [[Validate and Encode Data Passed to UIWebView Controls]]
+* [[Validate File Formats]]
+
+==Data Validation Checklists==
+* [[File Names and Paths Are Canonicalized]]
+* [[File Paths and Names Are Checked for Null Bytes]]
+* [[All Input Is Validated]]
+* [[Data Inserted into XML Documents Is Validated and Encoded]]
+* [[Data Passed to UIWebView Controls Is Validated and Encoded]]
+* [[File Formats Are Validated]]
+
 ==Additional Resources==
 
 * For information about //escapedTemplateForString// and //escapedTemplateForString// functions, please see http://developer.apple.com/library/ios/#documentation/Foundation/Reference/NSRegularExpression_Class/Reference/Reference.html

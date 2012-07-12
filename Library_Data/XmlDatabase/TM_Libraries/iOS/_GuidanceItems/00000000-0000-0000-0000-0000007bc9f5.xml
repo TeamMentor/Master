@@ -28,6 +28,15 @@ To disable file sharing in applications that support it:
 
 # **Identify applications with file sharing capabilities.** Enumerate all the installed applications. Check each application to see if it supports file sharing.
 # **Disable or secure file sharing.** Disable file sharing for each application that enables such functionality when file sharing is not being used. If the application offers security features to protect file sharing, such as password protection, use these features to protect file sharing. Even if security features are available for file sharing, file sharing should be disabled when it is not being used.
-# **Disable file sharing by default.** When developing applications, disable file sharing by default in your applications.]]></Data>
+# **Disable file sharing by default.** When developing applications, disable file sharing by default in your applications.
+
+==Authorization Guidelines==
+* [[Disable File Sharing in Applications that Support It]]
+* [[Use Role-based Access Control]]
+
+==Authorization Checklists==
+* [[File Sharing Is Disabled in Applications that Support It]]
+* [[Role-based Access Control Is Used]]
+]]></Data>
   </Content>
 </TeamMentor_Article>

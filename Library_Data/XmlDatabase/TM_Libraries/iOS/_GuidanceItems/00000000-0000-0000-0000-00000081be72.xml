@@ -31,6 +31,16 @@ To avoid using URL handlers for sensitive operations:
 # **Remove dangerous URL handlers.** Sometimes URL handlers are used for testing. Remove any URL handlers that may be too dangerous from the production release.
 # **Verify the origin of the URL request**. Use the //openURL// method to make sure the URL request came from within the application itself or from a trusted application for any remaining URL handlers.
 
+==Dangerous API Guidelines==
+* [[Avoid Using URL Handlers for Sensitive Operations]]
+* [[Disable Parsing of External XML Entities]]
+* [[Use Static Format Strings]]
+
+==Dangerous API Checklists==
+* [[URL Handlers Are Not Used for Sensitive Operations]]
+* [[Parsing of External XML Entities Is Disabled]]
+* [[Static Format Strings Are Used]]
+
 ==Additional Resources==
 
 * For more information about the //openURL// method, please see http://developer.apple.com/library/ios/#DOCUMENTATION/UIKit/Reference/UIApplication_Class/Reference/Reference.html]]></Data>

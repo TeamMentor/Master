@@ -30,8 +30,23 @@ Changing the root password prevents unauthorized parties from being able to conn
 
 There are multiple ways for changing the root passwords on jailbroken devices, but they usually require a command line interface. One common approach is to use the MobileTerminal program, which is available from Cydia. MobileTerminal is not installed by default, however. SSH is usually installed by default and enabled on jailbroken devices. To use SSH to change the root password on a jailbroken device:
 
-# **Identify the IP of the jailbroken device.** There are many different ways to identify the IP of a jailbroken device. One of the simplest ways is to connect the device to a WiFi network and check its IP from the Settings application. After the device is connected to a WiFi network, go to //Settings -&gt; Wi-Fi -&gt; [name of your network here]// and you will see the IP Address assigned to the device.
+# **Identify the IP of the jailbroken device.** There are many different ways to identify the IP of a jailbroken device. One of the simplest ways is to connect the device to a WiFi network and check its IP from the Settings application. After the device is connected to a WiFi network, go to //Settings -> Wi-Fi -> [name of your network here]// and you will see the IP Address assigned to the device.
 # **SSH into the jailbroken device.** Use your SSH client of choice to connect to the iDevice using the IP identified in the earlier step. The username is //root//. The password is //alpine//.
-# **Change the root password.** Issue the following command to change the root password: {{{passwd}}}. You will be asked to enter the new password twice.]]></Data>
+# **Change the root password.** Issue the following command to change the root password: {{{passwd}}}. You will be asked to enter the new password twice.
+
+==Authentication Guidelines==
+* [[Change Root Passwords on Jailbroken Devices]]
+* [[Encrypt Authentication Credentials Sent over the Network]]
+* [[Implement a Secure Password Reset Function]]
+* [[Throttle Authentication Attempts]]
+* [[Use Server-side Authentication]]
+
+==Authentication Checklists==
+* [[Root Passwords Have Been Changed on Jailbroken Devices]]
+* [[Authentication Credentials Sent over the Network Are Encrypted]]
+* [[A Secure Password Reset Function Is Implemented]]
+* [[Authentication Attempts Are Throttled]]
+* [[Authentication Is Implemented on the Server-side]]
+]]></Data>
   </Content>
 </TeamMentor_Article>

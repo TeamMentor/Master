@@ -44,6 +44,22 @@ To validate all user input using white-list input validation:
 # **Validate format.** If the input type has a specific pattern, such as a date or a phone number, add code to use regular expressions to make sure user input matches the input type specified by the application. Use regular expressions to enforce strong password requirements.
 # **Validate range.** Restrict the acceptable range of numerical input by comparing the input to the maximum and minimum acceptable values.
 # **(Optional) Reject and respond to known bad input.** This step does not add much actual security, but it is included here to let you know that such an option exists. The input validation subsystem may check for known attack strings and respond to these likely attacks by alerting the user. The options for responding to invalid input are: reject invalid input, log invalid input, take evasive action.
-# **(Optional) Encode input.** If the input is going to be displayed back through the web application, consider adding code to encode it to prevent Cross-Site Scripting attacks.]]></Data>
+# **(Optional) Encode input.** If the input is going to be displayed back through the web application, consider adding code to encode it to prevent Cross-Site Scripting attacks.
+
+==Data Validation Guidelines==
+* [[Canonicalize File Names and Paths]]
+* [[Check File Paths and Names for Null Bytes]]
+* [[Validate All Input]]
+* [[Validate and Encode Data Inserted into XML Documents]]
+* [[Validate and Encode Data Passed to UIWebView Controls]]
+* [[Validate File Formats]]
+
+==Data Validation Checklists==
+* [[File Names and Paths Are Canonicalized]]
+* [[File Paths and Names Are Checked for Null Bytes]]
+* [[All Input Is Validated]]
+* [[Data Inserted into XML Documents Is Validated and Encoded]]
+* [[Data Passed to UIWebView Controls Is Validated and Encoded]]
+* [[File Formats Are Validated]]]]></Data>
   </Content>
 </TeamMentor_Article>

@@ -24,6 +24,11 @@ If the device is lost or compromised, cached data may be recovered by attackers.
 
 ==How to Check==
 
+To verify that cached data is deleted after use:
+
+# **Identify cached data.** Make a list of all data cached by the application. Find code that is responsible for each peace of data that is cached.
+# **Verify that sensitive data is not cached.** Examine code that caches data to verify that sensitive data is not cached.
+
 ==How to Fix==
 
 To delete cached data after use:

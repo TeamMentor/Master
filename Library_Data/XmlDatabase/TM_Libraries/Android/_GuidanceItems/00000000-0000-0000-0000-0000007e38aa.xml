@@ -14,7 +14,11 @@
     <Status />
   </Metadata>
   <Content Sanitized="false" DataType="WikiText">
-    <Data><![CDATA[==What to Check For==
+    <Data><![CDATA[==Applies To==
+
+* Android applications that use SQL databases.
+
+==What to Check For==
 
 Verify that parameterized methods are used for database access.
 
@@ -23,6 +27,11 @@ Verify that parameterized methods are used for database access.
 Using parameterized query methods for database access prevents SQL injection vulnerabilities.
 
 ==How to Check==
+
+To verify that parameterized methods are used for database access:
+
+# **Identify all code that executes SQL queries.** Review application code to find all queries that are executed by the application and the code that executes them.
+# **Verify that parameterized APIs are used to execute SQL queries.** Make sure that data is passed to queries as parameters. Make sure that data, especially untrusted data, is never concatenated with the query strings and then executed.
 
 ==How to Fix==
 

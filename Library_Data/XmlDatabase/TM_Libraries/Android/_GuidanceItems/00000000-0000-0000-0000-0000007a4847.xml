@@ -24,6 +24,8 @@ Using native code increases the risk of memory management vulnerabilities, such 
 
 ==How to Check==
 
+Examine application source code files to detect any code that is not written in Java. Java files typically have //.java// file extensions and C files usually have //.c// file extensions. The presence of file names ending with //.c// indicates that native code is present.
+
 ==How to Fix==
 
 Examine the application architecture and identify any native code components. Consider replacing any native code components with Java equivalents. One reason to keep native code components is if they carry out simple but performance-sensitive operations. Avoid using native code in the future. Weigh the risks of additional vulnerabilities against the performance benefits when considering using native code.

@@ -42,6 +42,16 @@ To prevent caching of sensitive data:
 #* Encryption keys
 #* Personal information
 # **Identify code that creates temporary files used by the application.** Review the application source code to find functions that are responsible for creating the temporary files to find ones that write sensitive data.
-# **Remove code that writes sensitive data to temporary files.** Edit the functions that write sensitive data to temporary files to prevent caching of sensitive data.]]></Data>
+# **Remove code that writes sensitive data to temporary files.** Edit the functions that write sensitive data to temporary files to prevent caching of sensitive data.
+
+==Privacy Guidelines==
+* [[Do Not Cache Sensitive Data]]
+* [[Do Not Log Location Data]]
+* [[Do Not Log Sensitive Data]]
+
+==Privacy Checklists==
+* [[Sensitive Data Is Not Cached]]
+* [[Location Data Is Not Logged]]
+* [[Sensitive Data Is Not Logged]]]]></Data>
   </Content>
 </TeamMentor_Article>

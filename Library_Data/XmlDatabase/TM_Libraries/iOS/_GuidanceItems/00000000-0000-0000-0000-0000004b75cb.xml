@@ -57,6 +57,14 @@ To use the //keychain// to store cached authentication data and encryption keys:
 #* //kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly// - the item is only available after the device is unlocked for the first time after a reboot and is not moved to other devices.
 # **Identify the code that caches authenticaton data.** Review the application code to find all code that handles data that should be stored in the //keychain//.
 # **Store cached authentication credentials in the keychain.** Add code that uses the //keychain// to store cached authentication data to all code that handles such data or rewrite existing code as necessary.
+
+==Cryptographic Storage Guidelines==
+* [[Encrypt Stored Sensitive Data]]
+* [[Store Cached Authentication Data in the Keychain]]
+
+==Cryptographic Storage Checklists==
+* [[Stored Sensitive Data Is Encrypted]]
+* [[Cached Authentication Data Is Stored in the Keychain]]
 ]]></Data>
   </Content>
 </TeamMentor_Article>

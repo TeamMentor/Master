@@ -35,7 +35,15 @@ To use SSL to protect communications:
 # **Identify code that uses the network.** Identify code that is responsible for each network communication that needs to be encrypted.
 # **Add code that uses SSL.** Add code that uses SSL to code that performs network communications that need to be encrypted. The //NSURLRequest// and //NSURLConnection// classes support SSL with an acceptably secure default configuration starting with iOS 5 - this is the most practical way to use SSL on iOS and should be sufficient for most applications. 
 
-==Related Articles==
+==Communication Security Guidelines==
+* [[Disable Self-signed SSL Certificates]]
+* [[Use SSL to Protect Communications]]
+* [[Use Strong SSL Configurations]]
+
+==Communication Security Checklists==
+* [[Self-signed SSL Certificates Are Disabled]]
+* [[SSL Is Used to Protect Communications]]
+* [[Strong SSL Configurations Are Used]]
 
 ==Additional Resources==
 

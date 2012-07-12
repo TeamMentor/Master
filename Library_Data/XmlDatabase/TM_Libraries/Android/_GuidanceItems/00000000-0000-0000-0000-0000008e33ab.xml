@@ -24,6 +24,13 @@ Obfuscate the application binary with //ProGuard// to make it more difficult to 
 
 ==How to Check==
 
+To verify that code is obfuscated with //ProGuard//:
+
+# **Verify that //ProGuard// is configured.**
+# **Verify that //ProGuard// is enabled.**
+# **Verify that the application is built in release mode.**
+
+
 ==How to Fix==
 
 To obfuscate code with //ProGuard//:
