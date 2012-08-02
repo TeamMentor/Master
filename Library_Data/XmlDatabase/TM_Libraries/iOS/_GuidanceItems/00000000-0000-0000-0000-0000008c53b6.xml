@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-0000008c53b6</Id>
+    <Library_Id>b6f408c5-6e6e-4bc0-90a5-0bb10becc2ce</Library_Id>
+    <Title>Data Inserted into XML Documents Is Validated and Encoded</Title>
+    <Category>Data Validation</Category>
+    <Phase>Implementation</Phase>
+    <Technology>iOS</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>Data Inserted into XML Documents Is Validated and Encoded</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="WikiText">
+    <Data><![CDATA[==What to Check For==
+
+Verify that data inserted into XML documents is validated and encoded.
+
+==Why==
+
+Validating and encoding data inserted into XML documents helps prevent XML injection vulnerabilities.
+
+==How to Check==
+
+To verify that data inserted into XML documents is validated and encoded:
+
+# **Identify XML documents used by the application.** Examine the application design to identify all XML documents and XML document types used by the application.
+# **Identify code that uses XML documents.** Review application code to find code that uses XML documents.
+# **Review validation code.** Make sure there are clear validation functions defined for each type of XML data handled by the application.
+# **Review encoding code.** Make sure there are encoding functions defined for XML data. Consider the following when evaluating XML encoding: data has to be converted to a uniform character encoding first, XML entities have to be escaped properly, and code that loads XML documents should be able to restore the original data from the encoded data.
+# **Verify that validation and encoding are used.** Make sure that all XML data is validated and encoded before being inserted into XML documents.
+
+==How to Fix==
+
+To validate and encode data inserted into XML documents:
+
+# **Identify XML documents used by the application.** Examine the application design to identify all XML documents and XML document types used by the application.
+# **Identify code that uses XML documents.** Review application code to find code that uses XML documents.
+# **Add data validation code.** Add methods that validate all the data types that are stored in XML documents and used by the application.
+# **Use validation code.** Add code that uses the data validation methods from the previous step to code that uses XML documents. Validation should be performed before encoding.
+# **Add encoding code.** Add methods that escape XML entities. Unfortunately, there are no stable libraries available for escaping XML entities for iOS. When writing code that escapes XML entities, consider the following: data has to be converted to a uniform character encoding first, XML entities have to be escaped properly, and code that loads XML documents should be able to restore the original data from the encoded data.
+# **Use encoding code.** Add code that encodes data to code that uses XML documents. 
+
+==Data Validation Guidelines==
+* [[Canonicalize File Names and Paths]]
+* [[Check File Paths and Names for Null Bytes]]
+* [[Validate All Input]]
+* [[Validate and Encode Data Inserted into XML Documents]]
+* [[Validate and Encode Data Passed to UIWebView Controls]]
+* [[Validate File Formats]]
+
+==Data Validation Checklists==
+* [[File Names and Paths Are Canonicalized]]
+* [[File Paths and Names Are Checked for Null Bytes]]
+* [[All Input Is Validated]]
+* [[Data Inserted into XML Documents Is Validated and Encoded]]
+* [[Data Passed to UIWebView Controls Is Validated and Encoded]]
+* [[File Formats Are Validated]]
+]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="1135800852" Content_Hash="-2126177747">
+  <Metadata>
+    <Id>9c905082-0a13-4641-b8cb-28e0bdc710c2</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Use RSA-Protected Configuration Provider in Web Farm Environments</Title>
+    <Category>Data Access</Category>
+    <Phase>Deployment</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Use RSA-Protected Configuration Provider in Web Farm Environments</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Do</h1>
+  <p>Use the RSA Protected Configuration provider to encrypt sections of your configuration files. You can use Aspnet_regiis.exe tool to encrypt sensitive data, such as connection strings, held in the Web.config and Machine.config files.&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;</p>
+  <h1>Why</h1>
+  <p>Connection strings contain sensitive resource access credentials (e.g., a connection string for a SQL server resource includes a username and password.) Connection strings stored in plaintext are dangerous, because an attacker that can compromise a server will be able to read those connection strings. Even if a machine is not compromised, connection strings stored in plain text&amp;nbsp;are accessible to administrators and any other users with sufficient privileges&amp;nbsp;on the host machine and/or Windows domain.&amp;nbsp;</p>
+  <h1>When</h1>
+  <p>Always encrypt connection strings. In&amp;nbsp;a web farm environment,&amp;nbsp;the RSA protected configuration provider is an effective way to encrypt and decrypt configuration file sections&amp;nbsp;because it uses asymmetric encryption to encrypt and decrypt,&amp;nbsp;meaning&amp;nbsp;the keys can easily be exported and imported&amp;nbsp;from server to server.&amp;nbsp;If the application is not deployed to a web farm environment DPAPI will work as well as RSA for encrypting connection strings.&amp;nbsp; </p>
+  <h1>How</h1>
+  <p>Use the following steps to encrypt sections of your configuration files: </p>
+  <ol>
+    <li>
+      <p>
+        <strong>Identify the configuration sections to be encrypted.</strong> Encrypting and decrypting data incurs performance overhead. To keep this overhead to a minimum, encrypt only the sections of your configuration file that store sensitive data. In this case, we are interested in encrypting the &lt;connectionStrings&gt; element of the Web.config file since that is where the database connection string will reside. </p>
+    </li>
+    <li>
+      <p>
+        <strong>Choose the machine or user store.</strong> The DataProtectionConfigurationProvider supports machine-level and user-level stores for key storage. The choice of store depends largely on whether or not your application shares a server with other applications and whether or not sensitive data must be kept private for each application. </p>
+    </li>
+    <li>
+      <p>
+        <strong>Encrypt your configuration file data.</strong> Use the RSA Provider to Encrypt a Connection String in Web.config in a Web Farm. To do this, you must create a custom RSA encryption key container and deploy the same key container on all servers in your Web farm. This won't work by default because the default RSA encryption key, "NetFrameworkConfigurationKey", is different for each computer.</p>
+      <p>Run&amp;nbsp;the following command from a .NET command prompt to encrypt the connectionStrings section using the machine level store:</p>
+      <pre>aspnet_regiis -pe "connectionStrings" -app "/MachineRSA"</pre>
+      <p>Note: If your ASP.NET application identity does not have access to the .NET Framework configuration key store, you'll need to grant access.</p>
+    </li>
+  </ol>
+  <ul>
+  </ul>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance. </p>]]></Data>
+  </Content>
+</TeamMentor_Article>

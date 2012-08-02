@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-466188314" Content_Hash="-866758591">
+  <Metadata>
+    <Id>2e38872b-aef4-4c72-9529-626f8ea9778c</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Web Site Root Directory Has Deny Write ACE for Anonymous Internet Accounts</Title>
+    <Category>Server Hardening</Category>
+    <Phase>Deployment</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>Web Site Root Directory Has Deny Write ACE for Anonymous Internet Accounts</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>J.D. Meier, Alex Mackman, Michael Dunner, Srinath Vasireddy, Ray Escamilla and Anandha Murukan</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Check For</h1>
+  <p>Check to ensure that Web site root directory has deny write ACE for anonymous Internet accounts.</p>
+  <h1>How to Check</h1>
+  <p>IISLockdown denies write access to content directories for the anonymous account by applying a deny write access control entry (ACE) for the Web Anonymous Users and Web Applications groups. It also adds a deny execute ACL on command-line tools.</p>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance.</p>]]></Data>
+  </Content>
+</TeamMentor_Article>

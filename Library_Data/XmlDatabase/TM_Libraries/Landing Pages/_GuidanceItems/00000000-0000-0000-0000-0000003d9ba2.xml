@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-0000003d9ba2</Id>
+    <Library_Id>80a03482-cf8b-4055-82db-1aa09465d30f</Library_Id>
+    <Title>XPath Injection</Title>
+    <Category>Database</Category>
+    <Phase>NA</Phase>
+    <Technology>ASP.NET</Technology>
+    <Type>Vulnerability</Type>
+    <DirectLink>XPath Injection</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="WikiText">
+    <Data><![CDATA[==Description==
+
+XPath injection is a type of vulnerabilities that allows attackers to execute arbitrary queries on XML databases. XPath injection most commonly occurs as a result of concatenating user input with query strings. XPath injection vulnerabilities are similar to SQL injection vulnerabilities, but target XML databases instead of SQL databases. XPath injection vulnerabilities are often more dangerous than SQL injection attacks, because permissions are not enforced and the malicious queries can access every part of the XML documents. XPath injection attacks may allow retrieving, manipulating, or destroying data stored in XML documents.
+
+==Countermeasures==
+
+The following TeamMentor articles describe effective counter-measures against XPath injection vulnerabilities:
+
+* [[Validate All Input]]
+* [[Do Not Rely on Client-side Validation]]
+* [[Validate Input for Length, Range, Format, And Type]]
+* [[Do Not Disclose Valuable Information in Error Messages]]
+
+==Checklists==
+
+The following checklist items can help make sure that effective counter-measures against XPath injection vulnerabilities have been implemented:
+
+* [[All Input Is Validated]]
+* [[Client-side Validation Is Not Relied On]]
+* [[Input Is Validated for Length, Range, Format, And Type]]
+* [[Valuable Information Is Not Disclosed in Error Messages]]
+
+==Additional Resources==
+
+* For more information about XPath injection, please see https://www.owasp.org/index.php/XPATH_Injection]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="1917746851" Content_Hash="-1666851222">
+  <Metadata>
+    <Id>518f71dd-7173-4801-8a48-c0108b294809</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Validate All Input Passed to Database</Title>
+    <Category>Data Access</Category>
+    <Phase>Implementation</Phase>
+    <Technology>Java</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Validate All Input Passed to Database</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Do</h1>
+  <p>Validate all input before it is passed to the database.</p>
+  <h1>Why</h1>
+  <p>Unvalidated input can lead to persistent cross-site scripting, SQL injection and other vulnerabilities which would allow an attacker to gain unauthorized access to sensitive data.</p>
+  <h1>When</h1>
+  <p>If your application uses a backend database server, then validate all input before it is passed to the database.</p>
+  <h1>How</h1>
+  <p>To properly validate input passed to database:</p>
+  <ol>
+    <li>
+      <strong>Identify database entry points. </strong>Identify all locations within your application that interface with the database servers. Potential sources of input include: <ul><li>URL-based parameters </li><li>Form-based parameters </li><li>Hidden fields </li><li>Cookies </li><li>Local filesystem </li><li>Javascript variables</li></ul></li>
+    <li>
+      <p>
+        <strong>Create a set of validators. </strong>Build a set of validators that work with the database-specific language. Determine the appropriate validation at each validator. Centralize the validators as it helps strengthen your code by limiting the amount of scattered validation code throughout the component. Place the validators along the database entry points. All data should pass through the validators before transmitted to the database servers.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Use type safe SQL parameters in queries. </strong>Stored procedures and parameterized queries improve your application's robustness against SQL injection based attacks.</p>
+    </li>
+  </ol>
+  <h1>Problem Example</h1>
+  <p>The following code allows the user to query a database. Unfortunately, the application fails to validate the user's input; therefore, an attacker can access the backend database on behalf of the application through the use of SQL injection. </p>
+  <pre>public void doGet(HttpServletRequest request,<br />     HttpServletResponse response) throws ServletException, IOException{<br />     PrintWriter out = response.getWriter();<br />     String query = request.getParameter("query");<br />     String retData = "";<br /><br />     // The application fails to validate the user-supplied<br />     // query before submitting it to the database server<br />     retData = queryDB(query);<br /><br />     ...<br /><br />     out.flush();<br />     out.close();<br />}</pre>
+  <h1>Solution Example</h1>
+  <p>The following code allows the user to query a database. Because the application validates the user's input, it is much more difficult for an attacker to access the backend database through a SQL injection attack.</p>
+  <pre>public void doGet(HttpServletRequest request,<br />     HttpServletResponse response) throws ServletException, IOException{<br />     PrintWriter out = response.getWriter();<br />     String query = request.getParameter("query");<br />     String retData = "";<br /><br />     // The application validates the user-supplied query<br />     // before submitting it to the database server<br />     if (validateQuery(query))<br />     {<br />          retData = queryDB(query);<br /><br />          ...<br /><br />     }<br /><br />     out.flush();<br />     out.close();<br />}<br /><br /><br />public boolean validateQuery(String input){<br /><br />      // The input can be only of numeric characters<br />      String goodPattern = "[0-9]++";<br /><br />      Pattern p = Pattern.compile(goodPattern);<br />      Matcher m = p.matcher(input);<br /><br />      if(!m.matches())<br />      {<br />            return false;<br />      }<br /><br />      return true;<br />}</pre>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>A tutorial on regular expressions is available at <a href="http://www.regular-expressions.info/">Regular-Expressions.info</a>. </li>
+    <li>For more information on using regular expression in Java, see: Documentation for <a href="http://download.oracle.com/javase/1.4.2/docs/api/java/util/regex/Pattern.html">Class Pattern</a> in Java SDK. </li>
+  </ul>]]></Data>
+  </Content>
+</TeamMentor_Article>

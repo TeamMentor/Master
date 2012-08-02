@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-1461077660" Content_Hash="-171755971">
+  <Metadata>
+    <Id>52a195b8-bc65-413c-8308-31649d8fb60b</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Encrypt the Data Or Secure the Communication Channel</Title>
+    <Category>Communication Security</Category>
+    <Phase>Design</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Encrypt the Data Or Secure the Communication Channel</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>J.D. Meier, Alex Mackman, Michael Dunner, Srinath Vasireddy, Ray Escamilla and Anandha Murukan</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Do</h1>
+  <p>When passing sensitive data over the network, check that the data is either encrypted by the application or that the data is only passed over encrypted communication links.</p>
+  <h1>Why</h1>
+  <p>Sensitive data passed across the network to and from the database server may include application specific data or database login credentials. To ensure the privacy and integrity of data over the network, either use a platform-level solution (such as that provided by a secure datacenter where IPSec encrypted communication channels are used between servers) or configure your application to establish SSL connections to the database.</p>
+  <h1>When</h1>
+  <p>When you pass sensitive data over the network, make sure it remains private and unaltered.</p>
+  <h1>How</h1>
+  <p>If you are sending sensitive data over the network to the client, encrypt the data or secure the channel. A common practice is to use SSL between the client and Web server. Between servers, an increasingly common approach is to use IPSec. For securing sensitive data that flows through several intermediaries, for example, Web service Simple Object Access Protocol (SOAP) messages, use message level encryption.</p>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>Design Guidelines for Secure Web Applications <a href="http://msdn2.microsoft.com/en-us/library/aa302420.aspx">http://msdn2.microsoft.com/en-us/library/aa302420.aspx</a></li>
+    <li>Architecture and Design Review for Security <a href="http://msdn2.microsoft.com/en-us/library/aa302420.aspx">http://msdn2.microsoft.com/en-us/library/aa302420.aspx</a></li>
+    <li>Security Question List: ASP.NET 2.0 <a href="http://msdn2.microsoft.com/en-us/library/ms998375.aspx">http://msdn2.microsoft.com/en-us/library/ms998375.aspx&amp;nbsp;</a></li>
+  </ul>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance.</p>]]></Data>
+  </Content>
+</TeamMentor_Article>

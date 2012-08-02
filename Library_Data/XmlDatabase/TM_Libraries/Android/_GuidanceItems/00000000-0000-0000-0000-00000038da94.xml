@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-00000038da94</Id>
+    <Library_Id>f215ceee-9a08-41d9-b2c1-bbcc058a8f32</Library_Id>
+    <Title>Obfuscate Code with ProGuard</Title>
+    <Category>Code Integrity</Category>
+    <Phase>Implementation</Phase>
+    <Technology>Android</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Obfuscate Code with ProGuard</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="WikiText">
+    <Data><![CDATA[==What to Do==
+
+Obfuscate code with //ProGuard//.
+
+==Why==
+
+Obfuscate the application binary with //ProGuard// to make it more difficult to reverse engineer.
+
+==How==
+
+To obfuscate code with //ProGuard//:
+
+# **Configure //ProGuard//.** Edit the //proguard.cfg// file to suit your application.
+# **Enable //ProGuard//.** Change the //proguard.config// property in the //project.properties// file to point to the location of the //proguard.cfg// file.
+# **Enable release mode.** //ProGuard// is executed automatically by the Android build system when it is used to build applications in release mode.
+# **Build the application.** Build your application in release mode to obfuscate the binary with //ProGuard//.
+
+==Additional Resources==
+
+* For more information about //ProGuard//, please see http://developer.android.com/tools/help/proguard.html
+* For //ProGuard// documentation, please see http://proguard.sourceforge.net/manual/introduction.html
+]]></Data>
+  </Content>
+</TeamMentor_Article>

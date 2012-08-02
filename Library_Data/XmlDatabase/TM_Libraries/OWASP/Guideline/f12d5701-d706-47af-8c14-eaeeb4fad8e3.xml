@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="2070668630" Content_Hash="842552901">
+  <Metadata>
+    <Id>f12d5701-d706-47af-8c14-eaeeb4fad8e3</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Use a Secure Key Storage Location</Title>
+    <Category>Encryption</Category>
+    <Phase>Implementation</Phase>
+    <Technology>Java</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Use a Secure Key Storage Location</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Do</h1>
+  <p>Application keys should be stored in a well defined location, such as the Java <i>KeyStore</i>. Do not hard code them or store them as plaintext inside configuration files or source code.</p>
+  <h1>Why</h1>
+  <p>When faced with encryption, intruders attack the most vulnerable aspect: key management. Because keys are used to generate the encryption that protects sensitive data, the keys themselves become sensitive data that needs to be protected.</p>
+  <h1>When</h1>
+  <p>If your application uses encryption and encryption keys, use a secure storage location for the keys.</p>
+  <h1>How</h1>
+  <p>When considering a key storage location:</p>
+  <ol>
+    <li>
+      <p>
+        <strong>Identify the need for a key store. </strong>Key stores should be used when your application utilizes crypto keys. Example:</p>
+      <pre>KeyGenerator kgen = KeyGenerator.getInstance("AES");<br />kgen.init(256);SecretKey skey = kgen.generateKey();<br />byte[] rawKey = skey.getEncoded();<br /><br />SecretKeySpec skeySpec = new SecretKeySpec(rawKey, "AES");</pre>
+    </li>
+    <li>
+      <p>
+        <strong>Use Java's <i>KeyStore </i>class. </strong>Since version 1.2, Java offers a key store functionality as part of the Java Runtime Environment. The Java key store requires a master password for retrieving the contents of the key store. The master password should be given to the application at starting time. Use the <i>KeyTool </i>utility to create and manage the keys inside the key store. Example of accessing the key store:</p>
+      <pre>String keyStoreName = MyApp.getKeyStoreName();<br />char[] keyStorePass = MyApp.getKeyStorePass();<br />KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());<br />FileInputStream keyStoreFile = new FileInputStream(keyStoreName);<br />keyStore.load(keyStoreFile, keyStorePass);<br />keyStoreFile.close();<br /><br />final String keyName = "MyAppEncryptionKey";<br />// Note: Although the example uses the same password for storing the KeyStore<br />// on disk and adding keys to the KeyStore, the 2 passwords can be different<br />// from one another<br />SecretKey skey = (SecretKey)keyStore.getKey(keyName, keyStorePass);</pre>
+    </li>
+    <li>
+      <p>
+        <strong>Protect the key store.</strong>
+      </p>
+      <ul>
+        <li>
+          <strong>Choose a key store directory</strong>: Dedicate a directory for storing your application's key store files. Make sure the directory is not web-accessible. This limits the scope of users&amp;nbsp;who can potentially compromise the contents inside the directory. </li>
+        <li>
+          <strong>Set appropriate permissions</strong>: Apply filesystem permissions such that the key store files can be only accessed by your application and its administrators.</li>
+      </ul>
+    </li>
+    <li>
+      <p>
+        <strong>Avoid common mistakes.</strong>
+      </p>
+      <ul>
+        <li>
+          <strong>Do not hard-code keys in the application</strong>: Hard-coding the encryption keys into the source code, hoping that an attacker will not reverse engineer the application, is security through obscurity. A determined attacker will usually find a way to defeat such a mechanism. </li>
+        <li>
+          <strong>Do not place keys into configuration files</strong>: Obfuscating the encryption keys and placing them into configuration files is security through obscurity. A determined attacker will usually find a way to defeat such a mechanism. </li>
+        <li>
+          <strong>Unload keys from memory after their use</strong>: Leaving the encryption keys in memory after their final use allows the operating system to page them from memory and onto the hard drive. A determined attacker will usually find a way to obtain the encryption keys from the operating system's page file.</li>
+      </ul>
+    </li>
+  </ol>
+  <h1>Problem Example</h1>
+  <p>The following code shows a hard-coded encryption key inside the application. A determined attacker will be able to compromise the key once they gain access to the source code.</p>
+  <pre>String encKey = "encryption key";<br />MessageDigest md = MessageDigest.getInstance("SHA-512");<br />md.update(encKey.getBytes("UTF-8"));<br />byte[] rawKey = md.digest();<br />md.reset();<br />SecretKeySpec skeySpec = new SecretKeySpec(rawKey, "AES");</pre>
+  <h1>Solution Example</h1>
+  <p>The following code loads the encryption key from the Java key store. Because the key is properly stored, it is impossible for an attacker to steal the actual key without also stealing the master password.</p>
+  <pre>String keyStoreName = MyApp.getKeyStoreName();<br />char[] keyStorePass = MyApp.getKeyStorePass(); <br />KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());<br />FileInputStream keyStoreFile = new FileInputStream(keyStoreName);<br />keyStore.load(keyStoreFile, keyStorePass);<br />keyStoreFile.close();<br /> final String keyName = "MyAppEncryptionKey";<br />// Note: Although the example uses the same password for storing the KeyStore<br />// on disk and adding keys to the KeyStore, the 2 passwords can be different <br />// from one another<br />SecretKey skey = (SecretKey)keyStore.getKey(keyName, keyStorePass);<br /></pre>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>To learn more about storing encryption keys using Java, see: Documentation for <a href="http://download.oracle.com/javase/1.4.2/docs/api/java/security/KeyStore.html">Class KeyStore</a> in Java SDK.</li>
+  </ul>]]></Data>
+  </Content>
+</TeamMentor_Article>

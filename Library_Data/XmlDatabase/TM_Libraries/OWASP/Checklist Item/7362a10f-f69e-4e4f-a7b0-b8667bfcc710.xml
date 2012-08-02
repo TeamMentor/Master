@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-1873707851" Content_Hash="-1610411020">
+  <Metadata>
+    <Id>7362a10f-f69e-4e4f-a7b0-b8667bfcc710</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Web Site Content Is Located on a Non-system NTFS Volume</Title>
+    <Category>Server Hardening</Category>
+    <Phase>Deployment</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>Web Site Content Is Located on a Non-system NTFS Volume</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>J.D. Meier, Alex Mackman, Michael Dunner, Srinath Vasireddy, Ray Escamilla and Anandha Murukan</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Check For</h1>
+  <p>Check to ensure that Web site content is located on a non-system NTFS volume to mitigate the risks associated with unforeseen canonicalization issues and directory traversal attacks.</p>
+  <h1>How to Check</h1>
+  <p>Do not use the default <i>\inetpub\wwwroot</i> directory. For example, if your system is installed on the C: drive, then move your site and content directory to the D: drive.
+</p>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance.</p>]]></Data>
+  </Content>
+</TeamMentor_Article>

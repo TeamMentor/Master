@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-000000078900</Id>
+    <Library_Id>80a03482-cf8b-4055-82db-1aa09465d30f</Library_Id>
+    <Title>Cross-Site Scripting</Title>
+    <Category />
+    <Phase>NA</Phase>
+    <Technology>ASP.NET</Technology>
+    <Type>Vulnerability</Type>
+    <DirectLink>Cross-Site Scripting</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="WikiText">
+    <Data><![CDATA[==Description==
+
+Cross-Site Scripting (XSS) is a type of vulnerabilities that allow an attacker to inject arbitrary client-side code into the user's browser. XSS attacks target the application's users and not the application itself, but they use the application as the vehicle for the attack.
+
+There are two primary types of XSS, persistent and non-persistent. If the attacker is able to inject his malicious script into the web applications data store, then the script will be persistent and anyone who loads a page with that content will run the script and become a victim of the attack. Forums and other web services that have user supplied HTML content are a classic example of this. If this content is not validated and encoded then anyone can leave a malicious script on the site. Non-Persistent XSS uses some reflective aspect of the page to deliver the payload. Web applications often echo user input back to them without altering it. Attackers can create and distribute URLs for such sites that contain malicious scripts that gets reflected back to the users. One of the most common examples of this is the "page not found" error page which echoes the requested URL back to the user.
+
+==Countermeasures==
+
+The following Team Mentor articles describe effective countermeasures against Cross-Site Scripting vulnerabilities:
+
+* [[Encode Echoed Input]]
+* [[Validate Input for Length, Range, Format, And Type]]
+
+==Checklists==
+
+The following checklist items can help make sure that effective countermeasures against Cross-Site Scripting have been implemented:
+
+* [[Echoed Input Is Encoded]]
+* [[Input Is Validated for Length, Range, Format, And Type]]
+
+==Additional Resources==
+
+* For more information about Cross-Site Scripting, please see http://en.wikipedia.org/wiki/Cross-site_scripting
+* For more information about Cross-Site Scripting, please see https://www.owasp.org/index.php/Cross-site_Scripting_(XSS)]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-0000008b6bc0</Id>
+    <Library_Id>f798e6e6-1732-4172-9c47-9621d914efcd</Library_Id>
+    <Title>Use Parameterized APIs for Command Execution</Title>
+    <Category>Parameterization</Category>
+    <Phase>Implementation</Phase>
+    <Technology> Any</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Use Parameterized APIs for Command Execution</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h2>What to Do</h2>
+  <p>If available, use structured mechanisms that automatically enforce the separation between data and code.</p>
+  <h1>Why</h1>
+  <p>Structured command execution mechanisms may be able to provide the relevant quoting, encoding, and validation automatically, instead of relying on the developer to provide this capability at every point where output is generated.
+</p>
+  <h1>How</h1>
+  <p>Where possible, identify any function that invokes a command shell using a single string, and replace it with a function that requires individual arguments. These functions typically perform appropriate quoting and filtering of arguments. For example, in
+ C, the <em>system()</em> function accepts a string that contains the entire command to be executed, whereas
+<em>execl()</em>, <em>execve()</em>, and others require an array of strings, one for each argument. In Windows,
+<em>CreateProcess()</em> only accepts one command at a time. In Perl, if <em>system()</em> is provided with an array of arguments, then it will quote each of the arguments.</p>]]></Data>
+  </Content>
+</TeamMentor_Article>

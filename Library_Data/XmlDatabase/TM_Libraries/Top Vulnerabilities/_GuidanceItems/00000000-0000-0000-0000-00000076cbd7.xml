@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-00000076cbd7</Id>
+    <Library_Id>f798e6e6-1732-4172-9c47-9621d914efcd</Library_Id>
+    <Title>Cross-Site Scripting</Title>
+    <Category>Validation</Category>
+    <Phase>NA</Phase>
+    <Technology> Any</Technology>
+    <Type>Attack</Type>
+    <DirectLink>Cross-Site Scripting</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="WikiText">
+    <Data><![CDATA[==Description==
+
+A Cross Site Scripting (XSS) attack can cause arbitrary code to run in a user's browser while the browser is connected to a trusted Web site. The attack targets your application's users and not the application itself, but it uses your application as the vehicle for the attack. Because the script code is downloaded by the browser from a trusted site, the browser has no way of knowing that the code is not legitimate. As the attacker's code has access to the cookies associated with the trusted site and are stored on the user's local computer, a user's authentication cookies are typically the target of attack.
+
+There are two primary types of XSS, persistent and non-persistent. If the attacker is able to inject his malicious script to the web applications data store, then the script will be persistent and anyone who then loads a page with that content will run the script and become a victim of the attack. Forums and other web services that have user supplied HTML content are a classic example of this. If this content is not validated and encoded then anyone can leave a malicious script on the site. Non-Persistent XSS uses some reflective aspect of the page to deliver the payload. Web applications often echo user input back to them without altering it. Search engines are a good example of this type of behavior. Attackers can create and distribute URLs that contain a malicious script that gets reflected back to the user. The most common example of this is the "page not found" error page which echoes the requested page back to the user.
+
+The most common attack performed with cross-site scripting involves the disclosure of information stored in user cookies. In some circumstances it may be possible to run arbitrary code on a victim's computer when cross-site scripting is combined with other flaws. Even if an attacker cannot get at the authentication information of a user, they can act as that user.
+
+==Impact==
+
+*Credential Compromise
+*Information Disclosure
+*Elevation of Privilege
+]]></Data>
+  </Content>
+</TeamMentor_Article>

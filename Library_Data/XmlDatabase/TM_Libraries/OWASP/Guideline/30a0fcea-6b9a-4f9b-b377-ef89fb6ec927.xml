@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="1665382395" Content_Hash="-1083124832">
+  <Metadata>
+    <Id>30a0fcea-6b9a-4f9b-b377-ef89fb6ec927</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Use SSL to Protect Session Cookies on Authenticated Pages</Title>
+    <Category>Session Management</Category>
+    <Phase>Implementation</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Use SSL to Protect Session Cookies on Authenticated Pages</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Do</h1>
+  <p>Use SSL to protect session cookies on authenticated pages. </p>
+  <h1>Why</h1>
+  <p>Failing to protect authentication tickets is a common vulnerability that can lead to unauthorized spoofing and impersonation, session hijacking, and elevation of privilege.</p>
+  <h1>When</h1>
+  <p>All systems which use cookies for authentication should protect those cookies via SSL on all pages which require authentication, and ensure that the cookies are not used/sent for pages which do not require authentication and do not use SSL. </p>
+  <h1>How</h1>
+  <p>Set <strong>requireSSL="true"</strong> on the &lt;<strong>forms</strong>&gt; element, as shown in the following code.</p>
+  <pre>&lt;forms loginUrl="Secure\Login.aspx"<br />       requireSSL="true" ... /&gt;  </pre>
+  <br />
+  <p>By setting <strong>requireSSL="true"</strong>, you set the <strong>secure</strong> cookie property that determines whether browsers should send the cookie back to the server. With the <strong>secure</strong> property set, the cookie is sent by the browser only to a secure page that is requested using an HTTPS URL.</p>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance. </p>]]></Data>
+  </Content>
+</TeamMentor_Article>

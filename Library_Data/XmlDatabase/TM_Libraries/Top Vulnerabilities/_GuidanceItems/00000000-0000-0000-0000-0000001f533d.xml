@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-0000001f533d</Id>
+    <Library_Id>f798e6e6-1732-4172-9c47-9621d914efcd</Library_Id>
+    <Title>Force Reauthentication for Sensitive Operations</Title>
+    <Category>Authentication</Category>
+    <Phase>Implementation</Phase>
+    <Technology> Any</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Force Reauthentication for Sensitive Operations</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>What to Do</h1>
+  <p>Force the user to re-authenticate when executing security-critical functionality including, but not limited to, change of password, account modifications and critical transactions.</p>
+  <h1>Why</h1>
+  <p>Forcing the user to re-authenticate verifies the user's decision to execute the given functionality and preserves the application's integrity in the event that a user's account has been compromised via session hijacking.</p>
+  <h1>How</h1>
+  <p>Follow these steps when forcing re-authentication:</p>
+  <ol>
+    <li>
+      <p>
+        <strong>Identify critical functionality.</strong> Evaluate your application's design and requirements and determine what parts and resources of your application are very important to your organization's business model or your application's security architecture. This could include activities such as financial transactions or resetting user passwords.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Adopt a re-authentication mechanism.</strong> Establish a mechanism that requires the user to verify their authenticity:</p>
+      <ul>
+        <li>
+          <p>
+            <strong>Current password.</strong> The user uses their current password to confirm the identity. This technique ensures that the given user is aware of the action to be performed and holds responsibility for executing it. </p>
+        </li>
+        <li>
+          <p>
+            <strong>CAPTCHA.</strong> CAPTCHA are mechanisms designed to ensure that a human, not an automated script, is using the system. Using a CAPTCHA should be seen as a way of augmenting a password in this kind of situation, not a way of replacing it. Many CAPTCHA systems embed distorted letters or numbers into displayed images which the user must enter. There are a number of problems with many CAPTCHA systems, so they should not be relied on too heavily. First, many graphical CAPTCHAs can be trivially broken by optical character recognition systems, and ensuring that a CAPTCHA is sufficiently strong to be useful without having too high of a failure rate for real users is difficult. If CAPTCHAs are reused, the attacker can simply record the session IDs of CAPTCHAs with known values and replay them. CAPTCHAs can also be broken by using a man-in-the-middle technique where the image is saved and forwarded to another site controlled by the attacker. An unsuspecting user of that site solves the CAPTCHA and the attacker forwards the answer to the victim site. CAPTCHAs also create accessibility problems for users, as blind and sometimes even color-blind individuals can find them impossible. If you choose to implement a CAPTCHA, be aware of the trade-offs involved and ensure that the system you use is appropriately protected against the attacks you expect to see. </p>
+        </li>
+        <li>
+          <p>
+            <strong>2nd Factor.</strong> If your application supports a second factor of authentication such as a token, this could play a role in the re-authentication scheme.</p>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <p>
+        <strong>Enforce the re-authentication mechanism.</strong> Once the critical functionality is identified and the re-authentication mechanism is established, enforce the re-authentication mechanism before all security-critical actions.</p>
+    </li>
+  </ol>
+  <ul>
+  </ul>]]></Data>
+  </Content>
+</TeamMentor_Article>

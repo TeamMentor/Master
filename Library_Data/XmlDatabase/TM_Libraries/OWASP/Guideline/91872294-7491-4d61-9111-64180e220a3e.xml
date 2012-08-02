@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="340336973" Content_Hash="1768259399">
+  <Metadata>
+    <Id>91872294-7491-4d61-9111-64180e220a3e</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Protect Sensitive Data Inside Configuration Files</Title>
+    <Category>Server Hardening</Category>
+    <Phase>Implementation</Phase>
+    <Technology>Java</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Protect Sensitive Data Inside Configuration Files</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Do</h1>
+  <p>Protect all sensitive data that is stored within configuration files.</p>
+  <h1>Why</h1>
+  <p>Configuration files are a likely target for any attacker. If an attacker does compromise the configuration files, any unprotected sensitive data inside them will also be compromised.</p>
+  <h1>When</h1>
+  <p>If your application uses configuration files that contain sensitive data such as connection strings, directory paths or credentials, then protect the files.</p>
+  <h1>How</h1>
+  <p>To protect sensitive data inside configuration files use the following steps:</p>
+  <ol>
+    <li>
+      <p>
+        <strong>Identify the sensitive data. </strong>Locate all sensitive data that is stored inside configuration files. Examples of sensitive data include, but are not limited to, credentials, connection strings and directory paths.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Encrypt sensitive data inside the configuration files. </strong>Encrypt the sensitive data inside the configuration file to ensure its confidentiality in case this file is compromised. Once the application accesses the configuration file, it should decrypt the sensitive data just before use. Example:</p>
+      <pre>public Properties loadDatabaseCredentials()<br />      throws GeneralSecurityException, IOException{<br />      // Set the decryption mechanism<br />      byte[] rawKey = getEncryptionKey();<br />      SecretKeySpec skeySpec = new SecretKeySpec(rawKey, "AES");<br />      Cipher cipher = Cipher.getInstance("AES");<br />      cipher.init(Cipher.DECRYPT_MODE, skeySpec);<br /><br />      // Decrypt config file<br /><br />      File configFile = new File("../../config/testProp.config");<br />      byte[] tempBuff = new byte[(int)configFile.length()];<br />      FileInputStream fileStream = new FileInputStream(configFile);<br />      fileStream.read(tempBuff, 0, tempBuff.length);<br /><br />      InputStream propStream = new ByteArrayInputStream(cipher.doFinal(tempBuff));<br />      prop.load(propStream);<br />      propStream.close();<br />      fileStream.close();<br /><br />      return prop;}</pre>
+    </li>
+    <li>
+      <p>
+        <strong>Protect configuration files.</strong>
+      </p>
+      <ul>
+        <li>
+          <p>
+            <strong>Choose a configuration directory</strong>: Dedicate a directory for storing your application's configuration files. Make sure the directory is not web-accessible. This limits the scope of users&amp;nbsp;who can potentially compromise the contents inside the directory.</p>
+        </li>
+        <li>
+          <p>
+            <strong>Set appropriate permissions</strong>: Apply the appropriate filesystem permissions such that the configuration files can be only accessed by your application and its administrators.</p>
+        </li>
+      </ul>
+    </li>
+  </ol>
+  <h1>Problem Example</h1>
+  <p>The following code retrieves database credentials from a configuration file. Unfortunately, the credentials are not encrypted; therefore, anybody with access to the configuration file can retrieve the credentials and access the database on behalf of the application.</p>
+  <pre>public Properties loadDatabaseCredentials() throws IOException{<br />      Properties prop = new Properties();<br />      InputStream propStream = new FileInputStream("../../config/testProp.config");<br />      prop.load(propStream);<br />      propStream.close();<br /><br />      return prop;}</pre>
+  <h1>Solution Example</h1>
+  <p>The following code retrieves database credentials from a configuration file. Because the credentials are encrypted, the application decrypts them in real time, protecting the credentials' confidentiality in case the local access to the configuration file is not properly secured.</p>
+  <pre>public Properties loadDatabaseCredentials()<br />      throws GeneralSecurityException, IOException{<br />      // Set the decryption mechanism<br />      byte[] rawKey = getEncryptionKey();<br />      SecretKeySpec skeySpec = new SecretKeySpec(rawKey, "AES");<br />      Cipher cipher = Cipher.getInstance("AES");<br />      cipher.init(Cipher.DECRYPT_MODE, skeySpec);<br /><br />      // Decrypt config file<br /><br />      File configFile = new File("../../config/testProp.config");<br />      byte[] tempBuff = new byte[(int)configFile.length()];<br />      FileInputStream fileStream = new FileInputStream(configFile);<br />      fileStream.read(tempBuff, 0, tempBuff.length);<br /><br />      InputStream propStream = new ByteArrayInputStream(cipher.doFinal(tempBuff));<br />      prop.load(propStream);<br />      propStream.close();<br />      fileStream.close();<br /><br />      return prop;}</pre>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>To learn more about the JCE API, see: <a href="http://download.oracle.com/javase/1.4.2/docs/guide/security/jce/JCERefGuide.html">Java Cryptography Extension for the Java 2 SDK, v 1.4</a>.</li>
+  </ul>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-00000092d7fb</Id>
+    <Library_Id>b6f408c5-6e6e-4bc0-90a5-0bb10becc2ce</Library_Id>
+    <Title>File Sharing Is Disabled in Applications that Support It</Title>
+    <Category>Authorization</Category>
+    <Phase>Deployment</Phase>
+    <Technology>iOS</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>File Sharing Is Disabled in Applications that Support It</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="WikiText">
+    <Data><![CDATA[==What to Check For==
+
+Verify that file sharing is disabled in applications that support it.
+
+==Why==
+
+Disable file sharing to prevent unauthorized access. Some applications share all the user's files by default. If file sharing is necessary, it should only be enabled when it is being used.
+
+==How to Check==
+
+To verify that file sharing is disabled:
+
+# **Identify applications with file sharing capabilities.** Enumerate all the installed applications. Check each application to see if it supports file sharing.
+# **Verify that file sharing is disabled.** Examine application settings to make sure that file sharing is disabled.
+# **Verify that file sharing is disabled by default.** When developing applications, check the default settings to make sure that file sharing is disabled by default.
+
+==How to Fix==
+
+To disable file sharing in applications that support it:
+
+# **Identify applications with file sharing capabilities.** Enumerate all the installed applications. Check each application to see if it supports file sharing.
+# **Disable or secure file sharing.** Disable file sharing for each application that enables such functionality when file sharing is not being used. If the application offers security features to protect file sharing, such as password protection, use these features to protect file sharing. Even if security features are available for file sharing, file sharing should be disabled when it is not being used.
+# **Disable file sharing by default.** When developing applications, disable file sharing by default in your applications.
+
+==Authorization Guidelines==
+* [[Disable File Sharing in Applications that Support It]]
+* [[Use Role-based Access Control]]
+
+==Authorization Checklists==
+* [[File Sharing Is Disabled in Applications that Support It]]
+* [[Role-based Access Control Is Used]]]]></Data>
+  </Content>
+</TeamMentor_Article>

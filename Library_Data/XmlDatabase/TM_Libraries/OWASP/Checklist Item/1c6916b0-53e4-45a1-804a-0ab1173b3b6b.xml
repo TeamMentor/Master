@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-324697249" Content_Hash="1129146907">
+  <Metadata>
+    <Id>1c6916b0-53e4-45a1-804a-0ab1173b3b6b</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Type Safe SQL Parameters Are Used</Title>
+    <Category>Data Access</Category>
+    <Phase>Implementation</Phase>
+    <Technology>Java</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>Type Safe SQL Parameters Are Used</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Check For</h1>
+  <p>Ensure that type safe SQL parameters are used when performing database transactions.</p>
+  <h1>Why</h1>
+  <p>Attackers can use a SQL Injection Attack to manipulate the database in unforeseen ways. SQL injection allows an attacker to assume the credentials of the SQL account used to connect to the database, which may lead to arbitrary reading, writing, updating or deleting of data. In an improperly secured database, this can also lead to remote code execution through the use of certain stored procedures that allow for direct Operating System command injection.</p>
+  <h1>How to Check</h1>
+  <p>To check if parameterized queries are used:</p>
+  <ol>
+    <li>
+      <p>
+        <strong>Identify all database transactions. </strong>Locate all SQL queries throughout your application. Example:</p>
+      <blockquote>
+        <pre>"select user from myappUsers where user = ? and pass = ?;"</pre>
+      </blockquote>
+    </li>
+    <li>
+      <p>
+        <strong>Verify that each transaction uses Stored Procedures. </strong>Verify that your application interacts with the backend database through the use of Stored Procedures. Ensure that all SQL queries look like:</p>
+      <blockquote>
+        <pre>Connection.prepareStatement("exec PlaceOrder(?, ?, ?);");</pre>
+      </blockquote>
+      <p>and not like:</p>
+      <blockquote>
+        <pre>Connection.prepareStatement("insert into PendingPurchases "<br />                          + "(customer, item, quantity) values (?, ?, ?);");</pre>
+      </blockquote>
+    </li>
+    <li>
+      <p>
+        <strong>Verify that each transaction uses Prepared Statement. </strong>Verify that each SQL query is executed through the use of a <i>PreparedStatement </i>object. Example:</p>
+      <blockquote>
+        <pre>Connection cn = MyApp.getDBConnection();<br />PreparedStatement st = cn.prepareStatement("select user from myappUsers where user = ? and pass = ?;");<br />st.setString(1, user);<br />st.setString(2, new String(passDigest));<br />ResultSet rs = st.executeQuery();</pre>
+      </blockquote>
+    </li>
+  </ol>
+  <h1>Problem Example</h1>
+  <p>The following code validates the user based on a given username and password. It hashes the password with a random salt. Then it compares the username and the produced hash against the data stored in the backend database. Unfortunately, the SQL query is dynamically crafted by using the user's input. If there is no proper input validation, an attacker can access the application's database server through the use of SQL injection.</p>
+  <blockquote>
+    <pre>public boolean validateUser(String user, char[] pass)<br />{<br />      // Hash the credentials before querying the credential store<br />      // The application crafts the SQL query based on user's input<br />      Connection cn = MyApp.getDBConnection();<br />      Statement st = cn.createStatement();<br />      String query = "select login_attempts from myappUsers where user = \""<br />                    + user + "\" and pass = \"" + passHash + "\";";<br />      ResultSet rs = st.executeQuery(query);<br />      // Execute the rest of the authentication steps<br />}</pre>
+  </blockquote>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>To learn more about using parameterized queries in Java, see: <a href="http://java.sun.com/j2se/1.4.2/docs/api/java/sql/PreparedStatement.html">PreparedStatement</a>. </li>
+    <li>For more information about preventing SQL injection attacks, visit: <a href="http://www.owasp.org/index.php/Reviewing_Code_for_SQL_Injection">Reviewing Code for SQL Injection</a>&amp;nbsp;from OWASP.</li>
+  </ul>
+  <ul>
+  </ul>]]></Data>
+  </Content>
+</TeamMentor_Article>

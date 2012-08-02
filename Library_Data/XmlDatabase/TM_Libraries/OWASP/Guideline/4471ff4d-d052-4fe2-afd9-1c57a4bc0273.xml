@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="1079776515" Content_Hash="1992471098">
+  <Metadata>
+    <Id>4471ff4d-d052-4fe2-afd9-1c57a4bc0273</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Use Stored Procedures</Title>
+    <Category>Data Access</Category>
+    <Phase>Implementation</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Use Stored Procedures</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>1</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Do</h1>
+  <p>Always use stored procedures when interacting with a database. This increases performance and reduces the risk of a successful SQL injection attack.</p>
+  <h1>Why</h1>
+  <p>Attackers can use a SQL Injection Attack to manipulate the database in unforeseen ways. SQL injection allows an attacker to assume the credentials of the SQL account used to connect to the database, which may lead to arbitrary reading, writing, updating, or deleting of data. In an improperly secured database this can also lead to remote code execution through the use of certain stored procedures that allow for direct Operating System command injection.</p>
+  <h1>When</h1>
+  <p>Whenever interaction with a database is required</p>
+  <h1>How</h1>
+  <p>First the stored procedure will have to be created on the database, this can be done using the following SQL syntax:</p>
+  <pre>CREATE PROCEDURE <br />sp_AddNewUser( @UserName nvarchar(255), @Email  nvarchar(255), <br />@FirstName nvarchar(255), @LastName nvarchar(255)) AS</pre>
+  <pre>-- INSERT the new user<br />INSERT INTO Users_Table(UserName, Email, FirstName, LastName)<br />VALUES(@UserName, @Email, @FirstName, @LastName)<br />--This will return the new user’s IDSELECT SCOPE_IDENTITY()</pre>
+  <p>Now to call the stored procedure we can use the following .NET code:</p>
+  <pre>//create a new connection using our connection string<br />SqlConnection myConnection = new SqlConnection(connection string)<br />;myConnection.Open();<br />//create a new command that specifies our store procedure<br />SqlCommand myCommand = new SqlCommand("sp_AddNewUser", myConnection);<br />//Specify our command is a stored proceduremy<br />Command.CommandType = Command<br />Type.StoredProcedure;<br />//Create a new parameter to carry the username<br />SqlParameter UserParameter = new SqlParameter("@UserName", SqlDbType.VarChar);<br />UserParameter.Direction = ParameterDirection.Input;<br />UserParameter.Value = "TestUser";<br />//Add the parameter to the command<br />myCommand.Parameters.Add(UserParameter);<br />//Repeat this code to add commands for each parameter in the SPROC<br />//Execute the command on the Database<br />myCommand.ExecuteNonQuery();</pre>
+  <h1>Problem Example</h1>
+  <p>There are many ways to create a SQL injection vulnerability, and it’s even possible to do using stored procedures. The vulnerability lies in dynamically creating a SQL statement without bound parameters. In the following example the developer has built the SELECT statement by appending the components of the statements together with user provided input.</p>
+  <p>The developer wants to execute the following command where [username] is the username of the user whose e-mail we would like to return</p>
+  <pre>SELECT Email from Users_Table where <br />UserName = [username];<br /></pre>
+  <pre>The following code will create that statement an execute it on the database:<br />//create a new connection using our connection string<br />SqlConnection myConnection = new SqlConnection(connection string);<br />myConnection.Open();<br />//create a new command that specifies our store procedure<br />string selectCommand = "SELECT Email from Users_Table WHERE UserName = "<br />         + userNameBox.Text;<br />SqlCommand myCommand = new SqlCommand(selectCommand);<br />//Execute the command on the Database<br />SqlDataReader myReader = myCommand.ExecuteReader();</pre>
+  <h1>Solution Example</h1>
+  <p>First a stored procedure needs to be created on the database, the following SQL syntax can be used to create the same select statement as above:</p>
+  <pre>CREATE PROCEDURE sp_ReturnEmail( @UserName nvarchar(255)) <br />ASSELECT Email FROM Users_Table where UserName = @UserName;</pre>
+  <p>Now the following code can be used to query the database using the stored procedure:</p>
+  <pre>//create a new connection using our connection string<br />SqlConnection myConnection = new SqlConnection(connection string);<br />myConnection.Open();<br />//create a new command that specifies our store procedure<br />SqlCommand myCommand = new SqlCommand("sp_ReturnEmail", myConnection);<br />//Specify our command is a stored procedure<br />myCommand.CommandType = CommandType.StoredProcedure;<br />//Create a new parameter to carry the username<br />SqlParameter UserParameter = new SqlParameter("@UserName", SqlDbType.VarChar);U<br />serParameter.Direction = ParameterDirection.Input;UserParameter.Value = [username];<br />//Add the parameter to the command<br />myCommand.Parameters.Add(UserParameter);<br />//Execute the command on the Database<br />SqlDataReader myReader = myCommand.ExecuteReader();</pre>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>To learn more about stored procedures, visit: <a href="http://en.wikipedia.org/wiki/Stored_procedure">Stored procedure</a>. </li>
+    <li>For more information on using stored procedures, visit: <a href="http://aspnet.4guysfromrolla.com/articles/062905-1.aspx">Returning a Scalar value from a Stored Procedure</a>.</li>
+  </ul>
+  <ul>
+  </ul>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance.</p>]]></Data>
+  </Content>
+</TeamMentor_Article>

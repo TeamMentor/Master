@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-0000000329a1</Id>
+    <Library_Id>f798e6e6-1732-4172-9c47-9621d914efcd</Library_Id>
+    <Title>Divide Your Application by Authorization Level</Title>
+    <Category>Authorization</Category>
+    <Phase>Design</Phase>
+    <Technology> Any</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Divide Your Application by Authorization Level</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h2>What to Do</h2>
+  <p>Divide your software into anonymous, normal, privileged, and administrative areas. Identify which of these areas require a proven user identity, and use use centralized authentication. Identify all potential communication channels, or other means of interaction
+ with the software, to ensure that all channels are appropriately protected. Developers sometimes perform authentication at the primary channel, but open up a secondary channel that is assumed to be private. For example, a login mechanism may be listening on
+ one network port, but after successful authentication, it may open up a second port where it waits for the connection, but avoids authentication because it assumes that only the authenticated party will connect to the port. In general, if the software or protocol
+ allows a single session or user state to persist across multiple connections or channels, authentication and appropriate credential management need to be done throughout.</p>
+  <h2>Why</h2>
+  <p>Compartmentalizing software allows you to limit the amount of damage that can be done to a system. You can divide the system into a collection of isolated units so that even if one component is breached, the entire system is not compromised. Compartmentalization
+ separates resources, data, users, and processes from one another.</p>
+  <h2>When</h2>
+  <p>Designing an application architecture is best done in the early stages of the project. Later on, the architecture can be strengthened gradually over time.
+</p>
+  <h2>How</h2>
+  <p>To provide separation between components:</p>
+  <ol>
+    <li>
+      <p>
+        <strong>Compartmentalize users.</strong> You should never provide the same set of permissions on application resources to different users. The separation of users ensures that even if one user's account is compromised, other accounts remain secure. Use role-based
+ and user-based authorization to enforce separation of users. For role-based authorization, the roles need to be defined. Additionally, you need to determine the type of resources that can be accessed by a group of users. For user-based authorization, determine
+ the type of resources that can only be accessed by specific users.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Compartmentalize processes.</strong> Break your applications into a collection of well-defined functional components. Each of these components should have its own specific purpose. This separation applies even more when dealing with critical operations
+ and processes, such as credit card transactions.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Compartmentalize data.</strong> Data should be stored separately depending on its sensitivity and purpose:</p>
+      <ul>
+        <li>Store data in a database on a nonpublicly accessible machine. </li>
+        <li>Place Web-root on a separate partition from OS installation. </li>
+        <li>Segment data by the authorization level required to access it (database tables, config files, Web folders).
+</li>
+        <li>Separate databases/tables for storing different types of data and create different database users with privileges limited to their needs.
+</li>
+        <li>On the file system, assign permissions carefully, granting only the privileges a given process needs.</li>
+      </ul>
+    </li>
+  </ol>]]></Data>
+  </Content>
+</TeamMentor_Article>

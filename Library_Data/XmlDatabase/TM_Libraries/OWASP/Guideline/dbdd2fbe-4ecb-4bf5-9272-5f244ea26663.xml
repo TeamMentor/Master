@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-1416277150" Content_Hash="-298631181">
+  <Metadata>
+    <Id>dbdd2fbe-4ecb-4bf5-9272-5f244ea26663</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Encrypt Communication Links</Title>
+    <Category>Communication Security</Category>
+    <Phase>Implementation</Phase>
+    <Technology>Java</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Encrypt Communication Links</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Do</h1>
+  <p>Encrypt the communication channels when interacting with other software across the network.</p>
+  <h1>Why</h1>
+  <p>Encrypting the communication links allows the application to preserve the confidentiality and integrity of the transmitted data. </p>
+  <h1>When</h1>
+  <p>If sensitive data must be transmitted between two hosts, either&amp;nbsp;between servers or between application and server, then encrypt the communication links.</p>
+  <h1>How</h1>
+  <p>To encrypt the communication links:</p>
+  <ol>
+    <li>
+      <p>
+        <strong>Identify the connections used for transmitting sensitive data. </strong>Enumerate all connections between the different servers with other servers or with the application. Identify the sensitive data that is sent over the network and the respective connections that are used for such communication.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Choose the appropriate encryption mechanism. </strong>Depending on the infrastructure, you may consider using IPSec or TLS/SSL.</p>
+      <ul>
+        <li>
+          <strong>IPSec:</strong> IPSec is used when the encryption needs to be applied across all involved parties. Since IPSec is designed to secure connections between static hosts that are "always on," use IPSec to secure the network connections between your application's servers. Due to its nature, IPSec requires low level support; therefore, your application would need support from the operating system or a JNI component to manage it. </li>
+        <li>
+          <strong>TLS/SSL:</strong> TLS/SSL provides a granular protection which&amp;nbsp;allows only&amp;nbsp;the traffic containing sensitive data to be encrypted. Because TLS/SSL has a certificate based design, it allows the protection of data between mobile hosts. Use TLS/SSL to secure the communication channel between your application and its users.<br /><br />While Java provides APIs for handling SSL encrypted traffic, it is recommended to follow the manuals associated with the&amp;nbsp;third party software that&amp;nbsp;is being used. For example, if your application connects to a database server, follow the database server's manual on setting up the encryption; if your application is web-oriented, follow the web server's documentation on setting up the SSL certificate. If your application uses SSL, ensure that you use SSL 3.0 and disable the cryptographically weak SSL 2.0 protocols.</li>
+      </ul>
+    </li>
+    <li>
+      <p>
+        <strong>Apply the appropriate encryption mechanism. </strong>Apply the encryption mechanism of choice at the appropriate locations in the code. Such locations include all functionality that establishes a connection between your application and another entity.</p>
+    </li>
+  </ol>
+  <h1>Problem Example</h1>
+  <p>The following code establishes a connection between&amp;nbsp;two servers. Unfortunately, the communication is not encrypted; therefore, it is possible for an attacker to eavesdrop on the connection.</p>
+  <pre>String remoteHost = "server02.example.com";<br />int remotePort = "1337";<br /><br />Socket sock = new Socket(remoteHost, remotePort);<br />InputStreamReader isr = new InputStreamReader(sock.getInputStream());<br />BufferedReader input = new BufferedReader(isr);<br />PrintWriter output = new PrintWriter(sock.getOutputStream(), true);</pre>
+  <h1>Solution Example</h1>
+  <p>The following code establishes a connection between&amp;nbsp;two servers. Because the communication is encrypted, the confidentiality of the data in transit is preserved; therefore, it is impossible for an attacker to eavesdrop on the connection.</p>
+  <pre>String remoteHost = "server02.example.com";<br />int remotePort = "1337";<br /><br />SSLSocketFactory sslSF = (SSLSocketFactory) SSLSocketFactory.getDefault();<br />SSLSocket sslSock = (SSLSocket) sslSF.createSocket(remoteHost, remotePort);<br /><br />InputStreamReader isr = new InputStreamReader(sslSock.getInputStream());<br />BufferedReader input = new BufferedReader(isr);<br />PrintWriter output = new PrintWriter(sslSocket.getOutputStream(), true);</pre>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>For more information about TLS, see: RFC for <a href="http://www.faqs.org/rfcs/rfc2246.html">Transport Layer Security</a>. </li>
+    <li>For more information about Java SSL sockets, see: Documentation for <a href="http://download.oracle.com/javase/1.4.2/docs/api/javax/net/ssl/SSLSocket.html">Class SSLSocket</a> in Java SDK. </li>
+    <li>To learn about the JSSE API, see: <a href="http://download.oracle.com/javase/1.4.2/docs/guide/security/jsse/JSSERefGuide.html">Java Secure Socket Extension (JSSE) Reference Guide</a> available from Oracle. </li>
+    <li>For a tutorial about using the JSSE API, see: <a href="http://www.javaworld.com/javaworld/jw-05-2001/jw-0511-howto.html">Build secure network applications with SSL and the JSSE API</a>. </li>
+    <li>For a quick overview on IPSec, see: A publication on <a href="http://www.digisafe.com/products/pdf/IPSec_Primer.pdf">IPSec Primer</a>.</li>
+    <li>For more information about safely configuring SSL, see: <a href="https://www.owasp.org/index.php/Transport_Layer_Protection_Cheat_Sheet">https://www.owasp.org/index.php/Transport_Layer_Protection_Cheat_Sheet</a>.</li>
+  </ul>]]></Data>
+  </Content>
+</TeamMentor_Article>

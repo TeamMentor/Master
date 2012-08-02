@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-000000730288</Id>
+    <Library_Id>f798e6e6-1732-4172-9c47-9621d914efcd</Library_Id>
+    <Title>Output Encoding Using Struts 2</Title>
+    <Category>Encoding</Category>
+    <Phase>Implementation</Phase>
+    <Technology>Struts2</Technology>
+    <Type>Code Example</Type>
+    <DirectLink>Output Encoding Using Struts 2</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Applies to</h1>
+  <ul>
+    <li>Java</li>
+    <li>Struts 2</li>
+  </ul>
+  <h1>Summary</h1>
+  <p>Perform output encoding using Struts 2 within an application.</p>
+  <h1>Objectives</h1>
+  <p>Strong output encoding is a control that is typically used to prevent encoding (primarily XSS on the web) issues within an application. This article will describe how to use the built-in mechanisms provided by Struts 2 to perform appropriate output encoding.</p>
+  <h1>Solution Examples</h1>
+  <p>In general, Struts 2 tags perform HTML entity encoding by default (see XSS prevention cheat sheet in references). The url tag provides a mechanism to perform url encoding on parameter values. A few examples are given below.</p>
+  <p>Using <em>s:property</em> to output simple text (performs HTML entity encoding).</p>
+  <pre>&lt;s:property value="streetAddress" /&gt;</pre>
+  <p>Using <em>s:hidden</em> to output a hidden field (performs HTML entity encoding).</p>
+  <pre>&lt;s:hidden name="foo" value="bar" /&gt;</pre>
+  <p>Using <em>s:url</em> / <em>s:a</em> to output a url (performs URL encoding on url parameter values).</p>
+  <pre>&lt;s:url id="addBookUrl" namespace="/book" action="myBookAction" method="add"&gt;<br />&amp;nbsp; &lt;s:param name="id" value="${bookId}"/&gt;<br />&lt;/s:url&gt;<br />&lt;s:a href="%{addBookUrl}"&gt;Add&lt;/s:a&gt;</pre>
+  <p>
+    <strong>Note</strong>: An important point to be aware of is that there are a few tags that allow you to disable the encoding performed by the tag. This is sometimes useful, the most common case being where you are allowing administrators for a site add HTML formatted messages to be displayed to users. There may also be cases where users can create formatted messages for other users. These approaches are often not handled properly to prevent XSS. However, through strong input validation, it is possible to allow users to enter limited HTML and still display that safely to users without allowing XSS. </p>
+  <p>You can determine if this is being done by simply looking for the escape attribute in struts tags. If it is set to false, then the HTML entity encoding is disabled (the default is true). An example of disabling encoding is shown below.</p>
+  <pre>&lt;s:property value="streetAddress" escape="false" /&gt;</pre>
+  <p>Struts 2 provides various tags that can perform output encoding. However, you must be aware of the encoding properties of the tag(s) you are using and encode appropriately for your given output context. </p>
+  <h1>More Information</h1>
+  <ul>
+    <li>For Struts 2 tag documentation, please see <a href="http://struts.apache.org/2.0.14/docs/tag-reference.html">http://struts.apache.org/2.0.14/docs/tag-reference.html</a></li>
+    <li>For more information about Cross-Site Scripting Prevention, please see <a href="https://www.owasp.org/index.php/XSS_%28Cross_Site_Scripting%29_Prevention_Cheat_Sheet">https://www.owasp.org/index.php/XSS_%28Cross_Site_Scripting%29_Prevention_Cheat_Sheet</a></li>
+  </ul>
+  <ul>
+  </ul>]]></Data>
+  </Content>
+</TeamMentor_Article>

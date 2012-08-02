@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-00000067c695</Id>
+    <Library_Id>b6f408c5-6e6e-4bc0-90a5-0bb10becc2ce</Library_Id>
+    <Title>Encrypt Authentication Credentials Sent over the Network</Title>
+    <Category>Authentication</Category>
+    <Phase>Implementation</Phase>
+    <Technology>iOS</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Encrypt Authentication Credentials Sent over the Network</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="WikiText">
+    <Data><![CDATA[==Applies To==
+
+* iOS applications that authenticate to a remote server.
+
+==What to Do==
+
+Encrypt authentication credentials sent over the network. Using SSL is the simplest way to protect the authentication process.
+
+==Why==
+
+Encrypting authentication credentials sent over the network helps prevent various man-in-the-middle attacks, such as spoofing or hijacking.
+
+==How==
+
+To encrypt authentication credentials sent over the network:
+
+# **Identify the authentication mechanism used by the application.** Most applications use usernames and passwords for authentication, however there are other options available, such as certificates. 
+# **Identify the authentication code.** Identify the code that is responsible for authentication both on the iOS device and on the remote server. The authentication itself should be implemented on the server. To protect authentication credentials in transit, both end points need to support SSL. 
+# **Encrypt authentication credentials in transit.** Add code that uses SSL to protect authentication credentials in transit. The server should be configured to only accept authentication credentials via SSL. The iOS //NSURLRequest// and //NSURLConnection// classes support SSL and should be sufficient for many common authentication scenarios.
+
+==Authentication Guidelines==
+* [[Change Root Passwords on Jailbroken Devices]]
+* [[Encrypt Authentication Credentials Sent over the Network]]
+* [[Implement a Secure Password Reset Function]]
+* [[Throttle Authentication Attempts]]
+* [[Use Server-side Authentication]]
+
+==Authentication Checklists==
+* [[Root Passwords Have Been Changed on Jailbroken Devices]]
+* [[Authentication Credentials Sent over the Network Are Encrypted]]
+* [[A Secure Password Reset Function Is Implemented]]
+* [[Authentication Attempts Are Throttled]]
+* [[Authentication Is Implemented on the Server-side]]
+
+==Additional Resources==
+
+* For more information about the //NSURLRequest// class, please see http://developer.apple.com/library/ios/#DOCUMENTATION/Cocoa/Reference/Foundation/Classes/NSURLRequest_Class/Reference/Reference.html
+* For more information about the //NSURLConnection// class, please see https://developer.apple.com/library/mac/#documentation/Cocoa/Reference/Foundation/Classes/nsurlconnection_Class/Reference/Reference.html
+* For the "URL Loading System Programming Guide", please see http://developer.apple.com/library/ios/#DOCUMENTATION/Cocoa/Conceptual/URLLoadingSystem/URLLoadingSystem.html]]></Data>
+  </Content>
+</TeamMentor_Article>

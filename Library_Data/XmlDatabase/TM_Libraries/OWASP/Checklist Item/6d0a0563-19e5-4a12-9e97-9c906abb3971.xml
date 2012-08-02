@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="636209201" Content_Hash="-552562545">
+  <Metadata>
+    <Id>6d0a0563-19e5-4a12-9e97-9c906abb3971</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Application Is Partitioned into Public And Private Domains</Title>
+    <Category>Authentication</Category>
+    <Phase>Deployment</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>Application Is Partitioned into Public And Private Domains</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Check For</h1>
+  <p>Ensure that there is a boundary defined to separate public and restricted content in both the URL namespace and file system namespace. </p>
+  <h1>Why</h1>
+  <p>Defining a boundary between public and restricted content simplifies the task of user authorization and is generally less prone to error. When the content is separated, server configuration can be used to automatically apply authorization rules without relying on the developer to explicitly add checks in the code.</p>
+  <h1>How to Check</h1>
+  <p>Take the following steps to ensure your application is partitioned into public and restricted domains:</p>
+  <ol>
+    <li>
+      <p>
+        <strong>Enumerate all web accessible resources.</strong>&amp;nbsp;Identify the protected resources from the public resources. Common protected resources include, but are not limited to:</p>
+      <ul>
+        <li>Resources that require authentication </li>
+        <li>Critical application resources </li>
+        <li>Sensitive/confidential data</li>
+      </ul>
+    </li>
+    <li>
+      <p>
+        <strong>Check the structure of the URL namespace.</strong> Ensure that your application's URL namespace is structured properly according to the level of protection and security needs of each resource. Verify that transitions between URL namespaces is performed using absolute URLs.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Check if there is separation on disk between public and protected resources. </strong>Examine the local filesystem structure. Ensure that protected resources are not located inside a public directory and vice versa. </p>
+    </li>
+    <li>
+      <p>
+        <strong>Ensure that protected resources have the appropriate access controls.</strong>&amp;nbsp;Determine if all protected resources have the appropriate access controls assigned to them.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Verify the local system permissions for all resources.</strong> For each resource, check that the local filesystem permissions are set accordingly. If the resource is public, verify that anonymous users can access it. If the resource is protected, verify that only authorized users can access it.</p>
+    </li>
+  </ol>
+  <h1>Problem Example</h1>
+  <p>MyApp is a financial tool that generates reports based on sensitive data. It allows the user to upload the financial data and download the report. Since the application is small, all of its content is located within the same directory. The access control is enforced by the web application through checking the required permissions before a given call is executed.</p>
+  <p>Since both data and code are within the same directory, it may be possible for an attacker to gain access to the raw financial data.</p>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>To learn more about URL namespaces, see: <a href="http://msdn2.microsoft.com/en-us/library/ms178116(vs.80).aspx">ASP.NET Web Site Paths</a>.</li>
+  </ul>
+  <ul>
+  </ul>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance. </p>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-386254918" Content_Hash="-1260932905">
+  <Metadata>
+    <Id>1e909001-bc62-468c-ba18-f4aa03844dd1</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Strong Account And Password Policies Are Enforced for the Server</Title>
+    <Category>Server Hardening</Category>
+    <Phase>Deployment</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>Strong Account And Password Policies Are Enforced for the Server</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>J.D. Meier, Alex Mackman, Michael Dunner, Srinath Vasireddy, Ray Escamilla and Anandha Murukan</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Check For</h1>
+  <p>Check to ensure that strong account and password policies are enforced for the server.</p>
+  <h1>How to Fix</h1>
+  <p>To counter password guessing and brute force dictionary attacks on your application, apply strong password policies. To enforce a strong password policy:
+</p>
+  <ul>
+    <li>
+      <strong>Set</strong>
+      <strong>password length and complexity</strong>. Require strong passwords to reduce the threat of password guessing attacks or dictionary attacks. Strong passwords are eight or more characters and must include both alphabetical and
+ numeric characters. </li>
+    <li>
+      <strong>Set</strong>
+      <strong>password expiration</strong>. Passwords that expire regularly reduce the likelihood that an old password can be used for unauthorized access. Frequency of expiration is usually guided by a company's security policy.
+</li>
+  </ul>
+  <p>Table&amp;nbsp;below shows the default and recommended password policy settings.</p>
+  <p>
+    <strong>Password Policy Default and Recommended Settings</strong>
+  </p>
+  <div>
+    <table>
+      <tbody>
+        <tr>
+          <th>Password Policy</th>
+          <th>Default Setting</th>
+          <th>Recommended Minimum Setting</th>
+        </tr>
+        <tr>
+          <td>Enforce password history</td>
+          <td>1 password remembered.</td>
+          <td>24 passwords remembered.</td>
+        </tr>
+        <tr>
+          <td>Maximum password age</td>
+          <td>42 days</td>
+          <td>42 days</td>
+        </tr>
+        <tr>
+          <td>Minimum password age</td>
+          <td>0 days</td>
+          <td>2 days</td>
+        </tr>
+        <tr>
+          <td>Minimum password length</td>
+          <td>0 characters</td>
+          <td>8 characters</td>
+        </tr>
+        <tr>
+          <td>Passwords must meet complexity requirement.</td>
+          <td>Disabled</td>
+          <td>Enabled</td>
+        </tr>
+        <tr>
+          <td>Store password using reversible encryption for all users in the domain.</td>
+          <td>Disabled</td>
+          <td>Disabled</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p>In addition, record failed logon attempts so that you can detect and trace malicious behavior.</p>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>For more information, see "Step 10. SQL Server Security" in Chapter 18, "<a href="http://msdn2.microsoft.com/en-us/library/aa302434.aspx">Securing Your Database Server</a>."</li>
+  </ul>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance.</p>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-00000072817b</Id>
+    <Library_Id>f798e6e6-1732-4172-9c47-9621d914efcd</Library_Id>
+    <Title>Use Page ViewState User Key to Prevent CSRF</Title>
+    <Category>Session Management</Category>
+    <Phase>Implementation</Phase>
+    <Technology>ASP.NET</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Use Page ViewState User Key to Prevent CSRF</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Applies to</h1>
+  <ul>
+    <li>ASP.NET 4.0</li>
+  </ul>
+  <h1>What to Do</h1>
+  <p>Use page ViewState user key to&amp;nbsp;prevent Cross-Site Request Forgery vulnerabilities.&amp;nbsp;</p>
+  <h1>Why</h1>
+  <p>A&amp;nbsp;CSRF attack consists of posting a malicious HTTP form to a known, vulnerable Web site.&amp;nbsp;This allows an attacker to perform any action caused by the vulnerable form with the credentials of the victim. <em>ViewStateUserKey</em> makes it much harder for hackers to use the content of the client-side view state to prepare malicious posts against the site. Each time a form is invoked, a unique key is generated. The key contains encrypted time and session information, and the form submission is rejected if it is used in another session or after the session timeout has expired. </p>
+  <h1>When</h1>
+  <p>All forms which require authentication&amp;nbsp;should be protected with a <em>ViewStateUserKey</em>.&amp;nbsp;Furthermore, if a form triggers important functionality but does not require authentication, it should also be protected—a good example would be a financial transaction.</p>
+  <h1>How</h1>
+  <p>The&amp;nbsp;following code added to each&amp;nbsp;of your pages will set the key based on SessionID.</p>
+  <pre>void Page_Init (object sender, EventArgs e)<br />{<br />   ViewStateUserKey = Session.SessionID;<br />}</pre>
+  <p>Alternatively, you can add this code to the <em>OnInit</em> virtual method of the <em>Page</em>-derived class.&amp;nbsp;(Note that you must set this property in the <em>Page.Init</em> event).&amp;nbsp;This will allow you to write the code once rather than per page.</p>
+  <pre>protected override OnInit(EventArgs e)<br />{<br />   base.OnInit(e);<br />   ViewStateUserKey = Session.SessionID;<br />}</pre>
+  <p>Setting <em>ViewStateUserKey</em> to a constant string—the same for all users—is like leaving it blank.&amp;nbsp; You must set it to something that varies for each user—user ID or, better yet, session ID.&amp;nbsp; For a number of technical and social reasons, session ID is a much better fit because a session ID is unpredictable, times out, and varies on a per-user basis. </p>
+  <h1>Problem Example</h1>
+  <p>An e-commerce web site stores all of their customer's billing information and allows them to order merchandise by submitting a single simple form with the item number, quantity, and shipping address.&amp;nbsp;The form is completely static, allowing an attacker who can lure a logged-in user into submitting a form request on the attacker's behalf to order arbitrary items on the victim's account.&amp;nbsp;</p>
+  <h1>Solution Example</h1>
+  <p>An e-commerce web site stores all of their customer's billing information and allows them to order merchandise by submitting a single simple form with the item number, quantity, and shipping address.&amp;nbsp;The form uses a <em>ViewStateUserKey</em> set to the session ID, ensuring that even if an attacker can lure a logged-in user into submitting a form on their behalf, the attacker will be unable to construct a valid form submission.&amp;nbsp; </p>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance. </p>]]></Data>
+  </Content>
+</TeamMentor_Article>

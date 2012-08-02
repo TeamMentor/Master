@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-326735638" Content_Hash="7019034">
+  <Metadata>
+    <Id>ec178496-024d-4b3c-8381-8db94767e539</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Cross Site Scripting Attack</Title>
+    <Category>Input and Data Validation</Category>
+    <Phase>Any</Phase>
+    <Technology> Any</Technology>
+    <Type>Attack</Type>
+    <DirectLink>Cross Site Scripting Attack</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>1</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>Description</h1>
+  <p>A Cross Site Scripting (XSS) attack can cause arbitrary code to run in a user's browser while the browser is connected to a trusted Web site. The attack targets your application's users and not the application itself, but it uses your application as the vehicle for the attack. Because the script code is downloaded by the browser from a trusted site, the browser has no way of knowing that the code is not legitimate. Internet Explorer security zones provide no defense. As the attacker's code has access to the cookies associated with the trusted site and are stored on the user's local computer, a user's authentication cookies are typically the target of attack. </p>
+  <p>There are two primary types of XSS, persistent and non-persistent. If the attacker is able to inject his malicious script to the web applications data store, then the script will be persistent and anyone who then loads a page with that content will run the script and become a victim of the attack. Forums and other web services that have user supplied HTML content are a classic example of this. If this content is not validated and encoded then anyone can leave a malicious script on the site. Non-Persistent XSS uses some reflective aspect of the page to deliver the payload. Web applications often echo user input back to them without altering it. Search engines are a good example of this type of behavior. Attackers can create and distribute URLs that contain a malicious script that gets reflected back to the user. The most common example of this is the "page not found" error page which echoes the requested page back to the user.</p>
+  <ul>
+    <li>Confidentiality: The most common attack performed with cross-site scripting involves the disclosure of information stored in user cookies. </li>
+    <li>Access control: In some circumstances it may be possible to run arbitrary code on a victim's computer when cross-site scripting is combined with other flaws. </li>
+    <li>Elevation of privilege: Even if an attacker cannot get at the authentication information of a user, they can act as that user.</li>
+  </ul>
+  <h1>Impact</h1>
+  <ul>
+    <li>Credential compromise </li>
+    <li>Credential disclosure </li>
+    <li>Information disclosure </li>
+    <li>Execute code on client machine </li>
+    <li>Elevation of Privilege </li>
+    <li>Repudiation</li>
+  </ul>
+  <h1>Vulnerabilities</h1>
+  <ul>
+    <li>Failure to validate user input for script tags when that input can be echoed back into a web page. </li>
+    <li>Trusting data retrieved from a shared database. </li>
+    <li>Failing to encode any remotely provided data, including reverse DNS lookup, cookie contents, uploaded files, etc. </li>
+    <li>Improperly converting "safe" tags to HTML. </li>
+    <li>Displaying user input directly without encoding it appropriately for the context in which it is used. </li>
+    <li>Checking user submitted data against a blacklist instead of a whitelist.</li>
+  </ul>
+  <h1>Countermeasures</h1>
+  <ul>
+    <li>Perform context sensitive encoding of untrusted input before it is echoed back to a browser by using an encoding library (e.g., the Microsoft Anti-Cross Site Scripting Library or OWASP Reform). The following language-specific functionality may be helpful, is not sufficient to properly protect against cross-site scripting; a whitelisting library should be used instead. Most of these libraries only convert the symbols ", &amp;, &lt;, and &gt; to safe HTML equivalents. <ul><li><strong>Python</strong>: cgi.escape (only escapes 3 characters by default, escaping " is optional) </li><li><strong>ASP</strong>: HttpUtility.HtmlEncode and HttpUtility.UrlEncode (only encodes 4 characters) </li><li><strong>Perl</strong>: HTML::Entities::encode (only escapes 4 characters by default, but it makes it easy to specify other unsafe characters) </li><li><strong>PHP</strong>: htmlentities and urlencode (only escapes 4 characters by default, and can optionally encode ' (single quote))</li></ul></li>
+    <li>Untrusted input should be validated against an inclusion list before use. For example, use regular expressions to define acceptable character sequences and use it as a filter. If the input is meant to be a primitive type it can be cast appropriately to assure that it is the expected type (a type constraint) and then checked to ensure it's in appropriate range (a range constraint). In the case where there are only a limited number of acceptable inputs, then the input can be constrained to that set with simple if or switch control structures, or by matching against a fixed list of strings (a domain constraint).</li>
+  </ul>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>For more information on the Microsoft Anti-Cross Site Scripting Library, see the <a href="http://www.microsoft.com/downloads/details.aspx?familyid=9A2B9C92-7AD9-496C-9A89-AF08DE2E5982&amp;displaylang=en">Microsoft Downloads Site</a></li>
+    <li>For more information on the "Reform" encoding project, see <a href="http://www.owasp.org/index.php/Category:OWASP_Encoding_Project">The OWASP Encoding Project site</a></li>
+    <li>For more information on Cross Site Scripting, see <a href="http://www.owasp.org/index.php/Cross_site_scripting">Cross Site Scripting on the OWASP Site</a></li>
+    <li>For more information on attacks used in Cross Site Scripting, see <a href="http://ha.ckers.org/xss.html">ha.ckers.org</a></li>
+    <li>For more information on mitigations, see <a href="http://msdn2.microsoft.com/en-us/library/ms998274.aspx">How To: Prevent Cross-Site Scripting in ASP.NET</a></li>
+  </ul>
+  <ul>
+  </ul>]]></Data>
+  </Content>
+</TeamMentor_Article>

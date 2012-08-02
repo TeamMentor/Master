@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="1607693913" Content_Hash="1195834735">
+  <Metadata>
+    <Id>779b4344-83ee-4268-8aea-54dcd613b59b</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Windows Authentication Is Used Where Possible</Title>
+    <Category>Authentication</Category>
+    <Phase>Implementation</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>Windows Authentication Is Used Where Possible</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Check For</h1>
+  <p>If your user's accounts are in Active Directory,&amp;nbsp;verify that&amp;nbsp;your application is using Windows Authentication.</p>
+  <h1>Why</h1>
+  <p>By using Windows authentication with Active Directory, you benefit from a unified identity store, centralized account administration, enforceable account and password policies and strong authentication that avoids sending plain-text passwords over the network. </p>
+  <h1>How to Check</h1>
+  <p>Use the following steps to check if your application is using Windows Authentication:</p>
+  <ol>
+    <li>
+      <div>Check if your user accounts are stored in Active Directory.</div>
+    </li>
+    <li>
+      <div>Ensure that IIS is set to disable anonymous access.</div>
+    </li>
+    <li>
+      <div>Ensure that IIS is configured to use Windows-based authentication for your web application's virtual directory.</div>
+    </li>
+    <li>
+      <div>Ensure&amp;nbsp;that the <strong>mode</strong> attribute on the &lt;<strong>authentication</strong>&gt; element is set to "Windows" (the default setting) in your Web.config file.</div>
+    </li>
+  </ol>
+  <h1>How to Fix</h1>
+  <p>To use Windows authentication in ASP.NET, you must use Microsoft Internet Information Services (IIS) to disable anonymous access and configure a Windows-based authentication method for your Web application's virtual directory. You are generally recommended to use Windows integrated authentication, but you can also use Basic, Digest, or client certificate authentication. You must also ensure that the <strong>mode</strong> attribute on the &lt;<strong>authentication</strong>&gt; element is set to "Windows" (the default setting) in your Web.config file. </p>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance. </p>]]></Data>
+  </Content>
+</TeamMentor_Article>

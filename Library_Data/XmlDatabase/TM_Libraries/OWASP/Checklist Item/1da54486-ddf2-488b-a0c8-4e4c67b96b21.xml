@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="99910540" Content_Hash="1595091553">
+  <Metadata>
+    <Id>1da54486-ddf2-488b-a0c8-4e4c67b96b21</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>If Input File Names Are Required, They Are Well Formed And Are Verifiably Valid Within the Application Context</Title>
+    <Category>Input and Data Validation</Category>
+    <Phase>Implementation</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>If Input File Names Are Required, They Are Well Formed And Are Verifiably Valid Within the Application Context</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Check For</h1>
+  <p>Ensure that user-supplied filenames or paths are in the correct format and point to a valid location in the context of your application. </p>
+  <h1>Why</h1>
+  <p>Malicious file input can be used to coerce your application into accessing arbitrary files and resources. </p>
+  <h1>How to Check</h1>
+  <p>If your application accepts user supplied files or paths, ensure that they are passed through a validation routine. The validation routine should not only check for appropriate format, but also ensure that the file name is legitimate for your application.</p>
+  <p>For more information on input validation, see the related checklist item All Input is Validated for Length, Range, Format, and Type, linked below. </p>
+  <h1>How to Fix</h1>
+  <p>Use the following steps to fix this issue:</p>
+  <ol>
+    <li>
+      <p>
+        <strong>Check File Names. </strong>Ensure that file paths only refer to files within your application's virtual directory hierarchy if that is appropriate. When checking file names, obtain the full name of the file by using the <strong>System.IO.Path.GetFullPath</strong> method. </p>
+    </li>
+    <li>
+      <p>
+        <strong>Check File Paths. </strong>If you use <strong>MapPath</strong> to map a supplied virtual path to a physical path on the server, use the overloaded <strong>Request.MapPath</strong> method that accepts a <strong>bool</strong> parameter so that you can prevent cross-application mapping. The following code example shows this technique:</p>
+    </li>
+  </ol>
+  <blockquote>
+    <pre>try<br />{<br /> string mappedPath = Request.MapPath( inputPath.Text,<br />                                       Request.ApplicationPath, false);<br />}<br />catch (HttpException)<br />{<br /> // Cross-application mapping attempted <br />}</pre>
+    <p>The final <strong>false</strong> parameter prevents cross-application mapping. This means that a user cannot successfully supply a path that contains ".." to traverse outside of your application's virtual directory hierarchy. Any attempt to do this results in an exception of type <strong>HttpException</strong>.</p>
+  </blockquote>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance. </p>]]></Data>
+  </Content>
+</TeamMentor_Article>

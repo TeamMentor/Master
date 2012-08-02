@@ -1,0 +1,139 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="1905721199" Content_Hash="-393509813">
+  <Metadata>
+    <Id>500a3e89-2937-41b8-99cc-a19dc7696ed6</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Perform Role-based Security Checks</Title>
+    <Category>Authorization</Category>
+    <Phase>Design</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Perform Role-based Security Checks</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Do</h1>
+  <p>Enumerate the different types of users and create specific roles for them. When authorizing access to a resource, build the security checks on a per-role basis rather than on a per-user basis.</p>
+  <h1>Why</h1>
+  <p>Application roles allow administrators to group users into categories that need the same level of privileges. The mechanism provides an easy and clear way to discover and manage the least privileges necessary for the execution of a given task. It provides a more robust and flexible way of managing the application's users.</p>
+  <h1>When</h1>
+  <p>If your application uses access control and authorizes its users to application resources.</p>
+  <h1>How</h1>
+  <p>To apply this concept access control should be based on a user's role rather than the actual user.</p>
+  <p>Use the following steps when designing the role-based security:</p>
+  <ol>
+    <li>
+      <p>
+        <strong>Understand the different types of users</strong>: Enumerate the different types of users needed for the application. Understand how they willl use the application and to which resources they will need access. Create a spreadsheet mapping the actions each role is authorized to perform with the corresponding system components. Use this spreadsheet to identify the different types of users according to the functionality they need. Creating a threat model may be a useful step to ensure that you correctly understand the implications of this matrix.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Establish the roles</strong>: Define which resources can be accessed by each role. There are two approaches when enforcing role-based security - programmatic and declarative.</p>
+      <ul>
+        <li>
+          <p>
+            <strong>Programmatically</strong>: The programmatic approach to role-based security is written inside the code and provides additional runtime flexibility. It allows your application to dynamically create and assign roles so that user privileges can be granted and revoked without the need of restarting your application. When using the programmatic approach to role-based security, place access control checks at the appropriate locations in your application. For example, the following code requires users to be shareholders in order to generate a financial report:</p>
+          <pre>public void GenerateFinancialReport(DateTime startDate, DateTime endDate)<br />{<br />    if (HttpContext.Current.User.IsInRole("ShareHolders"))<br />    {<br />        // Generate the relevant financial report<br />    }<br />}</pre>
+          <p>Additionally, your application can programmatically check if a user is member of a local Windows group.</p>
+          <pre>public void RetrieveLogs(ref Hashtable logTable)<br />{<br />    WindowsPrincipal user = new WindowsPrincipal((WindowsIdentity)HttpContext.Current.User.Identity);<br />    if (user.IsInRole(WindowsBuiltInRole.Administrator))<br />    {<br />        // Add logic for retrieving logs<br />    }<br />}</pre>
+        </li>
+        <li>
+          <p>
+            <strong>Declarative</strong>: The declarative approach to role-based security is done via the configuration files. It allows easy manageability as the declarations can be modified without having to recompile. By using the declarative approach, you can easily manage the security settings for large portions of the application without changing the source code. ASP.NET applications that use declarative security specify the appropriate roles inside <strong>web.config</strong>. The following elements enforce role-based security through <strong>web.config</strong>:</p>
+          <ul>
+            <li>
+              <p>
+                <strong>roleManager</strong>: Configures the ASP.NET role manager. Applicable only if form-based authentication is used. Example:</p>
+              <pre>&lt;connectionStrings&gt;<br />  &lt;add name="MyAppSqlConnection"<br />       connectionString="Server=serv02.example.com; Database=myapp; Integrated Security=SSPI;"<br />       providerName="System.Data.SqlClient"/&gt;<br /> ...<br /> &lt;system.web&gt;<br />   &lt;roleManager enabled="true" cacheRolesInCookie="false" defaultProvider ="ProjectRoleProvider"&gt;<br />    &lt;providers&gt;<br />      &lt;clear /&gt;<br />      &lt;add name="MyAppRoleProvider"<br />            type="System.Web.Security.SqlRoleProvider"<br />            connectionStringName="MyAppSqlConnection"<br />            applicationName="MyApp"/&gt;</pre>
+            </li>
+            <li>
+              <p>
+                <strong>authorization</strong>: Encapsulates the authorization settings for a resource.</p>
+            </li>
+            <li>
+              <p>
+                <strong>allow</strong>: Represents the users and roles that are allowed access to the given resource.</p>
+            </li>
+            <li>
+              <p>
+                <strong>deny</strong>: Represents the users and roles that are denied access to the given resource.</p>
+            </li>
+          </ul>
+          <p>For example:</p>
+          <pre>&lt;!-- web.config --&gt;<br />&lt;system.web&gt;<br />   &lt;authentication mode="Windows" /&gt;<br />   &lt;authorization&gt;<br />    &lt;allow roles="BUILTIN\Administrators"/&gt;<br />    &lt;deny users="*"/&gt;<br />  &lt;/authorization&gt;<br />&lt;/system.web&gt;</pre>
+          <p>Additionally, if your application uses form-based authentication, you can configure your application's access controls through Visual Studio's ASP.NET Configuration, available by accessing the <strong>Website -&gt; ASP.NET Configuration</strong> menu.</p>
+          <p>Note that if you use Windows authentication, you will need to manage your application's users and user roles through managing Windows users and groups.</p>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <p>
+        <strong>Manage the users</strong>: Assign the users into their respective user roles. The application should enforce the security policy according to the user roles instead of the actual user. Based on your application's mechanism to enforce role-based access controls, use one of the following techniques to manage your application's users:</p>
+      <ul>
+        <li>
+          <p>
+            <strong>Programmatically</strong>: ASP.NET allows you to manage your application's users through the <strong>Roles</strong> class.</p>
+          <p>Use the following methods to assign users into roles:</p>
+          <ul>
+            <li>
+              <strong>AddUserToRole</strong>
+            </li>
+            <li>
+              <strong>AddUserToRoles</strong>
+            </li>
+            <li>
+              <strong>AddUsersToRole</strong>
+            </li>
+            <li>
+              <strong>AddUsersToRoles</strong>
+            </li>
+          </ul>
+          <p>Example:</p>
+          <pre>Roles.AddUserToRole("eric", "ShareHolders");</pre>
+          <p>Use the following methods to remove users from roles:</p>
+          <ul>
+            <li>
+              <strong>RemoveUserFromRole</strong>
+            </li>
+            <li>
+              <strong>RemoveUserFromRoles</strong>
+            </li>
+            <li>
+              <strong>RemoveUsersFromRole</strong>
+            </li>
+            <li>
+              <strong>RemoveUsersFromRoles</strong>
+            </li>
+          </ul>
+          <p>Example:</p>
+          <pre>Roles.RemoveUserFromRole("eric", "ShareHolders");</pre>
+        </li>
+        <li>
+          <p>
+            <strong>Declarative</strong>: Use the ASP.NET Role Manager to manage your application's users. If your application uses form-based authentication, you can configure your application's access controls through Visual Studio's ASP.NET Configuration, available by accessing the <strong>Website -&gt; ASP.NET Configuration</strong> menu.</p>
+        </li>
+        <li>
+          <p>
+            <strong>Windows</strong>: If your application uses Windows authentication, use the Windows <strong>Local Users and Groups</strong> service to manage your application's users. If your server is connected to your organization's NT Domain or Active Directory forest, user and role management will be performed by your organization's network administrators.</p>
+        </li>
+      </ul>
+    </li>
+  </ol>
+  <h1>Problem Example</h1>
+  <p>The following segment illustrates an application's access control policy. Because the application does not enforce role-based security, it has a policy entry for each separate user; therefore managing the users' access rights can be quite difficult when the number of users to the application grows.</p>
+  <pre>&lt;authorization&gt;<br />  &lt;allow users="NTDomain\joe, NTDomain\sarah, NTDomain\bill, NTDomain\sue"/&gt;<br />  &lt;deny users="*"/&gt;<br />&lt;/authorization&gt;</pre>
+  <h1>Solution Example</h1>
+  <p>The following segment illustrates an application's access control policy. Because the application enforces role-based security, it provides a policy entry for each group of users; therefore increasing the application's users has no impact on the ability to manage the users' access rights as only the group permissions need to be modified.</p>
+  <pre>&lt;authorization&gt;<br />  &lt;allow roles="NTDomain\Employees"/&gt;<br />  &lt;deny users="*"/&gt;<br />&lt;/authorization&gt;</pre>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>To learn more about the roleManager element in web.config, visit: Documentation for <a href="http://msdn2.microsoft.com/en-us/library/ms164660(vs.80).aspx">roleManager Element</a> in MSDN.</li>
+  </ul>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance. </p>]]></Data>
+  </Content>
+</TeamMentor_Article>

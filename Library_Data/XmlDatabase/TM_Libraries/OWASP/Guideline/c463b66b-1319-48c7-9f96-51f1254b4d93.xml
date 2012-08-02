@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="918187836" Content_Hash="-1987412892">
+  <Metadata>
+    <Id>c463b66b-1319-48c7-9f96-51f1254b4d93</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Use SSL When Transmitting Credentials</Title>
+    <Category>Authentication</Category>
+    <Phase>Implementation</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Use SSL When Transmitting Credentials</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Do</h1>
+  <p>Use Secure Sockets Layer (SSL) to protect the authentication credentials passed between browser and server.</p>
+  <h1>Why</h1>
+  <p>Using SSL prevents the credentials from being sniffed or tampered with as they are transmitted over the network. If SSL is not used, user credentials may be compromised by attacks such as a Network Credential Sniffing Attack or a Phishing Attack. Additionally, use the Protect Session Cookies guideline to minimize the risk of exposing your application's session cookies to an attacker.</p>
+  <h1>When</h1>
+  <p>If your application accepts form-based authentication credentials from users.</p>
+  <h1>How</h1>
+  <p>Using Secure Socket Layer (SSL) over HTTP requires the following steps:</p>
+  <ol>
+    <li>
+      <p>
+        <strong>Create a certificate request.</strong> Using the IIS management console, generate an SSL certificate request. This request is then sent to a Certification Authority to be signed.&amp;nbsp;</p>
+      <ol>
+      </ol>
+    </li>
+    <li>
+      <p>
+        <strong>Present the request to a Certification Authority (CA).</strong> If all conditions for obtaining an SSL certificate are met, the CA will produce a new SSL certificate based on the certificate request. Because the requirements for obtaining an SSL certificate depend on the Certification Authority, consult with the Certification Authority in regards to the administrative steps necessary for obtaining such certificate.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Install the certificate.</strong>&amp;nbsp;</p>
+      <ol>
+      </ol>
+    </li>
+    <li>
+      <strong>Ensure credentials are sent over SSL. </strong>Place the authentication portion of your application on a dedicated subdomain. Configure the server to accept only HTTPS traffic for the authentication subdomain. Ensure that form posts containing credentials are sent over HTTPS.&amp;nbsp;</li>
+  </ol>
+  <h1>Problem Example</h1>
+  <p>The following snippet is part of an application's web.config. The application uses form based authentication and has configured its &lt;forms&gt; element accordingly. Unfortunately, the &lt;forms&gt; element does not have the requireSSL attribute set to true. Therefore the application fails to enforce the use of SSL when performing form-based authentication.</p>
+  <pre>&lt;!-- The forms element does not have a requireSSL attribute --&gt;<br />&lt;forms loginUrl="Secure/Login.aspx"<br />       protection="All"<br />       timeout="00:30:00" <br />       slidingExpiration="true"<br />       name="MyApp"<br />       path="/Secure"<br /> /&gt;</pre>
+  <h1>Solution Example</h1>
+  <p>The following snippet is part of an application's web.config. The application uses form based authentication and has configured its &lt;forms&gt; element accordingly. Because the &lt;forms&gt; element has the requireSSL attribute set to true, all form-based authentication will be performed over an HTTPS connection.</p>
+  <pre>&lt;!-- The forms element has the requireSSL attribute set to true --&gt;<br />&lt;forms loginUrl="Secure/Login.aspx"<br />       protection="All"<br /><strong>       requireSSL="true"<br /></strong>       timeout="00:30:00"<br />       slidingExpiration="true"<br />       name="MyApp"<br />       path="/Secure"<br /> /&gt;</pre>
+  <ul>
+  </ul>
+  <ul>
+  </ul>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance. </p>]]></Data>
+  </Content>
+</TeamMentor_Article>

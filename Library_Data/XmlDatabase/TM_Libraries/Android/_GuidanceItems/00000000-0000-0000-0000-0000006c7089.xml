@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-0000006c7089</Id>
+    <Library_Id>f215ceee-9a08-41d9-b2c1-bbcc058a8f32</Library_Id>
+    <Title>Validate and Encode Data Inserted into XML Documents</Title>
+    <Category>Data Validation</Category>
+    <Phase>Implementation</Phase>
+    <Technology>Android</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Validate and Encode Data Inserted into XML Documents</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="WikiText">
+    <Data><![CDATA[==What to Do==
+
+Validate and encode data inserted into XML documents.
+
+==Why==
+
+Validating and encoding data inserted into XML documents helps prevent XML injection vulnerabilities.
+
+==How==
+
+To validate and encode data inserted into XML documents:
+
+# **Identify XML documents used by the application.** Examine the application design to identify all XML documents and XML document types used by the application.
+# **Identify code that uses XML documents.** Review application code to find code that uses XML documents.
+# **Add data validation code.** Add methods that validate all the data types that are stored in XML documents and used by the application.
+# **Use validation code.** Add code that uses the data validation methods from the previous step to code that uses XML documents. Validation should be performed before encoding.
+# **Add encoding code.** Add methods that escape XML entities. Unfortunately, there are no stable libraries available for escaping XML entities for iOS. When writing code that escapes XML entities, consider the following: data has to be converted to a uniform character encoding first, XML entities have to be escaped properly, and code that loads XML documents should be able to restore the original data from the encoded data.
+# **Use encoding code.** Add code that encodes data to code that uses XML documents. 
+
+==Related Items==
+
+==Additional Resources==]]></Data>
+  </Content>
+</TeamMentor_Article>

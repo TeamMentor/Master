@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-1604014246" Content_Hash="1743858588">
+  <Metadata>
+    <Id>cdddefd7-2197-48f1-b21e-20c7731c8df2</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Force Re-authentication When Executing Critical Functionality</Title>
+    <Category>Authentication</Category>
+    <Phase>Implementation</Phase>
+    <Technology>Java</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Force Re-authentication When Executing Critical Functionality</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Do</h1>
+  <p>Force the user to re-authenticate when executing security-critical functionality including, but not limited to, change of password, account modifications and critical transactions.</p>
+  <h1>Why</h1>
+  <p>Forcing the user to re-authenticate verifies the user's decision to execute the given functionality and preserves the application's integrity in the event that a user's account has been compromised via session hijacking.</p>
+  <h1>When</h1>
+  <p>Force re-authentication prior to executing security-critical functionality.</p>
+  <h1>How</h1>
+  <p>Follow these steps when forcing re-authentication:</p>
+  <ol>
+    <li>
+      <p>
+        <strong>Identify critical functionality.</strong> Evaluate your application's design and requirements and determine what parts and resources of your application are very important to your organization's business model or your application's security architecture. This could include activities such as financial transactions or resetting user passwords.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Adopt re-authentication mechanism.</strong> Establish a mechanism that requires the user to verify their authenticity:</p>
+      <ul>
+        <li>
+          <strong>Current password.</strong> The user uses their current password to confirm the identity. This technique ensures that the given user is aware of the action to be performed and holds responsibility for executing it. </li>
+        <li>
+          <strong>CAPTCHA.</strong> CAPTCHA are mechanisms designed to ensure that a human, not an automated script, is using the system. Using a CAPTCHA should be seen as a way of augmenting a password in this kind of situation, not a way of replacing it. Many CAPTCHA systems embed distorted letters or numbers into displayed images which the user must enter. There are a number of problems with many CAPTCHA systems, so they should not be relied on too heavily. First, many graphical CAPTCHAs can be trivially broken by optical character recognition systems, and ensuring that a CAPTCHA is sufficiently strong to be useful without having too high of a failure rate for real users is difficult. If CAPTCHAs are reused, the attacker can simply record the session IDs of CAPTCHAs with known values and replay them. CAPTCHAs can also be broken by using a man-in-the-middle technique where the image is saved and forwarded to another site controlled by the attacker. An unsuspecting user of that site solves the CAPTCHA and the attacker forwards the answer to the victim site. CAPTCHAs also create accessibility problems for users, as blind and sometimes even color-blind individuals can find them impossible. If you choose to implement a CAPTCHA, be aware of the trade-offs involved and ensure that the system you use is appropriately protected against the attacks you expect to see.</li>
+        <li>
+          <strong>2nd Factor.</strong> If your application supports a second factor of authentication such as a token, this could play a role in the re-authentication scheme.</li>
+      </ul>
+    </li>
+    <li>
+      <strong>Enforce the re-authentication mechanism.</strong> Once the critical functionality is identified and the re-authentication mechanism is established, enforce the re-authentication mechanism before all security-critical actions.</li>
+  </ol>
+  <h1>Problem Example</h1>
+  <p>The following code allows a user to change their credentials. Unfortunately, the code enters the new credentials into the credentials repository without verifying that it is the actual user changing the credentials.</p>
+  <pre>public boolean changePassword(String user, char[] newPass)<br />{<br />       // The application fails to re-authenticate the user<br />       // Verify that new password meets password requirements<br />       // Update the credential store with the new password<br />}</pre>
+  <h1>Solution Example</h1>
+  <p>The following code allows a user to change their credentials. Before entering the new credentials into the credentials repository, the code verifies that it is the actual user doing the credentials change.</p>
+  <pre>public boolean changePassword(String user, char[] oldPass, char[] newPass)<br />{<br />      // The application forces re-authentication<br />      if(!validateUser(user, oldPass))<br />      {<br />            return false;<br />      }<br />      // Verify that new password meets password requirements<br />      // Update the credential store with the new password<br />}</pre>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>To read more about authentication best practices, see: <a href="http://www.owasp.org/index.php/Guide_to_Authentication">Guide to Authentication</a> available from OWASP. </li>
+    <li>For more information on CAPTCHA, see: <a href="http://en.wikipedia.org/wiki/Captcha">CAPTCHA</a> in Wikipedia and the <a href="http://www.captcha.net/">official site</a> for CAPTCHA. </li>
+    <li>To learn more about the challenges of implementing CAPTCHA and the approaches to resolve them, see: <a href="http://www.15seconds.com/issue/040202.htm">Fighting Spambots with .NET and AI</a> and <a href="http://www.pcmag.com/article2/0,4149,1306805,00.asp">CAPTCHA-ing the Spammer</a>.</li>
+  </ul>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,309 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="1935854100" Content_Hash="312903613">
+  <Metadata>
+    <Id>6bfe7761-6f2a-43c2-a104-7ad3063affb3</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>How to Protect From Injection Attacks in ASP.NET</Title>
+    <Category>Input and Data Validation</Category>
+    <Phase>Implementation</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>How To</Type>
+    <DirectLink>How to Protect From Injection Attacks in ASP.NET</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>Summary</h1>
+  <p>This How to shows how you can validate input to protect your application from injection attacks. Performing input validation is essential because almost all application-level attacks contain malicious input. </p>
+  <p>You should validate all input, including form fields, query string parameters, and cookies to protect your application against malicious command injection. Assume all input to your Web application is malicious, and make sure that you use server validation for all sources of input. Use client-side validation to reduce round trips to the server and to improve the user experience, but do not rely on it because it is easily bypassed. </p>
+  <p>To validate input, define acceptable input for each application input field. A proven practice is to constrain input for length, range, format, and type. Use the list of acceptable characters to define valid input, instead of the list of unacceptable characters. Using the list of unacceptable characters is impractical because it is very difficult to anticipate all possible variations of bad input.</p>
+  <p>When you need to accept a range of HTML characters, make sure that you HTML-encode the data to make it safe prior to displaying it as output.</p>
+  <h1>Contents</h1>
+  <ul>
+    <li>
+      <div>Objectives</div>
+    </li>
+    <li>
+      <div>Overview</div>
+    </li>
+    <li>
+      <div>Summary of Steps</div>
+    </li>
+    <li>
+      <div>Step 1. Use ASP.NET Request Validation</div>
+    </li>
+    <li>
+      <div>Step 2. Constrain Input</div>
+    </li>
+    <li>
+      <div>Step 3. Encode Unsafe Output</div>
+    </li>
+    <li>
+      <div>Step 4. Use Command Parameters for SQL Queries</div>
+    </li>
+    <li>
+      <div>Step 5. Verify that ASP.NET Errors Are Not Returned to the Client</div>
+    </li>
+    <li>
+      <div>Additional Resources</div>
+    </li>
+  </ul>
+  <h1>Objectives</h1>
+  <ul>
+    <li>Constrain input for length, range, format, and type. </li>
+    <li>Apply ASP.NET request validation during development to identify injection attacks. </li>
+    <li>Constrain input by using ASP.NET validator controls. </li>
+    <li>Encode unsafe output. </li>
+    <li>Help prevent SQL injection by using command parameters. </li>
+    <li>Prevent detailed error information from returning to the client. </li>
+  </ul>
+  <h1>Overview</h1>
+  <p>You need to validate all untrusted input to your application. You should assume that any input from users is malicious. User input to your Web application includes form fields, query strings, client-side cookies, and browser environment values such as user agent strings and IP addresses. </p>
+  <p>Weak input validation is a common vulnerability that could allow your application to be exploited by a number of injection attacks. The following are common types of attacks that exploit weak or missing input validation: </p>
+  <ul>
+    <li>
+      <strong>SQL injection. </strong>If you generate dynamic SQL queries based on user input, an attacker could inject malicious SQL commands that can be executed by the database. </li>
+    <li>
+      <strong>Cross-site scripting.</strong> Cross-site scripting (XSS) attacks exploit vulnerabilities in Web page validation by injecting client-side script code. This code is subsequently sent to an unsuspecting user's computer and executed on the browser. Because the browser downloads the script code from a trusted site, the browser has no way of determining whether the code is legitimate. </li>
+    <li>
+      <strong>Unauthorized file access.</strong> If your code accepts input from a caller, a malicious user could potentially manipulate your code's file operations, such as accessing a file they should not access or exploiting your code by injecting bad data. </li>
+  </ul>
+  <blockquote>
+    <strong>Note</strong>&amp;nbsp;&amp;nbsp;&amp;nbsp;Injection attacks work over HTTP and HTTPS Secure Socket Layer (SSL) connections. Encryption provides no defense.</blockquote>
+  <p>The general approach for input validation is summarized here. You should apply this approach to any input that comes from the network, such as text boxes and other forms field input, query string parameters, cookies, server variables, and Web method parameters. Note that the strategy is to first allow only good input and then deny bad input. This is because you can easily define good input for your application, but you cannot realistically anticipate the format for all malicious input. </p>
+  <p>Check for valid input as follows: </p>
+  <ul>
+    <li>
+      <strong>Constrain: </strong>Check for known good data by validating the type, length, format, and range. To constrain input from server controls, use the ASP.NET validator controls. To constrain input from other sources, use regular expressions and custom validation. </li>
+    <li>
+      <strong>Reject:</strong> Check for any known bad data and reject bad input. </li>
+    <li>
+      <strong>Sanitize:</strong> Sometimes you also need to sanitize input and make potentially malicious input safe. For example, if your application supports free-format input fields, such as comment fields, you might want to permit certain safe HTML elements, such as &lt;<strong>b</strong>&gt; and &lt;<strong>i</strong>&gt;, and eliminate any other HTML elements. </li>
+  </ul>
+  <h1>Summary of Steps</h1>
+  <p>To protect your ASP.NET application from injection attacks, perform the following steps: </p>
+  <ul>
+    <li>Step 1. Use ASP.NET request validation. </li>
+    <li>Step 2. Constrain input. </li>
+    <li>Step 3. Encode unsafe output. </li>
+    <li>Step 4. Use command parameters for SQL queries. </li>
+    <li>Step 5. Verify that ASP.NET errors are not returned to the client. </li>
+  </ul>
+  <p>The next sections describe each of these.</p>
+  <h1>Step 1. Use ASP.NET Request Validation</h1>
+  <p>By default, ASP.NET request validation detects any HTML elements and reserved characters in data posted to the server. This helps prevent users from inserting scripts into your application. Request validation checks all input data against a hard-coded list of potentially dangerous values. If a match occurs, it throws an exception of type <strong>HttpRequestValidationException</strong>.</p>
+  <p>You can disable request validation in your Web.config application configuration file by adding a &lt;<strong>pages</strong>&gt; element with <strong>validateRequest="false"</strong> or on an individual page by setting <strong>ValidateRequest="false"</strong> on the <strong>@ Pages</strong> element. </p>
+  <p>If you need to disable request validation, you should disable it only on the affected page. An example of this is when you have a page with a free-format text field that accepts HTML-formatted input.</p>
+  <h2>Confirm that ASP.NET Request Validation Is Enabled in Machine.config</h2>
+  <p>Request validation is enabled by ASP.NET by default. You can see the following default setting in the Machine.config.comments file.</p>
+  <div>
+    <pre>&lt;pages validateRequest="true" ... /&gt;  </pre>
+  </div>
+  <p>Confirm that you have not disabled request validation by overriding the default settings in your server's Machine.config file or your application's Web.config file. </p>
+  <h2>Test ASP.NET Request Validation</h2>
+  <p>You can test the effects of request validation. To do this, create an ASP.NET page that disables request validation by setting <strong>ValidateRequest="false"</strong>, as follows.</p>
+  <div>
+    <pre>&lt;%@ Language="C#" ValidateRequest="false" %&gt;<br />&lt;html&gt;<br />&amp;nbsp;&lt;script runat="server"&gt;<br />&amp;nbsp; void btnSubmit_Click(Object sender, EventArgs e)<br />&amp;nbsp; {<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; // If ValidateRequest is false, then 'hello' is displayed<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; // If ValidateRequest is true, then ASP.NET returns an exception<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; Response.Write(txtString.Text);<br />&amp;nbsp; }<br />&amp;nbsp;&lt;/script&gt;<br />&amp;nbsp;&lt;body&gt;<br />&amp;nbsp; &lt;form id="form1" runat="server"&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;asp:TextBox id="txtString" runat="server" <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Text="&lt;script&gt;alert('hello');&lt;/script&gt;" /&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;asp:Button id="btnSubmit" runat="server" OnClick="btnSubmit_Click" <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Text="Submit" /&gt;<br />&amp;nbsp; &lt;/form&gt;<br />&amp;nbsp;&lt;/body&gt;<br />&lt;/html&gt;  </pre>
+  </div>
+  <p>When you run the page, "Hello" is displayed in a message box because the script in <strong>txtString</strong> is passed through and rendered as client-side script in your browser.</p>
+  <p>If you set <strong>ValidateRequest="true" </strong>or remove the <strong>ValidateRequest</strong> page attribute, ASP.NET request validation rejects the script input and produces an error similar to the following.</p>
+  <div>
+    <pre>A potentially dangerous Request.Form value was detected from the client (txtString="&lt;script&gt;alert('hello...").  </pre>
+  </div>
+  <blockquote>
+    <strong>Note</strong>&amp;nbsp;&amp;nbsp;&amp;nbsp;Do not rely on ASP.NET request validation. Treat it as an extra precautionary measure in addition to your own input validation.</blockquote>
+  <h1>Step 2. Constrain Input</h1>
+  <p>To constrain input, follow these guidelines: </p>
+  <ul>
+    <li>
+      <strong>Use server-side input validation.</strong> Do not rely on client-side validation because it is easily bypassed. Use client-side validation in addition to server-side validation to reduce round trips to the server and to improve the user experience. </li>
+    <li>
+      <strong>Validate length, range, format and type.</strong> Make sure that any input meets your guidelines for known good input. </li>
+    <li>
+      <strong>Use strong data typing. </strong>Assign numeric values to numeric data types such as <strong>Integer</strong> or <strong>Double</strong>. Assign string values to string data types. Assign dates to the <strong>DateTime</strong> data type. </li>
+  </ul>
+  <p>For Web form applications that obtain input through server controls, use the ASP.NET validator controls to constrain the input. For other sources of input data, such as query strings, cookies, and HTTP headers, constrain input by using the <strong>Regex</strong> class from the <strong>System.Text.RegularExpressions</strong> namespace.</p>
+  <h2>Explicitly Check Input from Form Fields</h2>
+  <p>To constrain form field input received through server controls, you can use the following ASP.NET validator controls: </p>
+  <ul>
+    <li>
+      <strong>RegularExpressionValidator.</strong> Use this control to constrain text input. </li>
+    <li>
+      <strong>RangeValidator.</strong> Use this control to check the ranges of numeric, currency, date, and string input. </li>
+    <li>
+      <strong>CustomValidator.</strong> Use this control for custom validation, such as ensuring that a date is in the future or in the past. </li>
+  </ul>
+  <p>To validate form field input received through HTML input controls, perform validation in server-side code and use the <strong>Regex</strong> class to help constrain text input. The following sections describe how to constrain a variety of common input types.</p>
+  <h3>Validating Text Fields </h3>
+  <ul>
+    <li>To validate text fields, such as names, addresses, and tax identification numbers, use regular expressions to do the following: </li>
+    <li>Constrain the acceptable range of input characters. </li>
+    <li>Apply formatting rules. For example, pattern-based fields, such as tax identification numbers, ZIP Codes, or postal codes, require specific patterns of input characters. </li>
+    <li>Check lengths. </li>
+  </ul>
+  <h3>Using a RegularExpressionValidator</h3>
+  <p>To use a <strong>RegularExpressionValidator</strong>, set the <strong>ControlToValidate</strong>, <strong>ValidationExpression</strong>, and <strong>ErrorMessage </strong>properties to appropriate values as shown in the following example.</p>
+  <div>
+    <pre>&lt;form id="WebForm" method="post" runat="server"&gt;<br />&amp;nbsp; &lt;asp:TextBox id="txtName" runat="server"&gt;&lt;/asp:TextBox&gt;<br />&amp;nbsp; &lt;asp:RegularExpressionValidator id="nameRegex" runat="server" <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ControlToValidate="txtName" <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ValidationExpression="^[a-zA-Z'.\s]{1,40}$" <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ErrorMessage="Invalid name"&gt;<br />&amp;nbsp; &lt;/asp:regularexpressionvalidator&gt;<br />&lt;/form&gt;  </pre>
+  </div>
+  <p>The regular expression used in the preceding code example limits an input name field to alphabetic characters (lowercase and uppercase), space characters, the single apostrophe for names such as O'Dell, and the period. In addition, the field length is constrained to 40 characters.</p>
+  <blockquote>
+    <strong>Note</strong>&amp;nbsp;&amp;nbsp;&amp;nbsp;The <strong>RegularExpressionValidator</strong> control automatically adds a caret (^) and dollar sign ($) as delimiters to the beginning and end of expressions if you have not added them yourself. You should add them to all of your regular expressions as a good practice.&amp;nbsp; Enclosing the expression in the delimiters ensures that the expression consists of the desired content and nothing else.</blockquote>
+  <h3>Using the Regex Class</h3>
+  <p>If you are not using server controls (which means you cannot use the validator controls), or you need to validate input from sources other than form fields (such as from query string parameters or cookies), you can use a <strong>Regex</strong> class.</p>
+  <p>
+    <strong>To use the Regex class</strong>
+  </p>
+  <ol>
+    <li>Add a <strong>using</strong> statement to reference the<strong> System.Text.RegularExpressions</strong> namespace. </li>
+    <li>Ensure that the regular expression is contained in the ^ and $ anchor characters (beginning of string, end of string). </li>
+    <li>Call the <strong>IsMatch</strong> method of the <strong>Regex</strong> class, as shown in the following code example. </li>
+  </ol>
+  <div>
+    <pre>// Instance method:<br />Regex reg = new Regex(@"^[a-zA-Z'.\s]{1,40}$");<br />Response.Write(reg.IsMatch(txtName.Text));</pre>
+  </div>
+  <pre>// Static method:<br />if (!Regex.IsMatch(txtName.Text,@"^[a-zA-Z'.\s]{1,40}$")) <br />{<br />&amp;nbsp; // Name does not match expression<br />}</pre>
+  <p>If you cannot cache your regular expression for frequent use, you should use the static <strong>IsMatch</strong> method where possible for performance reasons, to avoid unnecessary object creation.</p>
+  <h3>Validating Numeric Fields</h3>
+  <p>In most cases, numeric fields should be checked for type and range. To validate the type and range of a numeric input field that uses a server control, you can use a <strong>RangeValidator</strong> control. The <strong>RangeValidator</strong> supports currency, date, integer, double, and string data types. </p>
+  <p>To use a <strong>RangeValidator</strong>, set the <strong>ControlToValidate</strong>, <strong>Type</strong>, <strong>MinimumValue</strong>, <strong>MaximumValue</strong>, and <strong>ErrorMessage</strong> properties to appropriate values as shown in the following example.</p>
+  <div>
+    <pre>&lt;asp:RangeValidator <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ID="RangeValidator1" <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Runat="server" <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ErrorMessage="Invalid range. Number must be between 0 and 255."<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ControlToValidate="rangeInput" <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; MaximumValue="255" <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; MinimumValue="0" Type="Integer" /&gt;  </pre>
+  </div>
+  <p>If you are not using a server control, you can validate a numeric range by converting the input value to an integer and then performing a range check. For example, to validate that an integer is valid, convert the input value to a variable of type <strong>System.Int32</strong> by using the <strong>Int32.TryParse</strong> method. This method returns <strong>false</strong> if the type conversion fails.</p>
+  <div>
+    <pre>Int32 i;<br />if (Int32.TryParse(txtInput.Text, out i) == false)<br />{<br />&amp;nbsp; // Conversion failed<br />}  </pre>
+  </div>
+  <p>The following code shows how to perform a type and range check for an integer entered through an HTML text input control. </p>
+  <div>
+    <pre>&lt;%@ Page Language="C#" %&gt;</pre>
+    <pre>&lt;script runat="server"&gt;</pre>
+    <pre>&amp;nbsp; void Page_Load(object sender, EventArgs e)<br />&amp;nbsp; {<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; if (Request.RequestType == "POST")<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; {<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; int i;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; if (Int32.TryParse(Request.Form["integerTxt"], out i) == true)<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; {<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; // TryParse returns true if the conversion succeeds<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; if ((0 &lt;= i &amp;&amp; i &lt;= 255) == true)<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; {<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Response.Write("Input data is valid.");<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; }<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; else<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Response.Write("Input data is out of range");<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; }<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; else<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Response.Write("Input data is not an integer");<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; }<br />&amp;nbsp; }<br />&amp;nbsp;&amp;nbsp; <br />&lt;/script&gt;</pre>
+  </div>
+  <pre>&lt;html&gt;<br />&amp;nbsp; &lt;body&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;form id="form1" action="NumericInput.aspx" method="post"&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;div&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Enter an integer between 0 and 255:<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;input name="integerTxt" type="text" /&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;input name="Submit" type="submit" value="submit" /&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;/div&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;/form&gt;<br />&amp;nbsp; &lt;/body&gt;<br />&lt;/html&gt;</pre>
+  <h3>Validating Date Fields</h3>
+  <p>You need to validate that date fields are of the correct type. In most cases, you also need to check them for range, for example to validate that they are in the future or past. If you use a server control to capture an input date, and if you also need to validate that a date falls within a specific range, you can use a <strong>RangeValidator</strong> control with its <strong>Type</strong> field set to <strong>Date</strong>. This control lets you specify a range by using constant date values. If you need to validate a date range based on today's date, for example to validate that a date is in the future or the past, you can use a <strong>CustomValidator</strong> control.</p>
+  <p>To use a <strong>CustomValidator</strong> control to validate a date, set the <strong>ControlToValidate</strong> and <strong>ErrorMessage</strong> properties and the <strong>OnServerValidate</strong> event to point to a custom method containing your validation logic. The following sample .aspx page code shows this approach.</p>
+  <div>
+    <pre>&lt;%@ Page Language="C#" %&gt;</pre>
+    <pre>&lt;script runat="server"&gt;</pre>
+    <pre>&amp;nbsp;void ValidateDateInFuture(object source, ServerValidateEventArgs args)<br />&amp;nbsp;{<br />&amp;nbsp;&amp;nbsp; DateTime dt;</pre>
+  </div>
+  <pre>&amp;nbsp;&amp;nbsp; // Check for valid date and that the date is in the future<br />&amp;nbsp;&amp;nbsp; if ((DateTime.TryParse(args.Value, out dt) == false) || <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; (dt &lt;= DateTime.Today))<br />&amp;nbsp;&amp;nbsp; {<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; args.IsValid = false;<br />&amp;nbsp;&amp;nbsp; }<br />&amp;nbsp;}&amp;nbsp;</pre>
+  <pre>&lt;/script&gt;</pre>
+  <pre>&lt;html&gt;<br />&amp;nbsp; &lt;body&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;form id="form1" runat="server"&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;div&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;asp:Label ID="Label1" Runat="server" <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Text="Future Date:"&gt;&lt;/asp:Label&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;asp:TextBox ID="futureDatetxt" Runat="server"&gt;&lt;/asp:TextBox&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;asp:CustomValidator <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ID="CustomValidator1" Runat="server" <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ErrorMessage="Invalid date. Enter a date in the future."<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ControlToValidate="futureDatetxt"&amp;nbsp; <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; OnServerValidate="ValidateDateInFuture"&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;/asp:CustomValidator&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;br /&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;asp:Button ID="submitBtn" Runat="server" Text="Submit"&amp;nbsp; /&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;/div&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;/form&gt;<br />&amp;nbsp; &lt;/body&gt;<br />&lt;/html&gt;<br /></pre>
+  <blockquote>
+    <strong>Note</strong>&amp;nbsp;&amp;nbsp;&amp;nbsp;The preceding code uses <strong>DateTime.TryParse</strong>, which is new to .NET Framework 2.0.</blockquote>
+  <h2>Sanitizing Free-Text Fields</h2>
+  <p>To <em>sanitize</em> input, you make untrusted input safe by preventing it from being treated as code. For example, if your application handles user input that it cannot constrain or reads data from a shared database, you might need to sanitize the data or make the output safe when you write it on your page. Sanitize data prior to output by using <strong>AntiXSSLibrary.HtmlEncode</strong>. </p>
+  <h2>Allowing Restricted HTML Input</h2>
+  <p>If your application needs to accept a range of HTML elements—for example through a rich text input field such as a comments field—turn off ASP.NET request validation and create a filter that allows only the HTML elements that you want your application to accept. A common practice is to restrict formatting to safe HTML elements such as &lt;<strong>b</strong>&gt; (bold) and &lt;<strong>i</strong>&gt; (italic). Before writing the data, HTML-encode it. This makes any malicious script safe by causing it to be handled as text, not as executable code. </p>
+  <h2>To allow restricted HTML input </h2>
+  <ol>
+    <li>Disable ASP.NET request validation by the adding the <strong>ValidateRequest="false"</strong> attribute to the <strong>@ Page</strong> directive. </li>
+    <li>Encode the string input with the <strong>HtmlEncode</strong> method. </li>
+    <li>Use a <strong>StringBuilder</strong> and call its Replace method to selectively remove the encoding on the HTML elements that you want to permit. </li>
+  </ol>
+  <p>The following .aspx page code shows this approach. The page disables ASP.NET request validation by setting <strong>ValidateRequest="false"</strong>. It HTML-encodes the input and selectively allows the &lt;<strong>b</strong>&gt; and &lt;<strong>i</strong>&gt; HTML elements to support simple text formatting. </p>
+  <div>
+    <pre>&lt;%@ Page Language="C#" ValidateRequest="false"%&gt;</pre>
+    <pre>&lt;script runat="server"&gt;</pre>
+    <pre>&amp;nbsp; void submitBtn_Click(object sender, EventArgs e)<br />&amp;nbsp; {<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; // Encode the string input<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; StringBuilder sb = new StringBuilder(<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; AntiXSSLibrary.HtmlEncode(htmlInputTxt.Text));<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; // Selectively allow&amp;nbsp; and &lt;i&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; sb.Replace("&lt;b&gt;", "&lt;b&gt;");<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; sb.Replace("&lt;/b&gt;", "");<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; sb.Replace("&lt;i&gt;", "&lt;i&gt;");<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; sb.Replace("&lt;/i&gt;", "");<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; Response.Write(sb.ToString());<br />&amp;nbsp; }<br />&lt;/script&gt;</pre>
+    <pre>&lt;html&gt;<br />&amp;nbsp; &lt;body&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;form id="form1" runat="server"&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;div&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;asp:TextBox ID="htmlInputTxt" Runat="server" <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; TextMode="MultiLine" Width="318px"<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Height="168px"&gt;&lt;/asp:TextBox&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;asp:Button ID="submitBtn" Runat="server" <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Text="Submit" OnClick="submitBtn_Click" /&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;/div&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;/form&gt;<br />&amp;nbsp; &lt;/body&gt;<br />&lt;/html&gt;  </pre>
+  </div>
+  <h2>Validate Query String Values</h2>
+  <p>Validate query string values for length, range, format, and type. You usually do this by using a combination of regular expressions to: </p>
+  <ul>
+    <li>Constrain the input values. </li>
+    <li>Set explicit range checks. </li>
+    <li>Specify the explicit type checks performed by converting the input value to its equivalent .NET Framework type and handling any ensuing conversion errors. </li>
+  </ul>
+  <p>The following code example shows how to use the <strong>Regex</strong> class to validate a name string passed on a query string. </p>
+  <div>
+    <pre>void Page_Load(object sender, EventArgs e)<br />{<br />&amp;nbsp; if (!System.Text.RegularExpressions.Regex.IsMatch(<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Request.QueryString["Name"], @"^[a-zA-Z'.\s]{1,40}$"))<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; Response.Write("Invalid name parameter");<br />&amp;nbsp; else<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; Response.Write("Name is " + Request.QueryString["Name"]);<br />}  </pre>
+  </div>
+  <h2>Validate Cookie Values</h2>
+  <p>Values maintained in cookies, such as query string parameters, can easily be manipulated by a client. Validate cookie values in the same way as you would for query string parameters. Validate them for length, range, format, and type.</p>
+  <h2>Validate File and URL Paths</h2>
+  <p>If your application has to accept input file names, file paths, or URL paths, you need to validate that the path is in the correct format and that it points to a valid location within the context of your application. Failure to do this can result in attackers persuading your application into accessing arbitrary files and resources. </p>
+  <h3>Validating File Paths</h3>
+  <p>To prevent a malicious user manipulating your code's file operations, avoid writing code that accepts user-supplied file or path input. For example: </p>
+  <ul>
+    <li>If you must accept file names as input, use the full name of the file by using <strong>System.IO.Path.GetFileName</strong>. </li>
+    <li>If you must accept file paths as input, use the full file path by using <strong>System.IO.Path.GetFullPath</strong>. </li>
+  </ul>
+  <h3>Using MapPath to Prevent Cross Application Mapping</h3>
+  <p>If you use <strong>MapPath</strong> to map a supplied virtual path to a physical path on the server, use the overload of <strong>Request.MapPath</strong> that accepts a <strong>bool</strong> parameter so that you can prevent cross-application mapping. The following code example shows this technique.</p>
+  <div>
+    <pre>try<br />{<br />&amp;nbsp; string mappedPath = Request.MapPath( inputPath.Text, <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Request.ApplicationPath, false);<br />}<br />catch (HttpException)<br />{<br />&amp;nbsp; // Cross-application mapping attempted<br />}  </pre>
+  </div>
+  <p>The final <strong>false</strong> parameter prevents cross-application mapping. This means that a user cannot successfully supply a path that contains <strong>".."</strong> to traverse outside of your application's virtual directory hierarchy. Any attempt to do this results in an exception of type <strong>HttpException</strong>.</p>
+  <p>If you use server controls, you can use the <strong>Control.MapPathSecure</strong> method to retrieve the physical path to which the virtual path is mapped. <strong>Control.MapPathSecure</strong> uses code access security and throws an <strong>HttpException</strong> if the server control does not have permissions to read the resulting mapped file. For more information, see <strong>Control.MapPathSecure</strong> in the .NET Framework SDK documentation.</p>
+  <h3>Using Code Access Security to Restrict File I/O</h3>
+  <p>An administrator can restrict an application's file I/O to its own virtual directory hierarchy by configuring the application to run with Medium trust. In this event, .NET code access security ensures that no file access is permitted outside of the application's virtual directory hierarchy.</p>
+  <p>You configure an application to run with Medium trust by setting the &lt;<strong>trust</strong>&gt; element in Web.config or Machine.config.</p>
+  <div>
+    <pre>&lt;trust level="Medium" /&gt;  </pre>
+  </div>
+  <h3>Validating URLs</h3>
+  <p>You can filter for a valid URL format using a regular expression, such as the following.</p>
+  <div>
+    <pre>^(?:http|https|ftp)://[a-zA-Z0-9\.\-]+(?:\:\d{1,5})?(?:[A-Za-z0-9\.\;\:\@\&amp;\=\+\$\,\?/]|%u[0-9A-Fa-f]{4}|%[0-9A-Fa-f]{2})*$  </pre>
+  </div>
+  <p>This constrains the input, but it does not validate whether the URL is valid in terms of the application boundaries. You should check whether the target is valid in the context of your application. For example, does it point to an authorized server that you expect your application to communicate with?</p>
+  <h1>Step 3. Encode Unsafe Output</h1>
+  <p>If you write text output to a Web page, encode it using <strong>AntiXSSLibrary.HtmlEncode</strong>. Do this if the text came from user input, a database, or a local file. </p>
+  <p>Similarly, if you write URLs that might contain unsafe characters because they have been constructed from input data or data from a shared database, use <strong>AntiXSSLibrary.UrlEncode</strong> to make them safe. </p>
+  <p>Avoid the mistake of encoding the data early. Make sure you encode at the last possible opportunity before the data is displayed to the client. </p>
+  <p>Do not use the <strong>HttpUtilty </strong>class provided by ASP.NET as it does not do a complete job of protecting against cross site scripting attacks, the <strong>AntiXSSLibrary </strong>is much more effective.</p>
+  <h2>Use HtmlEncode to Encode Unsafe Output</h2>
+  <p>The <strong>HtmlEncode</strong> method replaces characters that have special meaning in HTML to HTML variables that represent those characters. For example, &lt; is replaced with <strong>&lt;</strong> and <strong>"</strong> is replaced with <strong>"</strong>. Encoded data does not cause the browser to execute code. Instead, the data is rendered as harmless text, and the tags are not interpreted as HTML.</p>
+  <p>To illustrate the use of <strong>HtmlEncode</strong>, the following page accepts input from the user and allows potentially unsafe HTML characters by setting <strong>ValidateRequest="false"</strong>. Before writing the input back to the user, the code calls <strong>AntiXSSLibrary.HtmlEncode</strong> on the supplied input text. This renders any potentially unsafe HTML as harmless text. </p>
+  <div>
+    <pre>&lt;%@ Page Language="C#" ValidateRequest="false" %&gt;</pre>
+    <pre>&lt;script runat="server"&gt;<br />&amp;nbsp; void submitBtn_Click(object sender, EventArgs e)<br />&amp;nbsp; {<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Response.Write(AntiXSSLibrary.HtmlEncode(inputTxt.Text));<br />&amp;nbsp; }<br />&lt;/script&gt;</pre>
+    <pre>&lt;html&amp;nbsp; &gt;<br />&amp;nbsp; &lt;body&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;form id="form1" runat="server"&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;div&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;asp:TextBox ID="inputTxt" Runat="server" <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; TextMode="MultiLine" Width="382px" Height="152px"&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;/asp:TextBox&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;asp:Button ID="submitBtn" Runat="server" Text="Submit" <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; OnClick="submitBtn_Click" /&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;/div&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;/form&gt;<br />&amp;nbsp; &lt;/body&gt;<br />&lt;/html&gt;  </pre>
+  </div>
+  <p>To see the effect of the HTML encoding, place the preceding page in a virtual directory, browse to it, enter some HTML code in the input text box, and click <strong>Submit</strong>. For example, the following input is rendered as text.</p>
+  <div>
+    <pre>Run script and say hello &lt;script&gt;alert('hello');&lt;/script&gt;  </pre>
+  </div>
+  <p>It produces the following safe output.</p>
+  <div>
+    <pre>Run script and say hello &lt;script&gt;alert('hello');&lt;/script&gt;  </pre>
+  </div>
+  <p>If you remove the call to <strong>HtmlEncode</strong> and simply write back the input, the browser executes the script and displays a message box. Malicious script could pose a significant threat. </p>
+  <h2>Use UrlEncode to Encode Unsafe URLs</h2>
+  <p>If you need to write URLs that are based on input that you do not fully trust, use <strong>AntiXSSLibrary.UrlEncode</strong> to encode the URL string.</p>
+  <div>
+    <pre>AntiXSSLibrary.UrlEncode( urlString );  </pre>
+  </div>
+  <h1>Step 4. Use Command Parameters for SQL Queries</h1>
+  <p>To help prevent SQL injection, use command parameters for SQL queries. The <strong>Parameters</strong> collection provides type checking and length validation. If you use the <strong>Parameters</strong> collection, input is treated as a literal value and SQL does not treat it as executable code. An additional benefit of using the <strong>Parameters</strong> collection is that you can enforce type and length checks. Values outside of the range trigger an exception.</p>
+  <h2>Use Parameters Collection When You Call a Stored Procedure</h2>
+  <p>The following code fragment illustrates the use of the <strong>Parameters</strong> collection when calling a stored procedure.</p>
+  <div>
+    <pre>SqlDataAdapter myCommand = new SqlDataAdapter("AuthorLogin", <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; myConnection);<br />myCommand.SelectCommand.CommandType = CommandType.StoredProcedure;<br />SqlParameter parm = myCommand.SelectCommand.Parameters.Add(<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; "@LoginId", SqlDbType.VarChar, 11);<br />parm.Value = Login.Text;  </pre>
+  </div>
+  <h2>Use Parameters Collection When Building Your SQL Statements</h2>
+  <p>If you cannot use stored procedures, you can still use parameters, as shown in the following code fragment.</p>
+  <div>
+    <pre>SqlDataAdapter myCommand = new SqlDataAdapter(<br />"SELECT au_lname, au_fname FROM Authors WHERE au_id = @au_id", myConnection);<br />SQLParameter parm = myCommand.SelectCommand.Parameters.Add(<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; "@au_id" ,SqlDbType.VarChar, 11);<br />Parm.Value = Login.Text;  </pre>
+  </div>
+  <h1>Step 5. Verify that ASP.NET Errors Are Not Returned to the Client</h1>
+  <p>You can use the &lt;<strong>customErrors</strong>&gt; element to configure custom, generic error messages that should be returned to the client in the event of an application exception condition.</p>
+  <p>Make sure that the <strong>mode</strong> attribute is set to <strong>"remoteOnly"</strong> in the web.config file as shown in the following example.</p>
+  <div>
+    <pre>&lt;customErrors mode="remoteOnly" /&gt;  </pre>
+  </div>
+  <p>After installing an ASP.NET application, you can configure the setting to point to your custom error page as shown in the following example.</p>
+  <div>
+    <pre>&lt;customErrors mode="On" defaultRedirect="YourErrorPage.htm" /&gt;  </pre>
+  </div>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance.</p>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-0000008feacc</Id>
+    <Library_Id>f798e6e6-1732-4172-9c47-9621d914efcd</Library_Id>
+    <Title>Destroy Sessions When Users Log Out</Title>
+    <Category>Session Management</Category>
+    <Phase>Implementation</Phase>
+    <Technology>PHP</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Destroy Sessions When Users Log Out</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h2>Applies to</h2>
+  <ul>
+    <li>PHP</li>
+  </ul>
+  <h2>What to Do</h2>
+  <p>Invalidate sessions when users log out.</p>
+  <h2>Why</h2>
+  <p>Invalidating sessions when users log out makes it harder to hijack them.</p>
+  <h2>How</h2>
+  <p>To invalidate sessions when users log out:</p>
+  <ol>
+    <li>
+      <p>
+        <strong>Identify logout functionality.</strong> Find code that is responsible for the logout functionality.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Add code to invalidate sessions.</strong> Add the following code to the logout function to invalidate the session:</p>
+      <pre>session_destroy();<br />setcookie(session_name(), "", time() - 3600, "/");</pre>
+    </li>
+  </ol>
+  <ul>
+  </ul>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,179 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="140741137" Content_Hash="900825088">
+  <Metadata>
+    <Id>6513cc58-bf67-4458-a4fa-cee65144db25</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>How to Use Regular Expressions to Constrain Input in ASP.NET</Title>
+    <Category>Input and Data Validation</Category>
+    <Phase>Implementation</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>How To</Type>
+    <DirectLink>How to Use Regular Expressions to Constrain Input in ASP.NET</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>Summary</h1>
+  <p>This How to shows how you can use regular expressions within ASP.NET applications to constrain untrusted input. Regular expressions are a good way to validate text fields such as names, addresses, phone numbers, and other user information. You can use them to constrain input, apply formatting rules, and check lengths. To validate input captured with server controls, you can use the <strong>RegularExpressionValidator</strong> control. To validate other forms of input, such as query strings, cookies, and HTML control input, you can use the <strong>System.Text.RegularExpressions.Regex</strong> class.</p>
+  <p>This How to shows how you can use regular expressions within ASP.NET applications to constrain untrusted input.</p>
+  <h1>Contents</h1>
+  <ul>
+    <li>
+      <div>Objectives</div>
+    </li>
+    <li>
+      <div>Overview</div>
+    </li>
+    <li>
+      <div>Using a RegularExpressionValidator Control</div>
+    </li>
+    <li>
+      <div>Using the Regex Class</div>
+    </li>
+    <li>
+      <div>Common Regular Expressions</div>
+    </li>
+    <li>
+      <div>Additional Resources</div>
+    </li>
+  </ul>
+  <h1>Objectives</h1>
+  <ul>
+    <li>Use regular expressions to constrain input, apply format rules, and check lengths. </li>
+    <li>Use the ASP.NET <strong>RegularExpressionValidator</strong> control to constrain and validate input. </li>
+    <li>Use the <strong>Regex</strong> class to constrain and validate input. </li>
+    <li>Learn common regular expressions that can be used to constrain input. </li>
+  </ul>
+  <h1>Overview</h1>
+  <p>If you make unfounded assumptions about the type, length, format, or range of input, your application is unlikely to be robust. Input validation can become a security issue if an attacker discovers that you have made unfounded assumptions. The attacker can then supply carefully crafted input that compromises your application by attempting SQL injection, cross-site scripting, and other injection attacks. To avoid such vulnerabilities, you should validate text fields (such as names, addresses, tax identification numbers, and so on) and use regular expressions to do the following: </p>
+  <ul>
+    <li>Constrain the acceptable range of input characters. </li>
+    <li>Apply formatting rules. For example, pattern-based fields, such as tax identification numbers, ZIP Codes, or postal codes, require specific patterns of input characters. </li>
+    <li>Check lengths. </li>
+  </ul>
+  <p>Regular expression support is available to ASP.NET applications through the <strong>RegularExpressionValidator</strong> control and the <strong>Regex</strong> class in the <strong>System.Text.RegularExpressions</strong> namespace.</p>
+  <h1>Using a RegularExpressionValidator Control</h1>
+  <p>If you capture input by using server controls, you can use the <strong>RegularExpressionValidator</strong> control to validate that input. You can use regular expressions to restrict the range of valid characters, to strip unwanted characters, and to perform length and format checks. You can constrain the input format by defining patterns that the input must match.</p>
+  <h2>To validate a server control's input using a RegularExpressionValidator </h2>
+  <ol>
+    <li>Add a <strong>RegularExpressionValidator</strong> control to your page. </li>
+    <li>Set the <strong>ControlToValidate</strong> property to indicate which control to validate. </li>
+    <li>Set the <strong>ValidationExpression</strong> property to an appropriate regular expression. </li>
+    <li>Set the <strong>ErrorMessage</strong> property to define the message to display if the validation fails. </li>
+  </ol>
+  <p>The following example shows a <strong>RegularExpressionValidator</strong> control used to validate a name field.</p>
+  <div>
+    <pre>&lt;%@ language="C#" %&gt;<br />&lt;form id="form1" runat="server"&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;asp:TextBox ID="txtName" runat="server"/&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;asp:Button ID="btnSubmit" runat="server" Text="Submit" /&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;asp:RegularExpressionValidator ID="regexpName" runat="server"&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ErrorMessage="This expression does not validate." <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ControlToValidate="txtName"&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ValidationExpression="^[a-zA-Z'.\s]{1,40}$" /&gt;<br />&lt;/form&gt;  </pre>
+  </div>
+  <p>The regular expression used in the preceding code example constrains an input name field to alphabetic characters (lowercase and uppercase), space characters, the single quotation mark (or apostrophe) for names such as O'Dell, and the period or dot character. In addition, the field length is constrained to 40 characters.</p>
+  <h2>Using ^ and $</h2>
+  <p>Enclosing the expression in the caret (<strong>^</strong>) and dollar sign (<strong>$)</strong>markers ensures that the expression consists of the desired content and nothing else. A <strong>^</strong> matches the position at the beginning of the input string and a <strong>$</strong> matches the position at the end of the input string. If you omit these markers, an attacker could affix malicious input to the beginning or end of valid content and bypass your filter.</p>
+  <h1>Using the Regex Class</h1>
+  <p>If you are not using server controls (which means you cannot use the validation controls) or if you need to validate input from sources other than form fields, such as query string parameters or cookies, you can use the <strong>Regex</strong> class within the <strong>System.Text.RegularExpressions</strong> namespace.</p>
+  <h2>To use the Regex class </h2>
+  <ol>
+    <li>Add a <strong>using</strong> statement to reference the <strong>System.Text.RegularExpressions</strong> namespace. </li>
+    <li>Call the <strong>IsMatch</strong> method of the <strong>Regex</strong> class, as shown in the following example. <div><pre>// Instance method:<br />Regex reg = new Regex(@"^[a-zA-Z'.]{1,40}$");<br />Response.Write(reg.IsMatch(txtName.Text));<br />// Static method:<br />if (!Regex.IsMatch(txtName.Text, <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; @"^[a-zA-Z'.]{1,40}$"))<br />{<br />&amp;nbsp; // Name does not match schema<br />}  </pre></div></li>
+  </ol>
+  <p>For performance reasons, you should use the static <strong>IsMatch</strong> method where possible to avoid unnecessary object creation.</p>
+  <p>The following example shows how to use a regular expression to validate a name input through a regular client-side HTML control.</p>
+  <div>
+    <pre>&lt;%@ Page Language="C#" %&gt;</pre>
+    <pre>&lt;html&amp;nbsp; &gt;<br />&amp;nbsp; &lt;body&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;form id="form1" method="post" action="HtmlControls.aspx"&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Name:<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;input name="txtName" type="text" /&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;input name="submitBtn" type="Submit" value="Submit"/&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;/form&gt;<br />&amp;nbsp; &lt;/body&gt;<br />&lt;/html&gt;</pre>
+  </div>
+  <pre>&lt;script runat="server"&gt;</pre>
+  <pre>&amp;nbsp; void Page_Load(object sender, EventArgs e)<br />&amp;nbsp; {<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; if (Request.RequestType == "POST")<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; {<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; string name = Request.Form["txtName"];<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; if (name.Length &gt; 0)<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; {<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; if (System.Text.RegularExpressions.Regex.IsMatch(name, <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; "^[a-zA-Z'.]{1,40}$"))<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Response.Write("Valid name");<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; else<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Response.Write("Invalid name");<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; }<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; }<br />&amp;nbsp; }</pre>
+  <pre>&lt;/script&gt;  </pre>
+  <h2>Use Regular Expression Comments</h2>
+  <p>Regular expressions are much easier to understand if you use the following syntax and comment each component of the expression by using a number sign (<strong>#</strong>). To enable comments, you must also specify <strong>RegexOptions.IgnorePatternWhitespace</strong>, which means that non-escaped white space is ignored.</p>
+  <div>
+    <pre>Regex regex = new Regex(@"<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ^&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; # anchor at the start<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; (?=.*\d)&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; # must contain at least one numeric character<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; (?=.*[a-z])&amp;nbsp; # must contain one lowercase character<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; (?=.*[A-Z])&amp;nbsp; # must contain one uppercase character<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; .{8,10}&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; # From 8 to 10 characters in length<br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; \s&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; # allows a space <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; $&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; # anchor at the end", <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; RegexOptions.IgnorePatternWhitespace);  </pre>
+  </div>
+  <h1>Common Regular Expressions</h1>
+  <p>Some common regular expressions are shown in Table 1.</p>
+  <p>
+    <strong>Table 1. Common Regular Expressions</strong>
+  </p>
+  <div>
+    <table>
+      <tbody>
+        <tr>
+          <th>Field </th>
+          <th>Expression</th>
+          <th>Format Samples</th>
+          <th>Description</th>
+        </tr>
+        <tr>
+          <td>Name</td>
+          <td>^[a-zA-Z''-'\s]{1,40}$</td>
+          <td>John Doe<br />O'Dell</td>
+          <td>Validates a name. Allows up to 40 uppercase and lowercase characters and a few special characters that are common to some names. You can modify this list.</td>
+        </tr>
+        <tr>
+          <td>Social Security Number</td>
+          <td>^\d{3}-\d{2}-\d{4}$</td>
+          <td>111-11-1111</td>
+          <td>Validates the format, type, and length of the supplied input field. The input must consist of 3 numeric characters followed by a dash, then 2 numeric characters followed by a dash, and then 4 numeric characters.</td>
+        </tr>
+        <tr>
+          <td>Phone Number</td>
+          <td>^[01]?[- .]?(\([2-9]\d{2}\)|[2-9]\d{2})[- .]?\d{3}[- .]?\d{4}$</td>
+          <td>(425) 555-0123<br />425-555-0123<br />425 555 0123<br />1-425-555-0123</td>
+          <td>Validates a U.S. phone number. It must consist of 3 numeric characters, optionally enclosed in parentheses, followed by a set of 3 numeric characters and then a set of 4 numeric characters. </td>
+        </tr>
+        <tr>
+          <td>E-mail </td>
+          <td>^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$</td>
+          <td>someone@example.com</td>
+          <td>Validates an e-mail address.</td>
+        </tr>
+        <tr>
+          <td>URL</td>
+          <td>^(ht|f)tp(s?)\:\/\/[0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*(:(0-9)*)*(\/?)([a-zA-Z0-9\-\.\?\,\'\/\\\+&amp;%\$#_]*)?$</td>
+          <td>http://www.microsoft.com</td>
+          <td>Validates a URL </td>
+        </tr>
+        <tr>
+          <td>ZIP Code</td>
+          <td>^(\d{5}-\d{4}|\d{5}|\d{9})$|^([a-zA-Z]\d[a-zA-Z] \d[a-zA-Z]\d)$</td>
+          <td>12345</td>
+          <td>Validates a U.S. ZIP Code. The code must consist of 5 or 9 numeric characters.</td>
+        </tr>
+        <tr>
+          <td>Password</td>
+          <td>(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{8,10})$</td>
+          <td>&amp;nbsp;</td>
+          <td>Validates a strong password. It must be between 8 and 10 characters, contain at least one digit and one alphabetic character, and must not contain special characters.</td>
+        </tr>
+        <tr>
+          <td>Non- negative integer</td>
+          <td>^\d+$</td>
+          <td>0<br />986</td>
+          <td>Validates that the field contains an integer greater than zero.</td>
+        </tr>
+        <tr>
+          <td>Currency (non- negative)</td>
+          <td>^\d+(\.\d\d)?$</td>
+          <td>1.00</td>
+          <td>Validates a positive currency amount. If there is a decimal point, it requires 2 numeric characters after the decimal point. For example, 3.00 is valid but 3.1 is not.</td>
+        </tr>
+        <tr>
+          <td>Currency (positive or negative)</td>
+          <td>^(-)?\d+(\.\d\d)?$</td>
+          <td>1.20</td>
+          <td>Validates for a positive or negative currency amount. If there is a decimal point, it requires 2 numeric characters after the decimal point.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>For more information, see the regular expression tutorial at <a href="http://www.regular-expressions.info/tutorial.html">http://www.regular-expressions.info/tutorial.html</a>.</li>
+  </ul>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance.</p>]]></Data>
+  </Content>
+</TeamMentor_Article>

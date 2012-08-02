@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-000000490c11</Id>
+    <Library_Id>f798e6e6-1732-4172-9c47-9621d914efcd</Library_Id>
+    <Title>Make Sessions Time-out</Title>
+    <Category>Session Management</Category>
+    <Phase>Deployment</Phase>
+    <Technology>PHP</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Make Sessions Time-out</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Applies to</h1>
+  <ul>
+    <li>PHP</li>
+  </ul>
+  <h1>What to Do</h1>
+  <p>Configure PHP to make sessions time-out after a certain period of time, even if the user is active.</p>
+  <h1>Why</h1>
+  <p>Limiting session life-time makes it harder to hijack sessions.</p>
+  <h1>How</h1>
+  <p>To set an absolute session time limit, configure the <em>php.ini</em> file to include the following directive:</p>
+  <pre>session.cookie_lifetime = 60000</pre>
+  <p>The snippet above sets the maximum session life-time to 60000 seconds by limiting the life-time of the session cookies.</p>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>For more information about PHP runtime configuration, please see <a href="http://php.net/manual/en/session.configuration.php">http://php.net/manual/en/session.configuration.php</a>&amp;nbsp;</li>
+  </ul>
+  <ul>
+  </ul>]]></Data>
+  </Content>
+</TeamMentor_Article>

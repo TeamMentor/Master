@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-00000061ea6c</Id>
+    <Library_Id>f798e6e6-1732-4172-9c47-9621d914efcd</Library_Id>
+    <Title>Output Encoding Using SpringMVC</Title>
+    <Category>Encoding</Category>
+    <Phase>Implementation</Phase>
+    <Technology>SpringMVC</Technology>
+    <Type>Code Example</Type>
+    <DirectLink>Output Encoding Using SpringMVC</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Applies to</h1>
+  <ul>
+    <li>JAVA</li>
+    <li>SpringMVC</li>
+  </ul>
+  <h1>Summary</h1>
+  <p>Perform output encoding using SpringMVC within an application.</p>
+  <h1>Objectives</h1>
+  <p>Strong output encoding is a control that is typically used to prevent encoding (primarily XSS on the web) issues within an application. This article will describe how to use the built-in mechanisms provided by SpringMVC to perform appropriate output encoding.</p>
+  <h1>Solution Example</h1>
+  <p>In general, SpringMVC tags perform HTML entity encoding by default (see XSS prevention cheat sheet in references) if they are configured to do so. There are a few ways to enable this mechanism (newer versions of SpringMVC have this enabled by default).</p>
+  <p>Enable html escaping on all form elements within the entire application. In order to do this, add this snippet to your <em>web.xml</em>.</p>
+  <pre>&lt;context-param&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;param-name&gt;defaultHtmlEscape&lt;/param-name&gt;<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;param-value&gt;true&lt;/param-value&gt;<br />&lt;/context-param&gt;</pre>
+  <p>Enable html escaping on all form elements within a single page. In order to do this, add this snippet at the top of your jsp page.</p>
+  <pre>&lt;spring:htmlEscape defaultHtmlEscape="true" /&gt; </pre>
+  <p>Enable html escaping on all form elements within a single form. In order to do this, attribute your form in this way.</p>
+  <pre>&lt;form:input path="someFormField" htmlEscape="true" /&gt; </pre>
+  <p>
+    <strong>Note</strong>: An important point to be aware of is that some tags that allow you to disable the encoding performed by the tag. This is sometimes useful, the most common case being where you are allowing administrators for a site add HTML formatted messages to be displayed to users. There may also be cases where users can create formatted messages for other users. These approaches are often not handled properly to prevent XSS. However, through strong input validation, it is possible to allow users to enter limited HTML and still display that safely to users without allowing XSS. </p>
+  <p>You can determine if this is being done by simply looking for the <em>htmlEscape="false"</em> attribute in individual SpringMVC tags. If it is set to false, then the HTML entity encoding is disabled (the default is true). </p>
+  <p>SpringMVC provides various mechanisms to perform output encoding. However, you must be aware of the encoding properties of the tag(s) you are using and encode appropriately for your given output context. </p>
+  <h1>More Information</h1>
+  <ul>
+    <li>For more information about the htmlEscape tag, please see <a href="http://static.springsource.org/spring/docs/2.5.x/reference/spring.tld.html#spring.tld.htmlEscape">http://static.springsource.org/spring/docs/2.5.x/reference/spring.tld.html#spring.tld.htmlEscape</a></li>
+    <li>For more information about Cross-Site Scripting prevention, please see<br /><a href="https://www.owasp.org/index.php/XSS_%28Cross_Site_Scripting%29_Prevention_Cheat_Sheet">https://www.owasp.org/index.php/XSS_%28Cross_Site_Scripting%29_Prevention_Cheat_Sheet</a></li>
+  </ul>
+  <ul>
+  </ul>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="1814579765" Content_Hash="-1753822663">
+  <Metadata>
+    <Id>93edf997-ee9c-4290-9041-2673fb656781</Id>
+    <Library_Id>00000000-0000-0000-0000-000000000000</Library_Id>
+    <Title>Free Form Input Is Sanitized to Protect Against Malicious Data</Title>
+    <Category>Input and Data Validation</Category>
+    <Phase>Implementation</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink />
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Check For</h1><p>Ensure that your application validates all forms of input&nbsp;and cleans malicious data either by&nbsp;rejecting or sanitizing it.</p><h1>How to Fix</h1><p>Do not trust input. An attacker passing malicious input can attempt SQL injection, cross-site scripting, and other injection attacks that aim to exploit your application's vulnerabilities. Check for known good data, and constrain input by validating it for type, length, format, and range.</p><p>For Web form applications that obtain input through server controls, use the ASP.NET validator controls, such as the <strong>RegularExpressionValidator</strong>, <strong>RangeValidator</strong>, and <strong>CustomValidator</strong>, to validate and constrain input. Check all numeric fields for type and range. If you are not using server controls, you can use regular expressions and the <strong>Regex</strong> class, and you can validate numeric ranges by converting the input value to an integer or double and then performing a range check.</p><hr><p>Adapted from Microsoft patterns &amp; practices guidance. </p>]]></Data>
+  </Content>
+</TeamMentor_Article>

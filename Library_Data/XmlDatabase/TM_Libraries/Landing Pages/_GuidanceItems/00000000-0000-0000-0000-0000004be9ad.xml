@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-0000004be9ad</Id>
+    <Library_Id>80a03482-cf8b-4055-82db-1aa09465d30f</Library_Id>
+    <Title>File Canonicalization</Title>
+    <Category />
+    <Phase>NA</Phase>
+    <Technology>ASP.NET</Technology>
+    <Type>Vulnerability</Type>
+    <DirectLink>File Canonicalization</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="WikiText">
+    <Data><![CDATA[==Description==
+
+File canonicalization vulnerabilities are a type of vulnerabilities that allow attackers to access unauthorized resources by entering obscure file names or paths. The process of resolving different forms of input that refer to the same standard name (the canonical name) is called canonicalization. Code is particularly susceptible to canonicalization issues if it makes security decisions based on the name of a resource that is passed to the program as input. Files, paths, host names, and URLs are resource types that are vulnerable to canonicalization because in each case there are many different ways to represent the same name.
+
+==Countermeasures==
+
+The following TeamMentor articles describe effective counter-measures against file canonicalization vulnerabilities:
+
+* [[Avoid File Name Or Path Input]]
+* [[Validate All Input]]
+* [[Do Not Rely on Client-side Validation]]
+* [[Validate Input for Length, Range, Format, And Type]]
+
+==Checklists==
+
+The following checklist items can help make sure that effective counter-measures against file canonicalization vulnerabilities have been implemented:
+
+* [[The Application Avoids File Name And Path Input]]
+* [[All Input Is Validated]]
+* [[Client-side Validation Is Not Relied On]]
+* [[Input Is Validated for Length, Range, Format, And Type]]
+
+==Additional Resources==
+
+* For more information about canonicalization, please see http://en.wikipedia.org/wiki/Canonicalization
+* For more information about canonicalization, please see https://www.owasp.org/index.php/Canonicalization,_locale_and_Unicode
+]]></Data>
+  </Content>
+</TeamMentor_Article>

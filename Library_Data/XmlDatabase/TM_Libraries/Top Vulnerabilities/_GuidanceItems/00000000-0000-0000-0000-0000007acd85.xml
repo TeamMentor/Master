@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-0000007acd85</Id>
+    <Library_Id>f798e6e6-1732-4172-9c47-9621d914efcd</Library_Id>
+    <Title>Output Encoding Using JSF</Title>
+    <Category>Encoding</Category>
+    <Phase>Implementation</Phase>
+    <Technology>JSF</Technology>
+    <Type>Code Example</Type>
+    <DirectLink>Output Encoding Using JSF</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Applies to</h1>
+  <ul>
+    <li>JAVA</li>
+    <li>JSF</li>
+  </ul>
+  <h1>Summary</h1>
+  <p>Perform output encoding using JSF within an application.</p>
+  <h1>Objectives</h1>
+  <p>Strong output encoding is a control that is typically used to prevent encoding (primarily XSS on the web) issues within an application. This article will describe how to use the built-in mechanisms provided by JSF to perform appropriate output encoding.</p>
+  <h1>Solution Example</h1>
+  <p>In general, JSF tags perform HTML entity encoding by default (see XSS prevention cheat sheet in references). A few examples are given below.</p>
+  <p>Using <em>h:outputText</em> to output simple text (performs HTML entity encoding).</p>
+  <pre>&lt;h:outputText value="#{someManagedBean.someValue}" /&gt;</pre>
+  <p>Using h:outputLabel to output simple text (performs HTML entity encoding).</p>
+  <pre>&lt;h:outputLabel value="#{someManagedBean.someValue}" /&gt;</pre>
+  <p>Using <em>h:outputLink</em> to output a url (performs URL encoding on url parameter values).</p>
+  <pre>&lt;h:outputLink value="#{form.welcomeURL}"&gt;<br />&lt;h:outputText value="#{form.welcomeLinkText}"/&gt;<br />&lt;/h:outputLink&gt;</pre>
+  <p>
+    <strong>Note</strong>: An important point to be aware of is that there are a few tags that allow you to disable the encoding performed by the tag. This is sometimes useful, the most common case being where you are allowing administrators for a site add HTML formatted messages to be displayed to users. There may also be cases where users can create formatted messages for other users. These approaches are often not handled properly to prevent XSS. However, through strong input validation, it is possible to allow users to enter limited HTML and still display that safely to users without allowing XSS. </p>
+  <p>You can determine if this is being done by simply looking for the escape attribute in JSF tags. If it is set to false, then the HTML entity encoding is disabled (the default is true). An example of disabling encoding is shown below.</p>
+  <pre>&lt;h:outputText value="#{someManagedBean.someValue}" escape="false" /&gt;</pre>
+  <p>Another important note is that while the <em>f:verbatim</em> tag can perform output encoding, it by default does not. If you see something like the following, it is unsafe.</p>
+  <pre>//DO NOT USE<br />&lt;f:verbatim&gt; Untrusted data &lt;/f:verbatim&gt;</pre>
+  <p>JSF provides various tags that can perform output encoding. However, you must be aware of the encoding properties of the tag(s) you are using and encode appropriately for your given output context. </p>
+  <h1>More Information</h1>
+  <ul>
+    <li>For more information about JSF tags, please see <a href="http://www.horstmann.com/corejsf/jsf-tags.html">http://www.horstmann.com/corejsf/jsf-tags.html</a></li>
+    <li>For more information about Cross-Site Scripting prevention, please see <a href="https://www.owasp.org/index.php/XSS_%28Cross_Site_Scripting%29_Prevention_Cheat_Sheet">https://www.owasp.org/index.php/XSS_%28Cross_Site_Scripting%29_Prevention_Cheat_Sheet</a></li>
+  </ul>
+  <ul>
+  </ul>]]></Data>
+  </Content>
+</TeamMentor_Article>

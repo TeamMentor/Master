@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-0000004ef2c8</Id>
+    <Library_Id>f215ceee-9a08-41d9-b2c1-bbcc058a8f32</Library_Id>
+    <Title>Sign Android Application Updates</Title>
+    <Category>Code Integrity</Category>
+    <Phase>Implementation</Phase>
+    <Technology>Android</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Sign Android Application Updates</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="WikiText">
+    <Data><![CDATA[==What to Do==
+
+Sign updates to the application.
+
+==Why==
+
+Sign updates to the application to help verify that the updates came from a trusted party.
+
+==How==
+
+Signing updates is an important principle in software development to prevent malicious software from masquerading as updates to legitimate software. In practice, updates to mobile software are usually distributed as complete new versions, rather than as patches to the already installed software. The updated software package is usually signed because otherwise it won't be allowed on the most popular distribution channels. Therefore, the process for signing mobile software and updates is usually already established by software developers. It is still important to be aware of the importance of signing software and software updates.
+
+==Related Items==
+
+* [[Sign Android Applications]]]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-00000033f0db</Id>
+    <Library_Id>b6f408c5-6e6e-4bc0-90a5-0bb10becc2ce</Library_Id>
+    <Title>Do Not Log Sensitive Data</Title>
+    <Category>Privacy</Category>
+    <Phase>Design</Phase>
+    <Technology>iOS</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Do Not Log Sensitive Data</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="WikiText">
+    <Data><![CDATA[==What to Do==
+
+Do not log sensitive data.
+
+==Why==
+
+If sensitive data is logged, it may be recovered by an attacker if the device is lost or compromised.
+
+==How==
+
+To prevent logging of sensitive data:
+
+# **Identify sensitive data.** Make a list of types of sensitive information handled by your application. Some examples are:
+#* Passwords
+#* Encryption keys
+#* Personal information
+# **Review logging code.** Identify code that generates log entries by searching for //NSLog()// function calls. Review this code to verify that it does not include sensitive information in log entries. If necessary, rewrite this code in a way that does not log sensitive data. If //NSLog()// calls are necessary for debugging, they can be conditionally commented out using //#define// directives.
+
+==Privacy Guidelines==
+* [[Do Not Cache Sensitive Data]]
+* [[Do Not Log Location Data]]
+* [[Do Not Log Sensitive Data]]
+
+==Privacy Checklists==
+* [[Sensitive Data Is Not Cached]]
+* [[Location Data Is Not Logged]]
+* [[Sensitive Data Is Not Logged]]]]></Data>
+  </Content>
+</TeamMentor_Article>

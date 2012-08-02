@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-0000004af9dc</Id>
+    <Library_Id>f798e6e6-1732-4172-9c47-9621d914efcd</Library_Id>
+    <Title>Protect Session IDs</Title>
+    <Category>Session Management</Category>
+    <Phase>Implementation</Phase>
+    <Technology>PHP</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Protect Session IDs</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Applies to</h1>
+  <ul>
+    <li>PHP</li>
+  </ul>
+  <h1>What to Do</h1>
+  <p>Protect session IDs from disclosure by only storing them in session cookies, sending session cookies only over SSL and setting security flags on the session cookies.</p>
+  <h1>Why</h1>
+  <p>Protecting session IDs helps protect user sessions from being hijacked.</p>
+  <h1>How</h1>
+  <p>To protect session IDs:</p>
+  <ol>
+    <li>
+      <p>
+        <strong>Store session IDs in cookies.</strong> This is the default behavior in PHP.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Enable SSL.</strong> SSL has to be enabled to protect session cookies from eavesdropping attacks. Please, refer to the documentation for your web platform for information about enabling and configuring SSL on your web server.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Set the "<em>secure</em>" flag on session cookies.</strong> Edit the <em>php.ini</em> file and configure the "<em>session.cookie_secure</em>" setting, like this:</p>
+      <pre>session.cookie_secure = On</pre>
+    </li>
+    <li>
+      <p>
+        <strong>
+          <em>Set the "HTTPOnly" flag on session cookies.</em>
+        </strong> Edit the<em> php.ini</em> file and configure the "<em>session.cookie_httponly</em>" setting, like this:</p>
+      <pre>session.cookie_httponly = On</pre>
+    </li>
+    <li>
+      <p>
+        <strong>Do not disclose session IDs.</strong> Make sure that session IDs are not disclosed in URLs, logs, or error messages. Do not allow URL rewriting of session cookies.</p>
+    </li>
+  </ol>
+  <ul>
+  </ul>]]></Data>
+  </Content>
+</TeamMentor_Article>

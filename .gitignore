@@ -1,6 +1,5 @@
 #TM specific
-_/Library_Data/XmlDatabase
-Library_Data/XmlDatabase/TM_Libraries
+/Library_Data/XmlDatabase
 o2.config
 
 # Visual Studio files # 

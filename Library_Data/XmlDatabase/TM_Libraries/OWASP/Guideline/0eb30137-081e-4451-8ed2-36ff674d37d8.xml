@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-1040956955" Content_Hash="-1331855137">
+  <Metadata>
+    <Id>0eb30137-081e-4451-8ed2-36ff674d37d8</Id>
+    <Library_Id>00000000-0000-0000-0000-000000000000</Library_Id>
+    <Title>Do Not Rely on Client State Management Options</Title>
+    <Category>Session Management</Category>
+    <Phase>Implementation</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>Guideline</Type>
+    <DirectLink />
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Do</h1><p>Avoid using any of the client-side state management options, such as view state, cookies, query strings, or hidden form fields, to store sensitive data. </p><h1>Why</h1><p>All information that is store on the client side can be tampered with by the client. Storing sensitive information on the client can compromise the integrity and confidentiality of your application's data. </p><h1>When</h1><p>Uniformly applicable whenever a sensitive info is being stored somewhere to maintain state. </p><h1>How</h1><p>Use the following steps when considering the use of client state management:</p><ol><li><p><strong>Identify sensitive information. </strong>Sensitive data is any information that is kept secret and should be disclosed only to authorized parties. Common examples of sensitive data include, but are not limited to, names of customers, government issued ID numbers, credit card and other financial information, passwords, and private keys. Some industries, such as health care and banking, have regulatory standards that define sensitive information. Use regulatory requirements, as they apply to your application, to identify sensitive data. Sensitive data can be defined as follows:</p><ul><li>Information that either contains personally identifiable information or can be used to derive personally identifiable information that should not be shared with others. </li><li>Information that a user provides that they would not want shared with other users of the application. </li><li>Information that comes from an external trusted source that is not designed to be shared with users.</li></ul><strong></strong></li><li><p><strong>Identify the use.</strong> Identify the use of the sensitive data. Consult with your application's design, functional requirements, and security documentation to determine whether it is necessary to use client state management for handling certain sensitive data. </p></li><li><p><strong>Choose appropriate management options.</strong> Sensitive data should always be stored into server-side state management options such as a database. If your application's documentation requires client state management, ensure that strong encryption is applied.</p></li><li><p><strong>Apply appropriate management options.</strong> Identify all uses of sensitive data. Ensure that the appropriate management options are applied.</p></li></ol><h1>Problem Example</h1><p>The following snippet shows an application that keeps track of the current user via the use of cookies. Unfortunately, an attacker can change the userID value of the cookie and impersonate another user.</p><pre>Response.Cookies["userID"].Value = "joe";</pre><h1>Solution Example</h1><p>The following snippet shows an application that keeps track of the current user via the use of server-side sessions. Therefore, it is impossible for an attacker to change the userID value and impersonate another user.</p><pre>Session["userID"] = "joe";</pre><h1>Additional Resources</h1><ul><li>To learn more about parameter manipulation and ways to prevent it, see: <a href="http://www.cgisecurity.com/owasp/html/ch11s04.html">Parameter Manipulation</a>. </li><li>To learn more about session management, see: <a href="http://www.securityfocus.com/infocus/1774">Basic Web Session Impersonation</a>.</li></ul><hr><p>Adapted from Microsoft patterns &amp; practices guidance. </p>]]></Data>
+  </Content>
+</TeamMentor_Article>

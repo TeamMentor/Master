@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-38142678" Content_Hash="-1790325494">
+  <Metadata>
+    <Id>7adb2cdc-5e51-4510-a5a7-f911e17d7de7</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Potentially Dangerous Virtual Directories Are Removed</Title>
+    <Category>Server Hardening</Category>
+    <Phase>Deployment</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>Potentially Dangerous Virtual Directories Are Removed</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>J.D. Meier, Alex Mackman, Michael Dunner, Srinath Vasireddy, Ray Escamilla and Anandha Murukan</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Check For</h1>
+  <p>Check to ensure that sample applications are not installed by default on production Web servers. Applications&amp;nbsp;include potentially dangerous virtual directories, IISSamples, IISAdmin, IISHelp, and Scripts virtual directories.</p>
+  <h1>How to Fix</h1>
+  <p>Sample applications are not installed by default and should not be installed on production Web servers. Remove all sample applications, including the ones that can be accessed only from the local computer with http://localhost, or http://127.0.0.1. Remove
+ the following virtual directories from production servers: IISSamples, IISAdmin, IISHelp, and Scripts.</p>
+  <p>
+    <strong>Note: </strong>IISLockdown provides an option to remove the Scripts, IISSamples, IISAdmin, and IISHelp virtual directories</p>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance.</p>]]></Data>
+  </Content>
+</TeamMentor_Article>

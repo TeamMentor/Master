@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-00000094e03b</Id>
+    <Library_Id>f798e6e6-1732-4172-9c47-9621d914efcd</Library_Id>
+    <Title>Allow Only Trusted Hosts to Connect to the Database Server</Title>
+    <Category>Data Access</Category>
+    <Phase>Implementation</Phase>
+    <Technology>ASP.NET</Technology>
+    <Type>Principle</Type>
+    <DirectLink>Allow Only Trusted Hosts to Connect to the Database Server</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="WikiText">
+    <Data><![CDATA[==What to Do==
+
+Allow only trusted hosts to connect to the database server.
+
+==Why==
+
+Direct access allows an attacker to establish a connection to the SQL Server and issue commands. This could lead to unauthorized access to data.
+
+==How==
+
+Perform the following actions to restrict access to your SQL Server:
+
+# **Restrict access from the outside.** Configure the firewall to make sure that SQL server ports are not visible from outside of the perimeter network.
+# **Restrict access from within the perimeter.** Restrict direct access by unauthorized internal hosts via internal firewalls and port filtering.
+# **Minimize exposure.** The production database server should only be accessible from the application server(s) it works with and a minimum set of other maintenance systems for monitoring, external logging, backup, and administration. Development and production systems should not share the same database server, and development machines should not have access to the production servers.]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-1203409825" Content_Hash="-997746395">
+  <Metadata>
+    <Id>00c5fcad-6dc3-4362-bfa3-a55379abe094</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Validate All Values Sent from the Client</Title>
+    <Category>Input and Data Validation</Category>
+    <Phase>Design</Phase>
+    <Technology> Any</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Validate All Values Sent from the Client</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>J.D. Meier, Alex Mackman, Michael Dunner, Srinath Vasireddy, Ray Escamilla and Anandha Murukan</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Do</h1>
+  <p>Check that your application validates all input parameters, including regular and hidden form fields, query strings, and cookies.</p>
+  <h1>Why</h1>
+  <p>To protect your application from denial of service attacks and code injection attacks, including SQL injection and XSS.</p>
+  <h1>When</h1>
+  <p>This is an important guideline and should be followed all the time.&amp;nbsp;</p>
+  <h1>How</h1>
+  <p>Restrict the fields that the user can enter and modify and validate all values coming from the client. If you have predefined values in your form fields, users can change them and post them back to receive different results. Permit only known good values wherever possible. For example, if the input field is for a state, only inputs matching a state postal code should be permitted.</p>
+  <p>The <strong>System.Text.RegularExpressions.Regex</strong> class helps validate input parameters. For example, the following code shows how to use this class to validate a name passed through a query string parameter. The same technique can be used to validate other forms of input parameters, for example, from cookies or form fields. For example, to validate a cookie parameter, use <strong>Request.Cookies</strong> instead of <strong>Request.QueryString</strong>.</p>
+  <div>
+    <div>
+    </div>
+    <div>
+      <pre>using System.Text.RegularExpressions;<br />. . .<br />private void Page_Load(object sender, System.EventArgs e)<br />{<br />&amp;nbsp; // Name must contain between 1 and 40 alphanumeric characters<br />&amp;nbsp; // together with (optionally) special characters '`´ for names such<br />&amp;nbsp; // as D'Angelo<br />&amp;nbsp; if (!Regex.IsMatch(Request.QueryString["name"], <br />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; @"^[a-zA-Z'`-´\s]{1,40}$"))<br />&amp;nbsp;&amp;nbsp;&amp;nbsp; throw new Exception("Invalid name parameter");<br />&amp;nbsp; // Use individual regular expressions to validate all other<br />&amp;nbsp; // query string parameters<br />&amp;nbsp; . . .<br />}</pre>
+    </div>
+  </div>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>For more information see, "Chapter 4 - Design Guidelines for Secure Web Applications" at <a href="http://msdn2.microsoft.com/en-us/library/aa302420.aspx">http://msdn2.microsoft.com/en-us/library/aa302420.aspx</a></li>
+  </ul>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance.</p>]]></Data>
+  </Content>
+</TeamMentor_Article>

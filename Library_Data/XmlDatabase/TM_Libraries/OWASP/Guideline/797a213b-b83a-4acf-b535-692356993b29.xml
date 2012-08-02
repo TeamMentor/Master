@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="283947568" Content_Hash="22571794">
+  <Metadata>
+    <Id>797a213b-b83a-4acf-b535-692356993b29</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Perform Role-based Security Checks</Title>
+    <Category>Authorization</Category>
+    <Phase>Design</Phase>
+    <Technology>Java</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Perform Role-based Security Checks</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Do</h1>
+  <p>Define&amp;nbsp;the different types of users and create specific roles for them. When authorizing access to a resource, build the security checks on a per-role basis rather than on a per-user basis.</p>
+  <h1>Why</h1>
+  <p>Application roles allow multiple users to play the same role and&amp;nbsp;provides a clear way to manage the privileges necessary for the execution of a given task. It provides a more robust and flexible way of managing the application's users.</p>
+  <h1>When</h1>
+  <p>If your application uses access control and authorizes its users to application resources, then define roles and perform role-based security checks.</p>
+  <h1>How</h1>
+  <p>To apply this concept, the security checks within an application should be executed against a user's role rather than against the actual user.</p>
+  <p>Use the following steps when designing the role-based security:</p>
+  <ol>
+    <li>
+      <p>
+        <strong>Understand the different types of users</strong>:&amp;nbsp;List the different types of users expected for the application.&amp;nbsp;Define&amp;nbsp;how they will use&amp;nbsp;the application, which resources they will&amp;nbsp;need to&amp;nbsp;access, and any additional rules that will impact&amp;nbsp;how access will vary. Create a matrix mapping roles to resource by describing what action the role can take with each system asset. Use this matrix to identify the different types of users according to the functionality they need.</p>
+      <pre>Role       Actions    Access Controls    Client Accounts<br />--------------------------------------------------------<br />Manager    Connect        Always            Always<br />           Read           Always            Always<br />           Use            Always            Occasionally<br />           Modify         Never             Occasionally<br />Employee   Connect        Always            Always<br />           Read           Always            Always<br />           Use            Always            Always<br />           Modify         Never             Never</pre>
+    </li>
+    <li>
+      <p>
+        <strong>Establish the roles</strong>: Define in code how each role can access each resource. There are two approaches when enforcing role-based security - programmatic and declarative:</p>
+      <ul>
+        <li>
+          <p>
+            <strong>Programmatically</strong>: The programmatic approach to role-based security is written inside the code and provides additional runtime flexibility.<br /><br />To enforce role-based security, you need to create a security policy for your application. If you implement this&amp;nbsp;approach using&amp;nbsp;Java Authentication and Authorization Service (JAAS) policies, you can execute a more focused set of security checks such as whether a user is allowed to access a particular resource or perform a specific action. When building the policy, create a role with associated permissions&amp;nbsp;for each type of user. For example, certain roles would be permitted to access the local filesystem while others would not.<br /></p>
+          <pre>grant Principal application.auth.GroupToken "administrators"<br />{<br />  permission java.security.SecurityPermission "AccessApp";<br />  permission java.io.FilePermission “/tmp/myapp/cache”, “read,write”;<br />};<br />grant Principal application.auth.GroupToken "users"<br />{<br />  permission java.security.SecurityPermission "AccessApp";<br />};</pre>
+        </li>
+        <li>
+          <p>
+            <strong>Declarative</strong>: The declarative approach to role-based security is declared within configuration files. While it doesn’t provide much flexibility in the development phase of the code, it allows easy manageability as the declarations can be modified without a recompile. By using the declarative approach, you can easily manage the security settings for&amp;nbsp;large portions of the applications without a need to change the code.<br /><br />Java applications that use declarative security rely on a deployment descriptor (e.g. web.xml). The deployment descriptor uses the following elements for role-based security:</p>
+          <ul>
+            <li>
+              <strong>security-constraint</strong>: Defines the access controls associated with a collection of resources as defined in the <em>web-resource-collection</em> element. </li>
+            <li>
+              <strong>web-resource-collection</strong>: Encapsulates a collection of resources that share mutual access controls. </li>
+            <li>
+              <strong>web-resource-name</strong>: Defines the name for the collection of resources. </li>
+            <li>
+              <strong>url-pattern</strong>: Identifies the URL of a resource that uses the access controls. </li>
+            <li>
+              <strong>auth-constraint</strong>: Defines the group of user roles that can access the collection of resources identified by the <em>web-resource-collection</em> element. </li>
+            <li>
+              <strong>role-name</strong>: Defines the roles that can access the collection of resources. </li>
+            <li>
+              <strong>http-method</strong>: Identifies the HTTP method upon which the access controls will be enforced. For example, your application may enforce access controls for POST requests, but not GET requests. If omitted, the access controls will apply to all HTTP methods. </li>
+          </ul>
+          <p>For example:</p>
+          <pre>&lt;!-- Application's web.xml --&gt;<br />&lt;security-constraint&gt;<br />      &lt;web-resource-collection&gt;<br />            &lt;web-resource-name&gt;Admin Commands&lt;/web-resource-name&gt;<br />            &lt;url-pattern&gt;/admin/*&lt;/url-pattern&gt;<br />            &lt;url-pattern&gt;/config.do&lt;/url-pattern&gt;<br />      &lt;/web-resource-collection&gt;<br />      &lt;auth-constraint&gt;<br />            &lt;role-name&gt;Admin&lt;/role-name&gt;<br />      &lt;/auth-constraint&gt;<br />&lt;/security-constraint&gt;<br /><br />&lt;login-config&gt;<br />      &lt;auth-method&gt;BASIC&lt;/auth-method&gt;<br />      &lt;realm-name&gt;Admin Realm&lt;/realm-name&gt;<br />&lt;/login-config&gt;<br /><br />&lt;!-- The following needs to be included if the application is to<br />     use form-based authentication --&gt;</pre>
+          <p>In web.xml:</p>
+          <pre>&lt;login-config&gt;<br />      &lt;auth-method&gt;FORM&lt;/auth-method&gt;<br />      &lt;form-login-config&gt;<br />            &lt;form-login-page&gt;/loginForm.jsp&lt;/form-login-page&gt;<br />            &lt;form-error-page&gt;/loginFailed.html&lt;/form-error-page&gt;<br />      &lt;/form-login-config&gt;<br />&lt;/login-config&gt;</pre>
+          <p>In loginForm.jsp:</p>
+          <pre>&lt;form method="POST" action="j_security_check"&gt;<br />&lt;input type="text" name="j_username"&gt;<br />&lt;input type="password" name="j_password"&gt;<br />&lt;input type="submit" value="log in"&gt;<br />&lt;/form&gt;</pre>
+          <p>Because declarative security asks the hosting server to handle authentication and authorization, there is the risk of disclosing connection strings, database credentials, etc.; therefore, use a JAAS LoginModule when using declarative security.<br /><br />Example using Tomcat (if you use a different environment, please consult its manual):</p>
+          <pre>      &lt;!-- $TOMCAT_HOME/conf/server.xml --&gt;<br />      &lt;!-- JAAS authentication realm --&gt;<br />      &lt;Realm className="org.apache.catalina.realm.JAASRealm"<br />             appName="AppLoginConfig"<br />             userClassNames="application.auth.GroupToken"<br />             roleClassNames="application.auth.GroupToken"<br />             useContextClassLoader="false"<br />             debug="99"/&gt;</pre>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <p>
+        <strong>Manage the users</strong>: Assign the users into their respective user roles. The application should apply the security policy according to the user roles instead of the actual user.</p>
+      <pre>GroupToken groupToken = new GroupToken(groupName);<br />if(!subject.getPrincipals().contains(groupToken))<br />{<br />      subject.getPrincipals().add(groupToken);<br />}</pre>
+    </li>
+    <li>
+      <p>
+        <strong>Consider using additional context when making security decisions</strong>: Simple examples include time of day and day of week. For instance, a given user may have no need to login to a system outside of the standard work hours, or even on the weekend. If that user attempts to login or perform some action in the middle of the weekend, it should not be allowed. Another example could be the user's phyisical location. If a user is expected to always use the system from their office in Chicago, but suddenly is connected in Eastern Europe, access should not be allowed.</p>
+    </li>
+    <li>
+      <p>
+        <strong>Consider using access control mechanisms provided by frameworks</strong>: Frameworks such as Spring Security (formerly Acegi) and Apache Shiro (formerly JSecurity), as well as others, seek to provide flexible but secure access control mechanisms that integrate neatly with current MVC frameworks and simplify security functionality.</p>
+    </li>
+  </ol>
+  <h1>Problem Example</h1>
+  <p>The following segment illustrates a JAAS policy. Because the application does not enforce role-based security, it has a policy entry for each separate user; therefore, changing the users' access rights can be quite difficult as each user needs to be modified individually.</p>
+  <pre>grant Principal application.auth.UserToken "joe"<br />{<br />  permission java.security.SecurityPermission "AccessApp";<br />};<br />grant Principal application.auth.UserToken "steve"<br />{<br />  permission java.security.SecurityPermission "AccessApp";<br />};<br />grant Principal application.auth.UserToken "julie" <br />{<br />  permission java.security.SecurityPermission "AccessApp";<br />};</pre>
+  <h1>Solution Example</h1>
+  <p>The following segment illustrates a JAAS policy. Because the application enforces role-based security, it has a policy entry for each group of users; therefore changing the users' access rights is easy as only the group needs to be modified.</p>
+  <pre>grant Principal application.auth.GroupToken "users"<br />{<br />  permission java.security.SecurityPermission "AccessApp";<br />};</pre>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>For more information about setting Tomcat Realms, see: <a href="http://tomcat.apache.org/tomcat-7.0-doc/realm-howto.html">Tomcat 7: Realm Configuration HOW-TO</a>.</li>
+  </ul>]]></Data>
+  </Content>
+</TeamMentor_Article>

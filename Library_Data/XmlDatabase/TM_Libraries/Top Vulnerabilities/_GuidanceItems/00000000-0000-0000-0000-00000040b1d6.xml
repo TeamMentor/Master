@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-00000040b1d6</Id>
+    <Library_Id>f798e6e6-1732-4172-9c47-9621d914efcd</Library_Id>
+    <Title>Include Unique Tokens in Sensitive HTTP Requests</Title>
+    <Category>Session Management</Category>
+    <Phase>Implementation</Phase>
+    <Technology> Any</Technology>
+    <Type>Principle</Type>
+    <DirectLink>Include Unique Tokens in Sensitive HTTP Requests</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="WikiText">
+    <Data><![CDATA[==What to Do==
+
+Include unique tokens in HTTP requests when performing sensitive operations to prevent Cross-Site Request Forgery (CSRF).
+
+==Why==
+
+CSRF may be possible when an attacker can form a URL, which performs an action on the behalf of an authenticated user. Forming such URLs becomes much more difficult, if unique tokens are included in HTTP requests.
+
+==How==
+
+To include unique tokens in HTTP requests:
+
+# **Identify sensitive operations.** Review application design and code to identify all operations that require authorization.
+# **Identify code that performs sensitive operations.** Identify all pages that are involved in performing sensitive operations - this includes both the pages that link to sensitive operations and the code that actually carries out the sensitive operations.
+# **Choose a method for generating unique tokens.** There are different ways to generate unique tokens. One approach is to generate random tokens for each request. Another approach is to use an API designed specifically for mitigating CSRF, such as ESAPI. Do not use session IDs as anti-CSRF tokens.
+# **Add unique tokens to HTTP requests.** Add code that uses the chosen method of generating unique tokens. Add code that adds the generated unique tokens to the pages that link to sensitive operations in hidden fields.
+# **Add token validation code.** Add code to the pages that carry out sensitive operations that validates the unique tokens to make sure that they have been generated on the server-side.]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="467720348" Content_Hash="-24882224">
+  <Metadata>
+    <Id>539222c3-efd5-4387-b4e7-b24f9f461ba6</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Limit Session Lifetime</Title>
+    <Category>Session Management</Category>
+    <Phase>Design</Phase>
+    <Technology> Any</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Limit Session Lifetime</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>J.D. Meier, Alex Mackman, Michael Dunner, Srinath Vasireddy, Ray Escamilla and Anandha Murukan</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Do</h1>
+  <p>Reduce the lifetime of sessions to mitigate the risk of session hijacking and replay attacks.</p>
+  <h1>Why</h1>
+  <p>Even when using SSL, there's still&amp;nbsp;a risk of session hijacking and replay; there are lots of other out-of-band ways to steal session tokens.&amp;nbsp; The shorter the session timeout, however, the less time an attacker has to capture a session cookie and use it to access your application.</p>
+  <h1>When</h1>
+  <p>All applications should consider the length of their sessions carefully, and any application protecting any sensitive information should make it as short as possible.</p>
+  <h1>How</h1>
+  <p>There are two pieces of information that need to be handled to limit the session lifetime.&amp;nbsp; The first is the actual session cookie and the second is the server side session state.&amp;nbsp; With most frameworks, each time the user takes an action on the site the timestamps on the session cookie&amp;nbsp;and the corresponding field in the server-side session state&amp;nbsp;are both reset to the current time.&amp;nbsp; If someone attempts to use an expired cookie, the timestamp in the server-side session state for that session is checked and the request is disallowed.&amp;nbsp; If the session is old enough that the server-side state has been deleted, it's denied immediately.&amp;nbsp; In web farms, the timestamp may be embedded in the cookie and cryptographically signed, freeing up servers from the need to keep a single explicit session-state table.</p>
+  <p>Most web application frameworks will handle the details for you, so you'll only need to specify a simple timeout value.&amp;nbsp; In some situations, you'll be able to choose whether the session timer should reset after each action (an idle timer, the default) or if it should be a single fixed timer from the initial login (an absolute timer).&amp;nbsp; The latter is useful for fast transactions and especially security critical situations.</p>
+  <p>For most situations, thirty minutes is the maximum that an idle session should be accepted.&amp;nbsp; For sites which handle sensitive information, ten minutes is more appropriate.&amp;nbsp; If you want to allow a user to browse a site and let sessions sit for long periods of time and retain a customized experience, you can seperate out the cookies that control site customization from those that control access to more sensitive information or functionality; the customization cookies can be persisted while the actual session is expired.</p>
+  <h1>Problem Example</h1>
+  <p>A web site uses the default (one hour) session time set by their web application framework.&amp;nbsp; When a user in an internet cafe forgets to log off, an attacker using the machine after them can browse to the site and use the old session to gain access to the victim's sensitive information.</p>
+  <h1>Solution Example</h1>
+  <p>A web site locks down its session timeouts to ten minutes, overriding the default set by their web application framework.&amp;nbsp; When a user in an internet cafe forgets to log off, an attacker using the machine after them cannot browse to the site and use the old session to gain access to the victim's sensitive information, because the session has already expired.</p>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>For more information see, "Chapter 4 - Design Guidelines for Secure Web Applications" at <a href="http://msdn2.microsoft.com/en-us/library/aa302420.aspx">http://msdn2.microsoft.com/en-us/library/aa302420.aspx</a>&amp;nbsp;&amp;nbsp; </li>
+  </ul>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance.</p>]]></Data>
+  </Content>
+</TeamMentor_Article>

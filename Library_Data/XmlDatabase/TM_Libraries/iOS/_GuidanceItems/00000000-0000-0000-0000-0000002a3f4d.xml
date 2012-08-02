@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-0000002a3f4d</Id>
+    <Library_Id>b6f408c5-6e6e-4bc0-90a5-0bb10becc2ce</Library_Id>
+    <Title>Authentication Is Implemented on the Server-side</Title>
+    <Category>Authentication</Category>
+    <Phase>Implementation</Phase>
+    <Technology>iOS</Technology>
+    <Type>Checklist Item</Type>
+    <DirectLink>Authentication Is Implemented on the Server-side</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="WikiText">
+    <Data><![CDATA[==Applies To==
+* iOS applications that authenticate to a remote server.
+
+==What to Check For==
+
+Verify that authentication is implemented on the server-side.
+
+==Why==
+
+Server-side authentication should be used because client-side authentication is trivial to bypass.
+
+==How to Check==
+
+To verify that authentication is implemented on the server-side:
+
+# **Review authentication requirements.** Consider the following aspects of authentication controls as pertaining to your application:
+#* Enforcing password strength requirements.
+#* Allowing secure password reset or recovery.
+#* Requiring re-authentication for sensitive operations.
+#* Using multi-factor authentication.
+#* Using simple error messages that don't give away information to the attacker.
+#* Using SSL/TLS to secure communications.
+#* Throttling repeated authentication attempts.
+#* Locking inactive authentication accounts.
+# **Identify authentication code.** Identify the code that is responsible for authentication both on the iOS device and on the remote server.
+# **Review authentication code.** Examine authentication code to find where the actual security controls are implemented.
+# **Verify that authentication is implemented on the server.** Make sure that sufficient security controls to satisfy authentication requirements are implemented on the server-side.
+
+
+==How to Fix==
+
+To implement authentication on the server-side:
+
+# **Define authentication requirements.** Consider the following aspects of authentication controls as pertaining to your application:
+#* Enforcing password strength requirements.
+#* Allowing secure password reset or recovery.
+#* Requiring re-authentication for sensitive operations.
+#* Using multi-factor authentication.
+#* Using simple error messages that don't give away information to the attacker.
+#* Using SSL/TLS to secure communications.
+#* Throttling repeated authentication attempts.
+#* Locking inactive authentication accounts.
+# **Implement authentication on the server.** It is important to implement security controls, such as authentication on the server, because client-side security controls can be tampered with or disabled altogether on the client. Implement authentication controls that match the requirements defined in the previous step on the server back-end. 
+# **Add client-side code that authenticates to the server.** Once authentication is implemented in accordance with the requirements, add client-side code that authenticates to the server. The client-side code will need an interface for managing authentication credentials, network code that communicates with the server using SSL/TLS, a token or some other means to maintain a session state on the server, and possibly secure storage for cached authentication credentials.
+
+==Authentication Guidelines==
+* [[Change Root Passwords on Jailbroken Devices]]
+* [[Encrypt Authentication Credentials Sent over the Network]]
+* [[Implement a Secure Password Reset Function]]
+* [[Throttle Authentication Attempts]]
+* [[Use Server-side Authentication]]
+
+==Authentication Checklists==
+* [[Root Passwords Have Been Changed on Jailbroken Devices]]
+* [[Authentication Credentials Sent over the Network Are Encrypted]]
+* [[A Secure Password Reset Function Is Implemented]]
+* [[Authentication Attempts Are Throttled]]
+* [[Authentication Is Implemented on the Server-side]]
+
+==Additional Resources==
+
+* For more information about authentication requirements, please see https://www.owasp.org/index.php/Authentication_Cheat_Sheet]]></Data>
+  </Content>
+</TeamMentor_Article>

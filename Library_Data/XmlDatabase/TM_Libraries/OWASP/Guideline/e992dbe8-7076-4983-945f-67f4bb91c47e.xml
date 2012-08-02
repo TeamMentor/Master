@@ -1,0 +1,130 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="-1972133755" Content_Hash="-679210286">
+  <Metadata>
+    <Id>e992dbe8-7076-4983-945f-67f4bb91c47e</Id>
+    <Library_Id>4738d445-bc9b-456c-8b35-a35057596c16</Library_Id>
+    <Title>Configure Appropriate ACLs on Web Site Files</Title>
+    <Category>Authorization</Category>
+    <Phase>Deployment</Phase>
+    <Technology>ASP.NET 3.5</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Configure Appropriate ACLs on Web Site Files</DirectLink>
+    <Tag />
+    <Security_Demand />
+    <Author />
+    <Priority>2</Priority>
+    <Status />
+  </Metadata>
+  <Content Sanitized="true" DataType="Html">
+    <Data><![CDATA[<h1>What to Do</h1>
+  <p>Configure access control lists (ACLs) on your Web site files so that IIS and ASP.NET file authorization appropriately control access to these files.&amp;nbsp;&amp;nbsp; </p>
+  <h1>Why</h1>
+  <p>Failure to apply proper&amp;nbsp;access control restrictions on files&amp;nbsp;may allow users&amp;nbsp;to read, edit,&amp;nbsp;or remove files they should not be able to.&amp;nbsp;ACLs are an important layer of defense against unauthorized file&amp;nbsp;access.&amp;nbsp;</p>
+  <h1>When</h1>
+  <p>All ASP.NET applications can benefit from appropriate file ACLs.&amp;nbsp;ACLs should be established&amp;nbsp;in the&amp;nbsp;design&amp;nbsp;phase, prior to&amp;nbsp;implementing the application.&amp;nbsp;The&amp;nbsp;ACLs&amp;nbsp;are applied at deploy time.&amp;nbsp;</p>
+  <h1>How</h1>
+  <p>You need to configure the right access control lists (ACLs) for the right identities on your Web site files so that IIS and also ASP.NET file authorization control access to these files appropriately. You need to grant access to the following identities: </p>
+  <ol>
+    <li>
+      <p>
+        <strong>Your Web application identity.</strong> If you are using a custom service account to run your ASP.NET application, you can grant the appropriate permissions to the IIS metabase and to the file system by running Aspnet_regiis.exe with the-<strong>ga</strong> switch. </p>
+    </li>
+    <li>
+      <p>
+        <strong>Your application's users.</strong> ASP.NET file authorization performs access checks for file types mapped by IIS to the ASP.NET ISAPI extension (Aspnet_isapi.dll). If you are using Windows authentication, the authenticated user's Windows access token (which may be IUSR_MACHINE for anonymous users) is checked against the ACL attached to the requested ASP.NET file. If you are using forms authentication, access is checked against IUSR_MACHINE.</p>
+    </li>
+  </ol>
+  <p>Use the following steps:</p>
+  <ol>
+    <li>
+      <p>
+        <strong>Determine the users/roles that need to access the application's resources.</strong> Create a list of all roles in the application.&amp;nbsp;The Web application's process&amp;nbsp;identity and the application's users are the entities that&amp;nbsp;require access to application resources. If&amp;nbsp;a custom service account is being utilised to run&amp;nbsp;the ASP.NET application be sure to list it as well, it will need the appropriate permissions to the IIS metabase and the file system.&amp;nbsp;</p>
+    </li>
+    <li>
+      <p>
+        <strong>Evaluate the level of access each user/role should have to use the application resources.</strong> It is important to assign the minimum privilege level for all entities that access resources.&amp;nbsp; To do this create a table that contains roles on one axis and resources on another.&amp;nbsp; Within the&amp;nbsp;matrix cells describe the level of access each role will need for each resource (eg. Read Only, Read/Write, Full Access, etc.).&amp;nbsp; This is commonly called a subject/object matrix:</p>
+      <p />
+      <table>
+        <tbody>
+          <tr>
+            <td>
+            </td>
+            <td>
+              <strong>Objects</strong>
+            </td>
+            <td>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Subjects</strong>
+            </td>
+            <td>
+              <strong>User Administration</strong>
+            </td>
+            <td>
+              <strong>Page Content</strong>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Admin</strong>
+            </td>
+            <td>Create, Delete, Modify</td>
+            <td>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Content Creator</strong>
+            </td>
+            <td>
+            </td>
+            <td>Create, Delete, Modify, Read</td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Reader</strong>
+            </td>
+            <td>
+            </td>
+            <td>Read</td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Anonymous</strong>
+            </td>
+            <td>
+            </td>
+            <td>Read</td>
+          </tr>
+        </tbody>
+      </table>
+      <p />
+    </li>
+    <li>
+      <p>
+        <strong>Apply ACLs to enforce these restrictions.</strong> To assign ASP.NET permissions to the&amp;nbsp;application's account, run the following command:</p>
+      <pre>aspnet_regiis -ga MachineName\AccountName </pre>
+      <p>Where MachineName is the name of your server or the domain name if you are using a domain account, and AccountName is the name of your custom account. When you run Aspnet_regiis.exe with the -ga switch, the command grants the following rights to the account:</p>
+      <ul>
+        <li>
+          <div>Access to the IIS Metabase</div>
+        </li>
+        <li>
+          <div>Permission to write to the %Windir%\Microsoft.NET\Framework\version\Temporary ASP.NET Files folder</div>
+        </li>
+      </ul>
+      <p>The account is also a member of the local Users group; therefore, it has read access to the \Inetpub directory tree (these directories have an ACL that grants read access to the Users group).&amp;nbsp;</p>
+    </li>
+  </ol>
+  <h1>Additional Resources</h1>
+  <ul>
+    <li>
+      <div>An Introduction to the IIS Metabase <a href="http://support.microsoft.com/kb/240941/en-us">http://support.microsoft.com/kb/240941/en-us</a></div>
+    </li>
+  </ul>
+  <hr />
+  <p>Adapted from Microsoft patterns &amp; practices guidance. </p>]]></Data>
+  </Content>
+</TeamMentor_Article>

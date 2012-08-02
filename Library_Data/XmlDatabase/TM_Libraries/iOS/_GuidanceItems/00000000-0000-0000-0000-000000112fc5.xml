@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-000000112fc5</Id>
+    <Library_Id>b6f408c5-6e6e-4bc0-90a5-0bb10becc2ce</Library_Id>
+    <Title>Compile Applications with Stack Cookies Enabled</Title>
+    <Category>Memory Management</Category>
+    <Phase>Implementation</Phase>
+    <Technology>iOS</Technology>
+    <Type>Guideline</Type>
+    <DirectLink>Compile Applications with Stack Cookies Enabled</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="WikiText">
+    <Data><![CDATA[==What to Do==
+
+Use stack smashing protection offered by the compiler.
+
+==Why==
+
+Stack cookies help mitigate buffer overflow vulnerabilities.
+
+==How==
+
+To use stack cookies:
+# **Open XCode.** Launch the XCode IDE.
+# **Add compiler flags.** Add the //-fstack-protector-all// flag to each file that is to be compiled in the XCode "Compile Sources" window in the "Compiler Flags" column.
+
+==Memory Management Guidelines==
+* [[Compile Applications with Stack Cookies Enabled]]
+* [[Do Not Reference Freed Objects]]
+* [[Use Automatic Reference Counting]]
+
+==Memory Management Checklists==
+* [[Applications Are Compiled with Stack Cookies Enabled]]
+* [[Freed Objects Are Not Referenced]]
+* [[Automatic Reference Counting Is Used]]]]></Data>
+  </Content>
+</TeamMentor_Article>
