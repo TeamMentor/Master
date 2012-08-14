@@ -210,19 +210,19 @@ TM.Gui.Main.Panels.buildGui = function()
     TM.Gui.Main.Panels.enableChromeCPUSpikeBugFix();
 }
 
-	
 
-				
-TM.Gui.Main.Panels.cssFixesForHomePage = function()
-	{
-        var that = TM.Gui.Main.Panels;
-		if ($.browser.msie)
-			that.div_North.$().height(78)	
-            			
-		that.div_CenterCenter.$().css('overflow','hidden')
 
-		that.onGuiResize();
-	}
+
+TM.Gui.Main.Panels.cssFixesForHomePage = function () {
+    var that = TM.Gui.Main.Panels;
+    if ($.browser.msie)
+        that.div_North.$().height(78)   
+    that.div_North.$().css('overflow', 'hidden')
+
+    that.div_CenterCenter.$().css('overflow', 'hidden')
+
+    that.onGuiResize();
+}
 		
 //due to the way the layouts sets theses clases, we have to reset these values	
 TM.Gui.Main.Panels.onGuiResize = function()
