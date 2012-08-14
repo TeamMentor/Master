@@ -25,7 +25,7 @@
 													{		
 														$("#openGIInNewWindow").show();												
 														getGuidanceItemHtml(id, function(html) 
-														{ 					
+														{														    
 															var code = "<h1 id='article_title'>{0}</h1><hr/><br/>{1}".format(title, html.d);
 															jQuery("#selectedGuidanceItem").html(code);	
                                                             TM.Gui.GuidanceItemViewer.handleMediaWikiText();																
@@ -54,14 +54,18 @@
 												}
             ,   handleMediaWikiText         : function()
                                                 {        
-                                                    var dataType = "html";    
-                                                    var wikiTextDiv =  $("#selectedGuidanceItem #tm_datatype_wikitext")
+                                                    var dataType = "html";
+                                                    var wikiTextDiv = $("#selectedGuidanceItem #tm_datatype_wikitext")
+                                                    
                                                     if (wikiTextDiv.length ===1)              
-                                                      {                                                                       
-                                                        var wikiText = wikiTextDiv.html();
-                                                        var targetDiv = document.createElement('div');        
-                                                        new creole().parse(targetDiv,wikiText )   
-                                                        var html = targetDiv.innerHTML ;
+                                                      {
+                                                            var wikiText = wikiTextDiv.html();
+                                                            wikiText = wikiText.replace(/&lt;/, "<")
+                                                                               .replace(/&gt;/, ">")
+                                                                               .replace(/&amp;/, "&");  // deal with double encoding WikiText issue
+                                                            var targetDiv = document.createElement('div');        
+                                                            new creole().parse(targetDiv,wikiText )   
+                                                            var html = targetDiv.innerHTML ;
               
                                                         wikiTextDiv.html(html);      
                                                      }

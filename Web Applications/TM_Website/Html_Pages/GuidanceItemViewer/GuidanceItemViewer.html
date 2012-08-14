@@ -90,9 +90,15 @@
 						    "GuidanceTypeLabel" .$().html(loadedGuidanceItem.Metadata.Type);
                         }
 						if (loadedGuidanceItem.Content.DataType.toLowerCase() === "wikitext")
+                        {
                             showGuidanceItemWikiText(loadedGuidanceItem.Content.Data_Json);
+                            $("#EditButton").hide();
+                        }
                         else
+                        {
 						    showGuidanceItemHtml(loadedGuidanceItem.Content.Data_Json);
+                            $("#EditButton").show();
+                        }
 					
 					}
 					else
@@ -343,7 +349,7 @@
 		</table>
 		<div id="SidePanel">      
 			<div id="links">
-				<a href="javascript:openGuidanceItemEditor()" class="IVButton">Edit WYSIWYG</a>
+				<a href="javascript:openGuidanceItemEditor()" class="IVButton" id="EditButton">Edit WYSIWYG</a>
 				<a href="javascript:openGuidanceItemNotepad()" class="IVButton">Edit Source</a>
 			</div>					
 		</div>		

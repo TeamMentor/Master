@@ -14,9 +14,10 @@ TM.Debug.reuseLibraryMappingsObject 		  	= true;
 TM.Debug.load_HomePage 						  	= true;
 
 TM.Debug.showExperimentalFeatures				= false;
+TM.Debug.allow_start_checkUserLoop              = true;    // use to prevent the auto check of user settings 
 
 
-TM.Debug.show_DebugDiv						  	= true;	// show small box with links to open trace view
+TM.Debug.show_DebugDiv						  	= false;	// show small box with links to open trace view
 TM.Debug.show_TraceView							= false; 	// show call trace popup window
 TM.Debug.callTrace_LoadEnvironment 			  	= false;	// open traceview popup and setup call trace hooks
 TM.Debug.callTrace_LoadEnvironment_Before_Gui 	= false;

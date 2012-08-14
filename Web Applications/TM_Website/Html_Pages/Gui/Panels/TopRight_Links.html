@@ -150,9 +150,10 @@
 				TM.Events.onUserDataLoaded	.add(TM.Gui.TopRightLinks.showUserLinks);
 				TM.Events.onEditModeChange	.add(TM.Gui.TopRightLinks.showUserLinks);				
 				TM.Events.onUserChange		.add(TM.Gui.TopRightLinks.refresh);
-				
+
 				//TM.Gui.CurrentUser.loadUserData();
-				TM.Gui.CurrentUser.start_checkUserLoop();
+                if (TM.Debug.allow_start_checkUserLoop)
+				    TM.Gui.CurrentUser.start_checkUserLoop();
 
 				TM.Gui.TopRightLinks.showUserLinks();
 				
