@@ -1,7 +1,7 @@
 currentPivotPanelFilters = new Array(); 
 
 TM.Gui.AppliedFiltersList.removeFilters = function()
-	{		
+	{		        
 		currentFilters =[];
 		currentPivotPanelFilters = new Array(); 
 		TM.Gui.AppliedFiltersList.populateAppliedFiltersTable() ;	

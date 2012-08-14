@@ -15,7 +15,7 @@ TM.Gui.Main.Panels =
         ,   div_TopMenuLinks            : 'TopMenuLinks'
 
 		,	panelsDir 					: '/Html_Pages/Gui/Panels/'
-			
+		,   initialId                   : ''	
 		,	openPanesBasedOnUserRole	: function()
 				{
                     if(TM.Gui.showLibraryStructureToAnonymous)
@@ -152,10 +152,10 @@ TM.Gui.Main.Panels.applyHomePageView = function(commands)
 								if (value =="false")
 									myLayout.sizePane("east",350);
 								else
-									myLayout.sizePane("east","MainTMGui".$().width() /2);	
-								break;
-							case "loadLibrary":
-								TM.InitialLibrary = value;																		
+									myLayout.sizePane("east","MainTMGui".$().width() /2);
+								break;        
+							case "load":
+							    TM.Gui.Main.Panels.initialId = value								
 							default:
 								//console.log("Unrecognized command ******: " + command);
 								break;									

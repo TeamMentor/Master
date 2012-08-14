@@ -20,11 +20,27 @@ TM.Gui.LibraryTree.showTree = function()
 					function (event, data) 	
 						{ 		
 							TM.Events.onLibraryTreeSelected();							
-						});			
-				
-				var firstNode = TM.Gui.LibraryTree.selectFirstNode()
-				TM.Gui.LibraryTree.openNode(firstNode);
-				TM.Events.onLibraryTreeSelected();				
+						});
+
+			    var nodeToSelect = $(TM.Gui.LibraryTree.targetDiv + " ul li[id='" + TM.Gui.Main.Panels.initialId + "']")
+			    if (nodeToSelect.size() == 1) 
+                {
+			        TM.Gui.LibraryTree.selectNode(nodeToSelect);
+			    }
+                else
+                {
+                    nodeToSelect = $(TM.Gui.LibraryTree.targetDiv + " ul li a:contains('" + TM.Gui.Main.Panels.initialId + "')")
+                    if (nodeToSelect.size() == 1) 
+                    {
+			            TM.Gui.LibraryTree.selectNode(nodeToSelect);
+			        }                
+                    else
+                    {
+				        var firstNode = TM.Gui.LibraryTree.selectFirstNode()
+				        TM.Gui.LibraryTree.openNode(firstNode);
+                    }
+                }
+			    TM.Events.onLibraryTreeSelected();	
 
 			};	
 		libraryTree.create_TreeUsingJSON();			

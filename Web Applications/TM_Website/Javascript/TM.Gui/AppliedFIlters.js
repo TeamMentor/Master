@@ -20,7 +20,7 @@
 			}
 			else
 			{  				
-				updatedFilter.push(filter);				
+				updatedFilter.push(filter);
 			}
 		}			
 		
@@ -42,8 +42,8 @@
 		}		
 						
 		//setTimeout(TM.Gui.AppliedFiltersList.populateAppliedFiltersTable , 25);
-		
-		TM.Events.onBuildFiltersGui()
+        if (TM.Gui.AppliedFilters.raise_onBuildFiltersGui)		
+		    TM.Events.onBuildFiltersGui()
 	}
 
 
@@ -188,22 +188,63 @@ TM.Gui.AppliedFilters.showFilters = function(arrayWithSelectedItems, arrayWithAl
 		
 	}
 
-TM.Gui.AppliedFilters.buildFiltersGui = function()	
-{
-	TM.Events.onInvalidateSearchText();	
-	
-	var aaData = TM.WebServices.Data.lastDataTableData.aaData;	
-	var filterResult  = TM.Gui.AppliedFilters.applyDataTableFilter_using_PivotPanelFilters(aaData, queryTo_filterDataTable , currentFilters );				
-	TM.Gui.AppliedFilters.showFilters(currentFilters, aaData, filterResult,true);				
-}	
+TM.Gui.AppliedFilters.buildFiltersGui = function () 
+{        
+        console.log("buildFiltersGui");
+	    TM.Events.onInvalidateSearchText();
 
-TM.Gui.AppliedFilters.buildFromSelectedNodeId = function()
-	{
-		currentPivotPanelFilters 			= new Array(); 		// reset applied filters
-		currentFilters 						=[];		
-		
-		var selectedNodeId = TM.Gui.selectedNodeId;
-		TM.WebServices.Data.getGuidanceItemsInGuid_For_DataTable(selectedNodeId);	
-		TM.Gui.AppliedFilters.buildFiltersGui();
+	    TM.Gui.AppliedFilters.raise_onBuildFiltersGui = false;
+	    TM.Gui.AppliedFilters.MapFiltersFromUrl(); // new one
+	    TM.Gui.AppliedFilters.raise_onBuildFiltersGui = true;
+
+	    var aaData = TM.WebServices.Data.lastDataTableData.aaData;
+	    var filterResult = TM.Gui.AppliedFilters.applyDataTableFilter_using_PivotPanelFilters(aaData, queryTo_filterDataTable, currentFilters);
+	    TM.Gui.AppliedFilters.showFilters(currentFilters, aaData, filterResult, true);
 	}
+
+TM.Gui.AppliedFilters.buildFromSelectedNodeId = function () {
+    currentPivotPanelFilters = new Array(); 		// reset applied filters
+    currentFilters = [];
+
+    console.log("TM.Gui.AppliedFilters.buildFromSelectedNodeId");
+
+
+    var selectedNodeId = TM.Gui.selectedNodeId;
+    TM.WebServices.Data.getGuidanceItemsInGuid_For_DataTable(selectedNodeId);
+    TM.Gui.AppliedFilters.buildFiltersGui();
+    
+    //TM.Gui.AppliedFilters.MapFiltersFromUrl();
+}
+
+$(window).bind('hashchange', function () {
+    currentPivotPanelFilters = new Array();
+    TM.Gui.AppliedFilters.buildFiltersGui();
+    //TM.Gui.AppliedFilters.MapFiltersFromUrl();
+});
+
+TM.Gui.AppliedFilters.MapFiltersFromUrl = function () {
+    console.log("MapFiltersFromUrl");
+    var commands = window.location.hash.slice(1).split("&");    
+    jQuery.each(commands, function () {
+        var splitCommand = this.split(":");
+        if (splitCommand.length == 2) {
+            var command = splitCommand[0];
+            var value = splitCommand[1];
+            switch (command) {
+                case "technology":                    
+                    setPivotPanelFilter(value, "Technology", 2, true);
+                    break;
+                case "phase":                    
+                    setPivotPanelFilter(value, "Phase", 3, true);
+                    break;
+                case "type":
+                    setPivotPanelFilter(value, "Type", 4, true);
+                    break;
+                case "category":
+                    setPivotPanelFilter(value, "Category", 5, true);
+                    break;
+            }
+        }
+    });
+}
 		
