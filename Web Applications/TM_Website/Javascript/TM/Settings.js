@@ -1,5 +1,5 @@
 //TM Settings
-TM.tmVersion = "TM 3.2 RC1";	
+TM.tmVersion = "TM 3.2 Beta RC1";	
 
 TM.tmWebServices     = '/Aspx_Pages/TM_WebServices.asmx/';
 TM.NotAuthorizedPage = '/Html_Pages/Gui/Panels/AD_Non_Authorized_User.html';
