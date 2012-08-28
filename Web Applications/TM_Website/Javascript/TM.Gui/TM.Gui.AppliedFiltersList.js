@@ -5,7 +5,8 @@ TM.Gui.AppliedFiltersList.removeFilters = function()
 		currentFilters =[];
 		currentPivotPanelFilters = new Array(); 
 		TM.Gui.AppliedFiltersList.populateAppliedFiltersTable() ;	
-		TM.Events.onFiltersRemoved()
+        TM.Events.onInvalidateSearchText();
+		TM.Events.onFiltersRemoved();
 	}
 
 TM.Gui.AppliedFiltersList.removeCriteraFromCriteriaCollection = function(text,title, column, state)
@@ -42,6 +43,7 @@ TM.Gui.AppliedFiltersList.add_Filter = function(text, title, column, showDeleteB
 
 TM.Gui.AppliedFiltersList.populateAppliedFiltersTable = function ()
 {		
+
 	if (isUndefined(TM.Gui.selectedNodeData))
 		return;
 	TM.Gui.AppliedFiltersList.clear_FiltersGui();

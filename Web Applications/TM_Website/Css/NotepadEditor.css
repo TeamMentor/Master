@@ -1,6 +1,7 @@
 body {
 	/*background-color: lightgray;*/
 	font-size: medium;
+	font-family: Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif;
 }
 
 h2 {
@@ -57,9 +58,9 @@ h2 {
 }
 
 .NEDataTypeLabel {
-	margin-left: 20px;
-	font-weight: bold;
-	font-family: Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif;
+	margin-left : 20px;	
+	font-weight : bold;
+	font-family : Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif;
 }
 
 .NEDataType {
@@ -67,7 +68,7 @@ h2 {
 	padding-left: 10px;
 	padding-right: 10px;
 	padding-top: 4px;
-	width: 70px;
+	width: 100px;
 	color: black;
 	border: 2px solid black;
 	border-radius: 4px;

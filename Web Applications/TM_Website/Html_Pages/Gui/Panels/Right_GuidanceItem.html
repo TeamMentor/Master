@@ -25,8 +25,10 @@
 													{		
 														$("#openGIInNewWindow").show();												
 														getGuidanceItemHtml(id, function(html) 
-														{														    
-															var code = "<h1 id='article_title'>{0}</h1><hr/><br/>{1}".format(title, html.d);
+														{								
+                                                            jQuery("#selectedGuidanceItemTitle").html(title + "<hr/>");							    
+															//var code = "<h1 id='article_title'>{0}</h1><hr/><br/>{1}".format(title, html.d);
+                                                            var code = html.d;
 															jQuery("#selectedGuidanceItem").html(code);	
                                                             TM.Gui.GuidanceItemViewer.handleMediaWikiText();																
 															fixGuidanceItemLinks();
@@ -116,7 +118,8 @@
 	</div>
 </div>	
 <div id="selectedGuidanceItemBorder">
-	<div id="selectedGuidanceItem" class="selectedGuidanceItem" _style="width:200px"> </div>
+    <h2><span id ="selectedGuidanceItemTitle" /></h2>
+	<div id="selectedGuidanceItem" class="selectedGuidanceItem ItemContent" > </div>
 </div>  
           
 <!--<div id="selectedGuidanceItemPopup" >

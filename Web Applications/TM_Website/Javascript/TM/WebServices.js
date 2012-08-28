@@ -44,7 +44,7 @@ TM.WebServices.Helper.invokeWebService = function(url, params, handleData, handl
 
 TM.WebServices.Helper.showUserMessage = function(msg)
 	{
-		console.log("Error: in showUserMessage");
+		console.log("Error: in showUserMessage (this function shouldn't be used here)");
 	};
 
 

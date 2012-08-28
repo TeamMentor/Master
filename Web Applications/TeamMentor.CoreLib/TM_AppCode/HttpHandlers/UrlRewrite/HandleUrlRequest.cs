@@ -26,20 +26,31 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 
         public void routeRequestUrl_for404()
         {
-            var fixedPath = context.Request.Url.AbsolutePath.replace("/html_pages/Gui/","/article/");
-            handleUrlRewrite(fixedPath);
+            var fixedPath = context.Request.Url.AbsolutePath.replace("/html_pages/Gui/","/article/");   //deal with the cases where there is an relative link inside the html_pages/Gui viewer page
+            handleUrlRewrite(fixedPath.uri());
         }
         public void routeRequestUrl()
         {
-            handleUrlRewrite(context.Request.Url.AbsolutePath);
+            handleUrlRewrite(context.Request.Url);
         }
-            
-		public void handleUrlRewrite(string path)
-		{
-            if (path.contains(".htm", ".asmx", ".ashx", ".aspx")) // don't process if these values are in path
-            { 
-                return;
+        
+        public void handleUrlRewrite(Uri uri)
+        {
+            try
+            {
+                if (shouldSkipCurrentRequest())
+                    return;
+
+                handleUrlRewrite(uri.AbsolutePath);
             }
+            catch (Exception ex)
+            {
+                ex.log("[in handleUrlRewrite]");
+            }
+        }
+
+        public void handleUrlRewrite(string path)
+        {
             if(path.starts("/"))
                 path = path.removeFirstChar();
             var splitedPath = path.split("/");
@@ -51,6 +62,39 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                     endResponse();                    
             }                        
 		}
+
+        public bool shouldSkipCurrentRequest()
+        {
+            var path = context.Request.PhysicalPath;
+            var extension = path.extension();
+            switch (extension)
+            {                 
+                case ".htm":
+                case ".js":
+                case ".css":
+                case ".html":
+                case ".asmx":
+                case ".ashx":
+                case ".aspx":
+                    return true;
+                case ".png":
+                case ".gif":
+                case ".jpg":
+                case ".jpeg":
+                case ".ico":
+                    //context.Response.ContentType = "image/png";                    // this was supposed to fix the warning we get when using cassini, but it is not working
+                    return true;
+                default:
+                    return false;
+
+            }
+            //var path = uri.AbsolutePath;
+            //var extension = path.subString_After()
+            //if (path.contains(".htm", ".asmx", ".ashx", ".aspx")) // don't process if these values are in path            
+            //    return false;            
+            //if (path.endsWith(".htm", ".asmx", ".ashx", ".aspx")) // don't process if these values are in path)
+            return true;
+        }
 
         
 		public bool handleRequest(string action , string data)
@@ -77,10 +121,10 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                         return handleAction_Xsl(data, "Notepad_Edit.xslt");                        
                     case "viewer":
                     case "article":
-                        return transfer_ArticleViewer();
+                        return transfer_ArticleViewer();                    
                     case "edit":
                     case "editor":
-                        return transfer_ArticleEditor(data);
+                        return transfer_ArticleEditor(data);                    
                     case "create":
                         return handleAction_Create(data);    
                     case "admin":
@@ -90,7 +134,9 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                     case "reload_config":
                         return reload_Config();
                     case "login":
-                        return transfer_Login();   
+                        return transfer_Login();
+                    case "login_ok":
+                        return handle_LoginOK();   
                     case "logout":
                         return redirectTo_Logout();
                     case "reload":
@@ -107,9 +153,10 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                 }                                           
             }                
             catch (Exception exception)
-            {                 
+            {
                 if (exception is SecurityException)
-                    return redirectTo_Login();
+                    return transfer_Login();
+              //      return redirectTo_Login();
                 //context.Response.Write("<h2>Error: {0} </h2>".format(ex.Message));
             }                                    
             return false;			
@@ -239,8 +286,15 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
             if (guid != Guid.Empty)
             {
                 context.Response.ContentType = "text/html";
-                var content = tmWebServices.GetGuidanceItemHtml(guid);
-                context.Response.Write(content);                
+                var article = tmWebServices.GetGuidanceItemById(guid.str());
+                var htmlTemplateFile = (article.Content.DataType == "WikiText") 
+                                            ? @"\Html_Pages\article_wikiText.html" 
+                                            : @"\Html_Pages\article_Html.html";
+                var htmlTemplate = context.Server.MapPath(htmlTemplateFile).fileContents();
+                    
+                var htmlContent = htmlTemplate.replace("#ARTICLE_TITLE", article.Metadata.Title)
+                                              .replace("#ARTICLE_HTML", article.Content.Data.Value);
+                context.Response.Write(htmlContent);                
             }
             else
                 transfer_ArticleViewer();
@@ -280,11 +334,23 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		}
 
         public bool transfer_Login()
-		{		
-	        context.Response.ContentType = "text/html";    
-			context.Server.Transfer("/Html_Pages/Gui/Pages/login.html");            
-            return false; 
+		{
+            context.Response.Redirect("/Html_Pages/Gui/Pages/login.html?LoginReferer=" + context.Request.Url.AbsolutePath);
+	        //context.Response.ContentType = "text/html";    
+			//context.Server.Transfer("/Html_Pages/Gui/Pages/login.html");
+            //context.Session["LoginReferer"] = context.Request.Url.AbsolutePath;
+            return true; 
 		}
+
+        public bool handle_LoginOK()
+        {
+            var loginReferer = context.Request.QueryString["LoginReferer"];
+            if (loginReferer.notNull() && loginReferer.StartsWith("/"))
+                context.Response.Redirect(loginReferer);
+            else
+                context.Response.Redirect("/");
+            return true;
+        }
 
         public bool redirectTo_HomePage()
 		{	            
@@ -311,17 +377,12 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			context.Response.Redirect(adminUrl);
             return false;    
 		}
-               
-        
-
-
+                       
         public bool redirectTo_Article(string article)
 		{			
 			context.Response.Redirect("/article/{0}".format(article));
             return false;    
-		}
-
-
+		}        
 	}
 
     public static class HelperExtensionMethods

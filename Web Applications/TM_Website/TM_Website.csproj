@@ -27,6 +27,7 @@
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation />
     <TargetFrameworkProfile />
+    <UseIISExpress>false</UseIISExpress>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -38,6 +39,7 @@
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <CodeAnalysisIgnoreGeneratedCode>false</CodeAnalysisIgnoreGeneratedCode>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -107,6 +109,8 @@
     <Content Include="Aspx_Pages\images\ui-icons_f5e175_256x240.png" />
     <Content Include="Aspx_Pages\images\ui-icons_f7a50d_256x240.png" />
     <Content Include="Aspx_Pages\images\ui-icons_fcd113_256x240.png" />
+    <Content Include="Css\ArticleEditor.css" />
+    <Content Include="Css\ArticleViewer.css" />
     <Content Include="Css\default.css" />
     <Content Include="Css\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Css\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -135,6 +139,7 @@
     <Content Include="Css\jquery.ui.slider.css" />
     <Content Include="Css\jquery.ui.tabs.css" />
     <Content Include="Css\jquery.ui.theme.css" />
+    <Content Include="Css\NotepadEditor.css" />
     <Content Include="Css\ThemeForest_ReadyMade\css\buttons.css" />
     <Content Include="Css\ThemeForest_ReadyMade\css\forms.css" />
     <Content Include="Css\ThemeForest_ReadyMade\css\login.css" />
@@ -145,6 +150,7 @@
     <Content Include="default.htm" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Html_Pages\article_wikiText.html" />
     <Content Include="Html_Pages\ControlPanel\Views\Set_Library_Path.html" />
     <Content Include="Html_Pages\ControlPanel\WebServices\Invoke_Javascript.html" />
     <Content Include="Html_Pages\ControlPanel\WebServices\Invoke_WebServices.html" />
@@ -209,6 +215,8 @@
     <Content Include="Html_Pages\ControlPanel\WebEditor\O2_WebEditor.html" />
     <Content Include="Html_Pages\ControlPanel\WebEditor\O2_WebEditor.js" />
     <Content Include="Html_Pages\ControlPanel\WebEditor\test.html" />
+    <Content Include="Html_Pages\article_Html.html" />
+    <Content Include="Html_Pages\errorPage.html" />
     <Content Include="Html_Pages\emptyPage.html" />
     <Content Include="Html_Pages\GuidanceItemEditor\cleditor\GuidanceItemEditor_CLEditor.html" />
     <Content Include="Html_Pages\GuidanceItemEditor\Elrte\GuidanceItemEditor_Elrte.html" />

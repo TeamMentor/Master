@@ -21,13 +21,11 @@
 																		,	debug			: false
 											
 																		,	onSubmit		: function(id, fileName)
-																								{ 																								
-																									//console.log("onSubmit:" + fileName); 
+																								{ 																																																	
 																								} 
 								//										,	onProgress		: function(id, fileName, loaded, total){console.log("onProgress:" + fileName);}
 																		,	onComplete		: function(id, fileName, responseJSON)
-																								{ 
-																									//console.log("onComplete: " + fileName + " -> " + responseJSON);
+																								{ 																									
 																									TM.Events.onFileUploaded();
 																									TM.ControlPanel.FileUpload.getUploadToken();  // get another token
 																								}

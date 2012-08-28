@@ -3,8 +3,7 @@
 	<head>			
 		<link  href="/aspx_Pages/scriptCombiner.ashx?s=HomePage_CSS&ct=css" 				type="text/css" rel="stylesheet" /> 
 		<link  href="/Css/ArticleEditor.css" type="text/css" rel="stylesheet" />		
-		<script src="/aspx_Pages/scriptCombiner.ashx?s=WebServices_JS"						type="text/javascript"></script>	
-        		
+		<script src="/aspx_Pages/scriptCombiner.ashx?s=WebServices_JS"						type="text/javascript"></script>	        		
 	</head>
 	<body>	
 		<script>		
@@ -182,9 +181,7 @@
 								$(".ItemDetailHeader button").top(0)
 						}
 					}
-					
-					/*$("#topButtons").css({ 'padding'  : '2px'});
-					$("#topButtons button").css({ 'font-size':'13px'})*/					
+								
 					$(".ui-autocomplete").css('font-size','11px')
 					$("input").css('font-size', '12px')
 							  .css('padding','2px')
@@ -279,7 +276,8 @@
 				$("#TypeValue_input")       .val(loadedGuidanceItem.Metadata.Type);
 				$("#CategoryValue_input")   .val(loadedGuidanceItem.Metadata.Category);
 
-				TM.Gui.GuidanceItemEditor.showGuidanceItemHtml(loadedGuidanceItem.Content.Data_Json);
+
+				TM.Gui.GuidanceItemEditor.showGuidanceItemHtml(loadedGuidanceItem.Content.Data_Json, loadedGuidanceItem.Content.DataType);
                 
 			}						  		
 
@@ -423,7 +421,7 @@
         var loadEditor = function()
 		{									
 			$("#guidanceItemEditor").load(TM.Gui.GuidanceItemEditor_Page, setGuidanceIdfromUrlHash);
-            $("#topButtons").show();
+			$(".EditButtons").show();
             $("button").show();	
             $(".ItemDetailTable").show();                      
 						
@@ -448,10 +446,10 @@
 					
 				    if(opener != null)
 				    {					
-					    technologies =[];  opener.$("#pivotPanel_Technology input").each(function() { technologies.push($.trim($(this).parent().text()) ) } ); 					
-					    phases =[];  opener.$("#pivotPanel_Phase input").each(function()			{ phases.push($.trim($(this).parent().text()) ) } ); 
-					    types =[];  opener.$("#pivotPanel_Type input").each(function() 				{ types.push($.trim($(this).parent().text()) ) } ); 
-					    categories =[];  opener.$("#pivotPanel_Category input").each(function() 	{ categories.push($.trim($(this).parent().text()) ) } ); 
+					    technologies =[];  opener.$("#pivotPanel_Technology input").each(function() { technologies.push($(this).parent().find("label").html())  } ); 
+					    phases =[];  opener.$("#pivotPanel_Phase input").each(function()			{ phases.push($(this).parent().find("label").html())  } ); 
+					    types =[];  opener.$("#pivotPanel_Type input").each(function() 				{ types.push($(this).parent().find("label").html())  } ); 
+					    categories =[];  opener.$("#pivotPanel_Category input").each(function() 	{ categories.push($(this).parent().find("label").html())  } ); 
 					
 					    /*$("#TechnologyLabel"	).autocomplete( { source: technologies });					
 					    $("#PhaseLabel"			).autocomplete( { source: phases	   	});			
@@ -508,7 +506,7 @@
 		$(function()
 			{												                
                 $(".ItemDetailTable").hide();
-                $("#topButtons").hide();
+                $(".EditButtons").hide();
                 
 				loadGuidanceItemEditor();
 				mapAutoCompleteValues();
@@ -558,7 +556,7 @@
 	<div id="ScriptLoader"> </div>
 	<div id="guiWithPanels"></div>	
 
-	<div id="topButtons">
+	<div class="EditButtons">
 		<span id="backToViewer" class="IEButton">View Article</span>
 		<span id="saveChanges" class="IEButton">Save Changes</span>
 	</div>

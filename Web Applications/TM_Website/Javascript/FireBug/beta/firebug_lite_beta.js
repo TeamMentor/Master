@@ -8234,8 +8234,7 @@ Menu.prototype =  extend(Controller,
         this.clearShowChildTimeout();
 
         if (!this.isVisible) return;
-
-        //console.log("hide", this.element.id);
+        
 
         this.elementStyle.display = "none";
 

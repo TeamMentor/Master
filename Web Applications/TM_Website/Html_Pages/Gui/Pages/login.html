@@ -28,7 +28,7 @@
                 if (document.referrer != "" && document.referrer != document.location)
                     document.location = document.referrer;
                 else			
-				    document.location = "/";
+				    document.location = "/Login_OK" + document.location.search;
 			}
 		}
 

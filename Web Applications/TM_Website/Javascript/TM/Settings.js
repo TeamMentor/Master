@@ -1,5 +1,6 @@
 //TM Settings
-TM.tmVersion = "TM 3.2 Beta RC1";	
+TM.tmVersion = "TM 3.2 Beta RC1";
+TM.ArticleTitle = "TeamMentor 3.2";
 
 TM.tmWebServices     = '/Aspx_Pages/TM_WebServices.asmx/';
 TM.NotAuthorizedPage = '/Html_Pages/Gui/Panels/AD_Non_Authorized_User.html';
@@ -25,7 +26,7 @@ TM.Debug.callTrace_ShowExecutionTime		  	= false;
 TM.Debug.callTrace_LogToConsole				  	= false;
 TM.Debug.callTrace_ShowParamsInConsoleLog	  	= false;
 
-TM.Debug.logLoadedEvents					  	= false;
+TM.Debug.logEventsRaised					  	= true;
 TM.Debug.logLoadedPages						  	= false;
 
 //only put real passwords here in QA environments

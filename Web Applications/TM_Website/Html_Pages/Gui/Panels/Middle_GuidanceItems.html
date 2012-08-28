@@ -9,6 +9,7 @@ $(function()
 		//TM.Debug.CallTrace.traceObject("TM.Gui.DataTable", TM.Gui.DataTable)	
 //		TM.Debug.CallTrace.trace_TM_Object();
 
+        TM.Events.onDisplayDataTable    .add(TM.Gui.DataTable.displayCurrentDataTable);				
  		TM.Events.onAppliedFieldsEnd	.add(TM.Gui.DataTable.displayCurrentDataTable);				
 		TM.Events.onEditModeChange		.add(TM.Gui.DataTable.displayCurrentDataTable);		
 		TM.Events.onUserDataLoaded		.add(TM.Gui.DataTable.displayCurrentDataTable_onUserChange);

@@ -62,7 +62,7 @@ queryTo_filterDataTable = function (rec)
 		 if (typeof(filter) != "undefined" && filter !="" && filter != null)
 		 {			
 			expectedMatches ++
-			$.each(filter.split('|'), function(index , subFilter)
+			$.each(filter.split('|'), function(index , subFilter)  //supports multiple technology filters
 			{
 				if (rec[i] == subFilter)
 					matches ++;

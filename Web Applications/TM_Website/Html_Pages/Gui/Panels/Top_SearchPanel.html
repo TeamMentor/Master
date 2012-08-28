@@ -4,10 +4,13 @@
 
 TM.Gui.TextSearch.getCurrentFilteredGuidanceItemsIds = function()
 	{
-		var aaData = TM.WebServices.Data.filteredDataTable.aaData.length > 0
+		/*var aaData = TM.WebServices.Data.filteredDataTable.aaData.length > 0
 						? TM.WebServices.Data.filteredDataTable.aaData
-						: TM.WebServices.Data.lastDataTableData.aaData
-						
+						: TM.WebServices.Data.lastDataTableData.aaData*/
+        
+		//var aaData  = TM.WebServices.Data.lastDataTableData.aaData;				
+        var aaData    = TM.WebServices.Data.dataTableDataForSelectedGuid.aaData;
+
 		return jlinq.from(aaData)
 					.select(function() 
 						{ 
@@ -27,11 +30,13 @@ TM.Gui.TextSearch.getValueAndApplyGlobalFilter = function()
 			{
 				var _matchedIds = matchedIds;
 				$("#SearchTextBox").css('background','white')				
-				var matchedIds_DataTable = TM.WebServices.Data.getGuidanceItems_For_DataTable( matchedIds);      
+				matchedIds_DataTable = TM.WebServices.Data.getGuidanceItems_For_DataTable( matchedIds);      
 			  			  
-				TM.Gui.DataTable.displayDataTable(matchedIds_DataTable)
+				//TM.Gui.DataTable.displayDataTable(matchedIds_DataTable)
+                TM.WebServices.Data.filteredDataTable = matchedIds_DataTable; 
+                TM.WebServices.Data.lastDataTableData = matchedIds_DataTable; 
 				TM.Gui.DataTable.currentTextFilter = searchText;
-				TM.Events.onTextSearch();
+				TM.Events.onTextSearchComplete();
 								
 			}; 
 		   
@@ -72,6 +77,7 @@ TM.Gui.TextSearch.setup = function()
 		{	
 			TM.Gui.TextSearch.setup();
 			TM.Events.onInvalidateSearchText.add(TM.Gui.TextSearch.invalidateSearchText);
+            TM.Events.onTextSearch          .add(TM.Gui.TextSearch.getValueAndApplyGlobalFilter)
 			//TM.Events.onAppliedFieldsEnd.
 		});
 </script>

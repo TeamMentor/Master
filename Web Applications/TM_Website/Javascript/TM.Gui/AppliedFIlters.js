@@ -38,12 +38,13 @@
 			if (typeof(currentFilters[filter.column]) == "undefined")
 				currentFilters[filter.column] = filter.text;
 			else
-				currentFilters[filter.column] += "|" + filter.text;						
+				currentFilters[filter.column] += "|" + filter.text;
 		}		
 						
 		//setTimeout(TM.Gui.AppliedFiltersList.populateAppliedFiltersTable , 25);
-        if (TM.Gui.AppliedFilters.raise_onBuildFiltersGui)		
-		    TM.Events.onBuildFiltersGui()
+        //if (TM.Gui.AppliedFilters.raise_onBuildFiltersGui)		
+
+		 TM.Events.onBuildFiltersGui()
 	}
 
 
@@ -61,9 +62,19 @@ function buildPivotPanel(pivotPanelData)
 }	
 
 TM.Gui.AppliedFilters.getFilterDataObject = function (arrayWithSelectedItems, arrayWithAllData, arrayWithFilteredData,  title, index)
-	{					
+	{				
+        var filterDataObject = 
+			{
+				title:title,
+				column: index,				
+				itemsAvail: [], 
+				itemsNotAvail: []
+			}	
+        if (arrayWithAllData.length === 0) // there is nothing to do    
+            return filterDataObject;
+        
 		var selectedFilter = arrayWithSelectedItems[index];		
-		
+
 		//items Checked	
 		if (typeof(selectedFilter) == "undefined" ||  selectedFilter== null)
 			selectedFilter = "";				
@@ -71,21 +82,29 @@ TM.Gui.AppliedFilters.getFilterDataObject = function (arrayWithSelectedItems, ar
 			var itemsChecked = [];		
 		else				
 			var itemsChecked = selectedFilter.split('|');
-		
-		var itemsAvail = []; 	
-		//var itemsNotAvail = getDistictColumnValue(arrayWithAllData,index); 
-		var itemsNotAvailRaw = getDistictColumnValue(arrayWithAllData,index); 
-		
-		//_itemsChecked = itemsChecked;
+		_itemsChecked = itemsChecked;
+		itemsAvail = []; 			
+		itemsNotAvailRaw = getDistictColumnValue(arrayWithAllData,index); 
+        var gotAtLeastOneMatch = false;
 		$.each(getDistictColumnValue(arrayWithFilteredData,index).sort(), function(index,value)
-			{
-				//var checked = itemsChecked.indexOf(value) > -1;
-				var checked = itemsChecked.has(value);//.indexOf(value) > -1;
+			{				
+				var checked = itemsChecked.has(value);
 				itemsAvail.push({ text : value , checked : checked  });
 				itemsNotAvailRaw = removeFromArray(itemsNotAvailRaw, value);
+                if (checked)
+                    gotAtLeastOneMatch = true;
 			});
-		
-		var itemsNotAvail = [];
+        // handle the case where there is no match for a value provided in the filter
+		if (gotAtLeastOneMatch === false && itemsChecked.length > 0)
+        {
+            itemsAvail = [];
+            itemsNotAvailRaw = getDistictColumnValue(arrayWithAllData,index);
+            TM.WebServices.Data.lastDataTableData.aaData = []
+            console.log("gotAtLeastOneMatch was false!!!!! with "  + itemsChecked);
+            console.log("itemsAvail: " + itemsAvail.length);
+            console.log("itemsNotAvailRaw: " + itemsNotAvailRaw);
+        }
+		itemsNotAvail = [];
 		itemsNotAvailRaw.sort();
 		$.each(itemsNotAvailRaw, function(index,value)
 			{				
@@ -94,13 +113,9 @@ TM.Gui.AppliedFilters.getFilterDataObject = function (arrayWithSelectedItems, ar
 			});
 		
 		//currentFilter
-		var filterDataObject = 
-			{
-				title:title,
-				column: index,				
-				itemsAvail: itemsAvail, 
-				itemsNotAvail: itemsNotAvail
-			}
+		filterDataObject.itemsAvail = itemsAvail;
+        filterDataObject.itemsNotAvail = itemsNotAvail;
+
 		return filterDataObject;	
 	}
 	
@@ -130,10 +145,10 @@ TM.Gui.AppliedFilters.showFilters = function(arrayWithSelectedItems, arrayWithAl
 		{
 			setTimeout(function() 
 				{
-					console.log("after wait: updatingFilters");
+					//console.log("after wait: updatingFilters");
 					TM.Gui.AppliedFilters.showFilters(arrayWithSelectedItems, arrayWithAllData, arrayWithFilteredData,raise_onAppliedFieldsEnd)
 				}, 200);;
-			console.log("updatingFilters");
+			//console.log("updatingFilters");
 			return;
 		}		
 	
@@ -159,6 +174,7 @@ TM.Gui.AppliedFilters.showFilters = function(arrayWithSelectedItems, arrayWithAl
 		
 		setTimeout(function(){
 		
+            //var aaData = TM.Gui.AppliedFilters.applyDataTableFilter_using_PivotPanelFilters(TM.WebServices.Data.filteredDataTable.aaData, queryTo_filterDataTable , currentFilters );		
 			//apply the text filter = 
 			var aaData = TM.Gui.AppliedFilters.applyDataTableFilter_using_PivotPanelFilters(TM.WebServices.Data.lastDataTableData.aaData, queryTo_filterDataTable , currentFilters );		
 		
@@ -168,14 +184,17 @@ TM.Gui.AppliedFilters.showFilters = function(arrayWithSelectedItems, arrayWithAl
 		
 			TM.WebServices.Data.filteredDataTable = {};
 			TM.WebServices.Data.filteredDataTable.aoColumns = TM.WebServices.Data.lastDataTableData.aoColumns;		
-			TM.WebServices.Data.filteredDataTable.aaData = aaData
-			
+			TM.WebServices.Data.filteredDataTable.aaData = aaData;
+		
 			
 			//raise event			
 			updatingFilters = false;						
 			TM.Debug.TimeSpan_Gui_AppliedFilters_ShowFilters = startTime.toNow();
             if (raise_onAppliedFieldsEnd)
-			    TM.Events.onAppliedFieldsEnd();					
+			    TM.Events.onAppliedFieldsEnd();
+
+            //run text search (which will also trigger a table
+    //            TM.Gui.TextSearch.getValueAndApplyGlobalFilter();					
 			
 			
 		},timeOutInterval)
@@ -189,62 +208,76 @@ TM.Gui.AppliedFilters.showFilters = function(arrayWithSelectedItems, arrayWithAl
 	}
 
 TM.Gui.AppliedFilters.buildFiltersGui = function () 
-{        
-        console.log("buildFiltersGui");
-	    TM.Events.onInvalidateSearchText();
-
-	    TM.Gui.AppliedFilters.raise_onBuildFiltersGui = false;
+    {                
+	    //TM.Events.onInvalidateSearchText();
+        TM.Events.onBuildFiltersGui.enabled = false;    
+	    //TM.Gui.AppliedFilters.raise_onBuildFiltersGui = false;
+    
 	    TM.Gui.AppliedFilters.MapFiltersFromUrl(); // new one
-	    TM.Gui.AppliedFilters.raise_onBuildFiltersGui = true;
+        TM.Events.onBuildFiltersGui.enabled = true; 
+//	    TM.Gui.AppliedFilters.raise_onBuildFiltersGui = true;
 
-	    var aaData = TM.WebServices.Data.lastDataTableData.aaData;
-	    var filterResult = TM.Gui.AppliedFilters.applyDataTableFilter_using_PivotPanelFilters(aaData, queryTo_filterDataTable, currentFilters);
+//	    var aaData = TM.WebServices.Data.lastDataTableData.aaData;
+        var aaData = TM.WebServices.Data.filteredDataTable.aaData;
+
+	    filterResult = TM.Gui.AppliedFilters.applyDataTableFilter_using_PivotPanelFilters(aaData, queryTo_filterDataTable, currentFilters);
+        
 	    TM.Gui.AppliedFilters.showFilters(currentFilters, aaData, filterResult, true);
+	    
+        //TM.Gui.AppliedFilters.raise_onBuildFiltersGui = true;
+
+        //TM.Gui.TextSearch.getValueAndApplyGlobalFilter();
+
+        
+        //TM.Events.onDisplayDataTable()
 	}
 
 TM.Gui.AppliedFilters.buildFromSelectedNodeId = function () {
+    
+    //this will reset the filters on node click
     currentPivotPanelFilters = new Array(); 		// reset applied filters
     currentFilters = [];
 
-    console.log("TM.Gui.AppliedFilters.buildFromSelectedNodeId");
-
-
     var selectedNodeId = TM.Gui.selectedNodeId;
     TM.WebServices.Data.getGuidanceItemsInGuid_For_DataTable(selectedNodeId);
-    TM.Gui.AppliedFilters.buildFiltersGui();
+
+    //TM.Gui.AppliedFilters.buildFiltersGui();
+    TM.Events.onTextSearch();
     
     //TM.Gui.AppliedFilters.MapFiltersFromUrl();
 }
 
-$(window).bind('hashchange', function () {
-    currentPivotPanelFilters = new Array();
-    TM.Gui.AppliedFilters.buildFiltersGui();
-    //TM.Gui.AppliedFilters.MapFiltersFromUrl();
-});
-
-TM.Gui.AppliedFilters.MapFiltersFromUrl = function () {
-    console.log("MapFiltersFromUrl");
-    var commands = window.location.hash.slice(1).split("&");    
-    jQuery.each(commands, function () {
-        var splitCommand = this.split(":");
-        if (splitCommand.length == 2) {
-            var command = splitCommand[0];
-            var value = splitCommand[1];
-            switch (command) {
-                case "technology":                    
-                    setPivotPanelFilter(value, "Technology", 2, true);
-                    break;
-                case "phase":                    
-                    setPivotPanelFilter(value, "Phase", 3, true);
-                    break;
-                case "type":
-                    setPivotPanelFilter(value, "Type", 4, true);
-                    break;
-                case "category":
-                    setPivotPanelFilter(value, "Category", 5, true);
-                    break;
-            }
-        }
+$(window).bind('hashchange', function () 
+    {
+        currentPivotPanelFilters = new Array();
+        TM.Events.onTextSearch()
+        //TM.Gui.AppliedFilters.buildFiltersGui();
+        //TM.Gui.AppliedFilters.MapFiltersFromUrl();
     });
-}
+
+TM.Gui.AppliedFilters.MapFiltersFromUrl = function () 
+    {    
+        var commands = window.location.hash.slice(1).split("&");    
+        jQuery.each(commands, function () {
+            var splitCommand = this.split(":");
+            if (splitCommand.length == 2) {
+                var command = splitCommand[0];
+                var value = splitCommand[1];
+                switch (command) {
+                    case "technology":                    
+                        setPivotPanelFilter(value, "Technology", 2, true);
+                        break;
+                    case "phase":                    
+                        setPivotPanelFilter(value, "Phase", 3, true);
+                        break;
+                    case "type":
+                        setPivotPanelFilter(value, "Type", 4, true);
+                        break;
+                    case "category":
+                        setPivotPanelFilter(value, "Category", 5, true);
+                        break;
+                }
+            }
+        });
+    }
 		

@@ -138,11 +138,9 @@ TM.Gui.DataTable.loadDataIntoDataTable_Step1 = function(dataTableData)
         {
             TM.abortTableDataLoad = true;
             setTimeout(function() 
-                {
-                    //console.log("after wait: loadDataIntoDataTable_Step1");
+                {                    
                     TM.Gui.DataTable.loadDataIntoDataTable_Step1(dataTableData);
-                }, 200);;
-            //console.log("loadDataIntoDataTable_Step1");
+                }, 200);;            
             return;
         }
         TM.loadingData = true;
@@ -162,15 +160,18 @@ TM.Gui.DataTable.loadDataIntoDataTable_Step1 = function(dataTableData)
         var dataTableLoadComplete = function()
             {
                 TM.DataTableLoaded = "TM: DataTable Loaded";				
-                TM.Gui.DataTable.selectRow(1);
+                if (lastDataLoad.aaData.length === 0)
+                    TM.Gui.DataTable.raiseEventForEmptyTable();
+                else
+                    TM.Gui.DataTable.selectRow(1);
                 TM.Events.onDataTableDisplayed();
             };
         
         if (itemsToAdd.length < 500)
         {
             _currentDataTable.fnAddData(itemsToAdd);
-            //$("#nowShowingLabel").html("Showing " + totalItemstoLoad + " items");
-            TM.Gui.DataTableViewer.set_Title("Showing " + totalItemstoLoad + " items");
+            //$("#nowShowingLabel").html("Showing " + totalItemstoLoad + " items");            
+            TM.Gui.DataTableViewer.set_Title("Showing " + totalItemstoLoad + " items (out of " + TM.WebServices.Data.dataTableDataForSelectedGuid.aaData.length + ")");
             dataTableLoadComplete();
         }
         else
@@ -179,8 +180,7 @@ TM.Gui.DataTable.loadDataIntoDataTable_Step1 = function(dataTableData)
                                         if(TM.abortTableDataLoad)																				
                                         {
                                             _currentDataTable.fnClearTable(); 
-                                            _currentDataTable.fnAddData(["","Refreshing....","","","","",""]); 
-                                            //console.log("abortingLoad")
+                                            _currentDataTable.fnAddData(["","Refreshing....","","","","",""]);                                             
                                             return;										
                                         }										
                                          //$("#nowShowingLabel").html(
@@ -188,8 +188,7 @@ TM.Gui.DataTable.loadDataIntoDataTable_Step1 = function(dataTableData)
                                                         {
                                                             TM.Gui.DataTableViewer.set_Title("Loaded " + (totalItemstoLoad - itemsToAdd.length) + " out of " + totalItemstoLoad);
                                                         }, 10);
-                                         var slice = itemsToAdd.splice(0,500)
-                                         //console.log("adding " + slice .length + " with " + itemsToAdd.length + " remaining"); 
+                                         var slice = itemsToAdd.splice(0,500)                                         
                                          _currentDataTable.fnAddData(slice  );
                                          
                                          if (itemsToAdd.length > 0)
@@ -206,7 +205,7 @@ TM.Gui.DataTable.loadDataIntoDataTable_Step1 = function(dataTableData)
         }		
         setTimeout(function() { TM.Gui.DataTable.loadDataIntoDataTable_Step3()}, 25 ) ;
     }
-    
+
 TM.Gui.DataTable.loadDataIntoDataTable_Step3 = function()
     {
         TM.loadingData = false;
@@ -225,104 +224,109 @@ TM.Gui.DataTable.loadDataIntoDataTable_Step4 = function()
         jQuery('table.display').css('clear','none') ;
         jQuery('#guidanceItemsTable_length').remove();
         if (TM.Gui.DataTable.showEditOptions())
-            TM.Gui.DataTableViewer.setDragAndDropOptions();		
-        
-        //console.log("loadDataIntoDataTable_Steps completed");
+            TM.Gui.DataTableViewer.setDragAndDropOptions();		                
     }	
     
 TM.Gui.DataTable.addDataTableButtons = function()
-{
-    if (TM.Gui.DataTable.showEditOptions())
-    {				
-        "guidanceItemsTableButtons".$().html(//"<div id='guidanceItemsTableButtons'>" +
-                                        "<button id='button_selectAll'>Select All</button>" +
-                                        "<button id='button_deselectAll'>Deselect All</button>"  +
-                                        //"<button id='button_newGuidanceItem'>New Guidance Item</button>" + 										
-                                        "<button id='button_RemoveGuidanceItemsFromView'>Remove Guidance Items from View</button>" + 
-                                        "<button id='button_DeleteGuidanceItemsFromLibrary'>Delete Guidance Items from Library</button>" + 
-                                        "<span id=guidanceTableEditorHelperText></span>" + 
-                                        "</div>" + 
-                                        "<br/>"); 
+    {
+        if (TM.Gui.DataTable.showEditOptions())
+        {				
+            "guidanceItemsTableButtons".$().html(//"<div id='guidanceItemsTableButtons'>" +
+                                            "<button id='button_selectAll'>Select All</button>" +
+                                            "<button id='button_deselectAll'>Deselect All</button>"  +
+                                            //"<button id='button_newGuidanceItem'>New Guidance Item</button>" + 										
+                                            "<button id='button_RemoveGuidanceItemsFromView'>Remove Guidance Items from View</button>" + 
+                                            "<button id='button_DeleteGuidanceItemsFromLibrary'>Delete Guidance Items from Library</button>" + 
+                                            "<span id=guidanceTableEditorHelperText></span>" + 
+                                            "</div>" + 
+                                            "<br/>"); 
                                         
-        //"button_newGuidanceItem".$().click(newGuidanceItem );								
-        "button_selectAll".$().click(function() 
-            { 				
-                "#guidanceItemsTable input".$().each(function() { $(this).attr('checked','true') }); 
-                "#guidanceItemsTable input".$()[0].click();		// this will trigger the event that populates the selectedGuidanceIds
-                "#guidanceItemsTable input".$()[0].click();		// reselect it
-            } );							
-        "button_deselectAll".$().click(function() 	
-            {
-                "#guidanceItemsTable input".$().each(function() { $(this).removeAttr('checked') }); 
-                "#guidanceItemsTable input".$()[0].click();		// this will trigger the event that populates the selectedGuidanceIds
-                "#guidanceItemsTable input".$()[0].click();		// reselect it
-            } );
-        "button_RemoveGuidanceItemsFromView".$().click(function() 
-            {					
-                removeGuidanceItemsFromView(TM.Gui.selectedNodeData.viewId, selectedGuidanceIds, 
-                    function(result) 
-                        {
-                            if (result.d)
+            //"button_newGuidanceItem".$().click(newGuidanceItem );								
+            "button_selectAll".$().click(function() 
+                { 				
+                    "#guidanceItemsTable input".$().each(function() { $(this).attr('checked','true') }); 
+                    "#guidanceItemsTable input".$()[0].click();		// this will trigger the event that populates the selectedGuidanceIds
+                    "#guidanceItemsTable input".$()[0].click();		// reselect it
+                } );							
+            "button_deselectAll".$().click(function() 	
+                {
+                    "#guidanceItemsTable input".$().each(function() { $(this).removeAttr('checked') }); 
+                    "#guidanceItemsTable input".$()[0].click();		// this will trigger the event that populates the selectedGuidanceIds
+                    "#guidanceItemsTable input".$()[0].click();		// reselect it
+                } );
+            "button_RemoveGuidanceItemsFromView".$().click(function() 
+                {					
+                    removeGuidanceItemsFromView(TM.Gui.selectedNodeData.viewId, selectedGuidanceIds, 
+                        function(result) 
                             {
-                                //_viewId = TM.Gui.selectedNodeData.viewId;
-                                //_selectedGuidanceIds = selectedGuidanceIds;
-                                TM.Gui.Dialog.alertUser("GuidanceItems successfully removed from view, please refresh view")
-                            }
-                            else
-                                TM.Gui.Dialog.alertUser("There was an error performing this action")
-                        });
-            });
-        
-        "button_DeleteGuidanceItemsFromLibrary".$().click(function()
-            {				
-                var deleteGuidanceItems = function() 
-                    {
-                        TM.WebServices.WS_Libraries.remove_GuidanceItems(selectedGuidanceIds, 
-                            function(result) 
+                                if (result.d)
                                 {
-                                    if (result)
-                                    {								
-                                        TM.Gui.Dialog.alertUser("GuidanceItems successfully deleted, please refresh browser")
-                                    }
-                                    else
-                                        TM.Gui.Dialog.alertUser("There was an error performing this action")
-                                });	
-                    };
-                var description = "{0} guidanceItems".format(selectedGuidanceIds.length);
-                TM.Gui.Dialog.deleteConfirmation(description,deleteGuidanceItems);
-            });
+                                    //_viewId = TM.Gui.selectedNodeData.viewId;
+                                    //_selectedGuidanceIds = selectedGuidanceIds;
+                                    TM.Gui.Dialog.alertUser("GuidanceItems successfully removed from view, please refresh view")
+                                }
+                                else
+                                    TM.Gui.Dialog.alertUser("There was an error performing this action")
+                            });
+                });
+        
+            "button_DeleteGuidanceItemsFromLibrary".$().click(function()
+                {				
+                    var deleteGuidanceItems = function() 
+                        {
+                            TM.WebServices.WS_Libraries.remove_GuidanceItems(selectedGuidanceIds, 
+                                function(result) 
+                                    {
+                                        if (result)
+                                        {								
+                                            TM.Gui.Dialog.alertUser("GuidanceItems successfully deleted, please refresh browser")
+                                        }
+                                        else
+                                            TM.Gui.Dialog.alertUser("There was an error performing this action")
+                                    });	
+                        };
+                    var description = "{0} guidanceItems".format(selectedGuidanceIds.length);
+                    TM.Gui.Dialog.deleteConfirmation(description,deleteGuidanceItems);
+                });
             
-        "guidanceTableEditorHelperText".$().css('font-size','10pt')
-                                           .relative()
-                                           .left(20)		
+            "guidanceTableEditorHelperText".$().css('font-size','10pt')
+                                               .relative()
+                                               .left(20)		
                                            
-        //hide it for now since it is not implemented
-        //if(typeof(TM.Gui.selectedNodeData.viewId) != "undefined" || typeof(TM.Gui.selectedNodeData.folderId) != "undefined" )	
-        if(TM.Gui.selectedNodeData.__type != "SecurityInnovation.TeamMentor.WebClient.Library_V3")	 
-            "button_DeleteGuidanceItemsFromLibrary".$().hide();
-        //if (typeof(TM.Gui.selectedNodeData) != "undefined")
-        if(TM.Gui.selectedNodeData.__type != "SecurityInnovation.TeamMentor.WebClient.View_V3")
-                "button_RemoveGuidanceItemsFromView".$().hide();
-        "button".$().button(); 
-        "button".$().css("font-size",'10px');
+            //hide it for now since it is not implemented
+            //if(typeof(TM.Gui.selectedNodeData.viewId) != "undefined" || typeof(TM.Gui.selectedNodeData.folderId) != "undefined" )	
+            if(TM.Gui.selectedNodeData.__type != "SecurityInnovation.TeamMentor.WebClient.Library_V3")	 
+                "button_DeleteGuidanceItemsFromLibrary".$().hide();
+            //if (typeof(TM.Gui.selectedNodeData) != "undefined")
+            if(TM.Gui.selectedNodeData.__type != "SecurityInnovation.TeamMentor.WebClient.View_V3")
+                    "button_RemoveGuidanceItemsFromView".$().hide();
+            "button".$().button(); 
+            "button".$().css("font-size",'10px');
         
-        if ($.browser.msie)	//TODO: figure out why this is happening in IE
-        {
-            $("#guidanceItemsTableButtons .ui-button-text").width('100%');
-            "button_selectAll".$().width(100);
-            "button_deselectAll".$().width(100);			
-            "button_RemoveGuidanceItemsFromView".$().width(250);
-            "button_DeleteGuidanceItemsFromLibrary".$().width(250);			
-            "guidanceTableEditorHelperText".$().width(300);
+            if ($.browser.msie)	//TODO: figure out why this is happening in IE
+            {
+                $("#guidanceItemsTableButtons .ui-button-text").width('100%');
+                "button_selectAll".$().width(100);
+                "button_deselectAll".$().width(100);			
+                "button_RemoveGuidanceItemsFromView".$().width(250);
+                "button_DeleteGuidanceItemsFromLibrary".$().width(250);			
+                "guidanceTableEditorHelperText".$().width(300);
+            }
+        
+        
+            /*"<button id='button_selectAll'>Select All</button>" +
+                                            "<button id=''>Deselect All</button>"  +
+                                            //"<button id=''>New Guidance Item</button>" + 										
+                                            "<button id=''>Remove Guidance Items from View</button>" + 
+                                            "<button id=''>Delete Guidance Items from Library</button>" + 
+                                            "<span id=></span>"
+            */
         }
-        
-        
-        /*"<button id='button_selectAll'>Select All</button>" +
-                                        "<button id=''>Deselect All</button>"  +
-                                        //"<button id=''>New Guidance Item</button>" + 										
-                                        "<button id=''>Remove Guidance Items from View</button>" + 
-                                        "<button id=''>Delete Guidance Items from Library</button>" + 
-                                        "<span id=></span>"
-        */
     }
-}
+
+TM.Gui.DataTable.raiseEventForEmptyTable = function()
+    {
+        TM.Gui.selectedGuidanceId = TM.Const.emptyGuid;
+        TM.Gui.selectedGuidanceTitle = "(no article available)";
+        TM.Events.onShowGuidanceItem();
+    }

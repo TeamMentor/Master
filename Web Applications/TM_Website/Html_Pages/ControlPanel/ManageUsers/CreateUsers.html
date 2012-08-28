@@ -26,17 +26,14 @@
 							{
 								if (value ==null)
 								{
-									console.log("error: " + TM.ControlPanel.UserCreation.createUserData[index]);
+									//console.log("error: " + TM.ControlPanel.UserCreation.createUserData[index]);
 									var escaptedText = escape(TM.ControlPanel.UserCreation.createUserData[index])  //to prevent XSS									
 									resultMessage.append($("<li>").append("Error Creating user with: '" + escaptedText + "'</li>") //
 																  .css('color','red'));
 								}
 								else
-								{
-									console.log("ok value: " + value);
-									console.log("ok value.UserName: {0}" + value.UserName);
-									var escaptedUserName = escape(value.UserName);									
-									console.log("ok escaptedUserName: " + escaptedUserName);
+								{									
+									var escaptedUserName = escape(value.UserName);																		
 									resultMessage.append($("<li>").append("User Created OK: " + escaptedUserName)
 																  .css('color','green'));
 								}

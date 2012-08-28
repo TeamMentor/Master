@@ -36,9 +36,9 @@
                                     };
         </script>
         <script>
-            var id = '<xsl:value-of select='//Metadata/Id'/>';            
-            var title = '<xsl:value-of select='//Metadata/Title'/>';            
-            var dataType = '<xsl:value-of select='//Content/@DataType'/>';
+            var id = "<xsl:value-of select='//Metadata/Id'/>";            
+            var title = "<xsl:value-of select='//Metadata/Title'/>";            
+            var dataType = "<xsl:value-of select='//Content/@DataType'/>";
             
             document.title = "Editing: " + title;
             

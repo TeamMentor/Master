@@ -1,7 +1,7 @@
 //Global events
 TM.Events = 
 	{
-			trace				: true
+			trace				: true        
 		,	_target				: 'body'
 		, 	_eventCount			: 0
 		,	_registerEvents		: function(eventNames)
@@ -17,11 +17,13 @@ TM.Events =
 										}
 										else
 											$(TM.Events._target).bind(name, callback);
-											
+										
 										TM.Events[name] 	= function() 
-																{ 
-																	TM.Events._raise(name) 
+																{                                                                     
+																	 TM.Events._raise(name) 
 																} ;
+                                        TM.Events[name].enabled = true;	
+
 										TM.Events[name].add = function(_callback)
 																{
 																	$(TM.Events._target).bind(name, _callback);
@@ -42,8 +44,13 @@ TM.Events =
 									}
 		, 	_raise				: function(name)
 									{
+                                        if (TM.Events[name].enabled === false)
+                                        {
+                                            console.log("Event {0} disabled".format(name));
+                                            return; 
+                                        }
 										TM.Events._eventCount++;
-										if(TM.Debug.logLoadedEvents)
+										if (TM.Debug.logEventsRaised)
 											console.log("event #{0} : {1}".format(TM.Events._eventCount, name));
 										setTimeout(function()
 											{
@@ -120,6 +127,7 @@ TM.Events._eventsFor_Gui =
 			,	'onFolderStructureMapped'
 			,	'onFiltersRemoved'
 			,	'onTextSearch'
+            ,	'onTextSearchComplete'
 			,	'onInvalidateSearchText'
 			
 		];

@@ -128,8 +128,6 @@ TM.Gui.LibraryTree =
 													});		
 											TM.Debug.TimeSpan_Gui_LibraryTree_CreatedTreeFromWsData = startTime.toNow();		
 											this.onTreeLoaded();
-											console.log("add_LibrariesFromWsData");
-											console.log("add_LibrariesFromWsData");
 										},
 										
 		add_LibraryFromWsData:		function(library)

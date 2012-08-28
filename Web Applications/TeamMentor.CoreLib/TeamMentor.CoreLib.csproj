@@ -39,8 +39,8 @@
     <Reference Include="O2_FluentSharp_CoreLib">
       <HintPath>..\packages\FluentSharp.CoreLib.4.0.0.1\lib\net40\O2_FluentSharp_CoreLib.dll</HintPath>
     </Reference>
-    <Reference Include="O2_Misc_Microsoft_MPL_Libs">
-      <HintPath>..\packages\O2.Platform.Misc_Microsoft_MPL_Libs.4.0.0.1\lib\net40\O2_Misc_Microsoft_MPL_Libs.dll</HintPath>
+    <Reference Include="O2_Misc_Microsoft_MPL_Libs, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>_ExternalDlls\O2_Misc_Microsoft_MPL_Libs.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -135,6 +135,15 @@
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="AntiXssLibrary.dll" />
+    <Content Include="O2_Misc_Microsoft_MPL_Libs.dll" />
+    <Content Include="_ExternalDlls\AntiXssLibrary.dll" />
+    <Content Include="_ExternalDlls\HtmlSanitizationLibrary.dll" />
+    <Content Include="_ExternalDlls\ICSharpCode.SharpZipLib.dll" />
+    <Content Include="_ExternalDlls\O2_FluentSharp_CoreLib.dll" />
+    <Content Include="_ExternalDlls\O2_Misc_Microsoft_MPL_Libs.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

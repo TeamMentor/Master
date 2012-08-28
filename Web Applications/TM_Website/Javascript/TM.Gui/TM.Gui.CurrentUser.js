@@ -22,8 +22,7 @@ TM.Gui.CurrentUser =
 													TM.WebServices.Config.CSRF_Token = that.userData.CSRF_Token;	// set CSRF token
 
 													if (that.currentUserName === that.userData.UserName)
-														{
-															//console.log("SAME user: " + that.currentUserName);
+														{															
 															return;
 														}
 													that.currentUserName = that.userData.UserName;

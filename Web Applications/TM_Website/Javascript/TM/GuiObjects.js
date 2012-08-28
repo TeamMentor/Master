@@ -110,8 +110,7 @@ TM.WebServices.Data.extractFolderStructure = function(callback)
 			
 			
 			var setGlobalVariablesAndContinue = function()
-				{
-					//console.log("in setGlobalVariablesAndContinue()");
+				{					
 					TM.WebServices.Data.AllViews 	 = allViews;
 					TM.WebServices.Data.AllFolders 	 = allFolders
 					TM.WebServices.Data.AllLibraries = allLibraries
@@ -119,10 +118,7 @@ TM.WebServices.Data.extractFolderStructure = function(callback)
 					TM.WebServices.Data.FolderStructure = true;
 					TM.Debug.TimeSpan_ExtractFolderStructure = new Date(new Date()   - startTime1);
 					TM.Debug.TimeSpan_CalculateFolderStructure = new Date(new Date() - startTime2);
-					
-					
-					//console.log("after mapFolderStructure");
-					
+
 					if(typeof(callback) !="undefined")
 						callback();		
 				}
@@ -140,13 +136,10 @@ TM.WebServices.Data.extractFolderStructure = function(callback)
 				mapFolders (rootNode.subFolders,rootNode );
 				mapViews(rootNode.views,rootNode);						
 				$.data[libraryStructure.libraryId]= libraryStructure; 
-				
-				//console.log(TM.WebServices.Data.folderStructure.length + "  === " + allLibraries.length);
+								
 				if(TM.WebServices.Data.folderStructure.length  === allLibraries.length)
-				{
-					//console.log(">>>>>");   
-					setGlobalVariablesAndContinue();
-					//console.log("<<<<<");
+				{					
+					setGlobalVariablesAndContinue();				
 				}
 			}		
 			
@@ -337,7 +330,8 @@ TM.WebServices.Data.getGuidanceItemsInGuid_For_DataTable = function(guid_for_Lib
 			dataTableData = TM.WebServices.Data.getGuidanceItems_For_DataTable([])			
 		}
 		
-		TM.WebServices.Data.lastDataTableData    = dataTableData;
+		TM.WebServices.Data.lastDataTableData            = dataTableData;
+        TM.WebServices.Data.dataTableDataForSelectedGuid = dataTableData;
 		return dataTableData;
    }
    

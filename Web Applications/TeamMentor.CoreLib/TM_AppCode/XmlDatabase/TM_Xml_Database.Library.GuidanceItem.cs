@@ -331,7 +331,11 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
             {
                 var cdataContent=  article.Content.Data.Value.replace("]]>", "]] >"); // xmlserialization below will break if there is a ]]>  in the text
                 //cdataContent = cdataContent.fixXmlDoubleEncodingIssue();
-                article.Content.Data.Value = cdataContent.tidyHtml();
+                var tidiedHtml = cdataContent.tidyHtml();
+                
+                article.Content.Data.Value = tidiedHtml;
+                if (article.serialize(false).inValid())        //see if the tidied content can be serialized  and if not use the original data              
+                    article.Content.Data.Value = cdataContent;
             }            
 			article.Metadata.Library_Id = libraryId;        //ensure the LibraryID is correct
 

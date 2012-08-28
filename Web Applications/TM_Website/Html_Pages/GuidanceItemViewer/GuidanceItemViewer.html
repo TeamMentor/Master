@@ -1,10 +1,10 @@
 <!DOCTYPE HTML>
 <html>	
 	<head>	
-		<title>TeamMentor</title>		
+		<title>TeamMentor 3.2</title>		
 		<link  href="/aspx_Pages/scriptCombiner.ashx?s=HomePage_CSS&ct=css" 				type="text/css" rel="stylesheet" /> 
-		<link  href="/Css/ArticleViewer.css" type="text/css" rel="stylesheet" /> 		
-		<script src="/aspx_Pages/scriptCombiner.ashx?s=WebServices_JS"						type="text/javascript"></script>	
+		<!--<link  href="/Css/ArticleViewer.css" type="text/css" rel="stylesheet" /> 		-->
+		<script src="/aspx_Pages/scriptCombiner.ashx?s=WebServices_JS&dontMinify=true"						type="text/javascript"></script>	
         
         <link href="/Javascript/jsPrettify/prettify.css"                                    type="text/css" rel="stylesheet" />
         <script src="/Javascript/jsPrettify/prettify.js"                                    type="text/javascript" ></script>				
@@ -48,7 +48,8 @@
                 var getGuidFromUrl = function()
 					{
                         mappingText = document.URL.split('/').pop();
-						var mapping = "{ mapping : '" + mappingText + "' }";                        
+						//var mapping = "{ mapping : '" + mappingText + "' }";   
+                        mapping =    { mapping : mappingText }    ;                           
 						TM.WebServices.Helper.invoke_TM_WebService("getGuidForMapping",mapping, function(data)
 							{
 								guidanceId = data;
@@ -72,8 +73,8 @@
 					if (loadedGuidanceItem != null)
 					{		
                         $("#itemContent").show()
-						"#Title"            .$().html(loadedGuidanceItem.Metadata.Title);	
-                        
+						"#Title"            .$().html(loadedGuidanceItem.Metadata.Title);
+						document.title = TM.ArticleTitle + " - " + loadedGuidanceItem.Metadata.Title;
                         if ((loadedGuidanceItem.Metadata.Category    == null || loadedGuidanceItem.Metadata.Category    == "")   &&
                             (loadedGuidanceItem.Metadata.Phase       == null || loadedGuidanceItem.Metadata.Phase       == "")      &&
                             (loadedGuidanceItem.Metadata.Technology  == null || loadedGuidanceItem.Metadata.Technology  == "") && 
@@ -89,17 +90,20 @@
 						    "TechnologyLabel"   .$().html(loadedGuidanceItem.Metadata.Technology);
 						    "GuidanceTypeLabel" .$().html(loadedGuidanceItem.Metadata.Type);
                         }
-						if (loadedGuidanceItem.Content.DataType.toLowerCase() === "wikitext")
-                        {
-                            showGuidanceItemWikiText(loadedGuidanceItem.Content.Data_Json);
-                            $("#EditButton").hide();
+                        if (loadedGuidanceItem.Content.DataType.toLowerCase() === "wikitext")
+                            {
+                                showGuidanceItemWikiText(loadedGuidanceItem.Content.Data_Json);
+                                $("#Edit_WYSIWYG").html("Edit WikiText")
+                            }
+                            else
+                            {
+						        showGuidanceItemHtml(loadedGuidanceItem.Content.Data_Json);
+                                $("#Edit_WYSIWYG").html("Edit WYSIWYG")						    
+                            }
+                        if (TM.Gui.CurrentUser.isEditor())
+                        {					        
+					        $(".EditButtons").show();	
                         }
-                        else
-                        {
-						    showGuidanceItemHtml(loadedGuidanceItem.Content.Data_Json);
-                            $("#EditButton").show();
-                        }
-					
 					}
 					else
 					{
@@ -254,13 +258,13 @@
 							$("#notAViewerErrorMessage").show().html("<h2>Access denied.</h2><br/><p>Please close this window or <a href='javascript:TM.Gui.Dialog.loginPage()'>login</a></p>");
 						}
 					
-						if(TM.Gui.CurrentUser.isEditor() )				
-						{
-							$("#SidePanel").show();					
+						/*if(TM.Gui.CurrentUser.isEditor() )				
+						{						    
+						    $(".EditButtons").show();			
 						}
 						else
-							$("#SidePanel").hide();
-
+						    $(".EditButtons").hide();
+                            */
 						//"ItemTitle".$().css('padding',10)	
 					}
 		
@@ -315,41 +319,43 @@
 			</script>
 		
         <a href="/"><img src="/Images/HeaderImage.jpg" alt="TeamMentor Enterprise Edition" class="HeaderImage"/></a>	
-		<h1><div class="ItemTitle" id="Title"> </div></h1> 
-
-		<table class="ItemDetailTable" cellpadding="0" cellspacing="0">
-			<tr>
-				<td class="ItemDetailHeader">
-					Technology
-				</td>	
-				<td class="ItemDetailHeader">
-					Category
-				</td>					
-				<td class="ItemDetailHeader">
-					Phase
-				</td>				
-				<td class="ItemDetailHeader">
-					Type
-				</td>			
-			</tr>
-			<tr>
-				<td class="ItemDetailValue">					
-					<div ID="TechnologyLabel"> </div>
-				</td>		
-				<td class="ItemDetailValue">
-					<div ID="CategoriesLabel"> </div>
-				</td>				
-				<td class="ItemDetailValue">
-					<div ID="PhaseLabel"> </div>
-				</td>				
-				<td class="ItemDetailValue">					
-					<div ID="GuidanceTypeLabel"> </div>
-				</td>		
-			</tr>
-		</table>
-		<div id="SidePanel">      
+        <div style="padding:10px">
+		    <h2><div class="ItemTitle" id="Title"> </div></h2> 
+            <br />        
+		    <table class="ItemDetailTable" cellpadding="0" cellspacing="0">
+			    <tr>
+				    <td class="ItemDetailHeader">
+					    Technology
+				    </td>	
+				    <td class="ItemDetailHeader">
+					    Category
+				    </td>					
+				    <td class="ItemDetailHeader">
+					    Phase
+				    </td>				
+				    <td class="ItemDetailHeader">
+					    Type
+				    </td>			
+			    </tr>
+			    <tr>
+				    <td class="ItemDetailValue">					
+					    <div ID="TechnologyLabel"> </div>
+				    </td>		
+				    <td class="ItemDetailValue">
+					    <div ID="CategoriesLabel"> </div>
+				    </td>				
+				    <td class="ItemDetailValue">
+					    <div ID="PhaseLabel"> </div>
+				    </td>				
+				    <td class="ItemDetailValue">					
+					    <div ID="GuidanceTypeLabel"> </div>
+				    </td>		
+			    </tr>
+		    </table>
+        </div>
+		<div class="EditButtons">      
 			<div id="links">
-				<a href="javascript:openGuidanceItemEditor()" class="IVButton" id="EditButton">Edit WYSIWYG</a>
+				<a href="javascript:openGuidanceItemEditor()" class="IVButton" id="Edit_WYSIWYG">Edit WYSIWYG</a>
 				<a href="javascript:openGuidanceItemNotepad()" class="IVButton">Edit Source</a>
 			</div>					
 		</div>		
