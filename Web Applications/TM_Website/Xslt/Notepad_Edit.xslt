@@ -8,7 +8,7 @@
     <html>
       <head>
         <title>TeamMentor 'Notepad' Editor</title>        
-		<link rel="stylesheet" href="/Css/NotepadEditor.css" type="text/css"></link>
+		    <link rel="stylesheet" href="/Css/NotepadEditor.css" type="text/css"></link>
         <script src="/Javascript/jQuery/jquery-1.7.1.min.js"                  type="text/javascript"></script>
         <script src="/Javascript/jQuery/jquery.textarea.js"                   type="text/javascript"></script>
 
@@ -17,6 +17,8 @@
         <script src="/Javascript/TM/WebServices.js"                           type="text/javascript"></script>
         <script src="/Javascript/TM/Events.js"                                type="text/javascript"></script>
         <script src="/Javascript/TM.Gui/TM.Gui.CurrentUser.js"                type="text/javascript"></script>
+        <script src="/Javascript/jQuery/jquery.validate.min.js"               type="text/javascript"></script>
+        <script src="/Javascript/jO2/jO2_jQuery_ExtensionMethods.js"          type="text/javascript"></script>        
       </head>
       <body>
         <script>
@@ -36,6 +38,7 @@
         <script>
             var id = '<xsl:value-of select='//Metadata/Id'/>';            
             var title = '<xsl:value-of select='//Metadata/Title'/>';            
+            var dataType = '<xsl:value-of select='//Content/@DataType'/>';
             
             document.title = "Editing: " + title;
             
@@ -106,6 +109,7 @@
                   addPreviewDiv();
                   TM.Events.onUserDataLoaded.add(setupGui);       
                   TM.Gui.CurrentUser.loadUserData();
+                  $("#DataType").val(dataType);
                 });
         </script>
         
@@ -130,11 +134,16 @@
 
   <xsl:template match="Content">
 	<span class="NEDataTypeLabel">Data Type:</span>
-	<input type ="input" id="DataType" class="NEDataType">
+    <select id="DataType" class="NEDataType">
+      <option value ="Html">Html</option>
+      <option value ="WikiText">WikiText</option>      
+     </select>
+    <span id="WikiTextHelp">WikiText uses <a href="http://wikicreole.org/attach/CheatSheet/creole_cheat_sheet.png" target="_blank"> WikiCreole</a> </span>
+	<!--<input type ="input" id="DataType" class="NEDataType">
 	<xsl:attribute name="value">
 	  <xsl:value-of select="@DataType"/>
 	</xsl:attribute>
-	</input>	
+	</input>	-->
 	
 	<div class="NEContent">
     <textarea class="Content" id="Content">
