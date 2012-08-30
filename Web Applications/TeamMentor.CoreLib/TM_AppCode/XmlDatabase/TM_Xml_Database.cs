@@ -73,7 +73,8 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			ActiveSessions = new Dictionary<Guid, TMUser>();
 				
 			//setDataFromCurrentScript(@"..\..");
-            setDataFromCurrentScript(@"..\TM_Library_Data");
+            //setDataFromCurrentScript(@"..\TM_Library_Data");
+            setDataFromCurrentScript(TMConfig.Current.TMLibraryDataVirtualPath);
 			
 		} 
 		

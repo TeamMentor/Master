@@ -9,6 +9,7 @@ namespace SecurityInnovation.TeamMentor.WebClient
 	{			
 		public string 		WebSite_Port 		        { get; set; }
 		public string 		WebSite_IP 			        { get; set; }
+        public string       TMLibraryDataVirtualPath    { get; set; }
 		public string 		XmlLibrariesPath 	        { get; set; }
 		public List<string> Libraries_Disabled 	        { get; set; }
 		public string 		DefaultAdminUserName        { get; set; }
@@ -97,6 +98,7 @@ namespace SecurityInnovation.TeamMentor.WebClient
 			tmConfig.Libraries_Disabled = new List<string>();				
 			tmConfig.WebSite_IP = "localhost";
 			tmConfig.WebSite_Port = "12345";
+            tmConfig.TMLibraryDataVirtualPath = "..\\..";
 			tmConfig.XmlLibrariesPath = "TM_Library";
 			tmConfig.DefaultAdminUserName = "admin";
 			tmConfig.DefaultAdminPassword = "!!tmbeta";
