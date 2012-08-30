@@ -21,6 +21,11 @@
         <script src="/Javascript/jO2/jO2_jQuery_ExtensionMethods.js"          type="text/javascript"></script>        
       </head>
       <body>
+
+        <span id="DataType_RawValue" class="NEHiddenValue"><xsl:value-of select="*/Content/@DataType"/></span>        
+        <span id="Title_RawValue"    class="NEHiddenValue"><xsl:value-of select="*/Metadata/Title"/></span>        
+        <span id="Id_RawValue"       class="NEHiddenValue"><xsl:value-of select="*/Metadata/Id"/></span>    
+        
         <script>
            jQuery.ctrl      = function(key, callback, args)                                       //from http://www.gmarwaha.com/blog/2009/06/16/ctrl-key-combination-simple-jquery-plugin/
                                     {
@@ -35,10 +40,12 @@
                                          });
                                     };
         </script>
+        
         <script>
-            var id = "<xsl:value-of select='//Metadata/Id'/>";            
-            var title = "<xsl:value-of select='//Metadata/Title'/>";            
-            var dataType = "<xsl:value-of select='//Content/@DataType'/>";
+          
+            var id       = $("#Id_RawValue").html(); 
+            var title    = $("#Title_RawValue").html();
+            var dataType = $("#DataType_RawValue").html(); 
             
             document.title = "Editing: " + title;
             
@@ -113,11 +120,13 @@
                 });
         </script>
         
-          <xsl:apply-templates select="*"/>    
+        <xsl:apply-templates select="*"/>
       </body>
     </html>
   </xsl:template>
 
+
+                
   <xsl:template match="Metadata">
     <div class="NEHeader">
       <h2>
@@ -139,11 +148,6 @@
       <option value ="WikiText">WikiText</option>      
      </select>
     <span id="WikiTextHelp">WikiText uses <a href="http://wikicreole.org/attach/CheatSheet/creole_cheat_sheet.png" target="_blank"> WikiCreole</a> </span>
-	<!--<input type ="input" id="DataType" class="NEDataType">
-	<xsl:attribute name="value">
-	  <xsl:value-of select="@DataType"/>
-	</xsl:attribute>
-	</input>	-->
 	
 	<div class="NEContent">
     <textarea class="Content" id="Content">

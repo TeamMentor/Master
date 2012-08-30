@@ -197,11 +197,11 @@ namespace SecurityInnovation.TeamMentor.WebClient
 
         public static TeamMentor_Article teamMentor_Article(this string pathToXmlFile)
         { 
-            var article = pathToXmlFile.load<TeamMentor_Article>()
-                                       .htmlEncode();
+            var article = pathToXmlFile.load<TeamMentor_Article>().htmlEncode(); 
             return article;
         }
 
+        //this causes  double encoding problems with some properties (like the Title on Html Editor) , but removing it opens up more XSS on other viewers (like the Table)
         public static TeamMentor_Article htmlEncode(this TeamMentor_Article article)
         {          
             var metaData = article.Metadata;

@@ -55,13 +55,14 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 																																		return new TM_Xml_Database().reloadData(libraryPath); 
 																																	}
 
-		[WebMethod(EnableSession = true)] public List<Guid> XmlDatabase_GuidanceItems_SearchTitleAndHtml(List<Guid> guidanceItemsIds, string searchText)		{	 return new TM_Xml_Database().guidanceItems_SearchTitleAndHtml(guidanceItemsIds,searchText); }																	
+		[WebMethod(EnableSession = true)] public List<Guid>     XmlDatabase_GuidanceItems_SearchTitleAndHtml(List<Guid> guidanceItemsIds, string searchText)		{	 return new TM_Xml_Database().guidanceItems_SearchTitleAndHtml(guidanceItemsIds,searchText); }																	
 																	
-		[WebMethod(EnableSession = true)] public string XmlDatabase_GetGuidanceItemXml(Guid guidanceItemId)	    {	return new TM_Xml_Database().xmlDB_guidanceItemXml(guidanceItemId); }        
+		[WebMethod(EnableSession = true)] public string         XmlDatabase_GetGuidanceItemXml(Guid guidanceItemId)	    {	return new TM_Xml_Database().xmlDB_guidanceItemXml(guidanceItemId); }        
+        [WebMethod(EnableSession = true)] public string         XmlDatabase_GetGuidanceItemPath(Guid guidanceItemId)	{	return new TM_Xml_Database().xmlDB_guidanceItemPath(guidanceItemId); }                
 																	
-		[WebMethod(EnableSession = true)] public string RBAC_CurrentIdentity_Name()				                {	return new UserRoleBaseSecurity().currentIdentity_Name(); }
-		[WebMethod(EnableSession = true)] public bool   RBAC_CurrentIdentity_IsAuthenticated()	                {	return new UserRoleBaseSecurity().currentIdentity_IsAuthenticated(); }
-		[WebMethod(EnableSession = true)] public List<string>  RBAC_CurrentPrincipal_Roles()		            {	return new UserRoleBaseSecurity().currentPrincipal_Roles().toList(); }
+		[WebMethod(EnableSession = true)] public string         RBAC_CurrentIdentity_Name()				                {	return new UserRoleBaseSecurity().currentIdentity_Name(); }
+		[WebMethod(EnableSession = true)] public bool           RBAC_CurrentIdentity_IsAuthenticated()	                {	return new UserRoleBaseSecurity().currentIdentity_IsAuthenticated(); }
+		[WebMethod(EnableSession = true)] public List<string>   RBAC_CurrentPrincipal_Roles()		            {	return new UserRoleBaseSecurity().currentPrincipal_Roles().toList(); }
 		[WebMethod(EnableSession = true)] public bool  RBAC_HasRole(string role)					            {	return RBAC_CurrentPrincipal_Roles().contains(role); }
 		[WebMethod(EnableSession = true)] public string  RBAC_SessionCookie()						            {	return HttpContext.Current.Request.Cookies["Session"].notNull() 
 																												? HttpContext.Current.Request.Cookies["Session"].Value : ""; }

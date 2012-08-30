@@ -164,7 +164,8 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                 {
                     o2Timer = new O2Timer("mapping to memory loadGuidanceItemsFromCache").start();
                     foreach (var loadedGuidanceItem in loadedGuidanceItems)
-                        TM_Xml_Database.Cached_GuidanceItems.add(loadedGuidanceItem.Metadata.Id, loadedGuidanceItem);
+                        if (loadedGuidanceItem.notNull())
+                            TM_Xml_Database.Cached_GuidanceItems.add(loadedGuidanceItem.Metadata.Id, loadedGuidanceItem);                    
                     o2Timer.stop();
                 }
 			}

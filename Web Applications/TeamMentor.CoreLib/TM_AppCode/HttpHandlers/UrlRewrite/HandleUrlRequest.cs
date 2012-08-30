@@ -329,7 +329,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 
             tmWebServices.XmlDatabase_GetGuidanceItemXml(guid); // will trigger an Security exception if the user if not authorized
 
-			context.Server.Transfer("/html_pages/GuidanceItemEditor/GuidanceItemEditor.html");						            
+            context.Server.Transfer("/html_pages/GuidanceItemEditor/GuidanceItemEditor.html");
             return false;    
 		}
 

@@ -246,8 +246,8 @@
 						
             var getGuidFromUrl = function()
 				{
-                    var id = document.URL.split('/').pop().split("#").shift();
-					var mapping = "{ mapping : '" + id + "' }";                        
+                    var id = document.URL.split('/').pop().split("#").shift();					     
+                    var mapping =    { mapping : id }    ;                    
 					TM.WebServices.Helper.invoke_TM_WebService("getGuidForMapping",mapping, function(data)
 						{
 							guidanceId = data;
@@ -270,7 +270,7 @@
 					return;
 				}
 				
-				$("#Title")                 .val(loadedGuidanceItem.Metadata.Title);
+				$("#Title")                 .val(htmlUnEscape(loadedGuidanceItem.Metadata.Title));
 				$("#TechnologyValue_input") .val(loadedGuidanceItem.Metadata.Technology);
 				$("#PhaseValue_input")      .val(loadedGuidanceItem.Metadata.Phase);
 				$("#TypeValue_input")       .val(loadedGuidanceItem.Metadata.Type);
@@ -300,6 +300,7 @@
                                 {
                                   	showMessage("Article saved.");
 									updateCacheWithSavedGuidanceItem();
+                                    setTimeout(openGuidanceItemViewer, 1000);
                                 }
 
                          	else
@@ -503,6 +504,15 @@
                         .replace(/>/g, '&gt;');
             };	
 		
+        var htmlUnEscape = function(str) 
+            {
+                return String(str)
+                        .replace(/&amp;/g, '&')
+                        .replace(/&quot;/g, '"')
+                        .replace(/&#39;/g, '\'')
+                        .replace(/&lt;/g, '<')
+                        .replace(/&gt;/g, '>');
+            };
 		$(function()
 			{												                
                 $(".ItemDetailTable").hide();

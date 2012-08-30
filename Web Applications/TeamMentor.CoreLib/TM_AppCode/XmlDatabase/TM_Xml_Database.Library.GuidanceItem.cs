@@ -12,6 +12,7 @@ using O2.DotNetWrappers.Windows;
 using urn.microsoft.guidanceexplorer;
 using urn.microsoft.guidanceexplorer.guidanceItem;
 using Microsoft.Security.Application;
+using SecurityInnovation.TeamMentor.Authentication.WebServices.AuthorizationRules;
 //O2File:TM_Xml_Database.cs
 //O2File:../O2_Scripts_APIs/_O2_Scripts_Files.cs
 
@@ -296,8 +297,8 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 							//			.type;
 									};
              */ 
-			article.xmlDB_Save_Article(libraryId, tmDatabase);			
-			return article.htmlEncode();
+			article.xmlDB_Save_Article(libraryId, tmDatabase);
+            return article.htmlEncode();  //this was causing double encoding problems with some properties (like the Title)
 		}
 
         public static Guid xmlDB_Create_Article(this TM_Xml_Database tmDatabase, TeamMentor_Article article)
@@ -385,6 +386,14 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			return guidanceXmlPath.fileContents();//.xmlFormat();
 		}
 
+        [Admin(SecurityAction.Demand)]	
+        public static string xmlDB_guidanceItemPath(this TM_Xml_Database tmDatabase, Guid guidanceItemId)
+        {
+            if (TM_Xml_Database.GuidanceItems_FileMappings.hasKey(guidanceItemId))                            
+                return TM_Xml_Database.GuidanceItems_FileMappings[guidanceItemId];            
+            return null;
+        }
+
 
         public static Guid xmlBD_resolveDirectMapping(this TM_Xml_Database tmDatabase, string mapping)
         {
@@ -466,8 +475,12 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 
         public static bool titleMatch(TeamMentor_Article article, string title1, string title2)
         {
-            return (article.Metadata.Title.notNull() && (article.Metadata.Title.lower() == title1) ||
-                                                         article.Metadata.Title.lower() == title2);
+            var match = (article.Metadata.Title.notNull() && (article.Metadata.Title.lower() == title1) ||
+                                                              article.Metadata.Title.lower() == title2);
+            if (match)
+            { 
+            }
+            return match;
         }
 
         public static Guid xmlBD_resolveMappingToArticleGuid(this TM_Xml_Database tmDatabase, string mapping)
