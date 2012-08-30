@@ -230,8 +230,15 @@
     <Content Include="Html_Pages\Gui\Pages\login.html" />
     <Content Include="Html_Pages\Gui\Panels\About_TeamMentor.html" />
     <Content Include="Html_Pages\Gui\Panels\AD_Non_Authorized_User.html" />
+    <Content Include="Html_Pages\_UnitTest_Helpers\DataGrids\DataGrid_withLoginPage.htm" />
     <Content Include="Html_Pages\_UnitTest_Helpers\Tests_For_BrowserBugs\Chrome_CPU_Spike_on_Password_Field_in_JQueryUI_Dialog.htm" />
     <Content Include="Html_Pages\_UnitTest_Helpers\_Javascript_Loaders\FirebugLite_with_TM_WebServices.html" />
+    <Content Include="Html_Pages\_UnitTest_Helpers\_Javascript_Loaders\jQuery.html" />
+    <Content Include="Images\AppliedFiltersHeader.jpg" />
+    <Content Include="Images\JiTGuidance.PNG" />
+    <Content Include="Images\open_in_new_window.png" />
+    <Content Include="Images\PivotHeader.jpg" />
+    <Content Include="Images\RemoveAllButton.jpg" />
     <Content Include="Javascript\bootstrap\bootstrap.min.css" />
     <Content Include="Javascript\bootstrap\bootstrap.min.js" />
     <Content Include="Javascript\bootstrap\glyphicons-halflings-white.png" />
