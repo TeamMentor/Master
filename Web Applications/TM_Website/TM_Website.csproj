@@ -501,10 +501,6 @@
     <Content Include="Javascript\jQuery\jquery.jeditable.mini.js" />
     <Content Include="Javascript\jQuery\jquery.rule-1.0.2.js" />
     <Content Include="Javascript\jQuery\jquery.validate.min.js" />
-    <Content Include="Javascript\jQuery\themes\default\d.gif" />
-    <Content Include="Javascript\jQuery\themes\default\d.png" />
-    <Content Include="Javascript\jQuery\themes\default\style.css" />
-    <Content Include="Javascript\jQuery\themes\default\throbber.gif" />
     <Content Include="Javascript\json\json2.js" />
     <Content Include="Javascript\jsPrettify\beautify.js" />
     <Content Include="Javascript\jsPrettify\prettify.css" />
