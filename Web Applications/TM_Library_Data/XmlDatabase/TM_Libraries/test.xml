@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<guidanceExplorer xmlns="urn:microsoft:guidanceexplorer">
+  <library name="468f7b17-2050-436b-bffa-70e642cf70ae" caption="test">
+    <libraryStructure>
+      <view caption="a View" id="92c79e3a-0223-4bb8-8409-ff246043d077" creationDate="0001-01-01T00:00:00">
+        <items>
+          <item>00000000-0000-0000-0000-00000087aad4</item>
+        </items>
+      </view>
+    </libraryStructure>
+    <items />
+  </library>
+</guidanceExplorer>

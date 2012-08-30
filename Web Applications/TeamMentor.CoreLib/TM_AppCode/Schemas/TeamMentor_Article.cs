@@ -162,6 +162,7 @@ namespace SecurityInnovation.TeamMentor.WebClient
                                                 };
             teamMentor_Article.Content.Data.Value = this.content;
             teamMentor_Article.setHashes();
+            teamMentor_Article.htmlEncode();            //encode contents
             return teamMentor_Article;
 		}
 	}
@@ -203,7 +204,9 @@ namespace SecurityInnovation.TeamMentor.WebClient
 
         //this causes  double encoding problems with some properties (like the Title on Html Editor) , but removing it opens up more XSS on other viewers (like the Table)
         public static TeamMentor_Article htmlEncode(this TeamMentor_Article article)
-        {          
+        {
+            if (article.isNull())
+                return null;
             var metaData = article.Metadata;
             foreach(var prop in metaData.type().properties())
             {

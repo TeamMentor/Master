@@ -296,7 +296,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		{
             try
             {
-                if (zipFileToImport.isUri())
+                 if (zipFileToImport.isUri())
                 {
                     "[xmlDB_Libraries_ImportFromZip] provided value was an URL so, downloading it: {0}".info(zipFileToImport);
                     zipFileToImport = new Web().downloadBinaryFile(zipFileToImport);
@@ -318,7 +318,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                     {
                         new ICSharpCode.SharpZipLib.Zip.FastZip().ExtractZip(zipFileToImport, currentLibraryPath, "");
 
-                        //zipFileToImport.unzip_File(currentLibraryPath); 					
+                        //zipFileToImport.unzip_File(currentLibraryPath); 				                        
                         return true;
                     }
                     else
