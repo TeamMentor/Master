@@ -100,16 +100,20 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		public static int createDefaultAdminUser(this TM_Xml_Database tmDb)
 		{  
 			var tmConfig = TMConfig.Current;
-			var defaultAdminUser_name = tmConfig.DefaultAdminUserName;
-			var defaultAdminUser_pwd =  tmConfig.DefaultAdminPassword;
-			var adminUser = tmDb.tmUser(defaultAdminUser_name);
-			if (adminUser.notNull())
-			{
-				//"[TM_Xml_Database] in TMUser createDefaultAdminUser, defaultAdminUser_name already existed in the database (returning its Id): {0}".debug(defaultAdminUser_name);
-				return adminUser.UserID;
-			}
-			var passwordHash = defaultAdminUser_name.createPasswordHash(defaultAdminUser_pwd);
-			return tmDb.newUser(defaultAdminUser_name, passwordHash, 1);
+            lock (tmConfig)
+            {
+                var defaultAdminUser_name = tmConfig.DefaultAdminUserName;
+                var adminUser = tmDb.tmUser(defaultAdminUser_name);
+                if (adminUser.notNull())
+                {
+                    //"[TM_Xml_Database] in TMUser createDefaultAdminUser, defaultAdminUser_name already existed in the database (returning its Id): {0}".debug(defaultAdminUser_name);
+                    return adminUser.UserID;
+                }
+                var defaultAdminUser_pwd = tmConfig.DefaultAdminPassword;
+                var passwordHash = defaultAdminUser_name.createPasswordHash(defaultAdminUser_pwd);
+                var userId = tmDb.newUser(defaultAdminUser_name, passwordHash, 1);
+                return userId;
+            }            
 		}
 		
 		public static TMUser tmUser(this string name)
