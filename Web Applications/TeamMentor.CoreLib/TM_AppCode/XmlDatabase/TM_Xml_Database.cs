@@ -72,16 +72,9 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			TMUsersPasswordHashes = new O2.DotNetWrappers.DotNet.Items ();
 			ActiveSessions = new Dictionary<Guid, TMUser>();
 				
-			setDataFromCurrentScript(@"..\..");
+			//setDataFromCurrentScript(@"..\..");
+            setDataFromCurrentScript(@"..\TM_Library_Data");
 			
-			/*	"[TM_Xml_Database]: TMConfig.BaseFolder: {0}".info(TMConfig.BaseFolder);
-				Path_XmlDatabase = TMConfig.BaseFolder.pathCombine(@"..\..\Library_Data\XmlDatabase").fullPath();
-				"[TM_Xml_Database] in static ctor: Path to XMLDatabase = {0}".info(Path_XmlDatabase);
-				//Path_XmlDatabase = AppDomain.CurrentDomain.BaseDirectory.pathCombine(@"..\..\Library_Data\XmlDatabase").fullPath();			
-				setLibraryPath(TMConfig.Current.XmlLibrariesPath);
-				
-				TM_Xml_Database_Load_and_FileCache_Utils.populateGuidanceItemsFileMappings();	//only do this once
-			*/				
 		} 
 		
 		public TM_Xml_Database()
@@ -103,11 +96,10 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			try
 			{				
 				"[setDataFromCurrentScript] virtualPathMapping: {0}".info(virtualPathMapping);
-				TM_Xml_Database.Path_XmlDatabase = //PublicDI .CurrentScript.directoryName()
-													TMConfig.BaseFolder
-															.pathCombine(virtualPathMapping)
+				TM_Xml_Database.Path_XmlDatabase = TMConfig .BaseFolder
+														    .pathCombine(virtualPathMapping)
 															.fullPath()
-															.pathCombine("Library_Data/XmlDatabase");
+															.pathCombine("XmlDatabase");
 				TM_Xml_Database.setLibraryPath(TMConfig.Current.XmlLibrariesPath);
 				"[TM_Xml_Database][setDataFromCurrentScript] TM_Xml_Database.Path_XmlDatabase: {0}".debug(TM_Xml_Database.Path_XmlDatabase);
 				"[TM_Xml_Database][setDataFromCurrentScript] TMConfig.Current.XmlLibrariesPath: {0}".debug(TMConfig.Current.XmlLibrariesPath);

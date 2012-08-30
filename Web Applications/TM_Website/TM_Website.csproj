@@ -80,6 +80,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Aspx_Pages\Debug.aspx" />
     <Content Include="Aspx_Pages\images\back_disabled.jpg" />
     <Content Include="Aspx_Pages\images\back_enabled.jpg" />
     <Content Include="Aspx_Pages\images\forward_disabled.jpg" />

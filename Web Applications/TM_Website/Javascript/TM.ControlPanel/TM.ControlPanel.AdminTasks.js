@@ -80,7 +80,7 @@
                                                     adminTasks.addLinkWithWebServiceCall('Set Library Path (default)', 'XmlDatabase_SetLibraryPath', { libraryPath: 'TM_Libraries' }, false);
                                                     adminTasks.addLinkWithWebServiceCall('Set Library Path (temp)', 'XmlDatabase_SetLibraryPath', { libraryPath: 'C:\\O2\\_tempDir\\_TeamMentor_Temp_Libraries' }, false);
                                                     adminTasks.addLinkWithWebServiceCall('Get Library Zips Path', 'Get_Libraries_Zip_Folder', {}, true);
-                                                    adminTasks.addLinkWithWebServiceCall('Set Library Zips Path (default)', 'Set_Libraries_Zip_Folder', { folder: '..//Library_Data//TM_Library_Zips' }, false);
+                                                    adminTasks.addLinkWithWebServiceCall('Set Library Zips Path (default)', 'Set_Libraries_Zip_Folder', { folder: '..//TM_Library_Zips' }, false);
 
 
                                                     adminTasks.addLinkWithWebServiceCall('Get Libraries', 'GetLibraries', {}, true);

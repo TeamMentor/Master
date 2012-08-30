@@ -148,6 +148,8 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                         return handleAction_Image(data);
                     case "jsonp":
                         return handleAction_JsonP(data);
+                    case "debug":
+                        return redirectTo_DebugPage();
                     default:                        
                         return false;                                          
                 }                                           
@@ -383,6 +385,13 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			context.Response.Redirect("/article/{0}".format(article));
             return false;    
 		}        
+
+        public bool redirectTo_DebugPage()
+		{			
+			context.Response.Redirect("/Aspx_Pages/Debug.aspx");
+            return false;    
+		}   
+        
 	}
 
     public static class HelperExtensionMethods
