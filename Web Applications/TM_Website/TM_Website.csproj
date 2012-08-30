@@ -456,7 +456,6 @@
     <Content Include="Javascript\jQuery.jsTree\jquery.cookie.js" />
     <Content Include="Javascript\jQuery.jsTree\jquery.hotkeys.js" />
     <Content Include="Javascript\jQuery.jsTree\jquery.jstree.js" />
-    <Content Include="Javascript\jQuery.jsTree\jsTree.ExtraMethods.js" />
     <Content Include="Javascript\jQuery.jsTree\themes\default\d.gif" />
     <Content Include="Javascript\jQuery.jsTree\themes\default\d.png" />
     <Content Include="Javascript\jQuery.jsTree\themes\default\style.css" />
