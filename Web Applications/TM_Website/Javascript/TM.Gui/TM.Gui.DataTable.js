@@ -327,6 +327,6 @@ TM.Gui.DataTable.addDataTableButtons = function()
 TM.Gui.DataTable.raiseEventForEmptyTable = function()
     {
         TM.Gui.selectedGuidanceId = TM.Const.emptyGuid;
-        TM.Gui.selectedGuidanceTitle = "(no article available)";
+        TM.Gui.selectedGuidanceTitle = "No article available.";
         TM.Events.onShowGuidanceItem();
     }
