@@ -343,7 +343,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
             if (article.serialize(false).valid())           // make sure the article can be serilialized  correctly
             {
                 article.saveAs(guidanceXmlPath);
-                //add it to in Memory cache
+                //add it to in Memory cache                
                 article.update_Cache_GuidanceItems(tmDatabase);
                 return guidanceXmlPath.fileExists();			
             }

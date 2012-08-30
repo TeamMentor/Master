@@ -230,14 +230,14 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		}
 		
 		public static TeamMentor_Article update_Cache_GuidanceItems(this TeamMentor_Article guidanceItem,  TM_Xml_Database tmDatabase)
-		{			
+        {
+            guidanceItem.htmlEncode(); // ensure MetaData is encoded
+
 			var guidanceItemGuid = guidanceItem.Metadata.Id;
 			if (TM_Xml_Database.Cached_GuidanceItems.hasKey(guidanceItemGuid))
 				TM_Xml_Database.Cached_GuidanceItems[guidanceItemGuid] = guidanceItem;
 			else
-				TM_Xml_Database.Cached_GuidanceItems.Add(guidanceItem.Metadata.Id, guidanceItem);
-			
-			//TM_Xml_Database.mapGuidanceItemsViews();  		// update views (to make sure they are pointing to the correct GuidanceItem object	
+				TM_Xml_Database.Cached_GuidanceItems.Add(guidanceItem.Metadata.Id, guidanceItem);						
 
 			tmDatabase.queue_Save_GuidanceItemsCache();
 			
