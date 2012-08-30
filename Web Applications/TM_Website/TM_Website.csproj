@@ -254,7 +254,6 @@
     <Content Include="Html_Pages\Gui\Panels\Top_ShowFilters.html" />
     <Content Include="Html_Pages\Gui\Panels\User_Not_Logged.html" />
     <Content Include="Html_Pages\Gui\TeamMentor.html" />
-    <Content Include="Html_Pages\Gui\Tests\_jQueryUI_Tests.html" />
     <Content Include="Html_Pages\Gui\TM_3_with_Panels.html" />
     <Content Include="Html_Pages\ManageContent\ManageGuidanceItems.html" />
     <Content Include="Html_Pages\_UnitTest_Helpers\AppliedFilters\AppliedFilters_View_All_GuidanceItems - shows IE load prob.html" />
