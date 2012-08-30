@@ -591,10 +591,10 @@
     <Content Include="Images\Up.png" />
     <Content Include="Images\ViewIcon.png" />
     <Content Include="Images\HeaderImage.jpg" />
-    <None Include="Aspx_Pages\File_Upload.ashx" />
+    <Content Include="Aspx_Pages\File_Upload.ashx" />
     <Content Include="Aspx_Pages\UrlRewriter.ashx" />
-    <None Include="Aspx_Pages\ScriptCombiner.ashx" />
-    <None Include="Aspx_Pages\TM_WebServices.asmx" />
+    <Content Include="Aspx_Pages\ScriptCombiner.ashx" />
+    <Content Include="Aspx_Pages\TM_WebServices.asmx" />
     <None Include="Html_Pages\ControlPanel\WebEditor\codeMirror\baboon_vector.svg" />
     <Content Include="Html_Pages\ControlPanel\WebEditor\WebEditorService.ashx" />
     <None Include="Html_Pages\_UnitTest_Helpers\TM_qUnit_Tests\js\TM_Gui\TM.Gui.LibraryTree - with JSON data" />
