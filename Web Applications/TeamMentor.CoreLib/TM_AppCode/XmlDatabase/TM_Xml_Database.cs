@@ -94,13 +94,15 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		
 		public static void setDataFromCurrentScript(string virtualPathMapping)
 		{
+            if (virtualPathMapping.notNull())
+                virtualPathMapping = @"..\.."; // to allow backwards compatibility
 			try
 			{				
 				"[setDataFromCurrentScript] virtualPathMapping: {0}".info(virtualPathMapping);
 				TM_Xml_Database.Path_XmlDatabase = TMConfig .BaseFolder
 														    .pathCombine(virtualPathMapping)
 															.fullPath()
-															.pathCombine("XmlDatabase");
+															.pathCombine("Library_Data//XmlDatabase");
 				TM_Xml_Database.setLibraryPath(TMConfig.Current.XmlLibrariesPath);
 				"[TM_Xml_Database][setDataFromCurrentScript] TM_Xml_Database.Path_XmlDatabase: {0}".debug(TM_Xml_Database.Path_XmlDatabase);
 				"[TM_Xml_Database][setDataFromCurrentScript] TMConfig.Current.XmlLibrariesPath: {0}".debug(TMConfig.Current.XmlLibrariesPath);

@@ -1,33 +1,8 @@
 <?xml version="1.0"?>
 <ArrayOfTMUser>
   <TMUser>
-    <UserID xmlns="https://TeamMentor.securityinnovation.com:13415/">673232836</UserID>
+    <UserID xmlns="https://TeamMentor.securityinnovation.com:13415/">488544138</UserID>
     <UserName xmlns="https://TeamMentor.securityinnovation.com:13415/">admin</UserName>
-    <FirstName xmlns="https://TeamMentor.securityinnovation.com:13415/" />
-    <LastName xmlns="https://TeamMentor.securityinnovation.com:13415/" />
-    <Title xmlns="https://TeamMentor.securityinnovation.com:13415/" />
-    <Company xmlns="https://TeamMentor.securityinnovation.com:13415/" />
-    <EMail xmlns="https://TeamMentor.securityinnovation.com:13415/" />
-    <GroupID xmlns="https://TeamMentor.securityinnovation.com:13415/">1</GroupID>
-    <IsActive xmlns="https://TeamMentor.securityinnovation.com:13415/">false</IsActive>
-    <CSRF_Token xmlns="https://TeamMentor.securityinnovation.com:13415/">817759126</CSRF_Token>
-    <ExpirationDate d3p1:nil="true" xmlns:d3p1="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://TeamMentor.securityinnovation.com:13415/" />
-  </TMUser>
-  <TMUser>
-    <UserID xmlns="https://TeamMentor.securityinnovation.com:13415/">242261450</UserID>
-    <UserName xmlns="https://TeamMentor.securityinnovation.com:13415/">test</UserName>
-    <FirstName xmlns="https://TeamMentor.securityinnovation.com:13415/" />
-    <LastName xmlns="https://TeamMentor.securityinnovation.com:13415/" />
-    <Title xmlns="https://TeamMentor.securityinnovation.com:13415/" />
-    <Company xmlns="https://TeamMentor.securityinnovation.com:13415/" />
-    <EMail xmlns="https://TeamMentor.securityinnovation.com:13415/" />
-    <GroupID xmlns="https://TeamMentor.securityinnovation.com:13415/">3</GroupID>
-    <IsActive xmlns="https://TeamMentor.securityinnovation.com:13415/">false</IsActive>
-    <ExpirationDate d3p1:nil="true" xmlns:d3p1="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://TeamMentor.securityinnovation.com:13415/" />
-  </TMUser>
-  <TMUser>
-    <UserID xmlns="https://TeamMentor.securityinnovation.com:13415/">2016766508</UserID>
-    <UserName xmlns="https://TeamMentor.securityinnovation.com:13415/">a</UserName>
     <FirstName xmlns="https://TeamMentor.securityinnovation.com:13415/" />
     <LastName xmlns="https://TeamMentor.securityinnovation.com:13415/" />
     <Title xmlns="https://TeamMentor.securityinnovation.com:13415/" />

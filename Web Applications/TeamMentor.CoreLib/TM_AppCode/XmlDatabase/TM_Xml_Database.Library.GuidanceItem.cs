@@ -491,7 +491,8 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
             if (mapping.isGuid())
                 return mapping.guid();            
 
-            mapping = mapping.urlDecode().replaceAllWith(" ", new [] {"_", "+"});
+            mapping = mapping.urlDecode().replaceAllWith(" ", new [] {"_", "+"})
+                             .htmlEncode();
             var directMapping = tmDatabase.xmlBD_resolveDirectMapping(mapping);
             if (directMapping != Guid.Empty)
                 return directMapping;            
