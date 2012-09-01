@@ -18,6 +18,7 @@
             <br />
             <strong>TM_Xml_Database.Path_XmlDatabase:</strong> <%=TM_Xml_Database.Path_XmlDatabase %><br />
             <strong>TM_Xml_Database.Path_XmlLibraries:</strong> <%=TM_Xml_Database.Path_XmlLibraries %>
+            <strong>AppDomain.CurrentDomain.BaseDirectory:</strong> <%=AppDomain.CurrentDomain.BaseDirectory%><br />
         </div>
     
 </body>

@@ -51,28 +51,23 @@ TM.Const.EmptyFunction = function() {};
 TM.WebServices.Data.lastDataTableData = { aoColumns : [] , aaData: [] }	
 TM.WebServices.Data.filteredDataTable = { aoColumns : [] , aaData: [] }	
 
-;
-/*TM.ImageCache = function()
-	{		
-		imgCache = null;
-		var loadedImages = [];
+//Global methods:
+var htmlEscape = function(str) 
+    {
+        return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;');
+    };	
 		
-		return 	{
-					setupCache		: function()
-						{
-							imgCache = $("<div>").attr('id', 'img-cache')
-												 .append('<h2>Image Cache</h2>')
-												 .hide();
-							$('body').append(imgCache);											    														
-						},
-					loadImage		: function(path)
-						{
-							var image = $('<img />').attr('src',path);
-							imgCache.append(image);
-							loadedImages.push(image);							
-						},
-					get_ImgCache	: function() { return imgCache; },
-					get_LoadedImages: function() { return loadedImages; }
-				};
-	}();	
-*/	
+var htmlUnEscape = function(str) 
+    {
+        return String(str)
+                .replace(/&amp;/g, '&')
+                .replace(/&quot;/g, '"')
+                .replace(/&#39;/g, '\'')
+                .replace(/&lt;/g, '<')
+                .replace(/&gt;/g, '>');
+    };
