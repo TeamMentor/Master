@@ -35,7 +35,7 @@ TM.Gui.AppliedFiltersList.add_Filter = function(text, title, column, showDeleteB
         
 		deleteImg.click(function()
 			{
-                if (pinned)			
+                if (pinnedImg.pinned)			
                     TM.Gui.Dialog.alertUser("You can't remove a pinned filter")
                 else	
 				    TM.Gui.AppliedFiltersList.removeCriteraFromCriteriaCollection(text, title, column, false);
