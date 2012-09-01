@@ -1,6 +1,7 @@
 TM.Gui.Main.Panels = 
 	{
 			trace						: true
+        ,   handleWindowHashChange  : true
         ,   div_North                   : 'gui_North'
         ,   div_Center                  : 'gui_Center'
         ,   div_Center_Center           : 'gui_CenterCenter'
@@ -52,7 +53,7 @@ TM.Gui.Main.Panels =
 					loadPage('TopMenuLinks',				 this.panelsDir + 'TopRight_Links.html');
 				}		
 		,	setHomePageViewFromUrlHash 	: function()
-			{		
+			{		            
 				TM.Gui.Main.Panels.applyHomePageView(window.location.hash.slice(1).split("&"));
 			}	
 	};
@@ -205,15 +206,30 @@ TM.Gui.Main.Panels.buildGui = function()
 	else		
 		TM.Gui.ShowProgressBar.close();	
 
-    $(window).bind('hashchange', TM.Gui.Main.Panels.setHomePageViewFromUrlHash);
+    TM.Gui.Main.Panels.setWindowHashChangeHook()
 
     TM.Gui.Main.Panels.enableChromeCPUSpikeBugFix();
 }
 
+TM.Gui.Main.Panels.setWindowHashChangeHook = function()
+    {
+        // see if we also need the special code to handle IE's case
+        $(window).bind('hashchange', TM.Gui.Main.Panels.onWindowHashChange);
+    }
 
+TM.Gui.Main.Panels.onWindowHashChange = function()
+    {
+        if (TM.Gui.Main.Panels.handleWindowHashChange)
+        {
+            TM.Gui.Main.Panels.setHomePageViewFromUrlHash();
+            currentPivotPanelFilters = new Array();
+            TM.Events.onTextSearch();    
+        }
+        TM.Gui.Main.Panels.handleWindowHashChange = true; // reset after one round
+    }
 
-
-TM.Gui.Main.Panels.cssFixesForHomePage = function () {
+TM.Gui.Main.Panels.cssFixesForHomePage = function () 
+    {
     var that = TM.Gui.Main.Panels;
     if ($.browser.msie)
         that.div_North.$().height(78)   

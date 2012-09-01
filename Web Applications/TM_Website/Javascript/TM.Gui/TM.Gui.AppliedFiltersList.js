@@ -20,26 +20,72 @@ TM.Gui.AppliedFiltersList.clear_FiltersGui = function()
 		$("#AppliedFilterItems").html('');
 	}
 	
-TM.Gui.AppliedFiltersList.add_Filter = function(text, title, column, showDeleteButton)
+TM.Gui.AppliedFiltersList.add_Filter = function(text, title, column, showDeleteButton, pinned)
 	{
 		var filterDiv = 	  $("<div class='AppliedFilterItem'>");
-		var deleteImg = 	  $("<img src='/Images/DeleteFilterIcon.png' alt='Delete View = Database Security' class='DeleteButton' />");
+		var deleteImg = 	  $("<img src='/Images/DeleteFilterIcon.png' alt='Delete Filter' class='DeleteButton' />");
 		var filterItemImage = $("<img id='ctl00_ContentPlaceHolder1_AppliedFilters1_AppliedFiltersListView_ctrl0_Image1' src='/Images/SingleLibrary.png' style='border-width:0px;' />"); 
+        var pinnedImg       = $("<img class='PinButton'/>");
+        //var unPinnedImg       = $("<img src='/Images/unPinned.png' alt='UnPin item' = Database Security' class='PinButton' style='width:15px'/>");
 		//filterItemText  = $("<span id='ctl00_ContentPlaceHolder1_AppliedFilters1_AppliedFiltersListView_ctrl0_Label1'>");
 		
 		filterItemText = $("<span>").append(" {0} = {1}".format(title, text));		
+
+        //handle delete button settings
+        
 		deleteImg.click(function()
-			{				
-				TM.Gui.AppliedFiltersList.removeCriteraFromCriteriaCollection(text, title, column, false);
+			{
+                if (pinned)			
+                    TM.Gui.Dialog.alertUser("You can't remove a pinned filter")
+                else	
+				    TM.Gui.AppliedFiltersList.removeCriteraFromCriteriaCollection(text, title, column, false);
 			})
 
-		filterDiv.append(filterItemImage);
+        //handle pin button settings
+        pinnedImg.click(function()
+            {
+                TM.Gui.AppliedFiltersList.handle_PinChange(text, title, pinnedImg);
+            });
+		TM.Gui.AppliedFiltersList.set_Pinned(pinnedImg, pinned);
+
+        //add all elements that make this fileter
+        filterDiv.append(filterItemImage);        
 		filterDiv.append(filterItemText);
+        
+        
 		if(showDeleteButton)
 			filterDiv.append(deleteImg)		
 		
+        //filterDiv.append((pinned) ? pinnedImg : unPinnedImg);        
+        filterDiv.append(pinnedImg);        
+        
 		$("#AppliedFilterItems").append(filterDiv);
 	}
+
+TM.Gui.AppliedFiltersList.handle_PinChange = function(text, title, pinnedImg)
+    {
+        pinnedImg.pinned = !pinnedImg.pinned;
+        TM.Gui.AppliedFiltersList.set_Pinned(pinnedImg, pinnedImg.pinned);
+        var hashCommand= title + ":" + text;
+        var newHash = "#";
+        newHash += (pinnedImg.pinned) ?  hashCommand : "";        
+        $.each(document.location.hash.substring(1).split("&"), function(index,value)
+            {
+                console.log("value: " + value);
+                if (value != hashCommand && value !="")
+                    newHash += ((newHash === "#") ? "" : "&") + value;
+            });                
+        TM.Gui.Main.Panels.handleWindowHashChange = false;
+        document.location.hash = newHash;                
+    }
+
+TM.Gui.AppliedFiltersList.set_Pinned = function(pinnedImg, pinned)
+    {        
+        if (pinned)
+            pinnedImg.attr('src', '/Images/Pinned.png').width('19px').pinned = true;
+        else
+            pinnedImg.attr('src', '/Images/unPinned.png').width('14px').pinned=false;
+    }
 
 TM.Gui.AppliedFiltersList.populateAppliedFiltersTable = function ()
 {		
@@ -47,16 +93,15 @@ TM.Gui.AppliedFiltersList.populateAppliedFiltersTable = function ()
 	if (isUndefined(TM.Gui.selectedNodeData))
 		return;
 	TM.Gui.AppliedFiltersList.clear_FiltersGui();
-	
-//	TM.Gui.AppliedFiltersList.add_Filter(TM.Gui.selectedNodeData.name, TM.Gui.selectedNodeData.type, -1 , false);
+
 	
 	$.each(currentPivotPanelFilters, function()
 		{			
-			TM.Gui.AppliedFiltersList.add_Filter(this.text, this.title, this.column, true);
+			TM.Gui.AppliedFiltersList.add_Filter(this.text, this.title, this.column, true, this.pinned);
 		})
 		
 	if (TM.Gui.DataTable.currentTextFilter != "") //escape
-		TM.Gui.AppliedFiltersList.add_Filter(htmlEscape(TM.Gui.DataTable.currentTextFilter), 'Search', -1 , true);
+		TM.Gui.AppliedFiltersList.add_Filter(htmlEscape(TM.Gui.DataTable.currentTextFilter), 'Search', -1 , true, false);
 		
 	TM.Gui.AppliedFiltersList.fixCSS_appliedFilters();
 }

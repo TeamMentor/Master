@@ -74,11 +74,11 @@
 						<div class="PivotItemIsAvail">
 							{#if $T.item.checked }						
 								<input 	type="checkbox" 								
-										onclick='setPivotPanelFilter("{$T.item.text}", "{$T.title}", "{$T.column}", this.checked);' 
+										onclick='setPivotPanelFilter("{$T.item.text}", "{$T.title}", "{$T.column}", this.checked , false);' 
 										CHECKED/>
 							{#else}  			
 								<input 	type="checkbox" 								
-										onclick='setPivotPanelFilter("{$T.item.text}", "{$T.title}", "{$T.column}", this.checked);'/>
+										onclick='setPivotPanelFilter("{$T.item.text}", "{$T.title}", "{$T.column}", this.checked , false);'/>
 							{#/if}  
 							<label title='Any'>{$T.item.text}</label>
 						</div>		

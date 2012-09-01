@@ -480,12 +480,19 @@ h1.ItemTitle
 	white-space: nowrap;
 }
 
+
+.PinButton
+{
+	cursor: pointer;
+	float: right;
+	padding-right: 5px
+}
+
 .DeleteButton
 {
 	cursor: pointer;
 	float: right;
 }
-
 /*    LIBRARY TREE    */
 .LibraryTree
 {

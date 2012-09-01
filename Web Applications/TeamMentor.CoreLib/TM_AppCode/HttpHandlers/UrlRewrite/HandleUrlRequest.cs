@@ -77,13 +77,6 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                 case ".ashx":
                 case ".aspx":
                     return true;
-                case ".png":
-                case ".gif":
-                case ".jpg":
-                case ".jpeg":
-                case ".ico":
-                    //context.Response.ContentType = "image/png";                    // this was supposed to fix the warning we get when using cassini, but it is not working
-                    return true;
                 default:
                     return false;
 
@@ -91,8 +84,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
             //var path = uri.AbsolutePath;
             //var extension = path.subString_After()
             //if (path.contains(".htm", ".asmx", ".ashx", ".aspx")) // don't process if these values are in path            
-            //    return false;            
-            //if (path.endsWith(".htm", ".asmx", ".ashx", ".aspx")) // don't process if these values are in path)
+            //    return false;                        
             return true;
         }
 

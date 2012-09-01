@@ -1,1 +1,3 @@
-- /Images/open_in_new_window.png icon is from: http://findicons.com/icon/437377/open_in_new_window?width=64
+/Images/open_in_new_window.png icon 	is from: http://findicons.com/icon/437377/open_in_new_window?width=64
+/Images/Pinned.png 			is from: http://findicons.com/icon/439225/pin?id=450076
+/Images/unPinned.png 			is from: http://findicons.com/icon/439225/pin?width=48

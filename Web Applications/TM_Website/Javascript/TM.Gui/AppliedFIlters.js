@@ -1,7 +1,7 @@
 	currentPivotPanelFilters = new Array();
 	currentFilters = []; 	
 	
-	function setPivotPanelFilter(text,title, column, state)
+	function setPivotPanelFilter(text,title, column, state, pinned)
 	{				
 		var updatedFilter = new Array();		
 		for (i=0; i < currentPivotPanelFilters.length; i++) 
@@ -28,7 +28,7 @@
 		
 		if(state && text!= "")		
 		{
-			currentPivotPanelFilters.push( { 'text' : text , 'title' : title , 'column' : column });			
+			currentPivotPanelFilters.push( { 'text' : text , 'title' : title , 'column' : column , 'pinned' : pinned });			
 		}	
 		
 		currentFilters = [];
@@ -247,13 +247,13 @@ TM.Gui.AppliedFilters.buildFromSelectedNodeId = function () {
     //TM.Gui.AppliedFilters.MapFiltersFromUrl();
 }
 
-$(window).bind('hashchange', function () 
+/*$(window).bind('hashchange', function () 
     {
         currentPivotPanelFilters = new Array();
         TM.Events.onTextSearch()
         //TM.Gui.AppliedFilters.buildFiltersGui();
         //TM.Gui.AppliedFilters.MapFiltersFromUrl();
-    });
+    });*/
 
 TM.Gui.AppliedFilters.MapFiltersFromUrl = function () 
     {    
@@ -261,20 +261,20 @@ TM.Gui.AppliedFilters.MapFiltersFromUrl = function ()
         jQuery.each(commands, function () {
             var splitCommand = this.split(":");
             if (splitCommand.length == 2) {
-                var command = splitCommand[0];
+                var command = splitCommand[0].toLowerCase();
                 var value = splitCommand[1];
                 switch (command) {
                     case "technology":                    
-                        setPivotPanelFilter(value, "Technology", 2, true);
+                        setPivotPanelFilter(value, "Technology", 2, true, true);
                         break;
                     case "phase":                    
-                        setPivotPanelFilter(value, "Phase", 3, true);
+                        setPivotPanelFilter(value, "Phase", 3, true, true);
                         break;
                     case "type":
-                        setPivotPanelFilter(value, "Type", 4, true);
+                        setPivotPanelFilter(value, "Type", 4, true, true);
                         break;
                     case "category":
-                        setPivotPanelFilter(value, "Category", 5, true);
+                        setPivotPanelFilter(value, "Category", 5, true , true);
                         break;
                 }
             }
