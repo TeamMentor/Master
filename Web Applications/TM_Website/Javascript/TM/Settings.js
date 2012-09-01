@@ -1,5 +1,5 @@
 //TM Settings
-TM.tmVersion = "TM 3.2 Beta RC1";
+TM.tmVersion = "TM 3.2 Beta RC1 (AppHarbor branch)";
 TM.ArticleTitle = "TeamMentor 3.2";
 
 TM.tmWebServices     = '/Aspx_Pages/TM_WebServices.asmx/';
