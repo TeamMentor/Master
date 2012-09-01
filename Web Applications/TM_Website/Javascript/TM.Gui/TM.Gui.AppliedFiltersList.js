@@ -20,7 +20,7 @@ TM.Gui.AppliedFiltersList.clear_FiltersGui = function()
 		$("#AppliedFilterItems").html('');
 	}
 	
-TM.Gui.AppliedFiltersList.add_Filter = function(text, title, column, showDeleteButton, pinned)
+TM.Gui.AppliedFiltersList.add_Filter = function(text, title, column, showButtons, pinned)
 	{
 		var filterDiv = 	  $("<div class='AppliedFilterItem'>");
 		var deleteImg = 	  $("<img src='/Images/DeleteFilterIcon.png' alt='Delete Filter' class='DeleteButton' />");
@@ -29,7 +29,7 @@ TM.Gui.AppliedFiltersList.add_Filter = function(text, title, column, showDeleteB
         //var unPinnedImg       = $("<img src='/Images/unPinned.png' alt='UnPin item' = Database Security' class='PinButton' style='width:15px'/>");
 		//filterItemText  = $("<span id='ctl00_ContentPlaceHolder1_AppliedFilters1_AppliedFiltersListView_ctrl0_Label1'>");
 		
-		filterItemText = $("<span>").append(" {0} = {1}".format(title, text));		
+		filterItemText = $("<span>").append(" {0} = {1}".format(htmlEscape(title), htmlEscape(text)));		
 
         //handle delete button settings
         
@@ -53,11 +53,11 @@ TM.Gui.AppliedFiltersList.add_Filter = function(text, title, column, showDeleteB
 		filterDiv.append(filterItemText);
         
         
-		if(showDeleteButton)
+		if(showButtons)
+        {
 			filterDiv.append(deleteImg)		
-		
-        //filterDiv.append((pinned) ? pinnedImg : unPinnedImg);        
-        filterDiv.append(pinnedImg);        
+            filterDiv.append(pinnedImg);
+        }
         
 		$("#AppliedFilterItems").append(filterDiv);
 	}
@@ -101,7 +101,7 @@ TM.Gui.AppliedFiltersList.populateAppliedFiltersTable = function ()
 		})
 		
 	if (TM.Gui.DataTable.currentTextFilter != "") //escape
-		TM.Gui.AppliedFiltersList.add_Filter(htmlEscape(TM.Gui.DataTable.currentTextFilter), 'Search', -1 , true, false);
+		TM.Gui.AppliedFiltersList.add_Filter(htmlEscape(TM.Gui.DataTable.currentTextFilter), 'Search', -1 , false, true);
 		
 	TM.Gui.AppliedFiltersList.fixCSS_appliedFilters();
 }
