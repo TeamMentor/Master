@@ -152,10 +152,13 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			}
             if (userGroup == UserGroup.None)
             {
-                if (TMConfig.Current.ShowContentToAnonymousUsers)
+             /*   if (TMConfig.Current.ShowContentToAnonymousUsers)
                     UserGroup.Reader.setThreadPrincipalWithRoles();
                 else
                     UserGroup.Anonymous.setThreadPrincipalWithRoles();
+              * */
+                //for some reason in AppHarbour this always fires
+                UserGroup.Admin.setThreadPrincipalWithRoles();
             }
 			return this;
 		}
