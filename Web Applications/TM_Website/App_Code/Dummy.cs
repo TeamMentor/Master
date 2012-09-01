@@ -5,8 +5,11 @@ using System.Web;
 
 namespace SecurityInnovation.TeamMentor.Website.App_Code
 {
-    public class tests
+    public class Dummy
     {
-        
+        public void SoThatMSBuildDoesntComplain()
+        {
+
+        }
     }
 }

@@ -617,7 +617,6 @@
     <None Include="_Customizations\homepage.js" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Code\" />
     <Folder Include="_Customizations\reports\" />
   </ItemGroup>
   <ItemGroup>
@@ -625,6 +624,9 @@
       <Project>{87BACB04-640F-44ED-8F01-45224D52A883}</Project>
       <Name>TeamMentor.CoreLib</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Code\Dummy.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
