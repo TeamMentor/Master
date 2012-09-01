@@ -62,8 +62,8 @@ public class UserRequestExecution
 		}
 		
 		object result = null;
-        var targetFolder = AppDomain.CurrentDomain.BaseDirectory;
-        //var targetFolder = AppDomain.CurrentDomain.BaseDirectory.pathCombine("..");
+        //var targetFolder = AppDomain.CurrentDomain.BaseDirectory;
+        var targetFolder = AppDomain.CurrentDomain.BaseDirectory.pathCombine("..");
 		switch(userRequest.command)
 		{
 			case "getFiles":
