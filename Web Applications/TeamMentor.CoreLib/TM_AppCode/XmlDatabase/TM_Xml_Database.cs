@@ -94,7 +94,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		
 		public static void setDataFromCurrentScript(string virtualPathMapping)
 		{
-            if (virtualPathMapping.notNull())
+            if (virtualPathMapping.inValid())
                 virtualPathMapping = @"..\.."; // to allow backwards compatibility
 			try
 			{				
