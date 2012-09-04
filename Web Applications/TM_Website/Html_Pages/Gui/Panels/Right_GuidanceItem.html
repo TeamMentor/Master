@@ -36,6 +36,10 @@
 																
 															TM.Gui.GuidanceItemViewer.lastPageLoaded = id;
 															//checkForUserActivities(guidanceId);
+
+                                                            //apply pretty print
+                                                            $(".ItemContent pre").addClass("prettyprint") ; 
+                                                            prettyPrint();                                                                                                        
 														});														
 													}
 													else
@@ -48,8 +52,6 @@
 														}
 													}
 													$("#selectedGuidanceItem").css('color','black');																
-
-                                                    
                                                     
                                                     my_Gauge.track("Article Preview",title);
                                                     

@@ -285,6 +285,10 @@ var getColumnFromArray = function(arrayData, columnIndex)
 			/* Add a click handler to the rows - this could be used as a callback */
 			$("#guidanceItemsTable tbody").mousedown(function(event) 
 				{					
+                    if ($(event.target).hasClass("dataTables_empty"))  // we can use dataTables_empty to detect if there are no rows in the current table
+                    {                        
+                        return;
+                    }
 					//selectedGuidanceIds = [];
 					//_target = event.target;
 					

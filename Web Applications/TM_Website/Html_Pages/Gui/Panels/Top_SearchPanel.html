@@ -20,11 +20,6 @@ TM.Gui.TextSearch.getCurrentFilteredGuidanceItemsIds = function()
 	
 TM.Gui.TextSearch.getValueAndApplyGlobalFilter = function()
 	{					
-		$("#SearchTextBox").css('background','#DDFFDD')
-		
-		var searchText = $('#SearchTextBox').val();		
-		var guidanceItemsIds = TM.Gui.TextSearch.getCurrentFilteredGuidanceItemsIds(); //use [] to search all
-		//TM.WebServices.Data.targetObjectGuidanceItemsIds;  //use [] to search all
 		
 		var callback = function (matchedIds) 
 			{
@@ -40,8 +35,22 @@ TM.Gui.TextSearch.getValueAndApplyGlobalFilter = function()
 								
 			}; 
 		   
-		var params =   { searchText: searchText , guidanceItemsIds: guidanceItemsIds}
-		TM.WebServices.Helper.invoke_TM_WebService('XmlDatabase_GuidanceItems_SearchTitleAndHtml', params, callback);	
+        
+		var searchText = $('#SearchTextBox').val();  // get the current search value
+        var guidanceItemsIds = guidanceItemsIds = TM.Gui.TextSearch.getCurrentFilteredGuidanceItemsIds();
+
+        if(searchText === "")                        // if there is no search text, we can use the current list of guidanceItemsIds
+            callback(guidanceItemsIds);
+        else
+        {
+            
+            if (isUndefined(TM.Gui.AppliedFilters.currentPivotPanelFilters) || TM.Gui.AppliedFilters.currentPivotPanelFilters.length ===0)                 // if there are no filters
+                guidanceItemsIds = [ TM.Gui.selectedNodeId ];                                                                                                 // we can use the GUID of the current Library, folder or view            
+		    
+		    $("#SearchTextBox").css('background','#DDFFDD')		
+		    var params =   { searchText: searchText , guidanceItemsIds: guidanceItemsIds}            
+		    TM.WebServices.Helper.invoke_TM_WebService('XmlDatabase_GuidanceItems_SearchTitleAndHtml', params, callback);	
+        }   
 		
 	}
 

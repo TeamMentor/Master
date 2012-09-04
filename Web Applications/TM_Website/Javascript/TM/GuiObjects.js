@@ -240,7 +240,9 @@ TM.WebServices.Data.getGuidanceItems_For_DataTable = function(guidanceItemsIds)
 			
 		var getTableData = function(guids)
 		{
-			var data = [];							
+			var data = [];	
+            if (guids === null)
+                return data;
 			$.each(guids, function(index,value) 
 				{ 						
 					var guidandeItem = $.data[value];
@@ -305,7 +307,8 @@ TM.WebServices.Data.getGuidanceItems_For_DataTable = function(guidanceItemsIds)
 	
 TM.WebServices.Data.getGuidanceItemsInGuid_For_DataTable = function(guid_for_LibraryFolderOrView)
 	{		
-		_guid_for_LibraryFolderOrView = guid_for_LibraryFolderOrView;
+		//_guid_for_LibraryFolderOrView = guid_for_LibraryFolderOrView;
+        TM.WebServices.Data.LastSelectedGuid_LibraryFolderOrView = guid_for_LibraryFolderOrView;
 		var dataTableData = {};
 		if (typeof(guid_for_LibraryFolderOrView) != "undefined")
 		{		
@@ -317,7 +320,8 @@ TM.WebServices.Data.getGuidanceItemsInGuid_For_DataTable = function(guid_for_Lib
 				dataTableData.targetObject = targetObject;
 			}
 			else
-				dataTableData = TM.WebServices.Data.getGuidanceItems_For_DataTable([])			
+				//dataTableData = TM.WebServices.Data.getGuidanceItems_For_DataTable([])			
+                dataTableData = TM.WebServices.Data.getGuidanceItems_For_DataTable(null)			
 				
 			/*dataTableData.targetObject = $.data[guid_for_LibraryFolderOrView];
 			if (typeof(dataTableData.targetObject)!= "undefined")

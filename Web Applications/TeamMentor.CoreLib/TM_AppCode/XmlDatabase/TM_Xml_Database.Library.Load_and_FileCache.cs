@@ -130,6 +130,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 				guidanceExplorers.addGuidanceExplorerObject(xmlFile);
 				
 			//then try to find the guidanceItems xml file by looking for an xml file with the same name as the folder
+            //this has to be done like this or the save and rename of libraries will not work
 			foreach(var folder in pathXmlLibraries.folders())
 			{
 				var xmlFile = "{0}\\{1}.xml".format(folder, folder.fileName());				

@@ -1,9 +1,9 @@
-currentPivotPanelFilters = new Array(); 
+TM.Gui.AppliedFilters.currentPivotPanelFilters = new Array(); 
 
 TM.Gui.AppliedFiltersList.removeFilters = function()
 	{		        
-		currentFilters =[];
-		currentPivotPanelFilters = new Array(); 
+		TM.Gui.AppliedFilters.currentFilters = [];
+		TM.Gui.AppliedFilters.currentPivotPanelFilters = new Array(); 
 		TM.Gui.AppliedFiltersList.populateAppliedFiltersTable() ;	
         TM.Events.onInvalidateSearchText();
 		TM.Events.onFiltersRemoved();
@@ -35,10 +35,13 @@ TM.Gui.AppliedFiltersList.add_Filter = function(text, title, column, showButtons
         
 		deleteImg.click(function()
 			{
-                if (pinnedImg.pinned)			
-                    TM.Gui.Dialog.alertUser("You can't remove a pinned filter")
-                else	
-				    TM.Gui.AppliedFiltersList.removeCriteraFromCriteriaCollection(text, title, column, false);
+             /*   if (pinnedImg.pinned)			
+                    TM.Gui.Dialog.alertUser("You can't remove a pinned filter (please unpin it first)")
+                else	*/  
+                if (pinnedImg.pinned)		        // if it is pinned we need to unpin it first
+                    pinnedImg.click();
+                    //TM.Gui.AppliedFiltersList.handle_PinChange(text, title, pinnedImg);
+				TM.Gui.AppliedFiltersList.removeCriteraFromCriteriaCollection(text, title, column, false);
 			})
 
         //handle pin button settings
@@ -95,7 +98,7 @@ TM.Gui.AppliedFiltersList.populateAppliedFiltersTable = function ()
 	TM.Gui.AppliedFiltersList.clear_FiltersGui();
 
 	
-	$.each(currentPivotPanelFilters, function()
+	$.each(TM.Gui.AppliedFilters.currentPivotPanelFilters, function()
 		{			
 			TM.Gui.AppliedFiltersList.add_Filter(this.text, this.title, this.column, true, this.pinned);
 		})

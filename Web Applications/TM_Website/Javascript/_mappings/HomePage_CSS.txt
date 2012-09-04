@@ -3,5 +3,6 @@
 /javascript/jQueryUI/jquery-ui-1.8.14.custom.css
 /css/default.css
 /javascript/Growl/growl.css
+/javascript/jsPrettify/prettify.css
 /Css/ArticleViewer.css
 /Css/ArticleEditor.css

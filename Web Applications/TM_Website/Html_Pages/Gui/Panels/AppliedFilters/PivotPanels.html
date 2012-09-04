@@ -1,119 +1,119 @@
 <script>
 
-	TM.showFilter_cssFixes = function()
-	{		
-		if (isUndefined("PivotHeader".$()))
-			return;
-		
-		/*if ($.browser.msie) 
-		{
-			$(".PivotBody").width(145); 
-			$(".PivotHeader").parent().width(190)
-			
-			$("#SpinInner").width("100%");
-			//"SpinInner".$().width("100%");
-		}*/
-		//else
-		{
-			"PivotHeader".$().parent().width(174);
-			"SpinInner".$().width(750);
-		}
-		"SpinPanel".$().css({ 'overflow-y':'hidden'});// , 'height': '160'});		
-		var height = $(".center-north").height() - 52;		
-		$(".PivotBody").height(height-65);		
-		$("#SpinPanel").height(height);
-		$(".spinContent").height(height );
-	}
-	
-	$(function()
-		{	
-			//DEBUG : setup traces	
+    TM.showFilter_cssFixes = function()
+    {		
+        if (isUndefined("PivotHeader".$()))
+            return;
+        
+        /*if ($.browser.msie) 
+        {
+            $(".PivotBody").width(145); 
+            $(".PivotHeader").parent().width(190)
+            
+            $("#SpinInner").width("100%");
+            //"SpinInner".$().width("100%");
+        }*/
+        //else
+        {
+            "PivotHeader".$().parent().width(174);
+            "SpinInner".$().width(750);
+        }
+        "SpinPanel".$().css({ 'overflow-y':'hidden'});// , 'height': '160'});		
+        var height = $(".center-north").height() - 52;		
+        $(".PivotBody").height(height-65);		
+        $("#SpinPanel").height(height);
+        $(".spinContent").height(height );
+    }
+    
+    $(function()
+        {	
+            //DEBUG : setup traces	
 /*			TM.Gui.AppliedFilters.trace	= true;	
-			//TM.Debug.CallTrace.trace_TM_Object()	
-			TM.Debug.CallTrace.traceObject("TM.Gui", TM.Gui.AppliedFilters)
-	*/	
-			TM.showFilter_cssFixes();	
-			TM.Events.onBuildFiltersGui();
-			TM.Events.onLibraryTreeSelected .add(TM.Gui.AppliedFilters.buildFromSelectedNodeId);
-			TM.Events.onRefreshGuiData		.add(TM.Gui.AppliedFilters.buildFromSelectedNodeId);
-			TM.Events.onFiltersRemoved		.add(TM.Gui.AppliedFilters.buildFromSelectedNodeId);
-			TM.Events.onBuildFiltersGui		.add(TM.Gui.AppliedFilters.buildFiltersGui);	
-			
+            //TM.Debug.CallTrace.trace_TM_Object()	
+            TM.Debug.CallTrace.traceObject("TM.Gui", TM.Gui.AppliedFilters)
+    */	
+            TM.showFilter_cssFixes();	
+            TM.Events.onBuildFiltersGui();
+            TM.Events.onLibraryTreeSelected .add(TM.Gui.AppliedFilters.buildFromSelectedNodeId);
+            TM.Events.onRefreshGuiData		.add(TM.Gui.AppliedFilters.buildFromSelectedNodeId);
+            TM.Events.onFiltersRemoved		.add(TM.Gui.AppliedFilters.buildFromSelectedNodeId);
+            TM.Events.onBuildFiltersGui		.add(TM.Gui.AppliedFilters.buildFiltersGui);	
+            
             TM.Events.onTextSearchComplete  .add(TM.Gui.AppliedFilters.buildFiltersGui);
-			
-			//TM.Events.onBuildFiltersGui
+            
+            //TM.Events.onBuildFiltersGui
 
-			
-			//TM.Events.onLibraryTreeSelected.add(TM.Events.onBuildFiltersGui);
-			
-			
-		});
+            
+            //TM.Events.onLibraryTreeSelected.add(TM.Events.onBuildFiltersGui);
+            
+            
+        });
 </script>		
 
 <div class="showFiltersPanel">
-	<div class="spinCorners">
-		<b class="sc2"></b><b class="sc3"></b><b class="sc4"></b><b class="sc5"></b><b class="sc6">
-		</b><b class="sc7"></b>
-		<div class="spinContent">
-			<div id="SpinPanel" class="Spin">
-				<div id="SpinInner">
-					<div id="pivotPanels"> </div>					
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="spinCorners">
+        <b class="sc2"></b><b class="sc3"></b><b class="sc4"></b><b class="sc5"></b><b class="sc6">
+        </b><b class="sc7"></b>
+        <div class="spinContent">
+            <div id="SpinPanel" class="Spin">
+                <div id="SpinInner">
+                    <div id="pivotPanels"> </div>					
+                </div>
+            </div>
+        </div>
+    </div>
 </div>	
 
 <div id="PivotPanelTemplate" style="display: none;">
-	<div id="PivotPanel0" class="Pivot">
-		<h3 class="PivotHeader">{$T.title}</h3>	
-		<div id="PivotBodyInner0" class="PivotBody">
-			<div id="ctl00_ContentPlaceHolder1_spincontrol1_PivotListView_ctrl0_Pivot1_PivotUpdate">							
-				{#foreach $T.itemsAvail as item}	
-					{#if ($T.item.text != "") }		
-						<div class="PivotItemIsAvail">
-							{#if $T.item.checked }						
-								<input 	type="checkbox" 								
-										onclick='setPivotPanelFilter("{$T.item.text}", "{$T.title}", "{$T.column}", this.checked , false);' 
-										CHECKED/>
-							{#else}  			
-								<input 	type="checkbox" 								
-										onclick='setPivotPanelFilter("{$T.item.text}", "{$T.title}", "{$T.column}", this.checked , false);'/>
-							{#/if}  
-							<label title='Any'>{$T.item.text}</label>
-						</div>		
-					{#/if} 
-				{#/for}					
-				{#foreach $T.itemsNotAvail as item}	
-					{#if ($T.item.text != "") }		
-						<div class="PivotItemNotAvail">
-							{#if $T.item.checked }	
-								<input 	type="checkbox" 								
-										onclick='setPivotPanelFilter("{$T.item.text}", "{$T.title}", "{$T.column}", this.checked);' disabled
-										CHECKED/>
-							{#else}  			
-								<input 	type="checkbox" 								
-										onclick='setPivotPanelFilter("{$T.item.text}", "{$T.title}", "{$T.column}", this.checked);' disabled/>
-							{#/if}  
-							<label 	for='Any' title='Any'>{$T.item.text}</label>
-						</div>
-					{#/if}  
-				{#/for}		
-			</div>
-		</div>
-	</div>
+    <div id="PivotPanel0" class="Pivot">
+        <h3 class="PivotHeader">{$T.title}</h3>	
+        <div id="PivotBodyInner0" class="PivotBody">
+            <div id="ctl00_ContentPlaceHolder1_spincontrol1_PivotListView_ctrl0_Pivot1_PivotUpdate">							
+                {#foreach $T.itemsAvail as item}	
+                    {#if ($T.item.text != "") }		
+                        <div class="PivotItemIsAvail">
+                            {#if $T.item.checked }						
+                                <input 	type="checkbox" 								
+                                        onclick='setPivotPanelFilter("{$T.item.text}", "{$T.title}", "{$T.column}", this.checked , false);' 
+                                        CHECKED/>
+                            {#else}  			
+                                <input 	type="checkbox" 								
+                                        onclick='setPivotPanelFilter("{$T.item.text}", "{$T.title}", "{$T.column}", this.checked , false);'/>
+                            {#/if}  
+                            <label title='Any'>{$T.item.text}</label>
+                        </div>		
+                    {#/if} 
+                {#/for}					
+                {#foreach $T.itemsNotAvail as item}	
+                    {#if ($T.item.text != "") }		
+                        <div class="PivotItemNotAvail">
+                            {#if $T.item.checked }	
+                                <input 	type="checkbox" 								
+                                        onclick='setPivotPanelFilter("{$T.item.text}", "{$T.title}", "{$T.column}", this.checked);' disabled
+                                        CHECKED/>
+                            {#else}  			
+                                <input 	type="checkbox" 								
+                                        onclick='setPivotPanelFilter("{$T.item.text}", "{$T.title}", "{$T.column}", this.checked);' disabled/>
+                            {#/if}  
+                            <label 	for='Any' title='Any'>{$T.item.text}</label>
+                        </div>
+                    {#/if}  
+                {#/for}		
+            </div>
+        </div>
+    </div>
 </div>
 <!--
 <div id="AppliedFiltersTemplate" style="display: none;">
-	<div id="ctl00_ContentPlaceHolder1_AppliedFilters1_UpdatePanel1">					
-		{#foreach $T as filter}				
-			<div class="AppliedFilterItem">
-				<img src='/Images/DeleteFilterIcon.png' alt='Delete View = Database Security' onclick='TM.Gui.AppliedFiltersList.removeCriteraFromCriteriaCollection("{$T.filter.text}","{$T.filter.title}", "{$T.filter.column}", "{$T.filter.state}");' class="DeleteButton" />
+    <div id="ctl00_ContentPlaceHolder1_AppliedFilters1_UpdatePanel1">					
+        {#foreach $T as filter}				
+            <div class="AppliedFilterItem">
+                <img src='/Images/DeleteFilterIcon.png' alt='Delete View = Database Security' onclick='TM.Gui.AppliedFiltersList.removeCriteraFromCriteriaCollection("{$T.filter.text}","{$T.filter.title}", "{$T.filter.column}", "{$T.filter.state}");' class="DeleteButton" />
 
-				<img id="ctl00_ContentPlaceHolder1_AppliedFilters1_AppliedFiltersListView_ctrl0_Image1" src="/Images/SingleLibrary.png" style="border-width:0px;" />
-				<span id="ctl00_ContentPlaceHolder1_AppliedFilters1_AppliedFiltersListView_ctrl0_Label1">{$T.filter.title} = {$T.filter.text}</span>
-			</div>		
-		{#/for}			
-	</div>
+                <img id="ctl00_ContentPlaceHolder1_AppliedFilters1_AppliedFiltersListView_ctrl0_Image1" src="/Images/SingleLibrary.png" style="border-width:0px;" />
+                <span id="ctl00_ContentPlaceHolder1_AppliedFilters1_AppliedFiltersListView_ctrl0_Label1">{$T.filter.title} = {$T.filter.text}</span>
+            </div>		
+        {#/for}			
+    </div>
 </div>	
 -->

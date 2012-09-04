@@ -31,7 +31,20 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
         }
         public void routeRequestUrl()
         {
-            handleUrlRewrite(context.Request.Url);
+            if (redirectedToSLL().isFalse())
+                handleUrlRewrite(context.Request.Url);
+        }
+
+        private bool redirectedToSLL()
+        {
+            //to add to TM Master
+            if (TMConfig.Current.SSL_RedirectHttpToHttps && !context.Request.IsLocal && !context.Request.IsSecureConnection)
+            {
+                string redirectUrl = context.Request.Url.ToString().Replace("http:", "https:");
+                context.Response.Redirect(redirectUrl);
+                return true;
+            }
+            return false;
         }
         
         public void handleUrlRewrite(Uri uri)
