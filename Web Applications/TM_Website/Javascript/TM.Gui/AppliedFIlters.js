@@ -1,12 +1,12 @@
-	currentPivotPanelFilters = new Array();
-	currentFilters = []; 	
+	TM.Gui.AppliedFilters.currentPivotPanelFilters = new Array();
+	TM.Gui.AppliedFilters.currentFilters = []; 	
 	
 	function setPivotPanelFilter(text,title, column, state, pinned)
 	{				
 		var updatedFilter = new Array();		
-		for (i=0; i < currentPivotPanelFilters.length; i++) 
+		for (i=0; i < TM.Gui.AppliedFilters.currentPivotPanelFilters.length; i++) 
 		{
-			var filter = currentPivotPanelFilters[i];
+			var filter = TM.Gui.AppliedFilters.currentPivotPanelFilters[i];
 			
 			if (filter.text == text && filter.column == column)
 			{					
@@ -24,21 +24,21 @@
 			}
 		}			
 		
-		currentPivotPanelFilters = updatedFilter;		
+		TM.Gui.AppliedFilters.currentPivotPanelFilters = updatedFilter;		
 		
 		if(state && text!= "")		
 		{
-			currentPivotPanelFilters.push( { 'text' : text , 'title' : title , 'column' : column , 'pinned' : pinned });			
+			TM.Gui.AppliedFilters.currentPivotPanelFilters.push( { 'text' : text , 'title' : title , 'column' : column , 'pinned' : pinned });			
 		}	
 		
-		currentFilters = [];
-		for (i=0; i < currentPivotPanelFilters.length; i++) 
+		TM.Gui.AppliedFilters.currentFilters = [];
+		for (i=0; i < TM.Gui.AppliedFilters.currentPivotPanelFilters.length; i++) 
 		{					
-			var filter = currentPivotPanelFilters[i];
-			if (typeof(currentFilters[filter.column]) == "undefined")
-				currentFilters[filter.column] = filter.text;
+			var filter = TM.Gui.AppliedFilters.currentPivotPanelFilters[i];
+			if (typeof(TM.Gui.AppliedFilters.currentFilters[filter.column]) == "undefined")
+				TM.Gui.AppliedFilters.currentFilters[filter.column] = filter.text;
 			else
-				currentFilters[filter.column] += "|" + filter.text;
+				TM.Gui.AppliedFilters.currentFilters[filter.column] += "|" + filter.text;
 		}		
 						
 		//setTimeout(TM.Gui.AppliedFiltersList.populateAppliedFiltersTable , 25);
@@ -122,10 +122,10 @@ TM.Gui.AppliedFilters.getFilterDataObject = function (arrayWithSelectedItems, ar
 function getTempFilterResult(index)
 	{
 		var aaData = TM.WebServices.Data.lastDataTableData.aaData;
-		var tempFilter = currentFilters[index];
-		currentFilters[index] = "";
-		var filterResult  = TM.Gui.AppliedFilters.applyDataTableFilter_using_PivotPanelFilters(aaData, queryTo_filterDataTable , currentFilters );
-		currentFilters[index] = tempFilter;
+		var tempFilter = TM.Gui.AppliedFilters.currentFilters[index];
+		TM.Gui.AppliedFilters.currentFilters[index] = "";
+		var filterResult  = TM.Gui.AppliedFilters.applyDataTableFilter_using_PivotPanelFilters(aaData, queryTo_filterDataTable , TM.Gui.AppliedFilters.currentFilters );
+		TM.Gui.AppliedFilters.currentFilters[index] = tempFilter;
 		return filterResult;
 	}
 	
@@ -174,9 +174,9 @@ TM.Gui.AppliedFilters.showFilters = function(arrayWithSelectedItems, arrayWithAl
 		
 		setTimeout(function(){
 		
-            //var aaData = TM.Gui.AppliedFilters.applyDataTableFilter_using_PivotPanelFilters(TM.WebServices.Data.filteredDataTable.aaData, queryTo_filterDataTable , currentFilters );		
+            //var aaData = TM.Gui.AppliedFilters.applyDataTableFilter_using_PivotPanelFilters(TM.WebServices.Data.filteredDataTable.aaData, queryTo_filterDataTable , TM.Gui.AppliedFilters.currentFilters );		
 			//apply the text filter = 
-			var aaData = TM.Gui.AppliedFilters.applyDataTableFilter_using_PivotPanelFilters(TM.WebServices.Data.lastDataTableData.aaData, queryTo_filterDataTable , currentFilters );		
+			var aaData = TM.Gui.AppliedFilters.applyDataTableFilter_using_PivotPanelFilters(TM.WebServices.Data.lastDataTableData.aaData, queryTo_filterDataTable , TM.Gui.AppliedFilters.currentFilters );		
 		
 			//TM.showFilter_cssFixes();		
 		
@@ -208,21 +208,17 @@ TM.Gui.AppliedFilters.showFilters = function(arrayWithSelectedItems, arrayWithAl
 	}
 
 TM.Gui.AppliedFilters.buildFiltersGui = function () 
-    {                
-	    //TM.Events.onInvalidateSearchText();
-        TM.Events.onBuildFiltersGui.enabled = false;    
-	    //TM.Gui.AppliedFilters.raise_onBuildFiltersGui = false;
-    
-	    TM.Gui.AppliedFilters.MapFiltersFromUrl(); // new one
+    {                	    
+        //this is now fired from the TM.Gui.AppliedFilters.buildFromSelectedNodeId method
+        /*TM.Events.onBuildFiltersGui.enabled = false;    	    
+	    TM.Gui.AppliedFilters.MapFiltersFromUrl(); 
         TM.Events.onBuildFiltersGui.enabled = true; 
-//	    TM.Gui.AppliedFilters.raise_onBuildFiltersGui = true;
-
-//	    var aaData = TM.WebServices.Data.lastDataTableData.aaData;
+*/
         var aaData = TM.WebServices.Data.filteredDataTable.aaData;
 
-	    filterResult = TM.Gui.AppliedFilters.applyDataTableFilter_using_PivotPanelFilters(aaData, queryTo_filterDataTable, currentFilters);
+	    filterResult = TM.Gui.AppliedFilters.applyDataTableFilter_using_PivotPanelFilters(aaData, queryTo_filterDataTable, TM.Gui.AppliedFilters.currentFilters);
         
-	    TM.Gui.AppliedFilters.showFilters(currentFilters, aaData, filterResult, true);
+	    TM.Gui.AppliedFilters.showFilters(TM.Gui.AppliedFilters.currentFilters, aaData, filterResult, true);
 	    
         //TM.Gui.AppliedFilters.raise_onBuildFiltersGui = true;
 
@@ -235,21 +231,23 @@ TM.Gui.AppliedFilters.buildFiltersGui = function ()
 TM.Gui.AppliedFilters.buildFromSelectedNodeId = function () {
     
     //this will reset the filters on node click
-    currentPivotPanelFilters = new Array(); 		// reset applied filters
-    currentFilters = [];
+    TM.Gui.AppliedFilters.currentPivotPanelFilters = new Array(); 		// reset applied filters
+    TM.Gui.AppliedFilters.currentFilters = [];
 
     var selectedNodeId = TM.Gui.selectedNodeId;
     TM.WebServices.Data.getGuidanceItemsInGuid_For_DataTable(selectedNodeId);
 
     //TM.Gui.AppliedFilters.buildFiltersGui();
+
+    TM.Gui.AppliedFilters.MapFiltersFromUrl();
+
     TM.Events.onTextSearch();
-    
-    //TM.Gui.AppliedFilters.MapFiltersFromUrl();
+        
 }
 
 /*$(window).bind('hashchange', function () 
     {
-        currentPivotPanelFilters = new Array();
+        TM.Gui.AppliedFilters.currentPivotPanelFilters = new Array();
         TM.Events.onTextSearch()
         //TM.Gui.AppliedFilters.buildFiltersGui();
         //TM.Gui.AppliedFilters.MapFiltersFromUrl();
@@ -257,6 +255,7 @@ TM.Gui.AppliedFilters.buildFromSelectedNodeId = function () {
 
 TM.Gui.AppliedFilters.MapFiltersFromUrl = function () 
     {    
+        TM.Events.onBuildFiltersGui.enabled = false;    	    
         var commands = window.location.hash.slice(1).split("&");    
         jQuery.each(commands, function () {
             var splitCommand = this.split(":");
@@ -278,6 +277,7 @@ TM.Gui.AppliedFilters.MapFiltersFromUrl = function ()
                         break;
                 }
             }
+        TM.Events.onBuildFiltersGui.enabled = true;    	    
         });
     }
 		

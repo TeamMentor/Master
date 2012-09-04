@@ -566,11 +566,14 @@ TM.Gui.LibraryTree.createContextMenu = function(node)
 	
 	if (TM.Gui.CurrentUser.isEditor() === false)
 		return items;
+
 	if (TM.Gui.editMode === false)
 	{
 		items = 
 			{	
-				showEditMode: 	{ label: "Open Edit Mode",  action: TM.Gui.showEditMode }
+				showEditMode: 	        { label: "Open Edit Mode",              action: TM.Gui.showEditMode } ,
+                showDirectLink: 	    { label: "Show Direct Link",            action: TM.Gui.LibraryTree.showDirectLink } ,
+                showDirectLinkForDevs: 	{ label: "Show Reading View Link",    action: TM.Gui.LibraryTree.showDirectLinkForDevs }
 			}
 		return items;
 	}
@@ -835,4 +838,19 @@ TM.Gui.LibraryTree.newGuidanceItem = function()
 	  } ;			  	  	
 	  createNewGuidanceItem();
 }	
+
+TM.Gui.LibraryTree.showDirectLink = function()
+    {        
+        window.location.hash = "#load:" + TM.Gui.selectedNodeId;
+        TM.Gui.AppliedFilters.currentFilters = [];
+        TM.Gui.Dialog.alertUser("The page's hash tag was set to the direct link: " + window.location.hash);
+    }
+
+TM.Gui.LibraryTree.showDirectLinkForDevs = function()
+    {        
+        window.location.hash = "#load:" + TM.Gui.selectedNodeId + "&showFilters:false&showTree:false&centerGuidanceItems:true";
+        TM.Gui.AppliedFilters.currentFilters = [];
+        TM.Gui.Dialog.alertUser("The page's hash tag was set to the Reading View link");
+    }
+
 

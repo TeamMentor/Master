@@ -433,8 +433,8 @@ function createGuidanceItem_AllValues(topic, technology, category, rule_Type, pr
 {
 	var url = TM.tmWebServices + 'CreateGuidanceItem';
 	var params = '{ guidanceItem: { "topic": "' + topic + 
-	                             '", "technology": " ' + technology +
-								 '", "category": " ' + category +
+	                             '", "technology": "' + technology +
+								 '", "category": "' + category +
 								 '", "rule_Type": "' + rule_Type +
 								 '", "priority": "' + priority + 
 								 '", "status": "' + status +

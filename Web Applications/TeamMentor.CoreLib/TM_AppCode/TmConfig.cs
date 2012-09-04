@@ -16,7 +16,8 @@ namespace SecurityInnovation.TeamMentor.WebClient
 		public string 		DefaultAdminPassword        { get; set; }	
 		public string 		GitHubPassword		        { get; set; }	
 		public string 		LibrariesUploadedFiles	    { get; set; }	
-		public bool 		ShowContentToAnonymousUsers { get; set; }	
+		public bool 		ShowContentToAnonymousUsers { get; set; }
+        public bool         SSL_RedirectHttpToHttps     { get; set; }
         public bool 		SanitizeHtmlContent         { get; set; }	        		
         public WindowsAuthentication_Config WindowsAuthentication			{ get; set; }
 
