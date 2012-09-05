@@ -14,6 +14,7 @@ using O2.DotNetWrappers.ExtensionMethods;
 using O2.DotNetWrappers.DotNet;
 using urn.microsoft.guidanceexplorer;
 using urn.microsoft.guidanceexplorer.guidanceItem;
+using System.IO;
 //O2File:../IJavascriptProxy.cs
 //O2File:../UtilMethods.cs   
 //O2File:../Schemas/library.cs 
@@ -99,10 +100,13 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			try
 			{				
 				"[setDataFromCurrentScript] virtualPathMapping: {0}".info(virtualPathMapping);
-				TM_Xml_Database.Path_XmlDatabase = TMConfig .BaseFolder
-														    .pathCombine(virtualPathMapping)
-															.fullPath()
-															.pathCombine("Library_Data//XmlDatabase");
+                var xmlDatabasePath = TMConfig.BaseFolder
+                                              .pathCombine(virtualPathMapping)
+                                              .fullPath();															
+                //check if we can write to current
+                if (canWriteToPath(xmlDatabasePath).isFalse())
+                    xmlDatabasePath = TMConfig.BaseFolder.pathCombine("App_Data"); // default to App_Data if we can't write to provided direct
+                TM_Xml_Database.Path_XmlDatabase = xmlDatabasePath.pathCombine("Library_Data//XmlDatabase");
 				TM_Xml_Database.setLibraryPath(TMConfig.Current.XmlLibrariesPath);
 				"[TM_Xml_Database][setDataFromCurrentScript] TM_Xml_Database.Path_XmlDatabase: {0}".debug(TM_Xml_Database.Path_XmlDatabase);
 				"[TM_Xml_Database][setDataFromCurrentScript] TMConfig.Current.XmlLibrariesPath: {0}".debug(TMConfig.Current.XmlLibrariesPath);
@@ -113,7 +117,27 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 				"[TM_Xml_Database] static .ctor: {0} \n\n".error(ex.Message, ex.StackTrace);
 			}
 		}
-		
+		public static bool canWriteToPath(string path)
+        {
+            try
+            {
+                var files = path.files();
+                var tempFile = path.pathCombine("tempFile".add_RandomLetters());
+                "test content".saveAs(tempFile);
+                if (tempFile.fileExists())
+                {
+                    File.Delete(tempFile);
+                    if (tempFile.fileExists().isFalse())
+                        return true;
+                }
+            }
+            catch(Exception ex)
+            {
+                ex.log("[in canWriteToPath] for path: {0} : {1}", path, ex.Message);
+            }
+            "[in canWriteToPath] test failed for for path: {0}".error(path);
+            return false;
+        }
 		public string reloadData()
 		{
 			return reloadData(null);
