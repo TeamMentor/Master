@@ -49,7 +49,8 @@ namespace SecurityInnovation.TeamMentor.Authentication.AuthorizationRules
         {
 			if (sessionIdGuid != Guid.Empty)
 			{
-				var userGroup = sessionIdGuid.session_UserGroup();                
+				var userGroup = sessionIdGuid.session_UserGroup();
+                "[MapRolesBasedOnSessionGuid] userGroup = {0}".info(userGroup);
 				HttpContextFactory.Current.SetCurrentUserRoles(userGroup);            
                 return userGroup;
 			}
