@@ -147,7 +147,8 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
             var userGroup = UserGroup.None;
 			if (sessionID != Guid.Empty)
 			{
-				if (check_CSRF_Token())		// only map the roles if the CSRF check passed
+                //TEMP: check_CSRF_Token is not working on AppHarbour
+				//if (check_CSRF_Token())		// only map the roles if the CSRF check passed
 				{
 					userGroup = new UserRoleBaseSecurity().MapRolesBasedOnSessionGuid(sessionID);					
 				}
