@@ -30,8 +30,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		[WebMethod(EnableSession = true)]							
 		public JsTree JsTreeWithFoldersAndGuidanceItems()
 		{			
-    		var jsTree = new JsTree();
-			var libraries = GetLibraries();
+    		var jsTree = new JsTree();            
 			Func<Guid, List<Folder_V3>, JsTreeNode, List<Guid>> mapFolders = null;
 			Func<Guid, Guid, List<Guid>, JsTreeNode, List<Guid>> mapViews = null;
 
@@ -77,7 +76,12 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 					return folderViewsId;
 					
 				};
-			
+            var sessionLibraryID = GetCurrentSessionLibrary();
+
+            var libraries = (sessionLibraryID == Guid.Empty)
+                                ? javascriptProxy.GetLibraries()
+                                : javascriptProxy.GetLibraryById(sessionLibraryID).wrapOnList();
+
 			foreach(var library in libraries)
 			{				
 				var libraryNode =jsTree.add_Node(library.Caption);

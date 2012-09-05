@@ -63,8 +63,8 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		[WebMethod(EnableSession = true)] public string         RBAC_CurrentIdentity_Name()				                {	return new UserRoleBaseSecurity().currentIdentity_Name(); }
 		[WebMethod(EnableSession = true)] public bool           RBAC_CurrentIdentity_IsAuthenticated()	                {	return new UserRoleBaseSecurity().currentIdentity_IsAuthenticated(); }
 		[WebMethod(EnableSession = true)] public List<string>   RBAC_CurrentPrincipal_Roles()		            {	return new UserRoleBaseSecurity().currentPrincipal_Roles().toList(); }
-		[WebMethod(EnableSession = true)] public bool  RBAC_HasRole(string role)					            {	return RBAC_CurrentPrincipal_Roles().contains(role); }
-		[WebMethod(EnableSession = true)] public string  RBAC_SessionCookie()						            {	return HttpContext.Current.Request.Cookies["Session"].notNull() 
+		[WebMethod(EnableSession = true)] public bool           RBAC_HasRole(string role)					            {	return RBAC_CurrentPrincipal_Roles().contains(role); }
+		[WebMethod(EnableSession = true)] public string         RBAC_SessionCookie()						            {	return HttpContext.Current.Request.Cookies["Session"].notNull() 
 																												? HttpContext.Current.Request.Cookies["Session"].Value : ""; }
 																												
 		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public string GitHub_Pull_Origin()	            {	return UtilMethods.syncWithGitHub_Pull_Origin();  }
@@ -139,5 +139,12 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                                                                                         FileUpload.UploadTokens.Add(uploadToken);
                                                                                         return uploadToken;
 																					}
+
+        //[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]        public string GetLogs()
+        [WebMethod(EnableSession = true)]                                         public string GetLogs()
+                                                                                    {
+                                                                                        var logData = O2.Kernel.PublicDI.log.LogRedirectionTarget.prop("LogData").str() ;
+                                                                                        return logData;
+                                                                                    }
     }
 }

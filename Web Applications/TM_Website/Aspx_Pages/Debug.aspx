@@ -1,4 +1,5 @@
 ﻿<%@ Page Language="C#"  %>
+<%@ Import Namespace ="O2.DotNetWrappers.ExtensionMethods" %>
 <%@ Import Namespace ="SecurityInnovation.TeamMentor.WebClient.WebServices" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -19,6 +20,17 @@
             <strong>TM_Xml_Database.Path_XmlDatabase:</strong> <%=TM_Xml_Database.Path_XmlDatabase %><br />
             <strong>AppDomain.CurrentDomain.BaseDirectory:</strong> <%=AppDomain.CurrentDomain.BaseDirectory%><br />
         </div>
-    
+        <hr />
+        <h1>Session Values</h1>
+        <ul>
+        <% foreach (string key in Session.Keys)
+               Response.Write("<li>{0}: {1}</li>".format(key,Session[key]));
+        %>
+            </ul>
+        <h1>Logs</h1>
+        <pre>
+<%= new TM_WebServices().GetLogs() %>
+        </pre>
+        
 </body>
 </html>

@@ -26,7 +26,8 @@ namespace O2.DotNetWrappers.ExtensionMethods
                     xmlToLoad = xmlToLoad.trim();
                 XmlReaderSettings xmlReaderSettings = new XmlReaderSettings();
                 xmlReaderSettings.XmlResolver = null;
-                xmlReaderSettings.ProhibitDtd = false;
+                //xmlReaderSettings.ProhibitDtd = false;
+                xmlReaderSettings.DtdProcessing = DtdProcessing.Ignore;
                 using (StringReader stringReader = new StringReader(xmlToLoad))
                 using (XmlReader xmlReader = XmlReader.Create(stringReader, xmlReaderSettings))
                     return XDocument.Load(xmlReader);

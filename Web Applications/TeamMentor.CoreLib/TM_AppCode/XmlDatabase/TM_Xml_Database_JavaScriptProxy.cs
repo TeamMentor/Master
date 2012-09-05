@@ -75,10 +75,11 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		public List<TeamMentor_Article> GetGuidanceItemsInLibrary(Guid libraryId)	{ return tmXmlDatabase.tmGuidanceItems(libraryId);}  	
 		
 		//OnlineStorage
-		public List<string> GetAllLibraryIds()										{ return tmXmlDatabase.tmLibraries().ids().toStringList(); }  	
-		public Library GetLibraryById(string libraryId)								{ return tmXmlDatabase.tmLibrary(libraryId.guid()).library(tmXmlDatabase);	 }  	
-		public Library GetLibraryByName(string libraryName)							{ return tmXmlDatabase.tmLibrary(libraryName).library(tmXmlDatabase);	 }  	
-		public Library_V3 CreateLibrary(Library library)							{ return tmXmlDatabase.xmlDB_NewGuidanceExplorer(library.id.guid(), library.caption).libraryV3(); }  	
+		public List<string> GetAllLibraryIds()										{ return tmXmlDatabase.tmLibraries().ids().toStringList(); }
+        public TM_Library   GetLibraryById(Guid libraryId)                          { return tmXmlDatabase.tmLibrary(libraryId);}  	
+		public Library      GetLibraryById(string libraryId)					    { return tmXmlDatabase.tmLibrary(libraryId.guid()).library(tmXmlDatabase);	 }  	
+		public Library      GetLibraryByName(string libraryName)					{ return tmXmlDatabase.tmLibrary(libraryName).library(tmXmlDatabase);	 }  	
+		public Library_V3   CreateLibrary(Library library)							{ return tmXmlDatabase.xmlDB_NewGuidanceExplorer(library.id.guid(), library.caption).libraryV3(); }  	
 		public bool UpdateLibrary(Library library)									{ return tmXmlDatabase.xmlDB_UpdateGuidanceExplorer(library.id.guid(), library.caption, library.delete).notNull(); }  	
 		public bool UnDeleteLibrary(Guid libraryId)		/*Not Implemented */		{ throw new Exception("not implemented"); }  	
 		public List<TM_Library> GetDeletedLibraries()	/*Not Implemented */		{ throw new Exception("not implemented"); }  	

@@ -25,7 +25,10 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		[WebMethod(EnableSession= true)]
 		public List<Library_V3> GetFolderStructure_Libraries()
 		{
-			return javascriptProxy.getFolderStructure_Libraries(GetGUIObjects());
+            var libraryId = this.GetCurrentSessionLibrary();
+            if (libraryId == Guid.Empty)
+			    return javascriptProxy.getFolderStructure_Libraries(GetGUIObjects());
+            return javascriptProxy.getFolderStructure_Library(libraryId, GetGUIObjects()).wrapOnList();
 		}
 		
 		[WebMethod(EnableSession= true)]
@@ -42,7 +45,28 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		public static bool guiObjectsCacheOK = false;
 		
 		public void resetCache() {  	guiObjectsCacheOK = false;  }
-		
+        
+        [WebMethod(EnableSession = true)]
+        public Guid GetCurrentSessionLibrary()
+        {
+            var libraryId = Guid.Empty;
+                        
+            if (Session["Library"].notNull())                
+            {
+                var libraryValue = Session["Library"].str();
+                var library = (libraryValue.isGuid())
+                                    ? javascriptProxy.GetLibraryById(libraryValue)
+                                    : javascriptProxy.GetLibraryByName(libraryValue);
+                if (library.notNull())
+                {
+                    guiObjectsCacheOK = false;
+                    return library.id.guid();
+                }
+                "[GetCurrentSessionLibrary] could not find library for provided value: {0}".error(libraryValue);
+            }
+            return libraryId;
+        }
+
 		[WebMethod(EnableSession= true)]
 		public bool ClearGUIObjects()
 		{
@@ -53,13 +77,21 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		
 		[WebMethod(EnableSession= true)]
 		public TM_GUI_Objects GetGUIObjects()
-		{
-			if (guiObjectsCacheOK &&  last_GUI_Objects.notNull())		// returns cached version on next calls
-				return last_GUI_Objects; 
+        {            
+         //   var sessionLibrary = "CWE";
+         //   Session["Library"] = sessionLibrary;
+
+            var libraryId = GetCurrentSessionLibrary();
+
+            
+		    if (guiObjectsCacheOK &&  last_GUI_Objects.notNull())		// returns cached version on next calls
+                return last_GUI_Objects; 
 				
-			var guiObjects = new TM_GUI_Objects(); 						
-			var allGuidanceItems = javascriptProxy.GetAllGuidanceItems_XmlDB();
-			foreach(var row in allGuidanceItems)      
+			var guiObjects = new TM_GUI_Objects();
+            var guidanceItems = (libraryId == Guid.Empty) 
+                                        ? javascriptProxy.GetAllGuidanceItems_XmlDB()
+                                        : javascriptProxy.GetGuidanceItemsInLibrary(libraryId);
+            foreach (var row in guidanceItems)      
 			{  
 				var guidanceItemMappings = "{0},{1},{2},{3},{4},{5},{6}".format(
 												//guiObjects.add_UniqueString(row.guidanceItemId.str().hash().str()),	// this will shave off another 80k from the request
