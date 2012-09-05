@@ -19,37 +19,37 @@ namespace TeamMentor.CoreLib
         }
         public void d(string debugMessage)
         {
-            LogData.AppendLine(debugMessage);
+            LogData.AppendLine("DEBUG: " + debugMessage);
         }
 
         public void debug(string debugMessageFormat, params object[] variables)
         {
-            LogData.AppendLine(debugMessageFormat.format(variables));
+            LogData.AppendLine("DEBUG: " + debugMessageFormat.format(variables));
         }
 
         public void debug(string debugMessage)
         {
-            LogData.AppendLine(debugMessage);
+            LogData.AppendLine("DEBUG: " + debugMessage);
         }
 
         public void e(string errorMessage)
         {
-            LogData.AppendLine(errorMessage);
+            LogData.AppendLine("ERROR: " + errorMessage);
         }
 
         public void error(string errorMessageFormat, params object[] variables)
         {
-            LogData.AppendLine(errorMessageFormat.format(variables));
+            LogData.AppendLine("ERROR: " + errorMessageFormat.format(variables));
         }
 
         public void error(string errorMessage)
         {
-            LogData.AppendLine(errorMessage);
+            LogData.AppendLine("ERROR: " + errorMessage);
         }
 
         public void ex(Exception ex, string comment, bool showStackTrace)
         {
-            LogData.AppendLine("[Exception] {0} {1}".format(comment, ex.Message));
+            LogData.AppendLine("Exception: {0} {1}".format(comment, ex.Message));
             if (showStackTrace)
                 LogData.AppendLine("            " + ex.StackTrace);
         }
@@ -71,17 +71,17 @@ namespace TeamMentor.CoreLib
 
         public void i(string infoMessage)
         {
-            LogData.AppendLine(infoMessage);
+            LogData.AppendLine("INFO: " + infoMessage);
         }
 
         public void info(string infoMessageFormat, params object[] variables)
         {
-            LogData.AppendLine(infoMessageFormat.format(variables));
+            LogData.AppendLine("INFO: " + infoMessageFormat.format(variables));
         }
 
         public void info(string infoMessage)
         {
-            LogData.AppendLine(infoMessage);
+            LogData.AppendLine("INFO: " + infoMessage);
         }
 
         public void logToChache(string text)
@@ -96,7 +96,7 @@ namespace TeamMentor.CoreLib
 
         public void write(string message)
         {
-            throw new NotImplementedException();
+            LogData.Append(message);
         }
     }
 }

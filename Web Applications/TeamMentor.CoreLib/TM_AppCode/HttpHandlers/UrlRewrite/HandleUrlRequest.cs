@@ -27,7 +27,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
         public void routeRequestUrl_for404()
         {
             var fixedPath = context.Request.Url.AbsolutePath.replace("/html_pages/Gui/","/article/");   //deal with the cases where there is an relative link inside the html_pages/Gui viewer page
-            handleUrlRewrite(fixedPath.uri());
+            handleUrlRewrite(fixedPath);
         }
         public void routeRequestUrl()
         {
@@ -53,8 +53,12 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
             {
                 if (shouldSkipCurrentRequest())
                     return;
+                var absolutePath = uri.notNull() ? uri.AbsolutePath : context.Request.Url.AbsolutePath;
+                
+                //if (absolutePath.starts("/html_pages/Gui/")) //deal with the cases where there is an relative link inside the html_pages/Gui viewer page
+                //    absolutePath = absolutePath.replace("/html_pages/Gui/", "/article/");   
 
-                handleUrlRewrite(uri.AbsolutePath);
+                handleUrlRewrite(absolutePath);
             }
             catch (Exception ex)
             {
@@ -71,7 +75,8 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
             if (splitedPath.size() > 0)
             { 
                 var action = splitedPath.shift();   // extract first element               
-                var data = splitedPath.join("/");   // rejoin the rest
+                //var data = splitedPath.join("/");   // rejoin the rest
+                var data = String.Join(",", splitedPath.ToArray());
                 if (action.valid() && handleRequest(action, data))    //if we did process it , end the request here
                     endResponse();                    
             }                        
@@ -115,6 +120,8 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                         return handleAction_Raw(data);                                                      
                     case "html":
                         return handleAction_Html(data);
+                    case "content":
+                        return handleAction_Content(data);
                     case "xml":
                         return handleAction_Xml(data);
                     case "xsl":
@@ -299,9 +306,9 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
             {
                 context.Response.ContentType = "text/html";
                 var article = tmWebServices.GetGuidanceItemById(guid.str());
-                var htmlTemplateFile = (article.Content.DataType == "WikiText") 
-                                            ? @"\Html_Pages\article_wikiText.html" 
-                                            : @"\Html_Pages\article_Html.html";
+                var htmlTemplateFile = (article.Content.DataType.lower() == "wikitext") 
+                                            ? @"\Html_Pages\Gui\Pages\article_wikiText.html" 
+                                            : @"\Html_Pages\Gui\Pages\article_Html.html";
                 var htmlTemplate = context.Server.MapPath(htmlTemplateFile).fileContents();
                     
                 var htmlContent = htmlTemplate.replace("#ARTICLE_TITLE", article.Metadata.Title)
@@ -312,7 +319,21 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                 transfer_ArticleViewer();
             return true;
         }
+        private bool handleAction_Content(string data)
+        { 
+            var guid = tmWebServices.getGuidForMapping(data);
+            if (guid != Guid.Empty)
+            {
+                context.Response.ContentType = "text/html";
+                var htmlContent = tmWebServices.GetGuidanceItemHtml(guid);
+                context.Response.Write(htmlContent);
+            }
+            else
+                transfer_ArticleViewer();
+            return true;
 
+        }
+        
         //utils
         public void endResponse()
         { 

@@ -153,7 +153,7 @@
     <Content Include="default.htm" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <Content Include="Html_Pages\article_wikiText.html" />
+    <Content Include="Html_Pages\Gui\Pages\article_wikiText.html" />
     <Content Include="Html_Pages\ControlPanel\Views\Set_Library_Path.html" />
     <Content Include="Html_Pages\ControlPanel\WebServices\Invoke_Javascript.html" />
     <Content Include="Html_Pages\ControlPanel\WebServices\Invoke_WebServices.html" />
@@ -218,7 +218,7 @@
     <Content Include="Html_Pages\ControlPanel\WebEditor\O2_WebEditor.html" />
     <Content Include="Html_Pages\ControlPanel\WebEditor\O2_WebEditor.js" />
     <Content Include="Html_Pages\ControlPanel\WebEditor\test.html" />
-    <Content Include="Html_Pages\article_Html.html" />
+    <Content Include="Html_Pages\Gui\Pages\article_Html.html" />
     <Content Include="Html_Pages\errorPage.html" />
     <Content Include="Html_Pages\emptyPage.html" />
     <Content Include="Html_Pages\GuidanceItemEditor\cleditor\GuidanceItemEditor_CLEditor.html" />
@@ -557,6 +557,7 @@
     <Content Include="Javascript\_mappings\ControlPanel_CSS.txt" />
     <Content Include="Javascript\_mappings\ControlPanel_JS.txt" />
     <Content Include="Javascript\_mappings\ControlPanel_JS_TM.txt" />
+    <Content Include="Javascript\_mappings\ArticleView_JS.txt" />
     <Content Include="Javascript\_mappings\DataTable_JS.txt" />
     <Content Include="Javascript\_mappings\GlobalVariables.txt" />
     <Content Include="Javascript\_mappings\WebServices_JS.txt" />

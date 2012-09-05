@@ -133,7 +133,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                         else
                             return articleContent.fixXmlDoubleEncodingIssue();                            
                     }
-                case "SafeHtml":
+                case "safehtml":
                     {
                         return articleContent.sanitizeHtmlContent();
                     }

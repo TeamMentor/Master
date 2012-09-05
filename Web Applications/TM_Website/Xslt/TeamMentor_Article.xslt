@@ -64,7 +64,8 @@
                   };
                     
           var handleClick = function()
-                  {                
+                  {      
+  
                     var href = $(this).attr('href');                                
                 
                     if (href.split(':').length  > 1) // javascript call
@@ -73,14 +74,14 @@
                     if (href.split('/').length  == 1) // only handle direct links
                     {
                         var page = encodeURIComponent(href);
-                        var target = "/html/" + page;
-                        console.log(target);  
+                        var target = "/content/" + page;
+                         
                         $("body").animate({ scrollTop: 0 }, 'fast');
                         
                         var newTitle = $(this).html();
                         
                         $("#Content").load(target,function() 
-                          {
+                          {                          
                             addBreadCrumb(newTitle);     
                             $("#Title").html(newTitle);
                         
@@ -108,7 +109,7 @@
                 
                 
           var handleMediaWikiText = function()
-            {             
+            {                      
               if ($("#Content #tm_datatype_wikitext").length ===1)              
               {
                 dataType = "wikitext";
@@ -120,10 +121,10 @@
                 var wikiText = $("#Content").html();
                 var targetDiv = document.createElement('div');        
                 new creole().parse(targetDiv,wikiText )   
-                var html = targetDiv.innerHTML ;
-              
+                var html = targetDiv.innerHTML ;                
                 $("#Content").html(html);      
              }
+  
              $("pre").addClass("prettyprint");
              prettyPrint();
              $("#ContentArea img").css("border","1px solid");

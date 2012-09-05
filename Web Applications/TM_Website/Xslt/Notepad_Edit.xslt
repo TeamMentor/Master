@@ -45,7 +45,7 @@
           
             var id       = $("#Id_RawValue").html(); 
             var title    = $("#Title_RawValue").html();
-            var dataType = $("#DataType_RawValue").html(); 
+            var dataType = $("#DataType_RawValue").html().toString().toLowerCase();
             
             document.title = "Editing: " + title;
             
@@ -144,8 +144,8 @@
   <xsl:template match="Content">
 	<span class="NEDataTypeLabel">Data Type:</span>
     <select id="DataType" class="NEDataType">
-      <option value ="Html">Html</option>
-      <option value ="WikiText">WikiText</option>      
+      <option value ="html">Html</option>
+      <option value ="wikitext">WikiText</option>      
      </select>
     <span id="WikiTextHelp">WikiText uses <a href="http://wikicreole.org/attach/CheatSheet/creole_cheat_sheet.png" target="_blank"> WikiCreole</a> </span>
 	

@@ -128,7 +128,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			var header_CSRF_Token = tmWebServices.Context.Request.Headers["CSRF_Token"];
 			if (header_CSRF_Token.valid())
 			{
-                "[check_CSRF_Token] {0} == {1} : {2}".debug(header_CSRF_Token, sessionID.str().hash().str(), header_CSRF_Token == sessionID.str().hash().str());
+                //"[check_CSRF_Token] {0} == {1} : {2}".debug(header_CSRF_Token, sessionID.str().hash().str(), header_CSRF_Token == sessionID.str().hash().str());
 				if (header_CSRF_Token == sessionID.str().hash().str())			// interrestingly session.hash().str() produces a different value
 					return true;
 			}
@@ -138,7 +138,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 
 		public TM_Authentication mapUserRoles()
 		{
-            "[TM_Authentication] mapUserRoles".info();
+            //"[TM_Authentication] mapUserRoles".info();
             if (WindowsAuthentication.windowsAuthentication_Enabled)
 				if (sessionID == Guid.Empty || sessionID.validSession() == false)
 					sessionID = new WindowsAuthentication().authenticateUserBaseOnActiveDirectory();
@@ -151,8 +151,8 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 				{
 					userGroup = new UserRoleBaseSecurity().MapRolesBasedOnSessionGuid(sessionID);					
 				}
-                else
-                    "[TM_Authentication] check_CSRF_Token failed".error();
+                //else
+                //    "[TM_Authentication] check_CSRF_Token failed".error();
 			}
             if (userGroup == UserGroup.None)
             {
