@@ -73,7 +73,7 @@
 					{		
                         $("#itemContent").show()
 						"#Title"            .$().html(loadedGuidanceItem.Metadata.Title);
-						document.title = TM.ArticleTitle + " - " + loadedGuidanceItem.Metadata.Title;
+						document.title = loadedGuidanceItem.Metadata.Title + " - " + TM.ArticleTitle;
                         if ((loadedGuidanceItem.Metadata.Category    == null || loadedGuidanceItem.Metadata.Category    == "")   &&
                             (loadedGuidanceItem.Metadata.Phase       == null || loadedGuidanceItem.Metadata.Phase       == "")      &&
                             (loadedGuidanceItem.Metadata.Technology  == null || loadedGuidanceItem.Metadata.Technology  == "") && 
