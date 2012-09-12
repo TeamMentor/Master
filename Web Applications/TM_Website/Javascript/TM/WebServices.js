@@ -176,6 +176,7 @@ TM.WebServices.WS_Users.createUser = function(username , passwordHash,  email, f
 									callback(data);
 							});		
 	}
+
 TM.WebServices.WS_Users.setUserGroupID = function(userId , groupId, callback)
 	{		
 		var params =  { userId: userId , roleId : groupId };

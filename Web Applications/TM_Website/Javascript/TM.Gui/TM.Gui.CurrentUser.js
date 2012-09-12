@@ -41,12 +41,16 @@ TM.Gui.CurrentUser =
 									}	
         ,   handleUserPostLoginData : function()
                                     {
-                                        var postLoginView = TM.Gui.CurrentUser.userData.PostLoginView;
-                                        if (typeof(postLoginView) == "string")
-                                        {
-                                            window.location.hash = postLoginView;
-                                        }
-                    
+										if (isDefined(TM.Gui.CurrentUser.userData))
+										{
+
+											var postLoginView = TM.Gui.CurrentUser.userData.PostLoginView;
+
+											if (window.location.hash.length < 2 && typeof(postLoginView) == "string")
+											{
+												window.location.hash = postLoginView;
+											}
+										}                    
                                     }						
 		, 	checkUserLoop			: function()
 									{

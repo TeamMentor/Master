@@ -223,6 +223,7 @@ TM.Gui.Main.Panels.onWindowHashChange = function()
         {
             TM.Gui.Main.Panels.setHomePageViewFromUrlHash();
             TM.Gui.AppliedFilters.currentPivotPanelFilters = new Array();
+			TM.Gui.AppliedFilters.MapFiltersFromUrl();
             TM.Events.onTextSearch();    
         }
         TM.Gui.Main.Panels.handleWindowHashChange = true; // reset after one round

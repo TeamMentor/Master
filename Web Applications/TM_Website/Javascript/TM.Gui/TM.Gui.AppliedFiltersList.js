@@ -4,7 +4,8 @@ TM.Gui.AppliedFiltersList.removeFilters = function()
 	{		        
 		TM.Gui.AppliedFilters.currentFilters = [];
 		TM.Gui.AppliedFilters.currentPivotPanelFilters = new Array(); 
-		TM.Gui.AppliedFiltersList.populateAppliedFiltersTable() ;	
+		window.location.hash = "";
+		//TM.Gui.AppliedFiltersList.populateAppliedFiltersTable() ;	
         TM.Events.onInvalidateSearchText();
 		TM.Events.onFiltersRemoved();
 	}

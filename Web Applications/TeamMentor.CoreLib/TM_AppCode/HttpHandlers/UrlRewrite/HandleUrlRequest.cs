@@ -388,7 +388,10 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 
         public bool transfer_Login()
 		{
-            context.Response.Redirect("/Html_Pages/Gui/Pages/login.html?LoginReferer=" + context.Request.Url.AbsolutePath);
+			var redirectTarget = context.Request.Url.AbsolutePath;
+			if (redirectTarget.lower() == "/login")
+				redirectTarget = "/";
+			context.Response.Redirect("/Html_Pages/Gui/Pages/login.html?LoginReferer=" + redirectTarget);
 	        //context.Response.ContentType = "text/html";    
 			//context.Server.Transfer("/Html_Pages/Gui/Pages/login.html");
             //context.Session["LoginReferer"] = context.Request.Url.AbsolutePath;
