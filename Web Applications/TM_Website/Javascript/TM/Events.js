@@ -28,6 +28,14 @@ TM.Events =
 																{
 																	$(TM.Events._target).bind(name, _callback);
 																}
+										TM.Events[name].add_RemoveOnRaise = function(_callback)
+																{
+																	TM.Events[name].add(function()
+																		{
+																			TM.Events[name].remove();
+																			_callback();
+																		});
+																}
 										TM.Events[name].remove = function()
 																{	
 																	TM.Events._remove(name);
@@ -57,8 +65,20 @@ TM.Events =
 												//$(TM.Events._target).trigger(name); // this throws error in IE for events across popup windows
 												if (TM.Events[name].events() != null)
 													$.each(TM.Events[name].events(),  function()         
-														{          
-															this.handler();
+														{        
+															if (isDefined(this.handler) === false)
+															{
+																TM.Gui.Dialog.alertUser("Event handler not set for: " + name, "Event invocation");
+																return;
+															}
+															try 
+															{
+																this.handler();    
+															} 
+															catch (e) 
+															{
+																TM.Gui.Dialog.alertUser(e.message,"Error executing event: " + name);
+															} 
 														});
 											} , 
 											20);											
@@ -152,6 +172,7 @@ TM.Events._eventsFor_ControlPanel =
 			,	'onControlPanelGuiLoaded'
 			,	'onControlPanelViewLoaded'
 			,	'onCreateUsers'
+			,	'onUserDeleted'
 			,	'onFileUploaded'
 		]	
 		
@@ -217,9 +238,13 @@ TM.Events.onRenamedView				= function() 			{} // called when there was a view wa
 
 
 //Other globally called functions
-TM.Gui.Dialog.showUserMessage		= function(message) 	{ console.log("TM USER MESSAGE:" + message); }  // to be overriten by a GUI class
-TM.Gui.showUserMode					= function()			{}					// used to render UserMode
-TM.Gui.showEditMode					= function()			{}					// used to render EditMode
-TM.Gui.Dialog.isThereAnDialogOpen   = function()			{ return false; }	
+
+// to be overriten by a GUI class
+
+TM.Gui.Dialog.showUserMessage		= function(message) 		{ console.log("TM USER MESSAGE: " + message); }  
+TM.Gui.Dialog.alertUser				= function(message, title)	{ console.log("TM USER MESSAGE: " + title + " : " + message); }
+TM.Gui.showUserMode					= function()				{}					// used to render UserMode
+TM.Gui.showEditMode					= function()				{}					// used to render EditMode
+TM.Gui.Dialog.isThereAnDialogOpen   = function()				{ return false; }	
 
 ;

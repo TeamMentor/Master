@@ -76,7 +76,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			//setDataFromCurrentScript(@"..\..");
             //setDataFromCurrentScript(@"..\TM_Library_Data");
             setDataFromCurrentScript(TMConfig.Current.TMLibraryDataVirtualPath);
-			
+            TM_Xml_Database.Current = new TM_Xml_Database();
 		} 
 		
 		public TM_Xml_Database()
@@ -130,12 +130,12 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                     if (tempFile.fileExists().isFalse())
                         return true;
                 }
+                "[in canWriteToPath] test failed for for path: {0}".error(path);
             }
             catch(Exception ex)
             {
                 ex.log("[in canWriteToPath] for path: {0} : {1}", path, ex.Message);
-            }
-            "[in canWriteToPath] test failed for for path: {0}".error(path);
+            }            
             return false;
         }
 		public string reloadData()

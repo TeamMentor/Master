@@ -26,10 +26,13 @@ TM.Debug.callTrace_ShowExecutionTime		  	= false;
 TM.Debug.callTrace_LogToConsole				  	= false;
 TM.Debug.callTrace_ShowParamsInConsoleLog	  	= false;
 
-TM.Debug.logEventsRaised					  	= false;
+TM.Debug.logEventsRaised					  	= true;
 TM.Debug.logLoadedPages						  	= false;
 
 //only put real passwords here in QA environments
+TM.QUnit.defaultUser_Admin                      = "qa_admin";
+TM.QUnit.defaultUser_Editor                     = "qa_editor";
+TM.QUnit.defaultUser_Reader                     = "qa_reader";
 TM.QUnit.defaultPassord_Admin                   = "!!tmbeta";
 TM.QUnit.defaultPassord_Editor                  = "!!tmbeta";
 TM.QUnit.defaultPassord_Reader                  = "!!tmbeta";

@@ -11,6 +11,7 @@ using SecurityInnovation.TeamMentor.Authentication.WebServices.AuthorizationRule
 //using Microsoft.Practices.Unity;
 using O2.DotNetWrappers.ExtensionMethods;
 using O2.XRules.Database.APIs;
+using SecurityInnovation.TeamMentor.Authentication;
 //O2File:../IJavascriptProxy.cs
 //O2File:../Authentication/UserRoleBaseSecurity.cs
 //O2File:TM_WebServices.asmx.cs
@@ -39,11 +40,11 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public string XmlDatabase_GetLibraryPath()		{	return TM_Xml_Database.Path_XmlLibraries;	}		
 		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public string XmlDatabase_ReloadData()			{	
 																																		guiObjectsCacheOK = false; 
-																																		return new TM_Xml_Database().reloadData(null); 
+																																		return  TM_Xml_Database.Current.reloadData(null); 
 																																	}
 		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public bool XmlDatabase_ImportLibrary_fromZipFile(string pathToZipFile)
 																																	{
-																																		if (new TM_Xml_Database().xmlDB_Libraries_ImportFromZip(pathToZipFile))
+																																		if ( TM_Xml_Database.Current.xmlDB_Libraries_ImportFromZip(pathToZipFile))
 																																		{
 																																			this.XmlDatabase_ReloadData();
 																																			return true;
@@ -52,20 +53,25 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 																																	}
 		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public string XmlDatabase_SetLibraryPath(string libraryPath)		
 																																	{	guiObjectsCacheOK = false; 
-																																		return new TM_Xml_Database().reloadData(libraryPath); 
+																																		return  TM_Xml_Database.Current.reloadData(libraryPath); 
 																																	}
 
-		[WebMethod(EnableSession = true)] public List<Guid>     XmlDatabase_GuidanceItems_SearchTitleAndHtml(List<Guid> guidanceItemsIds, string searchText)		{	 return new TM_Xml_Database().guidanceItems_SearchTitleAndHtml(guidanceItemsIds,searchText); }																	
+		[WebMethod(EnableSession = true)] public List<Guid>     XmlDatabase_GuidanceItems_SearchTitleAndHtml(List<Guid> guidanceItemsIds, string searchText)		{	 return  TM_Xml_Database.Current.guidanceItems_SearchTitleAndHtml(guidanceItemsIds,searchText); }																	
 																	
-		[WebMethod(EnableSession = true)] public string         XmlDatabase_GetGuidanceItemXml(Guid guidanceItemId)	    {	return new TM_Xml_Database().xmlDB_guidanceItemXml(guidanceItemId); }        
-        [WebMethod(EnableSession = true)] public string         XmlDatabase_GetGuidanceItemPath(Guid guidanceItemId)	{	return new TM_Xml_Database().xmlDB_guidanceItemPath(guidanceItemId); }                
+		[WebMethod(EnableSession = true)] public string         XmlDatabase_GetGuidanceItemXml(Guid guidanceItemId)	    {	return  TM_Xml_Database.Current.xmlDB_guidanceItemXml(guidanceItemId); }        
+        [WebMethod(EnableSession = true)] public string         XmlDatabase_GetGuidanceItemPath(Guid guidanceItemId)	{	return  TM_Xml_Database.Current.xmlDB_guidanceItemPath(guidanceItemId); }                
 																	
 		[WebMethod(EnableSession = true)] public string         RBAC_CurrentIdentity_Name()				                {	return new UserRoleBaseSecurity().currentIdentity_Name(); }
 		[WebMethod(EnableSession = true)] public bool           RBAC_CurrentIdentity_IsAuthenticated()	                {	return new UserRoleBaseSecurity().currentIdentity_IsAuthenticated(); }
-		[WebMethod(EnableSession = true)] public List<string>   RBAC_CurrentPrincipal_Roles()		            {	return new UserRoleBaseSecurity().currentPrincipal_Roles().toList(); }
+		[WebMethod(EnableSession = true)] public List<string>   RBAC_CurrentPrincipal_Roles()		                    {	return new UserRoleBaseSecurity().currentPrincipal_Roles().toList(); }
 		[WebMethod(EnableSession = true)] public bool           RBAC_HasRole(string role)					            {	return RBAC_CurrentPrincipal_Roles().contains(role); }
 		[WebMethod(EnableSession = true)] public string         RBAC_SessionCookie()						            {	return HttpContext.Current.Request.Cookies["Session"].notNull() 
-																												? HttpContext.Current.Request.Cookies["Session"].Value : ""; }
+																												                    ? HttpContext.Current.Request.Cookies["Session"].Value : ""; }
+
+        [WebMethod(EnableSession = true)]		                                    public Guid SSO_AuthenticateUser(string ssoToken)            {   return new SingleSignOn().authenticateUserBasedOn_SSOToken(ssoToken); }
+        [WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public string SSO_GetSSOTokenForUser(string userName)          {   return new SingleSignOn().getSSOTokenForUser(userName); }
+        [WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public TMUser SSO_GetUserFromSSOToken(string ssoToken)         {   return new SingleSignOn().getUserFromSSOToken(ssoToken); }        
+        
 																												
 		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public string GitHub_Pull_Origin()	            {	return UtilMethods.syncWithGitHub_Pull_Origin();  }
         [WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public string GitHub_Push_Origin()	            {	return UtilMethods.syncWithGitHub_Push_Origin();  }
@@ -140,11 +146,10 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                                                                                         return uploadToken;
 																					}
 
-        //[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]        public string GetLogs()
-        [WebMethod(EnableSession = true)]                                         public string GetLogs()
+        [WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]        public string GetLogs()        
                                                                                     {
                                                                                         var logData = O2.Kernel.PublicDI.log.LogRedirectionTarget.prop("LogData").str() ;
                                                                                         return logData;
-                                                                                    }
+                                                                                    }        
     }
 }

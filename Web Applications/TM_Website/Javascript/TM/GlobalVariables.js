@@ -39,6 +39,7 @@ mapGlobal(TM.Gui, "DataTable");
 mapGlobal(TM.Gui, "Dialog");
 mapGlobal(TM.Gui, "Main");
 
+
 //Extra IE mappings
 if (typeof(TM.Debug) == "undefined")
 	TM.Debug = {};
@@ -71,3 +72,12 @@ var htmlUnEscape = function(str)
                 .replace(/&lt;/g, '<')
                 .replace(/&gt;/g, '>');
     };
+
+if (typeof(console) == "undefined")
+{  	
+	console = 
+		{
+				log			: function() {}
+			,	error		: function() {}			
+		};	
+}	

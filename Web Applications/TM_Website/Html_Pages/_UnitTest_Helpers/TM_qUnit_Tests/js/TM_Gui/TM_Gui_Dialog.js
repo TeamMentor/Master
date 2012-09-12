@@ -106,6 +106,7 @@ asyncTest("loadPage: login Page ", function()
 			
 		var onLoadCallback = function()
 			{
+				ok(true, "on onLoadCallback");
 				$('#UsernameBox').val('username');
 				$('#PasswordBox').val('password');
 				$("button").click();				
@@ -113,7 +114,10 @@ asyncTest("loadPage: login Page ", function()
 			};			
 		var onCloseCallback = function()
 			{
+				ok(true, "on onCloseCallback");
 				start();
 			};				
-		TM.Gui.Dialog.loginPage(onLoadCallback, onCloseCallback);		
+		TM.Events.onLoginDialogOpen.add_RemoveOnRaise(onLoadCallback);
+		TM.Events.onLoginDialogClose.add_RemoveOnRaise(onCloseCallback);
+		TM.Gui.Dialog.loginPage();		
 	});

@@ -31,7 +31,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		{			
 			ProxyType = "TM Xml Database";
 			adminSessionID = Guid.Empty;
-			tmXmlDatabase = new TM_Xml_Database();			
+			tmXmlDatabase =  TM_Xml_Database.Current;			
 		}
 		//Misc		
     	public string GetTime() { return DateTime.Now.str(); }  	         

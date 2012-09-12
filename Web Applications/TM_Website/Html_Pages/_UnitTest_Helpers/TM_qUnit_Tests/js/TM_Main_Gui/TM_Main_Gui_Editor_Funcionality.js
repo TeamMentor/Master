@@ -1,7 +1,7 @@
 //TM_Main_Gui_Editor_Funcionality.js
 module("Editor - Funcionality");
 
-var testUserName = "editor";
+var testUserName = TM.QUnit.defaultUser_Editor;
 var testPassword = TM.QUnit.defaultPassord_Editor;
 
 asyncTest("open main GUI", function() 
@@ -11,8 +11,10 @@ asyncTest("open main GUI", function()
 	
 asyncTest("logout if needed", function() 
 	{
-		qunit_Gui_Helper.logout();
+	start();
+		//qunit_Gui_Helper.logout();
 	});
+
 asyncTest("login as editor", function() 	
 	{			
 		qunit_Gui_Helper.loginAs(testUserName,testPassword);				

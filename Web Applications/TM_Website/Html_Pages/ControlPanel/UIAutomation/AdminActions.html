@@ -24,9 +24,9 @@
 					,	add_Actions		: function()
 							{
 								var that = this;
-								this.add_Link("Login as Admin"						, function() { that.login_as_User("admin") 				})
-									.add_Link("Login as Editor"						, function() { that.login_as_User("editor") 			})
-									.add_Link("Login as Reader"						, function() { that.login_as_User("reader") 			})
+								this.add_Link("Login as Admin"						, function() { that.login_as_User(TM.QUnit.defaultUser_Admin , TM.QUnit.defaultPassord_Admin) 		    })
+									.add_Link("Login as Editor"						, function() { that.login_as_User(TM.QUnit.defaultUser_Editor, TM.QUnit.defaultPassord_Editor) 			})
+									.add_Link("Login as Reader"						, function() { that.login_as_User(TM.QUnit.defaultUser_Reader, TM.QUnit.defaultPassord_Reader) 			})
 									.add_Link("Login as Admin -> Web Services"		, function() { that.login_and_OpenLink("Web Services")	})
 									.add_Link("Login as Admin -> Admin Tasks"		, function() { that.login_and_OpenLink("Admin Tasks")	})
 									.add_Link("Login as Admin -> Install Libraries"	, function() { that.login_and_OpenLink("Upload Libraries")	});
@@ -51,9 +51,9 @@
 									});	
 								opener.$("#leftMenu_Links").find("a:contains(Login)").click()
 							}
-					, 	login_as_User	: function(user, callback)
+					, 	login_as_User	: function(user, password, callback)
 							{								
-								this.login(user,TM.QUnit.defaultPassord_Admin, callback );
+								this.login(user,password, callback );
 							}
 							
 					, 	login_and_OpenLink : function(linkText)
@@ -64,7 +64,7 @@
 											opener.$("#leftMenu_Links").find("a:contains('"+ linkText+"')").click()
 											opener.TM.Events.onLoginDialogClose.remove();
 										});
-								this.login_as_User("admin");									
+								this.login_as_User(TM.QUnit.defaultUser_Admin, TM.QUnit.defaultPassord_Admin);									
 							}
 				};
 				

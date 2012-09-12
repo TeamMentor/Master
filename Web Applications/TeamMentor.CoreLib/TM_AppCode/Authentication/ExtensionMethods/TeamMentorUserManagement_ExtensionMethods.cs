@@ -6,6 +6,7 @@ using System.Security.Permissions;
 using SecurityInnovation.TeamMentor.Authentication.WebServices;
 using SecurityInnovation.TeamMentor.Authentication.WebServices.AuthorizationRules;
 using O2.DotNetWrappers.ExtensionMethods;
+using SecurityInnovation.TeamMentor.WebClient.WebServices;
 //O2File:../UserRoles.cs
 
 namespace SecurityInnovation.TeamMentor.Authentication.ExtensionMethods

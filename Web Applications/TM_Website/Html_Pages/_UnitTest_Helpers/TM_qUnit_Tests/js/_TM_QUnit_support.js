@@ -11,7 +11,7 @@ QUnit.randomString = function()
 	
 QUnit.login_as_Admin = function(callback)
 	{		
-		TM.WebServices.WS_Users.login("admin", TM.QUnit.defaultPassord_Admin ,callback);
+		TM.WebServices.WS_Users.login(TM.QUnit.defaultUser_Admin, TM.QUnit.defaultPassord_Admin ,callback);
 	};	
 
 QUnit.config.reorder = false;	 //always exectute from the start

@@ -31,68 +31,71 @@ using SecurityInnovation.TeamMentor.Authentication.WebServices.AuthorizationRule
 
 namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 {
-    /// <summary>
-    /// Summary description for Authentication
-    /// </summary>
-    //[WebService(Namespace = "http://teammentor.securityinnoation.com/")]
+	/// <summary>
+	/// Summary description for Authentication
+	/// </summary>
+	//[WebService(Namespace = "http://teammentor.securityinnoation.com/")]
 	[WebService(Namespace = "http://tempuri.org/")]	 
-    [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
-    [System.ComponentModel.ToolboxItem(false)]
-    [System.Web.Script.Services.ScriptService]
-    public partial class TM_WebServices : System.Web.Services.WebService 
-    {
-        //[Dependency]
-        public TM_Xml_Database_JavaScriptProxy javascriptProxy { get; set; }
+	[WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
+	[System.ComponentModel.ToolboxItem(false)]
+	[System.Web.Script.Services.ScriptService]
+	public partial class TM_WebServices : System.Web.Services.WebService 
+	{
+		//[Dependency]
+		public TM_Xml_Database_JavaScriptProxy javascriptProxy { get; set; }
 
-        //public ActivityTracking activityTracking { get; set; }
+		//public ActivityTracking activityTracking { get; set; }
 
-        public TM_Authentication tmAuthentication { get; set; }
+		public TM_Authentication tmAuthentication { get; set; }
 		
-        public TM_WebServices()
-        {			                
-            //UnityInjection.resolve(this);
-            javascriptProxy = new TM_Xml_Database_JavaScriptProxy(); 
+		public TM_WebServices()
+		{			                
+			//UnityInjection.resolve(this);
+			javascriptProxy = new TM_Xml_Database_JavaScriptProxy(); 
 			tmAuthentication = new TM_Authentication(this);
 			tmAuthentication.mapUserRoles();					
 			
 			//Disable Activity Tracking
 			//activityTracking = new ActivityTracking();
 			//activityTracking.LogRequest();
-        }        
-        
+		}        
+		
 
 		//******** javascriptProxy User Management   no admin privs needed
-        [WebMethod(EnableSession = true)]											public int CreateUser(NewUser newUser)      				{   return javascriptProxy.CreateUser(newUser); 	}
+		[WebMethod(EnableSession = true)]											public int CreateUser(NewUser newUser)      				{   return javascriptProxy.CreateUser(newUser); 	}
 		[WebMethod(EnableSession = true)]											public TMUser CreateUser_Random()      						{   return javascriptProxy.CreateUser_Random(); 	}		        
 		
-        //******** javascriptProxy User Management   (all demand admin privs)     
-        [WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public TMUser GetUser_byID(int userId)        				{   return javascriptProxy.GetUser_byID(userId); ;        }
+		//******** javascriptProxy User Management   (all demand admin privs)     
+		[WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public TMUser GetUser_byID(int userId)        				{   return javascriptProxy.GetUser_byID(userId); ;        }
 		[WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public List<TMUser> GetUsers_byID(List<int> userIds)      	{   return javascriptProxy.GetUsers_byID(userIds); ;       }
 		[WebMethod(EnableSession = true)]   [Admin(SecurityAction.Demand)]			public TMUser GetUser_byName(string name)					{   return javascriptProxy.GetUser_byName(name);        }
-        [WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public List<TMUser> GetUsers()        						{   return javascriptProxy.GetUsers();        		}         
+		[WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public List<TMUser> GetUsers()        						{   return javascriptProxy.GetUsers();        		}         
 
 		[WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public List<TMUser> CreateUsers(List<NewUser> newUsers)    	{	return javascriptProxy.CreateUsers(newUsers).tmUsers();        }        
 		[WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public List<TMUser> BatchUserCreation(string batchUserData) {	return javascriptProxy.BatchUserCreation(batchUserData).tmUsers();  }        
-        [WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public bool DeleteUser(int userId)	        				{	return javascriptProxy.DeleteUser(userId);        }
+		[WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public bool DeleteUser(int userId)	        				{	return javascriptProxy.DeleteUser(userId);        }
 		[WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public List<bool> DeleteUsers(List<int> userIds)        	{	return javascriptProxy.DeleteUsers(userIds);        }
-        [WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public bool UpdateUser(int userId, string userName, 
+		[WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public bool UpdateUser(int userId, string userName, 
 																										   string firstname, string lastname, 
 																										   string title, string company, 
 																										   string email, int groupId) 		{	return javascriptProxy.UpdateUser(userId, userName, firstname, lastname, title, company, email, groupId);        }
-		[WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public bool SetUserPasswordHash(int userId,  string passwordHash) 					{ 	return javascriptProxy.SetUserPasswordHash(userId, passwordHash) ;        }
-		[WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public int GetUserGroupId(int userId)        			{	return javascriptProxy.GetUserGroupId(userId);        }
-		[WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public string GetUserGroupName(int userId)        		{	return javascriptProxy.GetUserGroupName(userId);        }
-		[WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public bool SetUserGroupId(int userId, int roleId)  	{	return javascriptProxy.SetUserGroupId(userId, roleId);        }
+		[WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public bool         SetUserPasswordHash(int userId,  string passwordHash) 					{ 	return javascriptProxy.SetUserPasswordHash(userId, passwordHash) ;        }
+		[WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public int          GetUserGroupId(int userId)        			{	return javascriptProxy.GetUserGroupId(userId);        }
+		[WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public string       GetUserGroupName(int userId)        		{	return javascriptProxy.GetUserGroupName(userId);        }
+		[WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public bool         SetUserGroupId(int userId, int roleId)  	{	return javascriptProxy.SetUserGroupId(userId, roleId);        }
 		[WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public List<string> GetUserRoles(int userId)			{	return javascriptProxy.GetUserRoles(userId);        }
+
+        [WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public TMUser       SetUser_PostLoginView   (string userName, string postLoginView)	    {	return userName.tmUser().set_PostLoginView(postLoginView);        }
+        [WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public TMUser       SetUser_PostLoginScript (string userName, string postLoginScript)   {	return userName.tmUser().set_PostLoginScript(postLoginScript);    }
 		
-	 	
 		
-        //********  Session Management (& Login)]
-        [WebMethod(EnableSession = true)]	public Guid Login(string username, string passwordHash)      		{   return tmAuthentication.sessionID = javascriptProxy.Login(username, passwordHash); }		
+		
+		//********  Session Management (& Login)]
+		[WebMethod(EnableSession = true)]	public Guid Login(string username, string passwordHash)      		{   return tmAuthentication.sessionID = javascriptProxy.Login(username, passwordHash); }		
 		[WebMethod(EnableSession = true)]	public Guid Login_PwdInClearText(string username, string password)	{	return tmAuthentication.sessionID = javascriptProxy.Login_PwdInClearText(username, password); }		
 		[WebMethod(EnableSession = true)]	public Guid Logout()      											{																													
 																													tmAuthentication.sessionID = Guid.Empty;
-                                                                                                                    return tmAuthentication.sessionID;																													
+																													return tmAuthentication.sessionID;																													
 																												}																												
 		[WebMethod(EnableSession = true)]	public Guid Current_SessionID()										{	return tmAuthentication.sessionID;  }
 		[WebMethod(EnableSession = true)]	public TMUser Current_User()										{	return tmAuthentication.currentUser;  }
@@ -125,10 +128,10 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 
 		//demand Admin privs
 		[WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public string GetAllUserLogs()		{				return javascriptProxy.GetAllUserLogs();		}		
-		[WebMethod(EnableSession = true)] 	[Admin(SecurityAction.Demand)]			public List<Guid> GetActiveSessions()									{ 	return new TM_Xml_Database().activeSessions().Keys.ToList(); }
+		[WebMethod(EnableSession = true)] 	[Admin(SecurityAction.Demand)]			public List<Guid> GetActiveSessions()									{ 	return TM_Xml_Database.Current.activeSessions().Keys.ToList(); }
 		[WebMethod(EnableSession = true)] 	[Admin(SecurityAction.Demand)]			public TMUser	  GetActiveSession(Guid sessionID)						
-																						{ 	
-																							var activeSessions = new TM_Xml_Database().activeSessions();
+																						{
+																							var activeSessions = TM_Xml_Database.Current.activeSessions();
 																							if (activeSessions.ContainsKey(sessionID))
 																								return activeSessions[sessionID];
 																							return null;
@@ -148,18 +151,18 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		[WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public bool RemoveViewFromFolder(Guid libraryId, Guid viewId)    					{ this.resetCache(); return javascriptProxy.RemoveViewFromFolder(libraryId, viewId); }  	
 		[WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public bool MoveViewToFolder(Guid viewId, Guid folderId) 							{ this.resetCache(); return javascriptProxy.MoveViewToFolder(viewId, folderId); }  	
 		[WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public Guid CreateGuidanceItem(GuidanceItem_V3 guidanceItem)						{ this.resetCache(); return javascriptProxy.CreateGuidanceItem(guidanceItem); 	}
-        [WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public Guid CreateArticle(TeamMentor_Article article)					            { this.resetCache(); return javascriptProxy.CreateArticle(article); 	}
-        [WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public Guid CreateArticle_Simple(Guid libraryId, string title, string dataType, string htmlCode)					       
-                                                                                        { 
-                                                                                            this.resetCache(); 
-                                                                                            var article = new TeamMentor_Article();
-                                                                                            article.Metadata.Library_Id = libraryId;
-                                                                                            article.Metadata.Title = title;
-                                                                                            article.Content.DataType = dataType;
-                                                                                            article.Content.Data.Value = htmlCode;
-                                                                                            return javascriptProxy.CreateArticle(article); 
-                                                                                        }
-        
+		[WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public Guid CreateArticle(TeamMentor_Article article)					            { this.resetCache(); return javascriptProxy.CreateArticle(article); 	}
+		[WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public Guid CreateArticle_Simple(Guid libraryId, string title, string dataType, string htmlCode)					       
+																						{ 
+																							this.resetCache(); 
+																							var article = new TeamMentor_Article();
+																							article.Metadata.Library_Id = libraryId;
+																							article.Metadata.Title = title;
+																							article.Content.DataType = dataType;
+																							article.Content.Data.Value = htmlCode;
+																							return javascriptProxy.CreateArticle(article); 
+																						}
+		
 		[WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public bool UpdateGuidanceItem(TeamMentor_Article guidanceItem)						
 																						{ 
 																							this.resetCache();
@@ -167,22 +170,22 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 																							return result;
 																						}	
 
-        [WebMethod(EnableSession = true)]   [EditArticles(SecurityAction.Demand)]   public bool SetArticleHtml (Guid articleId,string htmlContent)					        
-                                                                                        {
-                                                                                            return SetArticleContent(articleId, "html", htmlContent);
-                                                                                        }
+		[WebMethod(EnableSession = true)]   [EditArticles(SecurityAction.Demand)]   public bool SetArticleHtml (Guid articleId,string htmlContent)					        
+																						{
+																							return SetArticleContent(articleId, "html", htmlContent);
+																						}
 		[WebMethod(EnableSession = true)]   [EditArticles(SecurityAction.Demand)]   public bool SetArticleContent (Guid articleId, string dataType,  string content)					        
-                                                                                        { 
-                                                                                            resetCache();
-                                                                                            var article = javascriptProxy.GetGuidanceItemById(articleId.str());
-                                                                                            if (article.notNull())
-                                                                                            {
-                                                                                                article.Content.Data.Value = content;
-                                                                                                article.Content.DataType = dataType;
-                                                                                                return javascriptProxy.UpdateGuidanceItem(article);                                                                                                
-                                                                                            }
-                                                                                            return false;
-                                                                                        }
+																						{ 
+																							resetCache();
+																							var article = javascriptProxy.GetGuidanceItemById(articleId.str());
+																							if (article.notNull())
+																							{
+																								article.Content.Data.Value = content;
+																								article.Content.DataType = dataType;
+																								return javascriptProxy.UpdateGuidanceItem(article);                                                                                                
+																							}
+																							return false;
+																						}
 
 		[WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public bool DeleteGuidanceItem(Guid guidanceItemId)											{ resetCache(); return javascriptProxy.DeleteGuidanceItem(guidanceItemId); 	}			
 		[WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public bool DeleteGuidanceItems(List<Guid> guidanceItemIds)									{ resetCache(); return javascriptProxy.DeleteGuidanceItems(guidanceItemIds); 	}			
@@ -238,7 +241,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 				return false;
 			}
 		}
-        */
+		*/
 		//not implemented in TM3
 		[WebMethod(EnableSession = true)]	public List<GuidanceType> GetGuidanceTypes() { 		return javascriptProxy.GetGuidanceTypes(); }
 		[WebMethod(EnableSession = true)]	public GuidanceType CreateGuidanceType(GuidanceType guidanceType, string[] columns)	{ return javascriptProxy.CreateGuidanceType(guidanceType,columns) ; }		
@@ -252,5 +255,5 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		[WebMethod(EnableSession = true)]	public Schema GetSchemaById(string schemaId) 										{ return javascriptProxy.GetSchemaById(schemaId);		}
 		[WebMethod(EnableSession = true)]	public List<string> GetGuidanceItemKeywords(string itemsId)							{ return javascriptProxy.GetGuidanceItemKeywords(itemsId);		}
 		[WebMethod(EnableSession = true)]	public void SetGuidanceItemKeywords(string itemId, string[] keywords) 				{ javascriptProxy.SetGuidanceItemKeywords(itemId, keywords);		}						
-    }
+	}
 }

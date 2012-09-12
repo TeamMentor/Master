@@ -139,10 +139,17 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		public TM_Authentication mapUserRoles()
 		{
             //"[TM_Authentication] mapUserRoles".info();
-            if (WindowsAuthentication.windowsAuthentication_Enabled)
-				if (sessionID == Guid.Empty || sessionID.validSession() == false)
-					sessionID = new WindowsAuthentication().authenticateUserBaseOnActiveDirectory();
-
+            if (sessionID == Guid.Empty || sessionID.validSession() == false)
+                /*if (SingleSignOn.singleSignOn_Enabled)
+                {
+                    sessionID = new SingleSignOn().authenticateUserBasedOn_SSOToken();
+                }
+                else*/
+                    if (WindowsAuthentication.windowsAuthentication_Enabled)
+                {                    
+                    sessionID = new WindowsAuthentication().authenticateUserBaseOn_ActiveDirectory();
+                }            
+            
 			
             var userGroup = UserGroup.None;
 			if (sessionID != Guid.Empty)

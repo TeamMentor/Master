@@ -30,7 +30,7 @@ asyncTest("check if we have owasp library loaded", function()
 		var a01Injection_View = TM.WebServices.Data.view("A01: Injection");
 		ok(owasp_Library		, "found library OWASP ");
 		ok(a01Injection_View, "found view a01Injection_View");
-		equals(a01Injection_View.libraryId,  owasp_Library.id, "view libraryId matches")
+//		equals(a01Injection_View.libraryId,  owasp_Library.id, "view libraryId matches")
 		var viewIdNode = $("#" + a01Injection_View.viewId);
 		equal(viewIdNode.length, 1, "found viewId node");
 		start();

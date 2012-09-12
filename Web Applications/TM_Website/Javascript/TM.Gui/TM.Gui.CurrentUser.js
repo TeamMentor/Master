@@ -5,7 +5,7 @@ TM.Gui.CurrentUser =
 		,	userRoles 			: []
 		,	htmlPage 			: ""				
 		, 	autoCheckUser	 	: true
-		, 	autoCheckInterval 	: 60 * 1000				// check every 60 sec
+		, 	autoCheckInterval 	: 60    // check every 60 sec (will be incremented by 10 secs on every request
 		,	loadUserData  		: function()
 									{													
 										TM.WebServices.WS_Users.currentUser(
@@ -26,6 +26,7 @@ TM.Gui.CurrentUser =
 															return;
 														}
 													that.currentUserName = that.userData.UserName;
+                                                    TM.Gui.CurrentUser.handleUserPostLoginData();                                            
 													TM.Gui.CurrentUser.loadUserRoles();
 												});
 									}
@@ -34,16 +35,29 @@ TM.Gui.CurrentUser =
 										TM.WebServices.WS_Users.currentUserRoles(
 											function(data) 
 												{																	
-													TM.Gui.CurrentUser.userRoles = data;	
+													TM.Gui.CurrentUser.userRoles = data;	                                                       
 													TM.Events.onUserDataLoaded();
 												});
-									}							
+									}	
+        ,   handleUserPostLoginData : function()
+                                    {
+                                        var postLoginView = TM.Gui.CurrentUser.userData.PostLoginView;
+                                        if (typeof(postLoginView) == "string")
+                                        {
+                                            window.location.hash = postLoginView;
+                                        }
+                    
+                                    }						
 		, 	checkUserLoop			: function()
 									{
 										var that = TM.Gui.CurrentUser;										
 										that.loadUserData();
 										if (that.autoCheckUser)
-											setTimeout(that.checkUserLoop, that.autoCheckInterval);
+                                        {
+                                            that.autoCheckInterval += 10;
+											setTimeout(that.checkUserLoop, that.autoCheckInterval * 1000);
+                                        }
+
 									}
 		, 	logout				: function()		
 									{

@@ -2,6 +2,7 @@ TM.Gui.Dialog =
 	{	
 		// variables
 		version : 1 , 
+		currentDialog	: null,
 		defaultTargetDiv: '#TM_Gui_Dialog',
 		
 		loadPage: 			function (page, target, callback)
@@ -59,6 +60,7 @@ TM.Gui.Dialog =
 																		}
 															}
 										} )
+									TM.Gui.Dialog.currentDialog = userMessageDialog;
 									return userMessageDialog;
 								},
 								
@@ -80,7 +82,8 @@ TM.Gui.Dialog =
 											height	: height ,
 											width	: width
 											
-										} )										
+										} )		
+									TM.Gui.Dialog.currentDialog = yesNoDialog;							
 									return yesNoDialog;
 								},
 								
@@ -91,7 +94,7 @@ TM.Gui.Dialog =
 															"Are you sure you want to delete " + description, 
 															onYes, 
 															function() {  }
-															,360 + description.length*5, height);
+															,360 + description.length*6, height);
 								},
 								
 		actionConfirmation:	function(description, onYes, width, height)
@@ -116,8 +119,13 @@ TM.Gui.Dialog =
 								
 		alertUser			: function(message, title, timeout)
 								{
+									if(isDefined($.Growl) === false)
+									{
+										console.log(title + " : " + message);
+										return;
+									}
 									if(isUndefined(timeout))
-										timeout = 3000;
+										timeout = 3000;									
 									$.Growl.show(message, 
 										{
 											"icon": false,

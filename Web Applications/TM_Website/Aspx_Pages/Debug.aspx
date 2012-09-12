@@ -1,4 +1,5 @@
-﻿<%@ Page Language="C#"  %>
+﻿<%@ Page Language="C#"  Trace="true" %>
+<%@ Import Namespace ="O2.Kernel" %>
 <%@ Import Namespace ="O2.DotNetWrappers.ExtensionMethods" %>
 <%@ Import Namespace ="SecurityInnovation.TeamMentor.WebClient.WebServices" %>
 
@@ -12,26 +13,41 @@
 <body>    
        <h1> Debug page for TeamMentor</h1>
         <br />
-        <div>
-            <strong>Admins only
-            </strong>
-            <br />
-            <br />
-            <strong>TM_Xml_Database.Path_XmlDatabase:</strong> <%=TM_Xml_Database.Path_XmlDatabase %><br />
-            <strong>TM_Xml_Database.Path_XmlLibraries:</strong> <%=TM_Xml_Database.Path_XmlLibraries %>
-            <strong>AppDomain.CurrentDomain.BaseDirectory:</strong> <%=AppDomain.CurrentDomain.BaseDirectory%><br />
-        </div>
+        <h2>TM Config values</h2>
         <hr />
-        <h1>Session Values</h1>
+        <div>                                    
+            <strong>TM_Xml_Database.Path_XmlDatabase:</strong> <%=TM_Xml_Database.Path_XmlDatabase %><br />
+            <strong>TM_Xml_Database.Path_XmlLibraries:</strong> <%=TM_Xml_Database.Path_XmlLibraries %><br />
+            <strong>AppDomain.CurrentDomain.BaseDirectory:</strong> <%=AppDomain.CurrentDomain.BaseDirectory%><br />
+            <strong>O2 Temp Dir:</strong> <%= PublicDI.config.O2TempDir%><br />
+        </div>
+        
+        <br /><h2>Session Values</h2>
+        <hr />
         <ul>
         <% foreach (string key in Session.Keys)
                Response.Write("<li>{0}: {1}</li>".format(key,Session[key]));
         %>
             </ul>
-        <h1>Logs</h1>
+        <br />
+        <h2>Logs</h2>
+        <hr />
         <pre>
-<%= new TM_WebServices().GetLogs() %>
-        </pre>
+<% 
+        var logs = new TM_WebServices().GetLogs();
+        foreach (var line in logs.lines())
+        {
+            var color = "black";
+            if (line.starts("DEBUG:"))
+                color = "green";
+            else if (line.starts("ERROR:"))
+                color = "red";
+            Response.Write("<span style='color:{0}'>{1}<span><br/>".format(color,line.htmlEncode()));
+        }
+    %>
+        </pre>        
+        <br /><h2>Trace Data</h2>
+        <hr />
         
 </body>
 </html>

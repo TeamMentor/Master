@@ -1,6 +1,4 @@
 TM.Debug.logLoadedPages = true
-var testUserName = "admin";
-var testPassword = TM.QUnit.defaultPassord_Admin;
 var pauseOnPopups = false;
 
 module("Open Views",
@@ -20,11 +18,13 @@ asyncTest("Check if main panels where loaded", function()
 	});	
 	
 asyncTest("Login as Admin", function() 	
-	{			
+	{					
 		if (TM.Gui.CurrentUser.isAdmin())
 			start();
 		else
 		{						
+			var testUserName = TM.QUnit.defaultUser_Admin;
+			var testPassword = TM.QUnit.defaultPassord_Admin;
 			qunit_ControlPanel_Helper.loginAs(testUserName,testPassword);					
 		}
 	});
@@ -32,7 +32,7 @@ asyncTest("Login as Admin", function()
 asyncTest("My Account", function() 	
 	{	
 		 $("#leftMenu_Links a:contains('My Account')").click();		 		 
-		 TM.Events.onControlPanelViewLoaded.add(function() 
+		 TM.Events.onControlPanelViewLoaded.add_RemoveOnRaise(function() 
 			{
 				var userEditWindow = TM.ControlPanel.userEditModalWindow
 				ok(userEditWindow, "found TM.ControlPanel.userEditModalWindow");
@@ -52,13 +52,13 @@ asyncTest("My Account", function()
 asyncTest("Manage Users", function() 	
 	{	
 		 $("#leftMenu_Links a:contains('Manage Users')").click();		 		 
-		 TM.Events.onControlPanelViewLoaded.add(start);
+		 TM.Events.onControlPanelViewLoaded.add_RemoveOnRaise(start);
 	});	
 	
 asyncTest("Create Multiple Users", function() 	
 	{	
 		 $("a:contains('Create Multiple Users')").click();		 
-		 TM.Events.onControlPanelViewLoaded.add(start);
+		 TM.Events.onControlPanelViewLoaded.add_RemoveOnRaise(start);
 	});		
 
  
@@ -66,19 +66,19 @@ asyncTest("Create Multiple Users", function()
 asyncTest("WebServices", function() 	
 	{	
 		 TM.ControlPanel.open_WebServices();
-		 TM.Events.onControlPanelViewLoaded.add(start);
+		 TM.Events.onControlPanelViewLoaded.add_RemoveOnRaise(start);
 	});		
 	
 asyncTest("AdminTasks", function() 	
 	{	
 		 TM.ControlPanel.open_AdminTasks();
-		 TM.Events.onControlPanelViewLoaded.add(start);
+		 TM.Events.onControlPanelViewLoaded.add_RemoveOnRaise(start);
 	});		
 
 asyncTest("TeamMentor QUnitTests", function() 	
 	{	
 		 TM.ControlPanel.open_QUnitTests();
-		 TM.Events.onControlPanelViewLoaded.add(start);
+		 TM.Events.onControlPanelViewLoaded.add_RemoveOnRaise(start);
 	});		
 	
 

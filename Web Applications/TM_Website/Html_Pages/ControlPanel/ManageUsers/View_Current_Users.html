@@ -36,14 +36,17 @@
 		
 		var refreshUserTable = function()	
 			{
-				$(allUserData).each(function()
-					{ 						
-						this.GroupName =userRoles[this.GroupID];						
-					});
-				$("#result1").setTemplateElement("template")							
-							 .processTemplate(allUserData);
-				$("#status").html("");							 
-				cssFixes();
+				if ($("#result1").length ===1)
+				{
+					$(allUserData).each(function()
+						{ 						
+							this.GroupName =userRoles[this.GroupID];						
+						});
+					$("#result1").setTemplateElement("template")							
+								 .processTemplate(allUserData);
+					$("#status").html("");							 
+					cssFixes();
+				}				
 			}
 			
 		var showData = function(data)

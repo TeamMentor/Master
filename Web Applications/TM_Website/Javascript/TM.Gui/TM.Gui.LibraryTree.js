@@ -312,7 +312,9 @@ TM.Gui.LibraryTree.add_Library_to_Database = function(title, callback, skip_rena
 					}					
 					else
 						TM.Gui.Dialog.alertUser("It was not possible to create the library called : " + title, 'Library creation error'  );					
-					TM.Events.onNewLibrary(libraryV3);						
+					
+					TM.Gui.LibraryTree.lastLibraryCreated = libraryV3;
+					TM.Events.onNewLibrary();						
 				}); 
 		return libraryNode;
 	}
@@ -335,8 +337,7 @@ TM.Gui.LibraryTree.remove_Library_from_Database = function(libraryIdOrName)
 		{	
 			_libraryNode = libraryNode;
 			_libraryV3 = libraryV3;
-			TM.Gui.Dialog.showUserMessage("something is wrong, the objects required to remove the library are not available: " + libraryId);								
-			TM.Events.onRemovedLibrary(false,libraryV3);	
+			TM.Gui.Dialog.showUserMessage("something is wrong, the objects required to remove the library are not available: " + libraryId);											
 			return libraryId;
 		}
 		else	
@@ -349,10 +350,12 @@ TM.Gui.LibraryTree.remove_Library_from_Database = function(libraryIdOrName)
 							TM.WebServices.Data.AllLibraries.pop(libraryV3);
 							delete $.data[libraryV3.libraryId];
 							TM.Gui.Dialog.alertUser('Library Deleted');
+							TM.Gui.LibraryTree.lastLibraryRemoved = libraryV3;
+							TM.Events.onRemovedLibrary();	
 						}					
 						else
 							TM.Gui.Dialog.showUserMessage("it was not possible to remove the library:" + libraryId);												
-						TM.Events.onRemovedLibrary(result,libraryV3);	
+						
 					}); 		
 	}
 	
@@ -369,17 +372,20 @@ TM.Gui.LibraryTree.remove_Folder_from_Database = function(libraryId, folderId)
 							TM.WebServices.Data.AllFolders.pop(folderV3);
 							delete  $.data[folderId];
 							TM.Gui.Dialog.alertUser('Folder Removed');
+
+							TM.Gui.LibraryTree.lastFolderRemoved = folderV3;
+							TM.Events.onRemovedFolder();	
 						}					
 						else
 							TM.Gui.Dialog.showUserMessage("it was not possible to remove the folder:" + folderId);												
-						TM.Events.onRemovedFolder(result,folderV3);	
+						
 					}); 		
 	}	
 	
 TM.Gui.LibraryTree.remove_View_from_Database = function(libraryId, viewId)
 	{		
 		var viewNode = $("#" + viewId);  
-		var viewV3 = $.data[viewV3];	
+		var viewV3 = $.data[viewId];	
 		TM.WebServices.WS_Libraries.remove_View(
 				libraryId, viewId,  function(result) 
 					{ 											
@@ -388,11 +394,12 @@ TM.Gui.LibraryTree.remove_View_from_Database = function(libraryId, viewId)
 							viewNode.remove();							
 							TM.WebServices.Data.AllViews.pop(viewV3);
 							delete  $.data[viewV3];		
-							TM.Gui.Dialog.alertUser('View Removed');
+							TM.Gui.Dialog.alertUser('View Removed');					
+							TM.Gui.LibraryTree.lastViewRemoved = viewV3;
+							TM.Events.onRemovedView();	
 						}					
 						else
 							TM.Gui.Dialog.showUserMessage("it was not possible to remove the view:" + viewId);												
-						TM.Events.onRemovedView(result, viewV3);	
 					}); 		
 	}		
 
@@ -423,7 +430,9 @@ TM.Gui.LibraryTree.add_Folder_to_Database = function(libraryId, folderId, title,
 					}					
 					else
 						TM.Gui.Dialog.showUserMessage("it was not possible to create the folder:" + title);					
-					TM.Events.onNewFolder(folderV3);										}); 
+					TM.Gui.LibraryTree.lastFolderCreated = folderV3;
+					TM.Events.onNewFolder();
+				}); 
 
 		return folderNode;		
 	}	
@@ -462,7 +471,8 @@ TM.Gui.LibraryTree.add_View_to_Database = function(libraryId, folderId, viewName
 					}					
 					//else
 					//	TM.Gui.Dialog.showUserMessage("it was not possible to create the view:" + viewName);					
-					TM.Events.onNewView(viewV3);						
+					TM.Gui.LibraryTree.lastViewCreated = viewV3;
+					TM.Events.onNewView();						
 				}); 
 
 		return viewNode;		
@@ -485,7 +495,8 @@ TM.Gui.LibraryTree.rename_Library_to_Database = function(libraryId, newName)
 					}					
 					//else
 					//	TM.Gui.Dialog.showUserMessage("it was not possible to rename the library:" + title);					
-					TM.Events.onRenamedLibrary(libraryV3);						
+					TM.Gui.LibraryTree.lastLibraryRenamed = libraryV3;
+					TM.Events.onRenamedLibrary();						
 				},
 				function(error)
 				{
@@ -513,7 +524,8 @@ TM.Gui.LibraryTree.rename_Folder_to_Database = function(libraryId, folderId, new
 					}					
 					//else
 					//	TM.Gui.Dialog.showUserMessage("it was not possible to rename the library:" + title);					
-					TM.Events.onRenamedFolder(folderV3);						
+					TM.Gui.LibraryTree.lastFolderRenamed = folderV3;
+					TM.Events.onRenamedFolder();						
 				}); 
 		return folderNode;
 	}
@@ -535,7 +547,8 @@ TM.Gui.LibraryTree.rename_View_to_Database = function(libraryId, folderId, viewI
 					}					
 					//else
 					//	TM.Gui.Dialog.showUserMessage("it was not possible to rename the library:" + title);					
-					TM.Events.onRenamedView(viewV3);						
+					TM.Gui.LibraryTree.lastViewRenamed = viewV3;
+					TM.Events.onRenamedView();						
 				}); 
 		return viewNode;
 	}	
@@ -646,6 +659,7 @@ TM.Gui.LibraryTree.createContextMenu = function(node)
 			TM.Gui.Dialog.deleteConfirmation(description, function() 
 				{ 
 					TM.Gui.LibraryTree.remove_View_from_Database(libraryId, viewId)
+					TM.Events.onUserDeleted();
 				});
 		}				
 

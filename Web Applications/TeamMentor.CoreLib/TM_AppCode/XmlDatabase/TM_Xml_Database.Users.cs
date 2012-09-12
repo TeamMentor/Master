@@ -57,7 +57,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 				TM_Xml_Database.TMUsersPasswordHashes.saveAs(tmUsersPasswordsXmlFile);
 			}
 		}			
-	}
+	} 
 	
 	public static class TM_Xml_Database_ExtensionMethods_Users_Persistance
 	{		
@@ -370,6 +370,27 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			return false;
 		}
 		//
+        [PrincipalPermission(SecurityAction.Demand, Role = "Admin")]
+        public static TMUser set_PostLoginView(this TMUser tmUser, string postLoginView)
+        {
+            if (tmUser.notNull())
+            {
+                tmUser.PostLoginView = postLoginView;
+                TM_Xml_Database.Current.saveTmUserDataToDisk();
+            }
+            return tmUser;
+        }
+
+        [PrincipalPermission(SecurityAction.Demand, Role = "Admin")]
+        public static TMUser set_PostLoginScript(this TMUser tmUser, string postLoginScript)
+        {
+            if (tmUser.notNull())
+            {
+                tmUser.PostLoginScript = postLoginScript;
+                TM_Xml_Database.Current.saveTmUserDataToDisk();
+            }
+            return tmUser;
+        }
 	}	
 	
 	public static class TM_Xml_Database_ExtensionMethods_ActiveSessions
@@ -379,6 +400,13 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			var tmUser = userName.tmUser();			
 			return tmUser.registerUserSession(userGuid);
 		}
+
+        public static Guid registerUserSession(this string userName, Guid userGuid, int groupId)
+        {
+            var tmUser = userName.tmUser();
+            tmUser.GroupID = groupId;
+            return tmUser.registerUserSession(userGuid);
+        }
 
 		public static Guid registerUserSession(this TMUser tmUser, Guid userGuid)
 		{

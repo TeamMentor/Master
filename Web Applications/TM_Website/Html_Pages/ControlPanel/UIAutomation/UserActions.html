@@ -24,13 +24,13 @@
 								var that = this;
 								this.add_Link("Open Home Page"						, function() { opener.document.location = "/"			})
 								this.add_Link("Logout"								, function() { opener.$("a:contains(Logout)").click()	})
-									.add_Link("Login as Editor"						, function() { that.login_as_User("editor") 			})
-									.add_Link("Login as Reader"						, function() { that.login_as_User("reader") 			})
-									.add_Link("Login as Admin"						, function() { that.login_as_User("admin") 			})
+									.add_Link("Login as Editor"						, function() { that.login_as_User(TM.QUnit.defaultUser_Editor, TM.QUnit.defaultPassord_Editor) 			})
+									.add_Link("Login as Reader"						, function() { that.login_as_User(TM.QUnit.defaultUser_Reader, TM.QUnit.defaultPassord_Reader) 			})
+									.add_Link("Login as Admin"						, function() { that.login_as_User(TM.QUnit.defaultUser_Admin , TM.QUnit.defaultPassord_Admin) 			})
 									.add_Link("Login as Admin -> Web Services"		, function() { that.login_and_OpenLink("Web Services")	})
 									.add_Link("Login as Admin -> Admin Tasks"		, function() { that.login_and_OpenLink("Admin Tasks")	})
 									.add_Link("Login as Admin -> Install Libraries"	, function() { that.login_and_OpenLink("Install Libraries")	})
-									.add_Link("...reload..."					, function() { document.location.reload() })
+									.add_Link("...reload..."					    , function() { document.location.reload() })
 									;
 
 							}
@@ -56,9 +56,9 @@
 								else
 									opener.$("a:contains(Login)").click()
 							}
-					, 	login_as_User	: function(user, callback)
+					, 	login_as_User	: function(user,password, callback)
 							{								
-								this.login(user,TM.QUnit.defaultPassord_Admin, callback );
+								this.login(user,password, callback );
 							}
 							
 					, 	login_and_OpenLink : function(linkText)
@@ -68,7 +68,7 @@
 													opener.find("a:contains('"+ linkText+"')").click()
 													opener.TM.Events.onControlPanelGuiLoaded.remove();
 												};
-								this.login_as_User("admin");									
+								this.login_as_User(TM.QUnit.defaultUser_Admin,TM.QUnit.defaultPassord_Admin);									
 							}
 				};
 				

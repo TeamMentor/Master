@@ -110,21 +110,37 @@ asyncTest("Adding a Message on top of ProgressBar", function()
 		start();
 	});		
 	
-test("test TM.Events.raiseProcessBarNextValue", function()
+asyncTest("test TM.Events.raiseProcessBarNextValue", function()
 	{
 		var showProgressBar = TM.Gui.ShowProgressBar; 
 		showProgressBar.open();
-		showProgressBar.value(20);
+		showProgressBar.value(20);		
 		equal(showProgressBar.value(), 20, "after value(20), value was 20");		
 		var expectedValue = showProgressBar.value() + showProgressBar.nextAmount;
+
+		
+		var firstCheck = function()
+			{
+				var firstValue = showProgressBar.value();
+				equal(firstValue, expectedValue, "after raiseProcessBarNextValue value was correct");
+				var newNextAmount = 30;
+
+				showProgressBar.nextAmount = newNextAmount;
+				
+				var secondCheck = function()
+					{
+						var updatedValue = showProgressBar.value();
+						equal(updatedValue, firstValue + newNextAmount, "updatedValue  =  firstValue + newNextAmount");
+						start();
+					}
+				TM.Events.raiseProcessBarNextValue.add(function() { TM.Gui.ShowProgressBar.progressBarNextValue() } )
+				TM.Events.raiseProcessBarNextValue.add_RemoveOnRaise(secondCheck);
+				TM.Events.raiseProcessBarNextValue();			
+			}		
+
+		TM.Events.raiseProcessBarNextValue.add_RemoveOnRaise(firstCheck);
 		TM.Events.raiseProcessBarNextValue();
-		var firstValue = showProgressBar.value();
-		equal(firstValue, expectedValue, "after raiseProcessBarNextValue value was correct");
-		var newNextAmount = 30;
-		showProgressBar.nextAmount = newNextAmount;
-		TM.Events.raiseProcessBarNextValue();
-		var updatedValue = showProgressBar.value();
-		equal(updatedValue, firstValue + newNextAmount, "updatedValue  =  firstValue + newNextAmount");
+		
 		
 	});
 asyncTest("animating the ProgressBar (note the end is not good)", function()

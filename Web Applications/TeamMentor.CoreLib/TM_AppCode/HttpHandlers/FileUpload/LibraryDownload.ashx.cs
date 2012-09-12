@@ -9,28 +9,38 @@ using XssEncoder = Microsoft.Security.Application.Encoder;
 using O2.DotNetWrappers.ExtensionMethods;
 using O2.XRules.Database.APIs;
 using SecurityInnovation.TeamMentor.WebClient.WebServices;
+using O2.Kernel;
 //O2Ref:AntiXSSLibrary.dll
 
 namespace SecurityInnovation.TeamMentor.WebClient
 {
-    public class FileUpload : IHttpHandler
-    {        
-        public static List<Guid> UploadTokens = new List<Guid>();
+    public class LibraryDownload : IHttpHandler
+    {                
 
         public void ProcessRequest(HttpContext context)
         {
             var uploadTokenString = context.Request["uploadToken"];
-            if (uploadTokenString.isGuid().isFalse())
+/*            if (uploadTokenString.isGuid().isFalse())
+            {
+                context.Response.Write("No Upload Token provided");
                 return;
+            }
 
             var uploadToken = uploadTokenString.guid();
-            if (UploadTokens.contains(uploadToken).isFalse())
-                throw new SecurityException("Upload Token must be provided");
-
-
-            if (context.Request["qqfile"].inValid())
-                return;            
-
+            if (FileUpload.UploadTokens.contains(uploadToken).isFalse())
+                throw new SecurityException("Invalid Upload Token");
+            */
+            var libraryName = context.Request["library"] ?? "";            
+            var library = TM_Xml_Database.Current.tmLibrary(libraryName);
+            if (library.isNull())
+            {                
+                context.Response.Write("Library not found");
+                return;
+            }
+            context.Response.Write("Processing Library: {0}".format(libraryName));
+            context.Response.Write("...O2 Tempdir: {0}".format(PublicDI.config.O2TempDir));
+            return;            
+            
             var message = "...";
             var result = true;
 
@@ -58,7 +68,7 @@ namespace SecurityInnovation.TeamMentor.WebClient
 		                }";
             context.Response.Write(reply);
 
-            UploadTokens.remove(uploadToken);
+            //FileUpload.UploadTokens.remove(uploadToken);
         }
 
         public bool saveFile(HttpContext context, string targetFile)

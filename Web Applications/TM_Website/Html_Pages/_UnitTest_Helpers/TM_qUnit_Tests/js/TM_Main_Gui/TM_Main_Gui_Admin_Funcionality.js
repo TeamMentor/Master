@@ -1,8 +1,8 @@
 //TM_Main_Gui_Admin_Funcionality.js
 module("Admin - Funcionality");
 
-var testUserName = "admin";
-var testPassword = "!!tmbeta";
+var testUserName = TM.QUnit.defaultUser_Admin;
+var testPassword = TM.QUnit.defaultPassord_Admin;
 
 asyncTest("open main GUI", function() 
 	{									

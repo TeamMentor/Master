@@ -30,18 +30,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AntiXssLibrary">
-      <HintPath>..\packages\AntiXSS.4.2.1\lib\net40\AntiXssLibrary.dll</HintPath>
-    </Reference>
+    <Reference Include="AntiXssLibrary, Version=4.2.0.0, Culture=neutral, PublicKeyToken=d127efab8a9c114f, processorArchitecture=MSIL" />
     <Reference Include="HtmlSanitizationLibrary">
       <HintPath>..\packages\AntiXSS.4.2.1\lib\net40\HtmlSanitizationLibrary.dll</HintPath>
     </Reference>
     <Reference Include="O2_FluentSharp_CoreLib">
       <HintPath>..\packages\FluentSharp.CoreLib.4.0.0.1\lib\net40\O2_FluentSharp_CoreLib.dll</HintPath>
     </Reference>
-    <Reference Include="O2_Misc_Microsoft_MPL_Libs, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>_ExternalDlls\O2_Misc_Microsoft_MPL_Libs.dll</HintPath>
-    </Reference>
+    <Reference Include="O2_Misc_Microsoft_MPL_Libs, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.DirectoryServices.AccountManagement">
@@ -63,6 +59,7 @@
     <Compile Include="TM_AppCode\Authentication\ExtensionMethods\RoleBaseSecurity_ExtensionMethods.cs" />
     <Compile Include="TM_AppCode\Authentication\ExtensionMethods\SoapRequestUtils_ExtensionMethods.cs" />
     <Compile Include="TM_AppCode\Authentication\ExtensionMethods\TeamMentorUserManagement_ExtensionMethods.cs" />
+    <Compile Include="TM_AppCode\Authentication\SingleSignOn.cs" />
     <Compile Include="TM_AppCode\Authentication\TM_Authentication.cs" />
     <Compile Include="TM_AppCode\Authentication\UserRoleBaseSecurity.cs" />
     <Compile Include="TM_AppCode\Authentication\UserRoles.cs" />
@@ -71,6 +68,7 @@
     <Compile Include="TM_AppCode\ExtensionMethods\TM_Xml_Database_ExtensionMethods_GuiHelpers.cs" />
     <Compile Include="TM_AppCode\ExtensionMethods\TM_Xml_Database_JavascriptProxy_ExtensionMethods.cs" />
     <Compile Include="TM_AppCode\Global.asax.cs" />
+    <Compile Include="TM_AppCode\HttpHandlers\FileUpload\LibraryDownload.ashx.cs" />
     <Compile Include="TM_AppCode\HttpHandlers\FileUpload\FileUpload.ashx.cs" />
     <Compile Include="TM_AppCode\HttpHandlers\ScriptCombiner\JavaScriptMinifier.cs" />
     <Compile Include="TM_AppCode\HttpHandlers\ScriptCombiner\ScriptCombiner.ashx.cs" />
@@ -78,7 +76,6 @@
     <Compile Include="TM_AppCode\HttpHandlers\UrlRewrite\UrlRewriter.ashx.cs" />
     <Compile Include="TM_AppCode\IJavascriptProxy.cs" />
     <None Include="TM_AppCode\MoqObjects.cs.txt" />
-    <Compile Include="TM_AppCode\O2_Scripts_APIs\Authentication.cs" />
     <Compile Include="TM_AppCode\O2_Scripts_APIs\LinqDB.cs" />
     <Compile Include="TM_AppCode\O2_Scripts_APIs\MemoryLogger.cs" />
     <Compile Include="TM_AppCode\O2_Scripts_APIs\OnlineStorage.cs" />
@@ -92,6 +89,7 @@
     <Compile Include="TM_AppCode\Schemas\GuidanceItem.cs" />
     <Compile Include="TM_AppCode\Schemas\library.cs" />
     <Compile Include="TM_AppCode\Schemas\TeamMentor_Article.cs" />
+    <Compile Include="TM_AppCode\Schemas\TMUser.cs" />
     <Compile Include="TM_AppCode\TmConfig.cs" />
     <Compile Include="TM_AppCode\TrackingDB\ActivityTracking.cs" />
     <None Include="TM_AppCode\TrackingDB\PagesHistory.cs.txt">
@@ -138,13 +136,14 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="AntiXssLibrary.dll" />
-    <Content Include="O2_Misc_Microsoft_MPL_Libs.dll" />
     <Content Include="_ExternalDlls\AntiXssLibrary.dll" />
     <Content Include="_ExternalDlls\HtmlSanitizationLibrary.dll" />
     <Content Include="_ExternalDlls\ICSharpCode.SharpZipLib.dll" />
     <Content Include="_ExternalDlls\O2_FluentSharp_CoreLib.dll" />
     <Content Include="_ExternalDlls\O2_Misc_Microsoft_MPL_Libs.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

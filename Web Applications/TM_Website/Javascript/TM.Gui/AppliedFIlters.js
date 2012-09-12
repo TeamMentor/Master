@@ -99,10 +99,7 @@ TM.Gui.AppliedFilters.getFilterDataObject = function (arrayWithSelectedItems, ar
         {
             itemsAvail = [];
             itemsNotAvailRaw = getDistictColumnValue(arrayWithAllData,index);
-            TM.WebServices.Data.lastDataTableData.aaData = []
-            console.log("gotAtLeastOneMatch was false!!!!! with "  + itemsChecked);
-            console.log("itemsAvail: " + itemsAvail.length);
-            console.log("itemsNotAvailRaw: " + itemsNotAvailRaw);
+            TM.WebServices.Data.lastDataTableData.aaData = []            
         }
 		itemsNotAvail = [];
 		itemsNotAvailRaw.sort();

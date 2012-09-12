@@ -1,4 +1,5 @@
 ﻿/javascript/jQuery/jquery-1.7.1.min.js
+/javascript/json/json2.js
 
 /Javascript/jscreole/creole.min.js
 /Javascript/jsPrettify/prettify.js
@@ -18,6 +19,8 @@
 /javascript/TM_WS_Methods.js
 
 /javascript/TM.Gui/TM.Gui.CurrentUser.js
+
+/javascript/TM.Gui/TM.GUI.ShowProgressBar.js
 
 
 /Javascript/Gauges/Gauges_Tracking_Code.js

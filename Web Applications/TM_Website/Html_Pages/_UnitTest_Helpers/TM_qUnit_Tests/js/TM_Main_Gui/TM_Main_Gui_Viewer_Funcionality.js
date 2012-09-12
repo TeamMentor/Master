@@ -1,7 +1,7 @@
 //TM_Main_Gui_Editor_Funcionality.js
 module("Viewer - Funcionality");
 
-var testUserName = "reader";
+var testUserName = TM.QUnit.defaultUser_Reader;
 var testPassword = TM.QUnit.defaultPassord_Reader;
 
 asyncTest("open main GUI", function() 

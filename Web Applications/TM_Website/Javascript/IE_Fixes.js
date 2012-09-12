@@ -4,20 +4,6 @@
 //   see: http://stackoverflow.com/questions/1744310/how-to-fix-array-indexof-in-javascript-for-ie-browsers
 //        https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/IndexOf#Compatibility
 
-if (typeof(console) == "undefined")
-{  	
-	console = 
-		{
-				log			: function() {}
-			,	error		: function() {}			
-		};	
-/*	if (typeof(console.log) == "undefined")
-		console.log = function() {}
-		
-	if (typeof(console.error) == "undefined")
-	console.log = function() {}
-*/	
-}	
 
 if ($.browser.msie)
 {

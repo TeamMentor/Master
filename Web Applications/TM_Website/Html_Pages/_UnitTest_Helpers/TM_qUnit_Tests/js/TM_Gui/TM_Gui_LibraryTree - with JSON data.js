@@ -97,54 +97,70 @@ asyncTest("Check performance of LibraryTree with Live data", function()
 
 asyncTest("LibraryTree - create Using JSON", function() 
 {		
+	var removeEventsSet = function()
+		{
+			TM.Events.onLibraryTreeLoaded.remove();
+		}
 	$("#Canvas").html("<div id='LibraryTreeWithLiveData'>empty tree</div>");	
 	var libraryTree = TM.Gui.LibraryTree.open("#LibraryTreeWithLiveData");			
-	libraryTree.onTreeLoaded = 
-		function()  {												
-						ok(TM.Gui.LibraryTree.jsTree, "TM.Gui.LibraryTree.jsTree created ok");								
-						var timeSpan = TM.Debug.TimeSpan_Gui_LibraryTree_CreatedTreeFromJsonData;
-						ok(timeSpan.getSeconds() < 15, "it took less than 5 seconds to create the table (Crome is < 2s): " + timeSpan.secondsAndMiliSeconds());						
-						start();
-					};	
+	TM.Events.onLibraryTreeLoaded.add(function()  
+		{												
+			ok(TM.Gui.LibraryTree.jsTree, "TM.Gui.LibraryTree.jsTree created ok");								
+			var timeSpan = TM.Debug.TimeSpan_Gui_LibraryTree_CreatedTreeFromJsonData;
+			ok(timeSpan.getSeconds() < 15, "it took less than 5 seconds to create the table (Crome is < 2s): " + timeSpan.secondsAndMiliSeconds());						
+			removeEventsSet();
+			start();
+		});	
 	libraryTree.create_TreeUsingJSON();	
 });
 
+
 asyncTest("LibraryTree - JSON - Add Library", function() 
 {		
+	var removeEventsSet = function()
+		{
+			TM.Events.onLibraryTreeLoaded.remove();
+			TM.Events.onNewLibrary.remove();
+			TM.Events.onFolderStructureMapped.remove();
+		};
 	$("#Canvas").html("<div id='LibraryTreeWithLiveData'>empty tree</div>");	
 	var libraryTree = TM.Gui.LibraryTree.open("#LibraryTreeWithLiveData");			
 	
 	var data = TM.WebServices.Data;
 			
-	libraryTree.onTreeLoaded = 
-		function()  {	
-						var libraryName = QUnit.randomString() + "_testLib"
-						var library = data.library(libraryName);						
-						ok(isUndefined(library), "test library was not there");
+	TM.Events.onLibraryTreeLoaded.add(function()
+		{	
+			var libraryName = QUnit.randomString() + "_testLib"
+			var library = data.library(libraryName);						
+			ok(isUndefined(library), "test library was not there");
 						
-						var libraryNode = libraryTree.add_Library_to_Database(libraryName);
+			var libraryNode = libraryTree.add_Library_to_Database(libraryName);
 						
-						TM.Events.onNewLibrary.add(function(libraryV3)
-							{								
-								ok(libraryV3, "libraryV3 object ok");
-								if (libraryV3 == null)
-									ok(libraryV3 != null, "libraryV3 was not null");
-								else 
-								{
-									var library = data.library(libraryName);	
-									ok(library, "test library was there");		
-									ok(libraryV3.libraryId, "libraryV3.libraryId was ok: " + libraryV3.libraryId);
-									ok($.data[libraryV3.libraryId] , "$.data[library.libraryId] was there");
-									ok($("#" + libraryV3.libraryId).length ==1,"libraryV3.libraryId Html element was there");
-								}
-								start();
-							});
-					};	
-	
-	TM.Events.onFolderStructureLoaded.add(function()
+			TM.Events.onNewLibrary.add(function()
+				{								
+					var libraryV3 = TM.Gui.LibraryTree.lastLibraryCreated ;
+					ok(libraryV3, "libraryV3 object ok");
+					if (libraryV3 == null)
+						ok(libraryV3 != null, "libraryV3 was not null");
+					else 
+					{
+						var library = data.library(libraryName);	
+						ok(library, "test library was there");		
+						ok(libraryV3.libraryId, "libraryV3.libraryId was ok: " + libraryV3.libraryId);
+						ok($.data[libraryV3.libraryId] , "$.data[library.libraryId] was there");
+						ok($("#" + libraryV3.libraryId).length ==1,"libraryV3.libraryId Html element was there");
+					}
+					removeEventsSet();
+					start();
+					
+				});
+		});	
+		
+	TM.Events.onFolderStructureMapped.add(function()
 		{			
 			libraryTree.create_TreeUsingJSON();	
 		}) 			
+	TM.Events.onFolderStructureLoaded();
 });
 
 
@@ -154,34 +170,46 @@ var loadDataAndCreateTree = function()
 	{
 		$("#Canvas").html("<div id='LibraryTreeWithLiveData'>empty tree</div>");	
 		var libraryTree = TM.Gui.LibraryTree.open("#LibraryTreeWithLiveData");			
-		TM.Events.onFolderStructureLoaded.add(function()
+		TM.Events.onFolderStructureMapped.add(function()
 			{
 				libraryTree.create_TreeUsingJSON();			
 			});
+		TM.Events.onFolderStructureLoaded();
 		return libraryTree;
 	};
 
 asyncTest("LibraryTree - JSON - Add Library, Folder and View", function() 
 	{
+		var removeEventsSet = function()
+		{
+			TM.Events.onLibraryTreeLoaded.remove();
+			TM.Events.onFolderStructureMapped.remove();
+			TM.Events.onNewLibrary.remove();
+			TM.Events.onNewView.remove();
+			TM.Events.onNewFolder.remove();						
+		};
+
 		var libraryTree = TM.Gui.LibraryTree;
 		var data = TM.WebServices.Data;
 		
 		var viewInLibraryName = QUnit.randomString() + "_view_inLib";
 		
-		libraryTree.onTreeLoaded = function()
+		TM.Events.onLibraryTreeLoaded.add(function()
 			{				
 				libraryTree.add_Library_to_Database(QUnit.randomString() + "_testLib");			
-			};
+			});
 			
-		TM.Events.onNewLibrary.add(function(libraryV3)
+		TM.Events.onNewLibrary.add(function()
 			{				
+				var libraryV3 = TM.Gui.LibraryTree.lastLibraryCreated;
 				var folderName = QUnit.randomString() + "_folder";
 				var libraryId = libraryV3.libraryId;				
 				var folderNode = libraryTree.add_Folder_to_Database(libraryId, undefined,folderName);					
 			});		
 		
-		TM.Events.onNewFolder.add(function(folderV3)
+		TM.Events.onNewFolder.add(function()
 			{								
+				var folderV3 = TM.Gui.LibraryTree.lastFolderCreated;
 				ok(folderV3, "folderV3 object ok");
 				if (folderV3 == null)
 					ok(folderV3 != null, "folderV3 was not null");
@@ -198,8 +226,9 @@ asyncTest("LibraryTree - JSON - Add Library, Folder and View", function()
 				}				
 			});		
 			
-			TM.Events.onNewView.add(function(viewV3)
+			TM.Events.onNewView.add(function()
 			{								
+				var viewV3 = TM.Gui.LibraryTree.lastViewCreated ;
 				ok(viewV3, "viewV3 object ok");
 				if (viewV3 == null)
 					ok(viewV3 != null, "viewV3 was not null");
@@ -217,6 +246,9 @@ asyncTest("LibraryTree - JSON - Add Library, Folder and View", function()
 				else
 				{
 					ok(data.view(viewInLibraryName), "viewInLibraryName was there");
+
+					// last one
+					removeEventsSet();
 					start();
 				}
 			});
@@ -228,6 +260,22 @@ asyncTest("LibraryTree - JSON - Add Library, Folder and View", function()
 	
 asyncTest("LibraryTree - JSON - Create & Rename  Library, Folder and View", function() 	
 	{
+		var renameCount = 0;			// need to do this since the rename events all happen in an aSync way
+		var removeEventsSet = function()
+		{
+			renameCount++;
+			if (renameCount != 3)
+				return;
+			TM.Events.onLibraryTreeLoaded.remove();
+			TM.Events.onFolderStructureMapped.remove();
+			TM.Events.onNewLibrary.remove();
+			TM.Events.onNewView.remove();
+			TM.Events.onNewFolder.remove();			
+			TM.Events.onRenamedLibrary.remove();
+			TM.Events.onRenamedFolder.remove();
+			TM.Events.onRenamedView.remove();
+		};
+
 		var libraryTree = TM.Gui.LibraryTree;
 		var data = TM.WebServices.Data;
 		var randomText = QUnit.randomString();
@@ -257,36 +305,58 @@ asyncTest("LibraryTree - JSON - Create & Rename  Library, Folder and View", func
 				libraryTree.rename_Folder_to_Database	(viewV3.libraryId , viewV3.folderId					, newFolderText);
 				libraryTree.rename_View_to_Database		(viewV3.libraryId , viewV3.folderId, viewV3.viewId	, newViewText)
 					
-				TM.Events.onRenamedLibrary.add(function(libraryV3)
+				TM.Events.onRenamedLibrary.add(function()
 					{
+						var libraryV3 = TM.Gui.LibraryTree.lastLibraryRenamed;
 						equal(libraryV3.name, newLibraryText , "library Text was updated");
+						
+						removeEventsSet();
 						start();
 					});
 					
-				TM.Events.onRenamedFolder.add(function(folderV3)
+				TM.Events.onRenamedFolder.add(function()
 					{
+						var folderV3 = TM.Gui.LibraryTree.lastFolderRenamed;
 						equal(folderV3.name, newFolderText , "folder Text was updated");
+						
+						removeEventsSet();
 						start();
 					});
 
-				TM.Events.onRenamedView.add(function(viewV3)
+				TM.Events.onRenamedView.add(function()
 					{
+						var viewV3 = TM.Gui.LibraryTree.lastViewRenamed;
 						equal(viewV3.caption, newViewText , "view Text was updated");
+												
+						removeEventsSet();
 						start();
 					});		
 				start();
 			}
 		
-		TM.Events.onNewView.	.add(function(viewV3)	   	{ createAndRename(viewV3) });
-		TM.Events.onNewFolder 	.add(function(folderV3)  	{ libraryTree.add_View_to_Database	(folderV3.libraryId,  folderV3.folderId , randomText + "_testView"  );});
-		TM.Events.onNewLibrary 	.add(function(libraryV3) 	{ libraryTree.add_Folder_to_Database	(libraryV3.libraryId, undefined			, randomText + "_testFolder");});
-		libraryTree.onTreeLoaded = function() 		   		{ libraryTree.add_Library_to_Database(randomText + "_testLib"								   			);}
+		TM.Events.onNewView 		 .add(function()	   	{ var viewV3 = TM.Gui.LibraryTree.lastViewCreated		 ; createAndRename(viewV3) });
+		TM.Events.onNewFolder 		 .add(function()  		{ var folderV3 = TM.Gui.LibraryTree.lastFolderCreated	 ; libraryTree.add_View_to_Database	(folderV3.libraryId,  folderV3.folderId , randomText + "_testView"  );});
+		TM.Events.onNewLibrary 		 .add(function() 		{ var libraryV3 = TM.Gui.LibraryTree.lastLibraryCreated ; libraryTree.add_Folder_to_Database	(libraryV3.libraryId, undefined			, randomText + "_testFolder");});
+		TM.Events.onLibraryTreeLoaded.add(function()		{ libraryTree.add_Library_to_Database(randomText + "_testLib");});
 		loadDataAndCreateTree();		
 	});
 	
 
 asyncTest("LibraryTree - JSON - Create & Delete Library, Folder and View", function() 	
 	{
+		var removeEventsSet = function()
+		{
+			TM.Events.onLibraryTreeLoaded.remove();
+			TM.Events.onFolderStructureMapped.remove();
+			TM.Events.onNewLibrary.remove();
+			TM.Events.onNewView.remove();
+			TM.Events.onNewFolder.remove();			
+			TM.Events.onRemovedLibrary.remove();
+			TM.Events.onRemovedFolder.remove();
+			TM.Events.onRemovedView.remove();
+		};
+
+
 		var libraryTree = TM.Gui.LibraryTree;
 		var data = TM.WebServices.Data;
 		var randomText = QUnit.randomString() + "_for_deletion_";
@@ -297,43 +367,56 @@ asyncTest("LibraryTree - JSON - Create & Delete Library, Folder and View", funct
 				var folderNode 	= $("#" + viewV3.folderId);
 				var viewNode 	= $("#" + viewV3.viewId);							
 				
-				TM.Events.onRemovedLibrary = function(result)
-					{						
-						equal(result, true , "library was removed");
+				TM.Events.onRemovedLibrary.add(function()
+					{				
+						var libraryV3 = TM.Gui.LibraryTree.lastLibraryRemoved;		
+						equal(isDefined(libraryV3), true , "library was removed");
+						//last one
+						removeEventsSet();
 						start();
-					};							
+					});							
 					
-				TM.Events.onRemovedFolder = function(result)
-					{						
-						equal(result, true , "folder was removed");
-						TM.Gui.LibraryTree.remove_Library_from_Database(viewV3.libraryId);							
-					};															
+				TM.Events.onRemovedFolder.add(function()
+					{		
+						var folderV3 = TM.Gui.LibraryTree.lastFolderRemoved;						
+						equal(isDefined(folderV3), true , "folder was removed");
+						TM.Gui.LibraryTree.remove_Library_from_Database(folderV3.libraryId);							
+					});															
 				
-				TM.Events.onRemovedView = function(result)
-					{						
-						equal(result, true , "view was removed");
+				TM.Events.onRemovedView.add(function()
+					{		
+						var viewV3 = TM.Gui.LibraryTree.lastViewRemoved;										
+						equal(isDefined(viewV3), true , "view was removed");
 						TM.Gui.LibraryTree.remove_Folder_from_Database(viewV3.libraryId , viewV3.folderId);	
 						//start();
-					};											
+					});											
 				TM.Gui.LibraryTree.remove_View_from_Database(viewV3.libraryId , viewV3.viewId);	
 			}
 	
-		TM.Events.onNewView 	 .add(function(viewV3)	   { createAndDelete(viewV3) });
-		TM.Events.onNewFolder 	 .add(function(folderV3)  { libraryTree.add_View_to_Database	(folderV3.libraryId,  folderV3.folderId , randomText + "_View"  );});
-		TM.Events.onNewLibrary 	 .add(function(libraryV3) { libraryTree.add_Folder_to_Database	(libraryV3.libraryId, undefined			, randomText + "_Folder");});
-		libraryTree.onTreeLoaded = function() 		   { libraryTree.add_Library_to_Database(randomText + "_Lib"								   			);}
+		TM.Events.onNewView 		 .add(function()		{ var viewV3 = TM.Gui.LibraryTree.lastViewCreated		 ; createAndDelete(viewV3) });
+		TM.Events.onNewFolder 		 .add(function()		{ var folderV3 = TM.Gui.LibraryTree.lastFolderCreated	 ; libraryTree.add_View_to_Database	(folderV3.libraryId,  folderV3.folderId , randomText + "_View"  );});
+		TM.Events.onNewLibrary 		 .add(function()		{ var libraryV3 = TM.Gui.LibraryTree.lastLibraryCreated ; libraryTree.add_Folder_to_Database	(libraryV3.libraryId, undefined			, randomText + "_Folder");});
+		TM.Events.onLibraryTreeLoaded.add(function()		{ libraryTree.add_Library_to_Database(randomText + "_Lib" );});
 		loadDataAndCreateTree();		
 	});
 
 	
 asyncTest("LibraryTree - JSON - remove test libraries", function() 		
 	{	
+		var removeEventsSet = function()
+		{
+			TM.Events.onLibraryTreeLoaded.remove();
+			TM.Events.onFolderStructureMapped.remove();				
+			TM.Events.onRemovedLibrary.remove();			
+		};
+
 		var libraryTree = loadDataAndCreateTree();
 		
 		var deleteTempLibraries = function(librariesToDelete)
 			{								
 				if (librariesToDelete.length == 0)				
 				{
+					removeEventsSet();
 					start();				
 					return;
 				}
@@ -342,19 +425,19 @@ asyncTest("LibraryTree - JSON - remove test libraries", function()
 				ok(libraryToDelete, "libraryToDelete is ok: " + libraryToDelete.name);				
 				libraryTree.remove_Library_from_Database(libraryToDelete.libraryId);											
 			}
-		
-		libraryTree.onTreeLoaded.add(function()
-			{						
+	
+	TM.Events.onLibraryTreeLoaded.add(function()
+			{
 				var librariesToDelete = jLinq.from(TM.WebServices.Data.AllLibraries)
 											 .contains("name","qunit_")
 											 .orContains("name","temp_lib_")
-											 .select();	
-											 
-				TM.Events.onRemovedLibrary = function(result)
+											 .select();				
+				TM.Events.onRemovedLibrary.add(function()
 						{			
-							equal(result, true , "library was removed");							
+							var libraryV3 = TM.Gui.LibraryTree.lastLibraryRemoved
+							equal(isDefined(libraryV3), true , "library was removed");							
 							deleteTempLibraries(librariesToDelete) 
-						};
+						});								 				
 				deleteTempLibraries(librariesToDelete);				
 			});		
 	});

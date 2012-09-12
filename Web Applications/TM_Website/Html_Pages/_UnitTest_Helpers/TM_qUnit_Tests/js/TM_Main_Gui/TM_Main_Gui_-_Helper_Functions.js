@@ -24,10 +24,10 @@ var qunit_Gui_Helper =
 				{												
 					TM.Events.onHomePageLinksLoaded.add(function() 
 						{  
-							TM.Events.onHomePageLinksLoaded.remove();
+							//TM.Events.onHomePageLinksLoaded.remove();
 							start() ;
 						});						
-					logoutButton.click();	
+					logoutButton.click();
 				}
 				else
 					start();
@@ -39,19 +39,22 @@ var qunit_Gui_Helper =
 				
 				equals(1,loginButton.length,"There was one login link");
 				equals(0,logoutButton.length,"There was one no logout button");
-				$("#topRightMenu a:contains('Login')").click();
-				
+
+								
 				TM.Events.onLoginDialogOpen.add(function()
 					{
 						$("#UsernameBox").val(username)
 						$("#PasswordBox").val(password)
-						$("button:contains('login')").click();				
+						$("button:contains('login')").click();
 					});	
-					
-				TM.Events.onHomePageLinksLoaded.add(function() 
+
+				$("#topRightMenu a:contains('Login')").click();	
+
+		/*		TM.Events.onHomePageLinksLoaded.add_RemoveOnRaise(function() 
 						{  
-							TM.Events.onHomePageLinksLoaded.remove()
+alert('here');
+							//TM.Events.onHomePageLinksLoaded.remove()
 							start() ;
-						});					
+						});					*/
 			}
 	}

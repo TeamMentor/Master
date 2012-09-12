@@ -18,10 +18,11 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 
         public HandleUrlRequest()
         { 
-            tmWebServices  = new TM_WebServices();
-            tmWebServices.tmAuthentication = new TM_Authentication(tmWebServices);
+            //tmWebServices  = new TM_WebServices();
+
+            /*tmWebServices.tmAuthentication = new TM_Authentication(tmWebServices);
             tmWebServices.tmAuthentication.disable_CSRF_Check = true;
-			tmWebServices.tmAuthentication.mapUserRoles();
+			tmWebServices.tmAuthentication.mapUserRoles();*/
         }
 
         public void routeRequestUrl_for404()
@@ -96,10 +97,13 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                 case ".ashx":
                 case ".aspx":
                     return true;
-                default:
-                    return false;
-
+                //default:
+                //    return false;
             }
+            var absolutePath = context.Request.Url.AbsolutePath;
+            if (absolutePath.lower().contains("/images/"))
+                return true;
+            return false;
         }
 
         
@@ -107,6 +111,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		{
             try
             {
+                tmWebServices = new TM_WebServices();       // enable webservices access (and security checks)
                 action = Encoder.HtmlEncode(action);
                 data = Encoder.HtmlEncode(data).replace("%20"," ");
                 if (action.isGuid() & data.inValid())                
@@ -150,6 +155,8 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                         return handle_LoginOK();   
                     case "logout":
                         return redirectTo_Logout();
+                    case "wsdl":
+                        return redirectTo_Wsdl();
                     case "reload":
                         return reloadCache_and_RedirectToHomePage();
                     case "home":
@@ -163,6 +170,9 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                         return redirectTo_DebugPage();
                     case "library":
                         return redirectTo_SetLibrary(data);
+                    case "sso":
+                        return handleAction_SSO(data);
+
                     default:                        
                         return false;                                          
                 }                                           
@@ -181,7 +191,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
             return false;			
 		}
 
-        private bool reload_Config()
+        public bool reload_Config()
         {
             TMConfig.loadConfig();
             return redirectTo_HomePage();
@@ -333,6 +343,11 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
             return true;
 
         }
+        private bool handleAction_SSO(string data)
+        {
+            new SecurityInnovation.TeamMentor.Authentication.SingleSignOn().authenticateUserBasedOn_SSOToken();
+            return true;
+        }
         
         //utils
         public void endResponse()
@@ -408,6 +423,12 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		    context.Response.Redirect("/");                        	
             return false; 
 		}
+
+        public bool redirectTo_Wsdl()
+        {
+            context.Response.Redirect("/Aspx_Pages/TM_WebServices.asmx");
+            return false;
+        }
 
         public bool redirectTo_ControlPanel(bool includeExtraTag)
 		{			

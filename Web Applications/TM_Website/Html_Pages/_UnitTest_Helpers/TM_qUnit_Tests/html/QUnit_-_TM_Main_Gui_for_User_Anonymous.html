@@ -8,11 +8,11 @@
 	<script src="/javascript/qunit/qunit-git.js" ></script>		
 	<script src="/Html_Pages/_UnitTest_Helpers/TM_qUnit_Tests/js/_TM_QUnit_support.js"></script>	
 		
-	<!-- add jQuery so that we can load the scripts in a sync way (from html_pages/Gui/Scripts_used_in_MainGui.html)-->	
 	
-	<script src="/javascript/jQuery/jquery-1.6.2.min.js" 	type="text/javascript"></script>
-	
-	
+	<link  href="/aspx_Pages/scriptCombiner.ashx?s=HomePage_CSS&ct=css" 				type="text/css" rel="stylesheet" /> 					
+	<script src="/aspx_Pages/scriptCombiner.ashx?s=HomePage_JS"							type="text/javascript"></script>		
+	<script src="/aspx_Pages/scriptCombiner.ashx?s=HomePage_JS_TM&dontMinify=true&v1"	type="text/javascript"></script>		
+
 	<!-- qunit tests -->		
 
 	<script type="text/javascript" src="/Html_Pages/_UnitTest_Helpers/TM_qUnit_Tests/js/TM_Main_Gui/TM_Main_Gui_-_Helper_Functions.js"></script>
@@ -23,9 +23,10 @@
 		
 		$(function()
 			{
-				$.ajaxSetup({ async:false});
+				/*$.ajaxSetup({ async:false});
 				$("#ScriptLoader").load("/html_pages/Gui/Scripts_used_in_MainGui.html");
 				$.ajaxSetup({ async:true});
+				*/
 				$("#QUnit_Results").absolute().width("20%").top(0).left(0)
 								   .resizable();
 				$("#Canvas").absolute().width("79%").top(0).right(0).bottom(0)

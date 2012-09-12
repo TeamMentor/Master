@@ -32,10 +32,10 @@ namespace SecurityInnovation.TeamMentor.Website
         {
             new HandleUrlRequest().routeRequestUrl();                                  
         }
-        /*protected void Application_AcquireRequestState  (object sender, EventArgs e) // this doesn't work for non aspx requests
+        protected void Application_AcquireRequestState  (object sender, EventArgs e) // this doesn't work for non aspx requests
         {            
-            new HandleUrlRequest().routeRequestUrl();                                  
-        }*/
+            //new HandleUrlRequest().routeRequestUrl();                                  
+        }
         
 		protected void Application_AuthenticateRequest	(object sender, EventArgs e)		{ }
 		protected void Session_End						(object sender, EventArgs e)		{ }

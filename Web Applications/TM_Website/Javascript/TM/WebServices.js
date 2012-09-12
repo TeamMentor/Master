@@ -176,6 +176,18 @@ TM.WebServices.WS_Users.createUser = function(username , passwordHash,  email, f
 									callback(data);
 							});		
 	}
+TM.WebServices.WS_Users.setUserGroupID = function(userId , groupId, callback)
+	{		
+		var params =  { userId: userId , roleId : groupId };
+		TM.WebServices.Helper.invoke_TM_WebService(
+			'SetUserGroupId', 
+			params, 		
+			function(data)  {														
+								if (typeof(callback) != "undefined")
+									callback(data);
+							});		
+	}
+
 
 TM.WebServices.WS_Users.login = function(username, password, callback)
 	{			
@@ -252,6 +264,36 @@ TM.WebServices.WS_Users.getUsers = function(callback, errorHandler)
 							} ,	
 			errorHandler);
 	}
+
+
+//SSO
+TM.WebServices.WS_Users.login_usingSSOToken = function(ssoToken)
+    {
+        var callback = function(guid)
+            {
+                if(guid===TM.Const.emptyGuid)
+                    TM.Gui.Dialog.alertUser("SSO (Single-Sign-On) failed");
+                else
+                {
+                    //TM.Gui.Dialog.alertUser("SSO (Single-Sign-On) succeeded");
+                    TM.Gui.CurrentUser.loadUserData();
+                }
+            
+            }
+        TM.WebServices.Helper.invoke_TM_WebService("SSO_AuthenticateUser",{ssoToken:ssoToken},callback)
+    }
+
+TM.WebServices.WS_Users.login_asUser = function(userName)
+    {
+        var callback = function(ssoToken)
+            {   
+                if(ssoToken != null)
+                    TM.WebServices.WS_Users.login_usingSSOToken(ssoToken);
+            }
+        TM.WebServices.Helper.invoke_TM_WebService("SSO_GetSSOTokenForUser",{userName:userName},callback)
+    } 
+
+
 	
 //***********************
 //TM.WebServices.WS_Libraries
@@ -442,4 +484,3 @@ TM.WebServices.WS_Libraries.remove_GuidanceItems = function(guidanceItemIds, cal
 	var params = { guidanceItemIds : guidanceItemIds };		
 	TM.WebServices.Helper.invoke_TM_WebService('DeleteGuidanceItems', params, callback,errorHandler); 			
 }
-

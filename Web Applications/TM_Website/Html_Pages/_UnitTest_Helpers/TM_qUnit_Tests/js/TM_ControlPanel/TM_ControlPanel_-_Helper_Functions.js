@@ -11,7 +11,7 @@ TM.QUnit.ControlPanel =
 					return;
 				}
 				stop();
-				TM.Events.onControlPanelGuiLoaded.add(function() 
+				TM.Events.onControlPanelGuiLoaded.add_RemoveOnRaise(function() 
 					{
 						TM.QUnit.ControlPanel.guiLoaded = true;									
 						start();
@@ -38,7 +38,7 @@ var qunit_ControlPanel_Helper =
 				{		
 					logoutButton.click();
 					
-					TM.Events.onControlPanelGuiLoaded.add(function() 
+					TM.Events.onControlPanelGuiLoaded.add_RemoveOnRaise(function() 
 						{  							
 							start() ;
 						});
@@ -54,19 +54,29 @@ var qunit_ControlPanel_Helper =
 				
 				equals(1,loginButton.length,"There was one login link");
 				//equals(0,logoutButton.length,"There was one no logout button");
-				loginButton.click();
 				
-				TM.Events.onLoginDialogOpen.add(function()
+				
+				TM.Events.onLoginDialogOpen.add_RemoveOnRaise(function()
 					{
 						$("#UsernameBox").val(username)
 						$("#PasswordBox").val(password)
 						$("button:contains('login')").click();										
 					});		
-				TM.Events.onUserChange.add(function()	
+				TM.Events.onUserDataLoaded.add_RemoveOnRaise(function()	
 					{
 						TM.Events.onLoginDialogOpen.remove();
-						loadControlPanelDefaultPages();
+						loadControlPanelDefaultPages();			
 						start();
 					});
+				loginButton.click();
+			},
+		loginAs_Admin: function()
+			{
+				if (TM.Gui.CurrentUser.isAdmin())
+					start();
+				else
+				{						
+					qunit_ControlPanel_Helper.loginAs(TM.QUnit.defaultUser_Admin, TM.QUnit.defaultPassord_Admin);					
+				}
 			}
 	}

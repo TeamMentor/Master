@@ -172,6 +172,9 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		
 		public static TM_Library tmLibrary(this TM_Xml_Database tmDatabase, string caption)
 		{
+            if (caption.isGuid())   // if the value provided is a guid, then 
+                return tmDatabase.tmLibrary(caption.guid());
+
 			var tmLibrary = (from library in tmDatabase.tmLibraries()
 							 where library.Caption == caption
 							 select library).first();
