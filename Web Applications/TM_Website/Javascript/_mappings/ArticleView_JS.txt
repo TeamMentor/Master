@@ -1,4 +1,5 @@
 ﻿/javascript/jQuery/jquery-1.7.1.min.js
+/javascript/jQuery/jquery.validate.min.js
 /javascript/json/json2.js
 
 /Javascript/jscreole/creole.min.js

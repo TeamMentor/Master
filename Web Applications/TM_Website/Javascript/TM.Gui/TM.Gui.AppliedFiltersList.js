@@ -4,10 +4,14 @@ TM.Gui.AppliedFiltersList.removeFilters = function()
 	{		        
 		TM.Gui.AppliedFilters.currentFilters = [];
 		TM.Gui.AppliedFilters.currentPivotPanelFilters = new Array(); 
-		window.location.hash = "";
-		//TM.Gui.AppliedFiltersList.populateAppliedFiltersTable() ;	
-        TM.Events.onInvalidateSearchText();
-		TM.Events.onFiltersRemoved();
+		TM.Events.onInvalidateSearchText();
+		if (window.location.hash.length > 1)
+			window.location.hash = "";
+		else
+		{
+			TM.Gui.AppliedFiltersList.populateAppliedFiltersTable() ;				
+			TM.Events.onFiltersRemoved();
+		}
 	}
 
 TM.Gui.AppliedFiltersList.removeCriteraFromCriteriaCollection = function(text,title, column, state)

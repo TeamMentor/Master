@@ -147,7 +147,7 @@
       <option value ="html">Html</option>
       <option value ="wikitext">WikiText</option>      
      </select>
-    <span id="WikiTextHelp">WikiText uses <a href="http://wikicreole.org/attach/CheatSheet/creole_cheat_sheet.png" target="_blank"> WikiCreole</a> </span>
+    <span id="WikiTextHelp">WikiText uses <a href="http://docs.teammentor.net/article/Team Mentor Wiki Markup" target="_blank"> WikiCreole</a> </span>
 	
 	<div class="NEContent">
     <textarea class="Content" id="Content">

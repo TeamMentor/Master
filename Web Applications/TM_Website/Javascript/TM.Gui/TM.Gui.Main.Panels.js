@@ -212,9 +212,22 @@ TM.Gui.Main.Panels.buildGui = function()
 }
 
 TM.Gui.Main.Panels.setWindowHashChangeHook = function()
-    {
-        // see if we also need the special code to handle IE's case
-        $(window).bind('hashchange', TM.Gui.Main.Panels.onWindowHashChange);
+    {        
+		if ( $.browser.msie )   //IE specific
+			{
+				var current_hash = document.location.hash; 
+				var trackHash = function TrackHash() 
+				{			
+					if (current_hash != document.location.hash ) {							
+						current_hash = document.location.hash; 
+						TM.Gui.Main.Panels.onWindowHashChange();
+					}
+					return false;
+				}
+				setInterval('trackHash()', 500);
+			}
+		else
+			$(window).bind('hashchange', TM.Gui.Main.Panels.onWindowHashChange);
     }
 
 TM.Gui.Main.Panels.onWindowHashChange = function()
