@@ -63,17 +63,17 @@ asyncTest("User creation", function()
 		var loadUserCreationPage = function()
 			{
 				 $("a:contains('Create Multiple Users')").click();		 
-				 TM.Events.onControlPanelViewLoaded.add_RemoveOnRaise(testUserCreation);
+				 TM.Events.onControlPanelViewLoaded.add_InvokeOnce(testUserCreation);
 			};
 
-		TM.Events.onCreateUsers.add_RemoveOnRaise(checkUserCreation);		
+		TM.Events.onCreateUsers.add_InvokeOnce(checkUserCreation);		
 
 		if (TM.Gui.CurrentUser.isAdmin())
 			loadUserCreationPage();
 		else
 		{
 			stop();
-			TM.Events.onControlPanelGuiLoaded.add_RemoveOnRaise(loadUserCreationPage);		
+			TM.Events.onControlPanelGuiLoaded.add_InvokeOnce(loadUserCreationPage);		
 			qunit_ControlPanel_Helper.loginAs_Admin();
 		}		
 	});		
@@ -109,7 +109,7 @@ asyncTest("Delete Temp Users", function()
 			{
 				ok(	TM.Gui.CurrentUser.isAdmin(), "Current user is Admin");
 				 $("#leftMenu_Links a:contains('Manage Users')").click();		 		 
-				TM.Events.onControlPanelViewLoaded.add_RemoveOnRaise(removeTempUsers);
+				TM.Events.onControlPanelViewLoaded.add_InvokeOnce(removeTempUsers);
 				
 			};
 
@@ -118,7 +118,7 @@ asyncTest("Delete Temp Users", function()
 		else
 		{
 			stop();
-			TM.Events.onControlPanelGuiLoaded.add_RemoveOnRaise(loadUserManagementPage);		
+			TM.Events.onControlPanelGuiLoaded.add_InvokeOnce(loadUserManagementPage);		
 			qunit_ControlPanel_Helper.loginAs_Admin();
 		}
 	});

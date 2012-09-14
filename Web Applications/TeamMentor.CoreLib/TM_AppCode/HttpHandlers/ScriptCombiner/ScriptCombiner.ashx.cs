@@ -207,8 +207,8 @@ public partial class ScriptCombiner : IHttpHandler
 				while (setDefinition.Peek() >= 0)
 				{
 					fileName = setDefinition.ReadLine();
-					if (!String.IsNullOrEmpty(fileName))
-						scripts.Add(fileName);						
+					if (!String.IsNullOrEmpty(fileName) && fileName.starts("#").isFalse())
+						scripts.Add(fileName);					
 				}
 			}	
         return scripts.ToArray();

@@ -335,7 +335,7 @@ var getColumnFromArray = function(arrayData, columnIndex)
 					{
 						var selectedGuidanceId = oTable.fnGetData( aPos[0] )[6];				
 						if (showEditOptions)
-							openGuidanceItemEditor(selectedGuidanceId);
+							editGuidanceItemInNewWindow(selectedGuidanceId);
 						else
 							viewGuidanceItemInNewWindow(selectedGuidanceId);
 					}

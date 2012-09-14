@@ -174,6 +174,25 @@ TM.WebServices.Data.extractFolderStructure = function(callback)
 	}
 	
 //Extra Methods to access TM.WebServices.Data objects
+TM.WebServices.Data.id_ByName = function(name)
+{
+	var item = TM.WebServices.Data.item_ByName(name)
+	if (isDefined(item))
+		return item.id;
+}
+
+TM.WebServices.Data.item_ByName = function(name)
+	{
+		var library = TM.WebServices.Data.library(name);
+		if (isDefined(library))
+			return library;
+		var folder = TM.WebServices.Data.folder(name);
+		if (isDefined(folder))
+			return folder;
+		var view = TM.WebServices.Data.view(name);
+		if (isDefined(view))
+			return view;
+	}
 
 TM.WebServices.Data.library = function(nameOrId)
 	{

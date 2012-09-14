@@ -1,52 +1,7 @@
 <script>
 
-function applyJsTreeCssPatches()
-{
-	jQuery('.jstree-default.jstree-focused').css('background-color','#FFFFFF');
-}
 
-TM.Gui.LibraryTree.showTree = function()    
-	{						
-	
-		$("#libraryJsTree").html('...loading tree...')			
-					
-		libraryTree = TM.Gui.LibraryTree.open("#libraryJsTree");		
-		
-		libraryTree.onTreeLoaded = function()  
-			{					
-				applyJsTreeCssPatches();
-				
-				$(libraryTree.targetDiv).delegate("a", "click", 
-					function (event, data) 	
-						{ 		
-							TM.Events.onLibraryTreeSelected();							
-						});
 
-			    var nodeToSelect = $(TM.Gui.LibraryTree.targetDiv + " ul li[id='" + TM.Gui.Main.Panels.initialId + "']")
-			    if (nodeToSelect.size() == 1) 
-                {
-			        TM.Gui.LibraryTree.selectNode(nodeToSelect);
-			    }
-                else
-                {
-                    nodeToSelect = $(TM.Gui.LibraryTree.targetDiv + " ul li a:contains('" + TM.Gui.Main.Panels.initialId + "')")
-                    if (nodeToSelect.size() == 1) 
-                    {
-			            TM.Gui.LibraryTree.selectNode(nodeToSelect);
-			        }                
-                    else
-                    {
-				        var firstNode = TM.Gui.LibraryTree.selectFirstNode()
-				        TM.Gui.LibraryTree.openNode(firstNode);
-                    }
-                }
-			    TM.Events.onLibraryTreeSelected();	
-
-			};	
-		libraryTree.create_TreeUsingJSON();			
-		
-	}
-	
 var fixCSS_libraryTree = function()
 {
 	"LibraryTree".$().width("93%");
@@ -57,19 +12,13 @@ $(function ()
 	{		
 		fixCSS_libraryTree();				
 	
-		TM.Events.onFolderStructureMapped.add(function() { TM.Gui.LibraryTree.showTree() } );				
+		TM.Events.onFolderStructureMapped.add(TM.Gui.LibraryTree.showTree);				
 	});
 	
-var openGuidanceItemEditor = function(newGuidanceItemId)
+/*var openGuidanceItemEditor = function(newGuidanceItemId)
 	{
 		editGuidanceItemInNewWindow(newGuidanceItemId);
-
-	/*	openUrl("/Aspx_Pages/EditGuidanceItem.aspx?#id:" + newGuidanceItemId,
-				"Edit Guidance Item", 
-				$(window).width() - 100, 
-				$(window).height() - 50);
-				*/
-	}		
+	}		*/
 </script>
 
 

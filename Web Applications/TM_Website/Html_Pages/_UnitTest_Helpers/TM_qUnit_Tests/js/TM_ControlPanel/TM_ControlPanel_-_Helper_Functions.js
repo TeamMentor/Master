@@ -11,7 +11,7 @@ TM.QUnit.ControlPanel =
 					return;
 				}
 				stop();
-				TM.Events.onControlPanelGuiLoaded.add_RemoveOnRaise(function() 
+				TM.Events.onControlPanelGuiLoaded.add_InvokeOnce(function() 
 					{
 						TM.QUnit.ControlPanel.guiLoaded = true;									
 						start();
@@ -38,7 +38,7 @@ var qunit_ControlPanel_Helper =
 				{		
 					logoutButton.click();
 					
-					TM.Events.onControlPanelGuiLoaded.add_RemoveOnRaise(function() 
+					TM.Events.onControlPanelGuiLoaded.add_InvokeOnce(function() 
 						{  							
 							start() ;
 						});
@@ -56,13 +56,13 @@ var qunit_ControlPanel_Helper =
 				//equals(0,logoutButton.length,"There was one no logout button");
 				
 				
-				TM.Events.onLoginDialogOpen.add_RemoveOnRaise(function()
+				TM.Events.onLoginDialogOpen.add_InvokeOnce(function()
 					{
 						$("#UsernameBox").val(username)
 						$("#PasswordBox").val(password)
 						$("button:contains('login')").click();										
 					});		
-				TM.Events.onUserDataLoaded.add_RemoveOnRaise(function()	
+				TM.Events.onUserDataLoaded.add_InvokeOnce(function()	
 					{
 						TM.Events.onLoginDialogOpen.remove();
 						loadControlPanelDefaultPages();			

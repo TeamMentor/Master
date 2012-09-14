@@ -1,7 +1,7 @@
 	TM.Gui.AppliedFilters.currentPivotPanelFilters = new Array();
 	TM.Gui.AppliedFilters.currentFilters = []; 	
 	
-	function setPivotPanelFilter(text,title, column, state, pinned)
+	function setPivotPanelFilter(text,title, column, state, pinned, dontRaiseEvent_onBuildFiltersGui)
 	{				
 		var updatedFilter = new Array();		
 		for (i=0; i < TM.Gui.AppliedFilters.currentPivotPanelFilters.length; i++) 
@@ -43,7 +43,8 @@
 						
 		//setTimeout(TM.Gui.AppliedFiltersList.populateAppliedFiltersTable , 25);
         //if (TM.Gui.AppliedFilters.raise_onBuildFiltersGui)		
-
+		if (dontRaiseEvent_onBuildFiltersGui)
+			return;
 		 TM.Events.onBuildFiltersGui()
 	}
 
@@ -211,6 +212,9 @@ TM.Gui.AppliedFilters.buildFiltersGui = function ()
 	    TM.Gui.AppliedFilters.MapFiltersFromUrl(); 
         TM.Events.onBuildFiltersGui.enabled = true; 
 */
+		if (isDefined(TM.WebServices.Data.filteredDataTable) === false)
+			return;
+
         var aaData = TM.WebServices.Data.filteredDataTable.aaData;
 
 	    filterResult = TM.Gui.AppliedFilters.applyDataTableFilter_using_PivotPanelFilters(aaData, queryTo_filterDataTable, TM.Gui.AppliedFilters.currentFilters);
@@ -250,9 +254,43 @@ TM.Gui.AppliedFilters.buildFromSelectedNodeId = function () {
         //TM.Gui.AppliedFilters.MapFiltersFromUrl();
     });*/
 
+
+TM.Gui.AppliedFilters.add_Pinned_Filter = function(title, text)
+	{
+		var hashCommand= "&" + title + ":" + text;
+		window.location.hash += hashCommand;
+	}
+TM.Gui.AppliedFilters.add_Filter_Technology = function(value, pinned)
+	{
+		if (pinned)
+			TM.Gui.AppliedFilters.add_Pinned_Filter("Technology", value);
+		else
+			setPivotPanelFilter(value, "Technology", "2", true , false);		
+	}
+TM.Gui.AppliedFilters.add_Filter_Phase = function(value, pinned)
+	{
+		if (pinned)
+			TM.Gui.AppliedFilters.add_Pinned_Filter("Phase", value);
+		else
+			setPivotPanelFilter(value, "Phase", "3", true , false);		
+	}
+TM.Gui.AppliedFilters.add_Filter_Type = function(value, pinned)
+	{
+		if (pinned)
+			TM.Gui.AppliedFilters.add_Pinned_Filter("Type", value);
+		else
+			setPivotPanelFilter(value, "Type", "4", true , false);		
+	}
+TM.Gui.AppliedFilters.add_Filter_Category = function(value, pinned)
+	{
+		if (pinned)
+			TM.Gui.AppliedFilters.add_Pinned_Filter("Category", value);
+		else
+			setPivotPanelFilter(value, "Category", "5", true , false);		
+	}
+
 TM.Gui.AppliedFilters.MapFiltersFromUrl = function () 
-    {    
-        TM.Events.onBuildFiltersGui.enabled = false;    	    
+    {                
         var commands = window.location.hash.slice(1).split("&");    
         jQuery.each(commands, function () {
             var splitCommand = this.split(":");
@@ -261,20 +299,19 @@ TM.Gui.AppliedFilters.MapFiltersFromUrl = function ()
                 var value = splitCommand[1];
                 switch (command) {
                     case "technology":                    
-                        setPivotPanelFilter(value, "Technology", 2, true, true);
+                        setPivotPanelFilter(value, "Technology", 2, true, true, true);
                         break;
                     case "phase":                    
-                        setPivotPanelFilter(value, "Phase", 3, true, true);
+                        setPivotPanelFilter(value, "Phase", 3, true, true, true);
                         break;
                     case "type":
-                        setPivotPanelFilter(value, "Type", 4, true, true);
+                        setPivotPanelFilter(value, "Type", 4, true, true, true);
                         break;
                     case "category":
-                        setPivotPanelFilter(value, "Category", 5, true , true);
+                        setPivotPanelFilter(value, "Category", 5, true , true, true);
                         break;
                 }
-            }
-        TM.Events.onBuildFiltersGui.enabled = true;    	    
+            }         
         });
     }
 		

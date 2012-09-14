@@ -117,7 +117,7 @@ asyncTest("loadPage: login Page ", function()
 				ok(true, "on onCloseCallback");
 				start();
 			};				
-		TM.Events.onLoginDialogOpen.add_RemoveOnRaise(onLoadCallback);
-		TM.Events.onLoginDialogClose.add_RemoveOnRaise(onCloseCallback);
+		TM.Events.onLoginDialogOpen.add_InvokeOnce(onLoadCallback);
+		TM.Events.onLoginDialogClose.add_InvokeOnce(onCloseCallback);
 		TM.Gui.Dialog.loginPage();		
 	});

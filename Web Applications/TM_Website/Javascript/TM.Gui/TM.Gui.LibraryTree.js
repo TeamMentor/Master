@@ -167,6 +167,34 @@ TM.Gui.LibraryTree =
 	}
 
 //****************
+// Show Tree
+//****************
+TM.Gui.LibraryTree.showTree = function()    
+	{						
+		var applyJsTreeCssPatches = function()
+			{
+				jQuery('.jstree-default.jstree-focused').css('background-color','#FFFFFF');
+			}
+		$("#libraryJsTree").html('...loading tree...')			
+					
+		libraryTree = TM.Gui.LibraryTree.open("#libraryJsTree");		
+		
+		libraryTree.onTreeLoaded = function()  
+			{					
+				applyJsTreeCssPatches();
+				
+				$(libraryTree.targetDiv).delegate("a", "click", 
+					function (event, data) 	
+						{ 		
+							TM.Events.onLibraryTreeSelected();							
+						});
+
+				TM.Gui.LibraryTree.selectNode_ById(TM.Gui.Main.Panels.initialId)			    
+			};	
+		libraryTree.create_TreeUsingJSON();					
+	}
+
+//****************
 //nodes manipulation methods
 //****************
 
@@ -192,10 +220,11 @@ TM.Gui.LibraryTree.firstNode = function()
 	}
 	
 TM.Gui.LibraryTree.selectNode = function(node) 		
-	{							
-		_node = node;		
+	{		
+		//alert(TM.Gui.LibraryTree.selectedNode === node)
+		
 		if (isDefined(node))
-		{			
+		{					
 			selectedNodeId = jQuery(node).attr('id'); 			
 			if (isUndefined(selectedNodeId) || selectedNodeId==="")
 				selectedNodeId = jQuery(node).parent().attr('id'); 		
@@ -203,6 +232,7 @@ TM.Gui.LibraryTree.selectNode = function(node)
 			{			
 				if(selectedNodeId != TM.Gui.selectedNodeId)
 				{					
+					TM.Gui.LibraryTree.jsTree.deselect_all();									
 					TM.Gui.selectedNodeId = selectedNodeId;		
 					TM.Gui.selectedNodeData = $.data[selectedNodeId];							
 					TM.Gui.LibraryTree.jsTree.select_node(node);
@@ -215,7 +245,47 @@ TM.Gui.LibraryTree.selectNode = function(node)
 		}
 		return node;
 	}
-	
+
+TM.Gui.LibraryTree.selectNode_ById = function(guid)
+	{	
+		if (isDefined(guid) === false)
+			return;
+		try 
+		{					
+			var nodeToSelect = $(TM.Gui.LibraryTree.targetDiv + " ul li[id='" + htmlEscape(guid) + "']")
+			if (nodeToSelect.size() == 1) 
+            {
+			    TM.Gui.LibraryTree.selectNode(nodeToSelect);
+			}
+            else
+            {                		
+				nodeToSelect = $(TM.Gui.LibraryTree.targetDiv + " ul li a:contains('" + htmlEscape(guid)+ "')")			
+				if (nodeToSelect.size() == 1) 
+				{
+					TM.Gui.LibraryTree.selectNode(nodeToSelect);
+				}                
+				else
+				{
+					var firstNode = TM.Gui.LibraryTree.selectFirstNode()
+					TM.Gui.LibraryTree.openNode(firstNode);
+				}
+            }
+			TM.Events.onLibraryTreeSelected();	
+			
+		} 
+		catch (e) 
+		{
+			TM.Gui.Dialog.alertUser(e.message, "in TM.Gui.LibraryTree.selectNode_ById");
+		}
+		
+	}	
+
+TM.Gui.LibraryTree.selectNode_ByName = function(name)
+{
+	var guid = TM.WebServices.Data.id_ByName(name);
+	TM.Gui.LibraryTree.selectNode_ById(guid)
+}
+
 TM.Gui.LibraryTree.openNode = function(node) 		
 	{
 		TM.Gui.LibraryTree.jsTree.open_node(node);
@@ -228,8 +298,8 @@ TM.Gui.LibraryTree.selectFirstNode = function()
 		TM.Gui.LibraryTree.selectNode(firstNode);
 		return firstNode;
 	}
-//firstNode = $("#libraryJsTree ul li a").first();
-//				libraryTree.jsTree.select_node(firstNode);	
+
+
 	
 
 //*********************	
@@ -306,8 +376,8 @@ TM.Gui.LibraryTree.add_Library_to_Database = function(title, callback, skip_rena
 						libraryNode.fadeIn();
 						TM.WebServices.Data.AllLibraries.push(libraryV3);						
 						$.data[libraryV3.libraryId] = libraryV3;
-						libraryNode.attr("id", libraryV3.libraryId);
-						
+						libraryNode.attr("id", libraryV3.libraryId);						
+
 						TM.Gui.Dialog.alertUser('Library Created');
 					}					
 					else
@@ -847,7 +917,7 @@ TM.Gui.LibraryTree.newGuidanceItem = function()
 						TM.Gui.DataTableViewer.selectedRowTarget = null;
                         TM.Gui.DataTableViewer.selectedRowIndex = -1;						
 
-						openGuidanceItemEditor(newGuidanceItemId);
+						editGuidanceItemInNewWindow(newGuidanceItemId);
 					});
 	  } ;			  	  	
 	  createNewGuidanceItem();

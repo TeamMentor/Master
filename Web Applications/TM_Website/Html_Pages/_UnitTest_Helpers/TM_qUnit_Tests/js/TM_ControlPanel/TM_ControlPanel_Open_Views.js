@@ -32,7 +32,7 @@ asyncTest("Login as Admin", function()
 asyncTest("My Account", function() 	
 	{	
 		 $("#leftMenu_Links a:contains('My Account')").click();		 		 
-		 TM.Events.onControlPanelViewLoaded.add_RemoveOnRaise(function() 
+		 TM.Events.onControlPanelViewLoaded.add_InvokeOnce(function() 
 			{
 				var userEditWindow = TM.ControlPanel.userEditModalWindow
 				ok(userEditWindow, "found TM.ControlPanel.userEditModalWindow");
@@ -52,13 +52,13 @@ asyncTest("My Account", function()
 asyncTest("Manage Users", function() 	
 	{	
 		 $("#leftMenu_Links a:contains('Manage Users')").click();		 		 
-		 TM.Events.onControlPanelViewLoaded.add_RemoveOnRaise(start);
+		 TM.Events.onControlPanelViewLoaded.add_InvokeOnce(start);
 	});	
 	
 asyncTest("Create Multiple Users", function() 	
 	{	
 		 $("a:contains('Create Multiple Users')").click();		 
-		 TM.Events.onControlPanelViewLoaded.add_RemoveOnRaise(start);
+		 TM.Events.onControlPanelViewLoaded.add_InvokeOnce(start);
 	});		
 
  
@@ -66,19 +66,19 @@ asyncTest("Create Multiple Users", function()
 asyncTest("WebServices", function() 	
 	{	
 		 TM.ControlPanel.open_WebServices();
-		 TM.Events.onControlPanelViewLoaded.add_RemoveOnRaise(start);
+		 TM.Events.onControlPanelViewLoaded.add_InvokeOnce(start);
 	});		
 	
 asyncTest("AdminTasks", function() 	
 	{	
 		 TM.ControlPanel.open_AdminTasks();
-		 TM.Events.onControlPanelViewLoaded.add_RemoveOnRaise(start);
+		 TM.Events.onControlPanelViewLoaded.add_InvokeOnce(start);
 	});		
 
 asyncTest("TeamMentor QUnitTests", function() 	
 	{	
 		 TM.ControlPanel.open_QUnitTests();
-		 TM.Events.onControlPanelViewLoaded.add_RemoveOnRaise(start);
+		 TM.Events.onControlPanelViewLoaded.add_InvokeOnce(start);
 	});		
 	
 

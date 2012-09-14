@@ -50,7 +50,7 @@ var qunit_Gui_Helper =
 
 				$("#topRightMenu a:contains('Login')").click();	
 
-		/*		TM.Events.onHomePageLinksLoaded.add_RemoveOnRaise(function() 
+		/*		TM.Events.onHomePageLinksLoaded.add_InvokeOnce(function() 
 						{  
 alert('here');
 							//TM.Events.onHomePageLinksLoaded.remove()
