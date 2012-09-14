@@ -26,7 +26,7 @@ TM.Debug.callTrace_ShowExecutionTime		  	= false;
 TM.Debug.callTrace_LogToConsole				  	= false;
 TM.Debug.callTrace_ShowParamsInConsoleLog	  	= false;
 
-TM.Debug.logEventsRaised					  	= true;
+TM.Debug.logEventsRaised					  	= false;
 TM.Debug.logEventsRaised_CallTrace				= false;
 TM.Debug.logLoadedPages						  	= false;
 
