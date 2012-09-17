@@ -247,7 +247,9 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                                                   //.add_Xslt(xsltToUse);
                     if (xmlContent.valid())
                     {
-                        var xslTransform = new System.Xml.Xsl.XslTransform();
+                        //var xslTransform = new System.Xml.Xsl.XslTransform();
+						var xslTransform = new System.Xml.Xsl.XslCompiledTransform();
+						
                         xslTransform.Load(xstlFile);
 
                         var xmlReader = new System.Xml.XmlTextReader(new StringReader(xmlContent));
@@ -386,9 +388,12 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
             return false;    
 		}
 
-        public bool transfer_Login()
+        public bool transfer_Login()	
 		{
-			var redirectTarget = context.Request.Url.AbsolutePath;
+			var loginReferer = context.Request.QueryString["LoginReferer"];
+			var redirectTarget =  (loginReferer.notNull() && loginReferer.StartsWith("/"))
+										? loginReferer
+										: context.Request.Url.AbsolutePath;
 			if (redirectTarget.lower() == "/login")
 				redirectTarget = "/";
 			context.Response.Redirect("/Html_Pages/Gui/Pages/login.html?LoginReferer=" + redirectTarget);

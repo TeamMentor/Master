@@ -104,8 +104,9 @@
 					else
 					{
                         "ItemContent".$().hide();
-						"#Title".$().html("Sorry, we couldn't find the requested article. ")
-                                    .append("Why don't you <a href='/create/" + mappingText +"'>create it</a>");
+						"#Title".$().html("").append("<h4>Sorry, we couldn't find the requested article.</h4>" + 
+											         //"<h4>Why don't you <a href='/create/" + mappingText +"'>create it</a></h4>"
+													 "");
 						"CategoriesLabel".$().html("");
 						"PhaseLabel".$().html("");
 						"TechnologyLabel".$().html("");
@@ -338,16 +339,16 @@
 			    </tr>
 			    <tr>
 				    <td class="ItemDetailValue">					
-					    <div ID="TechnologyLabel"> </div>
+					    <div id="TechnologyLabel"> </div>
 				    </td>		
 				    <td class="ItemDetailValue">
-					    <div ID="CategoriesLabel"> </div>
+					    <div id="CategoriesLabel"> </div>
 				    </td>				
 				    <td class="ItemDetailValue">
-					    <div ID="PhaseLabel"> </div>
+					    <div id="PhaseLabel"> </div>
 				    </td>				
 				    <td class="ItemDetailValue">					
-					    <div ID="GuidanceTypeLabel"> </div>
+					    <div id="GuidanceTypeLabel"> </div>
 				    </td>		
 			    </tr>
 		    </table>

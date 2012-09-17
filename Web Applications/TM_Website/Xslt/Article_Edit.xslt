@@ -10,14 +10,17 @@
         <title>TeamMentor Article Editor</title>        
         <link rel="stylesheet" href="/javascript/bootstrap/bootstrap.min.css" type="text/css"></link>
         <script src="/Javascript/jQuery/jquery-1.7.1.min.js"                  type="text/javascript"></script>
-        <script src="/Javascript/jQuery/jquery.textarea.js"                   type="text/javascript"></script>
-
-        <script src="/Javascript/TM/GlobalVariables.js"></script>
+        <script src="/Javascript/jQuery/jquery.textarea.js"                   type="text/javascript"></script>				
+				<script src="/Javascript/json/json2.js"																type="text/javascript"></script>
+				<script src="/Javascript/IE_Fixes.js"																	type="text/javascript"></script>
+				
+				<script src="/Javascript/TM/GlobalVariables.js"></script>
         <script src="/Javascript/TM/Settings.js"></script>
         <script src="/Javascript/TM/WebServices.js"></script>
         <script src="/Javascript/TM/Events.js"></script>
         <script src="/Javascript/TM.Gui/TM.Gui.CurrentUser.js"></script>
-        <style>
+				
+				<style>
           .Content { width:95%; height:300px; }
           .Footer  { text-align:center}                    
         </style>
@@ -45,7 +48,7 @@
                 if (result != TM.Const.emptyGuid)
                   document.location = "/xsl/" + result;
                 else
-                  $("#SaveButton text").html(' Saved Failed!!!');
+                  $("#SaveButton #text").html(' Saved Failed!!!');
               }
               
             var saveContent = function()
@@ -54,14 +57,14 @@
                 var title = $("#title").val();                
                 var html = $(".Content").val();  
                 var dataType = $("#dataType").val();
-                $("#SaveButton text").html(' Creating Article');
+                $("#SaveButton #text").html(' Creating Article');
                 TM.WebServices.WS_Libraries.add_Article_Simple(libraryId, title, dataType, html,onCreate, function(error) { alert(error.responseText)});
                 return false;
               }
           
              var setSaveButtonText = function()
               {
-                $("#SaveButton text").html('  Save changes');
+                $("#SaveButton #text").html('  Save changes');
               }
                            
               
@@ -147,7 +150,7 @@
                 <label class="control-label" for="input01"></label>
                 <div class="controls">
                   <button type="submit" class="btn btn-primary" id="SaveButton">
-                    <i class="icon-file icon-white"></i> <text></text>
+                    <i class="icon-file icon-white"></i> <span id="text"></span>
                   </button>
                 </div>
               </div>
@@ -158,8 +161,8 @@
         </div>
         
         <footer class="Footer">
-      Powered by <a href="http://www.securityinnovation.com/products/secure-development-knowledgebase.html">Team.Mentor </a> 
-    </footer>
+				Powered by <a href="http://www.securityinnovation.com/products/secure-development-knowledgebase.html">Team.Mentor </a> 
+			</footer>
         <script src="/Javascript/Gauges/Gauges_Tracking_Code.js"   type="text/javascript"></script>     
       </body>
     </html>

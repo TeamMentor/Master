@@ -53,7 +53,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			//newGuidanceExplorer.library.libraryStructure.view = new List<urn.microsoft.guidanceexplorer.View>();  
 			newGuidanceExplorer.library.name = libraryId.str();
 			newGuidanceExplorer.library.caption = caption; 
-			"xmlLibraryPath: {0}".info(TM_Xml_Database.Path_XmlLibraries);
+			//"xmlLibraryPath: {0}".info(TM_Xml_Database.Path_XmlLibraries);
 			//var newLibraryPath = TM_Xml_Database.Path_XmlLibraries.pathCombine("{0}.xml".format(caption));
 			
 			newGuidanceExplorer.xmlDB_Save_GuidanceExplorer(tmDatabase);
@@ -150,7 +150,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		
 		public static guidanceExplorer xmlDB_UpdateGuidanceExplorer(this TM_Xml_Database tmDatabase, Guid libraryId, string caption, bool deleteLibrary)
 		{
-			"[xmlDB_UpdateGuidanceExplorer]".info();
+			//"[xmlDB_UpdateGuidanceExplorer]".info();
 			if (TM_Xml_Database.GuidanceExplorers_XmlFormat.hasKey(libraryId).isFalse())
 			{
 				"[TM_Xml_Database] in xmlDB_UpdateGuidanceExplorer, could not find library to update with id: {0}".error(libraryId);
@@ -179,7 +179,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 				"[TM_Xml_Database][xmlDB_RenameGuidanceExplorer] provided caption didn't pass validation regex".error();
 				throw new Exception("Provided Library name didn't pass validation regex"); 				
 			}
-			"[xmlDB_RenameGuidanceExplorer]".info();
+			//"[xmlDB_RenameGuidanceExplorer]".info();
 			if(guidanceExplorer.notNull())
 			{	
 				var existingCaption = guidanceExplorer.library.caption;
@@ -197,8 +197,8 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 						var pathToGuidanceItems_Existing = tmDatabase.xmlDB_LibraryPath_GuidanceItems(existingCaption);
 						var pathToGuidanceItems_New = tmDatabase.xmlDB_LibraryPath_GuidanceItems(newCaption);
 						
-						"pathToGuidanceItems_Existing: {0}".error(pathToGuidanceItems_Existing);
-						"pathToGuidanceItems_New: {0}".error(pathToGuidanceItems_New);
+						//"pathToGuidanceItems_Existing: {0}".error(pathToGuidanceItems_Existing);
+						//"pathToGuidanceItems_New: {0}".error(pathToGuidanceItems_New);
 						if(pathToGuidanceItems_Existing.dirExists())	
 						{
 							"RENAMING {0}-> {1}".error(pathToGuidanceItems_Existing, pathToGuidanceItems_New);

@@ -3,6 +3,14 @@
 <%@ Import Namespace ="O2.DotNetWrappers.ExtensionMethods" %>
 <%@ Import Namespace ="SecurityInnovation.TeamMentor.WebClient.WebServices" %>
 
+<%	
+	var tmWebServices = new TM_WebServices();
+	if (tmWebServices.RBAC_IsAdmin().isFalse())
+	{
+		Trace.IsEnabled = false;			//disable tracing or it will still show on the page
+		Response.Redirect("/Login?LoginReferer=/debug");		
+	}
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -34,7 +42,7 @@
         <hr />
         <pre>
 <% 
-        var logs = new TM_WebServices().GetLogs();
+        var logs = tmWebServices.GetLogs();
         foreach (var line in logs.lines())
         {
             var color = "black";

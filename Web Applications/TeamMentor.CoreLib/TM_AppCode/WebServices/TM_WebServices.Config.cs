@@ -12,6 +12,7 @@ using SecurityInnovation.TeamMentor.Authentication.WebServices.AuthorizationRule
 using O2.DotNetWrappers.ExtensionMethods;
 using O2.XRules.Database.APIs;
 using SecurityInnovation.TeamMentor.Authentication;
+using urn.microsoft.guidanceexplorer;
 //O2File:../IJavascriptProxy.cs
 //O2File:../Authentication/UserRoleBaseSecurity.cs
 //O2File:TM_WebServices.asmx.cs
@@ -65,20 +66,21 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		[WebMethod(EnableSession = true)] public bool           RBAC_CurrentIdentity_IsAuthenticated()	                {	return new UserRoleBaseSecurity().currentIdentity_IsAuthenticated(); }
 		[WebMethod(EnableSession = true)] public List<string>   RBAC_CurrentPrincipal_Roles()		                    {	return new UserRoleBaseSecurity().currentPrincipal_Roles().toList(); }
 		[WebMethod(EnableSession = true)] public bool           RBAC_HasRole(string role)					            {	return RBAC_CurrentPrincipal_Roles().contains(role); }
+		[WebMethod(EnableSession = true)] public bool           RBAC_IsAdmin()											{	return RBAC_CurrentPrincipal_Roles().contains("Admin"); }
 		[WebMethod(EnableSession = true)] public string         RBAC_SessionCookie()						            {	return HttpContext.Current.Request.Cookies["Session"].notNull() 
 																												                    ? HttpContext.Current.Request.Cookies["Session"].Value : ""; }
 
-        [WebMethod(EnableSession = true)]		                                    public Guid SSO_AuthenticateUser(string ssoToken)            {   return new SingleSignOn().authenticateUserBasedOn_SSOToken(ssoToken); }
-        [WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public string SSO_GetSSOTokenForUser(string userName)          {   return new SingleSignOn().getSSOTokenForUser(userName); }
-        [WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public TMUser SSO_GetUserFromSSOToken(string ssoToken)         {   return new SingleSignOn().getUserFromSSOToken(ssoToken); }        
+        [WebMethod(EnableSession = true)]		                                    public Guid		SSO_AuthenticateUser(string ssoToken)            {   return new SingleSignOn().authenticateUserBasedOn_SSOToken(ssoToken); }
+        [WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public string	SSO_GetSSOTokenForUser(string userName)          {   return new SingleSignOn().getSSOTokenForUser(userName); }
+        [WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public TMUser	SSO_GetUserFromSSOToken(string ssoToken)         {   return new SingleSignOn().getUserFromSSOToken(ssoToken); }        
         
 																												
-		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public string GitHub_Pull_Origin()	            {	return UtilMethods.syncWithGitHub_Pull_Origin();  }
-        [WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public string GitHub_Push_Origin()	            {	return UtilMethods.syncWithGitHub_Push_Origin();  }
-        [WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public string GitHub_Push_Commit()	            {	return UtilMethods.syncWithGitHub_Commit();  }
-        [WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public string Git_Execute(string gitCommand)	{	return UtilMethods.executeGitCommand(gitCommand);  }
+		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]		public string		GitHub_Pull_Origin()	            {	return UtilMethods.syncWithGitHub_Pull_Origin();  }
+        [WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]		public string		GitHub_Push_Origin()	            {	return UtilMethods.syncWithGitHub_Push_Origin();  }
+        [WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]		public string		GitHub_Push_Commit()	            {	return UtilMethods.syncWithGitHub_Commit();  }
+        [WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]		public string		Git_Execute(string gitCommand)	{	return UtilMethods.executeGitCommand(gitCommand);  }
 		
-		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public string CreateWebEditorSecret()	
+		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]		public string		CreateWebEditorSecret()	
 																									{
 																										var webEditorSecretDataFile = AppDomain.CurrentDomain.BaseDirectory.pathCombine("webEditorSecretData.config");
 																										Guid.NewGuid().str().serialize(webEditorSecretDataFile);
@@ -89,25 +91,16 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 																											session["webEditorSecretData"] = Guid.NewGuid().str();
 																										return (string)session["webEditorSecretData"];
 																										*/
-																									}		
-		
-		//TMConfigFileLocation
-		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public string TMConfigFileLocation()
-																					{	
-																						return TMConfig.Location;  
-																					}
-		//TMConfigFile
-		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public TMConfig TMConfigFile()
+																									}						
+		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]		public string		TMConfigFileLocation()			{	return TMConfig.Location;  }		
+		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]		public TMConfig		TMConfigFile()
 																					{	
 																						return TMConfig.Current;  
-																					}
-		//GetDisabledLibraries																			
-		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public List<string> GetDisabledLibraries()
+																					}																					
+		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]		public List<string> GetDisabledLibraries()
 																					{	
-																						return TMConfig.Current.Libraries_Disabled;  
-																					}
-		//SetDisabledLibraries
-		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public List<string> SetDisabledLibraries( List<string> disabledLibraries)
+																						return TMConfig.Current.Libraries_Disabled;  																					}		
+		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]		public List<string> SetDisabledLibraries( List<string> disabledLibraries)
 																					{
 																						var config = TMConfig.Current;
 																						config.Libraries_Disabled = disabledLibraries;
@@ -115,21 +108,17 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 																							return TMConfig.Current.Libraries_Disabled;
 																						return 
 																							null;
-																					}
-		
-		//Get_Libraries_Zip_Folder
-		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public string Get_Libraries_Zip_Folder()
+																					}				
+		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]		public string		Get_Libraries_Zip_Folder()
 																					{
                                                                                         var librariesZipsFolder = TMConfig.Current.LibrariesUploadedFiles;                                                                                        
                                                                                         return TM_Xml_Database.Path_XmlDatabase.fullPath().pathCombine(librariesZipsFolder).fullPath();
-																					}
-		//Get_Libraries_Zip_Folder_Files
-		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public List<string> Get_Libraries_Zip_Folder_Files()
+																					}		
+		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]		public List<string> Get_Libraries_Zip_Folder_Files()
 																					{
                                                                                         return Get_Libraries_Zip_Folder().files().fileNames();
-																					}																					
-		//Set_Libraries_Zip_Folder
-		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public string Set_Libraries_Zip_Folder(string folder)
+																					}																							
+		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]		public string		Set_Libraries_Zip_Folder(string folder)
 																					{
 																						var tmConfig = TMConfig.Current;
 																						tmConfig.LibrariesUploadedFiles = folder;
@@ -138,18 +127,31 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 																							return "Path set to '{0}' which currently has {1} files".format(folder.fullPath(), folder.files().size());
 																						return null;
 																					}
-
-        [WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]        public Guid GetUploadToken()
+        [WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]        public Guid			GetUploadToken()
                                                                                     {
                                                                                         var uploadToken = Guid.NewGuid();
                                                                                         FileUpload.UploadTokens.Add(uploadToken);
                                                                                         return uploadToken;
 																					}
-
-        [WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]        public string GetLogs()        
+        [WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]        public string		GetLogs()        
                                                                                     {
                                                                                         var logData = O2.Kernel.PublicDI.log.LogRedirectionTarget.prop("LogData").str() ;
                                                                                         return logData;
                                                                                     }        
-    }
+		[WebMethod(EnableSession = true)] /*[Admin(SecurityAction.Demand)] */       public List<KeyValue<Guid, string>>				Data_GuidanceItems_FileMappings()        
+                                                                                    {
+																						return TM_Xml_Database.GuidanceItems_FileMappings.ConvertDictionary();
+                                                                                    }
+		[WebMethod(EnableSession = true)] /*[Admin(SecurityAction.Demand)] */       public List<KeyValue<Guid, guidanceExplorer>>	Data_GuidanceExplorers_XmlFormat()        
+                                                                                    {
+																						return TM_Xml_Database.GuidanceExplorers_XmlFormat.ConvertDictionary();
+                                                                                    }
+		[WebMethod(EnableSession = true)] /*[Admin(SecurityAction.Demand)] */		public List<KeyValue<Guid, TeamMentor_Article>> Data_GuidanceItems_Cached_GuidanceItems()        
+                                                                                    {
+																						return TM_Xml_Database.Cached_GuidanceItems.ConvertDictionary();
+                                                                                    }
+		
+
+		
+    }	
 }

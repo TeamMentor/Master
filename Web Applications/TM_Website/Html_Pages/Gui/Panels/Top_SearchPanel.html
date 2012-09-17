@@ -66,17 +66,17 @@ TM.Gui.TextSearch.invalidateSearchText = function()
 
 TM.Gui.TextSearch.setup = function()
 	{
-		TM.Gui.DataTable.currentTextFilter = "";
-		//if (! $.browser.msie)			
-			$('#SearchTextBox').keypress(
-				function(e) 
-					{ 						
-						$("#SearchTextBox").css('background', (TM.Gui.DataTable.currentTextFilter 	=== "") ? 'white' : '#FFDDDD');
+		TM.Gui.DataTable.currentTextFilter = "";					
+		$('#SearchTextBox').keypress(
+			function(e) 
+				{ 						
+					$("#SearchTextBox").css('background', (TM.Gui.DataTable.currentTextFilter 	=== "") ? 'white' : '#FFDDDD');
+					if (! $.browser.msie)
 						if(e.which == 13)
 							{ 										
 								TM.Gui.TextSearch.getValueAndApplyGlobalFilter();
 							} 
-					} );
+				} );
 		$(".searchContent").height(24);
 		$(".SearchButton").height(23)
 		$(".SearchTextBox").width("center-north".$().width()-150)	

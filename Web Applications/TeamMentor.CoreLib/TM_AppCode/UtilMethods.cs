@@ -14,6 +14,8 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using O2.DotNetWrappers.ExtensionMethods;
 using O2.DotNetWrappers.Windows;
+using System.Globalization;
+using System.IO.Compression;
 //O2Ref:System.Web.Abstractions.dll
 //O2File:TmConfig.cs
 
@@ -21,30 +23,27 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 {
     public class UtilMethods
     {    	
+		//GIT
         public static string syncWithGitHub_Pull_Origin()
 		{
             var gitCommand = "pull origin";
             return executeGitCommand(gitCommand);
         }
-
         public static string syncWithGitHub_Push_Origin()
 		{
             var gitCommand = "push origin";
             return executeGitCommand(gitCommand);
         }
-
         public static string syncWithGitHub_Commit()
         {
             return syncWithGitHub_Commit("TeamMentor Commit at: {0}".format(DateTime.Now));
         }
-
         public static string syncWithGitHub_Commit(string message)
 		{
             executeGitCommand("add -A");       
             var commit = "commit -m '{0}'".format(message);
             return executeGitCommand(commit);
         }
-
         public static string executeGitCommand(string gitCommand)
         {                   
 			var gitExe = @"C:\Program Files\Git\bin\git.exe";
@@ -60,6 +59,53 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                                      .replace("\t", "    ");
 			return cmdOutput;
 		}
+
+
+		//GZIP
+		public static void enableGZipCompression_forAjaxRequests()
+		{
+			enableGZipCompression_forAjaxRequests(HttpContext.Current.Request, HttpContext.Current.Response);
+		}
+		public static void enableGZipCompression_forAjaxRequests(HttpRequest request, HttpResponse response)  //based on code from http://geekswithblogs.net/rashid/archive/2007/09/15/Compress-Asp.net-Ajax-Web-Service-Response---Save-Bandwidth.aspx
+		{
+			//HttpApplication app = (HttpApplication)sender;
+
+			//HttpRequest request = app.Request;
+			//HttpResponse response = app.Response;
+
+			//Ajax Web Service request is always starts with application/json
+			//if (request.ContentType.ToLower(CultureInfo.InvariantCulture).StartsWith("application/json"))
+			try
+			{
+				if (request.ContentType.lower().starts(new List<string>() { "text/xml", "application/json" }))
+				{
+					//if (!((request.Browser.IsBrowser("IE")) && (request.Browser.MajorVersion <= 6))) //IE 5 and 6 are not supported by TM
+					{
+						string acceptEncoding = request.Headers["Accept-Encoding"];
+
+						if (!string.IsNullOrEmpty(acceptEncoding))
+						{
+							acceptEncoding = acceptEncoding.ToLower(CultureInfo.InvariantCulture);
+
+							if (acceptEncoding.Contains("gzip"))
+							{
+								response.Filter = new GZipStream(response.Filter, CompressionMode.Compress);
+								response.AddHeader("Content-encoding", "gzip");
+							}
+							else if (acceptEncoding.Contains("deflate"))
+							{
+								response.Filter = new DeflateStream(response.Filter, CompressionMode.Compress);
+								response.AddHeader("Content-encoding", "deflate");
+							}
+						}
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				ex.log("in enableGZipCompression_forAjaxRequests");
+			}
+		}
     }
 	
 	public static class SoapRequestUtils
@@ -68,7 +114,6 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
         {
             return httpContext.Request.ServerVariables["HTTP_SOAPACTION"] != null;
         }
-
         public static XmlDocument GetPostDataAsXmlDocument(this HttpContextBase httpContext)
         {
             try
@@ -84,8 +129,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
             {
                 return null;
             }            
-        }
-		
+        }		
 		public static String GetPostDataAsString(this HttpContextBase httpContext)
         {	
 			try
@@ -117,8 +161,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			foreach (byte b in hashBytes)		
 				hashString.Append(b.ToString("x2"));					
 			return hashString.ToString();
-		}
-		
+		}		
 		public static List<string> toStringList(this List<Guid> guids)
 		{
 			return (from guid in guids
@@ -129,7 +172,6 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
     public class HttpContextFactory
     {
         public static HttpContextBase Context { get; set;}
-
         public static HttpContextBase Current
         {
             get
@@ -142,9 +184,38 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 
                 return new HttpContextWrapper(HttpContext.Current);
             }
-        }
-        
+        }        
     }
 
+	public class KeyValue<TKey, TValue>
+	{
+		public TKey Key { get; set; }
+		public TValue Value { get; set; }
+
+		public KeyValue()
+		{
+		}
+	}
+	public static class KeyValue_extensionMethods
+	{
+		public static List<KeyValue<TKey, TValue>> ConvertDictionary<TKey, TValue>(this Dictionary<TKey, TValue> dictionary)
+		{
+
+			try
+			{
+				var keyValueList = new List<KeyValue<TKey, TValue>>();
+				foreach (TKey key in dictionary.Keys)
+				{
+					keyValueList.Add(new KeyValue<TKey, TValue> { Key = key, Value = dictionary[key] });
+				}
+				return keyValueList;
+			}
+			catch (Exception ex)
+			{
+				ex.logWithStackTrace("in ConvertDictionary");
+				return new List<KeyValue<TKey, TValue>>(); 
+			}
+		}
+	}
 }
 

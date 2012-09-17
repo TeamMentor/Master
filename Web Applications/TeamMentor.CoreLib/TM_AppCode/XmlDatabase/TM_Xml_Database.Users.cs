@@ -249,8 +249,8 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
     	}
     	
     	public static Guid login(this TM_Xml_Database tmDb, string username, string passwordHash)
-    	{			
-            tmDb.sleep(TM_Xml_Database.FORCED_MILLISEC_DELAY_ON_LOGIN_ACTION);      // to slow down brute force attacks
+    	{
+			tmDb.sleep(TM_Xml_Database.FORCED_MILLISEC_DELAY_ON_LOGIN_ACTION, false);      // to slow down brute force attacks
     	    if(username.valid() && passwordHash.valid())
 			    if (TM_Xml_Database.TMUsersPasswordHashes[username] == passwordHash)
 				    return tmDb.registerUserSession(tmDb.tmUser(username), Guid.NewGuid());
@@ -259,8 +259,8 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
     	
 		
     	public static Guid login_PwdInClearText(this TM_Xml_Database tmDb, string username, string password)
-    	{	
-		    tmDb.sleep(TM_Xml_Database.FORCED_MILLISEC_DELAY_ON_LOGIN_ACTION);  // to slow down brute force attacks
+    	{
+			tmDb.sleep(TM_Xml_Database.FORCED_MILLISEC_DELAY_ON_LOGIN_ACTION, false);  // to slow down brute force attacks
     		if(username.valid() && password.valid())
 			    if (TM_Xml_Database.TMUsersPasswordHashes[username] == username.createPasswordHash(password))
 				    return tmDb.registerUserSession(tmDb.tmUser(username), Guid.NewGuid());				
@@ -428,6 +428,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		
 		public static Guid registerUserSession(this TM_Xml_Database tmDb, TMUser tmUser, Guid userGuid)
 		{
+			"[Security Event] user logged in: {0}".info(tmUser.UserName);
 			TM_Xml_Database.ActiveSessions.add(userGuid, tmUser);
 			return userGuid; 
 		}

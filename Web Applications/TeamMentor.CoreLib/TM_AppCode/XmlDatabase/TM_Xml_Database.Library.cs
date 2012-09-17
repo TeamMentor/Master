@@ -122,7 +122,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
             if (articleContent.inValid())
                 return "";
 
-            switch(article.Content.DataType.lower())
+            switch(article.Content.DataType.lower()) 
             {
                 case "raw":
                     return articleContent;
@@ -142,7 +142,19 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                 default:
                     return articleContent;
             }			
-		}				
+		}
+
+		[PrincipalPermission(SecurityAction.Demand, Role = "ReadArticles")]
+		public List<string> getGuidanceItemsHtml(List<Guid> guidanceItemsIds)
+		{
+			var data = new List<string>();
+			if (guidanceItemsIds.notNull())
+				foreach (var guidanceItemId in guidanceItemsIds)
+				{
+					data.add(getGuidanceItemHtml(guidanceItemId));
+				}
+			return data;
+		}
 	}
 
 

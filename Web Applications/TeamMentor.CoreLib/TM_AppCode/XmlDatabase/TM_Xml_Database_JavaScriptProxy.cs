@@ -70,7 +70,8 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		public List<TeamMentor_Article> GetGuidanceItemsInFolder(Guid folderId)		{ return tmXmlDatabase.tmGuidanceItems_InFolder(folderId);}  			
 		public List<TeamMentor_Article> GetGuidanceItemsInView(Guid viewId)			{ return tmXmlDatabase.getGuidanceItemsInView(viewId); }  	
 		public List<TeamMentor_Article> GetGuidanceItemsInViews(List<Guid> viewIds)	{ return tmXmlDatabase.getGuidanceItemsInViews(viewIds); }  	
-		public string GetGuidanceItemHtml(Guid GuidanceItemId)						{ return tmXmlDatabase.getGuidanceItemHtml(GuidanceItemId);  }  	
+		public string		GetGuidanceItemHtml(Guid GuidanceItemId)				{ return tmXmlDatabase.getGuidanceItemHtml(GuidanceItemId);  }
+		public List<string> GetGuidanceItemsHtml(List<Guid> GuidanceItemsIds)		{ return tmXmlDatabase.getGuidanceItemsHtml(GuidanceItemsIds); }  	
 		public List<TeamMentor_Article> GetAllGuidanceItems()						{ return tmXmlDatabase.tmGuidanceItems(); }  	
 		public List<TeamMentor_Article> GetGuidanceItemsInLibrary(Guid libraryId)	{ return tmXmlDatabase.tmGuidanceItems(libraryId);}  	
 		

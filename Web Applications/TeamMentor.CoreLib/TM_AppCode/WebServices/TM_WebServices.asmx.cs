@@ -53,8 +53,8 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			//UnityInjection.resolve(this);
 			javascriptProxy = new TM_Xml_Database_JavaScriptProxy(); 
 			tmAuthentication = new TM_Authentication(this);
-			tmAuthentication.mapUserRoles();					
-			
+			tmAuthentication.mapUserRoles();
+			UtilMethods.enableGZipCompression_forAjaxRequests();
 			//Disable Activity Tracking
 			//activityTracking = new ActivityTracking();
 			//activityTracking.LogRequest();
@@ -108,9 +108,10 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		[WebMethod(EnableSession = true)]	public List<Folder_V3> GetFolders(Guid libraryId)							{	return javascriptProxy.GetFolders(libraryId);	}
 		[WebMethod(EnableSession = true)]	public List<TeamMentor_Article> GetGuidanceItemsInFolder(Guid folderId)		{	return javascriptProxy.GetGuidanceItemsInFolder(folderId);	}		
 		[WebMethod(EnableSession = true)]	public List<TeamMentor_Article> GetGuidanceItemsInView(Guid viewId)			{	return javascriptProxy.GetGuidanceItemsInView(viewId);	}		
-		[WebMethod(EnableSession = true)]	public List<TeamMentor_Article> GetGuidanceItemsInViews(List<Guid> viewIds)	{	return javascriptProxy.GetGuidanceItemsInViews(viewIds);	}
-		//[WebMethod(EnableSession = true)]	public List<TM_GuidanceItem> GetAllGuidanceItemsInViews()					{ 	return javascriptProxy.getAllGuidanceItemsInViews();}
+		[WebMethod(EnableSession = true)]	public List<TeamMentor_Article> GetGuidanceItemsInViews(List<Guid> viewIds)	{	return javascriptProxy.GetGuidanceItemsInViews(viewIds);	}		
 		[WebMethod(EnableSession = true)]	public string GetGuidanceItemHtml(Guid GuidanceItemId)						{	return javascriptProxy.GetGuidanceItemHtml(GuidanceItemId);	}				
+		[WebMethod(EnableSession = true)]	public List<String> GetGuidanceItemsHtml(List<Guid> GuidanceItemsIds)		{	return javascriptProxy.GetGuidanceItemsHtml(GuidanceItemsIds);	}
+		
 		//both methods below will generate a JSON object with more than 1Mb (with the default SI library)
 		[WebMethod(EnableSession = true)]	public List<TeamMentor_Article> GetAllGuidanceItems()						{	return javascriptProxy.GetAllGuidanceItems();	}
 		[WebMethod(EnableSession = true)]	public List<TeamMentor_Article> GetGuidanceItemsInLibrary(Guid libraryId)	{	return javascriptProxy.GetGuidanceItemsInLibrary(libraryId); }

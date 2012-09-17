@@ -52,7 +52,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 
 		public static TM_Xml_Database setGuidanceExplorerObjects(this TM_Xml_Database tmDatabase)
 		{			
-			"in setGuidanceExplorerObjects".info();
+			//"in setGuidanceExplorerObjects".info();
 			var pathXmlLibraries = TM_Xml_Database.Path_XmlLibraries;
 			TM_Xml_Database.GuidanceExplorers_XmlFormat = pathXmlLibraries.getGuidanceExplorerObjects();				
 			return tmDatabase;
@@ -122,7 +122,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		
 		public static Dictionary<Guid, guidanceExplorer> getGuidanceExplorerObjects(this string pathXmlLibraries)
 		{			
-			"in getGuidanceExplorerObjects".info();
+			//"in getGuidanceExplorerObjects".info();
 			var guidanceExplorers = new Dictionary<Guid,guidanceExplorer>();
 			
 			//try first to load the library by finding it on the library root (original mode)
@@ -199,7 +199,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			if (enabled && Save_GuidanceItemsCache.isNull())
 				Save_GuidanceItemsCache = O2Thread.mtaThread(
 					()=>{
-							tmDatabase.sleep(1000);
+							tmDatabase.sleep(1000,false);
 							tmDatabase.save_GuidanceItemsCache();
 							Save_GuidanceItemsCache = null;
 						});

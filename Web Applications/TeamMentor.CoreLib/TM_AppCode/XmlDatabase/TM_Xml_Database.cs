@@ -85,7 +85,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			try
 			{							
 				this.xmlDB_Load_GuidanceItems();
-				this.createDefaultAdminUser();	// make sure this user exists		
+				this.createDefaultAdminUser();	// make sure this user exists						
 			}
 			catch(Exception ex)
 			{
