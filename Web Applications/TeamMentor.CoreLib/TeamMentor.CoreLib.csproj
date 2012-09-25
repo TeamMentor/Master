@@ -34,8 +34,9 @@
     <Reference Include="HtmlSanitizationLibrary">
       <HintPath>..\packages\AntiXSS.4.2.1\lib\net40\HtmlSanitizationLibrary.dll</HintPath>
     </Reference>
-    <Reference Include="O2_FluentSharp_CoreLib">
-      <HintPath>..\packages\FluentSharp.CoreLib.4.0.0.1\lib\net40\O2_FluentSharp_CoreLib.dll</HintPath>
+    <Reference Include="O2_FluentSharp_CoreLib, Version=4.3.1.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\FluentSharp.CoreLib.4.3.1.0\lib\net35\O2_FluentSharp_CoreLib.dll</HintPath>
     </Reference>
     <Reference Include="O2_Misc_Microsoft_MPL_Libs, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="System" />
@@ -139,11 +140,7 @@
     <Content Include="_ExternalDlls\AntiXssLibrary.dll" />
     <Content Include="_ExternalDlls\HtmlSanitizationLibrary.dll" />
     <Content Include="_ExternalDlls\ICSharpCode.SharpZipLib.dll" />
-    <Content Include="_ExternalDlls\O2_FluentSharp_CoreLib.dll" />
     <Content Include="_ExternalDlls\O2_Misc_Microsoft_MPL_Libs.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

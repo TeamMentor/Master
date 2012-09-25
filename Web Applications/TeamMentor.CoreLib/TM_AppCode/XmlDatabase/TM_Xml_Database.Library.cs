@@ -460,11 +460,17 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		
 		[PrincipalPermission(SecurityAction.Demand, Role = "ReadArticles")] 
 		//[PrincipalPermission(SecurityAction.Demand, Role = "ReadArticlesTitles")] 	
-		public static TeamMentor_Article tmGuidanceItem(this TM_Xml_Database tmDatabase, Guid guidanceItemId)
-		{			
-			return (from guidanceItem in tmDatabase.tmGuidanceItems()
+		public static TeamMentor_Article tmGuidanceItem(this TM_Xml_Database tmDatabase, Guid id)
+		{
+			if (TM_Xml_Database.Cached_GuidanceItems.hasKey(id))
+			{
+				var article = TM_Xml_Database.Cached_GuidanceItems[id];
+				return article;
+			}
+			return null;
+			/*return (from guidanceItem in tmDatabase.tmGuidanceItems()
 					where guidanceItem.Metadata.Id == guidanceItemId
-					select guidanceItem).first();				
+					select guidanceItem).first();				*/
 		}
 		
 		public static List<TeamMentor_Article> tmGuidanceItems(this TM_Xml_Database tmDatabase, TM_Library tmLibrary)

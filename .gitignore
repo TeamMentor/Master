@@ -1,7 +1,8 @@
 #TM specific
 /Library_Data/XmlDatabase
 o2.config
-
+TmUsers.xml
+webEditorSecretData.config
 # Visual Studio files # 
 *.pdb
 release

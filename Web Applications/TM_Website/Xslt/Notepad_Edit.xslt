@@ -11,14 +11,18 @@
 		    <link rel="stylesheet" href="/Css/NotepadEditor.css" type="text/css"></link>
         <script src="/Javascript/jQuery/jquery-1.7.1.min.js"                  type="text/javascript"></script>
         <script src="/Javascript/jQuery/jquery.textarea.js"                   type="text/javascript"></script>
-
+				
+				
         <script src="/Javascript/TM/GlobalVariables.js"                       type="text/javascript"></script>
         <script src="/Javascript/TM/Settings.js"                              type="text/javascript"></script>
         <script src="/Javascript/TM/WebServices.js"                           type="text/javascript"></script>
         <script src="/Javascript/TM/Events.js"                                type="text/javascript"></script>
         <script src="/Javascript/TM.Gui/TM.Gui.CurrentUser.js"                type="text/javascript"></script>
         <script src="/Javascript/jQuery/jquery.validate.min.js"               type="text/javascript"></script>
-        <script src="/Javascript/jO2/jO2_jQuery_ExtensionMethods.js"          type="text/javascript"></script>        
+        <script src="/Javascript/jO2/jO2_jQuery_ExtensionMethods.js"          type="text/javascript"></script>
+
+				<script src="/Javascript/json/json2.js"																type="text/javascript"></script>
+				<script src="/Javascript/IE_Fixes.js"																	type="text/javascript"></script>
       </head>
       <body>
 

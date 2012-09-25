@@ -203,7 +203,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		{			
 			var newGuid = Guid.NewGuid();
 			var newPath = fullPath.replace(original_Guid.str(), newGuid.str());
-			Files.MoveFile(fullPath, newPath);
+			Files.moveFile(fullPath, newPath);
 			"[xmlDB_GuidanceItem] resolved GuidanceItem ID conflict for  Id '{0}' was already mapped. \nExisting path: \t{1} \nNew path:  \t{2}".error(original_Guid, fullPath , newPath);
 			var guidanceItemV3 = tmDatabase.xmlDB_GuidanceItem(newGuid, newPath);			
 			return guidanceItemV3;

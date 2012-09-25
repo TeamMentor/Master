@@ -27,13 +27,16 @@ namespace O2.DotNetWrappers.ExtensionMethods
 		{
 			try
 			{	
-				htmlDocument.OptionCheckSyntax = true;
+				//htmlDocument.OptionCheckSyntax = true;
 				htmlDocument.OptionFixNestedTags = true;
 				htmlDocument.OptionAutoCloseOnEnd = true;
-				htmlDocument.OptionOutputAsXml = true;
+				htmlDocument.OptionOutputAsXml = true;				
 				//htmlDocument.OptionDefaultStreamEncoding = Encoding.Default;
-				var formatedCode = htmlDocument.DocumentNode.OuterHtml.xmlFormat().xRoot().innerXml().trim();
-				return formatedCode;			
+
+				var formatedCode = htmlDocument.DocumentNode
+											   .OuterHtml.xmlFormat()
+											   .xRoot().innerXml().trim();
+				return formatedCode.fixCRLF();			
 			}
         	catch(Exception ex)
         	{
