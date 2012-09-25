@@ -252,7 +252,12 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		{
 			var libraryPath = tmDatabase.xmlDB_LibraryPath(caption);
 			if (libraryPath.notNull())
-				return libraryPath.directoryName().pathCombine("{0}".format(caption));
+			{
+				var parentFolder = libraryPath.parentFolder();							//check if the xml file is in a folder with the same name as the library name
+				if (parentFolder.folderName() == caption)			
+					return parentFolder;
+				return libraryPath.directoryName().pathCombine("{0}".format(caption));  // if it is not , return the parent folder
+			}
 			return null;
 		}
 		
@@ -292,7 +297,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			return null;
 		}
 		
-		public static bool xmlDB_Libraries_ImportFromZip(this TM_Xml_Database tmDatabase, string zipFileToImport)
+		public static bool xmlDB_Libraries_ImportFromZip(this TM_Xml_Database tmDatabase, string zipFileToImport, string unzipPassword)
 		{
             try
             {
@@ -314,9 +319,12 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 
 
 
-                    if (libraryFilePath.fileExists().isFalse() && guidanceItemsPath.dirExists().isFalse())
+					if (libraryFilePath.fileExists() && libraryFilePath.fileInfo().size()==0 ||
+						libraryFilePath.fileExists().isFalse() && guidanceItemsPath.dirExists().isFalse())
                     {
-                        new ICSharpCode.SharpZipLib.Zip.FastZip().ExtractZip(zipFileToImport, currentLibraryPath, "");
+						var fastZip = new ICSharpCode.SharpZipLib.Zip.FastZip();
+						fastZip.Password = unzipPassword ?? unzipPassword;
+						fastZip.ExtractZip(zipFileToImport, currentLibraryPath, "");
 
                         //zipFileToImport.unzip_File(currentLibraryPath); 				                        
                         return true;

@@ -19,6 +19,8 @@ using System.IO.Compression;
 using System.Threading;
 using O2.DotNetWrappers.DotNet;
 using System.Web.Script.Serialization;
+using SecurityInnovation.TeamMentor.Authentication.WebServices.AuthorizationRules;
+using System.Security.Permissions;
 //O2Ref:System.Web.Abstractions.dll
 //O2File:TmConfig.cs
 
@@ -116,7 +118,8 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 	{
 		//public static List<Thread> ExecutionThreads = new List<Thread>();		
 		public static int MAX_EXECUTION_TIME = 20000;
-
+		
+		[Admin(SecurityAction.Demand)]
 		public static string executeSnippet(string snippet)
 		{
 			"[REPL] executing snippet with size: {0}".info(snippet.size());

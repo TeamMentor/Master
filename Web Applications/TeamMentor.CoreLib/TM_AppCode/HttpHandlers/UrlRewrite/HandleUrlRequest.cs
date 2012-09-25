@@ -37,11 +37,11 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
         }
 
         private bool redirectedToSLL()
-        {
-            //to add to TM Master
+        {			            
             if (TMConfig.Current.SSL_RedirectHttpToHttps && !context.Request.IsLocal && !context.Request.IsSecureConnection)
             {
-                string redirectUrl = context.Request.Url.ToString().Replace("http:", "https:");
+                string redirectUrl = context.Request.Url.ToString().Replace("http://", "https://");
+				"Redirecting current request to https: {0}".info(context.Request.Url);
                 context.Response.Redirect(redirectUrl);
                 return true;
             }
@@ -169,7 +169,10 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                     case "debug":
                         return redirectTo_DebugPage();
                     case "library":
-                        return redirectTo_SetLibrary(data);
+                        return redirectTo_SetLibrary(data);					
+					case "library_download":
+					case "download_library":
+						return redirectTo_DownloadLibrary(data);
                     case "sso":
                         return handleAction_SSO(data);
 
@@ -403,6 +406,9 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
             return true; 
 		}
 
+		
+
+
         public bool handle_LoginOK()
         {
             var loginReferer = context.Request.QueryString["LoginReferer"];
@@ -430,6 +436,13 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
             tmWebServices.Logout();
 		    context.Response.Redirect("/");                        	
             return false; 
+		}
+
+		public bool redirectTo_DownloadLibrary(string data)
+		{
+			var uploadToken = new TM_WebServices().GetUploadToken();
+			context.Response.Redirect("/Aspx_Pages/Library_Download.ashx?library={0}&uploadToken={1}".format(data, uploadToken));
+			return false;
 		}
 
         public bool redirectTo_Wsdl()

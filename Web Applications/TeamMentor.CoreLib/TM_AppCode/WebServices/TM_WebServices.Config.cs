@@ -43,9 +43,9 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 																																		guiObjectsCacheOK = false; 
 																																		return  TM_Xml_Database.Current.reloadData(null); 
 																																	}
-		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public bool XmlDatabase_ImportLibrary_fromZipFile(string pathToZipFile)
+		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public bool XmlDatabase_ImportLibrary_fromZipFile(string pathToZipFile, string unzipPassword)
 																																	{
-																																		if ( TM_Xml_Database.Current.xmlDB_Libraries_ImportFromZip(pathToZipFile))
+																																		if (TM_Xml_Database.Current.xmlDB_Libraries_ImportFromZip(pathToZipFile, unzipPassword))
 																																		{
 																																			this.XmlDatabase_ReloadData();
 																																			return true;

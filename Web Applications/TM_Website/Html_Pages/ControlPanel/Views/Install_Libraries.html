@@ -61,9 +61,10 @@
 			, installLibrary			: function()
 					{
 						var libraryToInstall = $("#fileOrUrl").val();
+						var unzipPassword = $("#unzipPassword").val();
 						$("#installMessage").html("... installing library: " + libraryToInstall);
 						TM.WebServices.Helper.invoke_TM_WebService('XmlDatabase_ImportLibrary_fromZipFile', 
-																   { pathToZipFile : libraryToInstall } , function(result) 
+																   { pathToZipFile : libraryToInstall , unzipPassword : unzipPassword} , function(result) 
 							{
 								if(result)									
 									$("#installMessage").html($("<p>").append(" > Library installed was successful").css('color','green'));
@@ -128,10 +129,9 @@
     <br />
     <form id="installForm">
     <p>
-        <b>
-            <label for="fileOrUrl">
-                File (server-side) or Url:</label></b>
-        <input type="text" id="fileOrUrl">
+		
+        <b><label for="fileOrUrl">File (server-side) or Url: </label></b><input type="text" id="fileOrUrl"><br /><br />
+        <b><label for="fileOrUrl">Unzip Password: </label></b><input type="text" id="unzipPassword"><br /><br />
         <input type="button" id="install" value="Install" />
         <br />
         <br />
