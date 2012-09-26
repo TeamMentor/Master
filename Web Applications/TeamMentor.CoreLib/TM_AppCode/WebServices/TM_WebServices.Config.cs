@@ -153,5 +153,32 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 																						return REPL.executeSnippet(snippet);
                                                                                     }
 		
+		//Virtual Articles
+
+		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]        public List<VirtualArticleAction>	VirtualArticle_GetCurrentMappings()        
+                                                                                    {
+																						return TM_Xml_Database.Current.getVirtualArticles().Values.toList();
+                                                                                    }
+		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]        public VirtualArticleAction			VirtualArticle_Add_Mapping_VirtualId( Guid id, Guid virtualId)
+                                                                                    {
+																						return TM_Xml_Database.Current.add_Mapping_VirtualId(id, virtualId);																						
+                                                                                    }
+		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]        public VirtualArticleAction			VirtualArticle_Add_Mapping_Redirect (Guid id, Uri redirectUri)
+                                                                                    {
+																						return TM_Xml_Database.Current.add_Mapping_Redirect(id, redirectUri);																						
+                                                                                    }
+		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]        public VirtualArticleAction			VirtualArticle_Add_Mapping_ExternalArticle(Guid id, string tmServer, Guid externalId)
+                                                                                    {
+																						return TM_Xml_Database.Current.add_Mapping_ExternalArticle(id, tmServer, externalId);																						
+                                                                                    }			
+		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]        public VirtualArticleAction			VirtualArticle_Add_Mapping_ExternalService(Guid id, string service, string data)
+                                                                                    {
+																						return TM_Xml_Database.Current.add_Mapping_ExternalService(id, service, data);																						
+                                                                                    }			
+		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]        public bool							VirtualArticle_Remove_Mapping( Guid id)
+                                                                                    {
+																						return TM_Xml_Database.Current.remove_Mapping_VirtualId(id);																						
+                                                                                    }
+		
     }	
 }

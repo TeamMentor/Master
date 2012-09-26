@@ -106,7 +106,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
             return false;
         }
 
-        
+        //All mappings are here
 		public bool handleRequest(string action , string data)
 		{
             try
@@ -137,7 +137,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                         return handleAction_Xsl(data, "Notepad_Edit.xslt");                        
                     case "viewer":
                     case "article":
-                        return transfer_ArticleViewer();                    
+						return handle_ArticleViewRequest(data);                                     
                     case "edit":
                     case "editor":
                         return transfer_ArticleEditor(data);                    
@@ -175,7 +175,12 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 						return redirectTo_DownloadLibrary(data);
                     case "sso":
                         return handleAction_SSO(data);
-
+					case "virtualarticles":
+						return showVirtualArticles();
+					case "addvirtualarticle":
+						return addVirtualArticleMapping(data);
+					case "removevirtualarticle":
+						return removeVirtualArticleMapping(data);
                     default:                        
                         return false;                                          
                 }                                           
@@ -200,30 +205,103 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
             return redirectTo_HomePage();
         }
 
-        private bool handleAction_JsonP(string data)
-        {            
-            var guid = tmWebServices.getGuidForMapping(data);
-            if (guid != Guid.Empty)
-            {
-                var article = tmWebServices.GetGuidanceItemById(guid.str());
-
-                var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
-                var serializedData = serializer.Serialize(article);
-                var callbackRaw = context.Request["callback"];
-                if (callbackRaw.valid())
-                {
-                    var callbackFunction = Encoder.JavaScriptEncode(callbackRaw, false);
-                    context.Response.Write("{0}({1})".format(callbackFunction, serializedData));
-                }
-                else
-                    context.Response.Write(serializedData);
-                return true;
-            }
-            return false;
-        }
-
-
+		//Virtual Articles
+		public bool showVirtualArticles()
+		{
+			var virtualArticles = tmWebServices.VirtualArticle_GetCurrentMappings();
+			var xmlContent = virtualArticles.serialize(false);
+			context.Response.ContentType = "text/xml";
+			context.Response.Write(xmlContent);
+			return true;
+		}
+		public bool addVirtualArticleMapping(string data)
+		{
+			tmWebServices.VirtualArticle_GetCurrentMappings();  // will trigger an authorization check if needed
+			try
+			{
+				var mappings = data.split(",");
+				if (mappings.size() == 2)				// VIRTUAL ID
+				{					
+					var guid1 = mappings[0].guid();   //will throw exception if guid not valid
+					var guid2 = mappings[1].guid();
+					if (guid1 != Guid.Empty && guid2 != Guid.Empty)
+					{
+						var virtualMapping = tmWebServices.VirtualArticle_Add_Mapping_VirtualId(guid1, guid2);
+						context.Response.ContentType = "text/xml";
+						var xml = virtualMapping.serialize(false);
+						context.Response.Write(xml);
+						return true;
+					}
+				}
+				else if (mappings.size() == 3)
+				{
+					var guid1 = mappings[0].guid();
+					if (mappings[2].isGuid())				// EXTERNAL ARTICLE
+					{
+						var tmServer = mappings[1].uri();
+						var guid2 = mappings[2].guid();
+						if (guid1 != Guid.Empty && guid2 != Guid.Empty && tmServer.notNull())
+						{
+							var virtualMapping = tmWebServices.VirtualArticle_Add_Mapping_ExternalArticle(guid1, tmServer.str(), guid2);
+							context.Response.ContentType = "text/xml";
+							var xml = virtualMapping.serialize(false);
+							context.Response.Write(xml);
+							return true;
+						}
+					}
+					else								 // EXTERNAL SERVICE
+					{
+						var service = mappings[1];
+						var serviceData = mappings[2];
+						var virtualMapping = tmWebServices.VirtualArticle_Add_Mapping_ExternalService(guid1, service, serviceData);
+						context.Response.ContentType = "text/xml";
+						var xml = virtualMapping.serialize(false);
+						context.Response.Write(xml);
+						return true;
+					}					
+				}
+			}
+			catch (Exception ex)
+			{
+				ex.log();
+			}			
+			return true;
+		}
+		public bool removeVirtualArticleMapping(string data)
+		{
+			if (data.isGuid())
+			{
+				if (tmWebServices.VirtualArticle_Remove_Mapping(data.guid()))
+				{
+					context.Response.Write("Mapping removed");
+					return true;
+				}
+			}
+			context.Response.Write("Provided mapping data could not be parsed");
+			return true;
+		}
         //handlers
+		private bool handleAction_JsonP(string data)
+		{
+			var guid = tmWebServices.getGuidForMapping(data);
+			if (guid != Guid.Empty)
+			{
+				var article = tmWebServices.GetGuidanceItemById(guid.str());
+
+				var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+				var serializedData = serializer.Serialize(article);
+				var callbackRaw = context.Request["callback"];
+				if (callbackRaw.valid())
+				{
+					var callbackFunction = Encoder.JavaScriptEncode(callbackRaw, false);
+					context.Response.Write("{0}({1})".format(callbackFunction, serializedData));
+				}
+				else
+					context.Response.Write(serializedData);
+				return true;
+			}
+			return false;
+		}
         private bool handleAction_Image(string data)
         {            
             
@@ -334,6 +412,26 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                 transfer_ArticleViewer();
             return true;
         }
+
+		private bool handle_ArticleViewRequest(string data)
+		{			
+			if ( data.isGuid())
+			{				
+				var guid = data.guid();
+				if (tmWebServices.GetGuidanceItemById(guid.str()).isNull())
+				{
+					var redirectTarget = TM_Xml_Database.Current.getGuidRedirect(guid);
+					if (redirectTarget.valid())
+					{
+						context.Response.Redirect(redirectTarget); ;
+						return false;
+					}
+				}
+			}
+			return transfer_ArticleViewer();       
+		}
+
+		
         private bool handleAction_Content(string data)
         { 
             var guid = tmWebServices.getGuidForMapping(data);

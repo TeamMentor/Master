@@ -40,41 +40,39 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		
 		//users
 		public static List<TMUser> TMUsers { get; set; }
-		public static O2.DotNetWrappers.DotNet.Items TMUsersPasswordHashes { get; set; }
-		public static Dictionary<Guid, TMUser> ActiveSessions { get; set; }
-		
-		public static Dictionary<Guid, guidanceExplorer> GuidanceExplorers_XmlFormat { get; set; }	
-		public static Dictionary<Guid, string> GuidanceItems_FileMappings { get; set; }	
-		//public static Dictionary<Guid, GuidanceItem_V3> Cached_GuidanceItems { get; set; }	
-        public static Dictionary<Guid, TeamMentor_Article> Cached_GuidanceItems { get; set; }	        
+		public static O2.DotNetWrappers.DotNet.Items TMUsersPasswordHashes				{ get; set; }
+		public static Dictionary<Guid, TMUser>				ActiveSessions				{ get; set; }		
+		public static Dictionary<Guid, guidanceExplorer>	GuidanceExplorers_XmlFormat { get; set; }	
+		public static Dictionary<Guid, string>				GuidanceItems_FileMappings	{ get; set; }			
+        public static Dictionary<Guid, TeamMentor_Article>	Cached_GuidanceItems		{ get; set; }
+
+		public static Dictionary<Guid, VirtualArticleAction> VirtualArticles			{ get; set; }
         
 		
 		//public static Dictionary<Guid, List<GuidanceItem_V3>> GuidanceItems_InViews { get; set; }
-								
-		public static string 	Path_XmlDatabase 	{ get; set; }					
-		public static string 	Path_XmlLibraries 	{ get; set; }					
+									
+		public static string 	Path_XmlDatabase 		{ get; set; }					
+		public static string 	Path_XmlLibraries 		{ get; set; }					
 		//public string 		 	DatabasePath		{  get {	return TM_Xml_Database.XmlDatabasePath; } }
 		//public string 		 	LibrariesPath		{  get {	return TM_Xml_Database.XmlLibrariesPath; } }
-		public List<TM_Library> Libraries  			{  get { 	return this.tmLibraries(); } }
-		public List<Folder_V3> 	Folders  			{  get { 	return this.tmFolders(); } } 		
-		public List<View_V3> 	Views  				{  get { 	return this.tmViews(); } } 
-		public List<TeamMentor_Article> GuidanceItems  {  get { return this.tmGuidanceItems(); } } 
+		public List<TM_Library> Libraries  				{  get { 	return this.tmLibraries(); } }
+		public List<Folder_V3> 	Folders  				{  get { 	return this.tmFolders(); } } 		
+		public List<View_V3> 	Views  					{  get { 	return this.tmViews(); } } 
+		public List<TeamMentor_Article> GuidanceItems	{  get {	return this.tmGuidanceItems(); } } 
 		        
 		
 		//public static string defaultLibrariesPath = ;
 		 
 		static TM_Xml_Database()
 		{			
-			Cached_GuidanceItems = new Dictionary<Guid, TeamMentor_Article> ();            
-			GuidanceItems_FileMappings = new Dictionary<Guid,string>();
-			GuidanceExplorers_XmlFormat = new Dictionary<Guid, guidanceExplorer>();	
-			
-			TMUsers = new List<TMUser>();
-			TMUsersPasswordHashes = new O2.DotNetWrappers.DotNet.Items ();
-			ActiveSessions = new Dictionary<Guid, TMUser>();
-				
-			//setDataFromCurrentScript(@"..\..");
-            //setDataFromCurrentScript(@"..\TM_Library_Data");
+			Cached_GuidanceItems		= new Dictionary<Guid, TeamMentor_Article> ();            
+			GuidanceItems_FileMappings	= new Dictionary<Guid,string>();
+			GuidanceExplorers_XmlFormat = new Dictionary<Guid, guidanceExplorer>();			
+
+			TMUsers						= new List<TMUser>();
+			TMUsersPasswordHashes		= new O2.DotNetWrappers.DotNet.Items ();
+			ActiveSessions				= new Dictionary<Guid, TMUser>();
+							
             setDataFromCurrentScript(TMConfig.Current.TMLibraryDataVirtualPath);
             TM_Xml_Database.Current = new TM_Xml_Database();
 		} 
@@ -107,7 +105,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                 if (canWriteToPath(xmlDatabasePath).isFalse())
                     xmlDatabasePath = TMConfig.BaseFolder.pathCombine("App_Data"); // default to App_Data if we can't write to provided direct
                 TM_Xml_Database.Path_XmlDatabase = xmlDatabasePath.pathCombine("Library_Data//XmlDatabase");
-				TM_Xml_Database.setLibraryPath(TMConfig.Current.XmlLibrariesPath);
+				TM_Xml_Database.setLibraryPath_and_LoadDataIntoMemory(TMConfig.Current.XmlLibrariesPath);
 				"[TM_Xml_Database][setDataFromCurrentScript] TM_Xml_Database.Path_XmlDatabase: {0}".debug(TM_Xml_Database.Path_XmlDatabase);
 				"[TM_Xml_Database][setDataFromCurrentScript] TMConfig.Current.XmlLibrariesPath: {0}".debug(TMConfig.Current.XmlLibrariesPath);
 				TM_Xml_Database_Load_and_FileCache_Utils.populateGuidanceItemsFileMappings();	//only do this once			
@@ -162,7 +160,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			GuidanceItems.Clear();
 			
 			if(newLibraryPath.valid())
-				setLibraryPath(newLibraryPath);
+				setLibraryPath_and_LoadDataIntoMemory(newLibraryPath);
 			else
 				TM_Xml_Database.loadDataIntoMemory();			
 				

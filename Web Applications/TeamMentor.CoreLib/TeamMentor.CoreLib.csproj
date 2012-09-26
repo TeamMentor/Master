@@ -113,6 +113,7 @@
     <Compile Include="TM_AppCode\WebServices\TM_WebServices.GuiHelpers.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="TM_AppCode\XmlDatabase\TM_Xml_Database.Virtual_Articles.cs" />
     <Compile Include="TM_AppCode\XmlDatabase\TM_Xml_Database.Library.Files.cs" />
     <Compile Include="TM_AppCode\XmlDatabase\TM_Xml_Database.cs" />
     <Compile Include="TM_AppCode\XmlDatabase\TM_Xml_Database.Library.cs" />

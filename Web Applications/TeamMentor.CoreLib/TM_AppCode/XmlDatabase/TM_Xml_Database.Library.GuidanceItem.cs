@@ -540,8 +540,10 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
         }
         public static Guid xmlBD_resolveMappingToArticleGuid(this TM_Xml_Database tmDatabase, string mapping)
 		{
-            if (mapping.isGuid())
-                return mapping.guid();            
+			if (mapping.isGuid())
+			{
+				return tmDatabase.getVirtualGuid_if_MappingExists(mapping.guid());
+			}
 
             mapping = mapping.urlDecode().replaceAllWith(" ", new [] {"_", "+"})
                              .htmlEncode();

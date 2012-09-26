@@ -20,8 +20,8 @@ using urn.microsoft.guidanceexplorer.guidanceItem;
 namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 {	
 	public partial class TM_Xml_Database 
-	{	
-		public static bool setLibraryPath(string libraryPath)
+	{
+		public static bool setLibraryPath_and_LoadDataIntoMemory(string libraryPath)
 		{			
 			//"in setLibraryPath: {0}".info(libraryPath);
 			if (libraryPath.dirExists().isFalse())						
@@ -467,6 +467,10 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 				var article = TM_Xml_Database.Cached_GuidanceItems[id];
 				return article;
 			}
+			var externalArticle = tmDatabase.getExternalTeamMentorArticle_if_MappingExists(id);
+			if (externalArticle.notNull())
+				return externalArticle;
+
 			return null;
 			/*return (from guidanceItem in tmDatabase.tmGuidanceItems()
 					where guidanceItem.Metadata.Id == guidanceItemId
