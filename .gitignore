@@ -11,7 +11,7 @@ obj
 *.suo
 *.nupkg
 Web Applications/TM_Website/bin/*.xml
-/Web Applications/packages
+
 Web Applications/TeamMentor.CoreLib/bin/Debug/TeamMentor.CoreLib.dll
 _/Web Applications/TM_Library_Data
 /Library_Data/XmlDatabase/TM_Libraries
