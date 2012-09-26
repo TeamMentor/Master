@@ -436,8 +436,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			//TM_Xml_Database.mapGuidanceItemsViews();
 			return true;
 		}
-		
-		
+				
         [PrincipalPermission(SecurityAction.Demand, Role = "ReadArticles")]
 		public static string xmlDB_guidanceItemXml(this TM_Xml_Database tmDatabase, Guid guidanceItemId)
 		{
@@ -452,7 +451,6 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                 return TM_Xml_Database.GuidanceItems_FileMappings[guidanceItemId];            
             return null;
         }
-
 
         public static Guid xmlBD_resolveDirectMapping(this TM_Xml_Database tmDatabase, string mapping)
         {
@@ -531,7 +529,6 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
             }
             return Guid.Empty;
         }
-
         public static bool titleMatch(TeamMentor_Article article, string title1, string title2)
         {
             var match = (article.Metadata.Title.notNull() && (article.Metadata.Title.lower() == title1) ||
@@ -541,7 +538,6 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
             }
             return match;
         }
-
         public static Guid xmlBD_resolveMappingToArticleGuid(this TM_Xml_Database tmDatabase, string mapping)
 		{
             if (mapping.isGuid())

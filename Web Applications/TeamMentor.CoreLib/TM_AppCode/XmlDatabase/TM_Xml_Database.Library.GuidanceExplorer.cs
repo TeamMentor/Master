@@ -313,25 +313,73 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                 else
                 {
                     var currentLibraryPath = TM_Xml_Database.Path_XmlLibraries;
-                    var libraryName = Path.GetFileNameWithoutExtension(zipFileToImport);
-                    var libraryFilePath = tmDatabase.xmlDB_LibraryPath(libraryName);
-                    var guidanceItemsPath = tmDatabase.xmlDB_LibraryPath_GuidanceItems(libraryName);
+					// handle the zips we get from GitHub
 
+					var tempDir = "_unzip".tempDir();
+					var fastZip = new ICSharpCode.SharpZipLib.Zip.FastZip();
+					fastZip.Password = unzipPassword ?? unzipPassword;
+					fastZip.ExtractZip(zipFileToImport, tempDir, "");
 
+					var gitZipFolderName = tempDir.folders().first().folderName();				// the first folder should be the one created by gitHub's zip
+					var xmlFile_location1 = tempDir.pathCombine(gitZipFolderName + ".xml");
+					var xmlFile_location2 = tempDir.pathCombine(gitZipFolderName).pathCombine(gitZipFolderName + ".xml");
+					if (xmlFile_location1.fileExists() || xmlFile_location2.fileExists())		// if these exists here, just copy the unziped files directly
+					{ 
+						Files.copyFolder(tempDir,currentLibraryPath,true,true,".git");
+						if (xmlFile_location1.fileExists())
+							Files.copy(xmlFile_location1, currentLibraryPath.pathCombine(gitZipFolderName));
+						return true;
+					}
+					//if (zipFileToImport.extension() == ".master")
+					else
+					{
+						
+						var gitZipDir = tempDir.pathCombine(gitZipFolderName);
+						foreach (var libraryFolder in gitZipDir.folders())
+						{
+							var libraryName = libraryFolder.folderName();
+							var targetFolder = currentLibraryPath.pathCombine(libraryName);
+							
+							//default behaviour is to override the existing libraries
+							/*if (targetFolder.dirExists())
+							{
+								"[xmlDB_Libraries_ImportFromZip] [from Git zip] could not import library with name {0} since there was already one with that name".error(libraryFolder.folderName());
+								return false;
+							}*/
+							Files.copyFolder(libraryFolder, currentLibraryPath);
 
-					if (libraryFilePath.fileExists() && libraryFilePath.fileInfo().size()==0 ||
-						libraryFilePath.fileExists().isFalse() && guidanceItemsPath.dirExists().isFalse())
-                    {
-						var fastZip = new ICSharpCode.SharpZipLib.Zip.FastZip();
-						fastZip.Password = unzipPassword ?? unzipPassword;
-						fastZip.ExtractZip(zipFileToImport, currentLibraryPath, "");
+							//handle the case where the xml file is located outside the library folder
+							var libraryXmlFile = gitZipDir.pathCombine("{0}.xml".format(libraryName));
+							if (libraryXmlFile.fileExists())
+								Files.copy(libraryXmlFile, targetFolder);			// put it in the Library folder which is where it really should be
 
-                        //zipFileToImport.unzip_File(currentLibraryPath); 				                        
-                        return true;
-                    }
-                    else
-                        "[xmlDB_Libraries_ImportFromZip] could not import library with name {0} since there was already one with that name".error(libraryName);
-                }
+						}
+						return true;
+					}
+					/*else
+					{
+						//if it is a normal zip, the expectation is that the zip is the library name
+						var libraryName = Path.GetFileNameWithoutExtension(zipFileToImport);
+						var libraryFilePath = tmDatabase.xmlDB_LibraryPath(libraryName);
+						var guidanceItemsPath = tmDatabase.xmlDB_LibraryPath_GuidanceItems(libraryName);
+
+						//default behaviour is to override the existing libraries
+
+						//if (libraryFilePath.fileExists() && libraryFilePath.fileInfo().size() == 0 ||
+						//	libraryFilePath.fileExists().isFalse() && guidanceItemsPath.dirExists().isFalse())
+						//{
+							var fastZip = new ICSharpCode.SharpZipLib.Zip.FastZip();
+							fastZip.Password = unzipPassword ?? unzipPassword;
+							fastZip.ExtractZip(zipFileToImport, currentLibraryPath, "");
+
+							//zipFileToImport.unzip_File(currentLibraryPath); 				                        
+							return true;
+						//}
+						//else
+						//	"[xmlDB_Libraries_ImportFromZip] could not import library with name {0} since there was already one with that name".error(libraryName);
+					 
+					} */
+				}
             }
             catch (Exception ex)
             { 

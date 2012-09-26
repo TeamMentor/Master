@@ -12,6 +12,7 @@
 						var that = this;
 						this.applyCss();
 						this.populateLibrariesZipFolder();
+						this.setLibrariesToInstallLinks();
 						this.populateListOfLibraries();
 						this.setUpLibraryUploadForm();
 						TM.Events.onFileUploaded.remove();
@@ -22,7 +23,20 @@
 			, 	setUpLibraryUploadForm	: function()
 				{
 
-				}				 
+				}
+			,	setLibrariesToInstallLinks : function()				 
+				{
+					var addLibraryLink = function(linkText, linkUrl)
+						{
+							$("#LibrariesToInstall").add_Link(linkText).click(function()  {$("#fileOrUrl").val(linkUrl);	});
+						}
+
+					addLibraryLink("OWASP",'https://github.com/TeamMentor/OWASP_Library/zipball/master');
+					addLibraryLink("TM Documentation",'http://cloud.github.com/downloads/TeamMentor/TeamMentor-Documentation/TM%20Documentation.zip');
+					addLibraryLink("Java (needs unzip pwd)",'http://cloud.github.com/downloads/TeamMentor/TeamMentor-Documentation/Java%20-%20needs%20pwd.zip');
+					addLibraryLink(".Net 4.0 (needs unzip pwd)",'http://cloud.github.com/downloads/TeamMentor/TeamMentor-Documentation/.NET%204.0%20-%20needs%20pwd.zip');
+					$("#LibrariesToInstall a").css('padding',5)
+				}
 
 			,	populateLibrariesZipFolder : function()
 					{
@@ -102,18 +116,20 @@
 	$(function() 
 		{ 
 			TM.ControlPanel.InstallLibraries.buildGui() 
-			$("#fileOrUrl").val('https://github.com/downloads/TeamMentor/OWASP_Library/OWASP.zip');	
+			//$("#fileOrUrl").val('https://github.com/downloads/TeamMentor/OWASP_Library/OWASP.zip');	
 		});
 					
 </script>
 
 <div>
     <br />
-    <b>Current Libraries Zip Folder(server side):</b> <span id="librariesFolder"></span>
-    <br />
-    <br />
+
     <h3>
-        Available Libraries Zip files (click to install)</h3>
+        Library Zip files uploaded to this server (click to install)</h3>
+
+    <br />
+	<b>Current Libraries Zip Folder(server side):</b> <span id="librariesFolder"></span>
+	<br />
     <br />
     <p id="AvailableLibsText">
         Note that instalation from Zip will override existing libraries with the same name.
@@ -124,10 +140,15 @@
         </div>
     </ul>
     <br />
-    <h3>
+    <h3>	
         Install Library from File or Url</h3>
-    <br />
+    
     <form id="installForm">
+	<br />
+	<p>	
+		URLs for Libraries to install: <span id="LibrariesToInstall"></span>
+	</p>
+	<br />
     <p>
 		
         <b><label for="fileOrUrl">File (server-side) or Url: </label></b><input type="text" id="fileOrUrl"><br /><br />
