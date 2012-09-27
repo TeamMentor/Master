@@ -80,7 +80,7 @@
                                 <input 	type="checkbox" 								
                                         onclick='setPivotPanelFilter("{$T.item.text}", "{$T.title}", "{$T.column}", this.checked , false);'/>
                             {#/if}  
-                            <label title='Any'>{$T.item.text}</label>
+                            <label title='{$T.item.text}'>{$T.item.text}</label>
                         </div>		
                     {#/if} 
                 {#/for}					
@@ -95,7 +95,7 @@
                                 <input 	type="checkbox" 								
                                         onclick='setPivotPanelFilter("{$T.item.text}", "{$T.title}", "{$T.column}", this.checked);' disabled/>
                             {#/if}  
-                            <label 	for='Any' title='Any'>{$T.item.text}</label>
+                            <label 	for='{$T.item.text}' title='{$T.item.text}'>{$T.item.text}</label>
                         </div>
                     {#/if}  
                 {#/for}		

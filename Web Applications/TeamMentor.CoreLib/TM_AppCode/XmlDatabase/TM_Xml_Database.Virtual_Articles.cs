@@ -97,7 +97,6 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			}
 			return false;
 		}
-
 		public static List<VirtualArticleAction> loadVirtualArticles(this TM_Xml_Database tmXmlDatabase)
 		{
 			var virtualArticlesFile = tmXmlDatabase.getVirtualArticlesFile();
@@ -120,13 +119,6 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			var virtualArticles = tmXmlDatabase.loadVirtualArticles();
 			foreach (var virtualArticle in virtualArticles)
 				TM_Xml_Database.VirtualArticles.add(virtualArticle.Id, virtualArticle);
-			/*
-			tmXmlDatabase.add_Mapping_VirtualId("c782a38d-dabc-4c67-a6cc-81a7fe305785".guid(), "31217d5a-1ad3-44a0-87c0-e09b9e004caa".guid());
-			//.add_Mapping_VirtualId		("4f5039ae-54d4-4511-aad2-27920aa5a2c3".guid(), "31217d5a-1ad3-44a0-87c0-e09b9e004caa".guid())
-			tmXmlDatabase.add_Mapping_ExternalArticle("4f5039ae-54d4-4511-aad2-27920aa5a2c3".guid(), "teammentor32.apphb.com", "4f5039ae-54d4-4511-aad2-27920aa5a2c3".guid());
-			tmXmlDatabase.add_Mapping_Redirect("4f5039ae-54d4-4511-aad2-27920aa5a211".guid(), "http://www.google.com".uri());
-			tmXmlDatabase.add_Mapping_Redirect("4f5039ae-54d4-4511-aad2-27920aa5a222".guid(), "http://teammentor32.apphb.com/article/4f5039ae-54d4-4511-aad2-27920aa5a2c3".uri())
-				*/			;
 			return tmXmlDatabase;
 		}
 		public static Dictionary<Guid, VirtualArticleAction> getVirtualArticles(this TM_Xml_Database tmXmlDatabase)
@@ -170,7 +162,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 							}
 						case "ExternalService":
 							{
-								return virtualArticle.createArticleFromExternalServiceData();
+								return virtualArticle.createArticle_from_ExternalServiceData();
 							}
 					}
 					
@@ -183,54 +175,51 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			return null;
 		}
 
-		public static TeamMentor_Article createArticleFromExternalServiceData(this VirtualArticleAction virtualArticle)
+		public static TeamMentor_Article createArticle_from_ExternalServiceData(this VirtualArticleAction virtualArticle)
+		{
+			if (virtualArticle.Service.valid() && virtualArticle.Service_Data.valid())
+				return virtualArticle.Service.createArticle_from_ExternalServiceData(virtualArticle.Service_Data);
+			return null;
+		}
+		public static TeamMentor_Article createArticle_from_ExternalServiceData(this string service, string serviceData)
 		{
 			try
 			{
+				Func<string, string, TeamMentor_Article> createArticleFromUrl = 
+					(title, url) =>	{
+										var externalArticle = new TeamMentor_Article();
+										externalArticle.Metadata.Title = title;
+										System.Net.WebClient webClient = new System.Net.WebClient();
+										webClient.Headers.Add("User-Agent", "TeamMentor");
+										var htmlContent = webClient.DownloadString(url);
+										var sanitizedHtml = Microsoft.Security.Application.Sanitizer.GetSafeHtmlFragment(htmlContent);										
+										externalArticle.Content.Data.Value = sanitizedHtml;
+										return externalArticle;
+									};
+
 				//Web.Https.ignoreServerSslErrors();
-				switch (virtualArticle.Service)
+				switch (service)
 				{ 
 					case "wikipedia":
-						{
-						
-							var externalArticle = new TeamMentor_Article();
-							externalArticle.Metadata.Title = "From Wikipedia.org: " + virtualArticle.Service_Data;
-							var wikipediaUrl = "https://en.wikipedia.org/wiki/{0}?action=render".format(virtualArticle.Service_Data);
-							
-							System.Net.WebClient webClient = new System.Net.WebClient();
-							webClient.Headers.Add("User-Agent", "TeamMentor");
-							//webClient.Headers.Add("Accept-Encoding", "gzip");							
-							var wikipediaData = webClient.DownloadString(wikipediaUrl);
-							externalArticle.Content.Data.Value = wikipediaData;
-							return externalArticle;						
+						{							
+							var url = "https://en.wikipedia.org/wiki/{0}?action=render".format(serviceData);
+							return createArticleFromUrl("From Wikipedia.org: " + serviceData, url);						
 						}
 					case "owasp":
 						{
-
-							var externalArticle = new TeamMentor_Article();
-							externalArticle.Metadata.Title = "From owasp.org: " + virtualArticle.Service_Data;
-							var owaspUrl = "https://www.owasp.org/index.php/{0}?action=render".format(virtualArticle.Service_Data);
 							
-							System.Net.WebClient webClient = new System.Net.WebClient();
-							webClient.Headers.Add("User-Agent", "TeamMentor");
-							//webClient.Headers.Add("Accept-Encoding", "gzip");							
-							var owaspData = webClient.DownloadString(owaspUrl);
-							externalArticle.Content.Data.Value = owaspData;
-							return externalArticle;
+							var title  = "From owasp.org: " + serviceData;
+							var url = "https://www.owasp.org/index.php/{0}?action=render".format(serviceData);
+							return createArticleFromUrl(title, url);													
 						}
 					case "msdn":
 						{
 
 							var externalArticle = new TeamMentor_Article();
-							externalArticle.Metadata.Title = "From MSDN: " + virtualArticle.Service_Data;
-							var msdnUrl = "http://msdn.microsoft.com/en-us/library/{0}.aspx".format(virtualArticle.Service_Data);
-							/*
-							System.Net.WebClient webClient = new System.Net.WebClient();
-							webClient.Headers.Add("User-Agent", "TeamMentor");
-							//webClient.Headers.Add("Accept-Encoding", "gzip");							
-							var msdnData = webClient.DownloadString(msdnUrl);
-							externalArticle.Content.Data.Value=  msdnData;*/
-							externalArticle.Content.Data.Value = @"<IFrame src='{0}'/ id='msdnContent' style='width:99%;' frameborder='0'></IFrame>
+							externalArticle.Metadata.Title = "From MSDN: " + service;
+							var msdnUrl = "http://msdn.microsoft.com/en-us/library/{0}.aspx".format(serviceData);
+						
+							externalArticle.Content.Data.Value = @"<IFrame src='{0}'/ id='msdnContent' style='width:99%;height:500px' frameborder='0'></IFrame>
 																	<script>$('#msdnContent').height(document.height-180)</script>".format(msdnUrl);
 
 							return externalArticle;
@@ -244,7 +233,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			return null;
 		}
 
-		public static string getGuidRedirect(this TM_Xml_Database tmXmlDatabase, Guid id)
+		public static string get_GuidRedirect(this TM_Xml_Database tmXmlDatabase, Guid id)
 		{
 			var virtualArticle = tmXmlDatabase.virtualArticle(id);
 			if (virtualArticle.notNull())

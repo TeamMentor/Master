@@ -175,6 +175,8 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 						return redirectTo_DownloadLibrary(data);
                     case "sso":
                         return handleAction_SSO(data);
+					case "external":
+						return showVirtualArticleExternal(data);
 					case "virtualarticles":
 						return showVirtualArticles();
 					case "addvirtualarticle":
@@ -280,6 +282,31 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			context.Response.Write("Provided mapping data could not be parsed");
 			return true;
 		}
+		public bool showVirtualArticleExternal(string data)
+		{
+			var mappings = data.split(",");
+			{
+				if (mappings.size() == 2)
+				{
+					var service = mappings[0];
+					var serviceData = mappings[1];
+					var article = tmWebServices.VirtualArticle_CreateArticle_from_ExternalServiceData(service, serviceData);
+					if (article.isNull())
+						context.Response.Write("There was a problem fetching the requested data");
+					else 
+					{
+						context.Response.ContentType = "text/html";						
+						var htmlTemplateFile = @"\Html_Pages\Gui\Pages\article_Html.html";
+						var htmlTemplate = context.Server.MapPath(htmlTemplateFile).fileContents();
+
+						var htmlContent = htmlTemplate.replace("#ARTICLE_TITLE", article.Metadata.Title)
+													  .replace("#ARTICLE_HTML", article.Content.Data.Value);
+						context.Response.Write(htmlContent);           
+					}					
+				}
+			}
+			return true;
+		}
         //handlers
 		private bool handleAction_JsonP(string data)
 		{
@@ -376,8 +403,6 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                 transfer_ArticleViewer();
             return true;
         }
-
-
         private bool handleAction_Xml(string data)
         {
             var guid = tmWebServices.getGuidForMapping(data);
@@ -391,7 +416,6 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                transfer_ArticleViewer();
             return true;
         }
-
         private bool handleAction_Html(string data)
         {
             var guid = tmWebServices.getGuidForMapping(data);
@@ -412,7 +436,6 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                 transfer_ArticleViewer();
             return true;
         }
-
 		private bool handle_ArticleViewRequest(string data)
 		{			
 			if ( data.isGuid())
@@ -420,7 +443,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 				var guid = data.guid();
 				if (tmWebServices.GetGuidanceItemById(guid.str()).isNull())
 				{
-					var redirectTarget = TM_Xml_Database.Current.getGuidRedirect(guid);
+					var redirectTarget = tmWebServices.VirtualArticle_Get_GuidRedirect(guid);
 					if (redirectTarget.valid())
 					{
 						context.Response.Redirect(redirectTarget); ;
@@ -429,9 +452,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 				}
 			}
 			return transfer_ArticleViewer();       
-		}
-
-		
+		}		
         private bool handleAction_Content(string data)
         { 
             var guid = tmWebServices.getGuidForMapping(data);
@@ -458,14 +479,11 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
             context.Response.Flush();
             context.Response.End();
         }
-
-
         private bool reloadCache_and_RedirectToHomePage()
         {
             tmWebServices.XmlDatabase_ReloadData();
             return redirectTo_HomePage();
         }
-
         public bool transfer_TeamMentorGui()
         {
             context.Server.Transfer("/html_pages/Gui/TeamMentor.html");            
@@ -475,8 +493,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		{
 			context.Server.Transfer("/html_pages/GuidanceItemViewer/GuidanceItemViewer.html");						
             return false;    
-		}
-        
+		}        
         public bool transfer_ArticleEditor(string data)
 		{         
             var guid = tmWebServices.getGuidForMapping(data);
@@ -488,7 +505,6 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
             context.Server.Transfer("/html_pages/GuidanceItemEditor/GuidanceItemEditor.html");
             return false;    
 		}
-
         public bool transfer_Login()	
 		{
 			var loginReferer = context.Request.QueryString["LoginReferer"];
@@ -503,7 +519,6 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
             //context.Session["LoginReferer"] = context.Request.Url.AbsolutePath;
             return true; 
 		}
-
 		
 
 

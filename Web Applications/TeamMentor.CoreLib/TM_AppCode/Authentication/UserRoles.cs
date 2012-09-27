@@ -74,4 +74,18 @@ namespace SecurityInnovation.TeamMentor.Authentication.WebServices.Authorization
 			return new PrincipalPermission(null, "EditArticles");			
 		}
 	}
+	[Serializable]	
+	public sealed class ReadArticlesAttribute : CodeAccessSecurityAttribute
+	{		
+						
+		public ReadArticlesAttribute(SecurityAction action) : base(action)
+		{						
+		}
+		
+		public override System.Security.IPermission CreatePermission()
+		{
+			return new PrincipalPermission(null, "ReadArticles");			
+		}
+	}
+	
 }

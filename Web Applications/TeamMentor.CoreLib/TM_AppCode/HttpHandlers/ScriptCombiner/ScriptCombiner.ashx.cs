@@ -14,9 +14,9 @@ using O2.DotNetWrappers.ExtensionMethods;
 //O2Ref:AntiXSSLibrary.dll
 
 public partial class ScriptCombiner : IHttpHandler
-{
-    public static TimeSpan CACHE_DURATION = TimeSpan.FromDays(30);
-	public static string mappingsLocation {get;set;}
+{    
+	public static string   MappingsLocation			 {get;set;}
+	public static DateTime LastModified_HeaderDate	{ get; set; }
 	
 	public string setName 				{ get; set;}
     public string version 				{ get; set;}
@@ -29,10 +29,14 @@ public partial class ScriptCombiner : IHttpHandler
 	public bool 		 ignoreCache	{ get; set; }
 	
 	public HttpContextBase context;
-	
+
+	static ScriptCombiner()
+	{
+		LastModified_HeaderDate = DateTime.Now;			//used to calculate if we will send a '304 Not Modified' to the user
+	}
 	public ScriptCombiner()
 	{
-		ScriptCombiner.mappingsLocation = "../javascript/_mappings/{0}.txt";				
+		ScriptCombiner.MappingsLocation = "../javascript/_mappings/{0}.txt";				
 	}
 	
     public void ProcessRequest(HttpContext __context)
@@ -40,7 +44,16 @@ public partial class ScriptCombiner : IHttpHandler
 		this.context = HttpContextFactory.Current;		
 		var request = context.Request;        
 		var response = context.Response;		
-		response.Clear();	
+		response.Clear();
+
+		if (send304Redirect())
+		{
+			context.Response.StatusCode = 304;
+			context.Response.StatusDescription = "Not Modified";
+			return;
+		}
+		setCacheHeaders();		
+
 		try
 		{
 			minifyCode = true;
@@ -77,57 +90,47 @@ public partial class ScriptCombiner : IHttpHandler
 			// Decide if browser supports compressed response
 			bool isCompressed = this.CanGZip(context.Request);
 
-			// If the set has already been cached, write the response directly from
-			// cache. Otherwise generate the response and cache it
-			if (ignoreCache || !this.WriteFromCache(setName, version, isCompressed))
+			using (MemoryStream memoryStream = new MemoryStream(8092))
 			{
-				using (MemoryStream memoryStream = new MemoryStream(8092))
+				// Decide regular stream or gzip stream based on whether the response can be compressed or not
+				//using (Stream writer = isCompressed ?  (Stream)(new GZipStream(memoryStream, CompressionMode.Compress)) : memoryStream)
+				using (Stream writer = isCompressed ? (Stream)(new ICSharpCode.SharpZipLib.GZip.GZipOutputStream(memoryStream)) : memoryStream)
 				{
-					// Decide regular stream or gzip stream based on whether the response can be compressed or not
-					//using (Stream writer = isCompressed ?  (Stream)(new GZipStream(memoryStream, CompressionMode.Compress)) : memoryStream)
-					using (Stream writer = isCompressed ? (Stream)(new ICSharpCode.SharpZipLib.GZip.GZipOutputStream(memoryStream)) : memoryStream)                
+					// Read the files into one big string
+					this.allScripts = new StringBuilder();
+					this.filesProcessed = GetScriptFileNames(setName);
+					foreach (string fileName in this.filesProcessed)
 					{
-						// Read the files into one big string
-						this.allScripts = new StringBuilder();
-						this.filesProcessed = GetScriptFileNames(setName);
-						foreach (string fileName in this.filesProcessed)
-						{							
-							var fullPath = context.Server.MapPath(fileName.trim());
-		
-							if (fullPath.fileExists())
-							{
-								this.allScripts.AppendLine("\n\n/********************************** ");
-								this.allScripts.AppendLine(" *****    " + fileName   );
-								this.allScripts.AppendLine(" **********************************/\n\n");
-								this.allScripts.AppendLine(File.ReadAllText(fullPath));															
-							}
+						var fullPath = context.Server.MapPath(fileName.trim());
+
+						if (fullPath.fileExists())
+						{
+							this.allScripts.AppendLine("\n\n/********************************** ");
+							this.allScripts.AppendLine(" *****    " + fileName);
+							this.allScripts.AppendLine(" **********************************/\n\n");
+							this.allScripts.AppendLine(File.ReadAllText(fullPath));
 						}
-						
-						var codeToSend = this.allScripts.ToString();
-								
-						if (minifyCode)
-						{							
-							// Minify the combined script files and remove comments and white spaces
-							var minifier = new JavaScriptMinifier();
-							this.minifiedCode = minifier.Minify(codeToSend);
-							codeToSend = this.minifiedCode;							
-						}			
-						
-						// Send minfied string to output stream
-						byte[] bts = Encoding.UTF8.GetBytes(codeToSend);
-						writer.Write(bts, 0, bts.Length);
 					}
 
-					// Cache the combined response so that it can be directly written
-					// in subsequent calls 
-					byte[] responseBytes = memoryStream.ToArray();
-					context.Cache.Insert(GetCacheKey(setName, version, isCompressed),
-						responseBytes, null, System.Web.Caching.Cache.NoAbsoluteExpiration,
-						CACHE_DURATION);
-						
-					// Generate the response
-					this.WriteBytes(responseBytes, isCompressed);
-				}
+					var codeToSend = this.allScripts.ToString();
+
+					if (minifyCode)
+					{
+						// Minify the combined script files and remove comments and white spaces
+						var minifier = new JavaScriptMinifier();
+						this.minifiedCode = minifier.Minify(codeToSend);
+						codeToSend = this.minifiedCode;
+					}
+
+					// Send minfied string to output stream
+					byte[] bts = Encoding.UTF8.GetBytes(codeToSend);
+					writer.Write(bts, 0, bts.Length);
+				}				
+
+				// Generate the response
+				byte[] responseBytes = memoryStream.ToArray();
+				this.WriteBytes(responseBytes, isCompressed);
+
 			}
 		}
 		catch(Exception ex)
@@ -136,18 +139,7 @@ public partial class ScriptCombiner : IHttpHandler
 			response.Write("//Error processing request"+  ex.Message);
 			response.End();
 		}		
-    }
-	
-    public bool WriteFromCache(string setName, string version, bool isCompressed)
-    {
-        byte[] responseBytes = context.Cache[GetCacheKey(setName, version, isCompressed)] as byte[];
-
-        if (responseBytes == null || responseBytes.Length == 0)
-            return false;
-
-        this.WriteBytes(responseBytes, isCompressed);
-        return true;
-    }
+    }	
 
     public void WriteBytes(byte[] bytes, bool isCompressed)
     {
@@ -161,10 +153,6 @@ public partial class ScriptCombiner : IHttpHandler
             response.AppendHeader("Content-Encoding", "gzip");
         else
             response.AppendHeader("Content-Encoding", "utf-8");
-
-//        context.Response.Cache.SetCacheability(HttpCacheability.Public);
-//        context.Response.Cache.SetExpires(DateTime.Now.Add(CACHE_DURATION));
-//        context.Response.Cache.SetMaxAge(CACHE_DURATION);
 								
         response.ContentEncoding = Encoding.Unicode;
         response.OutputStream.Write(bytes, 0, bytes.Length);
@@ -180,11 +168,6 @@ public partial class ScriptCombiner : IHttpHandler
         return false;
     }
 
-    public string GetCacheKey(string setName, string version, bool isCompressed)
-    {
-        return "HttpCombiner." + setName + "." + version + "." + isCompressed;
-    }
-
     public bool IsReusable
     {
         get { return true; }
@@ -196,7 +179,7 @@ public partial class ScriptCombiner : IHttpHandler
 		var httpContext = HttpContextFactory.Current;	//HttpContext.Current
 		
         var scripts = new System.Collections.Generic.List<string>();		
-		var resolvedFile = ScriptCombiner.mappingsLocation.format(setName);		
+		var resolvedFile = ScriptCombiner.MappingsLocation.format(setName);		
 		
         string setPath = httpContext.Server.MapPath(resolvedFile);		
 		
@@ -212,6 +195,28 @@ public partial class ScriptCombiner : IHttpHandler
 				}
 			}	
         return scripts.ToArray();
-
     }
+
+	//Cache code
+
+	public bool send304Redirect()
+	{
+		var ifModifiedSinceHeader = context.Request.Headers["If-Modified-Since"];
+		if (ifModifiedSinceHeader.valid() && ifModifiedSinceHeader.isDate())
+		{
+			var ifModifiedSinceDate = DateTime.Parse(ifModifiedSinceHeader);
+			if (LastModified_HeaderDate.str() == ifModifiedSinceDate.str())
+				return true;
+		}
+		return false;
+	}
+
+	public void setCacheHeaders()
+	{
+		//set Response Cache (client side)				
+		context.Response.Cache.SetCacheability(HttpCacheability.Public);
+		context.Response.Cache.SetExpires(DateTime.Now.AddMinutes(10));
+		context.Response.Cache.SetMaxAge(new TimeSpan(0, 10, 0));
+		context.Response.Cache.SetLastModified(LastModified_HeaderDate);
+	}
 }

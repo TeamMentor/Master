@@ -158,14 +158,15 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]        public List<VirtualArticleAction>	VirtualArticle_GetCurrentMappings()        
                                                                                     {
 																						return TM_Xml_Database.Current.getVirtualArticles().Values.toList();
-                                                                                    }
+                                                                                    }		
+		
 		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]        public VirtualArticleAction			VirtualArticle_Add_Mapping_VirtualId( Guid id, Guid virtualId)
                                                                                     {
 																						return TM_Xml_Database.Current.add_Mapping_VirtualId(id, virtualId);																						
                                                                                     }
-		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]        public VirtualArticleAction			VirtualArticle_Add_Mapping_Redirect (Guid id, Uri redirectUri)
+		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]        public VirtualArticleAction			VirtualArticle_Add_Mapping_Redirect (Guid id, string redirectUri)
                                                                                     {
-																						return TM_Xml_Database.Current.add_Mapping_Redirect(id, redirectUri);																						
+																						return TM_Xml_Database.Current.add_Mapping_Redirect(id, redirectUri.uri());																						
                                                                                     }
 		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]        public VirtualArticleAction			VirtualArticle_Add_Mapping_ExternalArticle(Guid id, string tmServer, Guid externalId)
                                                                                     {
@@ -178,6 +179,16 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]        public bool							VirtualArticle_Remove_Mapping( Guid id)
                                                                                     {
 																						return TM_Xml_Database.Current.remove_Mapping_VirtualId(id);																						
+                                                                                    }
+
+		[WebMethod(EnableSession = true)] [ReadArticles(SecurityAction.Demand)]     public string					VirtualArticle_Get_GuidRedirect(Guid id)
+																					{
+																						return TM_Xml_Database.Current.get_GuidRedirect(id);																						
+                                                                                    }
+				
+		[WebMethod(EnableSession = true)] [ReadArticles(SecurityAction.Demand)]     public TeamMentor_Article		VirtualArticle_CreateArticle_from_ExternalServiceData(string service, string serviceData)
+																					{
+																						return service.createArticle_from_ExternalServiceData(serviceData);																						
                                                                                     }
 		
     }	
