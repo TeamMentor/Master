@@ -260,7 +260,7 @@ TM.WebServices.Data.getGuidanceItems_For_DataTable = function(guidanceItemsIds)
 		var getTableData = function(guids)
 		{
 			var data = [];	
-            if (guids === null)
+            if (guids === null || isUndefined(guids))
                 return data;
 			$.each(guids, function(index,value) 
 				{ 						

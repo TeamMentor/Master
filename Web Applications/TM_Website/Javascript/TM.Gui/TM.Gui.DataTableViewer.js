@@ -93,7 +93,7 @@ TM.Gui.DataTableViewer.setDragAndDropOptions = function()
 		var addGuidanceItemsToParentObject = function(parentId, guidanceIds)
 		{
 			parentData = $.data[parentId];
-			if(isDefined(parentData) && parentData.__type == "SecurityInnovation.TeamMentor.WebClient.Folder_V3")
+			if(isDefined(parentData) && parentData.__type == "SecurityInnovation.TeamMentor.WebClient.Folder_V3" && isDefined(parentData.guidanceItems))
 			{			
 				parentData.guidanceItems  = parentData.guidanceItems.concat(guidanceIds);			
 				addGuidanceItemsToParentObject(parentData.parentId, guidanceIds);

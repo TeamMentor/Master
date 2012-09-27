@@ -214,9 +214,9 @@ public partial class ScriptCombiner : IHttpHandler
 	public void setCacheHeaders()
 	{
 		//set Response Cache (client side)				
-		context.Response.Cache.SetCacheability(HttpCacheability.Public);
-		context.Response.Cache.SetExpires(DateTime.Now.AddMinutes(10));
-		context.Response.Cache.SetMaxAge(new TimeSpan(0, 10, 0));
+		//context.Response.Cache.SetCacheability(HttpCacheability.Public);
+		//context.Response.Cache.SetExpires(DateTime.Now.AddMinutes(10));
+		//context.Response.Cache.SetMaxAge(new TimeSpan(0, 10, 0));
 		context.Response.Cache.SetLastModified(LastModified_HeaderDate);
 	}
 }

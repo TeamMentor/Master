@@ -75,11 +75,11 @@
                                                      }
                                                 }
 			,	addLink_OpenGIInNewWindow	: function()
-												{
+												{												
 													$("<img>").attr('id','openGIInNewWindow')//.hide()
 															  .attr("src" , "/Images/open_in_new_window.png")
 															  .appendTo('#SelectedGITitle').absolute().zIndex(100)
-															  .width(18)
+															  .width(18).height(18)
 															  .top(15).right(10)
 															  .click(function() 
 																			{									
@@ -88,7 +88,7 @@
 															  .mouseover(function () 
 																			{
 																				$(this).css('cursor', 'pointer');
-																			});
+																			});																										
 												}
 			,	cssFixes					: function()
 												{

@@ -7,8 +7,10 @@ TM.Gui.Dialog =
 		
 		loadPage: 			function (page, target, callback)
 								{										
-									target = this.ensureTargetExists(target);										
-									var pageToLoad = page + '?time='+ new Date().getTime();									
+									target = this.ensureTargetExists(target);	
+									var pageToLoad = page;
+									if (TM.Debug.addTimeStampToLoadedPages)
+										 pageToLoad += '?time='+ new Date().getTime();									
 									if($(target).length ==1)
 										$(target).load(pageToLoad, callback);			
 									else

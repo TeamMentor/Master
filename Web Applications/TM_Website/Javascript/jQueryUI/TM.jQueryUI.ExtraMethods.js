@@ -18,7 +18,7 @@ function loadPage(target, page, callback)
 function loadDialog(page, target, callback)
 {				
 	if (typeof(target == "undefined"))
-		target = '#JS_Dialog';
+		target = '#JS_Dialog';	
 	target.$().load(page + '?time='+ new Date().getTime(), callback);
 }
 

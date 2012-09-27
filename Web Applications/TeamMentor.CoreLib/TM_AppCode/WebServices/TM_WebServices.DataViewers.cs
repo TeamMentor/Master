@@ -48,7 +48,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 						
 						var viewNodeText =  view.viewId.str();												
 						var viewNode = targetNode.add_Node(view.caption, viewNodeText);						
-						viewNode.state = "closed";
+						//viewNode.state = "closed";   // views don't need this
 						viewNode.data.icon = "/Images/ViewIcon.png";												
 						viewsId.add(view.viewId);
 					}
@@ -89,7 +89,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 				mapFolders(library.Id, javascriptProxy.GetFolders(library.Id), libraryNode);
 				mapViews(library.Id, Guid.Empty, javascriptProxy.GetViewsInLibraryRoot(library.Id.str()).guids(), libraryNode);
 				//libraryNode.state = "open";
-				libraryNode.state = "closed";
+				libraryNode.state = "closed";				
 				libraryNode.data.icon = "/Images/SingleLibrary.png";
 				
 				var libraryNodeText = library.Id.str();										
