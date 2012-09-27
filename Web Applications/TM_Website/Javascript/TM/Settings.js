@@ -1,5 +1,5 @@
 //TM Settings
-TM.tmVersion = "TM 3.2 RC3";
+TM.tmVersion = "TM 3.2 RC4";
 TM.ArticleTitle = "TeamMentor 3.2";
 
 TM.tmWebServices     = '/Aspx_Pages/TM_WebServices.asmx/';
@@ -26,7 +26,7 @@ TM.Debug.callTrace_ShowExecutionTime		  	= false;
 TM.Debug.callTrace_LogToConsole				  	= false;
 TM.Debug.callTrace_ShowParamsInConsoleLog	  	= false;
 
-TM.Debug.logEventsRaised					  	= true;
+TM.Debug.logEventsRaised					  	= false;
 TM.Debug.logEventsRaised_CallTrace				= false;
 TM.Debug.logLoadedPages						  	= false;
 
