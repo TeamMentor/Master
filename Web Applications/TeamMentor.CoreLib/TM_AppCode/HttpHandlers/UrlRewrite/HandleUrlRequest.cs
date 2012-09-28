@@ -221,18 +221,34 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			tmWebServices.VirtualArticle_GetCurrentMappings();  // will trigger an authorization check if needed
 			try
 			{
+				Action<VirtualArticleAction> outputVirtualArticleActionAsXml = 
+						(virtualArticleAction)=> {
+													context.Response.ContentType = "text/xml";
+													var xml = virtualArticleAction.serialize(false);
+													context.Response.Write(xml);
+												};
 				var mappings = data.split(",");
-				if (mappings.size() == 2)				// VIRTUAL ID
+				if (mappings.size() == 2)				
 				{					
 					var guid1 = mappings[0].guid();   //will throw exception if guid not valid
-					var guid2 = mappings[1].guid();
-					if (guid1 != Guid.Empty && guid2 != Guid.Empty)
+					if (guid1 != Guid.Empty)
 					{
-						var virtualMapping = tmWebServices.VirtualArticle_Add_Mapping_VirtualId(guid1, guid2);
-						context.Response.ContentType = "text/xml";
-						var xml = virtualMapping.serialize(false);
-						context.Response.Write(xml);
-						return true;
+						if (mappings[1].isGuid())		  // VIRTUAL ID
+						{
+							var guid2 = mappings[1].guid();
+							if (guid2 != Guid.Empty)
+							{
+								var virtualArticleAction = tmWebServices.VirtualArticle_Add_Mapping_VirtualId(guid1, guid2);
+								outputVirtualArticleActionAsXml(virtualArticleAction);
+								return true;
+							}
+						}
+						else
+						{
+							var redirectUrl = "http://{0}/article/{1}".format(mappings[1], guid1);
+							var virtualArticleAction = tmWebServices.VirtualArticle_Add_Mapping_Redirect(guid1, redirectUrl);
+							outputVirtualArticleActionAsXml(virtualArticleAction);
+						}
 					}
 				}
 				else if (mappings.size() == 3)
@@ -244,10 +260,8 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 						var guid2 = mappings[2].guid();
 						if (guid1 != Guid.Empty && guid2 != Guid.Empty && tmServer.notNull())
 						{
-							var virtualMapping = tmWebServices.VirtualArticle_Add_Mapping_ExternalArticle(guid1, tmServer.str(), guid2);
-							context.Response.ContentType = "text/xml";
-							var xml = virtualMapping.serialize(false);
-							context.Response.Write(xml);
+							var virtualArticleAction = tmWebServices.VirtualArticle_Add_Mapping_ExternalArticle(guid1, tmServer.str(), guid2);
+							outputVirtualArticleActionAsXml(virtualArticleAction);
 							return true;
 						}
 					}
@@ -255,10 +269,8 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 					{
 						var service = mappings[1];
 						var serviceData = mappings[2];
-						var virtualMapping = tmWebServices.VirtualArticle_Add_Mapping_ExternalService(guid1, service, serviceData);
-						context.Response.ContentType = "text/xml";
-						var xml = virtualMapping.serialize(false);
-						context.Response.Write(xml);
+						var virtualArticleAction = tmWebServices.VirtualArticle_Add_Mapping_ExternalService(guid1, service, serviceData);
+						outputVirtualArticleActionAsXml(virtualArticleAction);						
 						return true;
 					}					
 				}
@@ -490,7 +502,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
             return false;
         }
 		public bool transfer_ArticleViewer()
-		{
+		{			
 			context.Server.Transfer("/html_pages/GuidanceItemViewer/GuidanceItemViewer.html");						
             return false;    
 		}        

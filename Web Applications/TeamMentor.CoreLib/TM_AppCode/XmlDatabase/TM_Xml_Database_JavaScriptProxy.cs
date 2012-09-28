@@ -108,9 +108,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		public List<TeamMentor_Article> GetGuidanceItemsInFolder_XmlDB(Guid folderId)   	{ return tmXmlDatabase.tmGuidanceItems_InFolder(folderId);}				       
 		public List<TeamMentor_Article> GetAllGuidanceItemsInViews_XmlDB()					{ return tmXmlDatabase.getAllGuidanceItemsInViews();} 
 		public List<TeamMentor_Article> GetAllGuidanceItems_XmlDB()						    { return tmXmlDatabase.tmGuidanceItems();}
-		
-        public Guid resolveMappingToArticleGuid(string mapping)                             { return tmXmlDatabase.xmlBD_resolveMappingToArticleGuid(mapping); }
-
+		        
 		
 		// new ones to add to main Webservice
 		public bool RemoveViewFromFolder(Guid libraryId, Guid viewId)	{ return tmXmlDatabase.xmlDB_RemoveViewFromFolder(libraryId, viewId);}

@@ -34,7 +34,8 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 	{
 		public static string getVirtualArticlesFile(this TM_Xml_Database tmXmlDatabase)
 		{
-			return TM_Xml_Database.Path_XmlDatabase.pathCombine("Virtual_Articles.xml");
+			//return TM_Xml_Database.Path_XmlDatabase.pathCombine("Virtual_Articles.xml");
+			return TM_Xml_Database.Path_XmlLibraries.pathCombine("Virtual_Articles.xml");
 		}
 		public static VirtualArticleAction add_Mapping_VirtualId(this TM_Xml_Database tmXmlDatabase, Guid id, Guid virtualId)
 		{

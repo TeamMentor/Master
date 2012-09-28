@@ -154,12 +154,10 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                                                                                     }
 		
 		//Virtual Articles
-
 		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]        public List<VirtualArticleAction>	VirtualArticle_GetCurrentMappings()        
                                                                                     {
 																						return TM_Xml_Database.Current.getVirtualArticles().Values.toList();
-                                                                                    }		
-		
+                                                                                    }				
 		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]        public VirtualArticleAction			VirtualArticle_Add_Mapping_VirtualId( Guid id, Guid virtualId)
                                                                                     {
 																						return TM_Xml_Database.Current.add_Mapping_VirtualId(id, virtualId);																						
@@ -180,16 +178,27 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                                                                                     {
 																						return TM_Xml_Database.Current.remove_Mapping_VirtualId(id);																						
                                                                                     }
-
 		[WebMethod(EnableSession = true)] [ReadArticles(SecurityAction.Demand)]     public string					VirtualArticle_Get_GuidRedirect(Guid id)
 																					{
 																						return TM_Xml_Database.Current.get_GuidRedirect(id);																						
-                                                                                    }
-				
+                                                                                    }				
 		[WebMethod(EnableSession = true)] [ReadArticles(SecurityAction.Demand)]     public TeamMentor_Article		VirtualArticle_CreateArticle_from_ExternalServiceData(string service, string serviceData)
 																					{
 																						return service.createArticle_from_ExternalServiceData(serviceData);																						
                                                                                     }
 		
+		//Article Guid Mappings
+		[WebMethod(EnableSession = true)]		public Guid getGuidForMapping(string mapping)
+		{
+			return TM_Xml_Database.Current.xmlBD_resolveMappingToArticleGuid(mapping);
+		}
+		[WebMethod(EnableSession = true)]		public bool IsGuidMappedInThisServer(Guid guid)
+												{
+													if (GetGuidanceItemById(guid.str()).notNull())
+														return true;
+													if (TM_Xml_Database.Current.get_GuidRedirect(guid).valid())
+														return true;
+													return false;
+												}
     }	
 }

@@ -117,9 +117,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		List<TeamMentor_Article> GetGuidanceItemsInLibrary_XmlDB(Guid libraryId);	
 		List<TeamMentor_Article> GetGuidanceItemsInFolder_XmlDB(Guid folderId);	
 		List<TeamMentor_Article> GetAllGuidanceItemsInViews_XmlDB();
-
-
-        Guid resolveMappingToArticleGuid(string mapping);
+        
     }    
 	
 	//move this so a separate file

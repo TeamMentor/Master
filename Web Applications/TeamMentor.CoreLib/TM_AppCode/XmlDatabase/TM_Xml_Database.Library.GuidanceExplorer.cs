@@ -351,8 +351,13 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 							//handle the case where the xml file is located outside the library folder
 							var libraryXmlFile = gitZipDir.pathCombine("{0}.xml".format(libraryName));
 							if (libraryXmlFile.fileExists())
-								Files.copy(libraryXmlFile, targetFolder);			// put it in the Library folder which is where it really should be
-
+								Files.copy(libraryXmlFile, targetFolder);			// put it in the Library folder which is where it really should be															
+						}
+						var virtualMappings = gitZipDir.pathCombine("Virtual_Articles.xml");
+						if (virtualMappings.fileExists())
+						{
+							Files.copy(virtualMappings, currentLibraryPath);			// copy virtual mappings if it exists
+							tmDatabase.mapVirtualArticles();
 						}
 						return true;
 					}
