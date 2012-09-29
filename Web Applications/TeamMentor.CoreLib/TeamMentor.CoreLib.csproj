@@ -39,11 +39,14 @@
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
-    <Reference Include="O2_FluentSharp_CoreLib, Version=4.3.1.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
+    <Reference Include="O2_FluentSharp_CoreLib, Version=4.3.2.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\FluentSharp.CoreLib.4.3.1.0\lib\net35\O2_FluentSharp_CoreLib.dll</HintPath>
+      <HintPath>..\packages\FluentSharp.CoreLib.4.3.2.0\lib\net35\O2_FluentSharp_CoreLib.dll</HintPath>
     </Reference>
-    <Reference Include="O2_Misc_Microsoft_MPL_Libs, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="O2_Misc_Microsoft_MPL_Libs, Version=4.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\O2.Platform.Misc_Microsoft_MPL_Libs.4.1.0.0\lib\net35\O2_Misc_Microsoft_MPL_Libs.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.DirectoryServices.AccountManagement">
@@ -138,9 +141,6 @@
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="_ExternalDlls\O2_Misc_Microsoft_MPL_Libs.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
