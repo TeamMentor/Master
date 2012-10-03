@@ -1,4 +1,8 @@
-TEAMMENTOR 3.1 RELEASE NOTES
+TEAMMENTOR 3.2 RELEASE NOTES (3rd October 2012)
+The TeamMentor 3.2 release includes both new content and new application code.
+
+
+TEAMMENTOR 3.1 RELEASE NOTES 
 
 The TeamMentor 3.1 release includes both new content and new application code. Major stability and usability improvements have been made to the application. A new content library has been added and numerous content fixes have been made based on feedback by a new editor - the TM content is periodically reviewed by different information security professionals.
 
@@ -32,13 +36,14 @@ REQUIREMENTS
 + .NET Framework 4.0
 
 
-DEFAULT ACCOUNTS
+DEFAULT ACCOUNTS (the TMUsers.xml file will be created on first run with only the admin account on it)
 
 + admin  : !!tmadmin
-+ editor : !!tmeditor
-+ reader : !!tmreader
 
+LOCAL WEBSITE
+
+To run TeamMentor locally run "start TeamMentor.bat" which will start a local WebServer (Cassini) on a high port: http://127.0.0.1:12120
 
 SUPPORT INFORMATION
 
-+ For more information about TeamMentor, please see "TeamMentor Documentation" at http://docs.teammentor.net/_Customizations/TM_Documentation/index.htm
++ For more information about TeamMentor, please see "TeamMentor Documentation" at http://docs.teammentor.net/
