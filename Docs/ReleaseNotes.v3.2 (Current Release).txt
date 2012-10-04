@@ -1,0 +1,47 @@
+TEAMMENTOR 3.2 RELEASE NOTES
+
+The TeamMentor 3.2 release includes new content and new application code. Stability improvements have been made to the application and features have been added. Content libraries covering mobile platform security have been added and multiple fixes have been made to content.
+
+
+APPLICATION CHANGES
+
+The TM3.2 release includes the following application changes:
++ Visual Studio code analysis plug-in.
++ WikiText article mark-up support (with Syntax Highlight)
++ Support for setting filters via the URL.
++ Support for controlling the UI via the URL.
++ Pinned Filters
++ Easy download and install of Libraries (to/from Zip files)
++ Improve Article search (by title and on all articles)
++ GZip compression and Client size cache (reduced data transfers by 50%) 
++ Multiple minor bug fixes
+
+CONTENT CHANGES
+
+The TM3.2 release includes the following content changes:
++ Android and iOS libraries have been added.
++ Broken links have been fixed throughout all libraries.
++ Major improvements to articles applicable to "Any" technology.
+
+
+REQUIREMENTS
+
++ Windows
++ .NET Framework 4.0
+
+
+DEFAULT ACCOUNTS
+
+A TMUsers.xml file will be created on first run with only the admin account in it:
+Username: admin
+Password: !!tmadmin
+
+
+LOCAL WEBSITE
+
+To run TeamMentor locally run "start TeamMentor.bat" which will start a local WebServer (Cassini) on a high port: http://127.0.0.1:12120
+
+
+SUPPORT INFORMATION
+
++ For more information about TeamMentor, please see "TeamMentor Documentation" at http://docs.teammentor.net/
