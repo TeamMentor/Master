@@ -20,7 +20,7 @@ TM.WebServices.Helper.invokeWebService = function(url, params, handleData, handl
 					type            : "POST"
 				,   url             : url
 				,	data            : params                
-				,	headers			: { "CSRF_Token" : TM.WebServices.Config.CSRF_Token}
+				,	headers			: { "CSRF-Token" : TM.WebServices.Config.CSRF_Token}
 				,	contentType: "application/json; charset=utf-8"
 				,	dataType: "json"
 				,	success: function (msg) 

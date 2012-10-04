@@ -125,7 +125,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		{
             if (disable_CSRF_Check)
                 return true;
-			var header_CSRF_Token = tmWebServices.Context.Request.Headers["CSRF_Token"];
+			var header_CSRF_Token = tmWebServices.Context.Request.Headers["CSRF-Token"];
 			if (header_CSRF_Token.valid())
 			{
                 //"[check_CSRF_Token] {0} == {1} : {2}".debug(header_CSRF_Token, sessionID.str().hash().str(), header_CSRF_Token == sessionID.str().hash().str());
