@@ -30,6 +30,7 @@ namespace SecurityInnovation.TeamMentor.Website
 
 		protected void Application_BeginRequest			(object sender, EventArgs e)		
         {
+			UtilMethods.addDefaultRequestHeaders();
             new HandleUrlRequest().routeRequestUrl();                                  
         }
         protected void Application_AcquireRequestState  (object sender, EventArgs e) // this doesn't work for non aspx requests

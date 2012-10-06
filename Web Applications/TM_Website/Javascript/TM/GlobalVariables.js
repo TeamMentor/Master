@@ -81,3 +81,10 @@ if (typeof(console) == "undefined")
 			,	error		: function() {}			
 		};	
 }	
+
+
+//ClickJacking protection
+if (self != top) 
+{
+	top.location = self.location; 
+}

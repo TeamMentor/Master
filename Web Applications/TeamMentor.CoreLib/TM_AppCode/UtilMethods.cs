@@ -111,6 +111,16 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 				ex.log("in enableGZipCompression_forAjaxRequests");
 			}
 		}
+
+		//RESPONSE
+		public static void addDefaultRequestHeaders()
+		{
+			//add clickjacking protection
+			HttpContext.Current.Response.AddHeader("X-Frame-Options", "DENY");
+			//IE AntiXSS projecttion
+			HttpContext.Current.Response.AddHeader("X-XSS-Protection", "1; mode=block");			
+			
+		}
 		
 	}
 
