@@ -9,11 +9,9 @@ module("TM.Gui.LibraryTree - Edit Mode",
 						start();			
 						return;
 					}					
-					TM.Events.onUserDataLoaded.add(function() 
-						{ 
-							TM.Events.onUserDataLoaded.remove();			
-							start();
-			
+					TM.Events.onUserDataLoaded.add_InvokeOnce(function() 
+						{ 							
+							start();			
 						});					
 					stop();					
                     TM.Gui.CurrentUser.loadUserData();
