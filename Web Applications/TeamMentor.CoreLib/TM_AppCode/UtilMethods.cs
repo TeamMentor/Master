@@ -67,44 +67,37 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 
 
 		//GZIP
-		public static void enableGZipCompression_forAjaxRequests()
+		public static void setGZipCompression_forAjaxRequests()
 		{
-			enableGZipCompression_forAjaxRequests(HttpContext.Current.Request, HttpContext.Current.Response);
+			setGZipCompression_forAjaxRequests(HttpContext.Current.Request, HttpContext.Current.Response);
 		}
-		public static void enableGZipCompression_forAjaxRequests(HttpRequest request, HttpResponse response)  //based on code from http://geekswithblogs.net/rashid/archive/2007/09/15/Compress-Asp.net-Ajax-Web-Service-Response---Save-Bandwidth.aspx
+		public static void setGZipCompression_forAjaxRequests(HttpRequest request, HttpResponse response)  //based on code from http://geekswithblogs.net/rashid/archive/2007/09/15/Compress-Asp.net-Ajax-Web-Service-Response---Save-Bandwidth.aspx
 		{
-			//HttpApplication app = (HttpApplication)sender;
-
-			//HttpRequest request = app.Request;
-			//HttpResponse response = app.Response;
-
-			//Ajax Web Service request is always starts with application/json
-			//if (request.ContentType.ToLower(CultureInfo.InvariantCulture).StartsWith("application/json"))
+			//if (TMConfig.Current.EnableGZipForWebServices.isFalse())
+			//	return;			
 			try
 			{
 				if (request.ContentType.lower().starts(new List<string>() { "text/xml", "application/json" }))
 				{
-					//if (!((request.Browser.IsBrowser("IE")) && (request.Browser.MajorVersion <= 6))) //IE 5 and 6 are not supported by TM
+					string acceptEncoding = request.Headers["Accept-Encoding"];
+
+					if (!string.IsNullOrEmpty(acceptEncoding))
 					{
-						string acceptEncoding = request.Headers["Accept-Encoding"];
+						acceptEncoding = acceptEncoding.ToLower(CultureInfo.InvariantCulture);
 
-						if (!string.IsNullOrEmpty(acceptEncoding))
+						if (acceptEncoding.Contains("gzip"))
 						{
-							acceptEncoding = acceptEncoding.ToLower(CultureInfo.InvariantCulture);
-
-							if (acceptEncoding.Contains("gzip"))
-							{
-								response.Filter = new GZipStream(response.Filter, CompressionMode.Compress);
-								response.AddHeader("Content-encoding", "gzip");
-							}
-							else if (acceptEncoding.Contains("deflate"))
-							{
-								response.Filter = new DeflateStream(response.Filter, CompressionMode.Compress);
-								response.AddHeader("Content-encoding", "deflate");
-							}
+							response.Filter = new GZipStream(response.Filter, CompressionMode.Compress);
+							response.AddHeader("Content-encoding", "gzip");
+						}
+						else if (acceptEncoding.Contains("deflate"))
+						{
+							response.Filter = new DeflateStream(response.Filter, CompressionMode.Compress);
+							response.AddHeader("Content-encoding", "deflate");
 						}
 					}
 				}
+				
 			}
 			catch (Exception ex)
 			{

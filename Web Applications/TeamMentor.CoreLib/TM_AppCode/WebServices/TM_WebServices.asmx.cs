@@ -47,14 +47,20 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		//public ActivityTracking activityTracking { get; set; }
 
 		public TM_Authentication tmAuthentication { get; set; }
-		
-		public TM_WebServices()
-		{			                
+
+		public TM_WebServices() : this(false)
+		{ }
+
+		public TM_WebServices(bool disable_CSRF_Check)
+		{			
 			//UnityInjection.resolve(this);
 			javascriptProxy = new TM_Xml_Database_JavaScriptProxy(); 
-			tmAuthentication = new TM_Authentication(this);
-			tmAuthentication.mapUserRoles();
-			UtilMethods.enableGZipCompression_forAjaxRequests();
+			tmAuthentication = new TM_Authentication(this);			
+			tmAuthentication.mapUserRoles(disable_CSRF_Check);
+
+			UtilMethods.setGZipCompression_forAjaxRequests();
+			
+			
 			//Disable Activity Tracking
 			//activityTracking = new ActivityTracking();
 			//activityTracking.LogRequest();

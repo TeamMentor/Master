@@ -138,6 +138,12 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 
 		public TM_Authentication mapUserRoles()
 		{
+			return mapUserRoles(false);
+		}
+
+		public TM_Authentication mapUserRoles(bool _disable_CSRF_Check)
+		{
+			disable_CSRF_Check = _disable_CSRF_Check;
             //"[TM_Authentication] mapUserRoles".info();
             if (sessionID == Guid.Empty || sessionID.validSession() == false)
                 /*if (SingleSignOn.singleSignOn_Enabled)

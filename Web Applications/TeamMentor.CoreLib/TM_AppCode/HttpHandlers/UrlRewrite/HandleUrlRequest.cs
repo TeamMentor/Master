@@ -111,7 +111,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		{
             try
             {
-                tmWebServices = new TM_WebServices();       // enable webservices access (and security checks)
+                tmWebServices = new TM_WebServices(true);       // enable webservices access (and security checks with CSRF disabled)
                 action = Encoder.HtmlEncode(action);
                 data = Encoder.HtmlEncode(data).replace("%20"," ");
                 if (action.isGuid() & data.inValid())                
@@ -174,7 +174,12 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 					case "download_library":
 						return redirectTo_DownloadLibrary(data);
                     case "sso":
-                        return handleAction_SSO(data);
+                        return handleAction_SSO(data);                                                            
+                }
+				
+				tmWebServices.tmAuthentication.mapUserRoles(false);			 // enable  CSRF protection
+				switch (action.lower())
+				{
 					case "external":
 						return showVirtualArticleExternal(data);
 					case "virtualarticles":
@@ -183,9 +188,9 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 						return addVirtualArticleMapping(data);
 					case "removevirtualarticle":
 						return removeVirtualArticleMapping(data);
-                    default:                        
-                        return false;                                          
-                }                                           
+					default:
+						return false;  
+				}
             }                
             catch (Exception ex)
             {
