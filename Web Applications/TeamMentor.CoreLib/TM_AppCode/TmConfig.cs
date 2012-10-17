@@ -7,11 +7,8 @@ namespace SecurityInnovation.TeamMentor.WebClient
 	//public values 
 	public partial class TMConfig
 	{			
-		public string 		WebSite_Port 		        { get; set; }
-		public string 		WebSite_IP 			        { get; set; }
         public string       TMLibraryDataVirtualPath    { get; set; }
-		public string 		XmlLibrariesPath 	        { get; set; }
-		public List<string> Libraries_Disabled 	        { get; set; }
+		public string 		XmlLibrariesPath 	        { get; set; }		
 		public string 		DefaultAdminUserName        { get; set; }
 		public string 		DefaultAdminPassword        { get; set; }	
 		public string 		GitHubPassword		        { get; set; }	
@@ -20,9 +17,10 @@ namespace SecurityInnovation.TeamMentor.WebClient
         public bool         SSL_RedirectHttpToHttps     { get; set; }
         public bool 		SanitizeHtmlContent         { get; set; }
         public bool         SingleSignOn_Enabled        { get; set; }
-		//public bool			EnableGZipForWebServices	{ get; set; }
-
+		
+		
         public WindowsAuthentication_Config WindowsAuthentication			{ get; set; }
+		public TMDebugAndDev_Config			TMDebugAndDev					{ get; set; }
 
 		public class WindowsAuthentication_Config
 		{				
@@ -32,6 +30,11 @@ namespace SecurityInnovation.TeamMentor.WebClient
 			public string	AdminGroup	{ get; set; }
 		}
 
+		public class TMDebugAndDev_Config
+		{
+			public bool EnableGZipForWebServices { get; set; }
+			public bool Enable302Redirects { get; set; }			
+		}
 	}
 	
 	
@@ -98,10 +101,7 @@ namespace SecurityInnovation.TeamMentor.WebClient
 	public static class TmConfig_ExtensionMethods
 	{
 		public static TMConfig setDefaultValues(this TMConfig tmConfig)
-		{
-			tmConfig.Libraries_Disabled = new List<string>();				
-			tmConfig.WebSite_IP = "localhost";
-			tmConfig.WebSite_Port = "12345";
+		{									
             tmConfig.TMLibraryDataVirtualPath = "..\\..";
 			tmConfig.XmlLibrariesPath = "TM_Library";
 			tmConfig.DefaultAdminUserName = "admin";
@@ -113,6 +113,8 @@ namespace SecurityInnovation.TeamMentor.WebClient
 			tmConfig.WindowsAuthentication.ReaderGroup = "TM_Reader";
 			tmConfig.WindowsAuthentication.EditorGroup = "TM_Editor";
 			tmConfig.WindowsAuthentication.AdminGroup  = "TM_Admin";
+
+			tmConfig.TMDebugAndDev = new TMConfig.TMDebugAndDev_Config();
 
 			return tmConfig;
 		}

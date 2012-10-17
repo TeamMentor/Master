@@ -7,6 +7,7 @@ using System.Web;
 using XssEncoder = Microsoft.Security.Application.Encoder;
 using SecurityInnovation.TeamMentor.WebClient.WebServices;
 using O2.DotNetWrappers.ExtensionMethods;
+using SecurityInnovation.TeamMentor.WebClient;
 //O2Ref:ICSharpCode.SharpZipLib.dll
 //O2File:..\UtilMethods.cs
 //O2File:JavaScriptMinifier.cs
@@ -46,7 +47,7 @@ public partial class ScriptCombiner : IHttpHandler
 		var response = context.Response;		
 		response.Clear();
 
-		if (send304Redirect())
+		if (TMConfig.Current.TMDebugAndDev.Enable302Redirects && send304Redirect())
 		{
 			context.Response.StatusCode = 304;
 			context.Response.StatusDescription = "Not Modified";
@@ -212,11 +213,7 @@ public partial class ScriptCombiner : IHttpHandler
 	}
 
 	public void setCacheHeaders()
-	{
-		//set Response Cache (client side)				
-		//context.Response.Cache.SetCacheability(HttpCacheability.Public);
-		//context.Response.Cache.SetExpires(DateTime.Now.AddMinutes(10));
-		//context.Response.Cache.SetMaxAge(new TimeSpan(0, 10, 0));
+	{	
 		context.Response.Cache.SetLastModified(LastModified_HeaderDate);
 	}
 }
