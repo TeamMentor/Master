@@ -1,5 +1,5 @@
 //TM Settings
-TM.tmVersion = "TM 3.2.2";
+TM.tmVersion = "TM 3.3 Beta.1";
 TM.ArticleTitle = "TeamMentor 3.2";
 
 TM.tmWebServices     = '/Aspx_Pages/TM_WebServices.asmx/';
@@ -10,7 +10,7 @@ TM.Gui.showLibraryStructureToAnonymous          = true;
 TM.Gui.LoadLibraryData      					= true
 TM.Gui.editMode			   						= false;
 
-TM.Debug.addTimeStampToLoadedPages 			  	= false;	 // set to true during dev
+TM.Debug.addTimeStampToLoadedPages 			  	= true;	 // set to true during dev
 TM.Debug.reuseLibraryMappingsObject 		  	= true;
 TM.Debug.load_HomePage 						  	= true;
 
@@ -26,7 +26,7 @@ TM.Debug.callTrace_ShowExecutionTime		  	= false;
 TM.Debug.callTrace_LogToConsole				  	= false;
 TM.Debug.callTrace_ShowParamsInConsoleLog	  	= false;
 
-TM.Debug.logEventsRaised					  	= false;
+TM.Debug.logEventsRaised					  	= true;
 TM.Debug.logEventsRaised_CallTrace				= false;
 TM.Debug.logLoadedPages						  	= false;
 

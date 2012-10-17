@@ -481,7 +481,16 @@ TM.WebServices.WS_Libraries.remove_GuidanceItem = function(guidanceItemId, callb
 }
 
 TM.WebServices.WS_Libraries.remove_GuidanceItems = function(guidanceItemIds, callback, errorHandler)
-{	
-	var params = { guidanceItemIds : guidanceItemIds };		
-	TM.WebServices.Helper.invoke_TM_WebService('DeleteGuidanceItems', params, callback,errorHandler); 			
-}
+	{	
+		var params = { guidanceItemIds : guidanceItemIds };		
+		TM.WebServices.Helper.invoke_TM_WebService('DeleteGuidanceItems', params, callback,errorHandler); 			
+	}
+
+
+//ARTICLES
+TM.WebServices.WS_Libraries.getGuidForMapping = function(mappingText, callback, errorHandler)
+	{
+		var mapping = { mapping : mappingText };                           
+		TM.WebServices.Helper.invoke_TM_WebService("getGuidForMapping",mapping, callback, errorHandler);
+	}
+						

@@ -44,13 +44,14 @@
 						
                 var getGuidFromUrl = function()
 					{
-                        mappingText = document.URL.split('/').pop()     //get last segment
-												  .split("#").shift()   // remove hash
+                        var mappingText = document.URL.split('/').pop()     //get last segment
+												      .split("#").shift()   // remove hash
 												 ;						
-                        mapping =    { mapping : mappingText }    ;                           
-						TM.WebServices.Helper.invoke_TM_WebService("getGuidForMapping",mapping, function(data)
-							{
-								guidanceId = data;
+                        //mapping =    { mapping : mappingText }    ;                           
+						//TM.WebServices.Helper.invoke_TM_WebService("getGuidForMapping",mapping, 						
+						TM.WebServices.WS_Libraries.getGuidForMapping(mappingText, function(guid)
+							{								
+								guidanceId = guid;
 								loadGuidanceItem();
 							});						
 					}
@@ -289,7 +290,7 @@
 						if($.browser.msie)	
 							"SidePanel".$().width(170)*/
 						TM.Gui.ShowProgressBar.close();
-				
+						$("#SI_Footer").bottom(0).width("100%").absolute()
 					});
 
 		
@@ -369,7 +370,9 @@
 		<br />
 		<br />
 		<br />
-		<hr />
-		TeamMentor © 2007-2012 all rights reserved - a <a href="http://www.securityinnovation.com/" target="_blank">Security Innovation</a>  eKnowledge Product | <a href="mailto:teammentor@securityinnovation.com">Contact Us</a>
+		<div id="SI_Footer">
+			<hr />
+			TeamMentor © 2007-2012 all rights reserved - a <a href="http://www.securityinnovation.com/" target="_blank">Security Innovation</a>  eKnowledge Product | <a href="mailto:teammentor@securityinnovation.com">Contact Us</a>
+		</div>
 	</body>
 </html>
