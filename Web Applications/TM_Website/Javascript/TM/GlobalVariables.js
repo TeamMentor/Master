@@ -83,8 +83,9 @@ if (typeof(console) == "undefined")
 }	
 
 
-//ClickJacking protection
+//ClickJacking protection (breaks embeded editor, we are going to live with the X-Frame-Options protection)
+/*
 if (self != top) 
 {
 	top.location = self.location; 
-}
+}*/

@@ -109,7 +109,8 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		public static void addDefaultRequestHeaders()
 		{
 			//add clickjacking protection
-			HttpContext.Current.Response.AddHeader("X-Frame-Options", "DENY");
+			//HttpContext.Current.Response.AddHeader("X-Frame-Options", "DENY");   //this broken the openUrl GUI funcionality
+			HttpContext.Current.Response.AddHeader("X-Frame-Options", "SAMEORIGIN");
 			//IE AntiXSS projecttion
 			HttpContext.Current.Response.AddHeader("X-XSS-Protection", "1; mode=block");			
 			

@@ -39,7 +39,8 @@
 
                                                             //apply pretty print
                                                             $(".ItemContent pre").addClass("prettyprint") ; 
-                                                            prettyPrint();                                                                                                        
+                                                            prettyPrint();  
+															$("#copyrightNotice").show();
 														});														
 													}
 													else
@@ -122,8 +123,18 @@
 <div id="selectedGuidanceItemBorder">
     <h2><span id ="selectedGuidanceItemTitle" /></h2>
 	<div id="selectedGuidanceItem" class="selectedGuidanceItem ItemContent" > </div>
-</div>  
-          
+
+
+	<br />
+	<br /><br />
+
+	
+	<div style="padding:5px ; display:none" id="copyrightNotice" >
+		<hr />
+		TeamMentor @ 2007-2012 all rights reserved | a <a href="http://www.securityinnovation.com/" target="_blank">Security Innovation</a>  eKnowledge Product | <a href="mailto:teammentor@securityinnovation.com">Contact Us</a>
+	</div>
+
+</div>            
 <!--<div id="selectedGuidanceItemPopup" >
 	<div id="selectedGuidanceItemPopupContent" class="selectedGuidanceItem"> </div>
 -->
