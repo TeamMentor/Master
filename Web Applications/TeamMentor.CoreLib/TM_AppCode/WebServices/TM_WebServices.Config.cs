@@ -95,20 +95,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 																					{	
 																						return TMConfig.Current;  
 																					}																					
-
-		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]		public List<string> GetDisabledLibraries()
-																					{	
-																						return TMConfig.Current.Libraries_Disabled;  																					}		
-		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]		public List<string> SetDisabledLibraries( List<string> disabledLibraries)
-																					{
-																						var config = TMConfig.Current;
-																						config.Libraries_Disabled = disabledLibraries;
-																						if (config.SaveTMConfig())
-																							return TMConfig.Current.Libraries_Disabled;
-																						return 
-																							null;
-																					}				
-
+		
 		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]		public string		Get_Libraries_Zip_Folder()
 																					{
                                                                                         var librariesZipsFolder = TMConfig.Current.LibrariesUploadedFiles;                                                                                        

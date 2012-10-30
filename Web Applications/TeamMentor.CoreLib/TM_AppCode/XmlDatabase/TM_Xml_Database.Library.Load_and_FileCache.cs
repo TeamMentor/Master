@@ -62,13 +62,9 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		{			
 			try
 			{
-				if (TMConfig.Current.Libraries_Disabled.contains(Path.GetFileNameWithoutExtension(xmlFile)))
-					"[getGuidanceExplorerObject] Skipping xmlFile {0} because it was listed in tmConfig.Libraries_Disabled".info(xmlFile);
-				else
-				{
-					"loading :{0}".debug(xmlFile);
-					return guidanceExplorer.Load(xmlFile); 					
-				};
+				
+				"loading :{0}".debug(xmlFile);
+				return guidanceExplorer.Load(xmlFile); 									
 			}
 			catch(Exception ex)
 			{

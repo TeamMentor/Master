@@ -73,8 +73,8 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		}
 		public static void setGZipCompression_forAjaxRequests(HttpRequest request, HttpResponse response)  //based on code from http://geekswithblogs.net/rashid/archive/2007/09/15/Compress-Asp.net-Ajax-Web-Service-Response---Save-Bandwidth.aspx
 		{
-			//if (TMConfig.Current.EnableGZipForWebServices.isFalse())
-			//	return;			
+			if (TMConfig.Current.TMDebugAndDev.EnableGZipForWebServices.isFalse())
+				return;			
 			try
 			{
 				if (request.ContentType.lower().starts(new List<string>() { "text/xml", "application/json" }))

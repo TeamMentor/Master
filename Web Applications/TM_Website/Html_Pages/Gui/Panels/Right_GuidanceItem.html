@@ -10,11 +10,15 @@
 													var that = TM.Gui.GuidanceItemViewer;
 													that.showSelectedGuidanceId(that.guidanceItemId, that.guidanceItemTitle);
 												}
-
+			
 			, 	showSelectedGuidanceId 		: function()
 												{											
 													var id = TM.Gui.selectedGuidanceId;
 													var title = TM.Gui.selectedGuidanceTitle;
+													TM.Gui.GuidanceItemViewer.showGuidance(title,id);
+												}
+			, 	showGuidance 				: function(title, id)
+												{												
 													TM.Gui.GuidanceItemViewer.guidanceItemId 	= id;
 													TM.Gui.GuidanceItemViewer.guidanceItemTitle = title;
 													
@@ -56,6 +60,17 @@
                                                     
                                                     my_Gauge.track("Article Preview",title);
                                                     
+												}
+			,	showGuidanceFromMapping		: function(mapping)
+												{
+													TM.WebServices.WS_Libraries.getGuidForMapping(mapping, function(guid) 
+														 { 
+															if (isDefined($.data[guid]))
+															{
+																var guidanceItem = $.data[guid];
+																 TM.Gui.GuidanceItemViewer.showGuidance(guidanceItem.title, guidanceItem.guidanceItemId)
+															}
+														  })
 												}
             ,   handleMediaWikiText         : function()
                                                 {        

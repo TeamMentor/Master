@@ -40,11 +40,8 @@ asyncTest("get config settings", function()
 			function(tmConfigFile) 
 				{
 					ok(tmConfigFile						, "TMConfigFile ok ")					
-					ok(true								, "TMConfigFile: " 		+ JSON.stringify(tmConfigFile))					
-					ok(tmConfigFile.WebSite_Port		, "WebSite_Port: " 		+ tmConfigFile.WebSite_Port);
-					ok(tmConfigFile.WebSite_IP			, "WebSite_IP: " 		+ tmConfigFile.WebSite_IP);
-					ok(tmConfigFile.XmlLibrariesPath	, "XmlLibrariesPath: " 	+ tmConfigFile.XmlLibrariesPath);
-					ok(tmConfigFile.Libraries_Disabled	, "Libraries_Disabled: " + tmConfigFile.Libraries_Disabled);
+					ok(true								, "TMConfigFile: " 		+ JSON.stringify(tmConfigFile))										
+					ok(tmConfigFile.XmlLibrariesPath	, "XmlLibrariesPath: " 	+ tmConfigFile.XmlLibrariesPath);					
 					start();
 				});				
 	});	

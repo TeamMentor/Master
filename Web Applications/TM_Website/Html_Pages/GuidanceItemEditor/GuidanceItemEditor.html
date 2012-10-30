@@ -246,12 +246,13 @@
 						
             var getGuidFromUrl = function()
 				{
-                    var id = document.URL.split('/').pop()     //get last segment
-										 .split("#").shift();  // remove hash				     
-                    var mapping =    { mapping : id }    ;                    
-					TM.WebServices.Helper.invoke_TM_WebService("getGuidForMapping",mapping, function(data)
-						{
-							guidanceId = data;
+                    var mappingText = document.URL.split('/').pop()     //get last segment
+												  .split("#").shift();  // remove hash				     
+                    //var mapping =    { mapping : id }    ;                    
+					//TM.WebServices.Helper.invoke_TM_WebService("getGuidForMapping",mapping, function(data)
+					TM.WebServices.WS_Libraries.getGuidForMapping(mappingText, function(guid)							
+						{						
+							guidanceId = guid;
 							loadGuidanceItem();
 						});						
 				}
