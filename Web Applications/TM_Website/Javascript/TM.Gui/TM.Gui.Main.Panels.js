@@ -295,12 +295,11 @@ TM.Gui.Main.Panels.enableChromeCPUSpikeBugFix = function()
     {
         if($.browser.safari)
         {
-            TM.Events.onLoginDialogOpen .add( function () { $("#guidanceItemsTable").fadeOut(); }) ;
-            TM.Events.onLoginDialogClose.add( function () { $("#guidanceItemsTable").fadeIn(); }) ;
+            TM.Events.onLoginDialogOpen .add( function () { $("#MainTMGui").fadeOut(); }) ;
+            TM.Events.onLoginDialogClose.add( function () { $("#MainTMGui").fadeIn(); }) ;
 
-
-            TM.Events.onSignupDialogOpen .add( function () { $("#guidanceItemsTable").fadeOut(); }) ;
-            TM.Events.onSignupDialogClose.add( function () { $("#guidanceItemsTable").fadeIn(); }) ;
+            TM.Events.onSignupDialogOpen .add( function () { $("#MainTMGui").fadeOut(); }) ;
+            TM.Events.onSignupDialogClose.add( function () { $("#MainTMGui").fadeIn(); }) ;
 
         }
     }

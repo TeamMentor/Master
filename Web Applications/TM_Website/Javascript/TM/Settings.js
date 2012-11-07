@@ -1,5 +1,5 @@
 //TM Settings
-TM.tmVersion = "TM 3.2.3";
+TM.tmVersion = "TM 3.2.4 Dev.1";
 TM.ArticleTitle = "TeamMentor 3.2";
 
 TM.tmWebServices     = '/Aspx_Pages/TM_WebServices.asmx/';
@@ -10,7 +10,7 @@ TM.Gui.showLibraryStructureToAnonymous          = true;
 TM.Gui.LoadLibraryData      					= true
 TM.Gui.editMode			   						= false;
 
-TM.Debug.addTimeStampToLoadedPages 			  	= false;	 // set to true during dev
+TM.Debug.addTimeStampToLoadedPages 			  	= true;	 // set to true during dev
 TM.Debug.reuseLibraryMappingsObject 		  	= true;
 TM.Debug.load_HomePage 						  	= true;
 
