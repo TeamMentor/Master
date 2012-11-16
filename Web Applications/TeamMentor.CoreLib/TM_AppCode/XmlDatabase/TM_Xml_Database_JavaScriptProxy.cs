@@ -43,18 +43,18 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
     	public int CreateUser(NewUser newUser)			 			{ return tmXmlDatabase.createTmUser(newUser); }  	
 		public TMUser CreateUser_Random()							{ return tmXmlDatabase.tmUser(tmXmlDatabase.newUser()); }  			
     	public List<int> CreateUsers(List<NewUser> newUsers)		{ return tmXmlDatabase.createTmUsers(newUsers); }  	
-		public List<int> BatchUserCreation(string batchUserData) { return tmXmlDatabase.createTmUsers(batchUserData); }
+		public List<int> BatchUserCreation(string batchUserData)	{ return tmXmlDatabase.createTmUsers(batchUserData); }
     	public bool DeleteUser(int userId)							{ return tmXmlDatabase.deleteTmUser(userId); }  	
     	public List<bool> DeleteUsers(List<int> userIds)			{ return tmXmlDatabase.deleteTmUsers(userIds); }  	
     	public bool UpdateUser(int userId, string userName, 
 							   string firstname, string lastname, 
 							   string title, string company, 
-							   string email, int groupId) 		{ return tmXmlDatabase.updateTmUser(userId, userName, firstname, lastname, title, company, email, groupId); }  	
+							   string email, int groupId) 			{ return tmXmlDatabase.updateTmUser(userId, userName, firstname, lastname, title, company, email, groupId); }  			
 		public bool SetUserPasswordHash(int userId,  string passwordHash) 					{ return tmXmlDatabase.setUserPassword(userId, passwordHash); }
 		public int GetUserGroupId(int userId) 												{ return tmXmlDatabase.getUserGroupId(userId); }  	
 		public string GetUserGroupName(int userId) 											{ return tmXmlDatabase.getUserGroupName(userId); }  	
 		public bool SetUserGroupId(int userId, int groupId)				 					{ return tmXmlDatabase.setUserGroupId(userId, groupId); }  	
-		public List<string> GetUserRoles(int userId)											{ return tmXmlDatabase.getUserRoles(userId); }  	
+		public List<string> GetUserRoles(int userId)										{ return tmXmlDatabase.getUserRoles(userId); }  	
     	
     	//Session Management
     	public Guid Login(string username, string passwordHash)						{ return tmXmlDatabase.login(username,passwordHash);  }  	

@@ -208,8 +208,8 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 						
 			
 			return userId;    		
-    	}
-		
+    	}				
+				
     	public static bool setUserPassword(this TM_Xml_Database tmDb, int userId, string passwordHash)
 		{
 			var tmUser = tmDb.tmUser(userId);
@@ -251,9 +251,13 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
     	public static Guid login(this TM_Xml_Database tmDb, string username, string passwordHash)
     	{
 			tmDb.sleep(TM_Xml_Database.FORCED_MILLISEC_DELAY_ON_LOGIN_ACTION, false);      // to slow down brute force attacks
-    	    if(username.valid() && passwordHash.valid())
-			    if (TM_Xml_Database.TMUsersPasswordHashes[username] == passwordHash)
-				    return tmDb.registerUserSession(tmDb.tmUser(username), Guid.NewGuid());
+			if (username.valid() && passwordHash.valid())
+			{
+				var tmUser = tmDb.tmUser(username);
+				if (tmUser.notNull())
+					if (TM_Xml_Database.TMUsersPasswordHashes[username] == passwordHash)
+						return tmDb.registerUserSession(tmUser, Guid.NewGuid());
+			}
     		return Guid.Empty;    			
     	}
     	
@@ -428,6 +432,11 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		
 		public static Guid registerUserSession(this TM_Xml_Database tmDb, TMUser tmUser, Guid userGuid)
 		{
+			if (tmUser.isNull())
+			{
+				"In registerUserSession tmUser object was null".error();
+				return Guid.Empty;
+			}
 			"[Security Event] user logged in: {0}".info(tmUser.UserName);
 			TM_Xml_Database.ActiveSessions.add(userGuid, tmUser);
 			return userGuid; 
