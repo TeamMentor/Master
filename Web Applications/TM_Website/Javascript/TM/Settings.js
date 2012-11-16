@@ -1,5 +1,5 @@
 //TM Settings
-TM.tmVersion = "TM 3.2.4 Dev.1";
+TM.tmVersion = "TM 3.2.4 Dev.2";
 TM.ArticleTitle = "TeamMentor 3.2";
 
 TM.tmWebServices     = '/Aspx_Pages/TM_WebServices.asmx/';
@@ -36,7 +36,7 @@ TM.QUnit.defaultUser_Editor                     = "qa_editor";
 TM.QUnit.defaultUser_Reader                     = "qa_reader";
 TM.QUnit.defaultPassord_Admin                   = "!!tmbeta";
 TM.QUnit.defaultPassord_Editor                  = "!!tmbeta";
-TM.QUnit.defaultPassord_Reader                  = "!!tmbeta";
+TM.QUnit.defaultPassord_Reader                  = "!!TMbeta";
 
 //Individual trace options
 TM.WebServices.Helper.trace						= false;
