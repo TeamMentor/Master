@@ -38,8 +38,14 @@
 													openUrl("/html_pages/Gui/Panels/About_TeamMentor.html".add_TimeToUrl(), "About TeamMentor", 750,510)
 												}
 			,	loginPage					: function ()
-												{ 			
+												{ 		
 													loadDialog('/Html_Pages/Gui/Dialogs/Login.Html'); 
+													//document.location = "/Login";
+												}
+			,	changePwdPage				: function ()
+												{ 		
+													loadDialog('/Html_Pages/Gui/Dialogs/Change_Password.Html'); 
+													//document.location = "/Login";
 												}
 			,	signupPage					: function()
 												{ 
@@ -88,6 +94,8 @@
 															else
 																this.add_Link("Edit Mode", TM.Gui.showEditMode);
 														}				
+														
+														this.add_Link("Change Password", this.changePwdPage);
 														
 														if (TM.Gui.CurrentUser.isAdmin())
 														{															

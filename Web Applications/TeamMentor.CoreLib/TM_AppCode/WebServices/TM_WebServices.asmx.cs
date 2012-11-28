@@ -69,7 +69,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 
 		//******** javascriptProxy User Management   no admin privs needed
 		[WebMethod(EnableSession = true)]											public int CreateUser(NewUser newUser)      				{   return javascriptProxy.CreateUser(newUser); 	}
-		[WebMethod(EnableSession = true)]											public TMUser CreateUser_Random()      						{   return javascriptProxy.CreateUser_Random(); 	}		        
+		[WebMethod(EnableSession = true)]											public TMUser CreateUser_Random()      						{   return javascriptProxy.CreateUser_Random(); 	}		
 		
 		//******** javascriptProxy User Management   (all demand admin privs)     
 		[WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public TMUser GetUser_byID(int userId)        				{   return javascriptProxy.GetUser_byID(userId); ;        }
@@ -84,12 +84,13 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		[WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public bool UpdateUser(int userId, string userName, 
 																										   string firstname, string lastname, 
 																										   string title, string company, 
-																										   string email, int groupId) 		{	return javascriptProxy.UpdateUser(userId, userName, firstname, lastname, title, company, email, groupId);        }
-		[WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public bool         SetUserPasswordHash(int userId,  string passwordHash) 					{ 	return javascriptProxy.SetUserPasswordHash(userId, passwordHash) ;        }
-		[WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public int          GetUserGroupId(int userId)        			{	return javascriptProxy.GetUserGroupId(userId);        }
-		[WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public string       GetUserGroupName(int userId)        		{	return javascriptProxy.GetUserGroupName(userId);        }
-		[WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public bool         SetUserGroupId(int userId, int roleId)  	{	return javascriptProxy.SetUserGroupId(userId, roleId);        }
-		[WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public List<string> GetUserRoles(int userId)			{	return javascriptProxy.GetUserRoles(userId);        }
+																										   string email, int groupId) 			{	return javascriptProxy.UpdateUser(userId, userName, firstname, lastname, title, company, email, groupId);        }
+
+		[WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public bool         SetUserPasswordHash(int userId,  string passwordHash) 	{ 	return javascriptProxy.SetUserPasswordHash(userId, passwordHash) ;        }		
+		[WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public int          GetUserGroupId(int userId)        						{	return javascriptProxy.GetUserGroupId(userId);        }
+		[WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public string       GetUserGroupName(int userId)        					{	return javascriptProxy.GetUserGroupName(userId);        }
+		[WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public bool         SetUserGroupId(int userId, int roleId)  				{	return javascriptProxy.SetUserGroupId(userId, roleId);        }
+		[WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public List<string> GetUserRoles(int userId)								{	return javascriptProxy.GetUserRoles(userId);        }
 
         [WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public TMUser       SetUser_PostLoginView   (string userName, string postLoginView)	    {	return userName.tmUser().set_PostLoginView(postLoginView);        }
         [WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public TMUser       SetUser_PostLoginScript (string userName, string postLoginScript)   {	return userName.tmUser().set_PostLoginScript(postLoginScript);    }
@@ -105,8 +106,9 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 																												}																												
 		[WebMethod(EnableSession = true)]	public Guid Current_SessionID()										{	return tmAuthentication.sessionID;  }
 		[WebMethod(EnableSession = true)]	public TMUser Current_User()										{	return tmAuthentication.currentUser;  }
-		[WebMethod(EnableSession = true)]	public List<string> GetCurrentUserRoles()							{	return tmAuthentication.sessionID.session_UserRoles().toStringList();  }		
-		
+		[WebMethod(EnableSession = true)]	public List<string> GetCurrentUserRoles()							{	return tmAuthentication.sessionID.session_UserRoles().toStringList();  }
+		[WebMethod(EnableSession = true)]	public bool SetCurrentUserPasswordHash(string passwordHash)			{	return TM_Xml_Database.Current.setUserPassword( tmAuthentication.currentUser, passwordHash); }
+
 		//********  Libraries		
 		[WebMethod(EnableSession = true)]	public List<TM_Library> GetLibraries()										{	return javascriptProxy.GetLibraries();	}		
 		[WebMethod(EnableSession = true)]	public List<Folder_V3> 	GetAllFolders()										{	return javascriptProxy.GetFolders();	}		

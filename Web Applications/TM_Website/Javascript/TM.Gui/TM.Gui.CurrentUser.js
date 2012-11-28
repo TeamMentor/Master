@@ -82,5 +82,19 @@ TM.Gui.CurrentUser =
 		,	userName			: function()		{	return TM.Gui.CurrentUser.userData.UserName; }
 		,	loggedIn			: function()		{	return typeof(TM.Gui.CurrentUser.userName()) != "undefined"; }
 		,	isUserLoaded		: function()		{	return isDefined(TM.Gui.CurrentUser.userData.UserName); }					
+
+		,	checkPwdComplexity	: function(password, passwordConfirm, errorDiv)
+													{									
+															if (password != passwordConfirm)
+																$(errorDiv).text("Passwords don't match");
+															else if (password.length < 8)
+																$(errorDiv).text("Password must be at least 8 characters").fadeIn();
+															else if (/^[a-zA-Z0-9]+$/.test(password))	
+																$(errorDiv).text("Password must contain a non-letter and a non-number character");
+															else
+																return true;										
+															$(errorDiv).fadeIn();
+															return false;
+													}
 	}
 ;

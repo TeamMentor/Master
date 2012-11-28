@@ -56,6 +56,14 @@ function defaultErrorHandler(msg)
 }
 
 //users
+
+function getUser(userName, callback)
+{
+	var url = TM.tmWebServices + 'GetUser_byName';
+	var params =  JSON.stringify( { name : userName } );
+	invokeWebService( url, params, callback, defaultErrorHandler);
+}
+
 function getUsers(callback)
 {
 	var url = TM.tmWebServices + 'GetUsers';
@@ -92,6 +100,14 @@ function updateUser(userId, userName, firstname, lastname, title, company, email
 	invokeWebService( url, params, callback, defaultErrorHandler);
 }
 
+
+function updateCurrentUserPassword(userName, newPassword, callback)
+{
+	var url = TM.tmWebServices + 'SetCurrentUserPasswordHash';	
+	var passwordHash = SHA256(userName + newPassword);
+	var params =  JSON.stringify( { passwordHash : passwordHash  } );		
+	invokeWebService( url, params, callback, defaultErrorHandler);
+}
 function updateUserPassword(userId, userName, newPassword, callback)
 {
 	var url = TM.tmWebServices + 'SetUserPasswordHash';	

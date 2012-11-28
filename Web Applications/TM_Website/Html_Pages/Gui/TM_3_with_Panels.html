@@ -6,7 +6,10 @@
 	$(function()
 		{				
 			TM.Events.onMainGuiDivAvailable();
-			TM.Gui.Main.Panels.buildGui();					
+			TM.Gui.Main.Panels.buildGui();				
+					
+			if (location.hash === "#QA")
+				openUrl("/Html_Pages/Gui/UIAutomation/UserActions.html", "User Actions (UI Automation)",350,700);
 		});
 	
 
