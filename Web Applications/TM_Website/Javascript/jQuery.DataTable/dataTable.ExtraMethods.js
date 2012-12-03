@@ -94,11 +94,8 @@ var getColumnFromArray = function(arrayData, columnIndex)
 	var viewGuidanceItemInNewWindow = function(guidanceId)
 		{
 			if (TM.Gui.CurrentUser.isViewer())
-			{
-				//window.open('/html_pages/GuidanceItemViewer/GuidanceItemViewer.html?#ruledisplay:' + guidanceId
-                window.open('/article/' + guidanceId
-								,'_blank'
-								,'location=1,status=1,scrollbars=1,  width=1020,height=700');
+			{				
+                window.open('/article/' + guidanceId,'_blank');
 			}
 		};
 	
