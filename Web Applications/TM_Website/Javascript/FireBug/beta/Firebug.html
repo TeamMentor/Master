@@ -1,6 +1,7 @@
 
-
-Firebug should open below ...
+<div id = "firebugMessage">
+ Firebug should open below ...
+</div>
 <script type="text/javascript">
 var loadFireBug = function(F, i, r, e, b, u, g, L, I, T, E)
 	{	
@@ -17,6 +18,8 @@ var loadFireBug = function(F, i, r, e, b, u, g, L, I, T, E)
 		(F[e]('head')[0] || F[e]('body')[0]).appendChild(E);
 		E = new Image;
 		E[r]('src', I + L);		
+
+		$("#firebugMessage").fadeOut();
 	};
 	
 	jQuery(function()
@@ -31,7 +34,8 @@ var loadFireBug = function(F, i, r, e, b, u, g, L, I, T, E)
 					'../skin/xp/sprite.png',
 					'/Javascript/Firebug/beta/',
 					'#startOpened');
-		
+
+		//setTimeout(function() {  } , 1500 );
 	})
 	
 

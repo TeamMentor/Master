@@ -293,15 +293,32 @@ TM.Gui.Main.Panels.onGuiResize = function()
 
 TM.Gui.Main.Panels.enableChromeCPUSpikeBugFix = function()
     {
+		var applyFix = function()	
+			{
+				if (isUndefined(TM.Gui.DataTable.currentDataTable))
+				{					
+					setTimeout(applyFix, 250);
+				}
+				else
+				{
+					TM.Gui.DataTable.currentDataTable.fnClearTable();
+					$("#MainTMGui").fadeOut();
+				}
+			}
+		
+		var removeFix = function()
+			{
+				$("#MainTMGui").fadeIn();
+				TM.Events.onDisplayDataTable();
+			}
+
         if($.browser.safari)
         {
-            TM.Events.onLoginDialogOpen .add( function () { $("#guidanceItemsTable").fadeOut(); }) ;
-            TM.Events.onLoginDialogClose.add( function () { $("#guidanceItemsTable").fadeIn(); }) ;
+            TM.Events.onLoginDialogOpen .add(applyFix) ;
+            TM.Events.onLoginDialogClose.add(removeFix) ;
 
-
-            TM.Events.onSignupDialogOpen .add( function () { $("#guidanceItemsTable").fadeOut(); }) ;
-            TM.Events.onSignupDialogClose.add( function () { $("#guidanceItemsTable").fadeIn(); }) ;
-
+            TM.Events.onSignupDialogOpen .add(applyFix) ;
+            TM.Events.onSignupDialogClose.add(removeFix) ;
         }
     }
 ;

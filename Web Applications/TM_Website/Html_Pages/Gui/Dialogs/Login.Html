@@ -52,7 +52,7 @@
 			signupDialog.remove();
 			
 		$(function()
-			{		
+			{					
 				$("*").eq(0).css('overflow','hidden')
 				
 				delete (TM.Debug.LastLoginResult);
@@ -67,23 +67,16 @@
 														TM.Gui.CurrentUser.loadUserData();
 														TM.Events.onLoginDialogClose()
 													}
-					/*					,	focus: 	function() {
-																	console.log("on focus");
-																	$('.ui-widget-overlay').css('width','40%');//.height('40%'); 
-															   }*/
 									};				
 				
 
-				//$('.ui-widget-overlay').css('width','30%').height('30%'); 
+				
 				
 				loginDialog = "LoginDialog".$().dialog(dialogOptions);											
-								
-				//$('.ui-widget-overlay').css('width','90%').height('90%'); 
-				
+					
 				$('#UsernameBox').keypress(function(e)  { if(e.which == 13) { loginUser(); } });
 				$('#PasswordBox').keypress(function(e)  { if(e.which == 13) { loginUser(); } });
-			
-				//TM.Events.onLoginDialogOpen();
+				
 			});
 	</script>
 	<div id="LoginDialog" class="_LoginArea">							
