@@ -146,7 +146,8 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		 
 		public GuidanceItem_V3()
 		{
-			guidanceItemId= Guid.Empty.next(7.randomNumbers().toInt());			
+			//guidanceItemId= Guid.Empty.next(7.randomNumbers().toInt());			
+			guidanceItemId = Guid.NewGuid();
 		}
 		
 		public GuidanceItem_V3(GuidanceItem guidanceItem)
