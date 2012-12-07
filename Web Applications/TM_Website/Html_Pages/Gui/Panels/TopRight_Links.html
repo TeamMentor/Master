@@ -72,10 +72,7 @@
 												
 			,	add_SimpleLink 				: function(text, link)
 												{
-													this.topRightMenuDiv.$().add_Link(text).click(function()
-																					{ 
-																						window.location=link;
-																					});
+													this.topRightMenuDiv.$().add_Link(text, link);
 													this.topRightMenuDiv.$().append("    ");
 												}		
 			
@@ -99,7 +96,8 @@
 														
 														if (TM.Gui.CurrentUser.isAdmin())
 														{															
-															this.add_Link("Control Panel", this.controlPanel);
+															//this.add_Link("Control Panel", this.controlPanel);
+															this.add_SimpleLink("Control Panel", "/admin");
 														}																								
 														if(TM.Gui.CurrentUser.userName().indexOf('\\') === -1)
 															this.add_Link("Logout", TM.WebServices.WS_Users.logout);				

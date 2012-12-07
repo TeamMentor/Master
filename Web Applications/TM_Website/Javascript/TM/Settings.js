@@ -10,7 +10,7 @@ TM.Gui.showLibraryStructureToAnonymous          = true;
 TM.Gui.LoadLibraryData      					= true
 TM.Gui.editMode			   						= false;
 
-TM.Debug.addTimeStampToLoadedPages 			  	= false;	 // set false true during dev
+TM.Debug.addTimeStampToLoadedPages 			  	= true;	 // set true true during dev
 TM.Debug.reuseLibraryMappingsObject 		  	= true;
 TM.Debug.load_HomePage 						  	= true;
 

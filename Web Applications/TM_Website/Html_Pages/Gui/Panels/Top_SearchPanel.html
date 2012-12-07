@@ -3,19 +3,21 @@
 
 
 TM.Gui.TextSearch.getCurrentFilteredGuidanceItemsIds = function()
-	{
-		/*var aaData = TM.WebServices.Data.filteredDataTable.aaData.length > 0
-						? TM.WebServices.Data.filteredDataTable.aaData
-						: TM.WebServices.Data.lastDataTableData.aaData*/
-        
-		//var aaData  = TM.WebServices.Data.lastDataTableData.aaData;				
-        var aaData    = TM.WebServices.Data.dataTableDataForSelectedGuid.aaData;
-
-		return jlinq.from(aaData)
-					.select(function() 
-						{ 
-							return this[6]
-						});
+	{					
+		try
+		{
+			var aaData    = TM.WebServices.Data.dataTableDataForSelectedGuid.aaData;
+				
+			return jlinq.from(aaData)
+						.select(function() 
+							{ 
+								return this[6]
+							});
+		}
+		catch(exception)
+		{
+			return [];
+		}
 	}
 	
 TM.Gui.TextSearch.getValueAndApplyGlobalFilter = function()
