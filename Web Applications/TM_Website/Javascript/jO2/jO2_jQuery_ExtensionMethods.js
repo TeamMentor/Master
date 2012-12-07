@@ -52,8 +52,8 @@
 	
 	jQuery.fn.add_Link = function(title, url)
 									{
-                                                                          	if (typeof(url)=="undefined")
-                                                                                  	url = "#";
+										if (typeof(url)=="undefined")
+											url = "#";
 										var linkId = "link".add_Random();
 										this.append("<a id='{0}' href='{1}'>{2}</a>".format(linkId, url, title));
 										return linkId.$id();								

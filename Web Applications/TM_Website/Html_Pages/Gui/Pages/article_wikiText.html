@@ -1,7 +1,7 @@
 <HTML>
 <HEAD>
     <link  href="/aspx_Pages/scriptCombiner.ashx?s=HomePage_CSS&ct=css" 				type="text/css" rel="stylesheet" /> 
-</HEAD>
+
 <SCRIPT>
 		/*!
  * Copyright (c) 2011 Ivan Fomichev
@@ -29,11 +29,12 @@ var creole=function(j){var c={};c._a='[^\\]|~\\n]*(?:(?:\\](?!\\])|~.)[^\\]|~\\n
     <br />
     <H1><DIV id=title>#ARTICLE_TITLE</DIV></H1>
     <DIV style="DISPLAY: block" id=itemContent class=ItemContent>
-    <DIV id="guidanceItem" ></DIV>
+		<DIV id="guidanceItem" ></DIV>
 
-    <DIV style="DISPLAY: none">
-        <PRE id=rawContent>#ARTICLE_HTML</PRE>
-    </DIV>
+		<DIV style="DISPLAY: none">
+			<PRE id=rawContent>#ARTICLE_HTML</PRE>
+		</DIV>
+	</div>
     <script>
         applyWikiTransform();
     </script>
