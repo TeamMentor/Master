@@ -1,33 +1,33 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using O2.DotNetWrappers.ExtensionMethods;
 using Microsoft.Security.Application;
-using SecurityInnovation.TeamMentor.Authentication.WebServices.AuthorizationRules;
 using System.IO;
 using System.Security;
+using TeamMentor.CoreLib.WebServices;
+
 //using O2.XRules.Database.Utils;
 
 namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 {
 	public class HandleUrlRequest
 	{
-		public HttpContext context = HttpContext.Current;
+		public HttpContextBase context = HttpContextFactory.Current;
+		public HttpRequestBase request = HttpContextFactory.Request;
         public TM_WebServices tmWebServices;        
 
-        public HandleUrlRequest()
+        /*public HandleUrlRequest()
         { 
             //tmWebServices  = new TM_WebServices();
 
-            /*tmWebServices.tmAuthentication = new TM_Authentication(tmWebServices);
-            tmWebServices.tmAuthentication.disable_CSRF_Check = true;
-			tmWebServices.tmAuthentication.mapUserRoles();*/
-        }
+            //tmWebServices.tmAuthentication = new TM_Authentication(tmWebServices);
+            //tmWebServices.tmAuthentication.disable_CSRF_Check = true;
+			//tmWebServices.tmAuthentication.mapUserRoles();
+        }*/
 
         public void routeRequestUrl_for404()
         {
-            var fixedPath = context.Request.Url.AbsolutePath.replace("/html_pages/Gui/","/article/");   //deal with the cases where there is an relative link inside the html_pages/Gui viewer page
+			var fixedPath = request.Url.AbsolutePath.replace("/html_pages/Gui/", "/article/");   //deal with the cases where there is an relative link inside the html_pages/Gui viewer page
             handleUrlRewrite(fixedPath);
         }
         public void routeRequestUrl()
@@ -40,7 +40,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
         {			            
             if (TMConfig.Current.SSL_RedirectHttpToHttps && !context.Request.IsLocal && !context.Request.IsSecureConnection)
             {
-                string redirectUrl = context.Request.Url.ToString().Replace("http://", "https://");
+				string redirectUrl = request.Url.ToString().Replace("http://", "https://");
 				"Redirecting current request to https: {0}".info(context.Request.Url);
                 context.Response.Redirect(redirectUrl);
                 return true;
@@ -54,7 +54,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
             {
                 if (shouldSkipCurrentRequest())
                     return;
-                var absolutePath = uri.notNull() ? uri.AbsolutePath : context.Request.Url.AbsolutePath;
+				var absolutePath = uri.notNull() ? uri.AbsolutePath : request.Url.AbsolutePath;
                 
                 //if (absolutePath.starts("/html_pages/Gui/")) //deal with the cases where there is an relative link inside the html_pages/Gui viewer page
                 //    absolutePath = absolutePath.replace("/html_pages/Gui/", "/article/");   
@@ -100,7 +100,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                 //default:
                 //    return false;
             }
-            var absolutePath = context.Request.Url.AbsolutePath;
+			var absolutePath = request.Url.AbsolutePath;
             if (absolutePath.lower().contains("/images/"))
                 return true;
             return false;

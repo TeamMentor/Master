@@ -72,9 +72,12 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			TMUsers						= new List<TMUser>();
 			TMUsersPasswordHashes		= new O2.DotNetWrappers.DotNet.Items ();
 			ActiveSessions				= new Dictionary<Guid, TMUser>();
-							
-            setDataFromCurrentScript(TMConfig.Current.TMLibraryDataVirtualPath);
-            TM_Xml_Database.Current = new TM_Xml_Database();
+
+			setPathsAndloadData();
+
+			TM_Xml_Database.Current		= new TM_Xml_Database();
+
+			//TM_Xml_Database.Current.handleDefaultInstallActions();			
 		} 
 		
 		public TM_Xml_Database()
@@ -90,52 +93,28 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 				"[TM_Xml_Database] .ctor: {0} \n\n".error(ex.Message, ex.StackTrace);
 			}
 		} 
-		
-		public static void setDataFromCurrentScript(string virtualPathMapping)
-		{
-            if (virtualPathMapping.inValid())
-                virtualPathMapping = @"..\.."; // to allow backwards compatibility
+		/// <summary>
+		/// Executed once on AppDomain start
+		/// </summary>
+		public static void setPathsAndloadData()
+		{            
 			try
-			{				
-				"[setDataFromCurrentScript] virtualPathMapping: {0}".info(virtualPathMapping);
-                var xmlDatabasePath = TMConfig.BaseFolder
-                                              .pathCombine(virtualPathMapping)
-                                              .fullPath();															
-                //check if we can write to current
-                if (canWriteToPath(xmlDatabasePath).isFalse())
-                    xmlDatabasePath = TMConfig.BaseFolder.pathCombine("App_Data"); // default to App_Data if we can't write to provided direct
-                TM_Xml_Database.Path_XmlDatabase = xmlDatabasePath.pathCombine("Library_Data//XmlDatabase");
-				TM_Xml_Database.setLibraryPath_and_LoadDataIntoMemory(TMConfig.Current.XmlLibrariesPath);
-				"[TM_Xml_Database][setDataFromCurrentScript] TM_Xml_Database.Path_XmlDatabase: {0}".debug(TM_Xml_Database.Path_XmlDatabase);
-				"[TM_Xml_Database][setDataFromCurrentScript] TMConfig.Current.XmlLibrariesPath: {0}".debug(TMConfig.Current.XmlLibrariesPath);
-				TM_Xml_Database_Load_and_FileCache_Utils.populateGuidanceItemsFileMappings();	//only do this once			
+			{								
+				var xmlDatabasePath = TMConfig.Current.xmlDatabasePath();;
+				var xmlVirtualLibraryPath = TMConfig.Current.XmlLibrariesPath;
+				TM_Xml_Database.Path_XmlDatabase = xmlDatabasePath;
+				TM_Xml_Database.setLibraryPath_and_LoadDataIntoMemory(xmlVirtualLibraryPath);
+
+				"[TM_Xml_Database][setDataFromCurrentScript] TM_Xml_Database.Path_XmlDatabase: {0}".debug(xmlDatabasePath);
+				"[TM_Xml_Database][setDataFromCurrentScript] TMConfig.Current.XmlLibrariesPath: {0}".debug(xmlVirtualLibraryPath);
+				TM_Xml_Database_Load_and_FileCache_Utils.populateGuidanceItemsFileMappings();	//only do this once
 			}
 			catch(Exception ex)
 			{
 				"[TM_Xml_Database] static .ctor: {0} \n\n".error(ex.Message, ex.StackTrace);
 			}
 		}
-		public static bool canWriteToPath(string path)
-        {
-            try
-            {
-                var files = path.files();
-                var tempFile = path.pathCombine("tempFile".add_RandomLetters());
-                "test content".saveAs(tempFile);
-                if (tempFile.fileExists())
-                {
-                    File.Delete(tempFile);
-                    if (tempFile.fileExists().isFalse())
-                        return true;
-                }
-                "[in canWriteToPath] test failed for for path: {0}".error(path);
-            }
-            catch(Exception ex)
-            {
-                ex.log("[in canWriteToPath] for path: {0} : {1}", path, ex.Message);
-            }            
-            return false;
-        }
+		
 		public string reloadData()
 		{
 			return reloadData(null);

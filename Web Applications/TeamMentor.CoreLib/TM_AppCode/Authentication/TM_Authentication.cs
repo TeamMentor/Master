@@ -8,6 +8,7 @@ using SecurityInnovation.TeamMentor.Authentication.ExtensionMethods;
 using SecurityInnovation.TeamMentor.Authentication.AuthorizationRules;
 using SecurityInnovation.TeamMentor.Authentication.WebServices.AuthorizationRules;
 using SecurityInnovation.TeamMentor.Authentication;
+using TeamMentor.CoreLib.WebServices;
 
 //O2File:ExtensionMethods/TeamMentorUserManagement_ExtensionMethods.cs
 //O2File:UserRoleBaseSecurity.cs
@@ -54,10 +55,10 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                     if (tmWebServices.Session.notNull() && tmWebServices.Session["sessionID"].notNull())
                         return (Guid)tmWebServices.Session["sessionID"];
                     // then check the cookie
-                    var sessionCookie = System.Web.HttpContext.Current.Request.Cookies["Session"];
+					var sessionCookie = HttpContextFactory.Request.Cookies["Session"];
                     if (sessionCookie.notNull() && sessionCookie.Value.isGuid())
                         return sessionCookie.Value.guid();
-                    var sessionHeader = System.Web.HttpContext.Current.Request.Headers["Session"];
+					var sessionHeader = HttpContextFactory.Request.Headers["Session"];
                     if (sessionHeader.notNull() && sessionHeader.isGuid())
                         return sessionHeader.guid();
                     //if none is set, return an empty Guid	
@@ -66,7 +67,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                 catch//(Exception ex) // this will happen on the unit tests
                 {
                     //"sessionID.get: {0}".error(ex.Message);
-                    //System.Web.HttpContext.Current.Response.Write("\n\nERROR: {0} ---\n\n".format(ex.Message));
+					//HttpContextFactory.Response.Write("\n\nERROR: {0} ---\n\n".format(ex.Message));
                     return _sessionID;
                 }
 
@@ -84,7 +85,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
                     }                    
                     var sessionCookie = new HttpCookie("Session", value.str());
                     sessionCookie.HttpOnly = true;
-                    System.Web.HttpContext.Current.Response.Cookies.Add(sessionCookie);                    
+					HttpContextFactory.Response.Cookies.Add(sessionCookie);                    
                 }
                 catch//(Exception ex) // this will happen on the unit tests
                 {

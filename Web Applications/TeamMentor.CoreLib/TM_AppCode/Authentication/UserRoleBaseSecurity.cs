@@ -11,6 +11,8 @@ using SecurityInnovation.TeamMentor.Authentication.WebServices.AuthorizationRule
 using SecurityInnovation.TeamMentor.Authentication.ExtensionMethods;
 using O2.DotNetWrappers.ExtensionMethods;
 using O2.XRules.Database.APIs;
+using TeamMentor.CoreLib.WebServices;
+
 //O2File:UserRoles.cs 
 //O2File:ExtensionMethods\RoleBaseSecurity_ExtensionMethods.cs
 //O2File:ExtensionMethods\TeamMentorUserManagement_ExtensionMethods.cs

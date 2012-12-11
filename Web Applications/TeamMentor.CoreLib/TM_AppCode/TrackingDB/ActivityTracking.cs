@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using O2.DotNetWrappers.ExtensionMethods;
 using O2.DotNetWrappers.DotNet;
 using O2.DotNetWrappers.Windows;
+using TeamMentor.CoreLib.WebServices;
+
 //O2File:../UtilMethods.cs 
 
 namespace SecurityInnovation.TeamMentor.WebClient.WebServices

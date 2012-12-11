@@ -40,6 +40,7 @@ namespace SecurityInnovation.TeamMentor.Authentication
 			editorGroup = TMConfig.Current.WindowsAuthentication.EditorGroup.trim();
 			adminGroup = TMConfig.Current.WindowsAuthentication.AdminGroup.trim();
 		}
+
 		public Guid authenticateUserBaseOn_ActiveDirectory()
 		{
 			var identity = WindowsIdentity.GetCurrent();

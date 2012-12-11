@@ -12,6 +12,7 @@ using SecurityInnovation.TeamMentor.Authentication.WebServices.AuthorizationRule
 using O2.DotNetWrappers.ExtensionMethods;
 using O2.XRules.Database.APIs;
 using SecurityInnovation.TeamMentor.Authentication;
+using TeamMentor.CoreLib.WebServices;
 using urn.microsoft.guidanceexplorer;
 //O2File:../IJavascriptProxy.cs
 //O2File:../Authentication/UserRoleBaseSecurity.cs
@@ -66,8 +67,8 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		[WebMethod(EnableSession = true)] public List<string>   RBAC_CurrentPrincipal_Roles()		                    {	return new UserRoleBaseSecurity().currentPrincipal_Roles().toList(); }
 		[WebMethod(EnableSession = true)] public bool           RBAC_HasRole(string role)					            {	return RBAC_CurrentPrincipal_Roles().contains(role); }
 		[WebMethod(EnableSession = true)] public bool           RBAC_IsAdmin()											{	return RBAC_CurrentPrincipal_Roles().contains("Admin"); }
-		[WebMethod(EnableSession = true)] public string         RBAC_SessionCookie()						            {	return HttpContext.Current.Request.Cookies["Session"].notNull() 
-																												                    ? HttpContext.Current.Request.Cookies["Session"].Value : ""; }
+		[WebMethod(EnableSession = true)] public string         RBAC_SessionCookie()						            {	return HttpContextFactory.Request.Cookies["Session"].notNull() 
+																												                    ? HttpContextFactory.Request.Cookies["Session"].Value : ""; }
 
         [WebMethod(EnableSession = true)]		                                    public Guid		SSO_AuthenticateUser(string ssoToken)            {   return new SingleSignOn().authenticateUserBasedOn_SSOToken(ssoToken); }
         [WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public string	SSO_GetSSOTokenForUser(string userName)          {   return new SingleSignOn().getSSOTokenForUser(userName); }
@@ -84,7 +85,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 																										Guid.NewGuid().str().serialize(webEditorSecretDataFile);
 																										return webEditorSecretDataFile.load<string>();
 																										//this (below) doesn't work because the webeditor is an *.ashx and doesn't have access to the HttpContext Session object
-																										/*var session = System.Web.HttpContext.Current.Session;
+																										/*var session = HttpContextFactory.Current.Session;
 																										if (session["webEditorSecretData"].isNull())
 																											session["webEditorSecretData"] = Guid.NewGuid().str();
 																										return (string)session["webEditorSecretData"];

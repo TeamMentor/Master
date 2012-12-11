@@ -1,16 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web;
-using System.Web.Security;
-using System.Web.SessionState;
 using SecurityInnovation.TeamMentor.WebClient.WebServices;
 using O2.Kernel;
-using TeamMentor.CoreLib;
+using System.Web.Routing;
+using System.ServiceModel.Activation;
+using TeamMentor.CoreLib.WebServices;
 
-namespace SecurityInnovation.TeamMentor.Website
+namespace TeamMentor.CoreLib
 {
-	public class Global : System.Web.HttpApplication
+	public class Global : HttpApplication
 	{
 		protected void Application_Error(object sender, EventArgs e)
 		{			
@@ -22,8 +20,9 @@ namespace SecurityInnovation.TeamMentor.Website
 		}
 
 		 
-		protected void Application_Start				(object sender, EventArgs e)		
-        {
+		protected void Application_Start				(object sender, EventArgs e)
+		{
+			Admin_REST_Config.SetRouteTable();
             PublicDI.log.LogRedirectionTarget = new MemoryLogger();
         }
 		protected void Session_Start					(object sender, EventArgs e)		{ }	

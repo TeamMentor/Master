@@ -4,6 +4,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Text;
 using System.Web;
+using TeamMentor.CoreLib.WebServices;
 using XssEncoder = Microsoft.Security.Application.Encoder;
 using SecurityInnovation.TeamMentor.WebClient.WebServices;
 using O2.DotNetWrappers.ExtensionMethods;

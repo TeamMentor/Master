@@ -1,21 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using SecurityInnovation.TeamMentor.WebClient;
-using System.Web;
 using O2.DotNetWrappers.ExtensionMethods;
 using System.Web.Security;
 using SecurityInnovation.TeamMentor.WebClient.WebServices;
 using System.IO;
+using TeamMentor.CoreLib.WebServices;
 
 namespace SecurityInnovation.TeamMentor.Authentication
 {
     //Security review this code: Namely check if the use of an 32bit int is a strong enough value for the SSO Tokem
     public class SingleSignOn
     {
-        public static bool singleSignOn_Enabled;
-        public HttpContext context = HttpContext.Current;
+        public static bool singleSignOn_Enabled;		
+
         static SingleSignOn()
         {
             loadConfiguration();
@@ -29,7 +26,7 @@ namespace SecurityInnovation.TeamMentor.Authentication
         {
             try
             {
-                var ssoToken = new StreamReader(context.Request.InputStream).ReadToEnd();
+				var ssoToken = new StreamReader(HttpContextFactory.Request.InputStream).ReadToEnd();
                 //var ssoToken = context.Request.Form["ssoToken"];
                 return authenticateUserBasedOn_SSOToken(ssoToken);
             }
@@ -51,9 +48,9 @@ namespace SecurityInnovation.TeamMentor.Authentication
                     var tmUser = getUserFromSSOToken(ssoToken);
                     if (tmUser.notNull())
                     {
-                        var sessionID = tmUser.registerUserSession(Guid.NewGuid());
-                        new TM_WebServices().tmAuthentication.sessionID = sessionID;
-                        return sessionID;
+                        var sessionId = tmUser.registerUserSession(Guid.NewGuid());
+                        new TM_WebServices().tmAuthentication.sessionID = sessionId;
+                        return sessionId;
                     }
                 }
             }

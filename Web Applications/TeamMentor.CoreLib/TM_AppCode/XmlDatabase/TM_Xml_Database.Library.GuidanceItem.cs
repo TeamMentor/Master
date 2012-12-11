@@ -132,35 +132,35 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 	}
 	
 	public static class TM_Xml_Database_ExtensionMethods_XmlDataSources_GuidanceItems_Load
-	{		
-		
+	{				
 		public static TM_Xml_Database xmlDB_Load_GuidanceItems(this TM_Xml_Database tmDatabase)
 		{						
 			var pathXmlLibraries = TM_Xml_Database.Path_XmlLibraries;
-            lock (pathXmlLibraries)
-            {
-                if (pathXmlLibraries.getCacheLocation().fileExists().isFalse())
-                {
-                    "[TM_Xml_Database] in xmlDB_Load_GuidanceItems, cache file didn't exist, so creating it".debug();
-                    var o2Timer = new O2Timer("loaded GuidanceItems from disk").start();
-                    //Load GuidanceItem from the disk				
-                    foreach (var guidanceExplorer in tmDatabase.xmlDB_GuidanceExplorers())
-                    {
-                        var libraryId = guidanceExplorer.library.name.guid();
-                        var pathToLibraryGuidanceItems = pathXmlLibraries.pathCombine(guidanceExplorer.library.caption);
-                        "libraryId: {0} : {1}".info(libraryId, pathToLibraryGuidanceItems);
-                        var filesToLoad = pathToLibraryGuidanceItems.files(true, "*.xml");
-                        tmDatabase.xmlDB_Load_GuidanceItemsV3(libraryId, filesToLoad);
-                    }
+			if (pathXmlLibraries.notNull())
+				lock (pathXmlLibraries)
+				{
+					if (pathXmlLibraries.getCacheLocation().fileExists().isFalse())
+					{
+						"[TM_Xml_Database] in xmlDB_Load_GuidanceItems, cache file didn't exist, so creating it".debug();
+						var o2Timer = new O2Timer("loaded GuidanceItems from disk").start();
+						//Load GuidanceItem from the disk				
+						foreach (var guidanceExplorer in tmDatabase.xmlDB_GuidanceExplorers())
+						{
+							var libraryId = guidanceExplorer.library.name.guid();
+							var pathToLibraryGuidanceItems = pathXmlLibraries.pathCombine(guidanceExplorer.library.caption);
+							"libraryId: {0} : {1}".info(libraryId, pathToLibraryGuidanceItems);
+							var filesToLoad = pathToLibraryGuidanceItems.files(true, "*.xml");
+							tmDatabase.xmlDB_Load_GuidanceItemsV3(libraryId, filesToLoad);
+						}
 
-                    //save it to the local cache file (reduces load time from 8s to 0.5s)
-                    tmDatabase.save_GuidanceItemsCache();
-                    o2Timer.stop();
+						//save it to the local cache file (reduces load time from 8s to 0.5s)
+						tmDatabase.save_GuidanceItemsCache();
+						o2Timer.stop();
 
-                    tmDatabase.ensureFoldersAndViewsIdsAreUnique();
-                    tmDatabase.removeMissingGuidanceItemsIdsFromViews();
-                }
-            }
+						tmDatabase.ensureFoldersAndViewsIdsAreUnique();
+						tmDatabase.removeMissingGuidanceItemsIdsFromViews();
+					}
+				}
 			return tmDatabase;
 		}
 		

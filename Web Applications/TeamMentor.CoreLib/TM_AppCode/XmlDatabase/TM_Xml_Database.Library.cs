@@ -180,8 +180,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 				ex.log();
 			}
 			return libraries;
-		}
-		
+		}		
 		public static TM_Library tmLibrary(this TM_Xml_Database tmDatabase, string caption)
 		{
             if (caption.isGuid())   // if the value provided is a guid, then 
@@ -193,8 +192,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			//if (tmLibrary.isNull())
 			//	"[TM_Xml_Database] couldn't find library with caption: {0}".error(caption);
 			return tmLibrary;
-		}
-		
+		}		
 		public static TM_Library tmLibrary(this TM_Xml_Database tmDatabase, Guid libraryId)
 		{
 			var tmLibrary = (from library in tmDatabase.tmLibraries()
@@ -203,14 +201,12 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			//if (tmLibrary.isNull())
 			//	"[TM_Xml_Database] couldn't find library with id: {0}".error(libraryId);
 			return tmLibrary;		
-		}
-		
+		}		
 		public static List<Guid> ids(this List<TM_Library> libraries)
 		{
 			return (from library in libraries
 					select library.Id).toList();
-		}
-		
+		}		
 		public static List<string> names(this List<TM_Library> libraries)
 		{
 			return libraries.captions();
@@ -220,12 +216,10 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			return (from library in libraries
 					select library.Caption).toList();
 		}	
-
 		public static TM_Library new_TmLibrary(this TM_Xml_Database tmDatabase)
 		{
 			return tmDatabase.new_TmLibrary("temp_lib_{0}".format(6.randomLetters()));
-		}
-		
+		}		
 		public static TM_Library new_TmLibrary(this TM_Xml_Database tmDatabase, string libraryCaption )
 		{
 			var existingLibrary = tmDatabase.tmLibrary(libraryCaption);
@@ -237,7 +231,6 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			tmDatabase.xmlDB_NewGuidanceExplorer(Guid.NewGuid(), libraryCaption);
 			return tmDatabase.tmLibrary(libraryCaption);
 		}		
-
 	}
 	
 	//******************* Folder_V3 (was TMFolder)
@@ -251,23 +244,19 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			foreach(var tmLibrary in tmDatabase.tmLibraries())
 				tmFolders.add(tmDatabase.tmFolders_All(tmLibrary.Id));
 			return tmFolders;
-		}
-		
+		}		
 		public static List<Folder_V3> tmFolders(this TM_Library tmLibrary, TM_Xml_Database tmDatabase )
 		{
 			return tmDatabase.tmFolders(tmLibrary);
-		}
-		
+		}		
 		public static List<Folder_V3> tmFolders(this TM_Xml_Database tmDatabase, TM_Library tmLibrary)
 		{
 			return tmDatabase.tmFolders(tmLibrary.Id);
-		}
-		
+		}		
 		public static List<Folder_V3> tmFolders(this TM_Xml_Database tmDatabase, Guid libraryId)
 		{
 			return tmDatabase.tmFolders(libraryId, tmDatabase.xmlDB_Folders(libraryId));
-		}	
-		
+		}			
 		public static List<Folder_V3> tmFolders(this TM_Xml_Database tmDatabase, Guid libraryId, IList<urn.microsoft.guidanceexplorer.Folder> folders)
 		{
 			var tmFolders = new List<Folder_V3>();
@@ -279,8 +268,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 				tmFolders.add(tmFolder);		
 			}
 			return tmFolders;									
-		}
-		
+		}		
 		public static Folder_V3 tmFolder(this urn.microsoft.guidanceexplorer.Folder folder, Guid libraryId, TM_Xml_Database tmDatabase)
 		{
 			if (folder.isNull())
@@ -312,28 +300,23 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 							};
 			mapFolder(tmDatabase.tmFolders(libraryId));
 			return tmFolders;
-		}
-		
-		
+		}				
 		public static Folder_V3 tmFolder(this TM_Library tmLibrary, Guid folderId, TM_Xml_Database tmDatabase )
 		{
 			return tmDatabase.tmFolder(tmLibrary.Id, folderId);
-		}
-		
+		}		
 		public static Folder_V3 tmFolder(this TM_Xml_Database tmDatabase, Guid libraryId, Guid folderId)
 		{
 			return (from tmFolder in tmDatabase.tmFolders_All(libraryId)
 					where tmFolder.folderId == folderId
 					select tmFolder).first();
-		}
-		
+		}		
 		public static Folder_V3 tmFolder(this TM_Xml_Database tmDatabase, Guid libraryId, string name)
 		{
 			return (from tmFolder in tmDatabase.tmFolders_All(libraryId)
 					where tmFolder.name == name
 					select tmFolder).first();
-		}
-		
+		}		
 		public static Folder_V3 tmFolder(this TM_Xml_Database tmDatabase, Guid folderId)
 		{
 			foreach(var tmLibrary in tmDatabase.tmLibraries())
@@ -356,13 +339,11 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			foreach(var tmLibrary in tmDatabase.tmLibraries())
 				tmViews.add(tmDatabase.tmViews(tmLibrary));
 			return tmViews;
-		}
-		
+		}		
 		public static List<View_V3> tmViews(this TM_Xml_Database tmDatabase, TM_Library tmLibrary)
 		{
 			return tmDatabase.tmViews(tmLibrary.Id);
-		}
-		
+		}		
 		public static List<View_V3> tmViews(this TM_Xml_Database tmDatabase, Guid libraryId)
 		{
 			var tmViews = tmDatabase.tmViews(libraryId, tmDatabase.xmlDB_Folders(libraryId));					
@@ -378,8 +359,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 					tmViews.add(view.tmView(libraryId, Guid.Empty));
 			return tmViews;
 			
-		}
-		
+		}		
 		public static List<View_V3> tmViews(this TM_Xml_Database tmDatabase, Guid libraryId ,  IList<urn.microsoft.guidanceexplorer.Folder> folders)
 		{
 			var tmViews = new List<View_V3>();							
@@ -390,28 +370,24 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 				tmViews.AddRange(tmDatabase.tmViews(libraryId, folder.folder1));	
 			}
 			return tmViews;									
-		}
-		
+		}		
 		public static View_V3 tmView(this TM_Xml_Database tmDatabase, Guid viewId)
 		{			
 			return (from view in tmDatabase.tmViews()
 					where view.viewId == viewId
 					select view).first();					
-		}
-		
+		}		
 		public static List<TeamMentor_Article> getGuidanceItemsInViews(this TM_Xml_Database tmDatabase, List<View> views)
 		{
 			var viewIds = (from view in views select view.id.guid()).toList();
 			return tmDatabase.getGuidanceItemsInViews(viewIds);
-		}
-		
+		}		
 		public static List<TeamMentor_Article> getGuidanceItemsInViews(this TM_Xml_Database tmDatabase, List<Guid> viewIds)
 		{
 			return (from viewId in viewIds
 					from guidanceItemV3 in tmDatabase.getGuidanceItemsInView(viewId)
 					select guidanceItemV3).toList();
-		}
-		
+		}		
 		public static List<TeamMentor_Article> getGuidanceItemsInView(this TM_Xml_Database tmDatabase, Guid viewId)
 		{		
 			var tmView = tmDatabase.tmView(viewId);
@@ -429,8 +405,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			//	return TM_Xml_Database.GuidanceItems_InViews[viewId];
 			"[TM_Xml_Database] getGuidanceItemsInView, requested viewId was not mapped: {0}".error(viewId);
 			return new List<TeamMentor_Article>();
-		}
-		
+		}		
 		public static List<TeamMentor_Article> getAllGuidanceItemsInViews(this TM_Xml_Database tmDatabase)
 		{
 			//return (from viewId in TM_Xml_Database.GuidanceItems_InViews.Keys
@@ -714,6 +689,28 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		{
 			return (from guidanceItemV3 in guidanceItemsV3
 					select guidanceItemV3.tmGuidanceItem()).toList();
+		}
+	}
+	
+	public static class TM_Xml_Database_ExtensionMethods_TMConfig
+	{
+		public static TMConfig tmConfig(this  TM_Xml_Database tmDatabase)
+		{
+			return TMConfig.Current;
+		}
+	}
+	public static class TM_Xml_Database_ExtensionMethods_OnInstallationActions
+	{
+		public static TM_Xml_Database handleDefaultInstallActions(this TM_Xml_Database tmDatabase)
+		{
+			var tmConfig = tmDatabase.tmConfig();
+			var defaultLibrary = tmConfig.OnInstallation.DefaultLibraryToInstall_Name;
+			if (defaultLibrary.valid())
+			{
+				var library = tmDatabase.tmLibrary(defaultLibrary);
+
+			}
+			return tmDatabase;
 		}
 	}	
 }

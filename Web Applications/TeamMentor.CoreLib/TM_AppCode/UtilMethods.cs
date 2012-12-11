@@ -20,6 +20,8 @@ using O2.DotNetWrappers.DotNet;
 using System.Web.Script.Serialization;
 using SecurityInnovation.TeamMentor.Authentication.WebServices.AuthorizationRules;
 using System.Security.Permissions;
+using TeamMentor.CoreLib.WebServices;
+
 //O2Ref:System.Web.Abstractions.dll
 //O2File:TmConfig.cs
 
@@ -68,9 +70,9 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		//GZIP
 		public static void setGZipCompression_forAjaxRequests()
 		{
-			setGZipCompression_forAjaxRequests(HttpContext.Current.Request, HttpContext.Current.Response);
+			setGZipCompression_forAjaxRequests(HttpContextFactory.Request, HttpContextFactory.Response);
 		}
-		public static void setGZipCompression_forAjaxRequests(HttpRequest request, HttpResponse response)  //based on code from http://geekswithblogs.net/rashid/archive/2007/09/15/Compress-Asp.net-Ajax-Web-Service-Response---Save-Bandwidth.aspx
+		public static void setGZipCompression_forAjaxRequests(HttpRequestBase request, HttpResponseBase response)  //based on code from http://geekswithblogs.net/rashid/archive/2007/09/15/Compress-Asp.net-Ajax-Web-Service-Response---Save-Bandwidth.aspx
 		{
 			if (TMConfig.Current.TMDebugAndDev.EnableGZipForWebServices.isFalse())
 				return;			
@@ -109,9 +111,9 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		{
 			//add clickjacking protection
 			//HttpContext.Current.Response.AddHeader("X-Frame-Options", "DENY");   //this broken the openUrl GUI funcionality
-			HttpContext.Current.Response.AddHeader("X-Frame-Options", "SAMEORIGIN");
+			HttpContextFactory.Response.AddHeader("X-Frame-Options", "SAMEORIGIN");
 			//IE AntiXSS projecttion
-			HttpContext.Current.Response.AddHeader("X-XSS-Protection", "1; mode=block");			
+			HttpContextFactory.Response.AddHeader("X-XSS-Protection", "1; mode=block");			
 			
 		}
 		
@@ -225,24 +227,6 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			return (from guid in guids
 					select guid.str()).toList();
 		}		
-    }
-	
-    public class HttpContextFactory
-    {
-        public static HttpContextBase Context { get; set;}
-        public static HttpContextBase Current
-        {
-            get
-            {
-                if (Context != null)
-                    return Context;
-
-                if (HttpContext.Current == null)
-                    throw new InvalidOperationException("HttpContext not available");
-
-                return new HttpContextWrapper(HttpContext.Current);
-            }
-        }        
     }
 
 	public class KeyValue<TKey, TValue>
