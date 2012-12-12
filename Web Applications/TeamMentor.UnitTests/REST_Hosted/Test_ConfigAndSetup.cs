@@ -8,7 +8,7 @@ using O2.FluentSharp;
 
 namespace TeamMentor.UnitTests
 {	
-	[TestClass]
+	[TestClass,Ignore]
 	public class Test_ConfigAndSetup : RestClass_Hosted
 	{
 		[TestMethod]
