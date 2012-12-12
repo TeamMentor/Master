@@ -77,17 +77,18 @@ namespace O2.FluentSharp
 	     	MockRequest.Setup(request =>request.Form		).Returns(new NameValueCollection()); 
 	     	
 	     	//Response
-	     	var outputStream = new MemoryStream();
-	     	MockResponse.Setup(response =>response.OutputStream).Returns(outputStream);
-
+	     	var outputStream = new MemoryStream();			
+			MockResponse.SetupGet(response => response.Cache).Returns(new Mock<HttpCachePolicyBase>().Object);
+	     	MockResponse.Setup(response => response.OutputStream).Returns(outputStream);
+			MockResponse.Setup(response => response.Headers).Returns(new NameValueCollection());
+			MockResponse.Setup(response => response.Write(It.IsAny<string>())).Callback(
+														 (string code) => outputStream.Write(code.asciiBytes(), 0, code.size()));
+			MockResponse.Setup(response => response.AddHeader(It.IsAny<string>(), It.IsAny<string>())).Callback(
+															 (string name,string value) => MockResponse.Object.Headers.Add(name,value));			
 			//Session
 			MockSession.Setup(session => session.SessionID).Returns("".add_RandomLetters(15)); 
 	     	//var writer = new StringWriter();
-			//context.Expect(ctx => ctx.Response.Output).Returns(writer);
-	     	
-	     	MockResponse.Setup(response =>response.Write(It.IsAny<string>())).Callback((string code) => outputStream.Write(code.asciiBytes(), 0, code.size()));
-	     	var cache = new Mock<HttpCachePolicyBase>();
-            MockResponse.SetupGet(response => response.Cache).Returns(cache.Object);
+			//context.Expect(ctx => ctx.Response.Output).Returns(writer);	     		     	
 	     	return this;
 		}
 	}
