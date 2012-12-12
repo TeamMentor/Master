@@ -17,8 +17,8 @@ namespace TeamMentor.UnitTests
 
 		public RestClass_Direct()
 		{
-			TMConfig.Current.UseAppDataFolder = true;								// set the TM XMl Database folder to be 
-			HttpContextFactory.Context = new API_Moq_HttpContext().httpContext();		
+			TMConfig.Current.UseAppDataFolder = true;									// set the TM XMl Database folder to be 
+		//	HttpContextFactory.Context = new API_Moq_HttpContext().httpContext();		
 			IrestAdmin = new REST_Admin();
 		}
 	}
