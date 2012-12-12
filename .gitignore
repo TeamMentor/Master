@@ -5,13 +5,16 @@ TmUsers.xml
 webEditorSecretData.config
 # Visual Studio files # 
 *.pdb
-release
+
 Web Applications/TeamMentor.CoreLib/bin/Debug/*.xml
 obj
 *.suo
+*.user
 *.nupkg
-Web Applications/TM_Website/bin/*.xml
+*.vsmdi
+*.testsettings
 
+Web Applications/TM_Website/bin/*.xml
 Web Applications/TeamMentor.CoreLib/bin/Debug/TeamMentor.CoreLib.dll
 
 /Library_Data/XmlDatabase/TM_Libraries
@@ -21,7 +24,7 @@ Web Applications/TeamMentor.CoreLib/bin/Debug/TeamMentor.CoreLib.dll
 /Web Applications/TeamMentor.ControlPanel/obj
 /Tools/_temp
 /Web Applications/TeamMentor.ControlPanel
-*.user
+
 /Web Applications/TeamMentor.UnitTests/bin
 /Web Applications/TeamMentor.UnitTests/obj
 /Web Applications/TestResults
