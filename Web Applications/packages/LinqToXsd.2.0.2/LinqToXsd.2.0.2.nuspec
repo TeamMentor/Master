@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>LinqToXsd</id>
+    <version>2.0.2</version>
+    <title>LinqToXsd</title>
+    <authors>Harry McIntyre</authors>
+    <owners>Harry McIntyre</owners>
+    <licenseUrl>http://linqtoxsd.codeplex.com/license</licenseUrl>
+    <projectUrl>http://linqtoxsd.codeplex.com/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Microsoft developed open source tool for generating strongly typed libraries for accessing XML documents.</description>
+    <summary>Tool for generating strongly typed libraries for accessing XML documents.</summary>
+    <tags>XML XSD LinqToXsd</tags>
+  </metadata>
+</package>

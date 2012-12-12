@@ -19,3 +19,9 @@ Web Applications/TeamMentor.CoreLib/bin/Debug/TeamMentor.CoreLib.dll
 /Web Applications/Local.testsettings
 /Web Applications/TeamMentor.ControlPanel/bin
 /Web Applications/TeamMentor.ControlPanel/obj
+/Tools/_temp
+/Web Applications/TeamMentor.ControlPanel
+*.user
+/Web Applications/TeamMentor.UnitTests/bin
+/Web Applications/TeamMentor.UnitTests/obj
+/Web Applications/TestResults
