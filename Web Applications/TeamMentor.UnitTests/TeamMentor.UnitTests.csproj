@@ -59,15 +59,16 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Admin_REST\Admin_REST_Class.cs" />
+    <Compile Include="REST_Direct\Admin_REST_Class.cs" />
+    <Compile Include="Helpers\RestClass_Hosted.cs" />
     <Compile Include="Helpers\RestClass_Direct.cs" />
-    <Compile Include="Admin_REST\RBAC_Functions.cs" />
+    <Compile Include="REST_Direct\RBAC_Functions.cs" />
     <Compile Include="API_Moq_HttpContext.cs" />
-    <Compile Include="Admin_REST_Hosted\CheckConfigurationAndSetup.cs" />
+    <Compile Include="REST_Direct\CheckConfigurationAndSetup.cs" />
     <Compile Include="ExtensionMethods\Trace_ExtensionMethods.cs" />
     <Compile Include="ExtensionMethods\VS_UnitTesting_ExtensionMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Helpers\Test_ConfigAndSetup.cs" />
+    <Compile Include="REST_Hosted\Test_ConfigAndSetup.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TeamMentor.CoreLib\TeamMentor.CoreLib.csproj">

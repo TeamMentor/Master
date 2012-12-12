@@ -7,24 +7,11 @@ using O2.DotNetWrappers.ExtensionMethods;
 using O2.FluentSharp;
 
 namespace TeamMentor.UnitTests
-{
-	//TO DO
-	//[TestClass]
-	public class Test_ConfigAndSetup
+{	
+	[TestClass]
+	public class Test_ConfigAndSetup : RestClass_Hosted
 	{
-		public static Admin_REST_Host AdminRestHost { get; set; }
-		public static IREST_Admin IrestAdmin { get; set; }
-
-		
-		public static void Initialize(TestContext context)
-		{
-			"Starting Host".writeLine_Trace();
-			HttpContextFactory.Context = new API_Moq_HttpContext().httpContext();
-			AdminRestHost = new Admin_REST_Host().StartHost();
-			IrestAdmin = AdminRestHost.GetProxy();
-		}
-
-		//[TestMethod]
+		[TestMethod]
 		public void CheckWebServiceHost()
 		{
 			var html = AdminRestHost.BaseAddress.append("/Version").getHtml();
@@ -39,11 +26,16 @@ namespace TeamMentor.UnitTests
 			"sessionID (hosted access): {0}".writeLine_Trace(sessionId);
 		}
 
+		[ClassInitialize]
+		public static void Initialize(TestContext context)
+		{
+			WCFHost_Start(context);
+		}
 		[ClassCleanup]
 		public static void Cleanup()
 		{
-			"Stopping Host".writeLine_Trace();
-			AdminRestHost.StoptHost();
+			WCFHost_Stop();
 		}
+		
 	}
 }
