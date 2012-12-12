@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using O2.DotNetWrappers.ExtensionMethods;
-using O2.FluenSharp;
+using O2.FluentSharp;
 using TeamMentor.CoreLib.WebServices;
 
 namespace SecurityInnovation.TeamMentor.WebClient
@@ -22,9 +22,10 @@ namespace SecurityInnovation.TeamMentor.WebClient
         public bool         SingleSignOn_Enabled        { get; set; }
 		
 		
-        public WindowsAuthentication_Config WindowsAuthentication			{ get; set; }
-		public TMDebugAndDev_Config			TMDebugAndDev					{ get; set; }
-		public OnInstallation_Config		OnInstallation { get; set; }
+		public REST_Config					REST						{ get; set; }
+		public OnInstallation_Config		OnInstallation				{ get; set; }
+        public WindowsAuthentication_Config WindowsAuthentication		{ get; set; }						
+		public TMDebugAndDev_Config			TMDebugAndDev				{ get; set; }
 
 		public class WindowsAuthentication_Config
 		{				
@@ -45,6 +46,10 @@ namespace SecurityInnovation.TeamMentor.WebClient
 			public bool   ForceAdminPasswordReset			{ get; set; }
 			public string DefaultLibraryToInstall_Name		{ get; set; }
 			public string DefaultLibraryToInstall_Location	{ get; set; }
+		}
+		public class REST_Config
+		{
+			public bool AllowCrossDomainAccess { get; set; }			
 		}
 	}
 	
@@ -148,6 +153,8 @@ namespace SecurityInnovation.TeamMentor.WebClient
 					DefaultLibraryToInstall_Name = "",
 					DefaultLibraryToInstall_Location = ""
 				};
+
+			tmConfig.REST = new TMConfig.REST_Config();
 			return tmConfig;	
 		}
 
