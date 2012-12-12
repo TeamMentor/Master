@@ -11,8 +11,6 @@ obj
 *.suo
 *.user
 *.nupkg
-*.vsmdi
-*.testsettings
 
 Web Applications/TM_Website/bin/*.xml
 Web Applications/TeamMentor.CoreLib/bin/Debug/TeamMentor.CoreLib.dll
