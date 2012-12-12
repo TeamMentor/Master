@@ -20,11 +20,18 @@ namespace TeamMentor.UnitTests
 		}
 
 		[TestMethod]
-		public void CheckVersion()
+		public void Test_Version()
 		{
 			var version = RestAdmin.Version();
-			version.assert_IsNotNull("Version was null");
+			Assert.IsNotNull(version, "Version was null");
 			"version (direct access): {0}".writeLine_Trace(version);
+		}
+		[TestMethod]
+		public void Test_SessionID()
+		{
+			var sessionId = RestAdmin.SessionId();
+			Assert.IsNotNull(sessionId, "SessionId was null");
+			"sessionId (direct access): {0}".writeLine_Trace(sessionId);
 		}
 
 		[ClassCleanup]

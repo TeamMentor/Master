@@ -122,20 +122,20 @@ namespace TeamMentor.CoreLib.WebServices
 
 		//Admin: User Management
 
-		public string CreateUser_Random()
+		public User CreateUser_Random()
 		{
-			return TmWebServices.CreateUser_Random().serialize(false);
+			return TmWebServices.CreateUser_Random().user();
 		}
 
-		public string GetUser_byID(string userId)
+		public User GetUser_byID(string userId)
 		{
-			return TmWebServices.GetUser_byID(userId.toInt()).serialize(false);
+			return TmWebServices.GetUser_byID(userId.toInt()).user();
 		}
 
-		public string GetUsers_byID(string usersIds)
+		public List<User> GetUsers_byID(string usersIds)
 		{
 			var ids = usersIds.split(",").Select((id) => id.toInt()).toList();
-			return TmWebServices.GetUsers_byID(ids).serialize(false);
+			return TmWebServices.GetUsers_byID(ids).users();
 		}
 
 		public User GetUser_byName(string name)

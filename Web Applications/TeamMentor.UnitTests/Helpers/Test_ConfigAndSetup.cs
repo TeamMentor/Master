@@ -8,7 +8,7 @@ using O2.FluentSharp;
 
 namespace TeamMentor.UnitTests
 {
-
+	//TO DO
 	//[TestClass]
 	public class Test_ConfigAndSetup
 	{
@@ -24,7 +24,7 @@ namespace TeamMentor.UnitTests
 			IrestAdmin = AdminRestHost.GetProxy();
 		}
 
-		[TestMethod]
+		//[TestMethod]
 		public void CheckWebServiceHost()
 		{
 			var html = AdminRestHost.BaseAddress.append("/Version").getHtml();

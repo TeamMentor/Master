@@ -38,9 +38,9 @@ namespace TeamMentor.CoreLib.WebServices
 
 		//Admin: User Management				
 
-		[OperationContract] [WebGet(UriTemplate = "/createUser"				)] string		CreateUser_Random();
-		[OperationContract] [WebGet(UriTemplate = "/user/id/{userId}"		)] string		GetUser_byID(string userId);
-		[OperationContract] [WebGet(UriTemplate = "/users/id/{usersIds}"	)] string		GetUsers_byID(string usersIds);
+		[OperationContract] [WebGet(UriTemplate = "/createUser"				)] User		CreateUser_Random();
+		[OperationContract] [WebGet(UriTemplate = "/user/id/{userId}"		)] User			GetUser_byID(string userId);
+		[OperationContract] [WebGet(UriTemplate = "/users/id/{usersIds}"	)] List<User>		GetUsers_byID(string usersIds);
 		[OperationContract] [WebGet(UriTemplate = "/user/{name}"			)] User			GetUser_byName(string name);
 		[OperationContract] [WebGet(UriTemplate = "/users"					)] List<User>	GetUsers();
 		[OperationContract] [WebGet(UriTemplate = "/user/delete/{userId}"	)] bool			DeleteUser(string userId);
