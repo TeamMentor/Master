@@ -20,6 +20,14 @@ namespace TeamMentor.UnitTests.REST_Direct
 		}
 
 		[TestMethod]
+		public void Test_DefaultSettings()
+		{
+			var tmConfig = TMConfig.Current;
+			Assert.IsTrue(tmConfig.ShowContentToAnonymousUsers, "ShowContentToAnonymousUsers");
+			Assert.IsFalse(tmConfig.WindowsAuthentication.Enabled, "tmConfig.WindowsAuthentication.Enabled");
+		}
+			
+		[TestMethod]
 		public void Test_CrossDomainAccess()
 		{
 			var response = HttpContextFactory.Response;
