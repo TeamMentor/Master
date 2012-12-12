@@ -23,7 +23,7 @@ namespace TeamMentor.UnitTests.REST_Direct
 		public void Test_DefaultSettings()
 		{
 			var tmConfig = TMConfig.Current;
-			Assert.IsTrue(tmConfig.ShowContentToAnonymousUsers, "ShowContentToAnonymousUsers");
+			Assert.IsFalse(tmConfig.ShowContentToAnonymousUsers, "ShowContentToAnonymousUsers");
 			Assert.IsFalse(tmConfig.WindowsAuthentication.Enabled, "tmConfig.WindowsAuthentication.Enabled");
 		}
 			
