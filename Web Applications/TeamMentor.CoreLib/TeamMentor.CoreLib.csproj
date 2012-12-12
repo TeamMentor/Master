@@ -121,10 +121,12 @@
     <Compile Include="TM_AppCode\WebServices\TM_WebServices.GuiHelpers.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="TM_AppCode\WebServices_REST\Admin_REST.cs" />
+    <Compile Include="TM_AppCode\WebServices_REST\REST_Admin.cs" />
     <Compile Include="TM_AppCode\WebServices_REST\Admin_REST_Config.cs" />
     <Compile Include="TM_AppCode\WebServices_REST\Admin_REST_Host.cs" />
-    <Compile Include="TM_AppCode\WebServices_REST\IAdmin_REST.cs" />
+    <Compile Include="TM_AppCode\WebServices_REST\IREST_Admin.cs" />
+    <Compile Include="TM_AppCode\WebServices_REST\IREST_Tests.cs" />
+    <Compile Include="TM_AppCode\WebServices_REST\REST_Tests.cs" />
     <Compile Include="TM_AppCode\XmlDatabase\TM_Xml_Database.Virtual_Articles.cs" />
     <Compile Include="TM_AppCode\XmlDatabase\TM_Xml_Database.Library.Files.cs" />
     <Compile Include="TM_AppCode\XmlDatabase\TM_Xml_Database.cs" />

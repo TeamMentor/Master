@@ -26,14 +26,14 @@ namespace TeamMentor.CoreLib.WebServices
 
 		public Admin_REST_Host StartHost()
 		{						
-			Host = new WebServiceHost(typeof (Admin_REST), BaseAddress);						
+			Host = new WebServiceHost(typeof (REST_Admin), BaseAddress);						
 			Host.Open();						
 			return this;
 		}
 
-		public IAdmin_REST GetProxy()
+		public IREST_Admin GetProxy()
 		{
-			var webChannelFactory = new WebChannelFactory<IAdmin_REST>(BaseAddress);			
+			var webChannelFactory = new WebChannelFactory<IREST_Admin>(BaseAddress);			
 			return webChannelFactory.CreateChannel();
 		}
 

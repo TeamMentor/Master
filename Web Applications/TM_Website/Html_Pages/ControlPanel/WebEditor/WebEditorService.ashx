@@ -9,6 +9,7 @@ using O2.DotNetWrappers.ExtensionMethods;
 using O2.DotNetWrappers.Windows;
 
 using O2.XRules.Database.APIs;
+using TeamMentor.CoreLib.WebServices;
 
 public class UserRequest
 {
@@ -75,7 +76,7 @@ public class UserRequestExecution
 				result  = jsTree;
 				break;	
 			case "saveFile":							
-				var fullPath = HttpContext.Current.Server.MapPath(userRequest.file);
+				var fullPath = HttpContextFactory.Server.MapPath(userRequest.file);
                 //var fullPath = targetFolder.pathCombine("." + userRequest.file);
 				userRequest.contents.saveAs(fullPath);				
 				result = "file '{0}' saved ok at {1}".format(userRequest.file, DateTime.Now);			
@@ -88,8 +89,8 @@ public class UserRequestExecution
 				else
 					result = "ERROR: in getFile, could not find file: {0}".format(fileToGet);
 				break;
-			case "deleteFile":							
-				var fileToDelete = HttpContext.Current.Server.MapPath(userRequest.file);							
+			case "deleteFile":
+				var fileToDelete = HttpContextFactory.Server.MapPath(userRequest.file);							
 				if (fileToDelete.fileExists() && Files.deleteFile(fileToDelete))
 				{					
 					result = "Deleted file: {0}".format(userRequest.file);

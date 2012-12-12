@@ -2,7 +2,7 @@
 using System.IO;
 using O2.DotNetWrappers.ExtensionMethods;
 
-namespace O2.FluenSharp
+namespace O2.FluentSharp
 {
 	public static class Extra_ExtensionMethods
 	{

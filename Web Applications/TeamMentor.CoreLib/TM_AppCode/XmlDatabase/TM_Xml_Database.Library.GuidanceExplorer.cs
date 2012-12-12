@@ -423,8 +423,23 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		public static guidanceExplorer guidanceExplorer(this TM_Library tmLibrary, TM_Xml_Database tmDatabase)
 		{
 			return tmDatabase.xmlDB_GuidanceExplorer(tmLibrary.Id);
-		}			
+		}
 
+		public static List<Library_V3> librariesV3(this List<TM_Library> libraries)
+		{
+			return (from library in libraries select library.libraryV3()).toList();
+		}
+
+		public static Library_V3 libraryV3(this TM_Library library)
+		{
+			if (library.isNull())
+				return null;
+			return new Library_V3()
+			{
+				libraryId = library.Id,
+				name = library.Caption
+			};
+		}
 		public static Library_V3 libraryV3(this Library library)		
 		{
 			if (library.isNull())
