@@ -35,13 +35,13 @@ namespace TeamMentor.UnitTests.REST_Direct
 			var headers = response.Headers;			
 			Assert.AreEqual(0, headers.size());
 			UtilMethods.addDefaultRequestHeaders();
-			Assert.AreEqual(0, headers.size()	, "no headers expected");
+			Assert.AreEqual(2, headers.size()	, "two headers expected");
 
 			TMConfig.Current.REST.AllowCrossDomainAccess = true;
 			UtilMethods.addDefaultRequestHeaders();
-			Assert.AreEqual(1, headers.size()	, "header expected");
-			Assert.AreEqual("Access-Control-Allow-Origin", headers.Keys[0]);
-			Assert.AreEqual("*", headers[0]);
+			Assert.AreEqual(3, headers.size()	, "three headers expected");
+			Assert.AreEqual("Access-Control-Allow-Origin", headers.Keys[2]);
+			Assert.AreEqual("*", headers[2]);
 			Assert.AreEqual("*", headers["Access-Control-Allow-Origin"]);
 		}
 	}
