@@ -12,7 +12,8 @@ namespace TM_API
 	{
 		public MainModule(IRouteCacheProvider routeCacheProvider)
 		{
-			Get["/"]		= x => View["routes", routeCacheProvider.GetCache()];
+			Get["/"]			= x => View["routes", routeCacheProvider.GetCache()];
+			Get["/api"]			= x => View["routes", routeCacheProvider.GetCache()];
 			Get["/api/test"]	= x => "Test";
 
 			Get["/api/users"] = x =>
@@ -25,6 +26,11 @@ namespace TM_API
 			{
 				var model = new REST_Admin();
 				return View["reload.cshtml", model];
+			};
+			Get["/api/users/new"] = x =>
+			{
+				var model = new REST_Admin();
+				return View["user_new.cshtml", model];
 			};
 		}
 	}

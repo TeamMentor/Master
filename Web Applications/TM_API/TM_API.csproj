@@ -35,6 +35,7 @@
   <ItemGroup>
     <Content Include="Global.asax" />
     <Content Include="Views\reload.cshtml" />
+    <Content Include="Views\user_new.cshtml" />
     <None Include="Views\routes.cshtml" />
     <Content Include="Web.config" />
   </ItemGroup>
