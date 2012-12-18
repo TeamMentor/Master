@@ -9,13 +9,13 @@ namespace TeamMentor.UnitTests
 {	
 	public class RestClass_Direct
 	{		
-		public static IREST_Admin IrestAdmin { get; set; }
+		public static IREST_Admin IRESTAdmin { get; set; }
 
 		public RestClass_Direct()
 		{
 			TMConfig.Current.UseAppDataFolder = true;									// set the TM XMl Database folder to be 
 			HttpContextFactory.Context = new API_Moq_HttpContext().httpContext();		
-			IrestAdmin = new REST_Admin();
+			IRESTAdmin = new REST_Admin();
 		}
 	}
 }

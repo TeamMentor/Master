@@ -173,6 +173,8 @@ namespace TeamMentor.CoreLib.WebServices
 
 		public static User user(this TMUser tmUser)
 		{
+			if (tmUser.isNull())
+				return null;
 			return new User()
 				{
 					UserId = tmUser.UserID,
