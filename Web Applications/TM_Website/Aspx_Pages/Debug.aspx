@@ -49,7 +49,7 @@
             var color = "black";
             if (line.starts("DEBUG:"))
                 color = "green";
-            else if (line.starts("ERROR:"))
+            else if (line.starts(new List<string> {"ERROR:", "Exception:"}))
                 color = "red";
             Response.Write("<span style='color:{0}'>{1}<span><br/>".format(color,line.htmlEncode()));
         }

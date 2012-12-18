@@ -1,9 +1,11 @@
 using System;
 using System.IO;
+using System.Security.Permissions;
 using System.Web;
 using System.Linq;
 using System.Collections.Generic;
 using System.Text;
+using SecurityInnovation.TeamMentor.Authentication.WebServices.AuthorizationRules;
 using SecurityInnovation.TeamMentor.WebClient.WebServices;
 //using Moq;
 using O2.Kernel;
@@ -296,7 +298,8 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			}*/
 			return null;
 		}
-		
+
+		[Admin(SecurityAction.Demand)]
 		public static bool xmlDB_Libraries_ImportFromZip(this TM_Xml_Database tmDatabase, string zipFileToImport, string unzipPassword)
 		{
             try
@@ -316,18 +319,17 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 					// handle the zips we get from GitHub
 
 					var tempDir = "_unzip".tempDir();
-					var fastZip = new ICSharpCode.SharpZipLib.Zip.FastZip();
-					fastZip.Password = unzipPassword ?? unzipPassword;
-					fastZip.ExtractZip(zipFileToImport, tempDir, "");
+					var fastZip = new ICSharpCode.SharpZipLib.Zip.FastZip {Password = unzipPassword ?? ""};
+	                fastZip.ExtractZip(zipFileToImport, tempDir, "");
 
 					var gitZipFolderName = tempDir.folders().first().folderName();				// the first folder should be the one created by gitHub's zip
-					var xmlFile_location1 = tempDir.pathCombine(gitZipFolderName + ".xml");
-					var xmlFile_location2 = tempDir.pathCombine(gitZipFolderName).pathCombine(gitZipFolderName + ".xml");
-					if (xmlFile_location1.fileExists() || xmlFile_location2.fileExists())		// if these exists here, just copy the unziped files directly
+					var xmlFile_Location1 = tempDir.pathCombine(gitZipFolderName + ".xml");
+					var xmlFile_Location2 = tempDir.pathCombine(gitZipFolderName).pathCombine(gitZipFolderName + ".xml");
+					if (xmlFile_Location1.fileExists() || xmlFile_Location2.fileExists())		// if these exists here, just copy the unziped files directly
 					{ 
 						Files.copyFolder(tempDir,currentLibraryPath,true,true,".git");
-						if (xmlFile_location1.fileExists())
-							Files.copy(xmlFile_location1, currentLibraryPath.pathCombine(gitZipFolderName));
+						if (xmlFile_Location1.fileExists())
+							Files.copy(xmlFile_Location1, currentLibraryPath.pathCombine(gitZipFolderName));
 						return true;
 					}
 					//if (zipFileToImport.extension() == ".master")

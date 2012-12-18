@@ -77,7 +77,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 
 			TM_Xml_Database.Current		= new TM_Xml_Database();
 
-			//TM_Xml_Database.Current.handleDefaultInstallActions();			
+			TM_Xml_Database.Current.handleDefaultInstallActions();			
 		} 
 		
 		public TM_Xml_Database()

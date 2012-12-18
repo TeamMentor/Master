@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Security.Permissions; 
 using Microsoft.Security.Application;
+using SecurityInnovation.TeamMentor.Authentication.ExtensionMethods;
 using SecurityInnovation.TeamMentor.WebClient.WebServices;
 //using Moq;
 using O2.Kernel;
@@ -13,6 +14,7 @@ using O2.DotNetWrappers.DotNet;
 using O2.DotNetWrappers.Windows;
 using urn.microsoft.guidanceexplorer;
 using urn.microsoft.guidanceexplorer.guidanceItem;
+using SecurityInnovation.TeamMentor.Authentication.WebServices.AuthorizationRules;
 //O2File:TM_Xml_Database.cs
 //O2File:../O2_Scripts_APIs/_O2_Scripts_Files.cs
 //O2Ref:HtmlSanitizationLibrary.dll
@@ -707,8 +709,31 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			var defaultLibrary = tmConfig.OnInstallation.DefaultLibraryToInstall_Name;
 			if (defaultLibrary.valid())
 			{
-				var library = tmDatabase.tmLibrary(defaultLibrary);
-
+				UserGroup.Admin.setThreadPrincipalWithRoles();		//elevate privileges to install library
+				try
+				{
+					var library = tmDatabase.tmLibrary(defaultLibrary);
+					if (library.isNull())
+					{
+						var installUrl = tmConfig.OnInstallation.DefaultLibraryToInstall_Location;
+						"[handleDefaultInstallActions] installing default Library {0} from {1}".info(defaultLibrary, installUrl);
+						if (tmDatabase.xmlDB_Libraries_ImportFromZip(installUrl, ""))
+						{
+							"[handleDefaultInstallActions]  library {0} installed ok".info(defaultLibrary);
+							tmDatabase.reloadData();
+						}
+						else
+							"[handleDefaultInstallActions]  failed to install default library {0}".error(defaultLibrary);
+					}
+				}
+				catch (Exception ex)
+				{
+					ex.log("[in handleDefaultInstallActions]");
+				}
+				finally
+				{
+					UserGroup.Anonymous.setThreadPrincipalWithRoles();		// reset back user roles
+				}				
 			}
 			return tmDatabase;
 		}
