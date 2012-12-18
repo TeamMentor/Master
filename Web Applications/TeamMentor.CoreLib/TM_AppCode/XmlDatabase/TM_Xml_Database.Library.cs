@@ -50,7 +50,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			GuidanceExplorers_XmlFormat = pathXmlLibraries.getGuidanceExplorerObjects();
 			pathXmlLibraries.loadGuidanceItemsFromCache();
 			//mapGuidanceItemsViews();
-			loadTmUserObjects(pathXmlDatabase);
+			loadAndCheckUserDatabase(pathXmlDatabase);
 			return true;					
 		}
 		

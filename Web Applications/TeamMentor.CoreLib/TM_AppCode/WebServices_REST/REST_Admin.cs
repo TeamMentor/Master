@@ -120,7 +120,7 @@ namespace TeamMentor.CoreLib.WebServices
 
 		//Admin: User Management
 
-		public User				CreateUser_Random()
+		public User				users_New()
 		{
 			return TmWebServices.CreateUser_Random().user();
 		}
@@ -147,7 +147,13 @@ namespace TeamMentor.CoreLib.WebServices
 			return TmWebServices.DeleteUser(userId.toInt());
 		}
 
-
+		public string admin_ReloadCache()
+		{
+			UserGroup.Admin.setThreadPrincipalWithRoles();
+			var response = TmWebServices.XmlDatabase_ReloadData();
+			UserGroup.Anonymous.setThreadPrincipalWithRoles();
+			return response;
+		}
 	}
 
 	public static class TMUser_ExtensionMethod

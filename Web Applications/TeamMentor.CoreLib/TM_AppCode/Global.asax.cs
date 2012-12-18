@@ -5,6 +5,7 @@ using O2.Kernel;
 using System.Web.Routing;
 using System.ServiceModel.Activation;
 using TeamMentor.CoreLib.WebServices;
+using O2.Kernel.InterfacesBaseImpl;
 
 namespace TeamMentor.CoreLib
 {
@@ -22,8 +23,8 @@ namespace TeamMentor.CoreLib
 		 
 		protected void Application_Start				(object sender, EventArgs e)
 		{
-			Admin_REST_Config.SetRouteTable();
-            PublicDI.log.LogRedirectionTarget = new MemoryLogger();
+			PublicDI.log.LogRedirectionTarget = new MemoryLogger();
+			Admin_REST_Config.SetRouteTable();            
         }
 		protected void Session_Start					(object sender, EventArgs e)		{ }	
 

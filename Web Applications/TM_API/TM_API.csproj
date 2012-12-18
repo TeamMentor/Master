@@ -34,6 +34,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <Content Include="Views\reload.cshtml" />
     <None Include="Views\routes.cshtml" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -70,7 +71,7 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\razor-simple.cshtml" />
+    <Content Include="Views\users.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainModule.cs" />

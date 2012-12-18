@@ -113,8 +113,12 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			//HttpContext.Current.Response.AddHeader("X-Frame-Options", "DENY");   //this broken the openUrl GUI funcionality
 			HttpContextFactory.Response.AddHeader("X-Frame-Options", "SAMEORIGIN");
 			//IE AntiXSS projecttion
-			HttpContextFactory.Response.AddHeader("X-XSS-Protection", "1; mode=block");			
-			
+			HttpContextFactory.Response.AddHeader("X-XSS-Protection", "1; mode=block");
+
+			if (TMConfig.Current.REST.AllowCrossDomainAccess)
+			{
+				HttpContextFactory.Response.AddHeader("Access-Control-Allow-Origin", "*");
+			}
 		}
 		
 	}

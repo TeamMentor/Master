@@ -44,7 +44,20 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			TM_Xml_Database.TMUsers = tmUsersXmlFile.load<List<TMUser>>();	
 			TM_Xml_Database.TMUsersPasswordHashes = tmUsersPasswordsXmlFile.load<O2.DotNetWrappers.DotNet.Items>();				
 		}
-		
+
+		public static void loadAndCheckUserDatabase(string xmlDatabasePath)
+		{
+			loadTmUserObjects(xmlDatabasePath);
+			//check for invalid users
+			foreach (var tmUser in TM_Xml_Database.TMUsers.toList())
+				if (tmUser.UserID == 0)
+				{
+					"[loadAndCheckUserDatabase] there was an account with userId=0, so removing it".error();
+					TM_Xml_Database.TMUsers.remove(tmUser);
+				}
+			saveTmUserObjects(xmlDatabasePath);
+		}
+
 		//[PrincipalPermission(SecurityAction.Demand, Role = "ManageUsers")] 
 		public static void saveTmUserObjects(string xmlDatabasePath)
 		{

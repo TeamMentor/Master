@@ -39,7 +39,7 @@ namespace TeamMentor.CoreLib.WebServices
 
 		//Admin: User Management				
 
-		[OperationContract] [WebGet(UriTemplate = "/createUser"				)]					User		CreateUser_Random();
+		[OperationContract] [WebGet(UriTemplate = "/users/new"				)]					User		users_New();
 		[OperationContract] [WebGet(UriTemplate = "/user/id/{userId}"		)]					User		GetUser_byID(string userId);
 		[OperationContract] [WebGet(UriTemplate = "/users/id/{usersIds}"	)]					List<User>	GetUsers_byID(string usersIds);
 		[OperationContract] [WebGet(UriTemplate = "/user/{name}"			)]					User		GetUser_byName(string name);
@@ -48,6 +48,8 @@ namespace TeamMentor.CoreLib.WebServices
 		[OperationContract] [WebInvoke(UriTemplate = "/user/delete/{userId}",	Method = "PUT")]	bool		DeleteUser(string userId);
 		
 
+		//Admin
+		[OperationContract] [WebInvoke(UriTemplate = "/admin/reloadCache",	Method = "PUT")]		string		admin_ReloadCache();
 
 		//Views 
 		[OperationContract] [WebGet(UriTemplate = "/users/.html"			)] Stream		users_html();

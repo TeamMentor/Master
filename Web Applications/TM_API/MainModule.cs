@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using Nancy;
 using Nancy.Routing;
+using TeamMentor.CoreLib.WebServices;
 
 namespace TM_API
 {
@@ -12,12 +13,18 @@ namespace TM_API
 		public MainModule(IRouteCacheProvider routeCacheProvider)
 		{
 			Get["/"]		= x => View["routes", routeCacheProvider.GetCache()];
-			Get["/test"]	= x => "Test";
+			Get["/api/test"]	= x => "Test";
 
-			Get["/razor-simple"] = x =>
+			Get["/api/users"] = x =>
+			{				
+				var model = new REST_Admin();
+				return View["users.cshtml", model];
+			};
+
+			Get["/api/reload"] = x =>
 			{
-				var model = new  { FirstName = "Fraaaaaank" };
-				return View["razor-simple.cshtml", model];
+				var model = new REST_Admin();
+				return View["reload.cshtml", model];
 			};
 		}
 	}
