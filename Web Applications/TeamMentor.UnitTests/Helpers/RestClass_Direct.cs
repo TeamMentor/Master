@@ -1,6 +1,4 @@
-﻿using System.ServiceModel;
-using System.ServiceModel.Web;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using O2.XRules.Database.APIs;
 using SecurityInnovation.TeamMentor.WebClient;
 using TeamMentor.CoreLib.WebServices;
