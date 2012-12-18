@@ -1,5 +1,9 @@
 ﻿using System;
 using System.IO;
+using System.Text;
+using System.Xml;
+using System.Xml.XPath;
+using System.Xml.Xsl;
 using O2.DotNetWrappers.ExtensionMethods;
 
 namespace O2.FluentSharp
@@ -33,4 +37,47 @@ namespace O2.FluentSharp
 			return false;
 		}
 	}
+
+	public static class Extra_ExtensionMethods_Serialization
+	{
+		public static string toXml(this object _object)
+		{
+			return _object.serialize(false);
+		}
+	}
+
+	public static class Extra_ExtensionMethods_Stream
+	{
+		public static MemoryStream stream_UFT8(this string text)
+		{
+			return text.valid()
+				       ? new MemoryStream(Encoding.UTF8.GetBytes(text))
+				       : new MemoryStream();
+		}
+	}
+	public static class Extra_ExtensionMethods_XSL
+	{
+		public static string xsl_Transform(this string xmlContent, string xstlFile)
+		{
+			try
+			{
+				var xslTransform = new XslCompiledTransform();
+
+				xslTransform.Load(xstlFile);
+
+				var xmlReader = new XmlTextReader(new StringReader(xmlContent));
+				var xpathNavigator = new XPathDocument(xmlReader);
+				var stringWriter = new StringWriter();
+
+				xslTransform.Transform(xpathNavigator, new XsltArgumentList(), stringWriter);
+				return stringWriter.str();
+			}
+			catch (Exception ex)
+			{
+				ex.log("[in xsl_Transform]");
+				return "";
+			}
+		}
+	}
+	
 }

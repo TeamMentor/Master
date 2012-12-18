@@ -48,6 +48,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.ServiceModel.Activation" />
@@ -125,6 +126,8 @@
     <Compile Include="TM_AppCode\WebServices_REST\Admin_REST_Config.cs" />
     <Compile Include="TM_AppCode\WebServices_REST\Admin_REST_Host.cs" />
     <Compile Include="TM_AppCode\WebServices_REST\IREST_Admin.cs" />
+    <Compile Include="TM_AppCode\WebServices_REST\REST_Tests.cs" />
+    <Compile Include="TM_AppCode\WebServices_REST\REST_User_Management.cs" />
     <Compile Include="TM_AppCode\XmlDatabase\TM_Xml_Database.Virtual_Articles.cs" />
     <Compile Include="TM_AppCode\XmlDatabase\TM_Xml_Database.Library.Files.cs" />
     <Compile Include="TM_AppCode\XmlDatabase\TM_Xml_Database.cs" />

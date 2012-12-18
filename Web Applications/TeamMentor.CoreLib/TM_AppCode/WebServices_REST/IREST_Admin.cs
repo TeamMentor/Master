@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.Serialization;
 using System.ServiceModel.Web;
 using System.ServiceModel;
@@ -38,15 +39,18 @@ namespace TeamMentor.CoreLib.WebServices
 
 		//Admin: User Management				
 
-		[OperationContract] [WebGet(UriTemplate = "/createUser"				)] User		CreateUser_Random();
-		[OperationContract] [WebGet(UriTemplate = "/user/id/{userId}"		)] User			GetUser_byID(string userId);
-		[OperationContract] [WebGet(UriTemplate = "/users/id/{usersIds}"	)] List<User>		GetUsers_byID(string usersIds);
-		[OperationContract] [WebGet(UriTemplate = "/user/{name}"			)] User			GetUser_byName(string name);
-		[OperationContract] [WebGet(UriTemplate = "/users"					)] List<User>	GetUsers();
-		[OperationContract] [WebGet(UriTemplate = "/user/delete/{userId}"	)] bool			DeleteUser(string userId);
+		[OperationContract] [WebGet(UriTemplate = "/createUser"				)]					User		CreateUser_Random();
+		[OperationContract] [WebGet(UriTemplate = "/user/id/{userId}"		)]					User		GetUser_byID(string userId);
+		[OperationContract] [WebGet(UriTemplate = "/users/id/{usersIds}"	)]					List<User>	GetUsers_byID(string usersIds);
+		[OperationContract] [WebGet(UriTemplate = "/user/{name}"			)]					User		GetUser_byName(string name);
+		[OperationContract] [WebGet(UriTemplate = "/users"					)]					List<User>	users();
 
-		//[OperationContract] [WebGet(UriTemplate = "/user/test"				)]	User test();
+		[OperationContract] [WebInvoke(UriTemplate = "/user/delete/{userId}",	Method = "PUT")]	bool		DeleteUser(string userId);
+		
 
+
+		//Views 
+		[OperationContract] [WebGet(UriTemplate = "/users/.html"			)] Stream		users_html();
 	}
 
 	[DataContract]

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
 using System.ServiceModel.Activation;
+using System.ServiceModel.Web;
 using System.Text;
 using System.Web;
 using System.Web.Routing;
@@ -16,8 +17,7 @@ namespace TeamMentor.CoreLib.WebServices
 {
 	[ServiceBehavior				(InstanceContextMode = InstanceContextMode.PerCall			  ), 
      AspNetCompatibilityRequirements(RequirementsMode	 = AspNetCompatibilityRequirementsMode.Allowed)]
-
-	public class REST_Admin : IREST_Admin
+	public partial class REST_Admin : IREST_Admin
 	{
 		public HttpContextBase		Context			 { get; set; }	
 		public HttpSessionStateBase Session			 { get; set; }	
@@ -48,7 +48,7 @@ namespace TeamMentor.CoreLib.WebServices
 		{
 			return TmWebServices.GetLibraries().librariesV3();
 		}
-		public Library_V3 library(string nameOrId)
+		public Library_V3		library(string nameOrId)
 		{
 			var library = (nameOrId.isGuid())
 							? TmWebServices.GetLibraryById(nameOrId.guid()).libraryV3()
@@ -57,111 +57,97 @@ namespace TeamMentor.CoreLib.WebServices
 				        ? TmWebServices.GetFolderStructure_Library(library.libraryId)
 				        : null;
 		}
-		public List<Folder_V3> folders(string libraryId)
+		public List<Folder_V3>	folders(string libraryId)
 		{
 			return TmWebServices.GetFolders(libraryId.guid());
 		}
-		public View_V3 view(string viewId)
+		public View_V3			view(string viewId)
 		{
 			return TmWebServices.GetViewById(viewId);
 		}
+
 		//public TeamMentor_Article article(string articleId)
-		public string article(string articleId)
+		public string			article(string articleId)
 		{
 			var article = TmWebServices.GetGuidanceItemById(articleId);
 			return article.serialize(false);
 			//			return article;		// this was failing
 		}
-		public string article_Html(string articleId)
+		public string			article_Html(string articleId)
 		{			
 			return TmWebServices.GetGuidanceItemHtml(articleId.guid());
 		}
 
 		//User Session 
-		public string SessionId()
+		public string			SessionId()
 		{			
 			return Session.SessionID;			
 		}
-		public Guid Login(string username, string password)
+		public Guid				Login(string username, string password)
 		{
 			return TmWebServices.Login_PwdInClearText(username, password);
 		}
-		public Guid Logout()
+		public Guid				Logout()
 		{
 			return TmWebServices.Logout();
 		}
 
-
-
-
 		//RBAC
-		public string		RBAC_CurrentIdentity_Name()
+		public string			RBAC_CurrentIdentity_Name()
 		{
 			return TmWebServices.RBAC_CurrentIdentity_Name();
 		}
-		public bool			RBAC_CurrentIdentity_IsAuthenticated()
+		public bool				RBAC_CurrentIdentity_IsAuthenticated()
 		{
 			return TmWebServices.RBAC_CurrentIdentity_IsAuthenticated();
 		}
-		public List<string> RBAC_CurrentPrincipal_Roles()
+		public List<string>		RBAC_CurrentPrincipal_Roles()
 		{
 			return TmWebServices.RBAC_CurrentPrincipal_Roles();
 		}
-		public bool			RBAC_HasRole(string role)
+		public bool				RBAC_HasRole(string role)
 		{
 			return TmWebServices.RBAC_HasRole(role);
 		}
-		public bool			RBAC_IsAdmin()
+		public bool				RBAC_IsAdmin()
 		{
 			return TmWebServices.RBAC_IsAdmin();
 		}
-		public string		RBAC_SessionCookie()
+		public string			RBAC_SessionCookie()
 		{
 			return TmWebServices.RBAC_SessionCookie();
 		}
 
 		//Admin: User Management
 
-		public User CreateUser_Random()
+		public User				CreateUser_Random()
 		{
 			return TmWebServices.CreateUser_Random().user();
 		}
-
-		public User GetUser_byID(string userId)
+		public User				GetUser_byID(string userId)
 		{
 			return TmWebServices.GetUser_byID(userId.toInt()).user();
 		}
-
-		public List<User> GetUsers_byID(string usersIds)
+		public List<User>		GetUsers_byID(string usersIds)
 		{
 			var ids = usersIds.split(",").Select((id) => id.toInt()).toList();
 			return TmWebServices.GetUsers_byID(ids).users();
 		}
-
-		public User GetUser_byName(string name)
+		public User				GetUser_byName(string name)
 		{
 			return TmWebServices.GetUser_byName(name).user();
-		}
-
-		public List<User> GetUsers()
+		}		
+		public List<User>		users()
 		{
 			return TmWebServices.GetUsers().users();
 		}
 
-		/*		public List<TMUser> CreateUsers(List<NewUser> newUsers)
-		{
-			return TmWebServices.RBAC_CurrentIdentity_Name();
-		}
-
-		public List<TMUser> BatchUserCreation(string batchUserData)
-		{
-			return TmWebServices.RBAC_CurrentIdentity_Name();
-		}*/
-
-		public bool DeleteUser(string userId)
+		public bool				DeleteUser(string userId)
 		{
 			return TmWebServices.DeleteUser(userId.toInt());
-		}		
+		}
+
+
 	}
 
 	public static class TMUser_ExtensionMethod
@@ -184,6 +170,20 @@ namespace TeamMentor.CoreLib.WebServices
 					LastName = tmUser.LastName,
 					Company = tmUser.Company
 				};
+		}
+	}
+
+	public static class IREST_Admin_ExtensionMethods
+	{
+		public static IREST_Admin response_ContentType_Html(this IREST_Admin iRest_Admin)
+		{
+			return iRest_Admin.response_ContentType("text/html");
+		}
+
+		public static IREST_Admin response_ContentType(this IREST_Admin iRest_Admin, string contentType)
+		{
+			WebOperationContext.Current.OutgoingResponse.ContentType = contentType;
+			return iRest_Admin;
 		}
 	}
 }

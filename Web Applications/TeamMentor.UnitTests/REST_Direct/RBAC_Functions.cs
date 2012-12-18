@@ -20,7 +20,7 @@ namespace TeamMentor.UnitTests
 		}
 		[TestMethod]	public void Test_GetUsers()
 		{
-			var users = IRESTAdmin.GetUsers();
+			var users = IRESTAdmin.users();
 			Assert.IsNotNull(users, "users object was null");
 			Assert.IsTrue(users.size() > 0 , "users object was empty");
 			"There were {0} users fetched: {0}".writeLine_Trace(users.size());
