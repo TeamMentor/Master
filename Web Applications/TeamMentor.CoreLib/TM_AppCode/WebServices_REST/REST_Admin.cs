@@ -83,9 +83,9 @@ namespace TeamMentor.CoreLib.WebServices
 		{			
 			return Session.SessionID;			
 		}
-		public Guid				Login(string username, string password)
+		public Guid			login(TM_Credentials credentials)
 		{
-			return TmWebServices.Login_PwdInClearText(username, password);
+			return TmWebServices.Login_PwdInClearText(credentials.UserName, credentials.Password);
 		}
 		public Guid				Logout()
 		{

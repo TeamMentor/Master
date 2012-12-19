@@ -117,7 +117,9 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 
 			if (TMConfig.Current.REST.AllowCrossDomainAccess)
 			{
-				HttpContextFactory.Response.AddHeader("Access-Control-Allow-Origin", "*");
+				HttpContextFactory.Response.AddHeader("Access-Control-Allow-Origin" , "*");
+				HttpContextFactory.Response.AddHeader("Access-Control-Allow-Methods", "PUT, GET, POST, DELETE, OPTIONS");
+				HttpContextFactory.Response.AddHeader("Access-Control-Allow-Headers", "Content-Type");				
 			}
 		}
 		

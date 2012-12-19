@@ -13,12 +13,7 @@
 			@foreach (var route in @module.Value) {
 				<li><a href='@Url.Content("~" + route.Item2.Path)'>@route.Item2.Path</a></li>
 			}
-		}
-        <li><a href='thiswillgivea404'>404</a></li>
-        <li><a href='@Url.Content("~/content/face.png")'>An image</a></li>
-        <li><a href='@Url.Content("~/moo/face.png")'>An image using alternative content convention</a></li>
-        <li><a href='@Url.Content("~/content/main.css")'>CSS</a></li>
-        <li><a href='@Url.Content("~/content/scripts.js")'>Some javascript</a></li>
+		}        
 	</ul>
 
 </body>

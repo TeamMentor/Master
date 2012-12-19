@@ -6,7 +6,6 @@ using System.ServiceModel.Web;
 using System.ServiceModel;
 using System.Web.Routing;
 using SecurityInnovation.TeamMentor.WebClient;
-using SecurityInnovation.TeamMentor.WebClient.WebServices;
 
 namespace TeamMentor.CoreLib.WebServices
 {
@@ -24,9 +23,10 @@ namespace TeamMentor.CoreLib.WebServices
 		[OperationContract][WebGet(UriTemplate = "/article/html/{articleId}")]	string				article_Html(string articleId);
 
 		//User Session
-		[OperationContract][WebGet(UriTemplate = "/SessionId"	)]	string SessionId();
-		[OperationContract][WebGet(UriTemplate = "/Logout"						)]	Guid Logout();
-		[OperationContract][WebGet(UriTemplate = "/Login/{username}/{password}"	)]	Guid Login(string username, string password);
+		[OperationContract][WebGet	 (UriTemplate = "/SessionId"					)]	string		SessionId();
+		[OperationContract][WebGet	 (UriTemplate = "/Logout"						)]	Guid		Logout();
+		//[OperationContract][WebGet(UriTemplate = "/Login/{username}/{password}"	)]	Guid		Login(string username, string password);
+		[OperationContract][WebInvoke(UriTemplate = "/login", Method = "POST",ResponseFormat = WebMessageFormat.Json)]	Guid		login(TM_Credentials credentials);
 
 		//RBAC
 		[OperationContract][WebGet(UriTemplate = "/User_Name"					)]	string			RBAC_CurrentIdentity_Name();
@@ -64,5 +64,12 @@ namespace TeamMentor.CoreLib.WebServices
 		[DataMember] public string LastName	 { get; set; }
 		[DataMember] public string Email	 { get; set; }
 		[DataMember] public string Company	 { get; set; }
+	}
+
+	[DataContract]
+	public class TM_Credentials
+	{
+		[DataMember] public string UserName  { get; set; }
+		[DataMember] public string Password  { get; set; }
 	}
 }
