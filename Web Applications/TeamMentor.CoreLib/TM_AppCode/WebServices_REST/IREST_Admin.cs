@@ -39,12 +39,13 @@ namespace TeamMentor.CoreLib.WebServices
 
 		//Admin: User Management				
 
-		[OperationContract] [WebGet(UriTemplate = "/users/new"				)]					User		users_New();
-		[OperationContract] [WebGet(UriTemplate = "/user/id/{userId}"		)]					User		GetUser_byID(string userId);
-		[OperationContract] [WebGet(UriTemplate = "/users/id/{usersIds}"	)]					List<User>	GetUsers_byID(string usersIds);
-		[OperationContract] [WebGet(UriTemplate = "/user/{name}"			)]					User		GetUser_byName(string name);
-		[OperationContract] [WebGet(UriTemplate = "/users"					)]					List<User>	users();
+		
+		[OperationContract] [WebGet	  (UriTemplate = "/user/id/{userId}"	)]						User		GetUser_byID(string userId);
+		[OperationContract] [WebGet	  (UriTemplate = "/users/id/{usersIds}"	)]						List<User>	GetUsers_byID(string usersIds);
+		[OperationContract] [WebGet	  (UriTemplate = "/user/{name}"			)]						User		GetUser_byName(string name);
+		[OperationContract] [WebGet	  (UriTemplate = "/users"				)]						List<User>	users();
 
+		[OperationContract] [WebInvoke(UriTemplate = "/users/new"			,	Method = "POST")]	User		users_New();
 		[OperationContract] [WebInvoke(UriTemplate = "/user/delete/{userId}",	Method = "PUT")]	bool		DeleteUser(string userId);
 		
 
