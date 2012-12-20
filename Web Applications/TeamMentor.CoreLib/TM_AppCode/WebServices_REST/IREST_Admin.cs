@@ -38,15 +38,14 @@ namespace TeamMentor.CoreLib.WebServices
 	 
 
 		//Admin: User Management				
+						
+		[OperationContract] [WebGet	  (UriTemplate = "/user/{nameOrId}"			)]					TM_User		user(string nameOrId);
+		//[OperationContract] [WebGet	  (UriTemplate = "/users/{usersIds}"	)]						List<TM_User>	users(string usersIds);
+		[OperationContract] [WebGet	  (UriTemplate = "/users"				)]						List<TM_User>	users();
 
-		
-		[OperationContract] [WebGet	  (UriTemplate = "/user/id/{userId}"	)]						User		GetUser_byID(string userId);
-		[OperationContract] [WebGet	  (UriTemplate = "/users/id/{usersIds}"	)]						List<User>	GetUsers_byID(string usersIds);
-		[OperationContract] [WebGet	  (UriTemplate = "/user/{name}"			)]						User		GetUser_byName(string name);
-		[OperationContract] [WebGet	  (UriTemplate = "/users"				)]						List<User>	users();
-
-		[OperationContract] [WebInvoke(UriTemplate = "/users/new"			,	Method = "POST")]	User		users_New();
-		[OperationContract] [WebInvoke(UriTemplate = "/user/delete/{userId}",	Method = "PUT")]	bool		DeleteUser(string userId);
+		[OperationContract] [WebInvoke(UriTemplate = "/user/update"			,	Method = "PUT", ResponseFormat = WebMessageFormat.Json)]	bool		user_Update(TM_User user);
+		[OperationContract] [WebInvoke(UriTemplate = "/user/new"			,	Method = "PUT", ResponseFormat = WebMessageFormat.Json)]	int			user_New(TM_User user);
+		[OperationContract] [WebInvoke(UriTemplate = "/user/delete/{userId}",	Method = "PUT", ResponseFormat = WebMessageFormat.Json)]	bool		DeleteUser(string userId);
 		
 
 		//Admin
@@ -54,23 +53,5 @@ namespace TeamMentor.CoreLib.WebServices
 
 		//Views 
 		[OperationContract] [WebGet(UriTemplate = "/users/.html"			)] Stream		users_html();
-	}
-
-	[DataContract]
-	public class User
-	{
-		[DataMember] public int	   UserId    { get; set; }
-		[DataMember] public string UserName  { get; set; }
-		[DataMember] public string FirstName { get; set; }
-		[DataMember] public string LastName	 { get; set; }
-		[DataMember] public string Email	 { get; set; }
-		[DataMember] public string Company	 { get; set; }
-	}
-
-	[DataContract]
-	public class TM_Credentials
-	{
-		[DataMember] public string UserName  { get; set; }
-		[DataMember] public string Password  { get; set; }
-	}
+	}	
 }

@@ -12,6 +12,12 @@ namespace TeamMentor.CoreLib.WebServices
 	public partial class REST_Admin
 	{
 		//REST_User_Management
+		public bool user_Update(TM_User user)
+		{
+			var groupId = -1; //not implemented for now
+			return TmWebServices.UpdateUser(user.UserId, user.UserName, user.FirstName, user.LastName, user.Title, user.Company,user.Email, groupId);
+		}
+
 		public Stream users_html()
 		{
 			//var xml = users().toXml();

@@ -36,8 +36,11 @@
     <Content Include="Global.asax" />
     <Content Include="Views\reload.cshtml" />
     <Content Include="Views\user_new.cshtml" />
+    <Content Include="Views\hubspot_users.cshtml" />
+    <Content Include="Views\hubspot_NewUser.cshtml" />
     <None Include="Views\routes.cshtml" />
     <Content Include="Web.config" />
+    <Content Include="Views\user.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
@@ -54,6 +57,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Nancy">
       <HintPath>..\packages\Nancy.0.14.1\lib\net40\Nancy.dll</HintPath>
     </Reference>
@@ -63,6 +67,8 @@
     <Reference Include="Nancy.ViewEngines.Razor">
       <HintPath>..\packages\Nancy.Viewengines.Razor.0.14.1\lib\net40\Nancy.ViewEngines.Razor.dll</HintPath>
     </Reference>
+    <Reference Include="O2_FluentSharp_CoreLib, Version=4.5.3.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL" />
+    <Reference Include="System" />
     <Reference Include="System.Web.Razor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Nancy.Viewengines.Razor.0.14.1\lib\net40\System.Web.Razor.dll</HintPath>

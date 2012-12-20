@@ -11,12 +11,16 @@ namespace TeamMentor.UnitTests
 	[TestClass]
 	public class RBAC_Functions : RestClass_Direct
 	{
-		[TestMethod]	public void Test_GetUser_byName()
+		[TestMethod]	public void Test_User()
 		{
-			var user = IRESTAdmin.GetUser_byName("admin");
+			var user = IRESTAdmin.user("admin");
 			Assert.IsNotNull(user, "user object was null");
-			Assert.IsTrue(user.UserName.valid(),"UserName was not vaild");
-			"UserData : {0}".writeLine_Trace(user.serialize(false));
+			Assert.IsTrue(user.UserName.valid(), "userUserName was not vaild");
+			//"UserData : {0}".writeLine_Trace(user.serialize(false));
+
+			var userById = IRESTAdmin.user(user.UserId.str());
+			Assert.IsNotNull(userById, "userById object was null");
+			Assert.IsTrue(userById.UserName.valid(), "userById.UserName was not vaild");
 		}
 		[TestMethod]	public void Test_GetUsers()
 		{
@@ -24,12 +28,6 @@ namespace TeamMentor.UnitTests
 			Assert.IsNotNull(users, "users object was null");
 			Assert.IsTrue(users.size() > 0 , "users object was empty");
 			"There were {0} users fetched: {0}".writeLine_Trace(users.size());
-		}
-		[TestMethod]	public void Test_GetUser_byID()
-		{
-			var user = IRESTAdmin.GetUser_byName("admin");
-			var user2 = IRESTAdmin.GetUser_byID(user.UserId.str());
-			Assert.AreEqual(user.UserName, user2.UserName, "user names didn't match");			
-		}
+		}		
 	}
 }

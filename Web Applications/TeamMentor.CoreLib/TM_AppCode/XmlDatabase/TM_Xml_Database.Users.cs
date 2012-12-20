@@ -188,17 +188,17 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		
 		public static int newUser(this TM_Xml_Database tmDb, string  username, string passwordHash, int groupId)
 		{
-			return tmDb.newUser(username, passwordHash, "","","","", groupId);
+			return tmDb.newUser(username, passwordHash, "","","","", "","",groupId);
 		}
 		
-    	public static int newUser(this TM_Xml_Database tmDb, string  username, string passwordHash, string email, string firstname, string lastname, string note , int groupId)
+    	public static int newUser(this TM_Xml_Database tmDb, string  username, string passwordHash, string email, string firstname, string lastname, string note , string title, string company, int groupId)
     	{			
     		var userId = Guid.NewGuid().hash();  //10000000.random();//10.randomNumbers().toInt();
 			if (userId < 0)						// find a .net that does this (maybe called 'invert')
 				userId = -userId;
 			"...Creating new user: {0} with id {1}".debug(username, userId);
 			
-			if (groupId ==0)				//set default user type			
+			if (groupId <1)				//set default user type			
 				groupId = 2;				//by default new users are of type 2 (i.e. Reader)
 				
     		var tmUser = new TMUser {
@@ -206,9 +206,9 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
     									UserName 	= Encoder.XmlEncode(username),
     									FirstName 	= Encoder.XmlEncode(firstname),
     									LastName 	= Encoder.XmlEncode(lastname),
-    									Company 	= "",
+    									Company 	= Encoder.XmlEncode(company),
 										GroupID 	= groupId,
-										Title 		= "", 										
+										Title 		= Encoder.XmlEncode(title), 										
     									EMail 		= Encoder.XmlEncode(email) ?? ""   									 
     								};										
 			
@@ -308,8 +308,8 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			if (newUser.groupId !=0)		// if there is a groupId provided we must check if the user has the manageUsers Priviledge						
 				UserRole.ManageUsers.demand();			
 			if (newUser.username.inValid() ||  tmDb.tmUser(newUser.username).notNull())
-				return 0;						   			
-			return tmDb.newUser(newUser.username, newUser.passwordHash, newUser.email, newUser.firstname, newUser.lastname, newUser.note, newUser.groupId );
+				return 0;
+			return tmDb.newUser(newUser.username, newUser.passwordHash, newUser.email, newUser.firstname, newUser.lastname, newUser.note, newUser.title, newUser.company, newUser.groupId);						
 		}							
 		
 		[PrincipalPermission(SecurityAction.Demand, Role = "Admin")] 

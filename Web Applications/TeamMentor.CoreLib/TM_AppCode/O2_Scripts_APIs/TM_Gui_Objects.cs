@@ -132,6 +132,8 @@ namespace SecurityInnovation.TeamMentor.WebClient
     	public string email { get; set; }
     	public string firstname { get; set; }
     	public string lastname { get; set; }
+		public string title { get; set; }
+		public string company { get; set; }
     	public string note { get; set; }
 		public int groupId { get; set; }
     }

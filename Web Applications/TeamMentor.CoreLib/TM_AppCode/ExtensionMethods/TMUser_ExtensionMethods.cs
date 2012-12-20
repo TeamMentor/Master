@@ -44,6 +44,10 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
     	public static bool updateUser(this List<TMUser> tmUsers, int userId, string userName, string firstname, string lastname, string title, string company, string email, int groupId)
     	{
     		var tmUser = tmUsers.user(userId);
+    		if (tmUser.isNull())
+    			return false;
+    		if (groupId == -1)
+    			groupId = tmUser.GroupID;
     		if (tmUser.notNull())
     		{
     			tmUser.EMail = 		Encoder.XmlEncode(email);
