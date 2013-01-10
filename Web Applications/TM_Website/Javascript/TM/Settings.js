@@ -1,5 +1,5 @@
 //TM Settings
-TM.tmVersion = "TM 3.3 Dev.2.5b";
+TM.tmVersion = "TM 3.3 Dev.2.5c";
 TM.ArticleTitle = "TeamMentor 3.3";
 
 TM.tmWebServices     = '/Aspx_Pages/TM_WebServices.asmx/';
