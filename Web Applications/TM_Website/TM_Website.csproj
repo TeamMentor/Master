@@ -665,6 +665,6 @@
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
-    <PostBuildEvent>del "$(TargetPath)"</PostBuildEvent>
+    <PostBuildEvent>rem del "$(TargetPath)"</PostBuildEvent>
   </PropertyGroup>
 </Project>
