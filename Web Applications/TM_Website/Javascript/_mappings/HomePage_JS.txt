@@ -25,5 +25,3 @@
 /Javascript/jscreole/creole.min.js
 
 /Javascript/jsPrettify/prettify.js
-
-/Javascript/Gauges/Gauges_Tracking_Code.js

@@ -163,7 +163,7 @@
         <footer class="Footer">
 				Powered by <a href="http://www.securityinnovation.com/products/secure-development-knowledgebase.html">Team.Mentor </a> 
 			</footer>
-        <script src="/Javascript/Gauges/Gauges_Tracking_Code.js"   type="text/javascript"></script>     
+        
       </body>
     </html>
   </xsl:template>

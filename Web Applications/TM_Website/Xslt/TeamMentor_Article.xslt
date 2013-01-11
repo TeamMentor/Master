@@ -60,7 +60,7 @@
                       if($(".breadcrumb li").size() > 5)
                         $(".breadcrumb li").first().remove()
                         
-                     my_Gauge.track("breadcrumb",newTitle);   
+                     //my_Gauge.track("breadcrumb",newTitle);   
                   };
                     
           var handleClick = function()
@@ -160,8 +160,7 @@
           <div class="Article container">
             <xsl:apply-templates select="*"/>
           </div>
-          </div>    
-        <script src="/Javascript/Gauges/Gauges_Tracking_Code.js"   type="text/javascript"></script>                                  
+          </div>            
       </body>
     </html>
   </xsl:template>

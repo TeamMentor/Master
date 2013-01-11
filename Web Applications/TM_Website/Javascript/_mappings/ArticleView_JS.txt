@@ -23,6 +23,3 @@
 /javascript/TM.Gui/TM.Gui.CurrentUser.js
 
 /javascript/TM.Gui/TM.GUI.ShowProgressBar.js
-
-
-/Javascript/Gauges/Gauges_Tracking_Code.js
