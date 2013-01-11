@@ -34,3 +34,5 @@
 /javascript/TM.Gui/AppliedFIlters.DataManipulation.js
 
 /_Customizations/homepage.js
+
+/javascript/gAnalytics/TrackingCode.js

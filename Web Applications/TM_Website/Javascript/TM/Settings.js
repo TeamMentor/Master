@@ -1,11 +1,12 @@
 //TM Settings
-TM.tmVersion = "TM 3.3 Dev.2.5c";
+TM.tmVersion = "TM 3.3 Dev.2.6";
 TM.ArticleTitle = "TeamMentor 3.3";
 
 TM.tmWebServices     = '/Aspx_Pages/TM_WebServices.asmx/';
 TM.NotAuthorizedPage = '/Html_Pages/Gui/Panels/AD_Non_Authorized_User.html';
 
-//TM.Gui.GauguesID                                = null;     // set to GaugesID to enabled it
+//TM.Gui.GauguesID                               = null;     
+TM.Tracking_Google_Analytics_ID					= "UA-37594728-3";	// set to ID to enabled it (null disables it)
 TM.Gui.showLibraryStructureToAnonymous          = true;
 TM.Gui.LoadLibraryData      					= true
 TM.Gui.editMode			   						= false;
