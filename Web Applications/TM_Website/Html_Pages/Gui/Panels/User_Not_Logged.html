@@ -1,9 +1,144 @@
-<h2> Login Required</h2>
-<br/>
-You must be logged in to view this page. 
-<br/>
-<br/>
-Please <a href='javascript:TM.Gui.Dialog.loginPage()'>Login</a> or 
-<a href='javascript:TM.Gui.TopRightLinks.signupPage()'>Sign Up</a>.
+<span id="notLoggedInMessage">	
+	<h2>Login required</h2>
+	<br/>
+	If you have a valid account, please <a href='javascript:TM.Gui.Dialog.loginPage()'>Login</a>, if not, please create an account to have 15 days access:
+</span>
 
+<script>
 
+	var signupResult = function(data)
+		{			
+			if (data.d == 0)
+			{				
+				jQuery('#signupMessage').hide();
+				jQuery('#signupContent').show();
+				//jQuery('#signupMessage').html("<h2>Failed to create user, please try again</h2>").css('color','red');
+				//jQuery('#signupContent').show();				
+				jQuery('#signupErrorMessage').text("Failed to create user, please try again");
+				$("#signupErrorMessageRow").fadeIn();
+			}
+			else
+			{						
+				$("#notLoggedInMessage").hide();	
+				jQuery('#signupMessage').html("<h2>Account created successfully</h2>").css('color','black');
+				jQuery('#signupMessage').append("<br/>Please <a href='#' onclick='javascript:TM.Gui.Dialog.loginPage()'>Login</a> ");
+			}
+		}
+
+	var signupUser = function(username, password)
+		{			
+			//alert('submiting form');
+			jQuery('#signupContent').hide();
+			jQuery('#signupMessage').show();
+			jQuery('#signupMessage').html('<h2>Creating user</h2> Please wait...').css('color','black');			
+			var passwordHash = SHA256(username+ password);
+			var email = jQuery('#ctl00_ContentPlaceHolder1_EmailBox').attr('value');
+			var firstName = jQuery('#ctl00_ContentPlaceHolder1_FNameBox').attr('value');
+			var lastName = jQuery('#ctl00_ContentPlaceHolder1_LNameBox').attr('value');
+				
+			setTimeout(
+				function() {
+								createUser(username, passwordHash, email, firstName, lastName, 'created from web', signupResult);														
+							}, 200);
+		}
+	
+	var submitForm_Signup = function()
+		{
+			var username = jQuery('#ctl00_ContentPlaceHolder1_UsernameBox').attr('value');
+			var password = jQuery('#ctl00_ContentPlaceHolder1_PasswordBox').attr('value');			
+			var passwordConfirm = jQuery('#ctl00_ContentPlaceHolder1_RepeatPasswordBox').attr('value');
+			if (TM.Gui.CurrentUser.checkPwdComplexity(password, passwordConfirm, "#signupErrorMessage"))
+				return signupUser(username, password);
+			$("#signupErrorMessage").css('padding',0);
+			$("#signupErrorMessageRow").fadeIn();		
+		};
+	
+	
+	if (typeof(signupDialog) != "undefined")
+			signupDialog.remove();
+			
+
+	$(function()
+		{						
+/*			signupDialog = "signUpDiv".$().dialog(
+										{ 	
+											title:'Signup to TeamMentor' , 
+											modal: false  , 													
+											//buttons: { "create account" : loginUser},
+											width: '650px' ,
+											open:  TM.Events.onSignupDialogOpen ,	
+											close: TM.Events.onSignupDialogClose
+										});//parent().width(400).top(100).height(250);
+	*/									
+				
+			$("#ctl00_ContentPlaceHolder1_SignUp").button();
+			$(".SignUpCol1").css('font-size', '12px');
+			$("#signupErrorMessageRow").hide();
+			
+			$('#ctl00_ContentPlaceHolder1_UsernameBox'		).keypress(function(e)	{ if(e.which == 13) { submitForm_Signup(); } });
+			$('#ctl00_ContentPlaceHolder1_PasswordBox'		).keypress(function(e)	{ if(e.which == 13) { submitForm_Signup(); } });
+			$('#ctl00_ContentPlaceHolder1_RepeatPasswordBox').keypress(function(e)	{ if(e.which == 13) { submitForm_Signup(); } });
+		
+			// new css: 
+			$(".ItemContent table").css("border","solid 0px");
+			$(".ItemContent tr").css("border","solid 0px");
+			$(".ItemContent td").css("border","solid 0px");
+			$(".ItemContent input").css("font-size","12px");
+		});
+
+</script>	
+
+<div id="signUpDiv">
+
+	
+		<div id="signupMessage"></div>
+		<div class="SignupContent" id ="signupContent">
+			<br />
+			<table class="SignupTable" style="width:100%">
+				<tr>
+					<td class="SignUpCol1">
+						<strong>Username</strong>
+					</td>
+					<td>
+						<input type="text" id="ctl00_ContentPlaceHolder1_UsernameBox" class="otherTextBox" style="width:100%" />
+					</td>
+				</tr>
+				<tr>
+					<td class="SignUpCol1"><strong>Password:</strong></td>
+					<td><input type="password" id="ctl00_ContentPlaceHolder1_PasswordBox" class="otherTextBox" style="width:100%;" /></td>
+				</tr>
+				<tr>
+
+					<td class="SignUpCol1"><strong>Repeat Password:</strong></td>
+					<td><input type="password" id="ctl00_ContentPlaceHolder1_RepeatPasswordBox" class="otherTextBox" style="width:100%;" />						
+					</td>					
+				</tr>				
+				<tr id="signupErrorMessageRow">
+					<td></td>					
+					<td><span class="errorMessage" id ="signupErrorMessage" ></span></td>					
+				</tr>				
+				<tr>
+					<td class="SignUpCol1">E-Mail:</td>
+					<td><input type="text" id="ctl00_ContentPlaceHolder1_EmailBox" class="otherTextBox" style="width:100%;" /></td>
+				</tr>
+				<tr>
+					<td class="SignUpCol1">First Name:</td>
+					<td><input type="text" id="ctl00_ContentPlaceHolder1_FNameBox" class="otherTextBox" style="width:100%;" /></td>
+				</tr>
+				<tr>
+					<td class="SignUpCol1">Last Name</td>
+					<td><input type="text" id="ctl00_ContentPlaceHolder1_LNameBox" class="otherTextBox" style="width:100%;" /></td>
+				</tr>
+				<tr>
+					<td class="SignUpCol1">&nbsp;</td>
+					<td align="right"><br /><input type="submit" value="Sign Up" onclick ="submitForm_Signup()" id="ctl00_ContentPlaceHolder1_SignUp" /></td>
+				</tr>
+			</table>
+
+			<input type="hidden" name="ctl00$ContentPlaceHolder1$PasswordHash" id="ctl00_ContentPlaceHolder1_PasswordHash" />
+
+		</div>
+
+	
+
+</div>
