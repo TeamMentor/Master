@@ -20,9 +20,10 @@ namespace TeamMentor.UnitTests.WebSite_Content
 		[Test]
 		public void Check_GoogleAnalitics()
 		{
-			Console.WriteLine("##teamcity[message text='Console normal text' errorDetails='stack trace' status='NORMAL']");
+			PublicDI.log.alsoShowInConsole = true;
+			//Console.WriteLine("##teamcity[message text='Console normal text' errorDetails='stack trace' status='NORMAL']");
 			"##teamcity[message text='Exception text' errorDetails='stack trace' status='ERROR']".info();
-			
+			Console.WriteLine("A message for TeamCity");
 			var assembly = Assembly.GetExecutingAssembly();			
 			"Location: {0}".info(assembly.Location);
 			"CodeBase: {0}".info(assembly.CodeBase);
