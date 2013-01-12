@@ -87,7 +87,7 @@
     <Compile Include="TM_AppCode\IJavascriptProxy.cs" />
     <None Include="TM_AppCode\MoqObjects.cs.txt" />
     <Compile Include="TM_AppCode\O2_Scripts_APIs\LinqDB.cs" />
-    <Content Include="TM_AppCode\O2_Scripts_APIs\MemoryLogger.cs.txt" />
+    <Compile Include="TM_AppCode\O2_Scripts_APIs\DiagnosticsDebug_Logger.cs" />
     <Compile Include="TM_AppCode\O2_Scripts_APIs\OnlineStorage.cs" />
     <Compile Include="TM_AppCode\O2_Scripts_APIs\TeamMentorSecurity.cs" />
     <Compile Include="TM_AppCode\O2_Scripts_APIs\TM_Gui_Objects.cs" />
