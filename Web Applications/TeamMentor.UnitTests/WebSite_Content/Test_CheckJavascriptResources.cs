@@ -35,8 +35,8 @@ namespace TeamMentor.UnitTests.WebSite_Content
 			Assert.That(gAnalyticsFolder.dirExists() , "gAnalyticsFolder dir");
 			Assert.That(gaFile			.fileExists(), "gaFile file");
 
-			var tmVersion	  = gaFile.fileContents();
-			var googleVersion = "http://www.google-analytics.com/ga.js".GET();
+			var tmVersion	  = gaFile.fileContents().fixCRLF();
+			var googleVersion = "http://www.google-analytics.com/ga.js".GET().fixCRLF();
 
 			Assert.That(tmVersion.valid()	, "ga.js tmVersion not valid");
 			Assert.That(googleVersion.valid(), "ga.js googleVerion not valid");
