@@ -14,24 +14,29 @@ namespace TeamMentor.UnitTests.WebSite_Content
 		[SetUp]
 		public void setup()
 		{
-			PublicDI.log.writeToDebug();
+			PublicDI.log.writeToDebug(true);						
 		}
 
 		[Test]
 		public void Check_GoogleAnalitics()
-		{
-			PublicDI.log.LogRedirectionTarget.alsoShowInConsole = true;
-			//Console.WriteLine("##teamcity[message text='Console normal text' errorDetails='stack trace' status='NORMAL']");
-			"##teamcity[message text='Exception text' errorDetails='stack trace' status='ERROR']".info();
-			Console.WriteLine("Executing Assembly: {0}".format(Assembly.GetExecutingAssembly()));
+		{			
+			var assembly = this.type().Assembly;
+
+			"CodeBase: {0}".info(assembly.CodeBase);
+			"Location: {0}".info(assembly.Location);
+
+			//this.script_Me().waitForClose();
+		}
+
+		/*Console.WriteLine("Executing Assembly: {0}".format(Assembly.GetExecutingAssembly()));
 			var assembly = Assembly.GetExecutingAssembly();			
 			"Location: {0}".info(assembly.Location);
 			"CodeBase: {0}".info(assembly.CodeBase);
 			"Escaped Evident: {0}".info(assembly.CodeBase);			
 
-			var url = "http://www.google-analytics.com/ga.js";
-			"Url:".info(url);
-			//this.script_Me().waitForClose();
-		}
+			//var url = "http://www.google-analytics.com/ga.js";
+			//"Url:".info(url);
+			
+		}*/
 	}
 }

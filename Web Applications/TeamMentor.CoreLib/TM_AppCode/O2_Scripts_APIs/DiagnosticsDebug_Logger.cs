@@ -10,7 +10,13 @@ namespace O2.DotNetWrappers.ExtensionMethods
 	{
 		public static IO2Log writeToDebug(this IO2Log log)
 		{
-			log.LogRedirectionTarget = new DiagnosticsDebug_Logger();
+			return log.writeToDebug(false);
+		}
+
+	
+		public static IO2Log writeToDebug(this IO2Log log, bool alsoShowInConsole)
+		{
+			log.LogRedirectionTarget = new DiagnosticsDebug_Logger {alsoShowInConsole = alsoShowInConsole};			
 			return log;
 		}
 	}
