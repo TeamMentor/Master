@@ -6,7 +6,7 @@ TM.tmWebServices     = '/Aspx_Pages/TM_WebServices.asmx/';
 TM.NotAuthorizedPage = '/Html_Pages/Gui/Panels/AD_Non_Authorized_User.html';
 
 //TM.Gui.GauguesID                               = null;     
-TM.Tracking_Google_Analytics_ID					= "UA-37594728-3";	// set to ID to enabled it (null disables it)
+TM.Tracking_Google_Analytics_ID					= null;	// configure this in  TM_Custom_Settings.js
 TM.Gui.showLibraryStructureToAnonymous          = true;
 TM.Gui.LoadLibraryData      					= true
 TM.Gui.editMode			   						= false;

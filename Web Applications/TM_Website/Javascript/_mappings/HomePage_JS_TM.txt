@@ -4,6 +4,8 @@
 /javascript/TM/Events.js
 /javascript/TM/Debug.js
 
+/_Customizations/TM_Custom_Settings.js
+
 /javascript/IE_Fixes.js
 
 /javascript/jO2/jO2_String_ExtensionMethods.js
@@ -32,7 +34,5 @@
 
 /javascript/TM.Gui/AppliedFilters.js
 /javascript/TM.Gui/AppliedFIlters.DataManipulation.js
-
-/_Customizations/homepage.js
 
 /javascript/gAnalytics/TrackingCode.js

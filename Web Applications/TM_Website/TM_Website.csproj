@@ -585,6 +585,7 @@
     <Content Include="Xslt\TeamMentor_Article.xslt">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="_Customizations\TM_Custom_Settings.js" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Images\AllLibraries.png" />
@@ -625,11 +626,8 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="packages.config" />
-    <None Include="_Customizations\homepage.js" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="_Customizations\reports\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\TeamMentor.CoreLib\TeamMentor.CoreLib.csproj">
       <Project>{87BACB04-640F-44ED-8F01-45224D52A883}</Project>
