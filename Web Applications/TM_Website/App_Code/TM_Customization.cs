@@ -13,19 +13,13 @@ namespace TeamMentor.Website
     {
 	    public static void AppInitialize()
 	    {		 
-		    new TM_Customizations().CustomizeTMConfig();
-
-			TMEvents.OnApplication_BeginRequest.Add(
-				()=>{
-						if (HttpContextFactory.Request.Url.str().contains(".js", ".ashx",".asmx", ".jpg", ".gif").isFalse())
-							HttpContextFactory.Response.Write("<h1>Custom code</h1>");
-					});
+		    new TM_Customizations().CustomizeTMConfig();			
 	    }
 
 	    public void CustomizeTMConfig()
 	    {
 		    var tmConfig = TMConfig.Current;
-			tmConfig.ShowContentToAnonymousUsers = true;
+			tmConfig.ShowContentToAnonymousUsers = false;
 	    }
     }
 }
