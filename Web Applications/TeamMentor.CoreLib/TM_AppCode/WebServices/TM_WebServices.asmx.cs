@@ -1,45 +1,17 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;  
 using System.Web.Services;
 using System.Security.Permissions;	
-using SecurityInnovation.TeamMentor.WebClient;
 using O2.DotNetWrappers.ExtensionMethods; 
-//using Microsoft.Practices.Unity;
-using O2.XRules.Database.APIs;
-using SecurityInnovation.TeamMentor.Authentication.ExtensionMethods;
-using SecurityInnovation.TeamMentor.Authentication.AuthorizationRules;
-using SecurityInnovation.TeamMentor.Authentication.WebServices.AuthorizationRules;
 
-//O2File:../Authentication/TM_Authentication.cs
-//O2File:../UnityInjection.cs
-//O2File:../DataViewers/JsTreeNode.cs
-//O2File:../O2_Scripts_APIs/_O2_Scripts_Files.cs
-
-//O2File:TM_WebServices.ActivityTracking.cs
-
-//O2File:TM_WebServices.Config.cs  
-//O2File:TM_WebServices.DataViewers.cs
-//O2File:TM_WebServices.GuiHelpers.cs
-
-//O2Ref:System.Web.dll
-//O2Ref:System.Web.Services.dll
-//O2Ref:System.Web.Extensions.dll 
-//O2Ref:Microsoft.Practices.Unity.dll
-
-namespace SecurityInnovation.TeamMentor.WebClient.WebServices
-{
-	/// <summary>
-	/// Summary description for Authentication
-	/// </summary>
-	//[WebService(Namespace = "http://teammentor.securityinnoation.com/")]
-	[WebService(Namespace = "http://tempuri.org/")]	 
+namespace TeamMentor.CoreLib
+{		
+	[WebService(Namespace = "http://teammentor.net/")]	 
 	[WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
 	[System.ComponentModel.ToolboxItem(false)]
 	[System.Web.Script.Services.ScriptService]
-	public partial class TM_WebServices : System.Web.Services.WebService 
+	public partial class TM_WebServices : WebService 
 	{
 		//[Dependency]
 		public TM_Xml_Database_JavaScriptProxy javascriptProxy { get; set; }
@@ -58,7 +30,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 			tmAuthentication = new TM_Authentication(this);			
 			tmAuthentication.mapUserRoles(disable_CSRF_Check);
 
-			UtilMethods.setGZipCompression_forAjaxRequests();
+			GZip.setGZipCompression_forAjaxRequests();
 			
 			
 			//Disable Activity Tracking

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Security.Permissions;	
+using System.Security.Permissions;
 
-namespace SecurityInnovation.TeamMentor.Authentication.WebServices.AuthorizationRules
+namespace TeamMentor.CoreLib
 {
     public enum UserGroup
     {

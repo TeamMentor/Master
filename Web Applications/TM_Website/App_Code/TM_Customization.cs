@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using O2.DotNetWrappers.ExtensionMethods;
-using SecurityInnovation.TeamMentor.WebClient;
-using TeamMentor.CoreLib;
-using TeamMentor.CoreLib.WebServices;
+﻿using TeamMentor.CoreLib;
 
 namespace TeamMentor.Website
 {

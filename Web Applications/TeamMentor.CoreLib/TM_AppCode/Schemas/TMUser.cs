@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace SecurityInnovation.TeamMentor.WebClient.WebServices
+namespace TeamMentor.CoreLib
 {
     [System.SerializableAttribute()]        
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "https://TeamMentor.securityinnovation.com:13415/")]

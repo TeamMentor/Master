@@ -1,12 +1,9 @@
 ﻿using System;
-using SecurityInnovation.TeamMentor.WebClient;
 using O2.DotNetWrappers.ExtensionMethods;
 using System.Web.Security;
-using SecurityInnovation.TeamMentor.WebClient.WebServices;
 using System.IO;
-using TeamMentor.CoreLib.WebServices;
 
-namespace SecurityInnovation.TeamMentor.Authentication
+namespace TeamMentor.CoreLib
 {
     //Security review this code: Namely check if the use of an 32bit int is a strong enough value for the SSO Tokem
     public class SingleSignOn

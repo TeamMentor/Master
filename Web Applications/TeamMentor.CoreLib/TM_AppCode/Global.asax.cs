@@ -2,11 +2,7 @@
 using System.Collections.Generic;
 using System.Web;
 using O2.DotNetWrappers.ExtensionMethods;
-using SecurityInnovation.TeamMentor.WebClient.WebServices;
 using O2.Kernel;
-using System.Web.Routing;
-using System.ServiceModel.Activation;
-using TeamMentor.CoreLib.WebServices;
 using O2.Kernel.InterfacesBaseImpl;
 
 namespace TeamMentor.CoreLib
@@ -47,7 +43,7 @@ namespace TeamMentor.CoreLib
 		protected void Application_BeginRequest			(object sender, EventArgs e)		
         {
 			TMEvents.OnApplication_BeginRequest.invoke();
-			UtilMethods.addDefaultRequestHeaders();
+			ResponseHeaders.addDefaultResponseHeaders();
             new HandleUrlRequest().routeRequestUrl();                                  
         }
 

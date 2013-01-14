@@ -1,38 +1,10 @@
 using System;
-using System.Web;
-using System.Linq;
 using System.Collections.Generic;
 using System.Security.Permissions;
-using System.Text;
-using SecurityInnovation.TeamMentor.WebClient;
-using SecurityInnovation.TeamMentor.WebClient.WebServices;
-//using SecurityInnovation.TeamMentor.Authentication.AuthorizationRules;
-using SecurityInnovation.TeamMentor.Authentication.WebServices.AuthorizationRules;
-//using Moq;
-using O2.Kernel;
 using O2.DotNetWrappers.ExtensionMethods;
-using O2.DotNetWrappers.DotNet;
 using urn.microsoft.guidanceexplorer;
-using urn.microsoft.guidanceexplorer.guidanceItem;
-using System.IO;
-//O2File:../IJavascriptProxy.cs
-//O2File:../UtilMethods.cs   
-//O2File:../Schemas/library.cs 
-//O2File:../Schemas/guidanceItem.cs
-//O2File:../TMConfig.cs
-//O2File:TM_Xml_Database.Library.cs
-//O2File:TM_Xml_Database.Library.GuidanceExplorer.cs
-//O2File:TM_Xml_Database.Library.GuidanceItem.cs
-//O2File:TM_Xml_Database.Library.Load_and_FileCache.cs
-//O2File:TM_Xml_Database.Library.Views_and_Folders.cs
-//O2File:TM_Xml_Database.Users.cs
-//O2File:../O2_Scripts_APIs/_O2_Scripts_Files.cs
-//O2Ref:moq.dll
-//O2Ref:System.dll
-//O2Ref:System.Web.Abstractions.dll
-//O2Ref:System.Web.dll
 
-namespace SecurityInnovation.TeamMentor.WebClient.WebServices
+namespace TeamMentor.CoreLib
 {	
 	public partial class TM_Xml_Database 
 	{

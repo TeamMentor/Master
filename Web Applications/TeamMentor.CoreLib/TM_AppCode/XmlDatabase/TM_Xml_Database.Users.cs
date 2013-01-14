@@ -1,26 +1,11 @@
 using System;
-using System.Web;
 using System.Linq;
 using System.Collections.Generic;
-//using System.Text;
 using Microsoft.Security.Application;
 using System.Security.Permissions;
-using SecurityInnovation.TeamMentor.WebClient.WebServices;
-//using Moq;
-using O2.Kernel;
 using O2.DotNetWrappers.ExtensionMethods;
-using O2.DotNetWrappers.DotNet;
-using urn.microsoft.guidanceexplorer;
-using urn.microsoft.guidanceexplorer.guidanceItem;
-using SecurityInnovation.TeamMentor.Authentication.WebServices.AuthorizationRules;
-using SecurityInnovation.TeamMentor.Authentication.ExtensionMethods;
-//O2File:TM_Xml_Database.cs
-//O2File:../ExtensionMethods/TMUser_ExtensionMethods.cs
-//O2File:../Authentication/UserRoles.cs
-//O2File:../Authentication/ExtensionMethods/TeamMentorUserManagement_ExtensionMethods.cs
-//O2Ref:AntiXSSLibrary.dll
 
-namespace SecurityInnovation.TeamMentor.WebClient.WebServices
+namespace TeamMentor.CoreLib
 {	
 	public partial class TM_Xml_Database 
 	{

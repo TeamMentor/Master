@@ -5,7 +5,7 @@ using System.Text;
 using System.Xml;
 using System.Web;
 
-namespace SecurityInnovation.TeamMentor.Authentication.ExtensionMethods
+namespace TeamMentor.CoreLib
 {
     public static class SoapRequestUtils
     {

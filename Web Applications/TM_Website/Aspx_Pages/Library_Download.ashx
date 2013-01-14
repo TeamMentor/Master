@@ -1,1 +1,1 @@
-<%@ WebHandler Language="C#" Class="SecurityInnovation.TeamMentor.WebClient.LibraryDownload" %>
+<%@ WebHandler Language="C#" Class="TeamMentor.CoreLib.LibraryDownload" %>

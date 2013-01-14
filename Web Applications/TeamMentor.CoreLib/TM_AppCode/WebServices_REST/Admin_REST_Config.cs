@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ServiceModel;
-using System.ServiceModel.Activation;
-using System.Text;
+﻿using System.ServiceModel.Activation;
 using System.Web.Routing;
-using SecurityInnovation.TeamMentor.WebClient;
 
-namespace TeamMentor.CoreLib.WebServices
+namespace TeamMentor.CoreLib
 {
 	public class Admin_REST_Config
 	{

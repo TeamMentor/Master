@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.Serialization;
 using System.ServiceModel.Web;
 using System.ServiceModel;
-using System.Web.Routing;
-using SecurityInnovation.TeamMentor.WebClient;
 
-namespace TeamMentor.CoreLib.WebServices
+namespace TeamMentor.CoreLib
 {
 	[ServiceContract]
 	public interface IREST_Admin

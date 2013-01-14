@@ -1,7 +1,7 @@
 ﻿<%@ Page Language="C#"  Trace="true" %>
 <%@ Import Namespace ="O2.Kernel" %>
 <%@ Import Namespace ="O2.DotNetWrappers.ExtensionMethods" %>
-<%@ Import Namespace ="SecurityInnovation.TeamMentor.WebClient.WebServices" %>
+<%@ Import Namespace="TeamMentor.CoreLib" %>
 
 <%	
 	var tmWebServices = new TM_WebServices();	

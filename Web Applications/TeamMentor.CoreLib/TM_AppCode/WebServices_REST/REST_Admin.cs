@@ -4,16 +4,10 @@ using System.Linq;
 using System.ServiceModel;
 using System.ServiceModel.Activation;
 using System.ServiceModel.Web;
-using System.Text;
 using System.Web;
-using System.Web.Routing;
 using O2.DotNetWrappers.ExtensionMethods;
-using SecurityInnovation.TeamMentor.Authentication.ExtensionMethods;
-using SecurityInnovation.TeamMentor.WebClient;
-using SecurityInnovation.TeamMentor.WebClient.WebServices;
-using SecurityInnovation.TeamMentor.Authentication.WebServices.AuthorizationRules;
 
-namespace TeamMentor.CoreLib.WebServices
+namespace TeamMentor.CoreLib
 {
 	[ServiceBehavior				(InstanceContextMode = InstanceContextMode.PerCall			  ), 
      AspNetCompatibilityRequirements(RequirementsMode	 = AspNetCompatibilityRequirementsMode.Allowed)]

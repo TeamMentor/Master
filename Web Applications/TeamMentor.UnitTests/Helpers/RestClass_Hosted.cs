@@ -1,6 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SecurityInnovation.TeamMentor.WebClient;
-using TeamMentor.CoreLib.WebServices;
+using TeamMentor.CoreLib;
 using O2.FluentSharp;
 
 namespace TeamMentor.UnitTests

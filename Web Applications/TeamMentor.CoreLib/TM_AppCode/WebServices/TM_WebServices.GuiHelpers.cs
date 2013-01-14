@@ -1,22 +1,9 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
-using System.Text;
 using System.Web.Services;
-using System.Security.Permissions;	
-using SecurityInnovation.TeamMentor.Authentication.WebServices.AuthorizationRules;
-//using Microsoft.Practices.Unity;
 using O2.DotNetWrappers.ExtensionMethods;
-using O2.XRules.Database.APIs;
-using System.IO;
 
-//O2File:TM_WebServices.asmx.cs
-//O2File:../ExtensionMethods/TM_Xml_Database_ExtensionMethods_GuiHelpers.cs
-//_O2Ref:System.Web.Services.dll 
-//_O2Ref:Microsoft.Practices.Unity.dll
-//O2Ref:System.Xml.Linq.dll
-
-namespace SecurityInnovation.TeamMentor.WebClient.WebServices
+namespace TeamMentor.CoreLib
 { 					
 	//WebServices related to: Data Viewers
     public partial class TM_WebServices 

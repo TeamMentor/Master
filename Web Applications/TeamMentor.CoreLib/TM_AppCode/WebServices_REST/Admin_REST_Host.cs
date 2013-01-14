@@ -2,7 +2,7 @@
 using System.ServiceModel.Web;
 using O2.DotNetWrappers.ExtensionMethods;
 
-namespace TeamMentor.CoreLib.WebServices
+namespace TeamMentor.CoreLib
 {
 	public class Admin_REST_Host
 	{

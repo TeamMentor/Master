@@ -2,17 +2,10 @@ using System;
 using System.Web;
 using System.IO;
 using System.Security;
-using System.Collections;
-using System.Collections.Generic;
-using SecurityInnovation.TeamMentor.WebClient;
 using XssEncoder = Microsoft.Security.Application.Encoder;
 using O2.DotNetWrappers.ExtensionMethods;
-using O2.XRules.Database.APIs;
-using SecurityInnovation.TeamMentor.WebClient.WebServices;
-using O2.Kernel;
-//O2Ref:AntiXSSLibrary.dll
 
-namespace SecurityInnovation.TeamMentor.WebClient
+namespace TeamMentor.CoreLib
 {
     public class LibraryDownload : IHttpHandler
     {                

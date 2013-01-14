@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using O2.DotNetWrappers.ExtensionMethods;
-using SecurityInnovation.TeamMentor.WebClient;
-using TeamMentor.CoreLib.WebServices;
-using SecurityInnovation.TeamMentor.WebClient.WebServices;
+using TeamMentor.CoreLib;
 
 namespace TeamMentor.UnitTests.REST_Direct
 {
@@ -34,11 +28,11 @@ namespace TeamMentor.UnitTests.REST_Direct
 			var response = HttpContextFactory.Response;
 			var headers = response.Headers;			
 			Assert.AreEqual(0, headers.size());
-			UtilMethods.addDefaultRequestHeaders();
+			ResponseHeaders.addDefaultResponseHeaders();
 			Assert.AreEqual(2, headers.size()	, "two headers expected");
 
 			TMConfig.Current.REST.AllowCrossDomainAccess = true;
-			UtilMethods.addDefaultRequestHeaders();
+			ResponseHeaders.addDefaultResponseHeaders();
 			Assert.AreEqual(5, headers.size()	, "five headers expected");
 			Assert.AreEqual("Access-Control-Allow-Origin", headers.Keys[2]);
 			Assert.AreEqual("*", headers[2]);

@@ -1,22 +1,10 @@
 using System;
-using System.Web;
-using System.Linq;
 using System.Collections.Generic;
-//using System.Text;
-using Microsoft.Security.Application;
-using System.Security.Permissions;
-using SecurityInnovation.TeamMentor.WebClient.WebServices;
-//using Moq;
-using O2.Kernel;
 using O2.DotNetWrappers.ExtensionMethods;
-using O2.DotNetWrappers.DotNet;
-using urn.microsoft.guidanceexplorer;
-using urn.microsoft.guidanceexplorer.guidanceItem;
 using System.Xml.Serialization;
-using O2.DotNetWrappers.Network;
 
 
-namespace SecurityInnovation.TeamMentor.WebClient.WebServices
+namespace TeamMentor.CoreLib
 {	
 	[Serializable]
 	public class VirtualArticleAction

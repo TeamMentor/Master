@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 using Nancy;
 using Nancy.Json;
 using Nancy.Responses.Negotiation;
 using Nancy.Routing;
 using O2.DotNetWrappers.ExtensionMethods;
-using SecurityInnovation.TeamMentor.Authentication.ExtensionMethods;
-using SecurityInnovation.TeamMentor.Authentication.WebServices.AuthorizationRules;
-using TeamMentor.CoreLib.WebServices;
+using TeamMentor.CoreLib;
 using O2.DotNetWrappers.Network;
 
 namespace TM_API

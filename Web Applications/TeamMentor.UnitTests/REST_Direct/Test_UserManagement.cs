@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SecurityInnovation.TeamMentor.WebClient;
-using TeamMentor.CoreLib.WebServices;
+using TeamMentor.CoreLib;
 
 namespace TeamMentor.UnitTests.REST_Direct
 {

@@ -11,7 +11,7 @@ using System.Web.Script.Serialization;
 using Microsoft.Security.Application;
 //O2File:C:\_WorkDir\O2\O2 Install\_TeamMentor\TeamMentor-Dinis-Dev-Fork\Web Applications\TeamMentor.CoreLib\TM_AppCode\Schemas\GuidanceItem.cs
 
-namespace SecurityInnovation.TeamMentor.WebClient
+namespace TeamMentor.CoreLib
 {
 	public class TeamMentor_Article
 	{ 

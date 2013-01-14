@@ -1,10 +1,8 @@
 using System;
-using System.Collections.Generic;
 using O2.DotNetWrappers.ExtensionMethods;
 using O2.FluentSharp;
-using TeamMentor.CoreLib.WebServices;
 
-namespace SecurityInnovation.TeamMentor.WebClient
+namespace TeamMentor.CoreLib
 {
 	//public values 
 	public partial class TMConfig

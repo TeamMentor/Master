@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.ServiceModel.Web;
-using System.Text;
-using O2.DotNetWrappers.ExtensionMethods;
+﻿using System.IO;
 using O2.FluentSharp;
 
-namespace TeamMentor.CoreLib.WebServices
+namespace TeamMentor.CoreLib
 {
 	public partial class REST_Admin
 	{

@@ -65,7 +65,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Moq\Test_API_Moq_HttpContext.cs" />
-    <Compile Include="REST_Direct\Admin_REST_Class.cs" />
     <Compile Include="Helpers\RestClass_Hosted.cs" />
     <Compile Include="Helpers\RestClass_Direct.cs" />
     <Compile Include="REST_Direct\RBAC_Functions.cs" />

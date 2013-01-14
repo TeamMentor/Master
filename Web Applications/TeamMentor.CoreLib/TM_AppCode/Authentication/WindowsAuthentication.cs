@@ -1,19 +1,11 @@
 using System;
-using System.Collections.Generic;
 using System.Security.Principal;
-using System.Linq;
-using System.Text;
-using SecurityInnovation.TeamMentor.WebClient;
-using SecurityInnovation.TeamMentor.WebClient.WebServices;
-using SecurityInnovation.TeamMentor.Authentication.WebServices.AuthorizationRules;
-using SecurityInnovation.TeamMentor.Authentication.ExtensionMethods;
 using O2.DotNetWrappers.ExtensionMethods;
 
 //O2File:../XmlDatabase/TM_Xml_Database.Users.cs
 
-namespace SecurityInnovation.TeamMentor.Authentication
-{
-	
+namespace TeamMentor.CoreLib
+{	
 	public class WindowsAuthentication
 	{
 		public static bool windowsAuthentication_Enabled;

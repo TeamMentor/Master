@@ -1,20 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using O2.DotNetWrappers.ExtensionMethods;
-using System.Security;
-using SecurityInnovation.TeamMentor.Authentication.ExtensionMethods;
-using SecurityInnovation.TeamMentor.Authentication.AuthorizationRules;
-using SecurityInnovation.TeamMentor.Authentication.WebServices.AuthorizationRules;
-using SecurityInnovation.TeamMentor.Authentication;
-using TeamMentor.CoreLib.WebServices;
 
-//O2File:ExtensionMethods/TeamMentorUserManagement_ExtensionMethods.cs
-//O2File:UserRoleBaseSecurity.cs
-//O2File:WindowsAndLDAP.cs
-
-namespace SecurityInnovation.TeamMentor.WebClient.WebServices
+namespace TeamMentor.CoreLib
 {
     public class TM_Authentication
     {

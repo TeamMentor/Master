@@ -1,24 +1,9 @@
 using System;
-using System.Web;
-using System.Linq;
 using System.Collections.Generic;
-using System.Text;
-using SecurityInnovation.TeamMentor.WebClient.WebServices;
-//using Moq;
 using O2.DotNetWrappers.ExtensionMethods;
-using O2.DotNetWrappers.DotNet;
-using urn.microsoft.guidanceexplorer;
-using urn.microsoft.guidanceexplorer.guidanceItem;
-//O2File:../IJavascriptProxy.cs
-//O2File:../UtilMethods.cs
-//O2File:../Schemas/library.cs
-//O2File:../Schemas/guidanceItem.cs
-//O2File:TM_Xml_Database.cs
-//O2Ref:moq.dll
-//O2Ref:System.dll
-//O2Ref:System.Web.Abstractions.dll
-               
-namespace SecurityInnovation.TeamMentor.WebClient.WebServices
+
+
+namespace TeamMentor.CoreLib
 {
 	public class TM_Xml_Database_JavaScriptProxy : IJavascriptProxy
 	{

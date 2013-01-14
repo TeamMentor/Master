@@ -2,21 +2,13 @@ using System;
 using System.Web;
 using System.Linq;
 using System.Collections.Generic;
-using System.Text;
 using System.Security.Permissions;
-using SecurityInnovation.TeamMentor.WebClient.WebServices;
-using O2.Kernel;
 using O2.DotNetWrappers.ExtensionMethods;
 using O2.DotNetWrappers.DotNet;
 using O2.DotNetWrappers.Windows;
-using urn.microsoft.guidanceexplorer;
-using urn.microsoft.guidanceexplorer.guidanceItem;
-using Microsoft.Security.Application;
-using SecurityInnovation.TeamMentor.Authentication.WebServices.AuthorizationRules;
-//O2File:TM_Xml_Database.cs
-//O2File:../O2_Scripts_APIs/_O2_Scripts_Files.cs
 
-namespace SecurityInnovation.TeamMentor.WebClient.WebServices
+
+namespace TeamMentor.CoreLib
 {
 	public static class TM_Xml_Database_ExtensionMethods_XmlDataSources_GuidanceItems_Search
 	{				

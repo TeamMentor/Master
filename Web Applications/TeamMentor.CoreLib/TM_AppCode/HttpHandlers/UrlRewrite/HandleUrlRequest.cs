@@ -4,11 +4,8 @@ using O2.DotNetWrappers.ExtensionMethods;
 using Microsoft.Security.Application;
 using System.IO;
 using System.Security;
-using TeamMentor.CoreLib.WebServices;
 
-//using O2.XRules.Database.Utils;
-
-namespace SecurityInnovation.TeamMentor.WebClient.WebServices
+namespace TeamMentor.CoreLib
 {
 	public class HandleUrlRequest
 	{
@@ -486,7 +483,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
         }
         private bool handleAction_SSO(string data)
         {
-            new SecurityInnovation.TeamMentor.Authentication.SingleSignOn().authenticateUserBasedOn_SSOToken();
+            new SingleSignOn().authenticateUserBasedOn_SSOToken();
             return true;
         }
         

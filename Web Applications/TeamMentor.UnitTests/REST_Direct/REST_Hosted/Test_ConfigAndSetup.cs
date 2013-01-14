@@ -1,6 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using O2.XRules.Database.APIs;
-using TeamMentor.CoreLib.WebServices;
 using O2.DotNetWrappers.ExtensionMethods;
 using O2.FluentSharp;
 

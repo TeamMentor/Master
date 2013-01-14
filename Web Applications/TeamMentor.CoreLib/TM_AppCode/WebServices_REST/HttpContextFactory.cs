@@ -1,7 +1,6 @@
-using System;
 using System.Web;
 
-namespace TeamMentor.CoreLib.WebServices
+namespace TeamMentor.CoreLib
 {
 	public class HttpContextFactory
 	{

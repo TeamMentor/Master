@@ -1,1 +1,1 @@
-﻿<%@ WebHandler Language="C#" CodeBehind="UrlRewriter.ashx.cs" Class="SecurityInnovation.TeamMentor.WebClient.WebServices.UrlRewriter" %>
+﻿<%@ WebHandler Language="C#"  Class="TeamMentor.CoreLib.UrlRewriter" %>

@@ -1,2 +1,2 @@
-﻿<%@ WebHandler Language="C#" Class="ScriptCombiner" %>
+﻿<%@ WebHandler Language="C#" Class="TeamMentor.CoreLib.ScriptCombiner" %>
 

@@ -1,4 +1,4 @@
-namespace TeamMentor.CoreLib.WebServices
+namespace TeamMentor.CoreLib
 {
 	public class TMConsts
 	{

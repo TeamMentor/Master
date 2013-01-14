@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Security.Principal;
+﻿using System.Security.Principal;
 using System.Web;
 using O2.DotNetWrappers.ExtensionMethods;
-using SecurityInnovation.TeamMentor.Authentication.WebServices.AuthorizationRules;
-//O2File:..\UserRoles.cs
 
-namespace SecurityInnovation.TeamMentor.Authentication.ExtensionMethods
+namespace TeamMentor.CoreLib
 {
     public static class RoleBaseSecurity
     {

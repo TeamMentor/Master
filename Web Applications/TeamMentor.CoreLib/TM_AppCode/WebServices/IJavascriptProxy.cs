@@ -1,17 +1,9 @@
 using System; 
 using System.Xml;
-using System.Linq;
 using System.Collections.Generic;
 using O2.DotNetWrappers.ExtensionMethods;
-using O2.XRules.Database.APIs;
 
-//O2File:DataViewers/JsTreeNode.cs
-//O2File:DataViewers/JsDataTable.cs
-
-//O2File:O2_Scripts_APIs/_O2_Scripts_Files.cs
-
-
-namespace SecurityInnovation.TeamMentor.WebClient.WebServices
+namespace TeamMentor.CoreLib
 {
     public interface IJavascriptProxy
     {    

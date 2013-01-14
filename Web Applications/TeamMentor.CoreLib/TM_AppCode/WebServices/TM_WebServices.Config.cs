@@ -1,29 +1,10 @@
 using System;
-using System.Web;
-using System.Linq;
 using System.Collections.Generic;
-using System.Text;
 using System.Web.Services;
 using System.Security.Permissions;	
-using SecurityInnovation.TeamMentor.WebClient;
-using SecurityInnovation.TeamMentor.Authentication.AuthorizationRules;
-using SecurityInnovation.TeamMentor.Authentication.WebServices.AuthorizationRules;
-//using Microsoft.Practices.Unity;
 using O2.DotNetWrappers.ExtensionMethods;
-using O2.XRules.Database.APIs;
-using SecurityInnovation.TeamMentor.Authentication;
-using TeamMentor.CoreLib.WebServices;
-using urn.microsoft.guidanceexplorer;
-//O2File:../IJavascriptProxy.cs
-//O2File:../Authentication/UserRoleBaseSecurity.cs
-//O2File:TM_WebServices.asmx.cs
-//O2File:../FileUpload/FileUpload.cs
-//O2Ref:System.Web.Services.dll 
-//O2Ref:Microsoft.Practices.Unity.dll
-//O2Ref:System.Xml.Linq.dll
 
-
-namespace SecurityInnovation.TeamMentor.WebClient.WebServices
+namespace TeamMentor.CoreLib
 { 					
 	//WebServices related to: Config Methods
     public partial class TM_WebServices 
@@ -48,7 +29,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 																																	{
 																																		if (TM_Xml_Database.Current.xmlDB_Libraries_ImportFromZip(pathToZipFile, unzipPassword))
 																																		{
-																																			this.XmlDatabase_ReloadData();
+																																			XmlDatabase_ReloadData();
 																																			return true;
 																																		}
 																																		return false;																																		
@@ -74,10 +55,10 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
         [WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public string	SSO_GetSSOTokenForUser(string userName)          {   return new SingleSignOn().getSSOTokenForUser(userName); }
         [WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public TMUser	SSO_GetUserFromSSOToken(string ssoToken)         {   return new SingleSignOn().getUserFromSSOToken(ssoToken); }                
 																												
-		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]		public string		GitHub_Pull_Origin()	            {	return UtilMethods.syncWithGitHub_Pull_Origin();  }
-        [WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]		public string		GitHub_Push_Origin()	            {	return UtilMethods.syncWithGitHub_Push_Origin();  }
-        [WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]		public string		GitHub_Push_Commit()	            {	return UtilMethods.syncWithGitHub_Commit();  }
-        [WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]		public string		Git_Execute(string gitCommand)	{	return UtilMethods.executeGitCommand(gitCommand);  }
+		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]		public string		GitHub_Pull_Origin()	            {	return Git.syncWithGitHub_Pull_Origin();  }
+        [WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]		public string		GitHub_Push_Origin()	            {	return Git.syncWithGitHub_Push_Origin();  }
+        [WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]		public string		GitHub_Push_Commit()	            {	return Git.syncWithGitHub_Commit();  }
+        [WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]		public string		Git_Execute(string gitCommand)		{	return Git.executeGitCommand(gitCommand);  }
 		
 		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]		public string		CreateWebEditorSecret()	
 																									{

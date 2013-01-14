@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using O2.DotNetWrappers.ExtensionMethods;
 using O2.FluentSharp;
-using TeamMentor.CoreLib.WebServices;
+using TeamMentor.CoreLib;
 
 namespace TeamMentor.UnitTests.Helpers
 {

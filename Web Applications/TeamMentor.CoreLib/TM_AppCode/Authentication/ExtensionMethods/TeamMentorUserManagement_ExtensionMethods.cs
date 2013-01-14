@@ -1,58 +1,53 @@
 ﻿using System;
 using System.Linq;
-using System.Text;
 using System.Collections.Generic;
 using System.Security.Permissions;
-using SecurityInnovation.TeamMentor.Authentication.WebServices;
-using SecurityInnovation.TeamMentor.Authentication.WebServices.AuthorizationRules;
 using O2.DotNetWrappers.ExtensionMethods;
-using SecurityInnovation.TeamMentor.WebClient.WebServices;
-//O2File:../UserRoles.cs
 
-namespace SecurityInnovation.TeamMentor.Authentication.ExtensionMethods
+namespace TeamMentor.CoreLib
 {
     public static class TeamMentorUserManagement_GUID
     {
         //Note: need to find a way to reuse database connections (the current model of creation a connection per request doesn't make a lot of sense        
-        public static string userName(this Guid sessionID)
-        {
-            "resolving username for sessionID: {0}".info(sessionID);
-//            if (sessionID != null && sessionID != Guid.Empty)            
-//                return ObjectFactory.AuthenticationManagement().LookupUsernameFromSessionID(sessionID);
-            return null;
-        }
+		/*        public static string userName(this Guid sessionID)
+				{
+					"resolving username for sessionID: {0}".info(sessionID);
+		//            if (sessionID != null && sessionID != Guid.Empty)            
+		//                return ObjectFactory.AuthenticationManagement().LookupUsernameFromSessionID(sessionID);
+					return null;
+				}
 
-        public static TMUser tmUser(this Guid sessionID)
-        { 
-            var userName = sessionID.userName();
-//            if (userName != null)
-//                return ObjectFactory.AuthenticationManagement().GetUserFromUsername(userName);
-            return null;
-        }
+				public static TMUser tmUser(this Guid sessionID)
+				{ 
+					var userName = sessionID.userName();
+		//            if (userName != null)
+		//                return ObjectFactory.AuthenticationManagement().GetUserFromUsername(userName);
+					return null;
+				}
 
-        public static int groupID(this Guid sessionID)
+		public static int groupID(this Guid sessionID)
         { 
             var tmUser = sessionID.tmUser();
             if (tmUser != null)
                 return tmUser.GroupID;
             return -1;            
         }
-        
-        public static UserGroup userGroup(this Guid sessionID)
+
+		public static UserGroup userGroup(this Guid sessionID)
         {
             return (UserGroup)sessionID.groupID();              
         }
 
-        public static List<UserRole> userRoles(this Guid sessionID)
+		public static List<UserRole> userRoles(this Guid sessionID)
         {
             return UserRolesMappings.Mappings[sessionID.userGroup()];
         }
-        
-        public static bool isAdmin(this Guid sessionID)
+
+		public static bool isAdmin(this Guid sessionID)
         {
             return UserGroup.Admin == sessionID.userGroup();
-        }        
-    }
+        }*/
+	}
 
     public static class TeamMentorUserManagement_TMUser
     {

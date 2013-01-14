@@ -12,7 +12,7 @@ using TeamMentor.CoreLib.WebServices;
 
 //O2File:../UtilMethods.cs 
 
-namespace SecurityInnovation.TeamMentor.WebClient.WebServices
+namespace TeamMentor.CoreLib
 {
 	[Serializable]
 	public class RequestData

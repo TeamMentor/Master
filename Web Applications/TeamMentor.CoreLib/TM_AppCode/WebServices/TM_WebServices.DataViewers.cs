@@ -1,20 +1,10 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using System.Text;
 using System.Web.Services;
-using System.Security.Permissions;	
-using SecurityInnovation.TeamMentor.Authentication.WebServices.AuthorizationRules;
-//using Microsoft.Practices.Unity;
 using O2.DotNetWrappers.ExtensionMethods;
-using O2.XRules.Database.APIs;
-//O2File:../IJavascriptProxy.cs
-//O2File:../UtilMethods.cs
-//O2File:../WebServices/TM_WebServices.asmx.cs
-//O2Ref:System.Web.Services.dll 
-//O2Ref:Microsoft.Practices.Unity.dll
-//O2Ref:System.Xml.Linq.dll
-namespace SecurityInnovation.TeamMentor.WebClient.WebServices
+
+namespace TeamMentor.CoreLib
 { 					
 	//WebServices related to: Data Viewers
     public partial class TM_WebServices 
@@ -76,16 +66,16 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 					return folderViewsId;
 					
 				};
-            var sessionLibraryID = GetCurrentSessionLibrary();
+            var sessionLibraryId = GetCurrentSessionLibrary();
 
-            var libraries = (sessionLibraryID == Guid.Empty)
+            var libraries = (sessionLibraryId == Guid.Empty)
                                 ? javascriptProxy.GetLibraries()
-                                : javascriptProxy.GetLibraryById(sessionLibraryID).wrapOnList();
+                                : javascriptProxy.GetLibraryById(sessionLibraryId).wrapOnList();
 
 			foreach(var library in libraries)
 			{				
 				var libraryNode =jsTree.add_Node(library.Caption);
-				var mappedFolders = new Dictionary<string, List<Folder_V3>>();				
+				//var mappedFolders = new Dictionary<string, List<Folder_V3>>();				
 				mapFolders(library.Id, javascriptProxy.GetFolders(library.Id), libraryNode);
 				mapViews(library.Id, Guid.Empty, javascriptProxy.GetViewsInLibraryRoot(library.Id.str()).guids(), libraryNode);
 				//libraryNode.state = "open";
@@ -147,7 +137,7 @@ namespace SecurityInnovation.TeamMentor.WebClient.WebServices
 		public JsDataTable getDataTableFromGuidanceItems(List<TeamMentor_Article> rawGuidanceItems)
 		{
 			var guidanceItems = rawGuidanceItems.GroupBy((guidanceItem)=>guidanceItem.Metadata.Id)
-												.Select((g)=>g.First())
+												.Select ((g)=>g.First())
 												.ToList();											
 								
 			var jsDataTable =  new JsDataTable();

@@ -1,23 +1,12 @@
 using System;
-using System.IO;
-using System.Web;
-using System.Linq;
 using System.Collections.Generic;
-using System.Text;
-using SecurityInnovation.TeamMentor.WebClient.WebServices;
-//using Moq;
-using O2.Kernel;
 using O2.DotNetWrappers.ExtensionMethods;
 using O2.DotNetWrappers.DotNet;
 using O2.DotNetWrappers.Windows;
 using urn.microsoft.guidanceexplorer;
-using urn.microsoft.guidanceexplorer.guidanceItem;
 using System.Threading;
-//O2File:TM_Xml_Database.cs
 
-//O2File:../Schemas/TeamMentor_Article.cs
-
-namespace SecurityInnovation.TeamMentor.WebClient.WebServices
+namespace TeamMentor.CoreLib
 {	
 
 	// this is a (bit) time consumining (less 1s for 8000 files), so it should only be done once (this is another good cache target)
