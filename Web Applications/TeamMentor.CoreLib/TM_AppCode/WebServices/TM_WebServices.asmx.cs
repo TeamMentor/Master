@@ -15,11 +15,12 @@ namespace TeamMentor.CoreLib
 	{		
 		public TM_Xml_Database_JavaScriptProxy javascriptProxy	{ get; set; }		
 		public TM_Authentication tmAuthentication				{ get; set; }
-		
+
+		[Trace("WebServicesCall")]
 		public TM_WebServices() : this(false)
 		{ }
 
-		[Trace("WebServicesCall")]
+		
 		public TM_WebServices(bool disable_Csrf_Check)
 		{			
 			javascriptProxy		= new TM_Xml_Database_JavaScriptProxy(); 
