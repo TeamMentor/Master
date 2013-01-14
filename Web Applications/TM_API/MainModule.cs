@@ -68,7 +68,7 @@ namespace TM_API
 			if (json.valid())
 			{
 				dynamic data = serializer.DeserializeObject(json);
-				var index = 0;
+				//var index = 0;
 				foreach (var contact in data["contacts"])
 				{
 					try
