@@ -12,30 +12,19 @@ namespace TeamMentor.CoreLib
 	[System.ComponentModel.ToolboxItem(false)]
 	[System.Web.Script.Services.ScriptService]
 	public partial class TM_WebServices : WebService 
-	{
-		//[Dependency]
-		public TM_Xml_Database_JavaScriptProxy javascriptProxy { get; set; }
-
-		//public ActivityTracking activityTracking { get; set; }
-
-		public TM_Authentication tmAuthentication { get; set; }
-
+	{		
+		public TM_Xml_Database_JavaScriptProxy javascriptProxy	{ get; set; }		
+		public TM_Authentication tmAuthentication				{ get; set; }
+		
 		public TM_WebServices() : this(false)
 		{ }
 
-		public TM_WebServices(bool disable_CSRF_Check)
+		[Trace("WebServicesCall")]
+		public TM_WebServices(bool disable_Csrf_Check)
 		{			
-			//UnityInjection.resolve(this);
-			javascriptProxy = new TM_Xml_Database_JavaScriptProxy(); 
-			tmAuthentication = new TM_Authentication(this);			
-			tmAuthentication.mapUserRoles(disable_CSRF_Check);
-
-			GZip.setGZipCompression_forAjaxRequests();
-			
-			
-			//Disable Activity Tracking
-			//activityTracking = new ActivityTracking();
-			//activityTracking.LogRequest();
+			javascriptProxy		= new TM_Xml_Database_JavaScriptProxy(); 
+			tmAuthentication	= new TM_Authentication(this).mapUserRoles(disable_Csrf_Check);
+			GZip.setGZipCompression_forAjaxRequests();						
 		}        
 		
 
@@ -44,9 +33,9 @@ namespace TeamMentor.CoreLib
 		[WebMethod(EnableSession = true)]											public TMUser CreateUser_Random()      						{   return javascriptProxy.CreateUser_Random(); 	}		
 		
 		//******** javascriptProxy User Management   (all demand admin privs)     
-		[WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public TMUser GetUser_byID(int userId)        				{   return javascriptProxy.GetUser_byID(userId); ;        }
-		[WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public List<TMUser> GetUsers_byID(List<int> userIds)      	{   return javascriptProxy.GetUsers_byID(userIds); ;       }
-		[WebMethod(EnableSession = true)]   [Admin(SecurityAction.Demand)]			public TMUser GetUser_byName(string name)					{   return javascriptProxy.GetUser_byName(name);        }
+		[WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public TMUser GetUser_byID(int userId)        				{   return javascriptProxy.GetUser_byID(userId);    }
+		[WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public List<TMUser> GetUsers_byID(List<int> userIds)      	{   return javascriptProxy.GetUsers_byID(userIds);  }
+		[WebMethod(EnableSession = true)]   [Admin(SecurityAction.Demand)]			public TMUser GetUser_byName(string name)					{   return javascriptProxy.GetUser_byName(name);    }
 		[WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public List<TMUser> GetUsers()        						{   return javascriptProxy.GetUsers();        		}         
 
 		[WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public List<TMUser> CreateUsers(List<NewUser> newUsers)    	{	return javascriptProxy.CreateUsers(newUsers).tmUsers();        }        
