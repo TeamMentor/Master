@@ -4,6 +4,7 @@ using PostSharp.Aspects;
 
 namespace TeamMentor.CoreLib
 {
+
 	[Serializable]
 	public sealed class TraceAttribute : OnMethodBoundaryAspect
 	{
@@ -25,8 +26,8 @@ namespace TeamMentor.CoreLib
 
 		public override void OnExit(MethodExecutionArgs args)
 		{
-			var message = "Leaving {0}.{1}.".format(args.Method.DeclaringType.Name, args.Method.Name);						
-			"[{0}] {1}".info(Category, message);
+			//var message = "Leaving {0}.{1}.".format(args.Method.DeclaringType.Name, args.Method.Name);						
+			//"[{0}] {1}".info(Category, message);
 		}
 	}
 }

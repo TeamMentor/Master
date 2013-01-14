@@ -21,7 +21,8 @@ namespace TeamMentor.CoreLib
 		private GoogleAnalytics()
 		{
 			AccountID	 = "UA-37594728-3";
-			RandomNumber = 1111111111; 
+			RandomNumber = 1111111111;
+			SetUserCookie(RandomNumber);		// for anonymous user
 		}
 
 
