@@ -16,7 +16,7 @@ namespace TeamMentor.CoreLib
 		public TM_Xml_Database_JavaScriptProxy javascriptProxy	{ get; set; }		
 		public TM_Authentication tmAuthentication				{ get; set; }
 
-		[Trace("WebServicesCall")]
+		[LogUrl("WebService")]
 		public TM_WebServices() : this(false)
 		{ }
 

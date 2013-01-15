@@ -253,7 +253,7 @@ namespace TeamMentor.CoreLib
 			{
 				var tmUser = tmDb.tmUser(username);
 				if (tmUser.notNull())
-					if (TM_Xml_Database.TMUsersPasswordHashes[username] == passwordHash)
+					if (TM_Xml_Database.TMUsersPasswordHashes[username] == passwordHash)					
 						return tmDb.registerUserSession(tmUser, Guid.NewGuid());
 			}
     		return Guid.Empty;    			
@@ -426,8 +426,7 @@ namespace TeamMentor.CoreLib
 			}
 			return Guid.Empty;
 		}
-				
-		
+						
 		public static Guid registerUserSession(this TM_Xml_Database tmDb, TMUser tmUser, Guid userGuid)
 		{
 			if (tmUser.isNull())
@@ -435,7 +434,9 @@ namespace TeamMentor.CoreLib
 				"In registerUserSession tmUser object was null".error();
 				return Guid.Empty;
 			}
-			"[Security Event] user logged in: {0}".info(tmUser.UserName);
+			//"[Security Event] user logged in: {0}".info(tmUser.UserName);
+
+			"User Login".logActivity(tmUser.UserName);
 			TM_Xml_Database.ActiveSessions.add(userGuid, tmUser);
 			return userGuid; 
 		}
@@ -454,6 +455,7 @@ namespace TeamMentor.CoreLib
 		{
             if (sessionID.validSession())
             {
+				"User Logout".logActivity(sessionID.session_UserName());
                 TM_Xml_Database.ActiveSessions.Remove(sessionID);
                 return true;
             }
@@ -467,14 +469,9 @@ namespace TeamMentor.CoreLib
 			return null;	
 		}
 		public static string session_UserName(this Guid sessionID)
-        {
-			"resolving username for sessionID: {0}".info(sessionID);
+        {			
 			if(sessionID.validSession())
 				return sessionID.session_TmUser().UserName;
-            
-			
-//            if (sessionID != null && sessionID != Guid.Empty)            
-//                return ObjectFactory.AuthenticationManagement().LookupUsernameFromSessionID(sessionID);
             return null;
         }
 

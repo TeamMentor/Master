@@ -34,7 +34,8 @@ namespace TeamMentor.CoreLib
 		        
 		
 		//public static string defaultLibrariesPath = ;
-		 
+
+		[Log("TM_Xml_Database Setup")]
 		static TM_Xml_Database()
 		{			
 			Cached_GuidanceItems		= new Dictionary<Guid, TeamMentor_Article> ();            

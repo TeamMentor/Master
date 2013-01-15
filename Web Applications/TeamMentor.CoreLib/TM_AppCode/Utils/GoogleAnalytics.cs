@@ -14,7 +14,7 @@ namespace TeamMentor.CoreLib
 				args.argument<UserActivity>().ga_LogEntry();
 			}
 			else
-				"LogMethod".ga_LogEntry(args.Method.Name);
+				"[LogMethod]".ga_LogEntry(args.Method.Name);
 			args.Proceed();			
 		}		
 	}		
@@ -41,11 +41,12 @@ namespace TeamMentor.CoreLib
 
 		private GoogleAnalytics()
 		{
-			AccountID	 = "UA-37594728-3";
-			RandomNumber = 1111111111;
-			SetUserCookie(RandomNumber);		// for anonymous user
-			Enabled = true;
+			Enabled				= false;
+			AccountID			= "UA-XXXXXXXX-X";		// invalid value
 			LogWebServicesCalls = true;
+
+			RandomNumber		= 1111111111;			
+			SetUserCookie(RandomNumber);				// for anonymous user						
 		}
 
 
@@ -66,8 +67,8 @@ namespace TeamMentor.CoreLib
 			if (Enabled.isFalse())
 				return this;
 
-			if (page.ga_LogThisPageType().isFalse())
-				return this;
+			//if (page.ga_LogThisPageType().isFalse())
+			//	return this;
 			
 			var gaRequest = ("{0}?utmdt={1}&utmp={2}&utmac={3}&utmcc={4}").format(
 								Analytics_Url, title, page, accountId, userCookie);
@@ -88,26 +89,30 @@ namespace TeamMentor.CoreLib
 			googleAnalytics = GoogleAnalytics.Current;
 		}
 
-		public static bool ga_LogThisPageType(this string page)
+		/*public static bool ga_LogThisPageType(this string page)
 		{
 			switch (page)
 			{
-				case "WebServices":
+				case "[WebService]":
 					return googleAnalytics.LogWebServicesCalls;
 				default:
 					return true;
 			}
-		}
+		}*/
 
-		public static GoogleAnalytics ga_LogEntry(this string page, string title)
+		public static GoogleAnalytics ga_LogEntry(this string title, string page)
 		{
 			return googleAnalytics.LogEntry(page, title);
 		}		
 
 		public static UserActivity ga_LogEntry(this UserActivity userActivity)
 		{
-			if(userActivity.notNull())
-				googleAnalytics.LogEntry(userActivity.Name, userActivity.Detail);
+			if (userActivity.notNull())
+			{
+				var title = "[UserActivity]";
+				var page = "{0}: {1}".format(userActivity.Name, userActivity.Detail);
+				title.ga_LogEntry(page);
+			}
 			return userActivity;
 		}
 	}

@@ -4,33 +4,40 @@ using PostSharp.Aspects;
 
 namespace TeamMentor.CoreLib
 {
-
 	[Serializable]
-	public sealed class TraceAttribute : OnMethodBoundaryAspect
+	public sealed class LogUrlAttribute : OnMethodBoundaryAspect
 	{
-		private readonly string category;
+		public string Category { get; set; }
 
-		public TraceAttribute(string category)
+		public LogUrlAttribute(string category)
 		{
-			this.category = category;
+			Category = category;
 		}
+		
+		public override void OnEntry(MethodExecutionArgs args)
+		{										
+			var url = HttpContextFactory.Request.Url;
+			var title = "[TM_Log] : {0}".format(Category);
+			title.ga_LogEntry(url.str());			
 
-		public string Category { get { return category; } }
+			base.OnEntry(args);
+		}
+	}
+	[Serializable]
+	public sealed class LogAttribute : OnMethodBoundaryAspect
+	{
+		public string Category { get; set; }
+
+		public LogAttribute(string category)
+		{
+			Category = category;
+		}
 
 		public override void OnEntry(MethodExecutionArgs args)
-		{ 
-			var message = "> Entering {0}.{1}.".format(args.Method.DeclaringType.Name, args.Method.Name);
-			var url = HttpContextFactory.Request.Url;			
-			"[{0}] {1} for: {2} ".info(Category, message, url);
-			var service = url.str().split("/").last();
-			"WebService".logActivity(service);
-			//GoogleAnalytics.Current.LogEntry("WebService", );
-		}
+		{ 			
+			"[TM_Log]".ga_LogEntry(Category);			
 
-		public override void OnExit(MethodExecutionArgs args)
-		{
-			//var message = "< Leaving {0}.{1}.".format(args.Method.DeclaringType.Name, args.Method.Name);						
-			//"[{0}] {1}".info(Category, message);
+			base.OnEntry(args);
 		}
 	}
 
