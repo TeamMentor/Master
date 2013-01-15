@@ -30,6 +30,8 @@ namespace TeamMentor.Website
 			googleAnalytics.Enabled					= true;
 			googleAnalytics.LogWebServicesCalls		= true;
 
+			//TM Security
+			tmConfig.SSL_RedirectHttpToHttps		= true;
 			
 	    }
     }
