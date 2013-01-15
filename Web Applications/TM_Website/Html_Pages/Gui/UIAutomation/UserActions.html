@@ -109,14 +109,26 @@
 									
 							}
 					,	signup	: function(username, password, passwordConfirm)
-							{	
-								opener.TM.Gui.TopRightLinks.signupPage(); 
+							{									
+								opener.$("#ctl00_ContentPlaceHolder1_UsernameBox").val(username);									 
+								opener.$("#ctl00_ContentPlaceHolder1_PasswordBox").val(password);	
+								opener.$("#ctl00_ContentPlaceHolder1_RepeatPasswordBox").val(passwordConfirm); 
+								opener.$("#ctl00_ContentPlaceHolder1_EmailBox").val("tm_qa@si.com"); 
+								opener.$("#ctl00_ContentPlaceHolder1_FNameBox").val("email");
+								opener.$("#ctl00_ContentPlaceHolder1_FNameBox").val("first");
+								opener.$("#ctl00_ContentPlaceHolder1_LNameBox").val("name");
+								opener.$("#ctl00_ContentPlaceHolder1_Title").val("developer");
+								opener.$("#ctl00_ContentPlaceHolder1_Country").val("UK");
+								opener.$("#ctl00_ContentPlaceHolder1_State").val("London");
+						
+						
+								/*opener.TM.Gui.TopRightLinks.signupPage(); 
 								setTimeout(function() 
 									{	
 										opener.$("#ctl00_ContentPlaceHolder1_UsernameBox").attr("value",username);									 
 										opener.$("#ctl00_ContentPlaceHolder1_PasswordBox").attr("value",password);	
 										opener.$("#ctl00_ContentPlaceHolder1_RepeatPasswordBox").attr("value",passwordConfirm); 
-									} , 500);
+									} , 500);*/
 									
 							}
 
