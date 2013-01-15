@@ -14,6 +14,11 @@ namespace TeamMentor.UnitTests.CoreLib
 		{
 			googleAnalytics = GoogleAnalytics.Current;
 			logCount_AtStart = GoogleAnalytics.Current.LogCount;
+			
+			//TM CI account
+			googleAnalytics.AccountID = "UA-37594728-3";
+			googleAnalytics.Enabled = true;
+			googleAnalytics.LogWebServicesCalls = true;
 		}
 
 		[Test]
