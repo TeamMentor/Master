@@ -25,7 +25,7 @@ namespace TeamMentor.UnitTests.CoreLib
 			Assert.NotNull(googleAnalytics.UserCookie, "UserCookie was null");
 		}
 
-		[Test]
+		[Test, Ignore]
 		public void LogTestEntry_Directly()
 		{
 			googleAnalytics.SetUserCookie(12345);
