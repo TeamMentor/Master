@@ -24,6 +24,8 @@ namespace TeamMentor.CoreLib
 		public OnInstallation_Config		OnInstallation				{ get; set; }
         public WindowsAuthentication_Config WindowsAuthentication		{ get; set; }						
 		public TMDebugAndDev_Config			TMDebugAndDev				{ get; set; }
+		public Eval_Accounts_Config			Eval_Accounts				{ get; set; }
+		
 
 		public class WindowsAuthentication_Config
 		{				
@@ -48,6 +50,12 @@ namespace TeamMentor.CoreLib
 		public class REST_Config
 		{
 			public bool AllowCrossDomainAccess { get; set; }			
+		}
+
+		public class Eval_Accounts_Config
+		{
+			public bool Enabled { get; set; }
+			public int  Days { get; set; }
 		}
 	}
 	
@@ -145,6 +153,7 @@ namespace TeamMentor.CoreLib
 					Enable302Redirects = true,
 					EnableGZipForWebServices = true
 				};
+
 			tmConfig.OnInstallation = new TMConfig.OnInstallation_Config()
 				{
 					ForceAdminPasswordReset = true,
@@ -152,7 +161,9 @@ namespace TeamMentor.CoreLib
 					DefaultLibraryToInstall_Location = ""
 				};
 
-			tmConfig.REST = new TMConfig.REST_Config();
+			tmConfig.REST			= new TMConfig.REST_Config();
+			tmConfig.Eval_Accounts  = new TMConfig.Eval_Accounts_Config();
+
 			return tmConfig;	
 		}
 

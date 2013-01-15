@@ -22,11 +22,15 @@ namespace TeamMentor.Website
 	    {	
 	    	//General TM Configuration
 			tmConfig.ShowContentToAnonymousUsers	= false;
+			tmConfig.Eval_Accounts.Enabled			= true;
+			tmConfig.Eval_Accounts.Days				= 1;
 
 			//Google Analytics
 		    googleAnalytics.AccountID				= "UA-37594728-3";			
 			googleAnalytics.Enabled					= true;
 			googleAnalytics.LogWebServicesCalls		= true;
+
+			
 	    }
     }
 }

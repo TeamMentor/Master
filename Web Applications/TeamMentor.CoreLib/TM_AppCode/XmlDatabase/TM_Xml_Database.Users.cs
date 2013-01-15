@@ -252,6 +252,14 @@ namespace TeamMentor.CoreLib
 			if (username.valid() && passwordHash.valid())
 			{
 				var tmUser = tmDb.tmUser(username);
+				
+				if (TMConfig.Current.Eval_Accounts.Enabled)
+					if (tmUser.Stats.ExpirationDate < DateTime.Now && tmUser.Stats.ExpirationDate != default(DateTime))
+					{
+						"Account Expired".logActivity(tmUser.UserName);
+						return Guid.Empty;
+					}
+
 				if (tmUser.notNull())
 					if (TM_Xml_Database.TMUsersPasswordHashes[username] == passwordHash)					
 						return tmDb.registerUserSession(tmUser, Guid.NewGuid());
