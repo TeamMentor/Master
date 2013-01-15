@@ -21,7 +21,7 @@ namespace TeamMentor.Website
 	    public void CustomizeTMConfig()
 	    {	
 	    	//General TM Configuration
-			tmConfig.ShowContentToAnonymousUsers	= true;
+			tmConfig.ShowContentToAnonymousUsers	= false;
 
 			//Google Analytics
 		    googleAnalytics.AccountID				= "UA-37594728-3";			

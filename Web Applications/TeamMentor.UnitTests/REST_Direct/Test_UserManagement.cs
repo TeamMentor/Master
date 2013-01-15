@@ -1,14 +1,18 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.IO;
+using NUnit.Framework;
+using O2.DotNetWrappers.DotNet;
+using O2.DotNetWrappers.ExtensionMethods;
+using O2.FluentSharp;
 using TeamMentor.CoreLib;
 
 namespace TeamMentor.UnitTests.REST_Direct
 {
-	[TestClass]
+	[TestFixture]
 	public class Test_UserManagement : RestClass_Direct
 	{
-		[TestMethod]
-		public void Test_Login()
+		[Test]
+		public void Login()
 		{
 			var tmConfig = TMConfig.Current;
 			var credentials = new TM_Credentials() { UserName = tmConfig.DefaultAdminUserName, Password = tmConfig.DefaultAdminPassword};
@@ -21,5 +25,24 @@ namespace TeamMentor.UnitTests.REST_Direct
 			sessionId = IRESTAdmin.login(credentials);
 			Assert.AreEqual(sessionId, Guid.Empty);
 		}
+
+
+		[Test]
+		public void UserActivities()
+		{
+			var expectedHtml = "<h1>UserActivites</h1>Waiting 10 times for user activity events<hr>";
+			
+			O2Thread.mtaThread(()=>IRESTAdmin.users_Activities());
+			50.wait();
+			var responseHtml = moq_HttpContext.HttpContextBase.response_Read_All();
+
+			Assert.AreEqual(expectedHtml, responseHtml);
+			
+			"Test".logActivity("User Activity");
+			600.wait();
+			responseHtml = moq_HttpContext.HttpContextBase.response_Read_All();
+			Assert.AreNotEqual(expectedHtml, responseHtml);
+		}
+
 	}
 }

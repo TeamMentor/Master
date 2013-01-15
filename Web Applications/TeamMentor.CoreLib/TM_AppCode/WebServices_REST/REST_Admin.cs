@@ -17,19 +17,15 @@ namespace TeamMentor.CoreLib
 		public HttpSessionStateBase Session			 { get; set; }	
 		public TM_WebServices		TmWebServices	 { get; set; }	
 
+		[LogUrl("REST")]
 		public REST_Admin()
 		{
 			Context = HttpContextFactory.Current;
 			Session = HttpContextFactory.Session;
-						
-
-			
-
-			//Context.Response.Write("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+									
 			TmWebServices = new TM_WebServices(true);	//Disabling CSRF
 
-			UserGroup.Admin.setThreadPrincipalWithRoles();
-					
+			UserGroup.Admin.setThreadPrincipalWithRoles();					
 		}
 
 		public string Version()
@@ -197,7 +193,8 @@ namespace TeamMentor.CoreLib
 
 		public static IREST_Admin response_ContentType(this IREST_Admin iRest_Admin, string contentType)
 		{
-			WebOperationContext.Current.OutgoingResponse.ContentType = contentType;
+			if (WebOperationContext.Current != null)
+				WebOperationContext.Current.OutgoingResponse.ContentType = contentType;
 			return iRest_Admin;
 		}
 	}

@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using O2.DotNetWrappers.ExtensionMethods;
 using TeamMentor.CoreLib;
 
 namespace TeamMentor.UnitTests.CoreLib
@@ -9,15 +8,16 @@ namespace TeamMentor.UnitTests.CoreLib
 	{
 		public GoogleAnalytics	googleAnalytics;
 		public int				logCount_AtStart;
+
 		[SetUp]
 		public void setup()
 		{
-			googleAnalytics = GoogleAnalytics.Current;
-			logCount_AtStart = GoogleAnalytics.Current.LogCount;
+			googleAnalytics		= GoogleAnalytics.Current;
+			logCount_AtStart	= GoogleAnalytics.Current.LogCount;
 			
 			//TM CI account
-			googleAnalytics.AccountID = "UA-37594728-3";
-			googleAnalytics.Enabled = true;
+			googleAnalytics.AccountID			= "UA-37594728-3";
+			googleAnalytics.Enabled				= true;
 			googleAnalytics.LogWebServicesCalls = true;
 		}
 

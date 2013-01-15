@@ -50,5 +50,9 @@ namespace TeamMentor.CoreLib
 
 		//Views 
 		[OperationContract] [WebGet(UriTemplate = "/users/.html"			)] Stream		users_html();
+
+		//UserActivities 
+		[OperationContract] [WebGet(UriTemplate = "/users/activites"		)] Stream		users_Activities();
+
 	}	
 }

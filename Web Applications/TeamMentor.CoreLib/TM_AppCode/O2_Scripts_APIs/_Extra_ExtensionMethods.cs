@@ -50,9 +50,11 @@ namespace O2.FluentSharp
 	{
 		public static MemoryStream stream_UFT8(this string text)
 		{
-			return text.valid()
+			var memoryStream = text.valid()
 				       ? new MemoryStream(Encoding.UTF8.GetBytes(text))
 				       : new MemoryStream();
+			memoryStream.Flush();
+			return memoryStream;
 		}
 	}
 	public static class Extra_ExtensionMethods_XSL
