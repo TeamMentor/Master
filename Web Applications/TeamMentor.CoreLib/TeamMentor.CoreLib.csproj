@@ -86,6 +86,7 @@
     <Compile Include="TM_AppCode\Schemas\NewUser.cs" />
     <Compile Include="TM_AppCode\Schemas\View_V3.cs" />
     <Compile Include="TM_AppCode\TMConsts.cs" />
+    <Compile Include="TM_AppCode\Users\UserActvities.cs" />
     <Compile Include="TM_AppCode\Utils\Git.cs" />
     <Compile Include="TM_AppCode\Utils\GoogleAnalytics.cs" />
     <Compile Include="TM_AppCode\Utils\GZip.cs" />

@@ -23,7 +23,8 @@ namespace TeamMentor.CoreLib
 			var url = HttpContextFactory.Request.Url;			
 			"[{0}] {1} for: {2} ".info(Category, message, url);
 			var service = url.str().split("/").last();
-			GoogleAnalytics.Current.LogEntry("WebService", service);
+			"WebService".logActivity(service);
+			//GoogleAnalytics.Current.LogEntry("WebService", );
 		}
 
 		public override void OnExit(MethodExecutionArgs args)
@@ -32,4 +33,30 @@ namespace TeamMentor.CoreLib
 			//"[{0}] {1}".info(Category, message);
 		}
 	}
+
+
+	public static class PostSharp_ExtensionMethods
+	{
+		public static bool has_Arguments(this MethodInterceptionArgs args)
+		{
+			return args.Arguments.empty().isFalse();
+		}
+
+		public static object first_Argument(this MethodInterceptionArgs args)
+		{
+			//return args.Arguments.first();  //returns null;
+			if (args.has_Arguments())
+				return args.Arguments[0];
+			return null;
+		}
+
+		public static T argument<T>(this MethodInterceptionArgs args)
+		{
+			var firstArgument = args.first_Argument();
+			if (firstArgument is T)
+				return (T) firstArgument;
+			return default(T);
+		}
+	}
+
 }

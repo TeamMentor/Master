@@ -7,12 +7,13 @@ namespace TeamMentor.UnitTests.CoreLib
 	[TestFixture]
 	public class Test_Utils_GoogleAnalytics
 	{
-		public GoogleAnalytics googleAnalytics;
-
+		public GoogleAnalytics	googleAnalytics;
+		public int				logCount_AtStart;
 		[SetUp]
 		public void setup()
 		{
 			googleAnalytics = GoogleAnalytics.Current;
+			logCount_AtStart = GoogleAnalytics.Current.LogCount;
 		}
 
 		[Test]
@@ -25,12 +26,34 @@ namespace TeamMentor.UnitTests.CoreLib
 		}
 
 		[Test]
-		public void LogTestEntry()
+		public void LogTestEntry_Directly()
 		{
 			googleAnalytics.SetUserCookie(12345);
 			// at the moment there is no way to verify that the next command will actually work (see note on LogEntry method)
 			googleAnalytics.LogEntry("Test_Utils_GoogleAnalytics", "LogTestEntry");			
 		}
 
+		[Test]
+		public void LogTestEntry_ViaAttribue()
+		{			
+			new GA_PostSharp_Test().Test_LogTo_GoogleAnalytics();
+			Assert.AreEqual(logCount_AtStart + 1, GoogleAnalytics.Current.LogCount);
+		}
+
+		[Test]
+		public void LogUserActivity()
+		{
+			"UnitTest".logActivity("LogUserActivity");
+			Assert.AreEqual(logCount_AtStart + 1, GoogleAnalytics.Current.LogCount);
+		}
+
+	}
+
+	public class GA_PostSharp_Test
+	{
+		[LogTo_GoogleAnalytics]
+		public void Test_LogTo_GoogleAnalytics()
+		{			
+		}
 	}
 }

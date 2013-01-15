@@ -1,16 +1,37 @@
-﻿using O2.DotNetWrappers.ExtensionMethods;
+﻿using System;
+using O2.DotNetWrappers.ExtensionMethods;
+using PostSharp.Aspects;
 
 namespace TeamMentor.CoreLib
 {
+	[Serializable]
+	public class LogTo_GoogleAnalytics : MethodInterceptionAspect
+	{
+		public override void OnInvoke(MethodInterceptionArgs args)
+		{
+			if (args.has_Arguments())
+			{
+				args.argument<UserActivity>().ga_LogEntry();
+			}
+			else
+				"LogMethod".ga_LogEntry(args.Method.Name);
+			args.Proceed();			
+		}		
+	}		
+
 	public class GoogleAnalytics
 	{
-		public static GoogleAnalytics Current		{ get; set; }
-		public static string		  Analytics_Url { get; set; }
+		public static	GoogleAnalytics Current				{ get; set; }
+		public static	string			Analytics_Url		{ get; set; }
 
-		public		  string		  AccountID		{ get; set; }
-		public		  int			  RandomNumber  { get; set; }   // this shouldn't really be random or we get unique sessions per request (the key is that the userCookie value is unique)
-		public		  int			  UserId		{ get; set; } 
-		public		  string		  UserCookie	{ get; set; } 
+		public			string			AccountID			{ get; set; }
+		public			int				RandomNumber		{ get; set; }   // this shouldn't really be random or we get unique sessions per request (the key is that the userCookie value is unique)
+		public			int				UserId				{ get; set; } 
+		public			string			UserCookie			{ get; set; }
+		public			bool			Enabled				{ get; set; }
+		public			bool			LogWebServicesCalls { get; set; }
+
+		public			int				LogCount { get; set; }
 
 		static GoogleAnalytics()
 		{
@@ -23,6 +44,8 @@ namespace TeamMentor.CoreLib
 			AccountID	 = "UA-37594728-3";
 			RandomNumber = 1111111111;
 			SetUserCookie(RandomNumber);		// for anonymous user
+			Enabled = true;
+			LogWebServicesCalls = true;
 		}
 
 
@@ -40,12 +63,52 @@ namespace TeamMentor.CoreLib
 
 		public GoogleAnalytics LogEntry(string page, string title, string accountId, string userCookie)
 		{
+			if (Enabled.isFalse())
+				return this;
+
+			if (page.ga_LogThisPageType().isFalse())
+				return this;
+			
 			var gaRequest = ("{0}?utmdt={1}&utmp={2}&utmac={3}&utmcc={4}").format(
 								Analytics_Url, title, page, accountId, userCookie);
 			//this should register a new entry in the GoogleAnalytics account, but I'm not sure how we cancheck that it actually worked (the returning gif is the same for success or failure)
 			gaRequest.info().GET();
+			LogCount++;
 			return this;
 		}
 		
+	}
+
+	public static class GoogleAnalytics_ExtensionMethods
+	{
+		public static GoogleAnalytics googleAnalytics;
+
+		static GoogleAnalytics_ExtensionMethods()
+		{
+			googleAnalytics = GoogleAnalytics.Current;
+		}
+
+		public static bool ga_LogThisPageType(this string page)
+		{
+			switch (page)
+			{
+				case "WebServices":
+					return googleAnalytics.LogWebServicesCalls;
+				default:
+					return true;
+			}
+		}
+
+		public static GoogleAnalytics ga_LogEntry(this string page, string title)
+		{
+			return googleAnalytics.LogEntry(page, title);
+		}		
+
+		public static UserActivity ga_LogEntry(this UserActivity userActivity)
+		{
+			if(userActivity.notNull())
+				googleAnalytics.LogEntry(userActivity.Name, userActivity.Detail);
+			return userActivity;
+		}
 	}
 }

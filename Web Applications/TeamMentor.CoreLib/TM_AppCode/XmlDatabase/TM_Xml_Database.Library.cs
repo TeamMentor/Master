@@ -106,6 +106,9 @@ namespace TeamMentor.CoreLib
 				return null;
 
             var article = Cached_GuidanceItems[guidanceItemId];
+
+			"View Article Html".logActivity(article.Metadata.Title);
+			
             var articleContent = article.Content.Data.Value;
 
             if (articleContent.inValid())

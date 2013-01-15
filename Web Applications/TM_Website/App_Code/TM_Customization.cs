@@ -12,7 +12,7 @@ namespace TeamMentor.Website
 	    public void CustomizeTMConfig()
 	    {
 		    var tmConfig = TMConfig.Current;
-			tmConfig.ShowContentToAnonymousUsers = false;
+			tmConfig.ShowContentToAnonymousUsers = true;
 	    }
     }
 }
