@@ -25,6 +25,9 @@ namespace TeamMentor.Website
 			tmConfig.Eval_Accounts.Enabled			= true;
 			tmConfig.Eval_Accounts.Days				= 15;
 
+		    tmConfig.TMDebugAndDev.EnableGZipForWebServices = false;
+
+
 			//Google Analytics
 		    googleAnalytics.AccountID				= "UA-37594728-3";			
 			googleAnalytics.Enabled					= true;
