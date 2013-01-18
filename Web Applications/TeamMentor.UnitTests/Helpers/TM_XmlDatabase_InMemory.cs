@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NUnit.Framework;
+using O2.DotNetWrappers.ExtensionMethods;
 using TeamMentor.CoreLib;
 
 namespace TeamMentor.UnitTests
@@ -26,7 +27,7 @@ namespace TeamMentor.UnitTests
 			Assert.IsNull(tmXmlDatabase.Path_XmlLibraries		, "Path_XmlLibraries");
 			Assert.IsEmpty(tmXmlDatabase.Cached_GuidanceItems	, "Cached_GuidanceItems");
 			Assert.IsEmpty(tmXmlDatabase.ActiveSessions			, "ActiveSessions");
-			Assert.IsEmpty(tmXmlDatabase.TMUsers				, "TMUsers");
+			Assert.AreEqual(tmXmlDatabase.TMUsers.size(),1		, "TMUsers");				// there should be admin
 		}
 	}
 }
