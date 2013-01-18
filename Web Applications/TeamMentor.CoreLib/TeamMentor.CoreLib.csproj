@@ -86,6 +86,9 @@
     <Compile Include="TM_AppCode\Schemas\NewUser.cs" />
     <Compile Include="TM_AppCode\Schemas\View_V3.cs" />
     <Compile Include="TM_AppCode\TMConsts.cs" />
+    <Compile Include="TM_AppCode\Users\TM_Xml_Database_ExtensionMethods_ActiveSessions.cs" />
+    <Compile Include="TM_AppCode\Users\TM_Xml_Database_ExtensionMethods_Users.cs" />
+    <Compile Include="TM_AppCode\Users\TM_Xml_Database_ExtensionMethods_Users_Persistance.cs" />
     <Compile Include="TM_AppCode\Users\UserActvities.cs" />
     <Compile Include="TM_AppCode\Utils\Git.cs" />
     <Compile Include="TM_AppCode\Utils\GoogleAnalytics.cs" />
@@ -145,7 +148,7 @@
     <Compile Include="TM_AppCode\WebServices_REST\REST_Tests.cs" />
     <Compile Include="TM_AppCode\WebServices_REST\REST_User_Management.cs" />
     <Compile Include="TM_AppCode\WebServices_REST\DataContracts.cs" />
-    <Compile Include="TM_AppCode\XmlDatabase\TM_Xml_Database.Users.cs" />
+    <Compile Include="TM_AppCode\Users\TM_Xml_Database.Users.cs" />
     <Compile Include="TM_AppCode\XmlDatabase\TM_Xml_Database.Virtual_Articles.cs" />
     <Compile Include="TM_AppCode\XmlDatabase\TM_Xml_Database.Library.Files.cs" />
     <Compile Include="TM_AppCode\XmlDatabase\TM_Xml_Database.cs" />

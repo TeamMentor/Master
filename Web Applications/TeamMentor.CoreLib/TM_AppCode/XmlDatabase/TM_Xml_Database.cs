@@ -16,7 +16,7 @@ namespace TeamMentor.CoreLib
 
 		//users
 		public List<TMUser>	TMUsers							{ get; set; }
-		public Items TMUsersPasswordHashes { get; set; }
+		//public Items TMUsersPasswordHashes { get; set; }
 
 		//articles
 		public Dictionary<Guid, TMUser>				ActiveSessions				{ get; set; }		
@@ -70,16 +70,17 @@ namespace TeamMentor.CoreLib
 				GuidanceExplorers_XmlFormat = new Dictionary<Guid, guidanceExplorer>();
 
 				TMUsers = new List<TMUser>();
-				TMUsersPasswordHashes = new Items();
+				//TMUsersPasswordHashes = new Items();
 				ActiveSessions = new Dictionary<Guid, TMUser>();
 
 				if (UsingFileStorage)
 				{
 					this.setPathsAndloadData();
 					this.handleDefaultInstallActions();
-					this.xmlDB_Load_GuidanceItems();
-					this.createDefaultAdminUser(); // make sure this user exists						
+					this.xmlDB_Load_GuidanceItems();					
 				}
+
+				this.createDefaultAdminUser(); // make sure this user exists						
 			}
 			catch(Exception ex)
 			{

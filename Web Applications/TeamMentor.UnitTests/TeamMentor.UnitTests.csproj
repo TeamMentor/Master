@@ -85,8 +85,9 @@
     <Compile Include="REST_Direct\Test_TmConfig.cs" />
     <Compile Include="REST_Direct\Test_UserManagement.cs" />
     <Compile Include="REST_Direct\REST_Hosted\Test_ConfigAndSetup.cs" />
-    <Compile Include="Users\Test_Users_Management.cs" />
+    <Compile Include="XmlDatabase_InMemory\Test_Users_Management.cs" />
     <Compile Include="WebSite_Content\Test_CheckJavascriptResources.cs" />
+    <Compile Include="XmlDatabase_InMemory\Test_Users_Rbac.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TeamMentor.CoreLib\TeamMentor.CoreLib.csproj">

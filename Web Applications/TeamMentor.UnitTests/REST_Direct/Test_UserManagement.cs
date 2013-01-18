@@ -14,6 +14,7 @@ namespace TeamMentor.UnitTests.REST_Direct
 		[Test]
 		public void Login()
 		{
+
 			var tmConfig = TMConfig.Current;
 			var credentials = new TM_Credentials() { UserName = tmConfig.DefaultAdminUserName, Password = tmConfig.DefaultAdminPassword};
 			//login with default value

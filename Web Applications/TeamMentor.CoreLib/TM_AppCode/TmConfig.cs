@@ -138,7 +138,7 @@ namespace TeamMentor.CoreLib
             tmConfig.TMLibraryDataVirtualPath = "..\\..";
 			tmConfig.XmlLibrariesPath = "TM_Library";
 			tmConfig.DefaultAdminUserName = "admin";
-			tmConfig.DefaultAdminPassword = "!!tmbeta";
+			tmConfig.DefaultAdminPassword = "!!tmadmin";
             tmConfig.LibrariesUploadedFiles = "LibrariesUploadedFiles";
 
 			tmConfig.WindowsAuthentication = new TMConfig.WindowsAuthentication_Config()
