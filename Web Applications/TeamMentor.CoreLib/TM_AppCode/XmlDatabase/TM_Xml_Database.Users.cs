@@ -26,19 +26,19 @@ namespace TeamMentor.CoreLib
 			if(tmUsersPasswordsXmlFile.fileExists().isFalse())			
 				new O2.DotNetWrappers.DotNet.Items().saveAs(tmUsersPasswordsXmlFile);
 				
-			TM_Xml_Database.TMUsers = tmUsersXmlFile.load<List<TMUser>>();	
-			TM_Xml_Database.TMUsersPasswordHashes = tmUsersPasswordsXmlFile.load<O2.DotNetWrappers.DotNet.Items>();				
+			TM_Xml_Database.Current.TMUsers = tmUsersXmlFile.load<List<TMUser>>();	
+			TM_Xml_Database.Current.TMUsersPasswordHashes = tmUsersPasswordsXmlFile.load<O2.DotNetWrappers.DotNet.Items>();				
 		}
 
 		public static void loadAndCheckUserDatabase(string xmlDatabasePath)
 		{
 			loadTmUserObjects(xmlDatabasePath);
 			//check for invalid users
-			foreach (var tmUser in TM_Xml_Database.TMUsers.toList())
+			foreach (var tmUser in TM_Xml_Database.Current.TMUsers.toList())
 				if (tmUser.UserID == 0)
 				{
 					"[loadAndCheckUserDatabase] there was an account with userId=0, so removing it".error();
-					TM_Xml_Database.TMUsers.remove(tmUser);
+					TM_Xml_Database.Current.TMUsers.remove(tmUser);
 				}
 			saveTmUserObjects(xmlDatabasePath);
 		}
@@ -51,8 +51,8 @@ namespace TeamMentor.CoreLib
 			{
 				var tmUsersXmlFile = xmlDatabasePath.getTmUsersXmlFile();
 				var tmUsersPasswordsXmlFile = xmlDatabasePath.getTmUsersPasswordsXmlFile();
-				TM_Xml_Database.TMUsers.saveAs(tmUsersXmlFile);
-				TM_Xml_Database.TMUsersPasswordHashes.saveAs(tmUsersPasswordsXmlFile);
+				TM_Xml_Database.Current.TMUsers.saveAs(tmUsersXmlFile);
+				TM_Xml_Database.Current.TMUsersPasswordHashes.saveAs(tmUsersPasswordsXmlFile);
 			}
 		}			
 	} 
@@ -69,7 +69,7 @@ namespace TeamMentor.CoreLib
 		
 		public static string getTmUsersXmlFile(this TM_Xml_Database tmDb)
 		{
-			return TM_Xml_Database.Path_XmlDatabase.getTmUsersXmlFile();
+			return TM_Xml_Database.Current.Path_XmlDatabase.getTmUsersXmlFile();
 		}
 		
 		public static string getTmUsersPasswordsXmlFile(this string xmlDatabasePath)
@@ -82,12 +82,12 @@ namespace TeamMentor.CoreLib
 		
 		public static string getTmUsersPasswordsXmlFile(this TM_Xml_Database tmDb)
 		{
-			return TM_Xml_Database.Path_XmlDatabase.getTmUsersPasswordsXmlFile();
+			return TM_Xml_Database.Current.Path_XmlDatabase.getTmUsersPasswordsXmlFile();
 		}
 		
 		public static TM_Xml_Database saveTmUserDataToDisk(this TM_Xml_Database tmDb)
 		{
-			TM_Xml_Database.saveTmUserObjects(TM_Xml_Database.Path_XmlDatabase);			
+			TM_Xml_Database.saveTmUserObjects(TM_Xml_Database.Current.Path_XmlDatabase);			
 			return tmDb;
 		}
 		
@@ -116,17 +116,17 @@ namespace TeamMentor.CoreLib
 		
 		public static TMUser tmUser(this string name)
 		{
-			return TM_Xml_Database.TMUsers.user(name);
+			return TM_Xml_Database.Current.TMUsers.user(name);
 		}
 		
 		public static TMUser tmUser(this TM_Xml_Database tmDb, string name)
 		{
-			return TM_Xml_Database.TMUsers.user(name);
+			return TM_Xml_Database.Current.TMUsers.user(name);
 		}
 		
 		public static TMUser tmUser(this TM_Xml_Database tmDb, int userId)
 		{
-			return TM_Xml_Database.TMUsers.user(userId);
+			return TM_Xml_Database.Current.TMUsers.user(userId);
 		}
 		
 		[PrincipalPermission(SecurityAction.Demand, Role = "ManageUsers")] 
@@ -134,14 +134,14 @@ namespace TeamMentor.CoreLib
 		{
 			var tmUsers = new List<TMUser>();
 			foreach(var userId in usersId)								
-				tmUsers.Add(TM_Xml_Database.TMUsers.user(userId));
+				tmUsers.Add(TM_Xml_Database.Current.TMUsers.user(userId));
 			return tmUsers;
 		}
 				
 		[PrincipalPermission(SecurityAction.Demand, Role = "ManageUsers")] 
 		public static List<TMUser> tmUsers(this TM_Xml_Database tmDb)
 		{
-			return TM_Xml_Database.TMUsers.toList();
+			return TM_Xml_Database.Current.TMUsers.toList();
 		}
 		
 		public static List<int> userIds(this List<TMUser> tmUsers)
@@ -197,7 +197,7 @@ namespace TeamMentor.CoreLib
     									EMail 		= Encoder.XmlEncode(email) ?? ""   									 
     								};										
 			
-			TM_Xml_Database.TMUsers.Add(tmUser);
+			TM_Xml_Database.Current.TMUsers.Add(tmUser);
 			//tmDb.setUserPassword_PwdInClearText(username, passwordHash);
 			tmDb.setUserPassword(username, passwordHash);
 						
@@ -226,12 +226,12 @@ namespace TeamMentor.CoreLib
 			if (tmUser.notNull())
 			{
 				"tmUser was not null".info();
-				if (TM_Xml_Database.TMUsersPasswordHashes[tmUser.UserName].isNull())
-					TM_Xml_Database.TMUsersPasswordHashes.add(tmUser.UserName, passwordHash);
+				if (TM_Xml_Database.Current.TMUsersPasswordHashes[tmUser.UserName].isNull())
+					TM_Xml_Database.Current.TMUsersPasswordHashes.add(tmUser.UserName, passwordHash);
 				else
 				{
 					//to deal with lack of setter in O2 Items object 
-					foreach(var item in TM_Xml_Database.TMUsersPasswordHashes)  
+					foreach(var item in TM_Xml_Database.Current.TMUsersPasswordHashes)  
 						if (item.Key == tmUser.UserName)
 							item.Value = passwordHash;				
 				}
@@ -261,7 +261,7 @@ namespace TeamMentor.CoreLib
 					}
 
 				if (tmUser.notNull())
-					if (TM_Xml_Database.TMUsersPasswordHashes[username] == passwordHash)					
+					if (TM_Xml_Database.Current.TMUsersPasswordHashes[username] == passwordHash)					
 						return tmDb.registerUserSession(tmUser, Guid.NewGuid());
 			}
     		return Guid.Empty;    			
@@ -272,7 +272,7 @@ namespace TeamMentor.CoreLib
     	{
 			tmDb.sleep(TM_Xml_Database.FORCED_MILLISEC_DELAY_ON_LOGIN_ACTION, false);  // to slow down brute force attacks
     		if(username.valid() && password.valid())
-			    if (TM_Xml_Database.TMUsersPasswordHashes[username] == username.createPasswordHash(password))
+			    if (TM_Xml_Database.Current.TMUsersPasswordHashes[username] == username.createPasswordHash(password))
 				    return tmDb.registerUserSession(tmDb.tmUser(username), Guid.NewGuid());				
     		return Guid.Empty;    			
     	}    	
@@ -289,7 +289,7 @@ namespace TeamMentor.CoreLib
 		[PrincipalPermission(SecurityAction.Demand, Role = "ManageUsers")] 
 		public static bool deleteTmUser(this TM_Xml_Database tmDb, int userId)
 		{
-			var result = TM_Xml_Database.TMUsers.delete(userId);
+			var result = TM_Xml_Database.Current.TMUsers.delete(userId);
 			if (result)
 				tmDb.saveTmUserDataToDisk(); 
 			return result;
@@ -336,7 +336,7 @@ namespace TeamMentor.CoreLib
 		[PrincipalPermission(SecurityAction.Demand, Role = "ManageUsers")] 
 		public static bool updateTmUser(this TM_Xml_Database tmDb, int userId, string userName, string firstname, string lastname, string title, string company, string email, int groupId)
 		{
-			var result = TM_Xml_Database.TMUsers.updateUser(userId, userName, firstname, lastname,  title, company, email, groupId);
+			var result = TM_Xml_Database.Current.TMUsers.updateUser(userId, userName, firstname, lastname,  title, company, email, groupId);
 			if (result) //save it			
 				tmDb.saveTmUserDataToDisk(); 
 			return result;
@@ -424,7 +424,7 @@ namespace TeamMentor.CoreLib
 			{
 				if (tmUser.notNull())
 				{
-					TM_Xml_Database.ActiveSessions.add(userGuid, tmUser);
+					TM_Xml_Database.Current.ActiveSessions.add(userGuid, tmUser);
 					return userGuid;
 				}
 			}
@@ -445,18 +445,18 @@ namespace TeamMentor.CoreLib
 			//"[Security Event] user logged in: {0}".info(tmUser.UserName);
 
 			"User Login".logActivity(tmUser.UserName);
-			TM_Xml_Database.ActiveSessions.add(userGuid, tmUser);
+			TM_Xml_Database.Current.ActiveSessions.add(userGuid, tmUser);
 			return userGuid; 
 		}
 		
 		public static Dictionary<Guid, TMUser> activeSessions(this TM_Xml_Database tmDb)
 		{
-			return TM_Xml_Database.ActiveSessions;
+			return TM_Xml_Database.Current.ActiveSessions;
 		}		
 		
 		public static bool validSession(this Guid sessionID)
 		{
-			return TM_Xml_Database.ActiveSessions.hasKey(sessionID);
+			return TM_Xml_Database.Current.ActiveSessions.hasKey(sessionID);
 		}
 
         public static bool invalidateSession(this Guid sessionID)
@@ -464,7 +464,7 @@ namespace TeamMentor.CoreLib
             if (sessionID.validSession())
             {
 				"User Logout".logActivity(sessionID.session_UserName());
-                TM_Xml_Database.ActiveSessions.Remove(sessionID);
+                TM_Xml_Database.Current.ActiveSessions.Remove(sessionID);
                 return true;
             }
             return false;
@@ -473,7 +473,7 @@ namespace TeamMentor.CoreLib
 		public static TMUser session_TmUser(this Guid sessionID)
 		{
 			if(sessionID.validSession())
-				return TM_Xml_Database.ActiveSessions[sessionID];
+				return TM_Xml_Database.Current.ActiveSessions[sessionID];
 			return null;	
 		}
 		public static string session_UserName(this Guid sessionID)

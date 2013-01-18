@@ -145,6 +145,7 @@
     <Compile Include="TM_AppCode\WebServices_REST\REST_Tests.cs" />
     <Compile Include="TM_AppCode\WebServices_REST\REST_User_Management.cs" />
     <Compile Include="TM_AppCode\WebServices_REST\DataContracts.cs" />
+    <Compile Include="TM_AppCode\XmlDatabase\TM_Xml_Database.Users.cs" />
     <Compile Include="TM_AppCode\XmlDatabase\TM_Xml_Database.Virtual_Articles.cs" />
     <Compile Include="TM_AppCode\XmlDatabase\TM_Xml_Database.Library.Files.cs" />
     <Compile Include="TM_AppCode\XmlDatabase\TM_Xml_Database.cs" />
@@ -153,7 +154,6 @@
     <Compile Include="TM_AppCode\XmlDatabase\TM_Xml_Database.Library.GuidanceItem.cs" />
     <Compile Include="TM_AppCode\XmlDatabase\TM_Xml_Database.Library.Load_and_FileCache.cs" />
     <Compile Include="TM_AppCode\XmlDatabase\TM_Xml_Database.Library.Views_and_Folders.cs" />
-    <Compile Include="TM_AppCode\XmlDatabase\TM_Xml_Database.Users.cs" />
     <Compile Include="TM_AppCode\XmlDatabase\TM_Xml_Database_JavaScriptProxy.cs" />
   </ItemGroup>
   <ItemGroup>

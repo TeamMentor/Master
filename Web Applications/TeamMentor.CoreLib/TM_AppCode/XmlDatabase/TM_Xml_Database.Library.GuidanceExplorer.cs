@@ -45,8 +45,8 @@ namespace TeamMentor.CoreLib
 			//newGuidanceExplorer.library.libraryStructure.view = new List<urn.microsoft.guidanceexplorer.View>();  
 			newGuidanceExplorer.library.name = libraryId.str();
 			newGuidanceExplorer.library.caption = caption; 
-			//"xmlLibraryPath: {0}".info(TM_Xml_Database.Path_XmlLibraries);
-			//var newLibraryPath = TM_Xml_Database.Path_XmlLibraries.pathCombine("{0}.xml".format(caption));
+			//"xmlLibraryPath: {0}".info(TM_Xml_Database.Current.Path_XmlLibraries);
+			//var newLibraryPath = TM_Xml_Database.Current.Path_XmlLibraries.pathCombine("{0}.xml".format(caption));
 			
 			newGuidanceExplorer.xmlDB_Save_GuidanceExplorer(tmDatabase);
 			//"saving new library to: {0}".info(newLibraryPath);			
@@ -130,7 +130,7 @@ namespace TeamMentor.CoreLib
 			}			
 			"[xmlDB_Save_GuidanceExplorer] could not find libraryPath for GuidanceExplorer: {0} - {1}".error(_guidanceExplorer.library.caption, _guidanceExplorer.library.name);
 			return null;
-			//TM_Xml_Database.mapGuidanceItemsViews();			
+			//TM_Xml_Database.Current.mapGuidanceItemsViews();			
 		}
 		
 		public static TM_Xml_Database xmlDB_Save_GuidanceExplorers(this TM_Xml_Database tmDatabase)
@@ -143,7 +143,7 @@ namespace TeamMentor.CoreLib
 		public static guidanceExplorer xmlDB_UpdateGuidanceExplorer(this TM_Xml_Database tmDatabase, Guid libraryId, string caption, bool deleteLibrary)
 		{
 			//"[xmlDB_UpdateGuidanceExplorer]".info();
-			if (TM_Xml_Database.GuidanceExplorers_XmlFormat.hasKey(libraryId).isFalse())
+			if (TM_Xml_Database.Current.GuidanceExplorers_XmlFormat.hasKey(libraryId).isFalse())
 			{
 				"[TM_Xml_Database] in xmlDB_UpdateGuidanceExplorer, could not find library to update with id: {0}".error(libraryId);
 				return null;
@@ -155,7 +155,7 @@ namespace TeamMentor.CoreLib
 			}
 			else
 			{			
-				var guidanceExplorerToUpdate = TM_Xml_Database.GuidanceExplorers_XmlFormat[libraryId];
+				var guidanceExplorerToUpdate = TM_Xml_Database.Current.GuidanceExplorers_XmlFormat[libraryId];
 				
 				// this is a rename 
 				if (guidanceExplorerToUpdate.library.caption != caption)
@@ -175,7 +175,7 @@ namespace TeamMentor.CoreLib
 			if(guidanceExplorer.notNull())
 			{	
 				var existingCaption = guidanceExplorer.library.caption;
-				var existingLibraryPath = tmDatabase.xmlDB_LibraryPath(existingCaption); // TM_Xml_Database.Path_XmlLibraries.pathCombine("{0}.xml".format(guidanceExplorer.library.caption));
+				var existingLibraryPath = tmDatabase.xmlDB_LibraryPath(existingCaption); // TM_Xml_Database.Current.Path_XmlLibraries.pathCombine("{0}.xml".format(guidanceExplorer.library.caption));
 				if(existingLibraryPath.fileExists().isFalse())
 					"[xmlDB_RenameGuidanceExplorer] something is wrong since existingLibraryPath was not there: {0}".error(existingLibraryPath);
 				else
@@ -219,21 +219,21 @@ namespace TeamMentor.CoreLib
 		
 		public static TM_Xml_Database updateGuidanceItems_FileMappings_withNewPath(this TM_Xml_Database tmDatabase, string oldPath, string newPath)
 		{
-			foreach(var key in TM_Xml_Database.GuidanceItems_FileMappings.Keys.toList())
+			foreach(var key in TM_Xml_Database.Current.GuidanceItems_FileMappings.Keys.toList())
 			{
-				var value = TM_Xml_Database.GuidanceItems_FileMappings[key];
+				var value = TM_Xml_Database.Current.GuidanceItems_FileMappings[key];
 				if(value.contains(oldPath))
-					TM_Xml_Database.GuidanceItems_FileMappings[key] = value.replace(oldPath, newPath);
+					TM_Xml_Database.Current.GuidanceItems_FileMappings[key] = value.replace(oldPath, newPath);
 			}
 			return tmDatabase;
 		}
 		
 		public static string xmlDB_LibraryPath(this TM_Xml_Database tmDatabase, string caption)
 		{
-			var libraryPath = TM_Xml_Database.Path_XmlLibraries.pathCombine("{0}\\{0}.xml".format(caption));			
+			var libraryPath = TM_Xml_Database.Current.Path_XmlLibraries.pathCombine("{0}\\{0}.xml".format(caption));			
 			if (libraryPath.fileExists())
 				return libraryPath;
-			libraryPath = TM_Xml_Database.Path_XmlLibraries.pathCombine("{0}.xml".format(caption));
+			libraryPath = TM_Xml_Database.Current.Path_XmlLibraries.pathCombine("{0}.xml".format(caption));
 			//if (libraryPath.fileExists())
 			return libraryPath;
 			//"[xmlDB_LibraryPath] could not find library path for library called '{0}'".info(caption);
@@ -255,7 +255,7 @@ namespace TeamMentor.CoreLib
 		
 		public static string xmlDB_Libraries_BackupFolder(this TM_Xml_Database tmDatabase)
 		{
-			return TM_Xml_Database.Path_XmlLibraries
+			return TM_Xml_Database.Current.Path_XmlLibraries
 								  .pathCombine("_Library_Backups")
 								  .createDir();
 		}
@@ -305,7 +305,7 @@ namespace TeamMentor.CoreLib
                     "[xmlDB_Libraries_ImportFromZip] could not find file to import".error(zipFileToImport);
                 else
                 {
-                    var currentLibraryPath = TM_Xml_Database.Path_XmlLibraries;
+                    var currentLibraryPath = TM_Xml_Database.Current.Path_XmlLibraries;
 					// handle the zips we get from GitHub
 
 					var tempDir = "_unzip".tempDir();
@@ -388,7 +388,7 @@ namespace TeamMentor.CoreLib
 		
 		public static guidanceExplorer xmlDB_GuidanceExplorer(this TM_Xml_Database tmDatabase, string caption)
 		{
-			foreach(var guidanceExplorer in TM_Xml_Database.GuidanceExplorers_XmlFormat.Values)
+			foreach(var guidanceExplorer in TM_Xml_Database.Current.GuidanceExplorers_XmlFormat.Values)
 				if (guidanceExplorer.library.caption == caption || guidanceExplorer.library.name == caption)
 					return guidanceExplorer;
 			"[xmlDB_GuidanceExplorer] Could not find is library with caption: {0}".error(caption);		
@@ -397,17 +397,17 @@ namespace TeamMentor.CoreLib
 		
 		public static guidanceExplorer xmlDB_GuidanceExplorer(this TM_Xml_Database tmDatabase, Guid libraryId)
 		{
-			if (TM_Xml_Database.GuidanceExplorers_XmlFormat.notNull())		
-				if (TM_Xml_Database.GuidanceExplorers_XmlFormat.hasKey(libraryId))
-					return TM_Xml_Database.GuidanceExplorers_XmlFormat[libraryId];
+			if (TM_Xml_Database.Current.GuidanceExplorers_XmlFormat.notNull())		
+				if (TM_Xml_Database.Current.GuidanceExplorers_XmlFormat.hasKey(libraryId))
+					return TM_Xml_Database.Current.GuidanceExplorers_XmlFormat[libraryId];
 			"[xmlDB_GuidanceExplorer] Could not find is library with id: {0}".error(libraryId);
 			return null;
 		}
 		
 		public static List<guidanceExplorer> xmlDB_GuidanceExplorers(this TM_Xml_Database tmDatabase)
 		{			
-			if (TM_Xml_Database.GuidanceExplorers_XmlFormat.notNull())				
-				return TM_Xml_Database.GuidanceExplorers_XmlFormat.Values.toList();
+			if (TM_Xml_Database.Current.GuidanceExplorers_XmlFormat.notNull())				
+				return TM_Xml_Database.Current.GuidanceExplorers_XmlFormat.Values.toList();
 			"[xmlDB_GuidanceExplorers] GuidanceExplorers_XmlFormat is null".error();
 			return new List<guidanceExplorer>();
 		}		

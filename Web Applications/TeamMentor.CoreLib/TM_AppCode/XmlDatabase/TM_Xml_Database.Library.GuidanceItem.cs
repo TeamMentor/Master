@@ -108,12 +108,12 @@ namespace TeamMentor.CoreLib
 
 		public static List<TeamMentor_Article> xmlDB_GuidanceItems(this TM_Xml_Database tmDatabase)
 		{
-			return TM_Xml_Database.Cached_GuidanceItems.Values.toList();
+			return TM_Xml_Database.Current.Cached_GuidanceItems.Values.toList();
 		}		
 		
 		public static List<TeamMentor_Article> xmlDB_GuidanceItems(this TM_Xml_Database tmDatabase, List<Guid> guidanceItemsIds)
 		{
-			return (from guidanceItem in TM_Xml_Database.Cached_GuidanceItems.Values
+			return (from guidanceItem in TM_Xml_Database.Current.Cached_GuidanceItems.Values
 					where guidanceItemsIds.contains(guidanceItem.Metadata.Id)
 					select guidanceItem).toList();
 		}
@@ -126,8 +126,8 @@ namespace TeamMentor.CoreLib
 	public static class TM_Xml_Database_ExtensionMethods_XmlDataSources_GuidanceItems_Load
 	{				
 		public static TM_Xml_Database xmlDB_Load_GuidanceItems(this TM_Xml_Database tmDatabase)
-		{						
-			var pathXmlLibraries = TM_Xml_Database.Path_XmlLibraries;
+		{
+			var pathXmlLibraries = TM_Xml_Database.Current.Path_XmlLibraries;
 			if (pathXmlLibraries.notNull())
 				lock (pathXmlLibraries)
 				{
@@ -206,22 +206,22 @@ namespace TeamMentor.CoreLib
 		{
 			try
 			{
-				if (TM_Xml_Database.Cached_GuidanceItems.hasKey(guidanceItemId))
+				if (TM_Xml_Database.Current.Cached_GuidanceItems.hasKey(guidanceItemId))
 				{
 					//"found match for id: {0} in {1}".info(guidanceItemId, fullPath);
-					if (TM_Xml_Database.GuidanceItems_FileMappings[guidanceItemId] != fullPath)
+					if (TM_Xml_Database.Current.GuidanceItems_FileMappings[guidanceItemId] != fullPath)
 					{						
 						//"[xmlDB_GuidanceItem] GuidanceItem ID conflict, the Id '{0}' was already mapped. \nExisting path: \t{1} \nNew path:  \t{2}".error(
 						//	guidanceItemId, TM_Xml_Database.GuidanceItems_FileMappings[guidanceItemId] , fullPath);
 						return tmDatabase.fixGuidanceItemFileDueToGuidConflict(guidanceItemId, fullPath);
 					}
-					return TM_Xml_Database.Cached_GuidanceItems[guidanceItemId]; 
+					return TM_Xml_Database.Current.Cached_GuidanceItems[guidanceItemId]; 
 				}
 				
 				if(fullPath.notNull())
 				{
 					//"trying to load id {0} from virtualPath: {1}".info(guidanceItemId, virtualPath);				
-					var pathXmlLibraries = TM_Xml_Database.Path_XmlLibraries;
+					var pathXmlLibraries = TM_Xml_Database.Current.Path_XmlLibraries;
 					/*var fullPath = virtualPath.fileExists() 
 										? virtualPath
 										: pathXmlLibraries.pathCombine(virtualPath).fullPath();*/
@@ -249,8 +249,8 @@ namespace TeamMentor.CoreLib
 						//guidanceItemV3.source_guidanceItemId = newGuid;				// also provides support for moving GuidanceItems across libraries
 							//var _guidanceItemV3 = _guidanceItem.tmGuidanceItemV3();
 							
-							TM_Xml_Database.Cached_GuidanceItems.Add(guidanceItemId, article);
-							TM_Xml_Database.GuidanceItems_FileMappings.add(guidanceItemId, fullPath);
+							TM_Xml_Database.Current.Cached_GuidanceItems.Add(guidanceItemId, article);
+							TM_Xml_Database.Current.GuidanceItems_FileMappings.add(guidanceItemId, fullPath);
 							
 							
 							return article;
@@ -373,7 +373,7 @@ namespace TeamMentor.CoreLib
                 "[xmlDB_Save_GuidanceItem] no LibraryId was provided".error();
                 return false;
             }
-			var xmlLibraries = TM_Xml_Database.Path_XmlLibraries;
+			var xmlLibraries = TM_Xml_Database.Current.Path_XmlLibraries;
 			var guidanceXmlPath = tmDatabase.getXmlFilePathForGuidanceId(article.Metadata.Id, libraryId);
 			
 			"Saving GuidanceItem {0} to {1}".info(article.Metadata.Id, guidanceXmlPath);				
@@ -420,8 +420,8 @@ namespace TeamMentor.CoreLib
 			"removing GuidanceItem with Id:{0} located at {1}".info(guidanceItemId, guidanceItemXmlPath);
 			if (guidanceItemXmlPath.valid())				
 			Files.deleteFile(guidanceItemXmlPath);
-			if (TM_Xml_Database.Cached_GuidanceItems.hasKey(guidanceItemId))
-				TM_Xml_Database.Cached_GuidanceItems.Remove(guidanceItemId);
+			if (TM_Xml_Database.Current.Cached_GuidanceItems.hasKey(guidanceItemId))
+				TM_Xml_Database.Current.Cached_GuidanceItems.Remove(guidanceItemId);
 
             tmDatabase.queue_Save_GuidanceItemsCache();
 
@@ -439,8 +439,8 @@ namespace TeamMentor.CoreLib
         [Admin(SecurityAction.Demand)]	
         public static string xmlDB_guidanceItemPath(this TM_Xml_Database tmDatabase, Guid guidanceItemId)
         {
-            if (TM_Xml_Database.GuidanceItems_FileMappings.hasKey(guidanceItemId))                            
-                return TM_Xml_Database.GuidanceItems_FileMappings[guidanceItemId];            
+            if (TM_Xml_Database.Current.GuidanceItems_FileMappings.hasKey(guidanceItemId))                            
+                return TM_Xml_Database.Current.GuidanceItems_FileMappings[guidanceItemId];            
             return null;
         }
 
@@ -450,14 +450,14 @@ namespace TeamMentor.CoreLib
                 return Guid.Empty;
 
 
-            /*foreach(var item in TM_Xml_Database.Cached_GuidanceItems)
+            /*foreach(var item in TM_Xml_Database.Current.Cached_GuidanceItems)
                 if(item.Value.Metadata.DirectLink.lower() == mapping ||item.Value.Metadata.Title.lower() == mapping)
                     return item.Key;
             */
             mapping = mapping.lower();
 
             //first resolve by direct link
-            var directLinkResult = (from item in TM_Xml_Database.Cached_GuidanceItems
+            var directLinkResult = (from item in TM_Xml_Database.Current.Cached_GuidanceItems
                                     where (item.Value.Metadata.DirectLink.notNull() && item.Value.Metadata.DirectLink.lower() == mapping)
                                     select item.Key).first();
             if (directLinkResult != Guid.Empty)
@@ -469,7 +469,7 @@ namespace TeamMentor.CoreLib
             if (mapping_Segments.size() == 1)
             {
                 var mapping_extra = mapping.Replace(" ", "_");
-                var titleResult = (from item in TM_Xml_Database.Cached_GuidanceItems
+                var titleResult = (from item in TM_Xml_Database.Current.Cached_GuidanceItems
                                    where titleMatch(item.Value, mapping, mapping_extra)
                                    select item.Key).first();
                 if (titleResult != Guid.Empty)
@@ -488,7 +488,7 @@ namespace TeamMentor.CoreLib
                 
                 //var libraryNames = tmDatabase.tmLibraries().names().lower();//pre calculate this to make it faster
                     
-                foreach (var item in TM_Xml_Database.Cached_GuidanceItems)
+                foreach (var item in TM_Xml_Database.Current.Cached_GuidanceItems)
                 {
                     if (titleMatch(item.Value, title, title_extra))             // check Title
                     {
@@ -546,7 +546,7 @@ namespace TeamMentor.CoreLib
             /*if (mapping.isInt())
             {   
                 var pos = mapping.toInt();
-                if(pos < TM_Xml_Database.Cached_GuidanceItems.Keys.size())
+                if(pos < TM_Xml_Database.Current.Cached_GuidanceItems.Keys.size())
                     return TM_Xml_Database.Cached_GuidanceItems.Keys.toList()[pos];            
             }*/
 

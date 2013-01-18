@@ -22,6 +22,7 @@ namespace TeamMentor.UnitTests
 			Assert.IsNotNull(userById, "userById object was null");
 			Assert.IsTrue(userById.UserName.valid(), "userById.UserName was not vaild");
 		}
+
 		[TestMethod]	public void Test_GetUsers()
 		{
 			var users = IRESTAdmin.users();

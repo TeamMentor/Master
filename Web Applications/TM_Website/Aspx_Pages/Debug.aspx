@@ -25,8 +25,8 @@
         <h2>TM Config values</h2>
         <hr />
         <div>                                    
-            <strong>TM_Xml_Database.Path_XmlDatabase:</strong> <%=TM_Xml_Database.Path_XmlDatabase %><br />
-            <strong>TM_Xml_Database.Path_XmlLibraries:</strong> <%=TM_Xml_Database.Path_XmlLibraries %><br />
+            <strong>TM_Xml_Database.Current.Path_XmlDatabase:</strong> <%=TM_Xml_Database.Current.Path_XmlDatabase %><br />
+            <strong>TM_Xml_Database.Current.Path_XmlLibraries:</strong> <%=TM_Xml_Database.Current.Path_XmlLibraries %><br />
             <strong>AppDomain.CurrentDomain.BaseDirectory:</strong> <%=AppDomain.CurrentDomain.BaseDirectory%><br />
             <strong>O2 Temp Dir:</strong> <%= PublicDI.config.O2TempDir%><br />
         </div>

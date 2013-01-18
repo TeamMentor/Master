@@ -23,7 +23,7 @@ namespace TeamMentor.CoreLib
 		public static string getVirtualArticlesFile(this TM_Xml_Database tmXmlDatabase)
 		{
 			//return TM_Xml_Database.Path_XmlDatabase.pathCombine("Virtual_Articles.xml");
-			return TM_Xml_Database.Path_XmlLibraries.pathCombine("Virtual_Articles.xml");
+			return TM_Xml_Database.Current.Path_XmlLibraries.pathCombine("Virtual_Articles.xml");
 		}
 		public static VirtualArticleAction add_Mapping_VirtualId(this TM_Xml_Database tmXmlDatabase, Guid id, Guid virtualId)
 		{
@@ -103,18 +103,18 @@ namespace TeamMentor.CoreLib
 		}
 		public static TM_Xml_Database mapVirtualArticles(this TM_Xml_Database tmXmlDatabase)
 		{
-			TM_Xml_Database.VirtualArticles = new Dictionary<Guid, VirtualArticleAction>();
+			TM_Xml_Database.Current.VirtualArticles = new Dictionary<Guid, VirtualArticleAction>();
 
 			var virtualArticles = tmXmlDatabase.loadVirtualArticles();
 			foreach (var virtualArticle in virtualArticles)
-				TM_Xml_Database.VirtualArticles.add(virtualArticle.Id, virtualArticle);
+				TM_Xml_Database.Current.VirtualArticles.add(virtualArticle.Id, virtualArticle);
 			return tmXmlDatabase;
 		}
 		public static Dictionary<Guid, VirtualArticleAction> getVirtualArticles(this TM_Xml_Database tmXmlDatabase)
 		{
-			if (TM_Xml_Database.VirtualArticles.isNull())
+			if (TM_Xml_Database.Current.VirtualArticles.isNull())
 				tmXmlDatabase.mapVirtualArticles();
-			return TM_Xml_Database.VirtualArticles;
+			return TM_Xml_Database.Current.VirtualArticles;
 
 		}
 		public static VirtualArticleAction virtualArticle(this TM_Xml_Database tmXmlDatabase, Guid id)

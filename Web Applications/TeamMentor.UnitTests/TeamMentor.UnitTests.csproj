@@ -72,6 +72,7 @@
   <ItemGroup>
     <Compile Include="CoreLib\Test_Users_UserActivities.cs" />
     <Compile Include="CoreLib\Test_Utils_GoogleAnalytics.cs" />
+    <Compile Include="Helpers\TM_XmlDatabase_InMemory.cs" />
     <Compile Include="Moq\Test_API_Moq_HttpContext.cs" />
     <Compile Include="Helpers\RestClass_Hosted.cs" />
     <Compile Include="Helpers\RestClass_Direct.cs" />
@@ -84,6 +85,7 @@
     <Compile Include="REST_Direct\Test_TmConfig.cs" />
     <Compile Include="REST_Direct\Test_UserManagement.cs" />
     <Compile Include="REST_Direct\REST_Hosted\Test_ConfigAndSetup.cs" />
+    <Compile Include="Users\Test_Users_Management.cs" />
     <Compile Include="WebSite_Content\Test_CheckJavascriptResources.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -10,31 +10,31 @@ namespace TeamMentor.CoreLib
 {	
 	public partial class TM_Xml_Database 
 	{
-		public static bool setLibraryPath_and_LoadDataIntoMemory(string libraryPath)
+		public  bool setLibraryPath_and_LoadDataIntoMemory(string libraryPath)
 		{			
 			//"in setLibraryPath: {0}".info(libraryPath);
 			if (libraryPath.dirExists().isFalse())						
 			{
-				libraryPath = TM_Xml_Database.Path_XmlDatabase.pathCombine(libraryPath);
+				libraryPath = TM_Xml_Database.Current.Path_XmlDatabase.pathCombine(libraryPath);
 				libraryPath.createDir();  // make sure it exists
 			}
-			TM_Xml_Database.Path_XmlLibraries = libraryPath;
+			TM_Xml_Database.Current.Path_XmlLibraries = libraryPath;
 			return loadDataIntoMemory();
 		}
 		
-		public static bool loadDataIntoMemory()
+		public  bool loadDataIntoMemory()
 		{
 			return loadDataIntoMemory(Path_XmlDatabase, Path_XmlLibraries);			
 		}		
 		
-		public static bool loadDataIntoMemory(string pathXmlDatabase, string pathXmlLibraries)
+		public  bool loadDataIntoMemory(string pathXmlDatabase, string pathXmlLibraries)
 		{	
 			if(pathXmlDatabase.dirExists().isFalse())
 			{
 				"[TM_Xml_Database] in loadDataIntoMemory, provided pathXmlDatabase didn't exist: {0}".error(pathXmlDatabase);
 				return false;
-			}			
-			GuidanceExplorers_XmlFormat = pathXmlLibraries.getGuidanceExplorerObjects();
+			}
+			TM_Xml_Database.Current.GuidanceExplorers_XmlFormat = pathXmlLibraries.getGuidanceExplorerObjects();
 			pathXmlLibraries.loadGuidanceItemsFromCache();
 			//mapGuidanceItemsViews();
 			loadAndCheckUserDatabase(pathXmlDatabase);
@@ -387,28 +387,28 @@ namespace TeamMentor.CoreLib
 			{
 				var guidanceItems = new List<TeamMentor_Article>();
 				foreach(var guidanceItemId in tmView.guidanceItems)
-					if (TM_Xml_Database.Cached_GuidanceItems.hasKey(guidanceItemId))
-						guidanceItems.add(TM_Xml_Database.Cached_GuidanceItems[guidanceItemId]);
+					if (TM_Xml_Database.Current.Cached_GuidanceItems.hasKey(guidanceItemId))
+						guidanceItems.add(TM_Xml_Database.Current.Cached_GuidanceItems[guidanceItemId]);
 					else
 						"[getGuidanceItemsInView]: in view ({0} {1}) could not find guidanceItem for id {2}".error(tmView.caption, tmView.viewId, guidanceItemId);
 				return guidanceItems;
 			}
-			//if (TM_Xml_Database.GuidanceItems_InViews.hasKey(viewId))
-			//	return TM_Xml_Database.GuidanceItems_InViews[viewId];
+			//if (TM_Xml_Database.Current.GuidanceItems_InViews.hasKey(viewId))
+			//	return TM_Xml_Database.Current.GuidanceItems_InViews[viewId];
 			"[TM_Xml_Database] getGuidanceItemsInView, requested viewId was not mapped: {0}".error(viewId);
 			return new List<TeamMentor_Article>();
 		}		
 		public static List<TeamMentor_Article> getAllGuidanceItemsInViews(this TM_Xml_Database tmDatabase)
 		{
-			//return (from viewId in TM_Xml_Database.GuidanceItems_InViews.Keys
-			//		from guidanceItem in TM_Xml_Database.GuidanceItems_InViews[viewId]
+			//return (from viewId in TM_Xml_Database.Current.GuidanceItems_InViews.Keys
+			//		from guidanceItem in TM_Xml_Database.Current.GuidanceItems_InViews[viewId]
 			//		select guidanceItem).toList();
 			return new List<TeamMentor_Article>();
 		}
 		
 /*		public static List<GuidanceItem_V3> getAllGuidanceItemsInLibrary(this TM_Xml_Database tmDatabase, GUID tmLibrary)
 		{
-			return (from guidanceItem in TM_Xml_Database.Cached_GuidanceItems
+			return (from guidanceItem in TM_Xml_Database.Current.Cached_GuidanceItems
 					where guidanceItem.guidanceItemId == 
 					select guidanceItem).toList();
 		}*/
@@ -429,9 +429,9 @@ namespace TeamMentor.CoreLib
 		//[PrincipalPermission(SecurityAction.Demand, Role = "ReadArticlesTitles")] 	
 		public static TeamMentor_Article tmGuidanceItem(this TM_Xml_Database tmDatabase, Guid id)
 		{
-			if (TM_Xml_Database.Cached_GuidanceItems.hasKey(id))
+			if (TM_Xml_Database.Current.Cached_GuidanceItems.hasKey(id))
 			{
-				var article = TM_Xml_Database.Cached_GuidanceItems[id];
+				var article = TM_Xml_Database.Current.Cached_GuidanceItems[id];
 				return article;
 			}
 			var externalArticle = tmDatabase.getExternalTeamMentorArticle_if_MappingExists(id);
@@ -451,7 +451,7 @@ namespace TeamMentor.CoreLib
 		
 		public static List<TeamMentor_Article> tmGuidanceItems(this TM_Xml_Database tmDatabase, Guid libraryId)
 		{			
-            return (from guidanceItem in TM_Xml_Database.Cached_GuidanceItems.Values
+            return (from guidanceItem in TM_Xml_Database.Current.Cached_GuidanceItems.Values
 					where guidanceItem.Metadata.Library_Id == libraryId
 					select guidanceItem).toList();		
 		}				

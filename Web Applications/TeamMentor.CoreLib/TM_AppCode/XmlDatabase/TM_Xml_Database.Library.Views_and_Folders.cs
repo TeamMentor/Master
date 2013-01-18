@@ -316,9 +316,9 @@ namespace TeamMentor.CoreLib
 		{			
 			try
 			{			
-				if (TM_Xml_Database.GuidanceExplorers_XmlFormat.hasKey(libraryId))
-				{					
-					var libraryStructure = TM_Xml_Database.GuidanceExplorers_XmlFormat[libraryId].library.libraryStructure;					
+				if (TM_Xml_Database.Current.GuidanceExplorers_XmlFormat.hasKey(libraryId))
+				{
+					var libraryStructure = TM_Xml_Database.Current.GuidanceExplorers_XmlFormat[libraryId].library.libraryStructure;					
 					if (libraryStructure.notNull())		
 						return libraryStructure.folder;
 		//				folders.AddRange(libraryStructure.folder.xmlDB_Folders());												
@@ -580,7 +580,7 @@ namespace TeamMentor.CoreLib
 				if (view.items.notNull() && view.items.item.notNull() && view.items.item.Count > 0)
 				{					
 					foreach(var id in view.items.item.toList())
-						if (TM_Xml_Database.Cached_GuidanceItems.hasKey(id.guid()).isFalse())
+						if (TM_Xml_Database.Current.Cached_GuidanceItems.hasKey(id.guid()).isFalse())
 						{
 							view.items.item.Remove(id);
 							conflictsDetected++;

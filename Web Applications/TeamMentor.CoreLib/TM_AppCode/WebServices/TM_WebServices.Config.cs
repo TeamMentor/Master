@@ -19,8 +19,8 @@ namespace TeamMentor.CoreLib
 		[WebMethod(EnableSession = true)] 											public string GetPasswordHash(string username, string password)		
 																																	{	return username.createPasswordHash(password); }
 		//Xml Database Specific
-		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public string XmlDatabase_GetDatabasePath()		{	return TM_Xml_Database.Path_XmlDatabase;	}
-		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public string XmlDatabase_GetLibraryPath()		{	return TM_Xml_Database.Path_XmlLibraries;	}		
+		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public string XmlDatabase_GetDatabasePath()		{	return TM_Xml_Database.Current.Path_XmlDatabase;	}
+		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public string XmlDatabase_GetLibraryPath()		{	return TM_Xml_Database.Current.Path_XmlLibraries;	}		
 		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]			public string XmlDatabase_ReloadData()			{	
 																																		guiObjectsCacheOK = false; 
 																																		return  TM_Xml_Database.Current.reloadData(null); 
@@ -80,8 +80,8 @@ namespace TeamMentor.CoreLib
 		
 		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]		public string		Get_Libraries_Zip_Folder()
 																					{
-                                                                                        var librariesZipsFolder = TMConfig.Current.LibrariesUploadedFiles;                                                                                        
-                                                                                        return TM_Xml_Database.Path_XmlDatabase.fullPath().pathCombine(librariesZipsFolder).fullPath();
+                                                                                        var librariesZipsFolder = TMConfig.Current.LibrariesUploadedFiles;
+																						return TM_Xml_Database.Current.Path_XmlDatabase.fullPath().pathCombine(librariesZipsFolder).fullPath();
 																					}		
 		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]		public List<string> Get_Libraries_Zip_Folder_Files()
 																					{
@@ -110,11 +110,11 @@ namespace TeamMentor.CoreLib
                                                                                     }        
 		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]        public List<KeyValue<Guid, string>>				Data_GuidanceItems_FileMappings()        
                                                                                     {
-																						return TM_Xml_Database.GuidanceItems_FileMappings.ConvertDictionary();
+																						return TM_Xml_Database.Current.GuidanceItems_FileMappings.ConvertDictionary();
                                                                                     }		
 		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)] 		public List<KeyValue<Guid, TeamMentor_Article>> Data_GuidanceItems_Cached_GuidanceItems()        
                                                                                     {
-																						return TM_Xml_Database.Cached_GuidanceItems.ConvertDictionary();
+																						return TM_Xml_Database.Current.Cached_GuidanceItems.ConvertDictionary();
                                                                                     }
 		
 		[WebMethod(EnableSession = true)] [Admin(SecurityAction.Demand)]        public string		REPL_ExecuteSnippet(string snippet)        

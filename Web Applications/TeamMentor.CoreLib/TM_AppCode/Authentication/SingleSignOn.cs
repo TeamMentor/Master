@@ -67,7 +67,7 @@ namespace TeamMentor.CoreLib
                     var decodedToken = decodeSSOToken(ssoToken);
                     var decodedUser = decodedToken.deserialize<TMUser>(false);
                     if (decodedUser.notNull())
-                        foreach (var tmUser in TM_Xml_Database.TMUsers)
+                        foreach (var tmUser in TM_Xml_Database.Current.TMUsers)
                             if (decodedUser.SSOKey == tmUser.SSOKey)                            
                                 return tmUser;                        
                 }

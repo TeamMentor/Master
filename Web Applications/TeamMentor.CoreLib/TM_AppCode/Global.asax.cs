@@ -37,7 +37,7 @@ namespace TeamMentor.CoreLib
 		{
 			TMEvents.OnApplication_Start.invoke();
 			PublicDI.log.LogRedirectionTarget = new MemoryLogger();			
-			Admin_REST_Config.SetRouteTable();            
+			Admin_REST_Config.SetRouteTable();			
         }
 		
 		protected void Application_BeginRequest			(object sender, EventArgs e)		

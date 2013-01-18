@@ -34,7 +34,7 @@ namespace TeamMentor.CoreLib
 			Stats = new UserStats
 				{
 					CreationDate = DateTime.Now,
-					ExpirationDate = DateTime.Now.AddMinutes(TMConfig.Current.Eval_Accounts.Days)
+					ExpirationDate = DateTime.Now.AddDays(TMConfig.Current.Eval_Accounts.Days)
 				};
 		}
     }

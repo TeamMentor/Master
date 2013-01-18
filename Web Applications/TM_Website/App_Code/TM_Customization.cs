@@ -23,7 +23,7 @@ namespace TeamMentor.Website
 	    	//General TM Configuration
 			tmConfig.ShowContentToAnonymousUsers	= false;
 			tmConfig.Eval_Accounts.Enabled			= true;
-			tmConfig.Eval_Accounts.Days				= 1;
+			tmConfig.Eval_Accounts.Days				= 15;
 
 			//Google Analytics
 		    googleAnalytics.AccountID				= "UA-37594728-3";			

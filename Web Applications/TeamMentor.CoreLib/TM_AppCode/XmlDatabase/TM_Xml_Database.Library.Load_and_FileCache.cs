@@ -15,23 +15,23 @@ namespace TeamMentor.CoreLib
 		public static void populateGuidanceItemsFileMappings()
 		{			
 			var o2Timer = new O2Timer("populateGuidanceExplorersFileMappings").start();
-			foreach(var filePath in TM_Xml_Database.Path_XmlLibraries.files(true, "*.xml"))
+			foreach (var filePath in TM_Xml_Database.Current.Path_XmlLibraries.files(true, "*.xml"))
 			{
 				var fileId = filePath.fileName().remove(".xml");
 				if (fileId.isGuid())
 				{
 					//"[populateGuidanceItemsFileMappings] loading GuidanceItem ID {0}".info(fileId);
 					var guid = fileId.guid();
-					if (TM_Xml_Database.GuidanceItems_FileMappings.hasKey(guid))
+					if (TM_Xml_Database.Current.GuidanceItems_FileMappings.hasKey(guid))
 					{
 						"[populateGuidanceItemsFileMappings] duplicate GuidanceItem ID found {0}".error(guid);
 					}
 					else
-						TM_Xml_Database.GuidanceItems_FileMappings.Add(guid, filePath);				
+						TM_Xml_Database.Current.GuidanceItems_FileMappings.Add(guid, filePath);				
 				}
 			}
 			o2Timer.stop();
-			"There are {0} files mapped in GuidanceItems_FileMappings".info(TM_Xml_Database.GuidanceItems_FileMappings.size());			
+			"There are {0} files mapped in GuidanceItems_FileMappings".info(TM_Xml_Database.Current.GuidanceItems_FileMappings.size());			
 		}
 	}
 
@@ -42,8 +42,8 @@ namespace TeamMentor.CoreLib
 		public static TM_Xml_Database setGuidanceExplorerObjects(this TM_Xml_Database tmDatabase)
 		{			
 			//"in setGuidanceExplorerObjects".info();
-			var pathXmlLibraries = TM_Xml_Database.Path_XmlLibraries;
-			TM_Xml_Database.GuidanceExplorers_XmlFormat = pathXmlLibraries.getGuidanceExplorerObjects();				
+			var pathXmlLibraries = TM_Xml_Database.Current.Path_XmlLibraries;
+			TM_Xml_Database.Current.GuidanceExplorers_XmlFormat = pathXmlLibraries.getGuidanceExplorerObjects();				
 			return tmDatabase;
 		}
 		
@@ -151,7 +151,7 @@ namespace TeamMentor.CoreLib
                     o2Timer = new O2Timer("mapping to memory loadGuidanceItemsFromCache").start();
                     foreach (var loadedGuidanceItem in loadedGuidanceItems)
                         if (loadedGuidanceItem.notNull())
-                            TM_Xml_Database.Cached_GuidanceItems.add(loadedGuidanceItem.Metadata.Id, loadedGuidanceItem);                    
+							TM_Xml_Database.Current.Cached_GuidanceItems.add(loadedGuidanceItem.Metadata.Id, loadedGuidanceItem);                    
                     o2Timer.stop();
                 }
 			}
@@ -162,9 +162,9 @@ namespace TeamMentor.CoreLib
 		{
 			var cacheFile = pathXmlLibraries.getCacheLocation();			
 			var o2Timer = new O2Timer("saveGuidanceItemsToCache").start();
-			lock(TM_Xml_Database.Cached_GuidanceItems)
-			{				
-				TM_Xml_Database.Cached_GuidanceItems.Values.toList().saveAs(cacheFile);
+			lock (TM_Xml_Database.Current.Cached_GuidanceItems)
+			{
+				TM_Xml_Database.Current.Cached_GuidanceItems.Values.toList().saveAs(cacheFile);
 			}
 			o2Timer.stop();
 			return pathXmlLibraries;
@@ -173,7 +173,7 @@ namespace TeamMentor.CoreLib
 		public static TM_Xml_Database clear_GuidanceItemsCache(this TM_Xml_Database tmDatabase)
 		{
 			"[TM_Xml_Database] clear_GuidanceItemsCache".info();
-			TM_Xml_Database.Cached_GuidanceItems.Clear();            
+			TM_Xml_Database.Current.Cached_GuidanceItems.Clear();            
 			return tmDatabase;
 		}		
 
@@ -193,21 +193,21 @@ namespace TeamMentor.CoreLib
 		public static TM_Xml_Database save_GuidanceItemsCache(this TM_Xml_Database tmDatabase)
 		{
 			"[TM_Xml_Database] save_GuidanceItemsCache".info();
-			TM_Xml_Database.Path_XmlLibraries.saveGuidanceItemsToCache();
+			TM_Xml_Database.Current.Path_XmlLibraries.saveGuidanceItemsToCache();
 			return tmDatabase;
 		}
 		
 		public static TM_Xml_Database load_GuidanceItemsCache(this TM_Xml_Database tmDatabase)
 		{
 			"[TM_Xml_Database] load_GuidanceItemsCache".info();
-			TM_Xml_Database.Path_XmlLibraries.loadGuidanceItemsFromCache();
+			TM_Xml_Database.Current.Path_XmlLibraries.loadGuidanceItemsFromCache();
 			return tmDatabase;
 		}
 		
 		public static TM_Xml_Database reCreate_GuidanceItemsCache(this TM_Xml_Database tmDatabase)
 		{
 			"[TM_Xml_Database] reCreate_GuidanceItemsCache".info();
-			var cacheFile = TM_Xml_Database.Path_XmlLibraries.getCacheLocation();			
+			var cacheFile = TM_Xml_Database.Current.Path_XmlLibraries.getCacheLocation();			
 			Files.deleteFile(cacheFile);
 			"cache file deleted:{0}".info(!cacheFile.fileExists());
 			tmDatabase.clear_GuidanceItemsCache(); 	
@@ -220,10 +220,10 @@ namespace TeamMentor.CoreLib
             guidanceItem.htmlEncode(); // ensure MetaData is encoded
 
 			var guidanceItemGuid = guidanceItem.Metadata.Id;
-			if (TM_Xml_Database.Cached_GuidanceItems.hasKey(guidanceItemGuid))
-				TM_Xml_Database.Cached_GuidanceItems[guidanceItemGuid] = guidanceItem;
+			if (TM_Xml_Database.Current.Cached_GuidanceItems.hasKey(guidanceItemGuid))
+				TM_Xml_Database.Current.Cached_GuidanceItems[guidanceItemGuid] = guidanceItem;
 			else
-				TM_Xml_Database.Cached_GuidanceItems.Add(guidanceItem.Metadata.Id, guidanceItem);						
+				TM_Xml_Database.Current.Cached_GuidanceItems.Add(guidanceItem.Metadata.Id, guidanceItem);						
 
 			tmDatabase.queue_Save_GuidanceItemsCache();
 			
@@ -232,15 +232,15 @@ namespace TeamMentor.CoreLib
 	
 		public static Dictionary<Guid, string> guidanceItemsFileMappings(this TM_Xml_Database tmDatabase)
 		{
-			return TM_Xml_Database.GuidanceItems_FileMappings;
+			return TM_Xml_Database.Current.GuidanceItems_FileMappings;
 		}
 		
 		public static string removeGuidanceItemFileMapping(this TM_Xml_Database tmDatabase, Guid guidanceItemId)
 		{
-			if (TM_Xml_Database.GuidanceItems_FileMappings.hasKey(guidanceItemId))
+			if (TM_Xml_Database.Current.GuidanceItems_FileMappings.hasKey(guidanceItemId))
 			{
-				var xmlPath = TM_Xml_Database.GuidanceItems_FileMappings[guidanceItemId];
-				TM_Xml_Database.GuidanceItems_FileMappings.Remove(guidanceItemId);
+				var xmlPath = TM_Xml_Database.Current.GuidanceItems_FileMappings[guidanceItemId];
+				TM_Xml_Database.Current.GuidanceItems_FileMappings.Remove(guidanceItemId);
 				return xmlPath;
 			}
 			return null;
@@ -254,19 +254,19 @@ namespace TeamMentor.CoreLib
 		public static string getXmlFilePathForGuidanceId(this TM_Xml_Database tmDatabase, Guid guidanceItemId, Guid libraryId)	
 		{		
 			//first see if we already have this mapping
-			if (TM_Xml_Database.GuidanceItems_FileMappings.hasKey(guidanceItemId))
+			if (TM_Xml_Database.Current.GuidanceItems_FileMappings.hasKey(guidanceItemId))
 			{
 				//"in getXmlFilePathForGuidanceId, found id in current mappings: {0}".info( guidanceItemId);
-				return TM_Xml_Database.GuidanceItems_FileMappings[guidanceItemId];
+				return TM_Xml_Database.Current.GuidanceItems_FileMappings[guidanceItemId];
 			}
 			//then update the GuidanceItems_FileMappings dictionary
 
 			//tmDatabase.populateGuidanceItemsFileMappings();
-			
-			if (TM_Xml_Database.GuidanceItems_FileMappings.hasKey(guidanceItemId))
+
+			if (TM_Xml_Database.Current.GuidanceItems_FileMappings.hasKey(guidanceItemId))
 			{
 				"[getXmlFilePathForGuidanceId] found id after reindex: {0}".info( guidanceItemId);
-				return TM_Xml_Database.GuidanceItems_FileMappings[guidanceItemId];
+				return TM_Xml_Database.Current.GuidanceItems_FileMappings[guidanceItemId];
 			}
 			
 			if (libraryId == Guid.Empty)
@@ -282,13 +282,13 @@ namespace TeamMentor.CoreLib
 			}
 			var newGuidanceVirtualFolder = "{0}\\_GuidanceItems".format(tmLibrary.Caption);
 			// if not store it on a _GuidanceItems folder
-			var xmlPath = TM_Xml_Database.Path_XmlLibraries
+			var xmlPath = TM_Xml_Database.Current.Path_XmlLibraries
 										 .pathCombine(newGuidanceVirtualFolder)
 										 .createDir()
 										 .pathCombine("{0}.xml".format(guidanceItemId));
 			"in getXmlFilePathForGuidanceId, no previous mapping found so guidanceitem to :{0}".info(xmlPath);
-			
-			TM_Xml_Database.GuidanceItems_FileMappings.add(guidanceItemId,xmlPath); //add it to the file_mappings dictionary so that we know it for next time
+
+			TM_Xml_Database.Current.GuidanceItems_FileMappings.add(guidanceItemId, xmlPath); //add it to the file_mappings dictionary so that we know it for next time
 			return xmlPath;
 			
 		}

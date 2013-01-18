@@ -1,4 +1,5 @@
 ﻿using System;
+using O2.DotNetWrappers.DotNet;
 using O2.DotNetWrappers.ExtensionMethods;
 using PostSharp.Aspects;
 
@@ -73,7 +74,7 @@ namespace TeamMentor.CoreLib
 			var gaRequest = ("{0}?utmdt={1}&utmp={2}&utmac={3}&utmcc={4}").format(
 								Analytics_Url, title, page, accountId, userCookie);
 			//this should register a new entry in the GoogleAnalytics account, but I'm not sure how we cancheck that it actually worked (the returning gif is the same for success or failure)
-			gaRequest.info().GET();
+			O2Thread.mtaThread(() => gaRequest.info().GET());
 			LogCount++;
 			return this;
 		}
