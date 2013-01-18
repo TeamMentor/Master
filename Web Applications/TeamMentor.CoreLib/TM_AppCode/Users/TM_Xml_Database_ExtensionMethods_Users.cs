@@ -17,14 +17,18 @@ namespace TeamMentor.CoreLib
 				UserGroup.Admin.setThreadPrincipalWithRoles();
 
 				var defaultAdminUser_name = tmConfig.DefaultAdminUserName;
-				var adminUser = tmDb.tmUser(defaultAdminUser_name);
-				if (adminUser.notNull() && adminUser.PasswordHash.valid())
-				{
-					//"[TM_Xml_Database] in TMUser createDefaultAdminUser, defaultAdminUser_name already existed in the database (returning its Id): {0}".debug(defaultAdminUser_name);
-					return adminUser.UserID;
-				}
 				var defaultAdminUser_pwd = tmConfig.DefaultAdminPassword;
 				var passwordHash = defaultAdminUser_name.createPasswordHash(defaultAdminUser_pwd);
+				var adminUser = tmDb.tmUser(defaultAdminUser_name);
+				
+				if (adminUser.notNull())
+				{
+					if (adminUser.PasswordHash.notValid())
+						adminUser.PasswordHash = passwordHash;
+					//"[TM_Xml_Database] in TMUser createDefaultAdminUser, defaultAdminUser_name already existed in the database (returning its Id): {0}".debug(defaultAdminUser_name);
+					return adminUser.UserID;
+				}				
+								
 				var userId = tmDb.newUser(defaultAdminUser_name, passwordHash, 1);
 				UserGroup.Anonymous.setThreadPrincipalWithRoles();
 				return userId;
@@ -184,9 +188,9 @@ namespace TeamMentor.CoreLib
 						return Guid.Empty;
 					}
 
-				if (tmUser.notNull()) // && tmUser.PasswordHash == passwordHash)
+				if (tmUser.notNull() && tmUser.PasswordHash == passwordHash)
 					//if (TM_Xml_Database.Current.TMUsersPasswordHashes[username] == passwordHash)					
-						return tmDb.registerUserSession(tmUser, Guid.NewGuid());
+					return tmDb.registerUserSession(tmUser, Guid.NewGuid());
 			}
 			return Guid.Empty;    			
 		}
