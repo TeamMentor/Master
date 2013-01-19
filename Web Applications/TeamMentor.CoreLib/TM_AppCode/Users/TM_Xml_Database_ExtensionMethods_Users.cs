@@ -25,6 +25,7 @@ namespace TeamMentor.CoreLib
 				{
 					if (adminUser.PasswordHash.notValid())
 						adminUser.PasswordHash = passwordHash;
+					adminUser.Stats.ExpirationDate = default(DateTime);
 					//"[TM_Xml_Database] in TMUser createDefaultAdminUser, defaultAdminUser_name already existed in the database (returning its Id): {0}".debug(defaultAdminUser_name);
 					return adminUser.UserID;
 				}				
@@ -232,7 +233,7 @@ namespace TeamMentor.CoreLib
 		{			
 			if (newUser.groupId !=0)		// if there is a groupId provided we must check if the user has the manageUsers Priviledge						
 				UserRole.ManageUsers.demand();			
-			if (newUser.username.inValid() ||  tmDb.tmUser(newUser.username).notNull())
+			if (newUser.username.inValid() ||  tmDb.TMUsers.user(newUser.username).notNull())
 				return 0;
 			return tmDb.newUser(newUser.username, newUser.passwordHash, newUser.email, newUser.firstname, newUser.lastname, newUser.note, newUser.title, newUser.company, newUser.groupId);						
 		}							

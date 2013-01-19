@@ -1,3 +1,4 @@
+using System.Security.Permissions;
 using O2.DotNetWrappers.ExtensionMethods;
 
 namespace TeamMentor.CoreLib
@@ -29,7 +30,14 @@ namespace TeamMentor.CoreLib
 		{
 			return TM_Xml_Database.Current.Path_XmlDatabase.getTmUsersPasswordsXmlFile();
 		}*/
-		
+
+		[PrincipalPermission(SecurityAction.Demand, Role = "ManageUsers")] 
+		public static TM_Xml_Database clearUserDatabase(this TM_Xml_Database tmDb)
+		{
+			tmDb.TMUsers.clear();
+			return tmDb;
+		}
+
 		public static TM_Xml_Database saveTmUserDataToDisk(this TM_Xml_Database tmDb)
 		{
 			TM_Xml_Database.saveTmUserObjects(TM_Xml_Database.Current.Path_XmlDatabase);			
