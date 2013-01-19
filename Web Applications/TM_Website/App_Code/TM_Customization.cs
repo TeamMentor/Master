@@ -4,7 +4,7 @@ namespace TeamMentor.Website
 {
     public class TM_Customizations
     {
-		public TMConfig			tmConfig;
+	    public TMConfig			tmConfig;
 	    public GoogleAnalytics	googleAnalytics;
 
 	    public static void AppInitialize()
