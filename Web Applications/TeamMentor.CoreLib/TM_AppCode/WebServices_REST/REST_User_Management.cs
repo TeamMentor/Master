@@ -4,7 +4,6 @@ using System.ServiceModel.Web;
 using System.Text;
 using O2.DotNetWrappers.DotNet;
 using O2.DotNetWrappers.ExtensionMethods;
-using O2.FluentSharp;
 
 namespace TeamMentor.CoreLib
 {

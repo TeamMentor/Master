@@ -1,6 +1,5 @@
 using System;
 using O2.DotNetWrappers.ExtensionMethods;
-using O2.FluentSharp;
 
 namespace TeamMentor.CoreLib
 {
