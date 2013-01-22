@@ -1,59 +1,59 @@
 <script>
-		
+        
 
 $(function()
-	{
-	
-		//DEBUG : setup traces	
+    {
+    
+        //DEBUG : setup traces	
 //		TM.Gui.DataTable.trace	= true;					
-		//TM.Debug.CallTrace.traceObject("TM.Gui.DataTable", TM.Gui.DataTable)	
+        //TM.Debug.CallTrace.traceObject("TM.Gui.DataTable", TM.Gui.DataTable)	
 //		TM.Debug.CallTrace.trace_TM_Object();
 
         TM.Events.onDisplayDataTable    .add(TM.Gui.DataTable.displayCurrentDataTable);				
- 		TM.Events.onAppliedFieldsEnd	.add(TM.Gui.DataTable.displayCurrentDataTable);				
-		TM.Events.onEditModeChange		.add(TM.Gui.DataTable.displayCurrentDataTable);		
-		TM.Events.onUserDataLoaded		.add(TM.Gui.DataTable.displayCurrentDataTable_onUserChange);
-	});
-	
+        TM.Events.onAppliedFieldsEnd	.add(TM.Gui.DataTable.displayCurrentDataTable);				
+        TM.Events.onEditModeChange		.add(TM.Gui.DataTable.displayCurrentDataTable);		
+        TM.Events.onUserDataLoaded		.add(TM.Gui.DataTable.displayCurrentDataTable_onUserChange);
+    });
+    
 </script>
 
 <div class="ItemListPanel">
 
-	<div id="nowShowingText" > </div>
-	<div id="guidanceItems">
+    <div id="nowShowingText" > </div>
+    <div id="guidanceItems">
 <!--		<br/>
-		<div id="guidanceItemsTableButtons"/>
-		<table cellpadding="0" cellspacing="0" border="0" class="display" 
-			   id="guidanceItemsTable">
-		</table>		-->
-	</div>	
-	
-	
+        <div id="guidanceItemsTableButtons"/>
+        <table cellpadding="0" cellspacing="0" border="0" class="display" 
+               id="guidanceItemsTable">
+        </table>		-->
+    </div>	
+    
+    
 <!--
-	<div id="ctl00_ContentPlaceHolder1_ItemsList1_ItemListUpdatePanel">	
-			<div class="Pager">
-				<span class="NowShowing">
-					<span id="nowShowingLabel">...</span>
-					</span>
-			</div>
+    <div id="ctl00_ContentPlaceHolder1_ItemsList1_ItemListUpdatePanel">	
+            <div class="Pager">
+                <span class="NowShowing">
+                    <span id="nowShowingLabel">...</span>
+                    </span>
+            </div>
 -->
-			
+            
 
 <!--			
-			<div class="itemListCorners">
+            <div class="itemListCorners">
 
-				<b class="il2"></b><b class="il3"></b><b class="il4"></b><b class="il5"></b><b class="il6">
+                <b class="il2"></b><b class="il3"></b><b class="il4"></b><b class="il5"></b><b class="il6">
 
-				</b><b class="il7"></b>
+                </b><b class="il7"></b>
 
-				<div class="itemListContent" valign="top">
-					<div id="guidanceItems"></div>		
-				</div>
-								
-				
-				
-			</div>
-		
-	</div>
-	-->	
+                <div class="itemListContent" valign="top">
+                    <div id="guidanceItems"></div>		
+                </div>
+                                
+                
+                
+            </div>
+        
+    </div>
+    -->	
 </div>	

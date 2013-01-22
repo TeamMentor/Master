@@ -1,112 +1,112 @@
 
 <script type="text/javascript">
 
-	TM.Events.raiseProcessBarNextValue("Loading Html page");				
-	
-	$(function()
-		{				
-			TM.Events.onMainGuiDivAvailable();
-			TM.Gui.Main.Panels.buildGui();				
-					
-			if (location.hash === "#QA")
-				openUrl("/Html_Pages/Gui/UIAutomation/UserActions.html", "User Actions (UI Automation)",350,700);
-		});
-	
+    TM.Events.raiseProcessBarNextValue("Loading Html page");				
+    
+    $(function()
+        {				
+            TM.Events.onMainGuiDivAvailable();
+            TM.Gui.Main.Panels.buildGui();				
+                    
+            if (location.hash === "#QA")
+                openUrl("/Html_Pages/Gui/UIAutomation/UserActions.html", "User Actions (UI Automation)",350,700);
+        });
+    
 
 </script>		
 
 <div id="TopMenuLinks" class="LoggedInLinks"> </div>
 <div id="MainTMGui">
-	<div class="pane ui-layout-center" id="gui_Center">			
-		<div class="center-north" id="gui_CenterNorth">
-			<div id="gui_CenterNorth_top"/>
-			<div id="gui_CenterNorth_bottom"/>
-		</div>		
-		<div class="center-center" id="gui_CenterCenter"></div>
-	</div>
-	<div class="pane ui-layout-north" id="gui_North">	<br/><br/>	</div>		
-	<!--<div class="pane ui-layout-south" id="gui_South"></div>	-->
-	<div class="pane ui-layout-east" id="gui_East"></div>
-	
-	<div class="pane ui-layout-west" id="gui_West">
-		<div id="gui_West_top"/>
-		<div id="gui_West_bottom"/>
-		<div>
-	</div>			
+    <div class="pane ui-layout-center" id="gui_Center">			
+        <div class="center-north" id="gui_CenterNorth">
+            <div id="gui_CenterNorth_top"/>
+            <div id="gui_CenterNorth_bottom"/>
+        </div>		
+        <div class="center-center" id="gui_CenterCenter"></div>
+    </div>
+    <div class="pane ui-layout-north" id="gui_North">	<br/><br/>	</div>		
+    <!--<div class="pane ui-layout-south" id="gui_South"></div>	-->
+    <div class="pane ui-layout-east" id="gui_East"></div>
+    
+    <div class="pane ui-layout-west" id="gui_West">
+        <div id="gui_West_top"/>
+        <div id="gui_West_bottom"/>
+        <div>
+    </div>			
 </div>
 
 <div id="JS_Dialog"></div>
 
 <style type="text/css">
 
-	html, body {		
-		overflow:	auto;   /* when page gets too small */
-	}
+    html, body {		
+        overflow:	auto;   /* when page gets too small */
+    }
 
-	
-	#MainTMGui {
-		background	: #ffffff;
-		top			: 0px;
-		bottom		: 0px;		
-		left		: 0px;
-		right		: 0px;
-		position	: absolute;		
-		
-		height		: 100%;
-		width		: 100%;
-		min-width 	: 800px;
-		min-height	: 500px;
-		_height		: 100%; /* min-height for IE6 */
-		_width		: 100%; /* min-width for IE6 */
-		
-	}
+    
+    #MainTMGui {
+        background	: #ffffff;
+        top			: 0px;
+        bottom		: 0px;		
+        left		: 0px;
+        right		: 0px;
+        position	: absolute;		
+        
+        height		: 100%;
+        width		: 100%;
+        min-width 	: 800px;
+        min-height	: 500px;
+        _height		: 100%; /* min-height for IE6 */
+        _width		: 100%; /* min-width for IE6 */
+        
+    }
 
-	.pane {
-		display:	none; /* will appear when layout inits */
+    .pane {
+        display:	none; /* will appear when layout inits */
 
-	}	
-	</style>	
+    }	
+    </style>	
 
-	<style type="text/css">
-	/**
-	 *	Basic Layout Theme
-	 * 
-	 *	This theme uses the default layout class-names for all classes
-	 *	Add any 'custom class-names', from options: paneClass, resizerClass, togglerClass
-	 */
+    <style type="text/css">
+    /**
+     *	Basic Layout Theme
+     * 
+     *	This theme uses the default layout class-names for all classes
+     *	Add any 'custom class-names', from options: paneClass, resizerClass, togglerClass
+     */
 
-	#gui_North
-	{
-	border-bottom: 5px solid lightsteelblue;	
-	height:80px;
-	}
-	 
-	 
-	.ui-layout-pane   /* all 'panes' */ 
-	{ 
-		background: #FFF; 
-		border: 0px solid lightsteelblue; 
-		padding: 0px; 
-		overflow: auto;
+    #gui_North
+    {
+    border-bottom: 5px solid lightsteelblue;	
+    height:80px;
+    }
+     
+     
+    .ui-layout-pane   /* all 'panes' */ 
+    { 
+        background: #FFF; 
+        border: 0px solid lightsteelblue; 
+        padding: 0px; 
+        overflow: auto;
 
-	} 
+    } 
 
-	.ui-layout-resizer 	 /* all 'resizer-bars' */ 
-	{
-		background: lightsteelblue; 	
-		opacity: 1;		
-	} 
+    .ui-layout-resizer 	 /* all 'resizer-bars' */ 
+    {
+        background: lightsteelblue; 	
+        opacity: 1;		
+    } 
 
-	.ui-layout-toggler /* all 'toggler-buttons' */ 
-	{ 
-		background: steelblue; 	
-	} 
-	
-	.ui-layout-content 
-	{
-	/*	overflow:		hidden !important; */ /* prevent scrollbars auto-added by Layout */
-		overflow: auto;
-	}
+    .ui-layout-toggler /* all 'toggler-buttons' */ 
+    { 
+        background: steelblue; 	
+    } 
+    
+    .ui-layout-content 
+    {
+    /*	overflow:		hidden !important; */ /* prevent scrollbars auto-added by Layout */
+        overflow: auto;
+    }
 )
 
-	</style>
+    </style>

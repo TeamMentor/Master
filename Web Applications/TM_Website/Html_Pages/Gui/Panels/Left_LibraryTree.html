@@ -1,39 +1,39 @@
 <script>
-
+    
 
 
 var fixCSS_libraryTree = function()
 {
-	"LibraryTree".$().width("93%");
-	"LibraryTreeHeader".$().height(32);	
+    "LibraryTree".$().width("93%");
+    "LibraryTreeHeader".$().height(32);	
 }
-	
+    
 $(function () 
-	{		
-		fixCSS_libraryTree();				
-	
-		TM.Events.onFolderStructureMapped.add(TM.Gui.LibraryTree.showTree);				
-	});
-	
+    {		
+        fixCSS_libraryTree();				
+    
+        TM.Events.onFolderStructureMapped.add(TM.Gui.LibraryTree.showTree);				
+    });
+    
 /*var openGuidanceItemEditor = function(newGuidanceItemId)
-	{
-		editGuidanceItemInNewWindow(newGuidanceItemId);
-	}		*/
+    {
+        editGuidanceItemInNewWindow(newGuidanceItemId);
+    }		*/
 </script>
 
 
 <div id="ctl00_ContentPlaceHolder1_LibraryTree1_LibraryPanel" class="LibraryTree">
 
-	
-	<h3 class="LibraryTreeHeader">
-		<span id="ctl00_ContentPlaceHolder1_LibraryTree1_LibraryTreeHeader">Guidance Libraries</span>
-	</h3>
-	<div class="AspNet-TreeView" id="ctl00_ContentPlaceHolder1_LibraryTree1_TreeView1">
-		<div id="libraryTreeTitle"></div>
-		<div id="libraryJsTree"></div>					
-	</div>
+    
+    <h3 class="LibraryTreeHeader">
+        <span id="ctl00_ContentPlaceHolder1_LibraryTree1_LibraryTreeHeader">Guidance Libraries</span>
+    </h3>
+    <div class="AspNet-TreeView" id="ctl00_ContentPlaceHolder1_LibraryTree1_TreeView1">
+        <div id="libraryTreeTitle"></div>
+        <div id="libraryJsTree"></div>					
+    </div>
 
-	<div id="loginNeeded"></div>
+    <div id="loginNeeded"></div>
 </div>	
-			
+            
 

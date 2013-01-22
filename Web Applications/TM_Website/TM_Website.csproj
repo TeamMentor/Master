@@ -399,7 +399,6 @@
     <Content Include="Javascript\FireBug\skin\xp\upHover.png" />
     <Content Include="Javascript\FireBug\skin\xp\warningIcon.gif" />
     <Content Include="Javascript\FireBug\skin\xp\warningIcon.png" />
-    <Content Include="Javascript\getData.js" />
     <Content Include="Javascript\Growl\bg.jpg" />
     <Content Include="Javascript\Growl\growl.css" />
     <Content Include="Javascript\Growl\growl.js" />
