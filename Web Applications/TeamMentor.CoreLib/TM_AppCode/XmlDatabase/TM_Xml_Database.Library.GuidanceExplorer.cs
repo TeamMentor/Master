@@ -308,7 +308,7 @@ namespace TeamMentor.CoreLib
                     var currentLibraryPath = TM_Xml_Database.Current.Path_XmlLibraries;
 					// handle the zips we get from GitHub
 
-					var tempDir = "_unzip".tempDir();
+					var tempDir = @"..\_".add_RandomLetters(3).tempDir(false).fullPath(); //trying to make the unzip path as small as possible
 					var fastZip = new ICSharpCode.SharpZipLib.Zip.FastZip {Password = unzipPassword ?? ""};
 	                fastZip.ExtractZip(zipFileToImport, tempDir, "");
 
