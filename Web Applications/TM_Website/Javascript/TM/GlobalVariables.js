@@ -3,7 +3,7 @@ var isUndefined 	= 	function (object) 		  { return ( typeof (object) 		  === 'un
 var isDefined 		= 	function (object) 		  { return ( typeof (object) 		  !=  'undefined'); }
 var notSet 			= 	function (object,varname) {	return ( typeof (window[varname]) === 'undefined'); }
 var mapGlobal   	=   function(object,name)     {	if (notSet(object,name))  object[name] = { trace : traceTMObjects };        }
-	
+    
 mapGlobal(window, "TM");
 
 mapGlobal(TM, "Gui");
@@ -42,9 +42,9 @@ mapGlobal(TM.Gui, "Main");
 
 //Extra IE mappings
 if (typeof(TM.Debug) == "undefined")
-	TM.Debug = {};
+    TM.Debug = {};
 
-	
+    
 //Global vars & Constants
 
 TM.Const.emptyGuid = "00000000-0000-0000-0000-000000000000";
@@ -62,7 +62,7 @@ var htmlEscape = function(str)
                 .replace(/</g, '&lt;')
                 .replace(/>/g, '&gt;');
     };	
-		
+        
 var htmlUnEscape = function(str) 
     {
         return String(str)
@@ -75,11 +75,11 @@ var htmlUnEscape = function(str)
 
 if (typeof(console) == "undefined")
 {  	
-	console = 
-		{
-				log			: function() {}
-			,	error		: function() {}			
-		};	
+    console = 
+        {
+                log			: function() {}
+            ,	error		: function() {}			
+        };	
 }	
 
 
@@ -87,5 +87,5 @@ if (typeof(console) == "undefined")
 /*
 if (self != top) 
 {
-	top.location = self.location; 
+    top.location = self.location; 
 }*/

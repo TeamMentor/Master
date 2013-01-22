@@ -18,7 +18,6 @@
 
 /javascript/TM_HelperMethods.js
 
-/javascript/getData.js
 /javascript/TM/WebServices.js
 /javascript/TM_WS_Methods.js
 

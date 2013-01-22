@@ -163,15 +163,15 @@ TM.Gui.DataTable.loadDataIntoDataTable_Step1 = function(dataTableData)
                 if (lastDataLoad.aaData.length === 0)
                     TM.Gui.DataTable.raiseEventForEmptyTable();
                 else
-				{					
-					var restCommand = location.pathname.toLowerCase().split("/");			//handle the case where the user as issue an REST command to open an specific article
-					var mapping = restCommand.pop();
-					var command = restCommand.pop();
-					if (command == "open")					
-						TM.Gui.GuidanceItemViewer.showGuidanceFromMapping(mapping)
-					else
-						TM.Gui.DataTable.selectRow(1);										// default to selecting the first row
-				}
+                {					
+                    var restCommand = location.pathname.toLowerCase().split("/");			//handle the case where the user as issue an REST command to open an specific article
+                    var mapping = restCommand.pop();
+                    var command = restCommand.pop();
+                    if (command == "open")					
+                        TM.Gui.GuidanceItemViewer.showGuidanceFromMapping(mapping)
+                    else
+                        TM.Gui.DataTable.selectRow(1);										// default to selecting the first row
+                }
                 TM.Events.onDataTableDisplayed();
             };
         

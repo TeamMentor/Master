@@ -20,8 +20,6 @@
 /javascript/TM.Gui/TM.GUI.ShowProgressBar.js
 /javascript/TM.Gui/TM.GUI.Main.js
 
-	
-/javascript/getData.js						 	
 /javascript/TM_WS_Methods.js						
 
 /javascript/IE_Fixes.js

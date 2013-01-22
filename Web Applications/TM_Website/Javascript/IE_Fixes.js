@@ -7,10 +7,10 @@
 
 if ($.browser.msie)
 {
-	console.group 		= function() {};
-	console.groupEnd	= function() {};
+    console.group 		= function() {};
+    console.groupEnd	= function() {};
 }
-	
+    
 if (!Array.prototype.indexOf) {
     Array.prototype.indexOf = function (searchElement /*, fromIndex */ ) {
         "use strict";
