@@ -1,8 +1,11 @@
-//TM.WS = {};
+/** typedef*/ TM;
+/** typedef*/ TM.Gui;
+/** typedef*/ TM.WebServices;
+/** typedef*/ TM.WebServices.Helper;
 
-var lastDataReceived = {};
+//var lastDataReceived = {};
 function invokeWebService(url, params, handleData, handleError)
-{		
+{
     TM.WebServices.Helper.invokeWebService(url, params, handleData, handleError);
 }
 
@@ -12,14 +15,13 @@ function defaultErrorHandler(msg)
     //showMessage_NotEnoughPriviledges
     try
     {		
-        _msg = msg;
+        //_msg = msg;
         if (typeof(msg)=="object" && typeof(msg.d)!="undefined")
         {
             TM.Gui.Dialog.alertUser(JSON.stringify(msg.d));
         }
         else
         {
-            
             var errorMessage = JSON.parse(msg.responseText).Message;
             if ( $.browser.msie )			//no idea why the concat below doesn't work in IE (so for now let's show the error message without the extra explanation
                 TM.Gui.Dialog.alertUser(errorMessage);
@@ -101,65 +103,13 @@ function getTime(callback)
     invokeWebService( url, params, callback, defaultErrorHandler);
 }
 
-//Folders & Tables data
-/*function jsTreeWithFolders(callback, handleError)
-{
-    alert('jsTreeWithFolders - in WS');
-    var url = TM.tmWebServices + 'JsTreeWithFolders';
-    var params = "{}";
-    invokeWebService( url, params, callback, handleError);
-}*/
-
-function jsTreeWithFoldersAndGuidanceItems(callback, handleError)
-{
-    var url = TM.tmWebServices + 'JsTreeWithFoldersAndGuidanceItems';
-    var params = "{}";
-    invokeWebService( url, params, callback, handleError);
-}
-
-function jsTableWithGuidanceItems(viewIds, callback)
-{
-    var url = TM.tmWebServices + 'JsDataTableWithGuidanceItemsInViews';
-    var params = "{viewIds : "+ viewIds + "}";
-    invokeWebService( url, params, callback, defaultErrorHandler);
-}
-
-function jsTableWithAllGuidanceItems(callback)
-{
-    var url = TM.tmWebServices + 'JsDataTableWithAllGuidanceItemsInViews';
-    var params = "{}";
-    invokeWebService( url, params, callback, defaultErrorHandler);
-}
-
-function jsTableWithGuidanceItemsIn_Library(libraryId, callback)
-{
-    var url = TM.tmWebServices + 'JsDataTableWithGuidanceItemsIn_Library';
-    var params = "{libraryId : '"+ libraryId + "'}";
-    invokeWebService( url, params, callback, defaultErrorHandler);
-}
-
-function jsTableWithGuidanceItemsIn_Folder(folderId, callback)
-{
-    var url = TM.tmWebServices + 'JsDataTableWithGuidanceItemsIn_Folder';
-    var params =  JSON.stringify( { folderId : folderId } );	
-    invokeWebService( url, params, callback, defaultErrorHandler);
-}
-
-function jsTableWithGuidanceItemsIn_View(viewId, callback)
-{
-    var url = TM.tmWebServices + 'JsDataTableWithGuidanceItemsIn_View';
-    var params = "{viewId : '"+ viewId + "'}";
-    invokeWebService( url, params, callback, defaultErrorHandler);
-}
-
-
 //Guidance Item & Views
-function getGuidanceItemsInViews(viewIds, callback)
-{	
+/*function getGuidanceItemsInViews(viewIds, callback)
+{
     var url = TM.tmWebServices + 'GetGuidanceItemsInViews';
     var params = "{viewIds : "+ viewIds + "}";
     invokeWebService( url, params, callback, defaultErrorHandler);
-}
+}*/
 
 function getGuidanceItemHtml(id, callback)
 {
@@ -175,15 +125,15 @@ function getGuidanceItemData(id, callback)
     invokeWebService( url, params, callback, defaultErrorHandler);
 }
  
-
+/*
 function updateGuidanceItemHtml(id, htmlContent, callback)
 {
     var url = TM.tmWebServices + 'UpdateGuidanceItemHtml';
     var params =  JSON.stringify( { guidanceItemId : id  , htmlContent : htmlContent } );
     invokeWebService( url, params, callback, defaultErrorHandler);
 }
-
-function updateGuidanceItemData(guidanceItemId, topic, technology, category, rule_Type, priority, status, author, 
+*/
+/*function updateGuidanceItemData(guidanceItemId, topic, technology, category, rule_Type, priority, status, author,
                                 libraryId,  guidanceType , creatorId ,creatorCaption, title, 
                                 images, lastUpdate ,  htmlContent, callback)
 {	
@@ -206,7 +156,7 @@ function updateGuidanceItemData(guidanceItemId, topic, technology, category, rul
                             htmlContent : htmlContent
                         }};
     updateGuidanceItem(guidanceItem, callback);
-}
+}*/
 function updateGuidanceItem(guidanceItem, callback)
 {
     var url = TM.tmWebServices + 'UpdateGuidanceItem';
@@ -219,17 +169,17 @@ function updateGuidanceItem(guidanceItem, callback)
 function login(username, password, callback)
 {	
     var url = TM.tmWebServices + 'Login';
-    var passwordHash = SHA256(username + password)	
+    var passwordHash = SHA256(username + password);
     var params =  JSON.stringify( { username : username  , passwordHash : passwordHash } );	
     invokeWebService( url, params, callback, defaultErrorHandler);
 }
 
-function loginToWindows(username, password, callback)
+/*function loginToWindows(username, password, callback)
 {
     var url = TM.tmWebServices + 'LoginToWindows';
     var params =  JSON.stringify( { username : username  , password : password } );		
     invokeWebService( url, params, callback, defaultErrorHandler);
-}
+}*/
 
 
 //session management
@@ -249,12 +199,12 @@ function loginToWindows(username, password, callback)
     invokeWebService( url, params, callback, defaultErrorHandler);
 }*/
 
-function userIsAuthenticated(callback)
+/*function userIsAuthenticated(callback)
 {
     var url = TM.tmWebServices + 'RBAC_CurrentIdentity_IsAuthenticated';
     var params = "{}";
     invokeWebService( url, params, callback, defaultErrorHandler);
-}
+}*/
 
 function currentUserHasRole(role, callback)
 {
@@ -294,7 +244,7 @@ function currentUserHasActivityInGuidanceItem(guidanceItemId, userActivity, call
 
 
 //guidanceItems Search
-function guidanceItems_Search(searchText, callback)
+/*function guidanceItems_Search(searchText, callback)
 {
     var url = TM.tmWebServices + 'XmlDatabase_GuidanceItem_SearchHtml';
     var params = "{ searchText : '" + searchText + "'}";
@@ -306,7 +256,7 @@ function guidanceItems_SearchTitle(searchText, callback)
     var url = TM.tmWebServices + 'XmlDatabase_GuidanceItem_Search_Title';
     var params = "{ searchText : '" + searchText + "'}";
     invokeWebService( url, params, callback, defaultErrorHandler);
-}
+}*/
 
 
 //guidanceItems Logging
@@ -325,7 +275,7 @@ function guidanceItem_LogPageUserComment(guidanceItemId, userComment, callback)
 }
 
 //Cache management
-function reloadData(callback)
+/*function reloadData(callback)
 {
     var url = TM.tmWebServices + 'XmlDatabase_ReloadData';
     var params = '{ }';
@@ -333,13 +283,13 @@ function reloadData(callback)
 }
 
 //Libraries management
-function createLibrary(libraryName, callback)
+/*function createLibrary(libraryName, callback)
 {
     var url = TM.tmWebServices + 'CreateLibrary';
     var params = '{ library : { id: "00000000-0000-0000-0000-000000000000", caption : "'  + libraryName + '" } }';
     invokeWebService( url, params, callback, defaultErrorHandler);
-}
-
+}*/
+/*
 function deleteLibrary(libraryId, callback)
 {
     var url = TM.tmWebServices + 'DeleteLibrary';
@@ -407,7 +357,7 @@ function deleteView(libraryId , viewId, callback)
     var params =  JSON.stringify( { libraryId  : libraryId  , viewId : viewId  } );		
     invokeWebService( url, params, callback, defaultErrorHandler);
 }
-
+*/
 function moveViewToFolder(viewId , folderId, callback)
     { 
         if(typeof(folderId) == "undefined")
@@ -465,7 +415,7 @@ function removeGuidanceItemsFromView(viewId, guidanceItemIds, callback)
     invokeWebService( url, params, callback, defaultErrorHandler);
 }
 
-
+/*
 
 function renameGuidanceItemTitle(guidanceItemId, title, callback)
 {
@@ -500,7 +450,7 @@ function getGuiObjects(callback)
 }
 
 
-
+*/
 
     
 

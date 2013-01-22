@@ -1,29 +1,22 @@
 #TM specific
 /Library_Data/XmlDatabase
-o2.config
+/Web Applications/TestResults
+/Web Applications/TM_Website/App_Data
 TmUsers.xml
 webEditorSecretData.config
+
 # Visual Studio files # 
 *.pdb
-
-Web Applications/TeamMentor.CoreLib/bin/Debug/*.xml
-obj
 *.suo
 *.user
 *.nupkg
-
-Web Applications/TM_Website/bin/*.xml
-Web Applications/TeamMentor.CoreLib/bin/Debug/TeamMentor.CoreLib.dll
-
-/Library_Data/XmlDatabase/TM_Libraries
-/Web Applications/TM_Website/App_Data
-/Web Applications/TeamMentor.ControlPanel/bin
-/Web Applications/TeamMentor.ControlPanel/obj
-/Tools/_temp
-/Web Applications/TeamMentor.ControlPanel
-
-/Web Applications/TeamMentor.UnitTests/bin
-/Web Applications/TeamMentor.UnitTests/obj
-/Web Applications/TestResults
-
+obj
 bin
+.idea
+
+#Debug
+/Tools/_temp
+
+
+
+

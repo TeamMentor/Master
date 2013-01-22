@@ -11,14 +11,12 @@ namespace TeamMentor.CoreLib
     {
 		//********  DataViewers
 		
-		[WebMethod(EnableSession = true)]	
-		public JsTree JsTreeWithFolders()
+		[WebMethod(EnableSession = true)]	public JsTree JsTreeWithFolders()
 		{
 			return JsTreeWithFoldersAndGuidanceItems();			
 		}
 		
-		[WebMethod(EnableSession = true)]							
-		public JsTree JsTreeWithFoldersAndGuidanceItems()
+		[WebMethod(EnableSession = true)]   public JsTree JsTreeWithFoldersAndGuidanceItems()
 		{			
     		var jsTree = new JsTree();            
 			Func<Guid, List<Folder_V3>, JsTreeNode, List<Guid>> mapFolders = null;
@@ -90,8 +88,7 @@ namespace TeamMentor.CoreLib
 			return jsTree;
 		}
 		
-		[WebMethod(EnableSession = true)]	
-		public JsDataTable JsDataTableWithAllGuidanceItemsInViews()
+		[WebMethod(EnableSession = true)]	public JsDataTable JsDataTableWithAllGuidanceItemsInViews()
 		{ 
 			var rawGuidanceItems = javascriptProxy.GetAllGuidanceItemsInViews_XmlDB();
 			//var rawGuidanceItems = tmXmlDatabase.getGuidanceItemsInViews(viewIds);
@@ -99,7 +96,7 @@ namespace TeamMentor.CoreLib
 		}	
 		
 		//old mode (to remove)
-		[WebMethod(EnableSession = true)]	
+/*		[WebMethod(EnableSession = true)]	
 		public JsDataTable JsDataTableWithGuidanceItemsInViews(List<Guid> viewIds)
 		{ 
 			if (viewIds.size()==1)	
@@ -111,7 +108,7 @@ namespace TeamMentor.CoreLib
 			var rawGuidanceItems = javascriptProxy.GetGuidanceItemsInViews_XmlDB(viewIds);			
 			return getDataTableFromGuidanceItems(rawGuidanceItems);
 		}
-		
+	
 		[WebMethod(EnableSession = true)]
 		public JsDataTable JsDataTableWithGuidanceItemsIn_Library(Guid libraryId)
 		{
@@ -132,7 +129,7 @@ namespace TeamMentor.CoreLib
 			var rawGuidanceItems = javascriptProxy.GetGuidanceItemsInViews_XmlDB(new List<Guid>().add(viewId));
 			return getDataTableFromGuidanceItems(rawGuidanceItems);
 		}
-		
+		*/	
 		
 		public JsDataTable getDataTableFromGuidanceItems(List<TeamMentor_Article> rawGuidanceItems)
 		{

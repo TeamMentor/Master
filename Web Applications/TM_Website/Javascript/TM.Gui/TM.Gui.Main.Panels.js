@@ -1,4 +1,9 @@
-TM.Gui.Main.Panels = 
+/** typedef */ TM;
+/** typedef */ TM.Gui;
+/** typedef */ TM.Gui.Main;
+/** typedef */ TM.Events;
+
+TM.Gui.Main.Panels =
     {
             trace   					: true
         ,   handleWindowHashChange  : true
@@ -246,10 +251,10 @@ TM.Gui.Main.Panels.cssFixesForHomePage = function ()
     {
     var that = TM.Gui.Main.Panels;
     if ($.browser.msie)
-        that.div_North.$().height(78)   
-    that.div_North.$().css('overflow', 'hidden')
+        that.div_North.$().height(78);
+    that.div_North.$().css('overflow', 'hidden');
 
-    that.div_CenterCenter.$().css('overflow', 'hidden')
+    that.div_CenterCenter.$().css('overflow', 'hidden');
 
     that.onGuiResize();
 }

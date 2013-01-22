@@ -1,4 +1,3 @@
-
 //TM.Gui.notAuthorizedMessage = "You must be logged in to view this page. Please <a href='javascript:loginPage()'>login</a> or <a href='javascript:signupPage()'>sign up</a>.";
 TM.Gui.Main.targetDiv = '#guiWithPanels';
 
@@ -32,10 +31,7 @@ TM.Gui.changeMode = function(editMode)
     {
         if (TM.Gui.editMode != editMode)
         {			
-            TM.Gui.editMode = editMode;		
-            //TM.Gui.Main.loadLibraryTree();
-            //loadPage('gui_West_bottom',TM.Gui.Main.Panels.panelsDir + 'Left_LibraryTree.html');	
-            //TM.Gui.TopRigthLinks.refresh();
+            TM.Gui.editMode = editMode;
             TM.Events.onEditModeChange();			
         }
     }
