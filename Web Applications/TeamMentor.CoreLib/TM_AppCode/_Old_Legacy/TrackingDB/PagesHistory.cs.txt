@@ -8,7 +8,7 @@ using O2.DotNetWrappers.ExtensionMethods;
 using O2.DotNetWrappers.DotNet;
 
 
-namespace SecurityInnovation.TeamMentor.WebClient.WebServices
+namespace TeamMentor.CoreLib.WebServices
 {
 	public class ChangedPage
 	{

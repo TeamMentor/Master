@@ -3,7 +3,7 @@ using System.Web;
 using System.Linq;
 using System.Collections.Generic;  
 using System.Text; 
-using SecurityInnovation.TeamMentor.WebClient.WebServices;
+using TeamMentor.CoreLib.WebServices;
 using Moq;
 using O2.DotNetWrappers.ExtensionMethods;
 using O2.DotNetWrappers.DotNet; 
@@ -15,7 +15,7 @@ using O2.DotNetWrappers.DotNet;
 //O2Ref:System.Web.Abstractions.dll
 //O2File:O2_Scripts_APIs/_O2_Scripts_Files.cs
 
-namespace SecurityInnovation.TeamMentor.WebClient.WebServices
+namespace TeamMentor.CoreLib.WebServices
 {
 	public class TM_Moq_Database
 	{

@@ -303,10 +303,10 @@ TM.Gui.DataTable.addDataTableButtons = function()
                                            
             //hide it for now since it is not implemented
             //if(typeof(TM.Gui.selectedNodeData.viewId) != "undefined" || typeof(TM.Gui.selectedNodeData.folderId) != "undefined" )	
-            if(TM.Gui.selectedNodeData.__type != "SecurityInnovation.TeamMentor.WebClient.Library_V3")	 
+            if(TM.Gui.selectedNodeData.__type != "TeamMentor.CoreLib.Library_V3")	 
                 "button_DeleteGuidanceItemsFromLibrary".$().hide();
             //if (typeof(TM.Gui.selectedNodeData) != "undefined")
-            if(TM.Gui.selectedNodeData.__type != "SecurityInnovation.TeamMentor.WebClient.View_V3")
+            if(TM.Gui.selectedNodeData.__type != "TeamMentor.CoreLib.View_V3")
                     "button_RemoveGuidanceItemsFromView".$().hide();
             "button".$().button(); 
             "button".$().css("font-size",'10px');

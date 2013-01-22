@@ -734,7 +734,7 @@ TM.Gui.LibraryTree.createContextMenu = function(node)
 		}				
 
 
-	if (nodeType == "SecurityInnovation.TeamMentor.WebClient.Library_V3")		
+	if (nodeType == "TeamMentor.CoreLib.Library_V3")		
 		items = 
 			{	
 				createFolderItem: 	{ label: "Add View",  action: addView },
@@ -748,7 +748,7 @@ TM.Gui.LibraryTree.createContextMenu = function(node)
 				newLibItem: { label: "New Library",  action: function (obj) { addLibrary(); } }
 				//reloadItem: { label: "Reload Data",  action: function (obj) { refreshLibraryView(); } }													
 			}
-	else if (nodeType == "SecurityInnovation.TeamMentor.WebClient.Folder_V3")		
+	else if (nodeType == "TeamMentor.CoreLib.Folder_V3")		
 		items = 
 			{				
 				createViewItem: 	{ label: "Add View",  action: addView },
@@ -756,7 +756,7 @@ TM.Gui.LibraryTree.createContextMenu = function(node)
 				renameItem: { label: "Rename Folder",  action: function (obj) { this.rename(obj); } },
 				deteteItem: { label: "Delete Folder",  action: removeFolder }				
 			}
-	else if (nodeType == "SecurityInnovation.TeamMentor.WebClient.View_V3")
+	else if (nodeType == "TeamMentor.CoreLib.View_V3")
 		items = 
 			{				
 				createItem: { label: "Add Guidance Item",  action:  TM.Gui.LibraryTree.newGuidanceItem },//function (obj) { newGuidanceItem(); } }, //this.create(obj); } },
@@ -853,15 +853,15 @@ TM.Gui.LibraryTree.onRename = function(event, data)
 	var targetNodeData = $.data[data.rslt.obj.attr("id")];	
 	if (isDefined(targetNodeData))
 	{		
-		if (targetNodeData.__type == "SecurityInnovation.TeamMentor.WebClient.Library_V3")
+		if (targetNodeData.__type == "TeamMentor.CoreLib.Library_V3")
 		{			
 			TM.Gui.LibraryTree.rename_Library_to_Database(targetNodeData.libraryId, rename_newData);			
 		}		
-		if (targetNodeData.__type == "SecurityInnovation.TeamMentor.WebClient.Folder_V3")
+		if (targetNodeData.__type == "TeamMentor.CoreLib.Folder_V3")
 		{			
 			TM.Gui.LibraryTree.rename_Folder_to_Database(targetNodeData.libraryId, targetNodeData.folderId, rename_newData);			
 		}
-		if (targetNodeData.__type == "SecurityInnovation.TeamMentor.WebClient.View_V3")
+		if (targetNodeData.__type == "TeamMentor.CoreLib.View_V3")
 		{			
 			TM.Gui.LibraryTree.rename_View_to_Database(targetNodeData.libraryId, targetNodeData.folderId, targetNodeData.viewId, rename_newData);			
 		}				

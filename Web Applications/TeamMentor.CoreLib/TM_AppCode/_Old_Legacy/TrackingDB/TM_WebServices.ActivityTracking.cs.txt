@@ -17,7 +17,7 @@ using SecurityInnovation.TeamMentor.Authentication.WebServices.AuthorizationRule
 //O2Ref:Microsoft.Practices.Unity.dll
 //O2Ref:System.Xml.Linq.dll
 
-namespace SecurityInnovation.TeamMentor.WebClient.WebServices
+namespace TeamMentor.CoreLib.WebServices
 { 					
 	//WebServices related to: user Activity Tracking
     public partial class TM_WebServices 

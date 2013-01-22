@@ -12,7 +12,7 @@ using O2.DotNetWrappers.ExtensionMethods;
 //O2Ref:Microsoft.Practices.Unity.dll  
 //O2Ref:System.Web.Abstractions.dll
 
-namespace SecurityInnovation.TeamMentor.WebClient.WebServices
+namespace TeamMentor.CoreLib.WebServices
 {
     public class UnityInjection
     {		

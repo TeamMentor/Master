@@ -34,21 +34,21 @@ asyncTest("Create LibraryTree with Live data", function()
 								//ok(type, "found type : " + type);								
 								switch(type)
 								{
-									case "SecurityInnovation.TeamMentor.WebClient.Library_V3":
+									case "TeamMentor.CoreLib.Library_V3":
 										var data = $.data[id];
 										//ok(data, "found cached data for id:" + id);
 										var title = TM.Gui.LibraryTree.title($(this))
 										equal(title, data.name, "library title ok: " + data.name);
 										librariesFound++;
 										break;
-									case "SecurityInnovation.TeamMentor.WebClient.Folder_V3":
+									case "TeamMentor.CoreLib.Folder_V3":
 										var data = $.data[id];
 										//ok(data, "found cached data for id");
 										var title = TM.Gui.LibraryTree.title($(this))
 										equal(title, data.name, "folder title ok: " + data.name);
 										foldersFound++;
 										break;
-									case "SecurityInnovation.TeamMentor.WebClient.View_V3":
+									case "TeamMentor.CoreLib.View_V3":
 										var data = $.data[id];
 										//ok(data, "found cached data for id");
 										var title = TM.Gui.LibraryTree.title($(this))

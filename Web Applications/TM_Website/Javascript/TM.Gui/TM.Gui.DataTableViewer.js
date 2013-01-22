@@ -73,7 +73,7 @@ TM.Gui.DataTableViewer.setDragAndDropOptions = function()
 					var id = $(this).parent().attr('id');
 					var nodeData = $.data[id];				      
 					//if( $(this).parent().attr('id').indexOf("type: 'view'") != -1) 
-					if (nodeData.__type === "SecurityInnovation.TeamMentor.WebClient.View_V3")
+					if (nodeData.__type === "TeamMentor.CoreLib.View_V3")
 					{ 			
 						TM.Gui.LibraryTree.setDraggableOptionsForView(this, nodeData);
 						//$(this)
@@ -93,7 +93,7 @@ TM.Gui.DataTableViewer.setDragAndDropOptions = function()
 		var addGuidanceItemsToParentObject = function(parentId, guidanceIds)
 		{
 			parentData = $.data[parentId];
-			if(isDefined(parentData) && parentData.__type == "SecurityInnovation.TeamMentor.WebClient.Folder_V3" && isDefined(parentData.guidanceItems))
+			if(isDefined(parentData) && parentData.__type == "TeamMentor.CoreLib.Folder_V3" && isDefined(parentData.guidanceItems))
 			{			
 				parentData.guidanceItems  = parentData.guidanceItems.concat(guidanceIds);			
 				addGuidanceItemsToParentObject(parentData.parentId, guidanceIds);
@@ -143,14 +143,14 @@ TM.Gui.DataTableViewer.setDragAndDropOptions = function()
 			{			
 				if (dragMode == 'guidanceItem')
 				{								
-					if (nodeData.__type=="SecurityInnovation.TeamMentor.WebClient.View_V3")
+					if (nodeData.__type=="TeamMentor.CoreLib.View_V3")
 						TM.Gui.LibraryTree.dropActions.show_DropOk(targetNode)					
 										
 				}
 				else if (dragMode == 'view')// || dragMode == 'folder')
 				{				
-					if (nodeData.__type=="SecurityInnovation.TeamMentor.WebClient.Folder_V3" || 
-						nodeData.__type=="SecurityInnovation.TeamMentor.WebClient.Library_V3")
+					if (nodeData.__type=="TeamMentor.CoreLib.Folder_V3" || 
+						nodeData.__type=="TeamMentor.CoreLib.Library_V3")
 					{
 						TM.Gui.LibraryTree.dropActions.show_DropOk(targetNode)
 					}					
@@ -170,7 +170,7 @@ TM.Gui.DataTableViewer.setDragAndDropOptions = function()
 			{						
 				if (TM.Gui.selectedNodeData.libraryId == nodeData.libraryId)
 				{
-					if (nodeData.__type=="SecurityInnovation.TeamMentor.WebClient.Folder_V3")
+					if (nodeData.__type=="TeamMentor.CoreLib.Folder_V3")
 						moveViewToFolder(TM.Gui.draggedData.viewId, nodeData.folderId,
 							function() {	
 											modeViewToFolderOrLibrary(TM.Gui.draggedData.viewId, nodeData.folderId);									
@@ -178,7 +178,7 @@ TM.Gui.DataTableViewer.setDragAndDropOptions = function()
 											TM.Gui.Dialog.alertUser('Moved view into folder');
 											
 										});
-					if (nodeData.__type=="SecurityInnovation.TeamMentor.WebClient.Library_V3")
+					if (nodeData.__type=="TeamMentor.CoreLib.Library_V3")
 						moveViewToFolder(TM.Gui.draggedData.viewId, nodeData.libraryId,
 							function() {	
 											modeViewToFolderOrLibrary(TM.Gui.draggedData.viewId, nodeData.libraryId);									
@@ -190,7 +190,7 @@ TM.Gui.DataTableViewer.setDragAndDropOptions = function()
 				return;			
 			}
 			
-			if (nodeData.__type=="SecurityInnovation.TeamMentor.WebClient.View_V3" && 
+			if (nodeData.__type=="TeamMentor.CoreLib.View_V3" && 
 				TM.Gui.selectedNodeData.libraryId == nodeData.libraryId)				
 			{						
 				addGuidanceItemToViews(nodeData.viewId, selectedGuidanceIds, 
