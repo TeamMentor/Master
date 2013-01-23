@@ -1,56 +1,53 @@
-var traceTMObjects	= 	true;
-var isUndefined 	= 	function (object) 		  { return ( typeof (object) 		  === 'undefined'); }
-var isDefined 		= 	function (object) 		  { return ( typeof (object) 		  !=  'undefined'); }
-var notSet 			= 	function (object,varname) {	return ( typeof (window[varname]) === 'undefined'); }
-var mapGlobal   	=   function(object,name)     {	if (notSet(object,name))  object[name] = { trace : traceTMObjects };        }
+var traceTMObjects  =   true;
+var isUndefined     =   function (object) { return  object   === undefined; };
+var isDefined       =   function (object) { return  object   !== undefined; };
     
-mapGlobal(window, "TM");
+/** typedef */ window.TM              = { trace : traceTMObjects };
+/** typedef */ window.TM.Gui          = { trace : traceTMObjects };
+/** typedef */ window.TM.QUnit        = { trace : traceTMObjects };
+/** typedef */ window.TM.Const        = { trace : traceTMObjects };
+/** typedef */ window.TM.Debug        = { trace : traceTMObjects };    // this fails in IE (see below)
+/** typedef */ window.TM.Events       = { trace : traceTMObjects };
+/** typedef */ window.TM.WebServices  = { trace : traceTMObjects };
+/** typedef */ window.TM.ControlPanel = { trace : traceTMObjects };
 
-mapGlobal(TM, "Gui");
-mapGlobal(TM, "QUnit"); 
-mapGlobal(TM, "Const");
-mapGlobal(TM, "Debug");			// this fails in IE (see below)
-mapGlobal(TM, "Events");
-mapGlobal(TM, "WebServices");
-mapGlobal(TM, "ControlPanel");
+/** typedef */ window.TM.WebServices.Data         = { trace : traceTMObjects };
+/** typedef */ window.TM.WebServices.Config       = { trace : traceTMObjects };
+/** typedef */ window.TM.WebServices.Helper       = { trace : traceTMObjects };
+/** typedef */ window.TM.WebServices.WS_Utils     = { trace : traceTMObjects };
+/** typedef */ window.TM.WebServices.WS_Data      = { trace : traceTMObjects };
+/** typedef */ window.TM.WebServices.WS_Users     = { trace : traceTMObjects };
+/** typedef */ window.TM.WebServices.WS_Libraries = { trace : traceTMObjects };
 
-//mapGlobal(TM, "WS");			// temp
+/** typedef */ window.TM.Events.Gui               = { trace : traceTMObjects };
 
+/** typedef */ window.TM.Gui.GuidanceItemViewer   = { trace : traceTMObjects };
+/** typedef */ window.TM.Gui.GuidanceItemEditor   = { trace : traceTMObjects };
+/** typedef */ window.TM.Gui.AppliedFiltersList   = { trace : traceTMObjects };
+/** typedef */ window.TM.Gui.DataTableViewer      = { trace : traceTMObjects };
+/** typedef */ window.TM.Gui.AppliedFilters       = { trace : traceTMObjects };
+/** typedef */ window.TM.Gui.TopRigthLinks        = { trace : traceTMObjects };
+/** typedef */ window.TM.Gui.CurrentUser          = { trace : traceTMObjects };
+/** typedef */ window.TM.Gui.TextSearch           = { trace : traceTMObjects };
+/** typedef */ window.TM.Gui.DataTable            = { trace : traceTMObjects };
+/** typedef */ window.TM.Gui.Dialog               = { trace : traceTMObjects };
+/** typedef */ window.TM.Gui.Main                 = { trace : traceTMObjects };
 
-mapGlobal(TM.WebServices,"Data");
-mapGlobal(TM.WebServices,"Config");
-mapGlobal(TM.WebServices,"Helper");
-mapGlobal(TM.WebServices,"WS_Utils");
-mapGlobal(TM.WebServices,"WS_Data");
-mapGlobal(TM.WebServices,"WS_Users");
-mapGlobal(TM.WebServices,"WS_Libraries");
-
-mapGlobal(TM.Events,"Gui");
-
-mapGlobal(TM.Gui, "GuidanceItemViewer");
-mapGlobal(TM.Gui, "GuidanceItemEditor");
-mapGlobal(TM.Gui, "AppliedFiltersList");
-mapGlobal(TM.Gui, "DataTableViewer");
-mapGlobal(TM.Gui, "AppliedFilters");
-mapGlobal(TM.Gui, "TopRigthLinks");
-mapGlobal(TM.Gui, "CurrentUser");
-mapGlobal(TM.Gui, "TextSearch");
-mapGlobal(TM.Gui, "DataTable");
-mapGlobal(TM.Gui, "Dialog");
-mapGlobal(TM.Gui, "Main");
 
 
 //Extra IE mappings
-if (typeof(TM.Debug) == "undefined")
-    TM.Debug = {};
+if (window.TM.Debug === undefined)
+    {
+        window.TM.Debug = {};
+    }
 
     
 //Global vars & Constants
 
-TM.Const.emptyGuid = "00000000-0000-0000-0000-000000000000";
-TM.Const.EmptyFunction = function() {};
-TM.WebServices.Data.lastDataTableData = { aoColumns : [] , aaData: [] }	
-TM.WebServices.Data.filteredDataTable = { aoColumns : [] , aaData: [] }	
+window.TM.Const.emptyGuid = "00000000-0000-0000-0000-000000000000";
+window.TM.Const.EmptyFunction = function() {};
+window.TM.WebServices.Data.lastDataTableData = { aoColumns : [] , aaData: [] };
+window.TM.WebServices.Data.filteredDataTable = { aoColumns : [] , aaData: [] };
 
 //Global methods:
 var htmlEscape = function(str) 
@@ -61,26 +58,25 @@ var htmlEscape = function(str)
                 .replace(/'/g, '&#39;')
                 .replace(/</g, '&lt;')
                 .replace(/>/g, '&gt;');
-    };	
+    };
         
 var htmlUnEscape = function(str) 
     {
-        return String(str)
-                .replace(/&amp;/g, '&')
-                .replace(/&quot;/g, '"')
-                .replace(/&#39;/g, '\'')
-                .replace(/&lt;/g, '<')
-                .replace(/&gt;/g, '>');
+        return String(str).replace(/&amp;/g , '&')
+                          .replace(/&quot;/g, '"')
+                          .replace(/&#39;/g , '\'')
+                          .replace(/&lt;/g  , '<')
+                          .replace(/&gt;/g  , '>');
     };
 
-if (typeof(console) == "undefined")
-{  	
-    console = 
+if (window.console === undefined)
+{
+    window.console =
         {
-                log			: function() {}
-            ,	error		: function() {}			
-        };	
-}	
+            log         : function() {},
+            error       : function() {}
+        };
+}
 
 
 //ClickJacking protection (breaks embeded editor, we are going to live with the X-Frame-Options protection)
