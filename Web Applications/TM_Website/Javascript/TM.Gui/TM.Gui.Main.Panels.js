@@ -1,8 +1,3 @@
-/** typedef */ TM;
-/** typedef */ TM.Gui;
-/** typedef */ TM.Gui.Main;
-/** typedef */ TM.Events;
-
 TM.Gui.Main.Panels =
     {
             trace   					: true

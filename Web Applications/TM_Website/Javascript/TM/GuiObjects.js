@@ -1,15 +1,15 @@
  //Client Side data processing
 
-TM.WebServices.Data.extractGuiObjects = function(callback)
+window.TM.WebServices.Data.extractGuiObjects = function(callback)
     {						
         var startTime1 = new Date();
-        TM.WebServices.Data.GuidanceItemsIDs = [];
+        window.TM.WebServices.Data.GuidanceItemsIDs = [];
         
         function extractMapping(rawMapping) 
         {
-            var uniqueStrings = TM.WebServices.Data.GuiObjects.UniqueStrings;
-            var indexes = rawMapping.split(',')
-            var mapping = {
+            var uniqueStrings = window.TM.WebServices.Data.GuiObjects.UniqueStrings,
+                indexes = rawMapping.split(','),
+                mapping = {
                                 guidanceItemId: uniqueStrings[indexes[0]],
                                 libraryId: uniqueStrings[indexes[1]],
                                 title: uniqueStrings[indexes[2]], 
@@ -21,19 +21,21 @@ TM.WebServices.Data.extractGuiObjects = function(callback)
             $.data[mapping.guidanceItemId] = mapping;
             TM.WebServices.Data.GuidanceItemsIDs.push(mapping.guidanceItemId);				
             return mapping; 
-        };
+        }
         
         function extractAllMappings() 
         {
-            var startTime2 = new Date();
-            var guidanceItemsMappings = TM.WebServices.Data.GuiObjects.GuidanceItemsMappings;
+            var startTime2 = new Date(),
+                guidanceItemsMappings = window.TM.WebServices.Data.GuiObjects.GuidanceItemsMappings;
             $.each(guidanceItemsMappings, function() {	extractMapping(this); });
             
-            TM.WebServices.Data.ExtractedAllMappings = true;
-            TM.Debug.TimeSpan_ExtractAllMappings  = new Date(new Date() - startTime1);
-            TM.Debug.TimeSpan_CalculateAllMappings = new Date(new Date() - startTime2);			
-            if(typeof(callback) !="undefined")
-                callback();	
+            window.TM.WebServices.Data.ExtractedAllMappings = true;
+            window.TM.Debug.TimeSpan_ExtractAllMappings  = new Date(new Date() - startTime1);
+            window.TM.Debug.TimeSpan_CalculateAllMappings = new Date(new Date() - startTime2);
+            if(callback !== undefined)
+                {
+                    callback();
+                }
         }		
         TM.WebServices.WS_Data.getGUIObjects(extractAllMappings);
         

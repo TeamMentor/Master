@@ -1,35 +1,39 @@
 //global objects
 
-TM.tmWebServices = '/Aspx_Pages/TM_WebServices.asmx/';
-TM.WebServices.Data.lastDataReceived = {};
-TM.WebServices.Config.Version = "v0.3";
-TM.WebServices.Config.CSRF_Token = "";
+window.TM.tmWebServices = '/Aspx_Pages/TM_WebServices.asmx/';
+window.TM.WebServices.Data.lastDataReceived = {};
+window.TM.WebServices.Config.Version = "v0.3";
+window.TM.WebServices.Config.CSRF_Token = "";
 
 //Helpers
-TM.WebServices.Helper.invokeWebService = function(url, params, handleData, handleError)
+window.TM.WebServices.Helper.invokeWebService = function(url, params, handleData, handleError)
 {
-    if (typeof(handleData) == "undefined") 
+    if (handleData === undefined)
     {   
-        handleData = TM.WebServices.Helper.defaultCallback;
+        handleData = window.TM.WebServices.Helper.defaultCallback;
     }
-    if (typeof(handleError) == "undefined")	
+    if (handleError === undefined)
     {
-        handleError = TM.WebServices.Helper.defaultErrorHandler;		
+        handleError = window.TM.WebServices.Helper.defaultErrorHandler;
     }
     $.ajax( {
                     type            : "POST"
                 ,   url             : url
                 ,   data            : params                
-                ,   headers         : { "CSRF-Token" : TM.WebServices.Config.CSRF_Token}
+                ,   headers         : { "CSRF-Token" : window.TM.WebServices.Config.CSRF_Token}
                 ,   contentType: "application/json; charset=utf-8"
                 ,   dataType: "json"
                 ,   success: function (msg) 
                         {
-                            TM.WebServices.Data.lastDataReceived = msg;
-                            if(typeof(msg.d) == "undefined")
+                            window.TM.WebServices.Data.lastDataReceived = msg;
+                            if(msg.d === "undefined")
+                            {
                                 handleError("No data received from call to: " + url);
+                            }
                             else
-                                handleData(msg)			
+                            {
+                                handleData(msg);
+                            }
                         }
                 ,   failure: function (msg) 
                         {						
@@ -40,41 +44,43 @@ TM.WebServices.Helper.invokeWebService = function(url, params, handleData, handl
                             handleError(msg);					
                         }
             });
-}
+};
 
-TM.WebServices.Helper.showUserMessage = function(msg)
+window.TM.WebServices.Helper.showUserMessage = function(msg)
     {
-        console.log("Error: in showUserMessage (this function shouldn't be used here)");
+        window.console.log("Error: in showUserMessage (this function shouldn't be used here)");
     };
 
 
-TM.WebServices.Helper.defaultErrorHandler = function(msg)		// this method should be overriden by a better GUI handler
+window.TM.WebServices.Helper.defaultErrorHandler = function(msg)		// this method should be overriden by a better GUI handler
     {			
         try
         {
             if (isDefined(msg) && isDefined(msg.responseText))
             {
                 msg = msg.responseText;
-                var parsedMsg = JSON.parse(msg)
+                var parsedMsg = JSON.parse(msg);
                 if(isDefined(parsedMsg) && isDefined(parsedMsg.Message))
-                    TM.Gui.Dialog.alertUser(parsedMsg.Message, "WebServices Error")
+                {
+                    window.TM.Gui.Dialog.alertUser(parsedMsg.Message, "WebServices Error")
+                }
             }
-            console.log("TM.WebServices.Helper.defaultErrorHandler: " + msg);
+            window.console.log("TM.WebServices.Helper.defaultErrorHandler: " + msg);
         }
         catch(error)    
         {		
-            console.log("TM.WebServices.Helper.defaultErrorHandler: error in defaultErrorHandler: " + error.message);
+            window.console.log("TM.WebServices.Helper.defaultErrorHandler: error in defaultErrorHandler: " + error.message);
         }
     }
 
-TM.WebServices.Helper.defaultCallback = function(msg)		// this method should be overriden by a better GUI handler
+window.TM.WebServices.Helper.defaultCallback = function(msg)		// this method should be overriden by a better GUI handler
     {
         console.log("Error: WebServices result: " + msg.d);
     }
 
-TM.WebServices.Helper.invoke_TM_WebService = function(method, params, callback, handleError)
+window.WebServices.Helper.invoke_TM_WebService = function(method, params, callback, handleError)
     {
-        var url = TM.tmWebServices + method					
+        var url = TM.tmWebServices + method;
         if(typeof(params) === "object")
             params = JSON.stringify( params );			
         TM.WebServices.Helper.invokeWebService( 

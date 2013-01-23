@@ -80,7 +80,7 @@ asyncTest("getUsers", function()
 		var callback = function(users)
 			{	
 				ok(users, "users was defined");
-				if (isDefined(users))
+				if (users !== undefined)
 				{
 					ok(users.length > 0 ,"we got multiple users: " + users.length);
 				}				

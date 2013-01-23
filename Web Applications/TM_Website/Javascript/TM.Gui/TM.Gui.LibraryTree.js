@@ -19,7 +19,7 @@ TM.Gui.LibraryTree =
         // methods
         open: 				function(_targetDiv)
                                 {									
-                                    this.targetDiv = _targetDiv
+                                    this.targetDiv = _targetDiv;
                                     return this;
                                 },
                                 
@@ -84,7 +84,7 @@ TM.Gui.LibraryTree =
                                     //bind renamema nd create events
                                     $(this.targetDiv)
                                           .bind("rename.jstree", 		TM.Gui.LibraryTree.onRename)
-                                          .bind("create.jstree", 		TM.Gui.LibraryTree.onCreate)						 
+                                          .bind("create.jstree", 		TM.Gui.LibraryTree.onCreate);
                                           
                                     //setup drag&drop actions and icons 
                                     TM.Gui.LibraryTree.dropActions.setUp();
@@ -164,44 +164,44 @@ TM.Gui.LibraryTree =
                                         }
         
                                 
-    }
+    };
 
 //****************
 // Show Tree
 //****************
-TM.Gui.LibraryTree.showTree = function()    
-    {						
+TM.Gui.LibraryTree.showTree = function()
+    {
         var applyJsTreeCssPatches = function()
             {
                 jQuery('.jstree-default.jstree-focused').css('background-color','#FFFFFF');
-            }
-        $("#libraryJsTree").html('...loading tree...')			
-                    
-        libraryTree = TM.Gui.LibraryTree.open("#libraryJsTree");		
-        
-        libraryTree.onTreeLoaded = function()  
-            {					
+            };
+        $("#libraryJsTree").html('...loading tree...');
+
+        libraryTree = TM.Gui.LibraryTree.open("#libraryJsTree");
+
+        libraryTree.onTreeLoaded = function()
+            {
                 applyJsTreeCssPatches();
-                
-                $(libraryTree.targetDiv).delegate("a", "click", 
-                    function (event, data) 	
-                        { 		
-                            TM.Events.onLibraryTreeSelected();							
+
+                $(libraryTree.targetDiv).delegate("a", "click",
+                    function (event, data)
+                        {
+                            TM.Events.onLibraryTreeSelected();
                         });
 
-                TM.Gui.LibraryTree.selectNode_ById(TM.Gui.Main.Panels.initialId)			    
-            };	
-        libraryTree.create_TreeUsingJSON();					
-    }
+                TM.Gui.LibraryTree.selectNode_ById(TM.Gui.Main.Panels.initialId)
+            };
+        libraryTree.create_TreeUsingJSON();
+    };
 
 //****************
 //nodes manipulation methods
 //****************
 
-TM.Gui.LibraryTree.nodes = function() 
+TM.Gui.LibraryTree.nodes = function()
     {
         return $(TM.Gui.LibraryTree.targetDiv + " ul li");
-    }
+    };
     
 TM.Gui.LibraryTree.title = function(node, value)
     {
@@ -407,8 +407,7 @@ TM.Gui.LibraryTree.remove_Library_from_Database = function(libraryIdOrName)
         {	
             _libraryNode = libraryNode;
             _libraryV3 = libraryV3;
-            TM.Gui.Dialog.showUserMessage("something is wrong, the objects required to remove the library are not available: " + libraryId);											
-            return libraryId;
+            TM.Gui.Dialog.showUserMessage("something is wrong, the objects required to remove the library are not available: " + libraryId);
         }
         else	
             TM.WebServices.WS_Libraries.remove_Library(

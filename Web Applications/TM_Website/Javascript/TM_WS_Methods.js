@@ -1,8 +1,3 @@
-/** typedef*/ TM;
-/** typedef*/ TM.Gui;
-/** typedef*/ TM.WebServices;
-/** typedef*/ TM.WebServices.Helper;
-
 //var lastDataReceived = {};
 function invokeWebService(url, params, handleData, handleError)
 {
