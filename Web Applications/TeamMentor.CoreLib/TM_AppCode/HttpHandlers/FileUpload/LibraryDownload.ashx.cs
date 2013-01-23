@@ -14,7 +14,8 @@ namespace TeamMentor.CoreLib
         {
 			try
 			{
-				var uploadTokenString = context.Request["uploadToken"];
+                //Temporarily disable uploadToken request
+				/*var uploadTokenString = context.Request["uploadToken"];
 				if (uploadTokenString.isGuid().isFalse())
 				{
 					context.Response.Write("No Upload Token provided");
@@ -25,7 +26,7 @@ namespace TeamMentor.CoreLib
 				if (FileUpload.UploadTokens.contains(uploadToken).isFalse())
 					throw new SecurityException("Invalid Upload Token");
 				FileUpload.UploadTokens.remove(uploadToken);			
-
+                */
 				var libraryName = context.Request["library"] ?? "";
 				var library = TM_Xml_Database.Current.tmLibrary(libraryName);
 				if (library.isNull())

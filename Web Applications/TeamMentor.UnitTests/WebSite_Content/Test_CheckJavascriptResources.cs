@@ -39,9 +39,11 @@ namespace TeamMentor.UnitTests.WebSite_Content
 			var googleVersion = "http://www.google-analytics.com/ga.js".GET().fixCRLF();
 
 			Assert.That(tmVersion.valid()	, "ga.js tmVersion not valid");
-			Assert.That(googleVersion.valid(), "ga.js googleVerion not valid");
-
-			Assert.AreEqual(tmVersion, googleVersion, "ga.js files didn't match");
+		    //TODO: if (online) // add check to see if we are online
+		    {
+		        Assert.That(googleVersion.valid(), "ga.js googleVersion not valid");
+		        Assert.AreEqual(tmVersion, googleVersion, "ga.js files didn't match");
+		    }   
 		}		
 	}
 }

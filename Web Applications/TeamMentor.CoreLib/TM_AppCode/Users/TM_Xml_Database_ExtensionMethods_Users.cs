@@ -196,8 +196,6 @@ namespace TeamMentor.CoreLib
 			}
 			return Guid.Empty;    			
 		}
-    	
-		
 		public static Guid login_PwdInClearText(this TM_Xml_Database tmDb, string username, string password)
 		{
 			tmDb.sleep(TM_Xml_Database.FORCED_MILLISEC_DELAY_ON_LOGIN_ACTION, false);  // to slow down brute force attacks
@@ -210,7 +208,7 @@ namespace TeamMentor.CoreLib
 			}
 			return Guid.Empty;    			
 		}    	
-		
+
 		[PrincipalPermission(SecurityAction.Demand, Role = "ManageUsers")] 		
 		public static List<bool> deleteTmUsers(this TM_Xml_Database tmDb, List<int> userIds)
 		{

@@ -567,7 +567,11 @@ namespace TeamMentor.CoreLib
 
 		public bool redirectTo_DownloadLibrary(string data)
 		{
-			var uploadToken = new TM_WebServices().GetUploadToken();
+		    // UserGroup.Admin.setThreadPrincipalWithRoles();      // to test for this (for now allow normal users to download libraries)
+		    // var currentUserRoles = tmWebServices.RBAC_CurrentPrincipal_Roles();
+
+			//var uploadToken = new TM_WebServices().GetUploadToken();
+		    var uploadToken = "";
 			context.Response.Redirect("/Aspx_Pages/Library_Download.ashx?library={0}&uploadToken={1}".format(data, uploadToken));
 			return false;
 		}
