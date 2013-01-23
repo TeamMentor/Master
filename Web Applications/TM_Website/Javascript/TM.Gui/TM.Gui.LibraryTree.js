@@ -1,55 +1,51 @@
 
 //$.jstree.defaults.themes.url = "/javascript/jQuery.jsTree/themes/default/style.css";
 
-TM.Gui.LibraryTree = 
-    {	
+window.TM.Gui.LibraryTree =
+    {
         // variables
-        version 	: 1 , 
-        plugins		:  [ "themes", "json_data" , "ui", "crrm", "contextmenu"] ,	  			 //  ,  "hotkeys"	
-        treeData 	: undefined,
-        targetDiv	: undefined,		
-        jsTree   	: undefined,			
+        version     : 1 ,
+        plugins     : [ "themes", "json_data" , "ui", "crrm", "contextmenu"] , //  ,  "hotkeys"
+        treeData    : undefined,
+        targetDiv   : undefined,
+        jsTree      : undefined,
         
         // events
-        onTreeCreated: 		function() { } ,
-        onTreeLoaded: 		function() { } ,
-        onSelectedNode:		function() { } ,
+        onTreeCreated:      function() { } ,
+        onTreeLoaded:       function() { } ,
+        onSelectedNode:     function() { } ,
         
         
         // methods
-        open: 				function(_targetDiv)
-                                {									
-                                    this.targetDiv = _targetDiv;
-                                    return this;
-                                },
-                                
-        create_EmptyTree:	function()
+        open:                       function(_targetDiv)    {
+                                                                this.targetDiv = _targetDiv;
+                                                                return this;
+                                                            },
+        create_EmptyTree:           function()              {
+                                                                this.jsTree = undefined;
+                                                                this.treeData = { data: [] };
+                                                                this.create_Tree();
+                                                            },
+        create_TreeUsingJSON:       function()
                                 {
-                                    this.jsTree = undefined;
-                                    this.treeData = { data: [] }; 									
-                                    this.create_Tree();
-                                },
-                                
-        create_TreeUsingJSON: function()								
-                                {															
                                     var that = this;
                                     var startTime = new Date();
                                     this.jsTree = undefined;
                                     
                                     this.onTreeCreated = function() 
-                                        {											
-                                            TM.Debug.TimeSpan_Gui_LibraryTree_CreatedTreeFromJsonData = startTime.toNow();		
+                                        {
+                                            TM.Debug.TimeSpan_Gui_LibraryTree_CreatedTreeFromJsonData = startTime.toNow();
                                             that.onTreeLoaded();
-                                            TM.Events.onLibraryTreeLoaded();											
+                                            TM.Events.onLibraryTreeLoaded();
                                         };
                                         
                                     this.loadJsonData(function() 
-                                        { 														
+                                        {
                                             that.create_Tree();
                                         } );
                                 },
         
-        create_Tree:		function()
+        create_Tree:                function()
                                 {															
                                     var options = { 
                                                       json_data 	: this.treeData,
@@ -91,7 +87,7 @@ TM.Gui.LibraryTree =
                                     
                                 },
                                 
-        setSelectedId:		function (event)	
+        setSelectedId:              function (event)
                                 {									
                                     //_event = event;									
                                     //var node = $(event.srcElement);	// doesn't work in FF
@@ -99,9 +95,9 @@ TM.Gui.LibraryTree =
                                     TM.Gui.LibraryTree.selectNode(node);																		
                                 },
                                 
-        onClick :			function (event, data) 		{ },
+        onClick :                   function (event, data)      { },
                                 
-        loadJsonData:		function(callback)
+        loadJsonData:               function(callback)
                                 {					
                                     var that = this;									
                                     TM.WebServices.WS_Data.getJsTreeWithFolders(
@@ -112,13 +108,13 @@ TM.Gui.LibraryTree =
                                             });
                                 },
                                 
-        create_Tree_FromWsData: 	function()
+        create_Tree_FromWsData:     function()
                                         {	
                                             this.create_EmptyTree();
                                             this.onTreeCreated = this.add_LibrariesFromWsData;
                                         },
                                             
-        add_LibrariesFromWsData: 	function()
+        add_LibrariesFromWsData:    function()
                                         {
                                             var startTime = new Date();
                                             var that = this;
@@ -130,7 +126,7 @@ TM.Gui.LibraryTree =
                                             this.onTreeLoaded();
                                         },
                                         
-        add_LibraryFromWsData:		function(library)
+        add_LibraryFromWsData:      function(library)
                                         {
                                             var libraryNode = this.add_Library(library.name);
                                             libraryNode.attr('id', library.id);
@@ -139,7 +135,7 @@ TM.Gui.LibraryTree =
                                             this.add_ViewsFromWsData	(libraryNode, library.views);
                                         },
                                         
-        add_FoldersFromWsData:		function(rootNode, folders)
+        add_FoldersFromWsData:      function(rootNode, folders)
                                         {					
                                             var that = this;
                                             $.each(folders, function() 
@@ -152,7 +148,7 @@ TM.Gui.LibraryTree =
                                                         that.add_ViewsFromWsData	(folderNode, this.views);
                                                     });		
                                         },
-        add_ViewsFromWsData:		function(rootNode, views)
+        add_ViewsFromWsData:        function(rootNode, views)
                                         {											
                                             $.each(views, function() 
                                                     { 
@@ -169,7 +165,7 @@ TM.Gui.LibraryTree =
 //****************
 // Show Tree
 //****************
-TM.Gui.LibraryTree.showTree = function()
+window.TM.Gui.LibraryTree.showTree = function()
     {
         var applyJsTreeCssPatches = function()
             {
@@ -198,12 +194,12 @@ TM.Gui.LibraryTree.showTree = function()
 //nodes manipulation methods
 //****************
 
-TM.Gui.LibraryTree.nodes = function()
+window.TM.Gui.LibraryTree.nodes = function()
     {
         return $(TM.Gui.LibraryTree.targetDiv + " ul li");
     };
-    
-TM.Gui.LibraryTree.title = function(node, value)
+
+window.TM.Gui.LibraryTree.title = function(node, value)
     {
         if(isDefined(value))
         {
@@ -214,12 +210,12 @@ TM.Gui.LibraryTree.title = function(node, value)
             return TM.Gui.LibraryTree.jsTree.get_text(node);		
     }
 
-TM.Gui.LibraryTree.firstNode = function() 	
+window.TM.Gui.LibraryTree.firstNode = function()
     {
         return TM.Gui.LibraryTree.nodes().first();
     }
-    
-TM.Gui.LibraryTree.selectNode = function(node) 		
+
+window.TM.Gui.LibraryTree.selectNode = function(node)
     {		
         //alert(TM.Gui.LibraryTree.selectedNode === node)
         
@@ -641,7 +637,7 @@ TM.Gui.LibraryTree.setDraggableOptionsForView = function(node, nodeData)
 
 // Create Context menu
 TM.Gui.LibraryTree.createContextMenu = function(node)
-{					
+    {
     updatedNodeId = false;
     createMode = "";
     var items = {};
@@ -885,44 +881,44 @@ TM.Gui.LibraryTree.newGuidanceItem = function()
     }     
     
     var createNewGuidanceItem = function()
-      { 				
+      {
             var title = "New Guidance Item";
             var htmlContent = "";
             createGuidanceItem(title,htmlContent, contextMenuIdValue.libraryId, 
                 function(data) 
-                    {						
+                    {
                         var newGuidanceItemId = data.d;
                         if (typeof(contextMenuIdValue.viewId) != "undefined")
                         {
                             
-                            var viewId = contextMenuIdValue.viewId;							
-                            addGuidanceItemToView(viewId, newGuidanceItemId, 	
-                                function() {													
+                            var viewId = contextMenuIdValue.viewId;
+                            addGuidanceItemToView(viewId, newGuidanceItemId,
+                                function() {
                                                 $.data[viewId].guidanceItems.push(newGuidanceItemId);
                                            } );
                                                         
                         }
                         
-                        $.data[newGuidanceItemId] = {};						
+                        $.data[newGuidanceItemId] = {};
                         $.data[newGuidanceItemId].guidanceItemId = newGuidanceItemId;
-                        $.data[newGuidanceItemId].libraryId 	 = contextMenuIdValue.libraryId;
-                        $.data[newGuidanceItemId].title 		 = title;
-                        $.data[newGuidanceItemId].technology 	 = "";
-                        $.data[newGuidanceItemId].phase 	 	 = "";
-                        $.data[newGuidanceItemId].type 	 		 = "";
-                        $.data[newGuidanceItemId].category 		 = "";
+                        $.data[newGuidanceItemId].libraryId      = contextMenuIdValue.libraryId;
+                        $.data[newGuidanceItemId].title          = title;
+                        $.data[newGuidanceItemId].technology     = "";
+                        $.data[newGuidanceItemId].phase          = "";
+                        $.data[newGuidanceItemId].type           = "";
+                        $.data[newGuidanceItemId].category       = "";
                         $.data[contextMenuIdValue.libraryId].guidanceItems.push(newGuidanceItemId);
 
                         TM.Gui.DataTableViewer.selectedRowTarget = null;
-                        TM.Gui.DataTableViewer.selectedRowIndex = -1;						
+                        TM.Gui.DataTableViewer.selectedRowIndex = -1;
 
                         editGuidanceItemInNewWindow(newGuidanceItemId);
                     });
-      } ;			  	  	
+      } ;
       createNewGuidanceItem();
-}	
+};
 
-TM.Gui.LibraryTree.showDirectLink = function()
+window.TM.Gui.LibraryTree.showDirectLink = function()
     {        
         window.location.hash = "#load:" + TM.Gui.selectedNodeId;
         TM.Gui.AppliedFilters.currentFilters = [];

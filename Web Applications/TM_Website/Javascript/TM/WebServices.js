@@ -78,7 +78,7 @@ window.TM.WebServices.Helper.defaultCallback = function(msg)		// this method sho
         console.log("Error: WebServices result: " + msg.d);
     }
 
-window.WebServices.Helper.invoke_TM_WebService = function(method, params, callback, handleError)
+window.TM.WebServices.Helper.invoke_TM_WebService = function(method, params, callback, handleError)
     {
         var url = TM.tmWebServices + method;
         if(typeof(params) === "object")
