@@ -179,7 +179,7 @@ TM.Gui.DataTable.loadDataIntoDataTable_Step1 = function(dataTableData)
         {
             _currentDataTable.fnAddData(itemsToAdd);
             //$("#nowShowingLabel").html("Showing " + totalItemstoLoad + " items");            
-            TM.Gui.DataTableViewer.set_Title("Showing " + totalItemstoLoad + " items (out of " + TM.WebServices.Data.dataTableDataForSelectedGuid.aaData.length + ")");
+            TM.Gui.DataTableViewer.set_Title("Showing " + totalItemstoLoad + " items (out of " + totalItemstoLoad  + ")");
             dataTableLoadComplete();
         }
         else
