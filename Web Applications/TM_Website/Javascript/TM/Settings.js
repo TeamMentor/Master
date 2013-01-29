@@ -8,7 +8,7 @@ window.TM.NotAuthorizedPage    = '/Html_Pages/Gui/Panels/AD_Non_Authorized_User.
 window.TM.Tracking_Google_Analytics_ID                 = null;    // configure this in  TM_Custom_Settings.js
 window.TM.Gui.showLibraryStructureToAnonymous          = true;
 window.TM.Gui.LoadLibraryData                          = true;
-window.TM.Gui.editMode                                 = true;
+window.TM.Gui.editMode                                 = false;
 
 window.TM.Debug.addTimeStampToLoadedPages              = true;     // set true true during dev
 window.TM.Debug.reuseLibraryMappingsObject             = true;

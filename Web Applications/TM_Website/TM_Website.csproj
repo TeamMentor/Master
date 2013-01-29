@@ -155,6 +155,11 @@
     <Content Include="default.htm" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Html_Pages\ControlPanel\CSharp_REPL\bootstrap.css" />
+    <Content Include="Html_Pages\ControlPanel\CSharp_REPL\gui.css" />
+    <Content Include="Html_Pages\ControlPanel\CSharp_REPL\index.html" />
+    <Content Include="Html_Pages\ControlPanel\CSharp_REPL\O2_REPL.js" />
+    <Content Include="Html_Pages\ControlPanel\CSharp_REPL\Repl.html" />
     <Content Include="Html_Pages\Gui\Dialogs\Change_Password.html" />
     <Content Include="Html_Pages\Gui\Pages\article_wikiText.html" />
     <Content Include="Html_Pages\ControlPanel\Views\Set_Library_Path.html" />

@@ -1,0 +1,121 @@
+html, body {
+  height: 100%;
+  background-color: #E3E9ED;
+}
+
+body {
+  font-size: 10pt;
+  font-family: "PT Sans", Helvetica, Arial, Sans-Serif;
+  color: #444;
+}
+
+a {
+  color: #4183C4;
+}
+
+pre, code {
+  font-family: "Inconsolata";
+  font-size: 10pt;
+}
+
+.topbar h3 {
+  font-family: "Droid Sans", Helvetica, Arial, Sans-Serif;
+  font-size: 120%;
+  color: #fff;
+}
+
+h1, h2, h3, h4 {
+  font-family: "Droid Sans", Helvetica, Arial, Sans-Serif;
+}
+
+span.logo {
+  font-family: "Droid Sans", Helvetica, Arial, Sans-Serif !important;
+}
+
+.options {
+  margin-top: 20px;
+}
+
+.options h3 {
+  margin-bottom: 10px;
+}
+
+.options li {
+  margin-bottom: 5px;
+}
+
+.more-options {
+  display: block;
+  padding-top: 10px;
+}
+
+.editor {
+  padding: 60px 0 0 0;
+}
+
+.editorArea > .buttons {
+  text-align: right;
+}
+
+.editorArea > .alert-message {
+  margin-bottom: 0;
+  padding: 5px 14px 6px;
+}
+
+.editorArea > .error a {
+  color: #fff;
+  border-bottom: dashed 1px #fff;
+}
+
+.editorArea > .error a:hover {
+  border-bottom: solid 1px #fff;
+  text-decoration: none;
+}
+
+.editorArea .CodeMirror {
+  background-color: #fff;
+  border-radius: 3px;
+  border: solid 1px #999;
+  margin: 10px 0;
+}
+
+.editorArea .CodeMirror-scroll {
+  .report div.al
+}
+
+div.report {
+  margin-top: 20px;
+  word-wrap: break-word;
+}
+
+div.report div.alert-message div.rows {
+  margin: 0;
+}
+
+div.report div.span10 {
+  width: 75%;
+}
+
+div.report div.span5 {
+  width: 20%;
+  text-align: right;
+}
+
+div.report div.options {
+  margin: 15px 0;
+}
+
+div.report ul.jshint-errors {
+  margin: 15px;
+  list-style-type: none;
+}
+
+div.report ul.jshint-errors li {
+  margin-bottom: 15px;
+}
+
+div.footer {
+  margin: 0 auto;
+  padding: 50px 0 25px 0;
+  text-align: center;
+}
