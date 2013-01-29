@@ -25,7 +25,7 @@ namespace TeamMentor.Website
 			tmConfig.Eval_Accounts.Enabled			= true;
 			tmConfig.Eval_Accounts.Days				= 15;
 
-		    tmConfig.TMDebugAndDev.EnableGZipForWebServices = false;
+		    tmConfig.TMDebugAndDev.EnableGZipForWebServices = true;
 
 
 			//Google Analytics
