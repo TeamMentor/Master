@@ -26,6 +26,7 @@ namespace TeamMentor.Website
 			tmConfig.Eval_Accounts.Days				= 15;
 
 		    tmConfig.TMDebugAndDev.EnableGZipForWebServices = true;
+            tmConfig.TMDebugAndDev.Enable302Redirects       = true;
 
 
 			//Google Analytics
