@@ -353,12 +353,12 @@ function deleteView(libraryId , viewId, callback)
     invokeWebService( url, params, callback, defaultErrorHandler);
 }
 */
-function moveViewToFolder(viewId , folderId, callback)
+function moveViewToFolder(viewId , folderId, libraryId, callback)
     { 
         if(typeof(folderId) == "undefined")
             folderId = "00000000-0000-0000-0000-000000000000";
-        var url = TM.tmWebServices + 'MoveViewToFolder';
-        var params =  JSON.stringify( { viewId  : viewId  , folderId : folderId  } );			
+        var url = window.TM.tmWebServices + 'MoveViewToFolder';
+        var params =  JSON.stringify( { viewId  : viewId  , targetFolderId : folderId  ,  targetLibraryId : libraryId  } );
         invokeWebService( url, params, callback, defaultErrorHandler);
     }
 

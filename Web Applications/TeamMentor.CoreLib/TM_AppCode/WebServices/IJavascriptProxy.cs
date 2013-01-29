@@ -83,7 +83,7 @@ namespace TeamMentor.CoreLib
 		bool AddGuidanceItemsToView(Guid viewId, List<Guid> guidanceItemIds);
 		bool RemoveGuidanceItemsFromView(Guid viewId, List<Guid> guidanceItemIds);
 		bool RemoveViewFromFolder(Guid libraryId,  Guid viewId);
-		bool MoveViewToFolder(Guid viewId, Guid folderId);
+		bool MoveViewToFolder(Guid viewId, Guid targetFolderId, Guid targetLibraryId);
 		//void CreateGuidanceItem(GuidanceItem item, string content);
 		//Guid CreateGuidanceItem(Guid libraryIdGuid, Guid guidanceType, Guid creatorId, string creatorCaption, string title, string images, DateTime lastUpdate, string topic, string technology, string category, string ruleType, string priority, string status, string author, string htmlContent) ;
 		//bool UpdateGuidanceItem(Guid id, string title, Guid guidanceType, Guid library, Guid creator, string creatorCaption, string content, string images, DateTime lastUpdate, string htmlContent);

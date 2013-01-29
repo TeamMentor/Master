@@ -87,17 +87,15 @@ namespace TeamMentor.CoreLib
 		public Folder_V3 CreateFolder(Guid libraryId, Guid parentFolderId, string newFolderName) 	{ return tmXmlDatabase.xmlDB_Add_Folder(libraryId, parentFolderId, newFolderName ).tmFolder(libraryId, tmXmlDatabase); } 		
 		public bool DeleteFolder(Guid libraryId, Guid folderId)										{ return  tmXmlDatabase.xmlDB_Delete_Folder(libraryId,  folderId); }
 		//XmlDB specific
-		public List<TeamMentor_Article> GetGuidanceItemsInViews_XmlDB(List<Guid> viewIds)	{ return tmXmlDatabase.getGuidanceItemsInViews(viewIds);}  			
+		public List<TeamMentor_Article> GetGuidanceItemsInViews_XmlDB(List<Guid> viewIds)	    { return tmXmlDatabase.getGuidanceItemsInViews(viewIds);}  			
 		
-		public List<TeamMentor_Article> GetGuidanceItemsInLibrary_XmlDB(Guid libraryId) 	{ return tmXmlDatabase.tmGuidanceItems(libraryId);}
-		public List<TeamMentor_Article> GetGuidanceItemsInFolder_XmlDB(Guid folderId)   	{ return tmXmlDatabase.tmGuidanceItems_InFolder(folderId);}				       
-		public List<TeamMentor_Article> GetAllGuidanceItemsInViews_XmlDB()					{ return tmXmlDatabase.getAllGuidanceItemsInViews();} 
-		public List<TeamMentor_Article> GetAllGuidanceItems_XmlDB()						    { return tmXmlDatabase.tmGuidanceItems();}
-		        
-		
-		// new ones to add to main Webservice
-		public bool RemoveViewFromFolder(Guid libraryId, Guid viewId)	{ return tmXmlDatabase.xmlDB_RemoveViewFromFolder(libraryId, viewId);}
-		public bool MoveViewToFolder(Guid viewId, Guid folderId)    	{ return tmXmlDatabase.xmlDB_MoveViewToFolder(viewId,folderId); }
+		public List<TeamMentor_Article> GetGuidanceItemsInLibrary_XmlDB(Guid libraryId) 	    { return tmXmlDatabase.tmGuidanceItems(libraryId);}
+		public List<TeamMentor_Article> GetGuidanceItemsInFolder_XmlDB(Guid folderId)   	    { return tmXmlDatabase.tmGuidanceItems_InFolder(folderId);}				       
+		public List<TeamMentor_Article> GetAllGuidanceItemsInViews_XmlDB()					    { return tmXmlDatabase.getAllGuidanceItemsInViews();} 
+		public List<TeamMentor_Article> GetAllGuidanceItems_XmlDB()						        { return tmXmlDatabase.tmGuidanceItems();}
+		        				
+		public bool RemoveViewFromFolder(Guid libraryId, Guid viewId)                   	    { return tmXmlDatabase.xmlDB_RemoveViewFromFolder(libraryId, viewId);}
+		public bool MoveViewToFolder(Guid viewId, Guid targetFolderId, Guid targetLibraryId)    { return tmXmlDatabase.xmlDB_MoveViewToFolder(viewId,targetFolderId, targetLibraryId); }
 
 				
 		/*ALL the ones below (including all GuidanceTypes and schema) are Not Implemented at the moment for the TmXmlDatabase*/

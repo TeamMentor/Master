@@ -18,7 +18,10 @@ namespace TeamMentor.CoreLib
 			//pre-create this mapping since the view retrieval was a massive performance bottle neck
 			var allViews = new Dictionary<Guid, View_V3>();
 			foreach(var view in javascriptProxy.GetViews())
-				allViews.Add(view.viewId, view);
+			    if (allViews.hasKey(view.viewId))
+			        "[getFolderStructure_Library] duplicate viewID: {0} from Library {0}".format(view.viewId, view.libraryId);  // this should be moved into a TM Library health check
+                else
+				    allViews.Add(view.viewId, view);
 				
 			Action<Folder_V3> mapFolderViews =  null;
 

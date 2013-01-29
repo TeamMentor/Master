@@ -1,37 +1,39 @@
-TM.Gui.DataTableViewer = 
+TM.Gui.DataTableViewer =
     {
             applyCss				: function()
                                         {
                                             $("#nowShowingText").css(
-                                                { 
+                                                {
                                                         "text-align"	: "center"
-                                                    ,	"font-weight"	: "bold" 
+                                                    ,	"font-weight"	: "bold"
                                                 });
                                         }
-                                        
+
         ,	set_Title				: function(text)
                                         {
                                             $("#nowShowingText").html(text);
                                         }
-                                        
+
         , 	addCheckBoxesToDataTable : function(dataTable)
                                         {
                                             if(TM.Gui.editMode)
-                                            {			
-                                                $.each(dataTable.aaData, function() 
-                                                    {   
+                                            {
+                                                $.each(dataTable.aaData, function()
+                                                    {
                                                         this[0] = "<input type='checkbox' class='GuidanceItemCheckBox' style='text-align: center'/>"
                                                     });
-                                            }											
-                                        }					
-    }
+                                            }
+                                        }
+    };
 
     
 TM.Gui.DataTableViewer.setDragAndDropOptions = function()
     {	
         // for main Table  (when dragging guidance items into views)
-            
-        $("#guidanceItemsTable tr").draggable(
+        var guidanceItemsTable = $("#guidanceItemsTable"),
+            libraryTree        = $(".LibraryTree");
+
+        guidanceItemsTable.find("tr").draggable(
             { 
                 //helper:'clone', 
                 helper: getDragHelperElement,
@@ -47,8 +49,8 @@ TM.Gui.DataTableViewer.setDragAndDropOptions = function()
                 // addClasses: false
                 //opacity: 0.35
             });
-            
-        $("#guidanceItemsTable input").draggable(
+
+        guidanceItemsTable.find("input").draggable(
             { 
                 helper:'clone', 
                 //helper: getDragHelperElement,
@@ -66,7 +68,7 @@ TM.Gui.DataTableViewer.setDragAndDropOptions = function()
             });	
 
         //for library Tree when dragging views
-        $(".LibraryTree a").each(function() 
+        libraryTree.find("a").each(function()
             { 
                 if (typeof($(this).parent().attr('id')) != 'undefined')
                 {
@@ -92,13 +94,13 @@ TM.Gui.DataTableViewer.setDragAndDropOptions = function()
         
         var addGuidanceItemsToParentObject = function(parentId, guidanceIds)
         {
-            parentData = $.data[parentId];
+            var parentData = $.data[parentId];
             if(isDefined(parentData) && parentData.__type == "TeamMentor.CoreLib.Folder_V3" && isDefined(parentData.guidanceItems))
             {			
                 parentData.guidanceItems  = parentData.guidanceItems.concat(guidanceIds);			
                 addGuidanceItemsToParentObject(parentData.parentId, guidanceIds);
             }
-        }
+        };
         
         var addGuidanceItemsToLocalViewObject = function(viewId, guidanceIds)
         {		
@@ -111,7 +113,7 @@ TM.Gui.DataTableViewer.setDragAndDropOptions = function()
                                     : viewData.folderId;
                 addGuidanceItemsToParentObject(parentId, guidanceIds);
             }		
-        }
+        };
         
         var modeViewToFolderOrLibrary = function(viewId, targetId)
         {
@@ -120,12 +122,12 @@ TM.Gui.DataTableViewer.setDragAndDropOptions = function()
             sourceNode.fadeOut();
             TM.Gui.LibraryTree.jsTree.move_node(sourceNode, targetNode);
             sourceNode.fadeIn();
-        }
+        };
         
-        var libraryTree_OnOut = function( event, ui ) 
+        var libraryTree_OnOut = function()  // function(event, ui )
             {							
                 TM.Gui.LibraryTree.dropActions.hide_DropIcons()	
-            }
+            };
             
         var libraryTree_OnOver = function(event, nodeData, dragMode)
         {	
@@ -137,9 +139,9 @@ TM.Gui.DataTableViewer.setDragAndDropOptions = function()
                 return;
             }
             
-            TM.Gui.LibraryTree.dropActions.show_DropNotOk(targetNode)
+            TM.Gui.LibraryTree.dropActions.show_DropNotOk(targetNode);
             
-            if (TM.Gui.selectedNodeData.libraryId == nodeData.libraryId)
+            //if (TM.Gui.selectedNodeData.libraryId == nodeData.libraryId) // allow Cross library drops
             {			
                 if (dragMode == 'guidanceItem')
                 {								
@@ -156,7 +158,7 @@ TM.Gui.DataTableViewer.setDragAndDropOptions = function()
                     }					
                 }			
             }
-        }
+        };
         
         var libraryTree_OnDrop = function(event, nodeData, dragMode)
         {
@@ -168,48 +170,43 @@ TM.Gui.DataTableViewer.setDragAndDropOptions = function()
             
             if (dragMode == 'view' )
             {						
-                if (TM.Gui.selectedNodeData.libraryId == nodeData.libraryId)
+                //if (TM.Gui.selectedNodeData.libraryId == nodeData.libraryId)   // allow Cross library drops
                 {
-                    if (nodeData.__type=="TeamMentor.CoreLib.Folder_V3")
-                        moveViewToFolder(TM.Gui.draggedData.viewId, nodeData.folderId,
+                    if (nodeData.__type == "TeamMentor.CoreLib.Folder_V3")
+                        moveViewToFolder(TM.Gui.draggedData.viewId, nodeData.folderId, nodeData.libraryId,
                             function() {	
-                                            modeViewToFolderOrLibrary(TM.Gui.draggedData.viewId, nodeData.folderId);									
-                                            
+                                            modeViewToFolderOrLibrary(TM.Gui.draggedData.viewId, nodeData.folderId);
                                             TM.Gui.Dialog.alertUser('Moved view into folder');
-                                            
                                         });
-                    if (nodeData.__type=="TeamMentor.CoreLib.Library_V3")
-                        moveViewToFolder(TM.Gui.draggedData.viewId, nodeData.libraryId,
+                    if (nodeData.__type == "TeamMentor.CoreLib.Library_V3")
+                        moveViewToFolder(TM.Gui.draggedData.viewId, window.TM.Const.emptyGuid , nodeData.libraryId,
                             function() {	
-                                            modeViewToFolderOrLibrary(TM.Gui.draggedData.viewId, nodeData.libraryId);									
-                                            
+                                            modeViewToFolderOrLibrary(TM.Gui.draggedData.viewId, nodeData.libraryId);
                                             TM.Gui.Dialog.alertUser('Moved view into library');
-                                            
                                         });
                 }
                 return;			
             }
             
-            if (nodeData.__type=="TeamMentor.CoreLib.View_V3" && 
-                TM.Gui.selectedNodeData.libraryId == nodeData.libraryId)				
+            if (nodeData.__type=="TeamMentor.CoreLib.View_V3") //&& TM.Gui.selectedNodeData.libraryId == nodeData.libraryId)			// allow Cross library drops
             {						
                 addGuidanceItemToViews(nodeData.viewId, selectedGuidanceIds, 
                     function(result) 
                         {
                             if (result)
                             {
-                                addGuidanceItemsToLocalViewObject(nodeData.viewId, selectedGuidanceIds)
+                                addGuidanceItemsToLocalViewObject(nodeData.viewId, selectedGuidanceIds);
                                 TM.Gui.Dialog.alertUser('Added {0} Guidance Items to view: {1}'.format(selectedGuidanceIds.length, nodeData.caption) );
                             }
                             
                         } );						
             }
-        }	
-            
-        $(".LibraryTree a").droppable( 
+        };
+
+        libraryTree.find("a").droppable(
             {
                 tolerance : 'pointer',
-                drop: function( event, ui ) 
+                drop: function( event) //function( event, ui )
                     {				
                         libraryTree_OnOut();
                         var droppedNodeData = $.data[$(event.target.parentNode).attr('id')];					
@@ -217,14 +214,14 @@ TM.Gui.DataTableViewer.setDragAndDropOptions = function()
                         libraryTree_OnDrop(event, droppedNodeData, TM.dragMode);									
                     }  ,
                 out: libraryTree_OnOut  ,
-                over: function( event, ui ) 
+                over: function( event) //function( event, ui )
                     { 									
                         setTimeout(function()
                             {
                                 var overNodeData = $.data[$(event.target.parentNode).attr('id')];	
                                 TM.Gui.LibraryTree.overNodeData = overNodeData;
                                 libraryTree_OnOver(event, overNodeData, TM.dragMode)					
-                            });
+                            },10);
                     }  
             } )	
-    }	
+    };

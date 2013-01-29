@@ -1,7 +1,7 @@
 using System;
 using O2.DotNetWrappers.ExtensionMethods;
 
-namespace TeamMentor.CoreLib
+namespace TeamMentor.CoreLib    
 {
 	//public values 
 	public partial class TMConfig

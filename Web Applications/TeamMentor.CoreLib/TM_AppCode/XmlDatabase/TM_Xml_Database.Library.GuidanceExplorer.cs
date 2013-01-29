@@ -101,15 +101,15 @@ namespace TeamMentor.CoreLib
 			return null;
 		}
 		
-		public static guidanceExplorer xmlDB_Save_GuidanceExplorer(this TM_Library tmLibrary, TM_Xml_Database tmDatabase)
+		public static guidanceExplorer xmlDB_Save_GuidanceExplorer(this TM_Library tmLibrary, TM_Xml_Database tmDatabase,  bool reloadGuidanceItemsMappings = true)
 		{
-			return tmDatabase.xmlDB_Save_GuidanceExplorer(tmLibrary.Id);			
+			return tmDatabase.xmlDB_Save_GuidanceExplorer(tmLibrary.Id,  reloadGuidanceItemsMappings);			
 		}
 		
-		public static guidanceExplorer xmlDB_Save_GuidanceExplorer(this TM_Xml_Database tmDatabase, Guid libraryId)
+		public static guidanceExplorer xmlDB_Save_GuidanceExplorer(this TM_Xml_Database tmDatabase, Guid libraryId,  bool reloadGuidanceItemsMappings = true)
 		{
 			var guidanceExplorer = tmDatabase.xmlDB_GuidanceExplorer(libraryId);
-			return guidanceExplorer.xmlDB_Save_GuidanceExplorer(tmDatabase);	
+			return guidanceExplorer.xmlDB_Save_GuidanceExplorer(tmDatabase, reloadGuidanceItemsMappings);	
 		}
 		
 		public static guidanceExplorer xmlDB_Save_GuidanceExplorer(this guidanceExplorer _guidanceExplorer, TM_Xml_Database tmDatabase)		

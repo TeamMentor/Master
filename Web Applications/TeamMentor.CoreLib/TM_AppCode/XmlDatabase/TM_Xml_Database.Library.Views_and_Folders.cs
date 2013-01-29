@@ -7,43 +7,38 @@ namespace TeamMentor.CoreLib
 {	
 	public static class TM_Xml_Database_ExtensionMethods_XmlDataSources_View
 	{	
-		public static TM_Library tmLibrary(this urn.microsoft.guidanceexplorer.View viewToFind, TM_Xml_Database tmDatabase)
+		public static TM_Library                                    tmLibrary(this urn.microsoft.guidanceexplorer.View viewToFind, TM_Xml_Database tmDatabase)
 		{
 			return (from tmLibrary in tmDatabase.tmLibraries()
 					from view in tmLibrary.xmlDB_Views(tmDatabase)					
 					where view == viewToFind
 					select tmLibrary).first();
-		}
-		
-		public static urn.microsoft.guidanceexplorer.View xmlDB_View(this TM_Xml_Database tmDatabase, Guid viewId)
+		}		
+		public static urn.microsoft.guidanceexplorer.View           xmlDB_View(this TM_Xml_Database tmDatabase, Guid viewId)
 		{
 			return (from view in tmDatabase.xmlDB_Views()					
 					where view.id == viewId.str()
 					select view).first();
-		}
-			
-		public static urn.microsoft.guidanceexplorer.View xmlDB_View(this urn.microsoft.guidanceexplorer.Folder folder, Guid viewId)
+		}			
+		public static urn.microsoft.guidanceexplorer.View           xmlDB_View(this urn.microsoft.guidanceexplorer.Folder folder, Guid viewId)
 		{
 			return (from view in folder.view
 					where view.id == viewId.str()
 					select view).first();
-		}
-		
-		public static urn.microsoft.guidanceexplorer.View xmlDB_View(this urn.microsoft.guidanceexplorer.Folder folder, string viewCaption)
+		}		
+		public static urn.microsoft.guidanceexplorer.View           xmlDB_View(this urn.microsoft.guidanceexplorer.Folder folder, string viewCaption)
 		{
 			return (from view in folder.view
 					where view.caption == viewCaption
 					select view).first();
-		}
-		
-		public static List<urn.microsoft.guidanceexplorer.View> xmlDB_Views(this TM_Xml_Database tmDatabase)
+		}		
+		public static List<urn.microsoft.guidanceexplorer.View>     xmlDB_Views(this TM_Xml_Database tmDatabase)
 		{
 			return (from tmLibrary in tmDatabase.tmLibraries()
 					from view in tmLibrary.xmlDB_Views(tmDatabase)					
 					select view).toList();
-		}
-		
-		public static List<urn.microsoft.guidanceexplorer.View> xmlDB_Views(this TM_Library tmLibrary , TM_Xml_Database tmDatabase)
+		}		
+		public static List<urn.microsoft.guidanceexplorer.View>     xmlDB_Views(this TM_Library tmLibrary , TM_Xml_Database tmDatabase)
 		{
 			var allViews = tmLibrary.xmlDB_Views_InLibraryRoot(tmDatabase);
 			//add the ones from the libraryRoot
@@ -53,9 +48,8 @@ namespace TeamMentor.CoreLib
 							   from view in folder.view					
 							   select view).toList());
 			return allViews;
-		}
-		
-		public static List<urn.microsoft.guidanceexplorer.View> xmlDB_Views_InLibraryRoot(this TM_Library tmLibrary , TM_Xml_Database tmDatabase)
+		}		
+		public static List<urn.microsoft.guidanceexplorer.View>     xmlDB_Views_InLibraryRoot(this TM_Library tmLibrary , TM_Xml_Database tmDatabase)
 		{
 			try
 			{
@@ -66,25 +60,22 @@ namespace TeamMentor.CoreLib
 				return new List<urn.microsoft.guidanceexplorer.View>();
 			}			
 		}
-		public static List<urn.microsoft.guidanceexplorer.View> xmlDB_Views(this urn.microsoft.guidanceexplorer.Folder folder)
+		public static List<urn.microsoft.guidanceexplorer.View>     xmlDB_Views(this urn.microsoft.guidanceexplorer.Folder folder)
 		{
 			if (folder.notNull())
 				return folder.view.toList();
 			return new List<urn.microsoft.guidanceexplorer.View>();
-		}
-		
-		public static View_V3 newView(this TM_Xml_Database tmDatabase, Guid parentFolderId, View tmView)
+		}		
+		public static View_V3                                       newView(this TM_Xml_Database tmDatabase, Guid parentFolderId, View tmView)
 		{
 			var view = tmDatabase.xmlDB_NewView(parentFolderId, tmView);
 			return tmDatabase.tmView(view.id.guid());
-		}
-		
-		public static urn.microsoft.guidanceexplorer.View xmlDB_NewView(this TM_Xml_Database tmDatabase, View tmView)
+		}		
+		public static urn.microsoft.guidanceexplorer.View           xmlDB_NewView(this TM_Xml_Database tmDatabase, View tmView)
 		{
 			return tmDatabase.xmlDB_NewView(Guid.Empty,  tmView);
-		}
-		
-		public static urn.microsoft.guidanceexplorer.View xmlDB_NewView(this TM_Xml_Database tmDatabase, Guid parentFolderId, View tmView)
+		}		
+		public static urn.microsoft.guidanceexplorer.View           xmlDB_NewView(this TM_Xml_Database tmDatabase, Guid parentFolderId, View tmView)
 		{			
 			var tmLibrary = tmDatabase.tmLibrary(tmView.library.guid());
 			//var guidanceExplorer = tmDatabase.xmlDB_GuidanceExplorer(tmView.library.guid());
@@ -122,14 +113,12 @@ namespace TeamMentor.CoreLib
 				}
 			}
 			return null;
-		}		
-		
-		public static urn.microsoft.guidanceexplorer.View xmlDB_UpdateView(this TM_Xml_Database tmDatabase, View tmView)
+		}				
+		public static urn.microsoft.guidanceexplorer.View           xmlDB_UpdateView(this TM_Xml_Database tmDatabase, View tmView)
 		{
 			return tmDatabase.xmlDB_UpdateView(tmView, new List<Guid>());
-		}
-		
-		public static urn.microsoft.guidanceexplorer.View xmlDB_UpdateView(this TM_Xml_Database tmDatabase, View tmView, List<Guid> guidanceItems)
+		}		
+		public static urn.microsoft.guidanceexplorer.View           xmlDB_UpdateView(this TM_Xml_Database tmDatabase, View tmView, List<Guid> guidanceItems)
 		{
 			".... in  xmlDB_UpdateView".info();
 			var tmLibrary = tmDatabase.tmLibrary(tmView.library.guid());
@@ -159,14 +148,12 @@ namespace TeamMentor.CoreLib
 			tmLibrary.xmlDB_Save_GuidanceExplorer(tmDatabase);			
 			return targetView;
 			//existingView.creationDate = tmView.lastUpdate // should we also update this?			
-		}				
-		
-		public static bool xmlDB_RemoveViewFromFolder(this TM_Xml_Database tmDatabase, Guid libraryId,  Guid viewId )
+		}						
+		public static bool                                          xmlDB_RemoveViewFromFolder(this TM_Xml_Database tmDatabase, Guid libraryId,  Guid viewId )
 		{
 			return tmDatabase.xmlDB_RemoveViewFromFolder(tmDatabase.tmLibrary(libraryId), viewId);
-		}
-		
-		public static bool xmlDB_RemoveViewFromFolder(this TM_Xml_Database tmDatabase, TM_Library tmLibrary, Guid viewId )
+		}		
+		public static bool                                          xmlDB_RemoveViewFromFolder(this TM_Xml_Database tmDatabase, TM_Library tmLibrary, Guid viewId )
 		{
 			if (tmLibrary.isNull())
 				"in xmlDB_RemoveViewFromFolder provided tmLibrary was null".error();
@@ -197,9 +184,8 @@ namespace TeamMentor.CoreLib
 				}*/
 			}
 			return false;
-		}
-		
-		public static bool xmlDB_MoveViewToFolder(this TM_Xml_Database tmDatabase, Guid viewId, Guid folderId)
+		}		
+		public static bool                                          xmlDB_MoveViewToFolder(this TM_Xml_Database tmDatabase, Guid viewId, Guid targetFolderId, Guid targetLibraryId)
 		{
 			try
 			{
@@ -207,24 +193,32 @@ namespace TeamMentor.CoreLib
 				if (viewToMove.notNull())
 				{
 					var tmView =  tmDatabase.tmView(viewToMove.id.guid());  
-					var tmLibrary = tmDatabase.tmLibrary(tmView.libraryId);
-					"found viewToMove : {0}".info(viewToMove.caption);
-					viewToMove.Untyped.Remove();							// remove from current location
-					var targetFolder = tmDatabase.xmlDB_Folder(folderId);
-					if (targetFolder == null)						// add view to Library root
-					{
-						
-						var guidanceExplorer = tmLibrary.guidanceExplorer(tmDatabase);										
+                    //"found viewToMove : {0}".info(viewToMove.caption);
+
+					var tmSourceLibrary = tmDatabase.tmLibrary(tmView.libraryId);
+                    var tmTargetLibrary = tmDatabase.tmLibrary(targetLibraryId);
+
+//                    if (tmSourceLibrary.Id == tmTargetLibrary.Id)   // remove original view if on the same library
+    				viewToMove.Untyped.Remove();				// remove from current location
+                    tmSourceLibrary.xmlDB_Save_GuidanceExplorer(tmDatabase);
+
+                    if(targetFolderId == Guid.Empty)                // add view to Library root
+					{						
+						var guidanceExplorer = tmTargetLibrary.guidanceExplorer(tmDatabase);										
 						guidanceExplorer.library.libraryStructure.view.Add(viewToMove);					
 						"Moved view to library root".info();
 					}	
 					else
 					{
+                        var targetFolder = tmDatabase.xmlDB_Folder(targetFolderId);
 						targetFolder.view.Add(viewToMove);
-						"Moved view to folder : {0}".info(targetFolder.caption);
+						"Moved view to folder : {0}".info(targetFolder.caption);                        
 					}
 
-					tmLibrary.xmlDB_Save_GuidanceExplorer(tmDatabase);				
+                    //if (tmTargetLibrary.Id != tmSourceLibrary.Id)
+                        				
+					tmTargetLibrary.xmlDB_Save_GuidanceExplorer(tmDatabase);				
+                    
 					return true;
 				}
 			}
@@ -233,10 +227,8 @@ namespace TeamMentor.CoreLib
 				ex.log();
 			}
 			return false;
-		}
-		
-		
-		public static bool xmlDB_AddGuidanceItemsToView(this TM_Xml_Database tmDatabase, Guid viewId, List<Guid> guidanceItemsIds)
+		}				
+		public static bool                                          xmlDB_AddGuidanceItemsToView(this TM_Xml_Database tmDatabase, Guid viewId, List<Guid> guidanceItemsIds)
 		{	
 			var view = tmDatabase.xmlDB_View(viewId); 
 			if (view.isNull())
@@ -253,9 +245,8 @@ namespace TeamMentor.CoreLib
 				return true;
 			}
 			return false;
-		}
-		
-		public static bool  xmlDB_RemoveGuidanceItemsFromView(this TM_Xml_Database tmDatabase, Guid viewId, List<Guid> guidanceItemsIds)
+		}		
+		public static bool                                          xmlDB_RemoveGuidanceItemsFromView(this TM_Xml_Database tmDatabase, Guid viewId, List<Guid> guidanceItemsIds)
 		{	
 			var view = tmDatabase.xmlDB_View(viewId); 
 			if (view.isNull())
@@ -272,9 +263,8 @@ namespace TeamMentor.CoreLib
 				return true;
 			}
 			return false;
-		}
-		
-		public static bool  xmlDB_RemoveAllGuidanceItemsFromView(this TM_Xml_Database tmDatabase, Guid viewId)
+		}		
+		public static bool                                          xmlDB_RemoveAllGuidanceItemsFromView(this TM_Xml_Database tmDatabase, Guid viewId)
 		{	
 			var view = tmDatabase.xmlDB_View(viewId); 
 			if (view.isNull())
@@ -289,9 +279,8 @@ namespace TeamMentor.CoreLib
 				return true;
 			}
 			return false;
-		}
-		
-		public static List<Guid> guids(this List<View_V3> views)
+		}		
+		public static List<Guid>                                    guids(this List<View_V3> views)
 		{
 			return (from view in views
 					select view.viewId).toList();
@@ -300,19 +289,17 @@ namespace TeamMentor.CoreLib
 	
 	public static class TM_Xml_Database_ExtensionMethods_XmlDataSources_Folder
 	{
-		public static List<urn.microsoft.guidanceexplorer.Folder> xmlDB_Folders(this TM_Xml_Database tmDatabase)
+		public static List<urn.microsoft.guidanceexplorer.Folder>   xmlDB_Folders(this TM_Xml_Database tmDatabase)
 		{						
 			return (from tmLibrary in tmDatabase.tmLibraries()
 					from folder in tmLibrary.xmlDB_Folders(tmDatabase)
 					select folder).toList();
-		}
-		
-		public static IList<urn.microsoft.guidanceexplorer.Folder> xmlDB_Folders(this TM_Library tmLibrary, TM_Xml_Database tmDatabase)
+		}		
+		public static IList<urn.microsoft.guidanceexplorer.Folder>  xmlDB_Folders(this TM_Library tmLibrary, TM_Xml_Database tmDatabase)
 		{
 			return tmDatabase.xmlDB_Folders(tmLibrary.Id);
-		}
-		
-		public static IList<urn.microsoft.guidanceexplorer.Folder> xmlDB_Folders(this TM_Xml_Database tmDatabase, Guid libraryId)
+		}		
+		public static IList<urn.microsoft.guidanceexplorer.Folder>  xmlDB_Folders(this TM_Xml_Database tmDatabase, Guid libraryId)
 		{			
 			try
 			{			
@@ -331,9 +318,8 @@ namespace TeamMentor.CoreLib
 				"[xmlDB_Folders] xmlDB_Folders: {0}".error(ex.Message);				
 			}
 			return new List<urn.microsoft.guidanceexplorer.Folder>() ;
-		}				
-		
-		public static IList<urn.microsoft.guidanceexplorer.Folder> xmlDB_Folders(this urn.microsoft.guidanceexplorer.Folder folderToMap)
+		}						
+		public static IList<urn.microsoft.guidanceexplorer.Folder>  xmlDB_Folders(this urn.microsoft.guidanceexplorer.Folder folderToMap)
 		{						
 			var folders = new List<urn.microsoft.guidanceexplorer.Folder>() ;
 			if (folderToMap.isNull())
@@ -347,19 +333,17 @@ namespace TeamMentor.CoreLib
 			}
 			return folders;*/
 		}
-		public static IList<urn.microsoft.guidanceexplorer.Folder> xmlDB_Folders_All(this TM_Xml_Database tmDatabase)
+		public static IList<urn.microsoft.guidanceexplorer.Folder>  xmlDB_Folders_All(this TM_Xml_Database tmDatabase)
 		{
 			return (from tmLibrary in tmDatabase.tmLibraries()
 					from folder in tmDatabase.xmlDB_Folders_All(tmLibrary.Id)
 					select folder).toList();
-		}
-		
-		public static IList<urn.microsoft.guidanceexplorer.Folder> xmlDB_Folders_All(this TM_Xml_Database tmDatabase, Guid libraryId)
+		}		
+		public static IList<urn.microsoft.guidanceexplorer.Folder>  xmlDB_Folders_All(this TM_Xml_Database tmDatabase, Guid libraryId)
 		{		
 			return tmDatabase.xmlDB_Folders_All(tmDatabase.xmlDB_Folders(libraryId));			
-		}
-				
-		public static IList<urn.microsoft.guidanceexplorer.Folder> xmlDB_Folders_All(this TM_Xml_Database tmDatabase, IList<urn.microsoft.guidanceexplorer.Folder> foldersToMap)
+		}				
+		public static IList<urn.microsoft.guidanceexplorer.Folder>  xmlDB_Folders_All(this TM_Xml_Database tmDatabase, IList<urn.microsoft.guidanceexplorer.Folder> foldersToMap)
 		{
 			var folders = new List<urn.microsoft.guidanceexplorer.Folder> ();
 			
@@ -370,9 +354,8 @@ namespace TeamMentor.CoreLib
 					folders.AddRange(tmDatabase.xmlDB_Folders_All(folderToMap.folder1));
 				}
 			return folders;
-		}
-		
-		public static IList<urn.microsoft.guidanceexplorer.Folder> xmlDB_Folders_All(this TM_Xml_Database tmDatabase, urn.microsoft.guidanceexplorer.Folder folderToMap)
+		}		
+		public static IList<urn.microsoft.guidanceexplorer.Folder>  xmlDB_Folders_All(this TM_Xml_Database tmDatabase, urn.microsoft.guidanceexplorer.Folder folderToMap)
 		{
 			var folders = new List<urn.microsoft.guidanceexplorer.Folder> ();			
 			if (folderToMap.notNull())
@@ -382,23 +365,21 @@ namespace TeamMentor.CoreLib
 			}
 			return folders;
 		}
-		public static urn.microsoft.guidanceexplorer.Folder xmlDB_Folder(this TM_Xml_Database tmDatabase, Guid folderId)
+		public static urn.microsoft.guidanceexplorer.Folder         xmlDB_Folder(this TM_Xml_Database tmDatabase, Guid folderId)
 		{
 			foreach(var folder in tmDatabase.xmlDB_Folders_All())			
 				if(folder.folderId == folderId.str())
 					return folder;									
 			return null;	
-		}
-		
-		public static urn.microsoft.guidanceexplorer.Folder xmlDB_Folder(this TM_Xml_Database tmDatabase, Guid libraryId, Guid folderId)
+		}		
+		public static urn.microsoft.guidanceexplorer.Folder         xmlDB_Folder(this TM_Xml_Database tmDatabase, Guid libraryId, Guid folderId)
 		{
 			foreach(var folder in tmDatabase.xmlDB_Folders_All(libraryId))			
 				if(folder.folderId == folderId.str())
 					return folder;									
 			return null;
-		}
-		
-		public static urn.microsoft.guidanceexplorer.Folder xmlDB_Folder(this TM_Xml_Database tmDatabase, Guid libraryId, Guid parentFolder,string folderName)
+		}		
+		public static urn.microsoft.guidanceexplorer.Folder         xmlDB_Folder(this TM_Xml_Database tmDatabase, Guid libraryId, Guid parentFolder,string folderName)
 		{
 			foreach(var folder in tmDatabase.xmlDB_Folders_All(libraryId))									
 				if(folder.folderId == parentFolder.str())
@@ -406,33 +387,28 @@ namespace TeamMentor.CoreLib
 						if (subFolder.caption == folderName)
 							return subFolder;						
 			return null;		
-		}
-		
-		public static urn.microsoft.guidanceexplorer.Folder xmlDB_Folder(this TM_Xml_Database tmDatabase, Guid libraryId,  string folderCaption)
+		}		
+		public static urn.microsoft.guidanceexplorer.Folder         xmlDB_Folder(this TM_Xml_Database tmDatabase, Guid libraryId,  string folderCaption)
 		{
 			var tmLibrary = tmDatabase.tmLibrary(libraryId); 
 			return tmLibrary.xmlDB_Folder(folderCaption, tmDatabase);
-		}
-		
-		public static urn.microsoft.guidanceexplorer.Folder xmlDB_Folder(this TM_Library tmLibrary, string folderCaption, TM_Xml_Database tmDatabase)
+		}		
+		public static urn.microsoft.guidanceexplorer.Folder         xmlDB_Folder(this TM_Library tmLibrary, string folderCaption, TM_Xml_Database tmDatabase)
 		{
 			return (from folder in tmLibrary.xmlDB_Folders(tmDatabase)
 					where folder.caption == folderCaption
 					select folder).first();				
-		}
-		
-		public static urn.microsoft.guidanceexplorer.Folder xmlDB_Add_Folder(this TM_Xml_Database tmDatabase, Guid libraryId, string folderCaption)
+		}		
+		public static urn.microsoft.guidanceexplorer.Folder         xmlDB_Add_Folder(this TM_Xml_Database tmDatabase, Guid libraryId, string folderCaption)
 		{
 			return tmDatabase.xmlDB_Add_Folder(libraryId, Guid.Empty, folderCaption);
-		}
-		
-		public static urn.microsoft.guidanceexplorer.Folder xmlDB_Add_Folder(this TM_Xml_Database tmDatabase, Guid libraryId, Guid parentFolderId, string folderCaption)
+		}		
+		public static urn.microsoft.guidanceexplorer.Folder         xmlDB_Add_Folder(this TM_Xml_Database tmDatabase, Guid libraryId, Guid parentFolderId, string folderCaption)
 		{
 			var tmLibrary = tmDatabase.tmLibrary(libraryId); 
 			return tmLibrary.xmlDB_Add_Folder(parentFolderId, folderCaption, tmDatabase);
-		}
-		
-		public static urn.microsoft.guidanceexplorer.Folder xmlDB_Add_Folder(this TM_Library tmLibrary, Guid parentFolderId, string folderCaption, TM_Xml_Database tmDatabase)
+		}		
+		public static urn.microsoft.guidanceexplorer.Folder         xmlDB_Add_Folder(this TM_Library tmLibrary, Guid parentFolderId, string folderCaption, TM_Xml_Database tmDatabase)
 		{		
 			try
 			{	
@@ -485,10 +461,8 @@ namespace TeamMentor.CoreLib
 				ex.log();
 				return null;
 			}
-		}
-		
-		
-		public static bool xmlDB_Rename_Folder(this TM_Xml_Database tmDatabase, Guid libraryId, Guid folderId, string newFolderName)
+		}				
+		public static bool                                          xmlDB_Rename_Folder(this TM_Xml_Database tmDatabase, Guid libraryId, Guid folderId, string newFolderName)
 		{
 			//if (orginalFolderName.inValid() || newFolderName.inValid())
 			//	return false;
@@ -498,9 +472,8 @@ namespace TeamMentor.CoreLib
 			folder.caption = newFolderName;
 			tmDatabase.xmlDB_Save_GuidanceExplorer(libraryId); 
 			return true;
-		}
-		
-		public static bool xmlDB_Delete_Folder(this TM_Xml_Database tmDatabase, Guid libraryId, Guid folderId)
+		}		
+		public static bool                                          xmlDB_Delete_Folder(this TM_Xml_Database tmDatabase, Guid libraryId, Guid folderId)
 		{
 			try
 			{
@@ -524,8 +497,7 @@ namespace TeamMentor.CoreLib
 				return false;
 			}
 			
-		}
-		
+		}		
 		/*public static urn.microsoft.guidanceexplorer.View xmlDB_RemoveView(urn.microsoft.guidanceexplorer.Folder , View tmView, TM_Xml_Database tmDatabase)
 		{
 			
@@ -568,8 +540,7 @@ namespace TeamMentor.CoreLib
 				tmDatabase.xmlDB_Save_GuidanceExplorers();
 			}
 			return tmDatabase;
-		}
-		
+		}		
 		public static TM_Xml_Database removeMissingGuidanceItemsIdsFromViews(this TM_Xml_Database tmDatabase)
 		{				
 			"in removeMissingGuidanceItemsIdsFromViews".debug();

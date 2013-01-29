@@ -116,13 +116,13 @@ namespace TeamMentor.CoreLib
 		[WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public List<TM_Library> GetDeletedLibraries() 		{ return javascriptProxy.GetDeletedLibraries();  }
 		[WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public bool DeleteDeletedLibraries()				{ return javascriptProxy.DeleteDeletedLibraries();  }		
 		[WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public View_V3 CreateView(Guid folderId, View view) { this.resetCache(); return javascriptProxy.CreateView(folderId,view);  }
-		[WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public bool UpdateView(View view)													{ this.resetCache(); return javascriptProxy.UpdateView(view);		}
-		[WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public bool AddGuidanceItemsToView(Guid viewId,  List<Guid> guidanceItemIds)		{ this.resetCache(); return javascriptProxy.AddGuidanceItemsToView(viewId, guidanceItemIds);		}
-		[WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public bool RemoveGuidanceItemsFromView(Guid viewId, List<Guid> guidanceItemIds)	{ this.resetCache(); return javascriptProxy.RemoveGuidanceItemsFromView(viewId, guidanceItemIds);		}		
-		[WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public bool RemoveViewFromFolder(Guid libraryId, Guid viewId)    					{ this.resetCache(); return javascriptProxy.RemoveViewFromFolder(libraryId, viewId); }  	
-		[WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public bool MoveViewToFolder(Guid viewId, Guid folderId) 							{ this.resetCache(); return javascriptProxy.MoveViewToFolder(viewId, folderId); }  	
-		[WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public Guid CreateGuidanceItem(GuidanceItem_V3 guidanceItem)						{ this.resetCache(); return javascriptProxy.CreateGuidanceItem(guidanceItem); 	}
-		[WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public Guid CreateArticle(TeamMentor_Article article)					            { this.resetCache(); return javascriptProxy.CreateArticle(article); 	}
+		[WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public bool UpdateView(View view)													    { this.resetCache(); return javascriptProxy.UpdateView(view);		}
+		[WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public bool AddGuidanceItemsToView(Guid viewId,  List<Guid> guidanceItemIds)		    { this.resetCache(); return javascriptProxy.AddGuidanceItemsToView(viewId, guidanceItemIds);		}
+		[WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public bool RemoveGuidanceItemsFromView(Guid viewId, List<Guid> guidanceItemIds)	    { this.resetCache(); return javascriptProxy.RemoveGuidanceItemsFromView(viewId, guidanceItemIds);		}		
+		[WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public bool RemoveViewFromFolder(Guid libraryId, Guid viewId)    					    { this.resetCache(); return javascriptProxy.RemoveViewFromFolder(libraryId, viewId); }  	
+		[WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public bool MoveViewToFolder(Guid viewId, Guid targetFolderId, Guid targetLibraryId)    { this.resetCache(); return javascriptProxy.MoveViewToFolder(viewId, targetFolderId, targetLibraryId); }  	
+		[WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public Guid CreateGuidanceItem(GuidanceItem_V3 guidanceItem)						    { this.resetCache(); return javascriptProxy.CreateGuidanceItem(guidanceItem); 	}
+		[WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public Guid CreateArticle(TeamMentor_Article article)					                { this.resetCache(); return javascriptProxy.CreateArticle(article); 	}
 		[WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public Guid CreateArticle_Simple(Guid libraryId, string title, string dataType, string htmlCode)					       
 																						{ 
 																							this.resetCache(); 
