@@ -72,7 +72,7 @@
             var username = jQuery('#ctl00_ContentPlaceHolder1_UsernameBox').attr('value');
             var password = jQuery('#ctl00_ContentPlaceHolder1_PasswordBox').attr('value');			
             var passwordConfirm = jQuery('#ctl00_ContentPlaceHolder1_RepeatPasswordBox').attr('value');
-            //if (TM.Gui.CurrentUser.checkPwdComplexity(password, passwordConfirm, "#signupErrorMessage"))
+            if (TM.Gui.CurrentUser.checkPwdComplexity(password, passwordConfirm, "#signupErrorMessage"))
                 return signupUser(username, password);
             
             $("#signupErrorMessageRow").fadeIn();		
