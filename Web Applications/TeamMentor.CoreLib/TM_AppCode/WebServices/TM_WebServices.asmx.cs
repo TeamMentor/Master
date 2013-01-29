@@ -69,7 +69,7 @@ namespace TeamMentor.CoreLib
 		[WebMethod(EnableSession = true)]	public Guid Current_SessionID()										{	return tmAuthentication.sessionID;  }
 		[WebMethod(EnableSession = true)]	public TMUser Current_User()										{	return tmAuthentication.currentUser;  }
 		[WebMethod(EnableSession = true)]	public List<string> GetCurrentUserRoles()							{	return tmAuthentication.sessionID.session_UserRoles().toStringList();  }
-		[WebMethod(EnableSession = true)]	public bool SetCurrentUserPasswordHash(string passwordHash)			{	return TM_Xml_Database.Current.setUserPassword( tmAuthentication.currentUser, passwordHash); }
+		[WebMethod(EnableSession = true)]	public bool SetCurrentUserPasswordHash(string passwordHash)			{	return TM_Xml_Database.Current.setCurrentUserPassword(tmAuthentication , passwordHash); }
 
 		//********  Libraries		
 		[WebMethod(EnableSession = true)]	public List<TM_Library> GetLibraries()										{	return javascriptProxy.GetLibraries();	}		

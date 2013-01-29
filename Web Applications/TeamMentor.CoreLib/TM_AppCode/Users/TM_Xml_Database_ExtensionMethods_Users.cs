@@ -147,6 +147,18 @@ namespace TeamMentor.CoreLib
 			return tmDb.setUserPassword(tmUser, passwordHash);
 		}
 
+        public static bool setCurrentUserPassword(this TM_Xml_Database tmDb, TM_Authentication tmAuthentication, string passwordHash)
+        {
+            var tmUser = tmAuthentication.currentUser;
+            if (tmUser.notNull())
+			{
+                tmUser.PasswordHash = passwordHash;
+                tmDb.saveTmUserDataToDisk(); 
+                return true;
+            }
+            return false;
+        }
+        
 		[PrincipalPermission(SecurityAction.Demand, Role = "ManageUsers")] 
 		public static bool setUserPassword(this TM_Xml_Database tmDb, TMUser tmUser, string passwordHash)
 		{		
