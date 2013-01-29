@@ -18,8 +18,8 @@ asyncTest("login As Admin", function()
 	{
 		QUnit.login_as_Admin(
 			function(sessionID)
-				{					
-					notEqual(sessionID, TM.Const.emptyGuid, "valid SessionID: " + sessionID);
+				{
+					notEqual(sessionID, window.TM.Const.emptyGuid, "valid SessionID: " + sessionID);
 					start();
 				});
 	});

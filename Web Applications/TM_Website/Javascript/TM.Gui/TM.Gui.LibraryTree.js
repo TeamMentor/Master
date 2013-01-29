@@ -1,8 +1,7 @@
 
 //$.jstree.defaults.themes.url = "/javascript/jQuery.jsTree/themes/default/style.css";
 
-window.TM.Gui.LibraryTree =
-    {
+window.TM.Gui.LibraryTree =    {
         // variables
         version     : 1 ,
         plugins     : [ "themes", "json_data" , "ui", "crrm", "contextmenu"] , //  ,  "hotkeys"
@@ -28,15 +27,15 @@ window.TM.Gui.LibraryTree =
                                                             },
         create_TreeUsingJSON:       function()
                                 {
-                                    var that = this;
-                                    var startTime = new Date();
+                                    var that = this,
+                                        startTime = new Date();
                                     this.jsTree = undefined;
                                     
                                     this.onTreeCreated = function() 
                                         {
-                                            TM.Debug.TimeSpan_Gui_LibraryTree_CreatedTreeFromJsonData = startTime.toNow();
+                                            window.TM.Debug.TimeSpan_Gui_LibraryTree_CreatedTreeFromJsonData = startTime.toNow();
                                             that.onTreeLoaded();
-                                            TM.Events.onLibraryTreeLoaded();
+                                            window.TM.Events.onLibraryTreeLoaded();
                                         };
                                         
                                     this.loadJsonData(function() 
@@ -48,42 +47,36 @@ window.TM.Gui.LibraryTree =
         create_Tree:                function()
                                 {															
                                     var options = { 
-                                                      json_data 	: this.treeData,
-                                                      plugins 		: //(TM.Gui.editMode)  
-                                                                        //? this.plugins.concat("dnd")
-                                                                        //: 
-                                                                        this.plugins, 	
+                                                      json_data     : this.treeData,
+                                                      plugins       : this.plugins,
                                                       themes		: { url: '/javascript/jQuery.jsTree/themes/default/style.css'},
-                                                      contextmenu 	: { items: TM.Gui.LibraryTree.createContextMenu },
-                                                      ui 			: { "select_limit" : 1 }
+                                                      contextmenu   : { items: window.TM.Gui.LibraryTree.createContextMenu },
+                                                      ui            : { "select_limit" : 1 }
                                                       //,
 /*													  "dnd"			: { "drag_check": function() { alert('drag check') } ,
                                                                         "drag_finish": function() { alert('drag finish') }, 
                                                                         "drop_finish": function() { alert('drop finish') } 
                                                                       }*/
-                                                  };
-
-                                    _options = options;									
-                                    var that = this;
+                                        },
+                                        that    = this;
                                 
-                                    $(this.targetDiv).bind("loaded.jstree", function (event, data) 
-                                                        {																	
-                                                            that.jsTree = data.inst;
-                                                            that.onTreeCreated();
-                                                        });
+                                    $(this.targetDiv).bind("loaded.jstree", function (event, data)  {
+                                                                                                        that.jsTree = data.inst;
+                                                                                                        that.onTreeCreated();
+                                                                                                    });
                                     
                                     //create tree
                                     $(this.targetDiv).jstree(options)
                                                      .delegate("a", "click", this.setSelectedId)
-                                                     .delegate("a", "click", function() { that.onClick() } );
+                                                     .delegate("a", "click", function() { that.onClick(); } );
                                     
                                     //bind renamema nd create events
                                     $(this.targetDiv)
-                                          .bind("rename.jstree", 		TM.Gui.LibraryTree.onRename)
-                                          .bind("create.jstree", 		TM.Gui.LibraryTree.onCreate);
+                                          .bind("rename.jstree",        window.TM.Gui.LibraryTree.onRename)
+                                          .bind("create.jstree",        window.TM.Gui.LibraryTree.onCreate);
                                           
                                     //setup drag&drop actions and icons 
-                                    TM.Gui.LibraryTree.dropActions.setUp();
+                                    window.TM.Gui.LibraryTree.dropActions.setUp();
                                     
                                 },
                                 
@@ -92,37 +85,30 @@ window.TM.Gui.LibraryTree =
                                     //_event = event;									
                                     //var node = $(event.srcElement);	// doesn't work in FF
                                     var node = $(event.target);									
-                                    TM.Gui.LibraryTree.selectNode(node);																		
+                                    window.TM.Gui.LibraryTree.selectNode(node);
                                 },
                                 
         onClick :                   function (event, data)      { },
                                 
-        loadJsonData:               function(callback)
-                                {					
-                                    var that = this;									
-                                    TM.WebServices.WS_Data.getJsTreeWithFolders(
-                                        function(data)
-                                            {														
-                                                that.treeData = data;												
-                                                 callback();
-                                            });
-                                },
-                                
-        create_Tree_FromWsData:     function()
-                                        {	
-                                            this.create_EmptyTree();
-                                            this.onTreeCreated = this.add_LibrariesFromWsData;
-                                        },
+        loadJsonData:               function(callback) {
+                                                            var that = this;
+                                                            window.TM.WebServices.WS_Data.getJsTreeWithFolders(
+                                                                function(data)
+                                                                    {
+                                                                        that.treeData = data;
+                                                                         callback();
+                                                                    });
+                                                        },
                                             
         add_LibrariesFromWsData:    function()
                                         {
-                                            var startTime = new Date();
-                                            var that = this;
-                                            $.each(TM.WebServices.Data.AllLibraries, function() 
+                                            var startTime = new Date(),
+                                                that = this;
+                                            $.each(window.TM.WebServices.Data.AllLibraries, function()
                                                     { 
                                                         that.add_LibraryFromWsData(this);  
                                                     });		
-                                            TM.Debug.TimeSpan_Gui_LibraryTree_CreatedTreeFromWsData = startTime.toNow();		
+                                            window.TM.Debug.TimeSpan_Gui_LibraryTree_CreatedTreeFromWsData = startTime.toNow();
                                             this.onTreeLoaded();
                                         },
                                         
@@ -162,18 +148,14 @@ window.TM.Gui.LibraryTree =
                                 
     };
 
-//****************
-// Show Tree
-//****************
-window.TM.Gui.LibraryTree.showTree = function()
-    {
-        var applyJsTreeCssPatches = function()
-            {
-                jQuery('.jstree-default.jstree-focused').css('background-color','#FFFFFF');
-            };
-        $("#libraryJsTree").html('...loading tree...');
+//*: Show Tree
+window.TM.Gui.LibraryTree.showTree = function()    {
+        var applyJsTreeCssPatches = function()  {
+                                                    $('.jstree-default.jstree-focused').css('background-color','#FFFFFF');
+                                                },
+            libraryTree           = window.TM.Gui.LibraryTree.open("#libraryJsTree");
 
-        libraryTree = TM.Gui.LibraryTree.open("#libraryJsTree");
+        $("#libraryJsTree").html('...loading tree...');
 
         libraryTree.onTreeLoaded = function()
             {
@@ -182,135 +164,119 @@ window.TM.Gui.LibraryTree.showTree = function()
                 $(libraryTree.targetDiv).delegate("a", "click",
                     function (event, data)
                         {
-                            TM.Events.onLibraryTreeSelected();
+                            window.TM.Events.onLibraryTreeSelected();
                         });
 
-                TM.Gui.LibraryTree.selectNode_ById(TM.Gui.Main.Panels.initialId)
+                window.TM.Gui.LibraryTree.selectNode_ById(window.TM.Gui.Main.Panels.initialId);
             };
         libraryTree.create_TreeUsingJSON();
     };
 
-//****************
-//nodes manipulation methods
-//****************
-
-window.TM.Gui.LibraryTree.nodes = function()
-    {
-        return $(TM.Gui.LibraryTree.targetDiv + " ul li");
+//*: nodes manipulation methods
+window.TM.Gui.LibraryTree.nodes             = function()            {
+        return $(window.TM.Gui.LibraryTree.targetDiv + " ul li");
     };
-
-window.TM.Gui.LibraryTree.title = function(node, value)
-    {
-        if(isDefined(value))
+window.TM.Gui.LibraryTree.title             = function(node, value) {
+        if(value !== undefined) //isDefined(value))
         {
-            TM.Gui.LibraryTree.jsTree.set_text(node, value);
+            window.TM.Gui.LibraryTree.jsTree.set_text(node, value);
             return node;
         }
-        else
-            return TM.Gui.LibraryTree.jsTree.get_text(node);		
-    }
-
-window.TM.Gui.LibraryTree.firstNode = function()
-    {
-        return TM.Gui.LibraryTree.nodes().first();
-    }
-
-window.TM.Gui.LibraryTree.selectNode = function(node)
-    {		
+        return window.TM.Gui.LibraryTree.jsTree.get_text(node);
+    };
+window.TM.Gui.LibraryTree.firstNode         = function()            {
+        return window.TM.Gui.LibraryTree.nodes().first();
+    };
+window.TM.Gui.LibraryTree.selectNode        = function(node)        {
         //alert(TM.Gui.LibraryTree.selectedNode === node)
         
-        if (isDefined(node))
+        if (node !==undefined) // isDefined(node))
         {					
-            selectedNodeId = jQuery(node).attr('id'); 			
-            if (isUndefined(selectedNodeId) || selectedNodeId==="")
-                selectedNodeId = jQuery(node).parent().attr('id'); 		
-            if (isDefined(selectedNodeId))
-            {			
-                if(selectedNodeId != TM.Gui.selectedNodeId)
-                {					
-                    TM.Gui.LibraryTree.jsTree.deselect_all();									
-                    TM.Gui.selectedNodeId = selectedNodeId;		
-                    TM.Gui.selectedNodeData = $.data[selectedNodeId];							
-                    TM.Gui.LibraryTree.jsTree.select_node(node);
-                    TM.Gui.LibraryTree.selectedNode = node;
-                    TM.Gui.LibraryTree.onSelectedNode(node);
-                }
-            }
-            else				
-                console.log("selectedNodeId was not defined");
-        }
-        return node;
-    }
-
-TM.Gui.LibraryTree.selectNode_ById = function(guid)
-    {	
-        if (isDefined(guid) === false)
-            return;
-        try 
-        {					
-            var nodeToSelect = $(TM.Gui.LibraryTree.targetDiv + " ul li[id='" + htmlEscape(guid) + "']")
-            if (nodeToSelect.size() == 1) 
+            var selectedNodeId = $(node).attr('id');
+            if (selectedNodeId === undefined || selectedNodeId==="") //isUndefined(selectedNodeId) || selectedNodeId==="")
             {
-                TM.Gui.LibraryTree.selectNode(nodeToSelect);
+                selectedNodeId = $(node).parent().attr('id');
+            }
+            if (selectedNodeId !== undefined) //isDefined(selectedNodeId))
+            {			
+                if(selectedNodeId !== window.TM.Gui.selectedNodeId)
+                {
+                    window.TM.Gui.LibraryTree.jsTree.deselect_all();
+                    window.TM.Gui.selectedNodeId = selectedNodeId;
+                    window.TM.Gui.selectedNodeData = $.data[selectedNodeId];
+                    window.TM.Gui.LibraryTree.jsTree.select_node(node);
+                    window.TM.Gui.LibraryTree.selectedNode = node;
+                    window.TM.Gui.LibraryTree.onSelectedNode(node);
+                }
             }
             else
-            {                		
-                nodeToSelect = $(TM.Gui.LibraryTree.targetDiv + " ul li a:contains('" + htmlEscape(guid)+ "')")			
-                if (nodeToSelect.size() == 1) 
-                {
-                    TM.Gui.LibraryTree.selectNode(nodeToSelect);
-                }                
-                else
-                {
-                    var firstNode = TM.Gui.LibraryTree.selectFirstNode()
-                    TM.Gui.LibraryTree.openNode(firstNode);
-                }
+            {
+                window.console.log("selectedNodeId was not defined");
             }
-            TM.Events.onLibraryTreeSelected();	
-            
-        } 
-        catch (e) 
-        {
-            TM.Gui.Dialog.alertUser(e.message, "in TM.Gui.LibraryTree.selectNode_ById");
         }
-        
-    }	
-
-TM.Gui.LibraryTree.selectNode_ByName = function(name)
-{
-    var guid = TM.WebServices.Data.id_ByName(name);
-    TM.Gui.LibraryTree.selectNode_ById(guid)
-}
-
-TM.Gui.LibraryTree.openNode = function(node) 		
-    {
-        TM.Gui.LibraryTree.jsTree.open_node(node);
         return node;
-    }	
-    
-TM.Gui.LibraryTree.selectFirstNode = function() 		
-    {
-        var firstNode = TM.Gui.LibraryTree.firstNode();
-        TM.Gui.LibraryTree.selectNode(firstNode);
-        return firstNode;
-    }
+    };
+window.TM.Gui.LibraryTree.selectNode_ById   = function(guid)        {
+                                                                    if (guid===undefined) // isDefined(guid) === false)
+                                                                    {
+                                                                        return;
+                                                                    }
+                                                                    try
+                                                                    {
+                                                                        var firstNode,
+                                                                            nodeToSelect = $(window.TM.Gui.LibraryTree.targetDiv + " ul li[id='" + window.htmlEscape(guid) + "']");
+                                                                        if (nodeToSelect.size() === 1)
+                                                                        {
+                                                                            window.TM.Gui.LibraryTree.selectNode(nodeToSelect);
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            nodeToSelect = $(window.TM.Gui.LibraryTree.targetDiv + " ul li a:contains('" + window.htmlEscape(guid)+ "')");
+                                                                            if (nodeToSelect.size() === 1)
+                                                                            {
+                                                                                window.TM.Gui.LibraryTree.selectNode(nodeToSelect);
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                firstNode = window.TM.Gui.LibraryTree.selectFirstNode();
+                                                                                window.TM.Gui.LibraryTree.openNode(firstNode);
+                                                                            }
+                                                                        }
+                                                                        window.TM.Events.onLibraryTreeSelected();
 
+                                                                    }
+                                                                    catch (e)
+                                                                    {
+                                                                        window.TM.Gui.Dialog.alertUser(e.message, "in window.TM.Gui.LibraryTree.selectNode_ById");
+                                                                    }
 
-    
+                                                                };
+window.TM.Gui.LibraryTree.selectNode_ByName = function(name)        {
+                                                                    var guid = window.TM.WebServices.Data.id_ByName(name);
+                                                                    window.TM.Gui.LibraryTree.selectNode_ById(guid);
+                                                                };
+window.TM.Gui.LibraryTree.openNode          = function(node)        {
+                                                                    window.TM.Gui.LibraryTree.jsTree.open_node(node);
+                                                                    return node;
+                                                                };
+window.TM.Gui.LibraryTree.selectFirstNode   = function()            {
+                                                                    var firstNode = window.TM.Gui.LibraryTree.firstNode();
+                                                                    window.TM.Gui.LibraryTree.selectNode(firstNode);
+                                                                    return firstNode;
+                                                                };
 
-//*********************	
-//node creation methods
-//*********************
-
-TM.Gui.LibraryTree.add_Node = function(targetNode, title, icon, callback, skip_rename)
-    {
-        if (isUndefined(skip_rename))
+//*: Node creation methods: These methods make no connection to the database (i.e. are purely GUI driven)
+window.TM.Gui.LibraryTree.add_Node          = function(targetNode, title, icon, callback, skip_rename)      {
+        if (skip_rename === undefined) //isUndefined(skip_rename))
+        {
             skip_rename = true;
-        var newNode = TM.Gui.LibraryTree.jsTree
+        }
+        var newNode = window.TM.Gui.LibraryTree.jsTree
                             .create(
                                         targetNode, 
                                         "last",
-                                        {  data: { 
+                                        {
+                                            data: {
                                                     title:title , 
                                                     icon:  icon
                                                  }
@@ -318,618 +284,582 @@ TM.Gui.LibraryTree.add_Node = function(targetNode, title, icon, callback, skip_r
                                         callback , 
                                         skip_rename
                                     );
-        newNode.title = function(value) { return TM.Gui.LibraryTree.title(newNode, value) };	
+        newNode.title = function(value) { return window.TM.Gui.LibraryTree.title(newNode, value); };
         return newNode;
-    }
-//These methods make no connection to the database (i.e. are purely GUI driven)
-TM.Gui.LibraryTree.add_Library = function(title, callback, skip_rename)
-    {		
-        var libraryNode = TM.Gui.LibraryTree.add_Node("",title, '/Images/SingleLibrary.png' , callback, skip_rename)
+    };
+window.TM.Gui.LibraryTree.add_Library       = function(title, callback, skip_rename)                        {
+        var libraryNode = window.TM.Gui.LibraryTree.add_Node("",title, '/Images/SingleLibrary.png' , callback, skip_rename);
         libraryNode.add_Folder = function(title, callback, skip_rename) 
             { 
-                return TM.Gui.LibraryTree.add_Folder(libraryNode, title, callback, skip_rename);
+                return window.TM.Gui.LibraryTree.add_Folder(libraryNode, title, callback, skip_rename);
             };
         libraryNode.add_View = function(title, callback, skip_rename) 
             { 
-                return TM.Gui.LibraryTree.add_View(libraryNode, title, callback, skip_rename);
+                return window.TM.Gui.LibraryTree.add_View(libraryNode, title, callback, skip_rename);
             };	
             
-        //libraryNode.title = function(value) { return TM.Gui.LibraryTree.title(libraryNode, value) };
+        //libraryNode.title = function(value) { return window.TM.Gui.LibraryTree.title(libraryNode, value) };
         
         return libraryNode;
-    }
-    
-TM.Gui.LibraryTree.add_Folder = function(targetNode, title, callback, skip_rename)
-    {
-        var folderNode = TM.Gui.LibraryTree.add_Node(targetNode,title, '/Images/FolderIcon.png' , callback, skip_rename)
+    };
+window.TM.Gui.LibraryTree.add_Folder        = function(targetNode, title, callback, skip_rename)            {
+        var folderNode = window.TM.Gui.LibraryTree.add_Node(targetNode,title, '/Images/FolderIcon.png' , callback, skip_rename);
         folderNode.add_Folder = function(title, callback, skip_rename) 
             { 
-                return TM.Gui.LibraryTree.add_Folder(folderNode, title, callback, skip_rename);
+                return window.TM.Gui.LibraryTree.add_Folder(folderNode, title, callback, skip_rename);
             };
         folderNode.add_View = function(title, callback, skip_rename) 
             { 
-                return TM.Gui.LibraryTree.add_View(folderNode, title, callback, skip_rename);
+                return window.TM.Gui.LibraryTree.add_View(folderNode, title, callback, skip_rename);
             };	
         return folderNode;
-    }
+    };
+window.TM.Gui.LibraryTree.add_View          = function(targetNode, title, callback, skip_rename)            {
+        return window.TM.Gui.LibraryTree.add_Node(targetNode,title, '/Images/ViewIcon.png' , callback, skip_rename);
+    };
 
-TM.Gui.LibraryTree.add_View = function(targetNode, title, callback, skip_rename)
-    {
-        return TM.Gui.LibraryTree.add_Node(targetNode,title, '/Images/ViewIcon.png' , callback, skip_rename)
-    }
+//*: Node creation methods: These methods are the ones that make commits to the database and the GUI
+window.TM.Gui.LibraryTree.add_Library_to_Database       = function(title, callback, skip_rename)            {
+        var libraryNode = window.TM.Gui.LibraryTree.add_Library(title, callback, skip_rename);
+        libraryNode.hide();
 
-//These methods are the ones that make commits to the database and the GUI
-TM.Gui.LibraryTree.add_Library_to_Database = function(title, callback, skip_rename)	
-    {
-        var libraryNode = TM.Gui.LibraryTree.add_Library(title, callback, skip_rename);
-        libraryNode.hide();		
-        TM.WebServices.WS_Libraries.add_Library(
-            title, function(libraryV3) 
-                { 						
-                    if (libraryV3 != null)		
-                    {					
-                        libraryV3.type = "Library";
-                        libraryNode.fadeIn();
-                        TM.WebServices.Data.AllLibraries.push(libraryV3);						
-                        $.data[libraryV3.libraryId] = libraryV3;
-                        libraryNode.attr("id", libraryV3.libraryId);						
+        window.TM.WebServices.WS_Libraries.add_Library(
+            title,
+            function(libraryV3) {
+                                    if (libraryV3 !== null)
+                                    {
+                                        libraryV3.type = "Library";
+                                        libraryNode.fadeIn();
+                                        window.TM.WebServices.Data.AllLibraries.push(libraryV3);
+                                        $.data[libraryV3.libraryId] = libraryV3;
+                                        libraryNode.attr("id", libraryV3.libraryId);
 
-                        TM.Gui.Dialog.alertUser('Library Created');
-                    }					
-                    else
-                        TM.Gui.Dialog.alertUser("It was not possible to create the library called : " + title, 'Library creation error'  );					
-                    
-                    TM.Gui.LibraryTree.lastLibraryCreated = libraryV3;
-                    TM.Events.onNewLibrary();						
-                }); 
+                                        window.TM.Gui.Dialog.alertUser('Library Created');
+                                    }
+                                    else
+                                    {
+                                        window.TM.Gui.Dialog.alertUser("It was not possible to create the library called : " + title, 'Library creation error'  );
+                                    }
+                                    window.TM.Gui.LibraryTree.lastLibraryCreated = libraryV3;
+                                    window.TM.Events.onNewLibrary();
+                                });
         return libraryNode;
-    }
+    };
+window.TM.Gui.LibraryTree.remove_Library_from_Database  = function(libraryIdOrName)                         {
+        var libraryId = libraryIdOrName,
+            libraryV3 = $.data[libraryId],
+            libraryNode;
 
-TM.Gui.LibraryTree.remove_Library_from_Database = function(libraryIdOrName)
-    {
-        var libraryId = libraryIdOrName;
-        var libraryV3 = $.data[libraryId];
-        if (isUndefined(libraryV3))
+        if (libraryV3 === undefined)    //isUndefined(libraryV3))
         {			
-            libraryV3 = TM.WebServices.Data.library(libraryIdOrName);	
-            if (isUndefined(libraryV3))
-                TM.Gui.Dialog.showUserMessage("In remove_Library_from_Database, could not find the library to remove:" + libraryIdOrName);					
+            libraryV3 = window.TM.WebServices.Data.library(libraryIdOrName);
+            if (libraryV3 === undefined) // isUndefined(libraryV3))
+            {
+                window.TM.Gui.Dialog.showUserMessage("In remove_Library_from_Database, could not find the library to remove:" + libraryIdOrName);
+            }
             libraryId = libraryV3.libraryId;
         }		
         
-        var libraryNode = $("#" + libraryId);  
+        libraryNode = $("#" + libraryId);
         
-        if (libraryNode.length != 1 || isUndefined(libraryV3))
-        {	
-            _libraryNode = libraryNode;
-            _libraryV3 = libraryV3;
-            TM.Gui.Dialog.showUserMessage("something is wrong, the objects required to remove the library are not available: " + libraryId);
+        if (libraryNode.length !== 1 || libraryV3 === undefined) //isUndefined(libraryV3))
+        {
+            window.TM.Gui.Dialog.showUserMessage("something is wrong, the objects required to remove the library are not available: " + libraryId);
         }
-        else	
-            TM.WebServices.WS_Libraries.remove_Library(
+        else
+        {
+            window.TM.WebServices.WS_Libraries.remove_Library(
                 libraryId, function(result) 
-                    { 											
-                        if (result)		
+                    {
+                        if (result)
                         {											
                             libraryNode.remove();
-                            TM.WebServices.Data.AllLibraries.pop(libraryV3);
+                            window.TM.WebServices.Data.AllLibraries.pop(libraryV3);
                             delete $.data[libraryV3.libraryId];
-                            TM.Gui.Dialog.alertUser('Library Deleted');
-                            TM.Gui.LibraryTree.lastLibraryRemoved = libraryV3;
-                            TM.Events.onRemovedLibrary();	
-                        }					
+                            window.TM.Gui.Dialog.alertUser('Library Deleted');
+                            window.TM.Gui.LibraryTree.lastLibraryRemoved = libraryV3;
+                            window.TM.Events.onRemovedLibrary();
+                        }
                         else
-                            TM.Gui.Dialog.showUserMessage("it was not possible to remove the library:" + libraryId);												
+                        {
+                            window.TM.Gui.Dialog.showUserMessage("it was not possible to remove the library:" + libraryId);
+                        }
                         
-                    }); 		
-    }
-    
-TM.Gui.LibraryTree.remove_Folder_from_Database = function(libraryId, folderId)
-    {		
-        var folderNode = $("#" + folderId);  
-        var folderV3 = $.data[folderId];				
-        TM.WebServices.WS_Libraries.remove_Folder(
-                libraryId, folderId,  function(result) 
-                    { 											
-                        if (result)		
-                        {											
-                            folderNode.remove();							
-                            TM.WebServices.Data.AllFolders.pop(folderV3);
-                            delete  $.data[folderId];
-                            TM.Gui.Dialog.alertUser('Folder Removed');
+                    });
+        }
+    };
+window.TM.Gui.LibraryTree.remove_Folder_from_Database   = function(libraryId, folderId)                     {
+                                                                                            var folderNode = $("#" + folderId),
+                                                                                                folderV3 = $.data[folderId];
+                                                                                            window.TM.WebServices.WS_Libraries.remove_Folder(
+                                                                                                    libraryId, folderId,  function(result)
+                                                                                                        {
+                                                                                                            if (result)
+                                                                                                            {
+                                                                                                                folderNode.remove();
+                                                                                                                window.TM.WebServices.Data.AllFolders.pop();
+                                                                                                                delete  $.data[folderId];
+                                                                                                                window.TM.Gui.Dialog.alertUser('Folder Removed');
 
-                            TM.Gui.LibraryTree.lastFolderRemoved = folderV3;
-                            TM.Events.onRemovedFolder();	
-                        }					
-                        else
-                            TM.Gui.Dialog.showUserMessage("it was not possible to remove the folder:" + folderId);												
-                        
-                    }); 		
-    }	
-    
-TM.Gui.LibraryTree.remove_View_from_Database = function(libraryId, viewId)
-    {		
-        var viewNode = $("#" + viewId);  
-        var viewV3 = $.data[viewId];	
-        TM.WebServices.WS_Libraries.remove_View(
+                                                                                                                window.TM.Gui.LibraryTree.lastFolderRemoved = folderV3;
+                                                                                                                window.TM.Events.onRemovedFolder();
+                                                                                                            }
+                                                                                                            else
+                                                                                                            {
+                                                                                                                window.TM.Gui.Dialog.showUserMessage("it was not possible to remove the folder:" + folderId);
+                                                                                                            }
+
+                                                                                                        });
+                                                                                        };
+window.TM.Gui.LibraryTree.remove_View_from_Database     = function(libraryId, viewId)                       {
+        var viewNode = $("#" + viewId),
+            viewV3 = $.data[viewId];
+        window.TM.WebServices.WS_Libraries.remove_View(
                 libraryId, viewId,  function(result) 
-                    { 											
-                        if (result)		
+                    {
+                        if (result)
                         {											
                             viewNode.remove();							
-                            TM.WebServices.Data.AllViews.pop(viewV3);
+                            window.TM.WebServices.Data.AllViews.pop(viewV3);
                             delete  $.data[viewV3];		
-                            TM.Gui.Dialog.alertUser('View Removed');					
-                            TM.Gui.LibraryTree.lastViewRemoved = viewV3;
-                            TM.Events.onRemovedView();	
-                        }					
+                            window.TM.Gui.Dialog.alertUser('View Removed');
+                            window.TM.Gui.LibraryTree.lastViewRemoved = viewV3;
+                            window.TM.Events.onRemovedView();
+                        }
                         else
-                            TM.Gui.Dialog.showUserMessage("it was not possible to remove the view:" + viewId);												
-                    }); 		
-    }		
-
-TM.Gui.LibraryTree.add_Folder_to_Database = function(libraryId, folderId, title, callback, skip_rename)	
-    {				
-        var targetNode = isDefined(folderId)
+                        {
+                            window.TM.Gui.Dialog.showUserMessage("it was not possible to remove the view:" + viewId);
+                        }
+                    });
+    };
+window.TM.Gui.LibraryTree.add_Folder_to_Database        = function(libraryId, folderId, title, callback, skip_rename)       {
+        var targetNode = folderId !== undefined //isDefined(folderId)
                             ? $("#" + folderId)
-                            : $("#" + libraryId);
+                            : $("#" + libraryId),
                             
-        var folderNode = TM.Gui.LibraryTree.add_Folder(targetNode,title,callback, skip_rename);
+            folderNode = window.TM.Gui.LibraryTree.add_Folder(targetNode,title,callback, skip_rename);
         
-        folderNode.hide();		
-        TM.WebServices.WS_Libraries.add_Folder(
+        folderNode.hide();
+        window.TM.WebServices.WS_Libraries.add_Folder(
             libraryId, 
             folderId,
             title, 
             function(folderV3) 
-                { 						
-                    if (folderV3 != null)		
+                {
+                    if (folderV3 !== null)
                     {					
                         folderV3.type = "Folder";
                         folderNode.fadeIn();
-                        TM.WebServices.Data.AllFolders.push(folderV3);
+                        window.TM.WebServices.Data.AllFolders.push(folderV3);
                         $.data[folderV3.folderId]= folderV3;
                         $.data[folderV3.folderId].parentId = folderId;
                         folderNode.attr("id", folderV3.folderId);
-                        TM.Gui.Dialog.alertUser('Folder Added');
-                    }					
+                        window.TM.Gui.Dialog.alertUser('Folder Added');
+                    }
                     else
-                        TM.Gui.Dialog.showUserMessage("it was not possible to create the folder:" + title);					
-                    TM.Gui.LibraryTree.lastFolderCreated = folderV3;
-                    TM.Events.onNewFolder();
+                    {
+                        window.TM.Gui.Dialog.showUserMessage("it was not possible to create the folder:" + title);
+                    }
+                    window.TM.Gui.LibraryTree.lastFolderCreated = folderV3;
+                    window.TM.Events.onNewFolder();
                 }); 
 
-        return folderNode;		
-    }	
-
-TM.Gui.LibraryTree.add_View_to_Database = function(libraryId, folderId, viewName, callback, skip_rename)	
-    {				
-        var targetNode = isDefined(folderId)
+        return folderNode;
+    };
+window.TM.Gui.LibraryTree.add_View_to_Database          = function(libraryId, folderId, viewName, callback, skip_rename)    {
+        var targetNode = folderId !== undefined //isDefined(folderId)
                             ? $("#" + folderId)
-                            : $("#" + libraryId);
-        
-        var viewNode = TM.Gui.LibraryTree.add_View(targetNode, viewName, callback, skip_rename);
-        viewNode.hide();		
-        TM.WebServices.WS_Libraries.add_View(
+                            : $("#" + libraryId),
+            viewNode = window.TM.Gui.LibraryTree.add_View(targetNode, viewName, callback, skip_rename);
+
+        viewNode.hide();
+        window.TM.WebServices.WS_Libraries.add_View(
             libraryId, 
             folderId,
             viewName, 
             function(viewV3) 
-                { 						
-                    if (viewV3 != null)		
-                    {					
+                {
+                    if (viewV3 !== null)
+                    {
                         viewV3.type = "View";
                         viewV3.name = viewV3.caption;
                         viewNode.fadeIn();
-                        TM.WebServices.Data.AllViews.push(viewV3);
+                        window.TM.WebServices.Data.AllViews.push(viewV3);
                         $.data[viewV3.viewId]= viewV3;
                         viewNode.attr("id", viewV3.viewId);
-                        TM.Gui.LibraryTree.setDraggableOptionsForView(viewNode, viewV3);						
-                        TM.Gui.Dialog.alertUser('View added: {0}'.format(viewV3.caption));
-                        _viewNode = viewNode
+                        window.TM.Gui.LibraryTree.setDraggableOptionsForView(viewNode, viewV3);
+                        window.TM.Gui.Dialog.alertUser('View added: {0}'.format(viewV3.caption));
                         
                         
                         // this is a work around the current issue of not being able to drag into created views
-                        TM.Gui.LibraryTree.jsTree.deselect_all()
-                        TM.Gui.LibraryTree.selectNode(_viewNode)
-                        TM.Events.onLibraryTreeSelected();
-                    }					
+                        window.TM.Gui.LibraryTree.jsTree.deselect_all();
+                        window.TM.Gui.LibraryTree.selectNode(viewNode);
+                        window.TM.Events.onLibraryTreeSelected();
+                    }
                     //else
                     //	TM.Gui.Dialog.showUserMessage("it was not possible to create the view:" + viewName);					
-                    TM.Gui.LibraryTree.lastViewCreated = viewV3;
-                    TM.Events.onNewView();						
+                    window.TM.Gui.LibraryTree.lastViewCreated = viewV3;
+                    window.TM.Events.onNewView();
                 }); 
 
-        return viewNode;		
-    }		
-
-TM.Gui.LibraryTree.rename_Library_to_Database = function(libraryId, newName)
-    {
-        var libraryNode = $("#"+libraryId);		
-        //libraryNode.hide();		
-        TM.WebServices.WS_Libraries.rename_Library(libraryId, newName 
-              , function(result) 
-                { 	
-                    var libraryV3 =$.data[libraryId];
-                    if (result != null)		
-                    {			
-                        TM.Gui.LibraryTree.title(libraryNode, newName);
-                        libraryNode.hide().fadeIn();						
-                        libraryV3.name = newName;	
-                        TM.Gui.Dialog.alertUser('Library Renamed');
-                    }					
-                    //else
-                    //	TM.Gui.Dialog.showUserMessage("it was not possible to rename the library:" + title);					
-                    TM.Gui.LibraryTree.lastLibraryRenamed = libraryV3;
-                    TM.Events.onRenamedLibrary();						
-                },
+        return viewNode;
+    };
+window.TM.Gui.LibraryTree.rename_Library_to_Database    = function(libraryId, newName)                      {
+        var libraryNode = $("#"+libraryId);
+        //libraryNode.hide();
+        window.TM.WebServices.WS_Libraries.rename_Library(libraryId, newName
+              , function(result) {
+                                    var libraryV3 =$.data[libraryId];
+                                    if (result !== null)
+                                    {
+                                        window.TM.Gui.LibraryTree.title(libraryNode, newName);
+                                        libraryNode.hide().fadeIn();
+                                        libraryV3.name = newName;
+                                        window.TM.Gui.Dialog.alertUser('Library Renamed');
+                                    }
+                                    //else
+                                    //	TM.Gui.Dialog.showUserMessage("it was not possible to rename the library:" + title);
+                                    window.TM.Gui.LibraryTree.lastLibraryRenamed = libraryV3;
+                                    window.TM.Events.onRenamedLibrary();
+                                },
                 function(error)
                 {
-                    _libraryId = libraryId;
-                    TM.Gui.LibraryTree.jsTree.rename_node(libraryNode,$.data[_libraryId].name)
-                    TM.WebServices.Helper.defaultErrorHandler(error);
+                    window.TM.Gui.LibraryTree.jsTree.rename_node(libraryNode,$.data[libraryId].name);
+                    window.TM.WebServices.Helper.defaultErrorHandler(error);
                 }); 
         return libraryNode;
-    }
-
-TM.Gui.LibraryTree.rename_Folder_to_Database = function(libraryId, folderId, newName)
-    {
+    };
+window.TM.Gui.LibraryTree.rename_Folder_to_Database     = function(libraryId, folderId, newName)            {
         var folderNode = $("#"+folderId);
-        folderNode.hide();		
-        TM.WebServices.WS_Libraries.rename_Folder(libraryId, folderId, newName,
+        folderNode.hide();
+        window.TM.WebServices.WS_Libraries.rename_Folder(libraryId, folderId, newName,
               function(result) 
-                { 	
+                {
                     var folderV3 =$.data[folderId];
-                    if (result != null)		
+                    if (result !== null)
                     {			
-                        TM.Gui.LibraryTree.title(folderNode, newName);
+                        window.TM.Gui.LibraryTree.title(folderNode, newName);
                         folderNode.fadeIn();						
                         folderV3.name = newName;	
-                        TM.Gui.Dialog.alertUser('Folder Renamed');
-                    }					
+                        window.TM.Gui.Dialog.alertUser('Folder Renamed');
+                    }
                     //else
                     //	TM.Gui.Dialog.showUserMessage("it was not possible to rename the library:" + title);					
-                    TM.Gui.LibraryTree.lastFolderRenamed = folderV3;
-                    TM.Events.onRenamedFolder();						
+                    window.TM.Gui.LibraryTree.lastFolderRenamed = folderV3;
+                    window.TM.Events.onRenamedFolder();
                 }); 
         return folderNode;
-    }
-
-TM.Gui.LibraryTree.rename_View_to_Database = function(libraryId, folderId, viewId, newName)
-    {
+    };
+window.TM.Gui.LibraryTree.rename_View_to_Database       = function(libraryId, folderId, viewId, newName)    {
         var viewNode = $("#"+viewId);
-        viewNode.hide();		
-        TM.WebServices.WS_Libraries.rename_View(libraryId, folderId, viewId, newName,
+        viewNode.hide();
+        window.TM.WebServices.WS_Libraries.rename_View(libraryId, folderId, viewId, newName,
                function(result) 
-                { 	
+                {
                     var viewV3 =$.data[viewId];
-                    if (result != null)		
+                    if (result !== null)
                     {			
-                        TM.Gui.LibraryTree.title(viewNode, newName);
+                        window.TM.Gui.LibraryTree.title(viewNode, newName);
                         viewNode.fadeIn();						
                         viewV3.caption = newName;	
-                        TM.Gui.Dialog.alertUser("View renamed to: {0}".format(viewV3.caption));
-                    }					
+                        window.TM.Gui.Dialog.alertUser("View renamed to: {0}".format(viewV3.caption));
+                    }
                     //else
                     //	TM.Gui.Dialog.showUserMessage("it was not possible to rename the library:" + title);					
-                    TM.Gui.LibraryTree.lastViewRenamed = viewV3;
-                    TM.Events.onRenamedView();						
+                    window.TM.Gui.LibraryTree.lastViewRenamed = viewV3;
+                    window.TM.Events.onRenamedView();
                 }); 
         return viewNode;
-    }	
-
+    };
     
-//**********************	
-//Admin/Edit mode 
-//**********************
-//Drag & Drop
+//*:    Admin/Edit mode
 
-TM.Gui.LibraryTree.setDraggableOptionsForView = function(node, nodeData)
-    {
+//Drag & Drop
+window.TM.Gui.LibraryTree.setDraggableOptionsForView      = function(node, nodeData)    {
         $(node).draggable(
                         {
                             helper:'clone',
                             cursorAt: {left: -20, top: -20},
-                            start : function() { TM.Gui.draggedData = nodeData ; TM.dragMode = 'view'; }
-                        })  
-    }
-    
+                            start : function() {
+                                                    window.TM.Gui.draggedData = nodeData ;
+                                                    window.TM.dragMode = 'view';
+                                                }
+                        });
+    };
+window.TM.Gui.LibraryTree.dropActions =                     {
+                                                                dropOk              : undefined,
+                                                                dropNotOk           : undefined,
+                                                                iconOffset_Top      : 0,
+                                                                iconOffset_Left     : -20,
+                                                                currentTargetNode   : undefined
+                                                            };
+window.TM.Gui.LibraryTree.dropActions.setUp               = function()                        {
 
-// Create Context menu
-TM.Gui.LibraryTree.createContextMenu = function(node)
-    {
-    updatedNodeId = false;
-    createMode = "";
-    var items = {};
-    
-    if (TM.Gui.CurrentUser.isEditor() === false)
-        return items;
+        var that = window.TM.Gui.LibraryTree.dropActions;
+        that.dropOk = $("<div>").attr('id','dropOk').appendTo('body').absolute().height(18).width(18).zIndex(100);
+        that.dropOk.css("background" , "url('/javascript/jQuery.jsTree/themes/default/d.png') -2px -53px no-repeat" ).width(18).height(18);
 
-    if (TM.Gui.editMode === false)
-    {
-        items = 
-            {	
-                showEditMode: 	        { label: "Open Edit Mode",              action: TM.Gui.showEditMode } ,
-                showDirectLink: 	    { label: "Show Direct Link",            action: TM.Gui.LibraryTree.showDirectLink } ,
-                showDirectLinkForDevs: 	{ label: "Show Reading View Link",    action: TM.Gui.LibraryTree.showDirectLinkForDevs }
+        that.dropNotOk = $("<div>").attr('id','dropNotOk').appendTo('body').absolute().height(18).width(18).zIndex(100);
+        that.dropNotOk.css("background" , "url('/javascript/jQuery.jsTree/themes/default/d.png') -18px -53px no-repeat" ).width(18).height(18)
+
+        that.hide_DropIcons();
+    };
+window.TM.Gui.LibraryTree.dropActions.hide_DropIcons      = function()                        {
+  //{
+        var that = window.TM.Gui.LibraryTree.dropActions;
+        that.dropOk.hide();
+        that.dropNotOk.hide();
+    };
+window.TM.Gui.LibraryTree.dropActions.show_DropOk         = function(targetNode)              {
+  //{
+        var that = window.TM.Gui.LibraryTree.dropActions;
+        that.show_DropIcon(targetNode, that.dropOk);
+    };
+window.TM.Gui.LibraryTree.dropActions.show_DropNotOk      = function(targetNode)              {
+ //{
+        var that = window.TM.Gui.LibraryTree.dropActions;
+        that.show_DropIcon(targetNode, that.dropNotOk);
+
+        //open the node after 1 second (if still the same)
+        that.currentTargetNode = targetNode;
+        setTimeout(function()
+        {
+            if(that.currentTargetNode === targetNode)
+            {
+                window.TM.Gui.LibraryTree.jsTree.open_node(targetNode);
             }
-        return items;
-    }
-    contextMenuIdValue = $.data[node.attr('id')];	
-    
-    if (typeof(contextMenuIdValue) == "undefined")
-        return items;
-    var nodeType = contextMenuIdValue.__type;	
-    
-    
-    var addLibrary = function()
-        {			
-            TM.Gui.LibraryTree.add_Library_to_Database("New_Library" + "".add_Random().slice(0,5), undefined, false);				
+        }, 1000);
+    };
+window.TM.Gui.LibraryTree.dropActions.show_DropIcon       = function(targetNode, dropIcon)    {
+ //{
+        if(targetNode !== undefined) //isDefined(targetNode))
+        {
+            var that = window.TM.Gui.LibraryTree.dropActions;
+            that.hide_DropIcons();
+            dropIcon.show();
+            dropIcon.top ($(targetNode).offset().top + that.iconOffset_Top);
+            dropIcon.left($(targetNode).offset().left + that.iconOffset_Left);
         }
-        
-    var removeLibrary = function(parentNode)
-        {			
+    };
+// Context menu
+window.TM.Gui.LibraryTree.contextMenuIdValue = null;
+window.TM.Gui.LibraryTree.createContextMenu = function(node)    {
+    var updatedNodeId = false,
+        createMode = "",
+        items = {},
+        nodeType,
+        addLibrary, removeLibrary, addFolder, removeFolder, addView, removeView;
+
+    if (window.TM.Gui.CurrentUser.isEditor() === false)
+    {
+        return items;
+    }
+    if (window.TM.Gui.editMode === false)
+    {
+        items =
+        {
+            showEditMode:           { label: "Open Edit Mode",              action: window.TM.Gui.showEditMode } ,
+            showDirectLink:         { label: "Show Direct Link",            action: window.TM.Gui.LibraryTree.showDirectLink } ,
+            showDirectLinkForDevs:  { label: "Show Reading View Link",      action: window.TM.Gui.LibraryTree.showDirectLinkForDevs }
+        };
+        return items;
+    }
+    window.TM.Gui.LibraryTree.contextMenuIdValue = $.data[node.attr('id')];
+
+    if (window.TM.Gui.LibraryTree.contextMenuIdValue === undefined)
+    {
+        return items;
+    }
+    nodeType = window.TM.Gui.LibraryTree.contextMenuIdValue.__type;
+
+    addLibrary = function()
+    {
+        window.TM.Gui.LibraryTree.add_Library_to_Database("New_Library" + "".add_Random().slice(0,5), undefined, false);
+    };
+
+    removeLibrary = function(parentNode)
+    {
+        var nodeId = parentNode.id(),
+            nodeData = $.data[nodeId],
+            description = "library: '{0}'".format(nodeData.name);
+        window.TM.Gui.Dialog.deleteConfirmation(description, function()
+        {
             var nodeId = parentNode.id();
-            var nodeData = $.data[nodeId];
-            var description = "library: '{0}'".format(nodeData.name);
-            TM.Gui.Dialog.deleteConfirmation(description, function() 
-                { 				
-                    var nodeId = parentNode.id();
-                    TM.Gui.LibraryTree.remove_Library_from_Database(nodeId)
-                });
-        }			
-    
-    var addFolder = function(parentNode)
-        {				
-            var nodeId = parentNode.id();
-            var nodeData = $.data[nodeId];			
-            var libraryId = nodeData.libraryId;
-            var folderId = nodeData.folderId;						
-            TM.Gui.LibraryTree.add_Folder_to_Database(libraryId, folderId, "new folder", undefined, false);			
-        }
-        
-    var removeFolder = function(parentNode)
-        {						
-            var nodeId = parentNode.id();
-            var nodeData = $.data[nodeId];			
-            var libraryId = nodeData.libraryId;
-            var folderId = nodeData.folderId;			
-            
-            //confirm before deletion 
-            var description = "folder: '{0}'".format(nodeData.name);						
-            TM.Gui.Dialog.deleteConfirmation(description, function() 
-                { 
-                    TM.Gui.LibraryTree.remove_Folder_from_Database(libraryId,folderId)
-                } );
-            
-        }				
-        
-    var addView = function(parentNode)
-        {				
-            var nodeId = parentNode.id();
-            var nodeData = $.data[nodeId];
-            var libraryId = nodeData.libraryId;
-            var folderId = nodeData.folderId;						
-            TM.Gui.LibraryTree.add_View_to_Database(libraryId, folderId, "new view", undefined, false);						
-        }	
-        
-    var removeView = function(parentNode)
-        {						
-            var nodeId = parentNode.id();
-            var nodeData = $.data[nodeId];			
-            var libraryId = nodeData.libraryId;
-            //var folderId = nodeData.folderId;	
-            var viewId = nodeData.viewId;						
-            var description = "view: '{0}'".format(nodeData.caption);
-            TM.Gui.Dialog.deleteConfirmation(description, function() 
-                { 
-                    TM.Gui.LibraryTree.remove_View_from_Database(libraryId, viewId)
-                    TM.Events.onUserDeleted();
-                });
-        }				
+            window.TM.Gui.LibraryTree.remove_Library_from_Database(nodeId)
+        });
+    };
+
+    addFolder = function(parentNode)
+    {
+        var nodeId = parentNode.id(),
+            nodeData = $.data[nodeId],
+            libraryId = nodeData.libraryId,
+            folderId = nodeData.folderId;
+        window.TM.Gui.LibraryTree.add_Folder_to_Database(libraryId, folderId, "new folder", undefined, false);
+    };
+
+    removeFolder = function(parentNode)
+    {
+        var nodeId = parentNode.id(),
+            nodeData = $.data[nodeId],
+            libraryId = nodeData.libraryId,
+            folderId = nodeData.folderId,
+            description = "folder: '{0}'".format(nodeData.name);
+        //confirm before deletion
+        window.TM.Gui.Dialog.deleteConfirmation(description, function()
+        {
+            window.TM.Gui.LibraryTree.remove_Folder_from_Database(libraryId,folderId)
+        } );
+
+    };
+
+    addView = function(parentNode)
+    {
+        var nodeId = parentNode.id(),
+            nodeData = $.data[nodeId],
+            libraryId = nodeData.libraryId,
+            folderId = nodeData.folderId;
+        window.TM.Gui.LibraryTree.add_View_to_Database(libraryId, folderId, "new view", undefined, false);
+    };
+
+    removeView = function(parentNode)
+    {
+        var nodeId = parentNode.id(),
+            nodeData = $.data[nodeId],
+            libraryId = nodeData.libraryId,
+            viewId = nodeData.viewId,
+            description = "view: '{0}'".format(nodeData.caption);
+        window.TM.Gui.Dialog.deleteConfirmation(description, function()
+        {
+            window.TM.Gui.LibraryTree.remove_View_from_Database(libraryId, viewId);
+            window.TM.Events.onUserDeleted();
+        });
+    };
 
 
-    if (nodeType == "TeamMentor.CoreLib.Library_V3")		
-        items = 
-            {	
-                createFolderItem: 	{ label: "Add View",  action: addView },
-                createViewItem: 	{ label: "Add Folder",  action: addFolder },
-                //createViewItem: 	{ label: "Add Folder",  action: function (obj) 	{ createMode = "Folder" ; this.create(obj); } },
-                //createFolderItem: 	{ label: "Add View",  action: function (obj) 	{ createMode = "View" ;   this.create(obj); } },
-                createGuidanceItem: { label: "Add Guidance Item",  action: TM.Gui.LibraryTree.newGuidanceItem },//function (obj) { newGuidanceItem(); } }, //this.create(obj); } },
-                renameItem: { label: "Rename Library",  action: function (obj) { this.rename(obj); } },					
-                deteteItem: { label: "Delete Library",  action: removeLibrary},     //function (obj) { this.remove(obj); } },
-                separatorItem: { label: "-----------",  action: function (obj) { } },
-                newLibItem: { label: "New Library",  action: function (obj) { addLibrary(); } }
-                //reloadItem: { label: "Reload Data",  action: function (obj) { refreshLibraryView(); } }													
-            }
-    else if (nodeType == "TeamMentor.CoreLib.Folder_V3")		
-        items = 
-            {				
-                createViewItem: 	{ label: "Add View",  action: addView },
-                createFolderItem: 	{ label: "Add Folder",  action: addFolder },
-                renameItem: { label: "Rename Folder",  action: function (obj) { this.rename(obj); } },
-                deteteItem: { label: "Delete Folder",  action: removeFolder }				
-            }
-    else if (nodeType == "TeamMentor.CoreLib.View_V3")
-        items = 
-            {				
-                createItem: { label: "Add Guidance Item",  action:  TM.Gui.LibraryTree.newGuidanceItem },//function (obj) { newGuidanceItem(); } }, //this.create(obj); } },
-                renameItem: { label: "Rename View",  action: function (obj) { this.rename(obj); } },
-                deteteItem: { label: "Delete View",  action: removeView }				
-            }
-            
-    /*else if (nodeType == "guidanceItem")				
-        items = 
-            {									
-                renameItem: { label: "Rename Guidance Item",  action: function (obj) { this.rename(obj); } },
-                deteteItem: { label: "Delete Guidance Item",  action: function (obj) { this.remove(obj); } }
-            }*/
+    if (nodeType === "TeamMentor.CoreLib.Library_V3")
+    {
+        items = {
+            createFolderItem:   { label: "Add View",  action: addView },
+            createViewItem:     { label: "Add Folder",  action: addFolder },
+            //createViewItem:   { label: "Add Folder",  action: function (obj)  { createMode = "Folder" ; this.create(obj); } },
+            //createFolderItem: { label: "Add View",  action: function (obj)    { createMode = "View" ;   this.create(obj); } },
+            createGuidanceItem: { label: "Add Guidance Item",  action: window.TM.Gui.LibraryTree.newGuidanceItem },//function (obj) { newGuidanceItem(); } }, //this.create(obj); } },
+            renameItem: { label: "Rename Library",  action: function (obj) { this.rename(obj); } },
+            deteteItem: { label: "Delete Library",  action: removeLibrary},     //function (obj) { this.remove(obj); } },
+            separatorItem: { label: "-----------",  action: function (obj) { } },
+            newLibItem: { label: "New Library",  action: function (obj) { addLibrary(); } }
+            //reloadItem: { label: "Reload Data",  action: function (obj) { refreshLibraryView(); } }
+        };
+    }
+    else if (nodeType === "TeamMentor.CoreLib.Folder_V3")
+    {
+        items = {
+            createViewItem      : { label: "Add View"       ,  action: addView },
+            createFolderItem    : { label: "Add Folder"     ,  action: addFolder },
+            renameItem          : { label: "Rename Folder"  ,  action: function (obj) { this.rename(obj); } },
+            deteteItem          : { label: "Delete Folder"  ,  action: removeFolder }
+        };
+    }
+    else if (nodeType === "TeamMentor.CoreLib.View_V3")
+    {
+        items = {
+            createItem: { label: "Add Guidance Item",  action:  window.TM.Gui.LibraryTree.newGuidanceItem },//function (obj) { newGuidanceItem(); } }, //this.create(obj); } },
+            renameItem: { label: "Rename View",  action: function (obj) { this.rename(obj); } },
+            deteteItem: { label: "Delete View",  action: removeView }
+        };
+    }
+    /*else if (nodeType == "guidanceItem")
+     items =
+     {
+     renameItem: { label: "Rename Guidance Item",  action: function (obj) { this.rename(obj); } },
+     deteteItem: { label: "Delete Guidance Item",  action: function (obj) { this.remove(obj); } }
+     }*/
     else
     {
-        TM.Gui.Dialog.alertUser('not supported nodeType: ' + nodeType);
+        window.TM.Gui.Dialog.alertUser('not supported nodeType: ' + nodeType);
     }
     items.separator2Item = { label: "-----------",  action: function (obj) { } };
-    items.userMode = { label: "Exit Edit Mode",  action: TM.Gui.showUserMode};
-    
+    items.userMode = { label: "Exit Edit Mode",  action: window.TM.Gui.showUserMode};
+
     return items;
-}
-
-TM.Gui.LibraryTree.dropActions = 
-    {	
-            dropOk				: undefined
-        ,	dropNotOk			: undefined
-        ,	iconOffset_Top		: 0
-        ,	iconOffset_Left		: -20
-        , 	currentTargetNode	: undefined
-        ,	setUp				: function()
-                                    {
-                                        var that = TM.Gui.LibraryTree.dropActions;
-                                        that.dropOk = $("<div>").attr('id','dropOk').appendTo('body').absolute().height(18).width(18).zIndex(100)
-                                        that.dropOk.css("background" , "url('/javascript/jQuery.jsTree/themes/default/d.png') -2px -53px no-repeat !important;" ).width(18).height(18)
-                                        
-                                        that.dropNotOk = $("<div>").attr('id','dropNotOk').appendTo('body').absolute().height(18).width(18).zIndex(100)
-                                        that.dropNotOk.css("background" , "url('/javascript/jQuery.jsTree/themes/default/d.png') -18px -53px no-repeat !important;" ).width(18).height(18)
-                                        
-                                        that.hide_DropIcons();
-                                    }
-                                    
-        , 	hide_DropIcons		: function()						
-                                    {
-                                        var that = TM.Gui.LibraryTree.dropActions;
-                                        that.dropOk.hide();
-                                        that.dropNotOk.hide();
-                                    }
-        , 	show_DropIcon		: function(targetNode, dropIcon)
-                                    {
-                                        
-                                        if(isDefined(targetNode))
-                                        {
-                                            var that = TM.Gui.LibraryTree.dropActions;
-                                            that.hide_DropIcons();
-                                            dropIcon.show();
-                                            dropIcon.top ($(targetNode).offset().top + that.iconOffset_Top)
-                                            dropIcon.left($(targetNode).offset().left + that.iconOffset_Left)
-                                        }
-                                    }
-        , 	show_DropOk			: function(targetNode)
-                                    {								
-                                        var that = TM.Gui.LibraryTree.dropActions;
-                                        that.show_DropIcon(targetNode, that.dropOk)	
-                                    }
-        , 	show_DropNotOk		: function(targetNode)
-                                    {								
-                                        var that = TM.Gui.LibraryTree.dropActions;
-                                        that.show_DropIcon(targetNode, that.dropNotOk)	
-                                        
-                                        //open the node after 1 second (if still the same)
-                                        that.currentTargetNode = targetNode
-                                        setTimeout(function()
-                                            {
-                                                if(that.currentTargetNode == targetNode)											
-                                                {													
-                                                    TM.Gui.LibraryTree.jsTree.open_node(targetNode);
-                                                }											
-                                            }, 1000);
-                                    }
-                                    
-    }
-
-
-
-
-
-// RENAME event
-TM.Gui.LibraryTree.onRename = function(event, data)
-{		
+};
+window.TM.Gui.LibraryTree.onRename = function(event, data)  {
     var rename_newData = data.rslt.new_name;
     //_targetNodeData = eval("( {0} )".format(data.rslt.obj.attr("id")));
     
-    var targetNodeData = $.data[data.rslt.obj.attr("id")];	
-    if (isDefined(targetNodeData))
-    {		
+    var targetNodeData = $.data[data.rslt.obj.attr("id")];
+    if (targetNodeData !== undefined) //isDefined(targetNodeData))
+    {
         if (targetNodeData.__type == "TeamMentor.CoreLib.Library_V3")
-        {			
-            TM.Gui.LibraryTree.rename_Library_to_Database(targetNodeData.libraryId, rename_newData);			
-        }		
+        {
+            window.TM.Gui.LibraryTree.rename_Library_to_Database(targetNodeData.libraryId, rename_newData);
+        }
         if (targetNodeData.__type == "TeamMentor.CoreLib.Folder_V3")
-        {			
-            TM.Gui.LibraryTree.rename_Folder_to_Database(targetNodeData.libraryId, targetNodeData.folderId, rename_newData);			
+        {
+            window.TM.Gui.LibraryTree.rename_Folder_to_Database(targetNodeData.libraryId, targetNodeData.folderId, rename_newData);
         }
         if (targetNodeData.__type == "TeamMentor.CoreLib.View_V3")
-        {			
-            TM.Gui.LibraryTree.rename_View_to_Database(targetNodeData.libraryId, targetNodeData.folderId, targetNodeData.viewId, rename_newData);			
-        }				
-    }	
-}
-
-// CREATE event
-TM.Gui.LibraryTree.onCreate = function(event, data)
-{			
-    data.rslt.new_name = data.rslt.name;		// to make it compatible with onCreate		
-    TM.Gui.LibraryTree.onRename(event, data);   // the node is already there so we only have to deal with the rename		
-}
-    
-// NEW GUIDANCE ITEM
-
-TM.Gui.LibraryTree.newGuidanceItem = function()
-{            
-
-    var closeNewGuidanceItemDialog = function()
-    {		
-        "ui-dialog-titlebar-close".$().click();				
-    }     
-    
-    var createNewGuidanceItem = function()
-      {
-            var title = "New Guidance Item";
-            var htmlContent = "";
-            createGuidanceItem(title,htmlContent, contextMenuIdValue.libraryId, 
-                function(data) 
-                    {
-                        var newGuidanceItemId = data.d;
-                        if (typeof(contextMenuIdValue.viewId) != "undefined")
-                        {
-                            
-                            var viewId = contextMenuIdValue.viewId;
-                            addGuidanceItemToView(viewId, newGuidanceItemId,
-                                function() {
-                                                $.data[viewId].guidanceItems.push(newGuidanceItemId);
-                                           } );
-                                                        
-                        }
-                        
-                        $.data[newGuidanceItemId] = {};
-                        $.data[newGuidanceItemId].guidanceItemId = newGuidanceItemId;
-                        $.data[newGuidanceItemId].libraryId      = contextMenuIdValue.libraryId;
-                        $.data[newGuidanceItemId].title          = title;
-                        $.data[newGuidanceItemId].technology     = "";
-                        $.data[newGuidanceItemId].phase          = "";
-                        $.data[newGuidanceItemId].type           = "";
-                        $.data[newGuidanceItemId].category       = "";
-                        $.data[contextMenuIdValue.libraryId].guidanceItems.push(newGuidanceItemId);
-
-                        TM.Gui.DataTableViewer.selectedRowTarget = null;
-                        TM.Gui.DataTableViewer.selectedRowIndex = -1;
-
-                        editGuidanceItemInNewWindow(newGuidanceItemId);
-                    });
-      } ;
-      createNewGuidanceItem();
+        {
+            window.TM.Gui.LibraryTree.rename_View_to_Database(targetNodeData.libraryId, targetNodeData.folderId, targetNodeData.viewId, rename_newData);
+        }
+    }
 };
+window.TM.Gui.LibraryTree.onCreate = function(event, data)  {
+                                                                data.rslt.new_name = data.rslt.name;                // to make it compatible with onCreate
+                                                                window.TM.Gui.LibraryTree.onRename(event, data);   // the node is already there so we only have to deal with the rename
+                                                            };
+window.TM.Gui.LibraryTree.newGuidanceItem = function()      {
+                                                                var closeNewGuidanceItemDialog, createNewGuidanceItem;
 
-window.TM.Gui.LibraryTree.showDirectLink = function()
-    {        
-        window.location.hash = "#load:" + TM.Gui.selectedNodeId;
-        TM.Gui.AppliedFilters.currentFilters = [];
-        TM.Gui.Dialog.alertUser("The page's hash tag was set to the direct link: " + window.location.hash);
-    }
+                                                                closeNewGuidanceItemDialog = function()
+                                                                                                {
+                                                                                                    "ui-dialog-titlebar-close".$().click();
+                                                                                                };
+                                                                createNewGuidanceItem       = function()
+                                                                                                {
+                                                                                                    var title = "New Guidance Item",
+                                                                                                        htmlContent = "";
+                                                                                                    createGuidanceItem(title,htmlContent, window.TM.Gui.LibraryTree.contextMenuIdValue.libraryId,
+                                                                                                        function(data)
+                                                                                                            {
+                                                                                                                var newGuidanceItemId = data.d;
+                                                                                                                if (typeof(window.TM.Gui.LibraryTree.contextMenuIdValue.viewId) != "undefined")
+                                                                                                                {
 
-TM.Gui.LibraryTree.showDirectLinkForDevs = function()
-    {        
-        window.location.hash = "#load:" + TM.Gui.selectedNodeId + "&showFilters:false&showTree:false&centerGuidanceItems:true";
-        TM.Gui.AppliedFilters.currentFilters = [];
-        TM.Gui.Dialog.alertUser("The page's hash tag was set to the Reading View link");
-    }
+                                                                                                                    var viewId = window.TM.Gui.LibraryTree.contextMenuIdValue.viewId;
+                                                                                                                    addGuidanceItemToView(viewId, newGuidanceItemId,
+                                                                                                                        function() {
+                                                                                                                                        $.data[viewId].guidanceItems.push(newGuidanceItemId);
+                                                                                                                                   } );
 
+                                                                                                                }
 
+                                                                                                                $.data[newGuidanceItemId] = {};
+                                                                                                                $.data[newGuidanceItemId].guidanceItemId = newGuidanceItemId;
+                                                                                                                $.data[newGuidanceItemId].libraryId      = window.TM.Gui.LibraryTree.contextMenuIdValue.libraryId;
+                                                                                                                $.data[newGuidanceItemId].title          = title;
+                                                                                                                $.data[newGuidanceItemId].technology     = "";
+                                                                                                                $.data[newGuidanceItemId].phase          = "";
+                                                                                                                $.data[newGuidanceItemId].type           = "";
+                                                                                                                $.data[newGuidanceItemId].category       = "";
+                                                                                                                $.data[window.TM.Gui.LibraryTree.contextMenuIdValue.libraryId].guidanceItems.push(newGuidanceItemId);
+
+                                                                                                                window.TM.Gui.DataTableViewer.selectedRowTarget = null;
+                                                                                                                window.TM.Gui.DataTableViewer.selectedRowIndex = -1;
+
+                                                                                                                editGuidanceItemInNewWindow(newGuidanceItemId);
+                                                                                                            });
+                                                                                                  } ;
+                                                                  createNewGuidanceItem();
+                                                            };
+window.TM.Gui.LibraryTree.showDirectLink = function()       {
+        window.location.hash = "#load:" + window.TM.Gui.selectedNodeId;
+        window.TM.Gui.AppliedFilters.currentFilters = [];
+        window.TM.Gui.Dialog.alertUser("The page's hash tag was set to the direct link: " + window.location.hash);
+    };
+window.TM.Gui.LibraryTree.showDirectLinkForDevs = function()       {
+        window.location.hash = "#load:" + window.TM.Gui.selectedNodeId + "&showFilters:false&showTree:false&centerGuidanceItems:true";
+        window.TM.Gui.AppliedFilters.currentFilters = [];
+        window.TM.Gui.Dialog.alertUser("The page's hash tag was set to the Reading View link");
+    };

@@ -24,21 +24,21 @@
 		<script>
 			var createLibraryTree = function()
 				{
-					var libraryTree = TM.Gui.LibraryTree.open("#TestLibraryTree");
-					TM.Events.onFolderStructureLoaded.add(function()
+					var libraryTree = window.TM.Gui.LibraryTree.open("#TestLibraryTree");
+					window.TM.Events.onFolderStructureLoaded.add(function()
 					{
 						libraryTree.create_TreeUsingJSON();									
 					});
 					
 					libraryTree.onSelectedNode = function () 
 						{ 
-							var jsonString = JSON.stringify(TM.Gui.selectedNodeData);
-							$("#TestLibraryTreeProperties").html(jsonString)
+							var jsonString = JSON.stringify(window.TM.Gui.selectedNodeData);
+							$("#TestLibraryTreeProperties").html(jsonString);
 						};
 					
 					libraryTree.onTreeLoaded = function()
 					{
-						TM.Debug.UnitTest_Message = "Test Complete";
+						window.TM.Debug.UnitTest_Message = "Test Complete";
 						libraryTree.selectFirstNode();
 					}
 				}

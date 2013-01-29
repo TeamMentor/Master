@@ -37,7 +37,7 @@ TM.Gui.DataTableViewer.setDragAndDropOptions = function()
                 helper: getDragHelperElement,
                 revert: false , 
                 cursor: "arrow" , 
-                revertDuration: 250, 			
+                revertDuration: 250,
                 cursorAt: {left: -20, top: -20},
                 zIndex: 10,
                 appendTo: 'body', 
@@ -159,7 +159,7 @@ TM.Gui.DataTableViewer.setDragAndDropOptions = function()
         }
         
         var libraryTree_OnDrop = function(event, nodeData, dragMode)
-        {		
+        {
             if (isUndefined(nodeData))
             {
                 console.log("ERROR: nodeData not defined");

@@ -1,14 +1,16 @@
 module("TM.Gui.LibraryTree - with JSON data");
 
-TM.Debug.reuseLibraryMappingsObject = false;
+window.TM.Debug.reuseLibraryMappingsObject = false;
 
 asyncTest("login As Admin", function() 
 	{		
 		QUnit.login_as_Admin(
-			function(sessionID)
-				{					
-					notEqual(sessionID, TM.Const.emptyGuid, "valid SessionID: " + sessionID);
-					start();
+			function(userId)
+                    {
+                        notEqual(userId, undefined                   , "defined userId: " + userId);
+					    //notEqual(userId, window.TM.Const.emptyGuid , "valid userId: " + userId);
+                        QUnit.equals(true,userId >0  , "valid userId: " + userId);
+					    start();
 				});
 	});
 

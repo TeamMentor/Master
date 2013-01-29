@@ -15,12 +15,12 @@ QUnit.login_as_Admin = function(callback)
 			{
 				TM.Events.onUserDataLoaded.add_InvokeOnce(function() 
 					{ 							
-						callback();		
+						callback(TM.Gui.CurrentUser.userData.UserID);
 					});										
 				TM.Gui.CurrentUser.loadUserData();
 			}
 		if (TM.Gui.CurrentUser.isAdmin())
-			callback();			
+			callback(TM.Gui.CurrentUser.userData.UserID);
 		else
 			TM.WebServices.WS_Users.login(TM.QUnit.defaultUser_Admin, TM.QUnit.defaultPassord_Admin ,onLogin);
 		

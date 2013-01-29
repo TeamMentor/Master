@@ -50,7 +50,7 @@ window.TM.WebServices.Data.lastDataTableData = { aoColumns : [] , aaData: [] };
 window.TM.WebServices.Data.filteredDataTable = { aoColumns : [] , aaData: [] };
 
 //Global methods:
-var htmlEscape = function(str) 
+window.htmlEscape = function(str)
     {
         return String(str)
                 .replace(/&/g, '&amp;')
