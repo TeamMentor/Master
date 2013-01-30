@@ -477,7 +477,6 @@
     <Content Include="Javascript\jQuery.DataTable\Images\sort_both.png" />
     <Content Include="Javascript\jQuery.DataTable\Images\sort_desc.png" />
     <Content Include="Javascript\jQuery.DataTable\Images\sort_desc_disabled.png" />
-    <Content Include="Javascript\jQuery.DataTable\previous version\jquery.dataTables.min.js" />
     <Content Include="Javascript\jQuery.event.drag\jquery.event.drag-2.0.min.js" />
     <Content Include="Javascript\jQuery.jsTree\jquery.cookie.js" />
     <Content Include="Javascript\jQuery.jsTree\jquery.hotkeys.js" />
