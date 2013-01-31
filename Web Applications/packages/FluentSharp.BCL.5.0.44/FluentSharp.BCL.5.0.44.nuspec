@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>FluentSharp.BCL</id>
-    <version>5.0.38</version>
+    <version>5.0.44</version>
     <title>FluentSharp - BCL (Base Class Libraries)</title>
     <authors>O2 Platform</authors>
     <owners>O2 Platform</owners>
@@ -18,6 +18,9 @@
     <dependencies>
       <dependency id="FluentSharp.CoreLib" />
     </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System.Windows.Forms" targetFramework="" />
+    </frameworkAssemblies>
     <references>
       <reference file="FluentSharp.BCL.dll" />
     </references>
