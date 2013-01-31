@@ -25,7 +25,7 @@ namespace TeamMentor.CoreLib
 									
 			TmWebServices = new TM_WebServices(true);	//Disabling CSRF
 
-			UserGroup.Admin.setThreadPrincipalWithRoles();					
+			//UserGroup.Admin.setThreadPrincipalWithRoles();					
 		}
 
 		public string Version()
@@ -34,11 +34,11 @@ namespace TeamMentor.CoreLib
 		}		
 
 		//Libraries
-		public List<Library_V3> libraries()
+		public List<Library_V3> Libraries()
 		{
 			return TmWebServices.GetLibraries().librariesV3();
 		}
-		public Library_V3		library(string nameOrId)
+		public Library_V3		Library(string nameOrId)
 		{
 			var library = (nameOrId.isGuid())
 							? TmWebServices.GetLibraryById(nameOrId.guid()).libraryV3()
@@ -47,23 +47,23 @@ namespace TeamMentor.CoreLib
 				        ? TmWebServices.GetFolderStructure_Library(library.libraryId)
 				        : null;
 		}
-		public List<Folder_V3>	folders(string libraryId)
+		public List<Folder_V3>	Folders(string libraryId)
 		{
 			return TmWebServices.GetFolders(libraryId.guid());
 		}
-		public View_V3			view(string viewId)
+		public View_V3			View(string viewId)
 		{
 			return TmWebServices.GetViewById(viewId);
 		}
 
 		//public TeamMentor_Article article(string articleId)
-		public string			article(string articleId)
+		public string			Article(string articleId)
 		{
 			var article = TmWebServices.GetGuidanceItemById(articleId);
 			return article.serialize(false);
 			//			return article;		// this was failing
 		}
-		public string			article_Html(string articleId)
+		public string			Article_Html(string articleId)
 		{			
 			return TmWebServices.GetGuidanceItemHtml(articleId.guid());
 		}
@@ -73,7 +73,11 @@ namespace TeamMentor.CoreLib
 		{			
 			return Session.SessionID;			
 		}
-		public Guid			login(TM_Credentials credentials)
+        public Guid			    Login(string username, string password)
+		{
+			return TmWebServices.Login_PwdInClearText(username, password);
+		}
+		public Guid			    Login_using_Credentials(TM_Credentials credentials)
 		{
 			return TmWebServices.Login_PwdInClearText(credentials.UserName, credentials.Password);
 		}

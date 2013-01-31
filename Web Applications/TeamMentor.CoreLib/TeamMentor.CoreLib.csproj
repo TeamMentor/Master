@@ -35,11 +35,12 @@
     <Reference Include="AntiXssLibrary, Version=4.2.0.0, Culture=neutral, PublicKeyToken=d127efab8a9c114f, processorArchitecture=MSIL">
       <HintPath>..\packages\AntiXSS.4.2.1\lib\net40\AntiXssLibrary.dll</HintPath>
     </Reference>
-    <Reference Include="FluentSharp.BCL">
-      <HintPath>..\packages\FluentSharp.BCL.5.0.38\lib\net35\FluentSharp.BCL.dll</HintPath>
+    <Reference Include="FluentSharp.BCL, Version=5.0.1.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\FluentSharp.BCL.5.0.44\lib\net35\FluentSharp.BCL.dll</HintPath>
     </Reference>
-    <Reference Include="FluentSharp.CoreLib">
-      <HintPath>..\packages\FluentSharp.CoreLib.5.0.38\lib\net35\FluentSharp.CoreLib.dll</HintPath>
+    <Reference Include="FluentSharp.CoreLib, Version=5.0.1.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentSharp.CoreLib.5.0.44\lib\net35\FluentSharp.CoreLib.dll</HintPath>
     </Reference>
     <Reference Include="HtmlAgilityPack">
       <HintPath>..\packages\HtmlAgilityPack.1.4.6\lib\Net40\HtmlAgilityPack.dll</HintPath>
@@ -72,7 +73,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="RequiresPostSharp.cs" />
     <Compile Include="TM_AppCode\Authentication\ExtensionMethods\RoleBaseSecurity_ExtensionMethods.cs" />
     <Compile Include="TM_AppCode\Authentication\ExtensionMethods\SoapRequestUtils_ExtensionMethods.cs" />
     <Compile Include="TM_AppCode\Authentication\ExtensionMethods\TeamMentorUserManagement_ExtensionMethods.cs" />
@@ -92,6 +92,7 @@
     <Compile Include="TM_AppCode\Schemas\NewUser.cs" />
     <Compile Include="TM_AppCode\Schemas\View_V3.cs" />
     <Compile Include="TM_AppCode\TMConsts.cs" />
+    <Compile Include="TM_AppCode\TM_StartUp.cs" />
     <Compile Include="TM_AppCode\Users\TM_Xml_Database_ExtensionMethods_ActiveSessions.cs" />
     <Compile Include="TM_AppCode\Users\TM_Xml_Database_ExtensionMethods_Users.cs" />
     <Compile Include="TM_AppCode\Users\TM_Xml_Database_ExtensionMethods_Users_Persistance.cs" />
@@ -104,7 +105,7 @@
     <Compile Include="TM_AppCode\Utils\PostSharp.cs" />
     <Compile Include="TM_AppCode\Utils\REPL.cs" />
     <Compile Include="TM_AppCode\Utils\ResponseHeaders.cs" />
-    <Compile Include="TM_AppCode\WebServices_REST\HttpContextFactory.cs" />
+    <Compile Include="TM_AppCode\Utils\HttpContextFactory.cs" />
     <Compile Include="TM_AppCode\HttpHandlers\FileUpload\LibraryDownload.ashx.cs" />
     <Compile Include="TM_AppCode\HttpHandlers\FileUpload\FileUpload.ashx.cs" />
     <Compile Include="TM_AppCode\HttpHandlers\ScriptCombiner\JavaScriptMinifier.cs" />
@@ -146,13 +147,13 @@
     <Compile Include="TM_AppCode\WebServices\TM_WebServices.GuiHelpers.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="TM_AppCode\WebServices_REST\models\TM_Credentials.cs" />
     <Compile Include="TM_AppCode\WebServices_REST\REST_Admin.cs" />
     <Compile Include="TM_AppCode\WebServices_REST\Admin_REST_Config.cs" />
-    <Compile Include="TM_AppCode\WebServices_REST\Admin_REST_Host.cs" />
     <Compile Include="TM_AppCode\WebServices_REST\IREST_Admin.cs" />
     <Compile Include="TM_AppCode\WebServices_REST\REST_Tests.cs" />
     <Compile Include="TM_AppCode\WebServices_REST\REST_User_Management.cs" />
-    <Compile Include="TM_AppCode\WebServices_REST\DataContracts.cs" />
+    <Compile Include="TM_AppCode\WebServices_REST\models\TM_User.cs" />
     <Compile Include="TM_AppCode\Users\TM_Xml_Database.Users.cs" />
     <Compile Include="TM_AppCode\XmlDatabase\TM_Xml_Database.Virtual_Articles.cs" />
     <Compile Include="TM_AppCode\XmlDatabase\TM_Xml_Database.Library.Files.cs" />

@@ -7,37 +7,38 @@ using System.ServiceModel;
 namespace TeamMentor.CoreLib
 {
 	[ServiceContract]
-	public interface IREST_Admin
+	public interface IREST
 	{
-		[OperationContract][WebGet(UriTemplate = "/Version"		)]	string Version();				
+		[OperationContract][WebGet(UriTemplate = "/version"		)]	string Version();				
 
 		//Libraries
-		[OperationContract][WebGet(UriTemplate = "/Libraries"				)]	List<Library_V3>	libraries();
-		[OperationContract][WebGet(UriTemplate = "/Library/{nameOrId}"		)]	Library_V3			library(string nameOrId);
-		[OperationContract][WebGet(UriTemplate = "/Folders/{libraryId}"		)]	List<Folder_V3>		folders(string libraryId);		
-		[OperationContract][WebGet(UriTemplate = "/View/{viewId}"			)]	View_V3				view(string viewId);
-		[OperationContract][WebGet(UriTemplate = "/article/{articleId}"		)]	string				article(string articleId);
-		[OperationContract][WebGet(UriTemplate = "/article/html/{articleId}")]	string				article_Html(string articleId);
+		[OperationContract][WebGet(UriTemplate = "/libraries"				)]	List<Library_V3>	Libraries();
+		[OperationContract][WebGet(UriTemplate = "/library/{nameOrId}"		)]	Library_V3			Library(string nameOrId);
+		[OperationContract][WebGet(UriTemplate = "/folders/{libraryId}"		)]	List<Folder_V3>		Folders(string libraryId);		
+		[OperationContract][WebGet(UriTemplate = "/view/{viewId}"			)]	View_V3				View(string viewId);
+		[OperationContract][WebGet(UriTemplate = "/article/{articleId}"		)]	string				Article(string articleId);
+		[OperationContract][WebGet(UriTemplate = "/article/html/{articleId}")]	string				Article_Html(string articleId);
 
 		//User Session
-		[OperationContract][WebGet	 (UriTemplate = "/SessionId"					)]	string		SessionId();
-		[OperationContract][WebGet	 (UriTemplate = "/Logout"						)]	Guid		Logout();
-		//[OperationContract][WebGet(UriTemplate = "/Login/{username}/{password}"	)]	Guid		Login(string username, string password);
-		[OperationContract][WebInvoke(UriTemplate = "/login", Method = "POST",ResponseFormat = WebMessageFormat.Json)]	Guid		login(TM_Credentials credentials);
+		[OperationContract][WebGet	 (UriTemplate = "/sessionId"					)]	string		SessionId();
+		[OperationContract][WebGet	 (UriTemplate = "/logout"						)]	Guid		Logout();
+		[OperationContract][WebGet   (UriTemplate = "/login/{username}/{password}"	)]	Guid		Login(string username, string password);
+        
+		[OperationContract][WebInvoke(UriTemplate = "/login/", Method = "POST",ResponseFormat = WebMessageFormat.Json)]	Guid		Login_using_Credentials(TM_Credentials credentials);
 
 		//RBAC
-		[OperationContract][WebGet(UriTemplate = "/User_Name"					)]	string			RBAC_CurrentIdentity_Name();
-		[OperationContract][WebGet(UriTemplate = "/User_IsAuthenticated"		)]	bool			RBAC_CurrentIdentity_IsAuthenticated();
-		[OperationContract][WebGet(UriTemplate = "/User_Roles"					)]	List<string>	RBAC_CurrentPrincipal_Roles();
-		[OperationContract][WebGet(UriTemplate = "/User_HasRole/{role}"			)]	bool			RBAC_HasRole(string role);
-		[OperationContract][WebGet(UriTemplate = "/User_IsAdmin"				)]	bool			RBAC_IsAdmin();
-		[OperationContract][WebGet(UriTemplate = "/User_SessionCookie"			)]	string			RBAC_SessionCookie();	
+		[OperationContract][WebGet(UriTemplate = "/user/name"					)]	string			RBAC_CurrentIdentity_Name();
+		[OperationContract][WebGet(UriTemplate = "/user/isAuthenticated"		)]	bool			RBAC_CurrentIdentity_IsAuthenticated();
+		[OperationContract][WebGet(UriTemplate = "/user/roles"					)]	List<string>	RBAC_CurrentPrincipal_Roles();
+		[OperationContract][WebGet(UriTemplate = "/user/hasRole/{role}"			)]	bool			RBAC_HasRole(string role);
+		[OperationContract][WebGet(UriTemplate = "/user/isAdmin"				)]	bool			RBAC_IsAdmin();
+		[OperationContract][WebGet(UriTemplate = "/user/sessionCookie"			)]	string			RBAC_SessionCookie();	
 	 
 
 		//Admin: User Management				
 						
 		[OperationContract] [WebGet	  (UriTemplate = "/user/{nameOrId}"			)]					TM_User		user(string nameOrId);
-		//[OperationContract] [WebGet	  (UriTemplate = "/users/{usersIds}"	)]						List<TM_User>	users(string usersIds);
+		//[OperationContract] [WebGet	  (UriTemplate = "/users/{usersIds}"	)]					List<TM_User>	users(string usersIds);
 		[OperationContract] [WebGet	  (UriTemplate = "/users"				)]						List<TM_User>	users();
 
 		[OperationContract] [WebInvoke(UriTemplate = "/user/update"			,	Method = "PUT", ResponseFormat = WebMessageFormat.Json)]	bool		user_Update(TM_User user);
@@ -46,7 +47,8 @@ namespace TeamMentor.CoreLib
 		
 
 		//Admin
-		[OperationContract] [WebInvoke(UriTemplate = "/admin/reloadCache",	Method = "PUT")]		string		admin_ReloadCache();
+		[OperationContract] [WebGet(UriTemplate = "/admin/reloadCache")]		string		admin_ReloadCache();
+        [OperationContract] [WebGet(UriTemplate = "/admin/restart")]		    string		admin_RestartCache();
 
 		//Views 
 		[OperationContract] [WebGet(UriTemplate = "/users/.html"			)] Stream		users_html();
