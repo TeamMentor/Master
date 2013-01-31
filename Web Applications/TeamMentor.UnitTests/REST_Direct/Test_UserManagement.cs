@@ -18,12 +18,12 @@ namespace TeamMentor.UnitTests.REST_Direct
 			var tmConfig = TMConfig.Current;
 			var credentials = new TM_Credentials() { UserName = tmConfig.DefaultAdminUserName, Password = tmConfig.DefaultAdminPassword};
 			//login with default value
-			var sessionId = IRESTAdmin.login(credentials);
+			var sessionId = IRESTAdmin.Login_using_Credentials(credentials);
 
 			Assert.AreNotEqual(sessionId, Guid.Empty);
 			//login with a bad password
 			credentials.Password = "AAAA";
-			sessionId = IRESTAdmin.login(credentials);
+			sessionId = IRESTAdmin.Login_using_Credentials(credentials);
 			Assert.AreEqual(sessionId, Guid.Empty);
 		}
 
