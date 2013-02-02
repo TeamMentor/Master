@@ -7,14 +7,14 @@ namespace TeamMentor.UnitTests
 	[TestClass]
 	public class CheckConfigurationAndSetup 
 	{
-		public static REST_Admin RestAdmin { get; set; }
+		public static ITM_REST RestAdmin { get; set; }
 
 		[ClassInitialize]
 		public static void Initialize(TestContext context)
 		{			
 			HttpContextFactory.Context = new API_Moq_HttpContext().httpContext();
 			TMConfig.Current.UseAppDataFolder = true;
-			RestAdmin = new REST_Admin();
+			RestAdmin = new TM_REST();
 		}
 
 		[TestMethod]

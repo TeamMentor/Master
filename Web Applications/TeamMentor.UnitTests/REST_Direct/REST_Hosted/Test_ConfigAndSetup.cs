@@ -5,12 +5,12 @@ using O2.FluentSharp;
 namespace TeamMentor.UnitTests
 {	
 	[TestClass,Ignore]
-	public class Test_ConfigAndSetup : RestClass_Hosted
+	public class Test_ConfigAndSetup : TM_Rest_Hosted
 	{
 		[TestMethod]
 		public void CheckWebServiceHost()
 		{
-			var html = AdminRestHost.BaseAddress.append("/Version").getHtml();
+			var html = TmRestHost.BaseAddress.append("/Version").getHtml();
 			html.valid().assert_True("Html fetch failed");
 			//test version
 			var version = IrestAdmin.Version();

@@ -7,7 +7,7 @@ using System.ServiceModel;
 namespace TeamMentor.CoreLib
 {
 	[ServiceContract]
-	public interface IREST
+	public interface ITM_REST
 	{
 		[OperationContract][WebGet(UriTemplate = "/version"		)]	string Version();				
 
@@ -22,13 +22,13 @@ namespace TeamMentor.CoreLib
 		//User Session
 		[OperationContract][WebGet	 (UriTemplate = "/sessionId"					)]	string		SessionId();
 		[OperationContract][WebGet	 (UriTemplate = "/logout"						)]	Guid		Logout();
-		[OperationContract][WebGet   (UriTemplate = "/login/{username}/{password}"	)]	Guid		Login(string username, string password);
-        
+		[OperationContract][WebGet   (UriTemplate = "/login/{username}/{password}"	)]	Guid		Login(string username, string password);        
 		[OperationContract][WebInvoke(UriTemplate = "/login/", Method = "POST",ResponseFormat = WebMessageFormat.Json)]	Guid		Login_using_Credentials(TM_Credentials credentials);
-
-		//RBAC
+                
+		//User and RBAC
+        [OperationContract][WebGet(UriTemplate = "/user/loggedIn"				)]	bool		    User_LoggedIn();
 		[OperationContract][WebGet(UriTemplate = "/user/name"					)]	string			RBAC_CurrentIdentity_Name();
-		[OperationContract][WebGet(UriTemplate = "/user/isAuthenticated"		)]	bool			RBAC_CurrentIdentity_IsAuthenticated();
+		[OperationContract][WebGet(UriTemplate = "/user/isAuthenticated"	    )]	bool			RBAC_CurrentIdentity_IsAuthenticated();
 		[OperationContract][WebGet(UriTemplate = "/user/roles"					)]	List<string>	RBAC_CurrentPrincipal_Roles();
 		[OperationContract][WebGet(UriTemplate = "/user/hasRole/{role}"			)]	bool			RBAC_HasRole(string role);
 		[OperationContract][WebGet(UriTemplate = "/user/isAdmin"				)]	bool			RBAC_IsAdmin();
@@ -47,14 +47,22 @@ namespace TeamMentor.CoreLib
 		
 
 		//Admin
-		[OperationContract] [WebGet(UriTemplate = "/admin/reloadCache")]		string		admin_ReloadCache();
-        [OperationContract] [WebGet(UriTemplate = "/admin/restart")]		    string		admin_RestartCache();
+		[OperationContract] [WebGet(UriTemplate = "/admin/reloadCache")]		string		Admin_ReloadCache();
+        [OperationContract] [WebGet(UriTemplate = "/admin/restart")]		    string		Admin_Restart();
 
+        [OperationContract] [WebGet(UriTemplate = "/admin/script/{name}")]	    string		Admin_InvokeScript(string name);
 		//Views 
-		[OperationContract] [WebGet(UriTemplate = "/users/.html"			)] Stream		users_html();
+		[OperationContract] [WebGet(UriTemplate = "/users/.html"			)]  Stream		users_html();
 
 		//UserActivities 
-		[OperationContract] [WebGet(UriTemplate = "/users/activites"		)] Stream		users_Activities();
+		//[OperationContract] [WebGet(UriTemplate = "/users/activites"		)]  Stream		users_Activities();
 
+
+        //TBot
+        [OperationContract] [WebGet(UriTemplate = "/tbot"	        )]      Stream		Show_TBot();
+        [OperationContract] [WebGet(UriTemplate = "/tbot/list"      )]	    Stream		List_TBot_Questions();
+        [OperationContract] [WebGet(UriTemplate = "/tbot/ask/{what}")]	    Stream		Ast_TBot (string what);
+        
+        
 	}	
 }

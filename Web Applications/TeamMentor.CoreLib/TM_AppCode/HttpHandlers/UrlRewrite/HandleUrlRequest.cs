@@ -156,7 +156,7 @@ namespace TeamMentor.CoreLib
                         return redirectTo_Wsdl();
                     case "reload":
                         return reloadCache_and_RedirectToHomePage();
-                    case "home":
+                   case "home":
                         return redirectTo_HomePage();
                     //case "images":                        
                     case "image":
@@ -171,7 +171,7 @@ namespace TeamMentor.CoreLib
 					case "download_library":
 						return redirectTo_DownloadLibrary(data);
                     case "sso":
-                        return handleAction_SSO(data);                                                            
+                        return handleAction_SSO();                                                            
                 }
 				
 				tmWebServices.tmAuthentication.mapUserRoles(false);			 // enable  CSRF protection
@@ -460,7 +460,7 @@ namespace TeamMentor.CoreLib
 					var redirectTarget = tmWebServices.VirtualArticle_Get_GuidRedirect(guid);
 					if (redirectTarget.valid())
 					{
-						context.Response.Redirect(redirectTarget); ;
+						context.Response.Redirect(redirectTarget);
 						return false;
 					}
 				}
@@ -481,7 +481,7 @@ namespace TeamMentor.CoreLib
             return true;
 
         }
-        private bool handleAction_SSO(string data)
+        private bool handleAction_SSO()
         {
             new SingleSignOn().authenticateUserBasedOn_SSOToken();
             return true;
@@ -498,6 +498,7 @@ namespace TeamMentor.CoreLib
             tmWebServices.XmlDatabase_ReloadData();
             return redirectTo_HomePage();
         }
+        
         public bool transfer_TeamMentorGui()
         {
             context.Server.Transfer("/html_pages/Gui/TeamMentor.html");            

@@ -4,7 +4,7 @@ using O2.DotNetWrappers.ExtensionMethods;
 
 namespace TeamMentor.CoreLib
 {
-	public class Admin_REST_Host
+	public class TM_REST_Host
 	{
 		public static string	Service_Protocol	{ get; set; }
 		public static int		Service_Port		{ get; set; }
@@ -12,7 +12,7 @@ namespace TeamMentor.CoreLib
 				
 		public WebServiceHost	Host				{ get; set; }
 
-		static Admin_REST_Host()
+		static TM_REST_Host()
 		{
 			Service_Protocol = "http";
 			Service_Port	 = 20000; 
@@ -24,20 +24,20 @@ namespace TeamMentor.CoreLib
 			get { return  "{0}://{1}:{2}".format(Service_Protocol, Service_IP, Service_Port).uri(); }
 		}
 
-		public Admin_REST_Host StartHost()
+		public TM_REST_Host StartHost()
 		{						
-			Host = new WebServiceHost(typeof (REST_Admin), BaseAddress);						
+			Host = new WebServiceHost(typeof (TM_REST), BaseAddress);						
 			Host.Open();						
 			return this;
 		}
 
-		public IREST GetProxy()
+		public ITM_REST GetProxy()
 		{
-			var webChannelFactory = new WebChannelFactory<IREST>(BaseAddress);			
+			var webChannelFactory = new WebChannelFactory<ITM_REST>(BaseAddress);			
 			return webChannelFactory.CreateChannel();
 		}
 
-		public Admin_REST_Host StoptHost()
+		public TM_REST_Host StoptHost()
 		{
 			Host.Close();
 			return this;

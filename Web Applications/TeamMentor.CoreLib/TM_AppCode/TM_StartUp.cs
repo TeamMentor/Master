@@ -26,7 +26,7 @@ namespace TeamMentor.CoreLib
         public void Application_Start()
         {
             PublicDI.log.LogRedirectionTarget = new Logger_Memory();
-            Admin_REST_Config.SetRouteTable();			
+            TM_REST.SetRouteTable();			
         }
         public void Application_End()
         {

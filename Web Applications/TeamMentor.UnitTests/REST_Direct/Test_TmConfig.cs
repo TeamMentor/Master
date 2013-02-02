@@ -5,7 +5,7 @@ using TeamMentor.CoreLib;
 namespace TeamMentor.UnitTests.REST_Direct
 {
 	[TestClass]
-	public class Admin_REST_Class : RestClass_Direct
+	public class Admin_REST_Class : TM_Rest_Direct
 	{
 		[TestMethod]
 		public void Test_LoadTmConfig()

@@ -11,7 +11,7 @@ namespace TM_API
 {
 	public class MainModule : NancyModule
 	{
-		public IREST_Admin rest_Admin { get; set; }		
+		public ITM_REST rest_Admin { get; set; }		
 
 		public MainModule() 
 		{
@@ -20,7 +20,7 @@ namespace TM_API
 
 		public MainModule(IRouteCacheProvider routeCacheProvider)
 		{
-			rest_Admin = new REST_Admin();
+			rest_Admin = new TM_REST();
 			UserGroup.Admin.setThreadPrincipalWithRoles(); //el	evate privileges during dev
 
 			Get["/"]					= (x) => View["routes", routeCacheProvider.GetCache()];
