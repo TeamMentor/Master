@@ -579,7 +579,7 @@
     <Content Include="Javascript\_mappings\HomePage_JS.txt" />
     <Content Include="Javascript\_mappings\HomePage_JS_TM.txt" />
     <Content Include="TBot\Questions\hello.cshtml" />
-    <Content Include="TBot\Questions\test.cshtml" />
+    <Content Include="TBot\Questions\testB.cshtml" />
     <Content Include="TBot\Questions\theTime.cshtml" />
     <Content Include="TBot\TBotMain.html" />
     <Content Include="Web.config">
@@ -640,6 +640,7 @@
     <Content Include="TBot\Users\users.cshtml" />
     <Content Include="TBot\Users\user_new.cshtml" />
     <Content Include="TBot\Users\user.cshtml" />
+    <Content Include="TBot\Questions\version.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

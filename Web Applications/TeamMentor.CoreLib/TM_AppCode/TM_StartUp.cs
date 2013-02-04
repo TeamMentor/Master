@@ -37,7 +37,8 @@ namespace TeamMentor.CoreLib
             if (lastError is HttpException && (lastError as HttpException).GetHttpCode() == 404)
             {				
                 new HandleUrlRequest().routeRequestUrl_for404();
-            }						
+            }
+            "LastError: {0}".error(lastError);
         }   
         
         public void Application_BeginRequest()

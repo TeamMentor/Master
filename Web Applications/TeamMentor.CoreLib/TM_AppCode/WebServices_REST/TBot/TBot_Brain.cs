@@ -37,23 +37,27 @@ namespace TeamMentor.CoreLib
 
         public Stream Ask(string what)
         {
+            
             try
-            {
+            {                
                 var askFile = HttpContextFactory.Server.MapPath(TBot_Questions_Folder).pathCombine(what.urlEncode());
-            if (askFile.fileExists())
-            {
-                var code = askFile.fileContents();
-                var returnValue = code.compileAndExecuteCodeSnippet().str();
-                return GetHtml(returnValue);
-            }
-            var csFile = askFile + ".cshtml";
-            if (csFile.fileExists())
-            {
-                return GetHtml(Razor.Run(csFile));
-                //return GetHtml(Razor.Parse(csFile.fileContents()));
-                //return GetHtml("Found .cshtml file: " + csFile);
-            }
-            return GetHtml("Couldn't find requested question");            
+                if (askFile.fileExists())
+                {
+                    var code = askFile.fileContents();
+                    var returnValue = code.compileAndExecuteCodeSnippet().str();
+                    return GetHtml(returnValue);
+                }
+                var csFile = askFile + ".cshtml";
+                if (csFile.fileExists())
+                {
+                    var templateService = (ITemplateService) typeof (Razor).prop("TemplateService");
+                    if (templateService.HasTemplate(csFile).isFalse())
+                        Razor.Compile(csFile.fileContents(), csFile);
+                    return GetHtml(Razor.Run(csFile));
+                    //return GetHtml(Razor.Parse(csFile.fileContents()));
+                    //return GetHtml("Found .cshtml file: " + csFile);
+                }
+                return GetHtml("Couldn't find requested question");            
             }
             catch (Exception ex)
             {
@@ -71,8 +75,7 @@ namespace TeamMentor.CoreLib
                 foreach (var file in questionsFolder.files(true))
                 {
                     var name = file.fileName_WithoutExtension();
-                    filesHtml += "<li><a href='/rest/tbot/ask/{0}'>{0}</a></li>".format(name);
-                    Razor.Compile(file.fileContents(), file);
+                    filesHtml += "<li><a href='/rest/tbot/ask/{0}'>{0}</a></li>".format(name);                    
                 }
                 filesHtml += "</ul>";
                 return GetHtml(filesHtml, false);
