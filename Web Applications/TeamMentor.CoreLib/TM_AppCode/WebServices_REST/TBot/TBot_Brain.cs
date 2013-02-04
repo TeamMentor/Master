@@ -14,9 +14,17 @@ namespace TeamMentor.CoreLib
     public class TBot_Brain
     {
         public static string TBot_Main_HTML_Page    = "/TBot/TbotMain.html";
-        public static string TBot_Questions_Folder  = "/TBot/Questions";
-        public static Dictionary<string, ITemplate> precompiledTemplates = new Dictionary<string, ITemplate>();
+        public static string TBot_Scripts_Folder  = "/TBot";
+        public static Dictionary<string,string> AvailableScripts     { get; set; }
+        public static List<int>                 ScriptContentHashes  { get; set; }
 
+        static TBot_Brain()
+        {
+            ScriptContentHashes = new List<int>();
+            AvailableScripts = HttpContextFactory.Server.MapPath(TBot_Scripts_Folder)
+                                                 .files(true, "*.cshtml")
+                                                 .ToDictionary((file) => file.fileName_WithoutExtension());
+        }                
 
         public Stream GetHtml(string content, bool htmlEncode = true)
         {
@@ -36,24 +44,27 @@ namespace TeamMentor.CoreLib
         }
 
         public Stream Ask(string what)
-        {
-            
+        {            
             try
-            {                
-                var askFile = HttpContextFactory.Server.MapPath(TBot_Questions_Folder).pathCombine(what.urlEncode());
-                if (askFile.fileExists())
+            {                                
+                /*if (askFile.fileExists())
                 {
                     var code = askFile.fileContents();
                     var returnValue = code.compileAndExecuteCodeSnippet().str();
                     return GetHtml(returnValue);
-                }
-                var csFile = askFile + ".cshtml";
-                if (csFile.fileExists())
+                }*/                
+                if (AvailableScripts.hasKey(what))
                 {
+                    var csFile = AvailableScripts[what];
                     var templateService = (ITemplateService) typeof (Razor).prop("TemplateService");
-                    if (templateService.HasTemplate(csFile).isFalse())
-                        Razor.Compile(csFile.fileContents(), csFile);
-                    return GetHtml(Razor.Run(csFile));
+                    var fileContents = csFile.fileContents();
+                    var fileContentsHash = fileContents.hash();
+                    if (templateService.HasTemplate(csFile).isFalse() || ScriptContentHashes.contains(fileContentsHash).isFalse())
+                    {                        
+                        Razor.Compile(fileContents, csFile);
+                        ScriptContentHashes.add(fileContentsHash);
+                    }
+                    return GetHtml(Razor.Run(csFile), false);
                     //return GetHtml(Razor.Parse(csFile.fileContents()));
                     //return GetHtml("Found .cshtml file: " + csFile);
                 }
@@ -67,20 +78,16 @@ namespace TeamMentor.CoreLib
         }
 
         public Stream List()
-        {
-            var questionsFolder = HttpContextFactory.Server.MapPath(TBot_Questions_Folder);
-            if (questionsFolder.dirExists())
+        {                        
+            var filesHtml = "Here are the commands I found:<ul>";
+            foreach (var items in AvailableScripts)
             {                
-                var filesHtml = "Here are the commands I found:<ul>";
-                foreach (var file in questionsFolder.files(true))
-                {
-                    var name = file.fileName_WithoutExtension();
-                    filesHtml += "<li><a href='/rest/tbot/ask/{0}'>{0}</a></li>".format(name);                    
-                }
-                filesHtml += "</ul>";
-                return GetHtml(filesHtml, false);
+                filesHtml += "<li><a href='/rest/tbot/ask/{0}'>{0}</a> - {1}</li>".format(items.Key, items.Value.fileContents().hash());                    
             }
-            return GetHtml("Couldn't find the Questions Folders");            
+            filesHtml += "</ul>";
+            return GetHtml(filesHtml, false);
+            
         }
+        
     }
 }
