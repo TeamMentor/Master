@@ -1,1 +1,0 @@
-﻿return "It's {0} on {1}".format(DateTime.Now.ToLongTimeString(), DateTime.Now.ToLongDateString());

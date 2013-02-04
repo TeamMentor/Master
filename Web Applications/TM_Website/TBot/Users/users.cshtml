@@ -1,0 +1,11 @@
+﻿@{
+	var users = Model.users();
+}
+
+	@foreach (var user in users)
+	{
+	 <tr>
+	 <td><a userid="@user.UserId">@user.UserName</a></td><td> @user.UserId</td><td id="CreatedDate">12/Feb/2012</td><td id="Actions">....</td>
+	 </tr>
+	}
+</ul>
