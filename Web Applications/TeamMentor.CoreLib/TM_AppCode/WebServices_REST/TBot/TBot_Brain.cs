@@ -6,6 +6,7 @@ using System.Security.Permissions;
 using System.Text;
 using O2.DotNetWrappers.ExtensionMethods;
 using RazorEngine;
+using RazorEngine.Templating;
 
 namespace TeamMentor.CoreLib
 {
@@ -14,6 +15,8 @@ namespace TeamMentor.CoreLib
     {
         public static string TBot_Main_HTML_Page    = "/TBot/TbotMain.html";
         public static string TBot_Questions_Folder  = "/TBot/Questions";
+        public static Dictionary<string, ITemplate> precompiledTemplates = new Dictionary<string, ITemplate>();
+
 
         public Stream GetHtml(string content, bool htmlEncode = true)
         {
@@ -46,7 +49,8 @@ namespace TeamMentor.CoreLib
             var csFile = askFile + ".cshtml";
             if (csFile.fileExists())
             {
-                return GetHtml(Razor.Parse(csFile.fileContents()));
+                return GetHtml(Razor.Run(csFile));
+                //return GetHtml(Razor.Parse(csFile.fileContents()));
                 //return GetHtml("Found .cshtml file: " + csFile);
             }
             return GetHtml("Couldn't find requested question");            
@@ -68,6 +72,7 @@ namespace TeamMentor.CoreLib
                 {
                     var name = file.fileName_WithoutExtension();
                     filesHtml += "<li><a href='/rest/tbot/ask/{0}'>{0}</a></li>".format(name);
+                    Razor.Compile(file.fileContents(), file);
                 }
                 filesHtml += "</ul>";
                 return GetHtml(filesHtml, false);
