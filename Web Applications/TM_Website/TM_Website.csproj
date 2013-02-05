@@ -641,6 +641,7 @@
     <Content Include="TBot\Users\user_new.cshtml" />
     <Content Include="TBot\Users\user.cshtml" />
     <Content Include="TBot\Questions\version.cshtml" />
+    <Content Include="TBot\Admin\ActiveSessions.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

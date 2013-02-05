@@ -18,13 +18,20 @@ namespace TeamMentor.CoreLib
         public static Dictionary<string,string> AvailableScripts     { get; set; }
         public static List<int>                 ScriptContentHashes  { get; set; }
 
+        public DateTime     StartTime { get; set; }
+
         static TBot_Brain()
         {
             ScriptContentHashes = new List<int>();
             AvailableScripts = HttpContextFactory.Server.MapPath(TBot_Scripts_Folder)
                                                  .files(true, "*.cshtml")
                                                  .ToDictionary((file) => file.fileName_WithoutExtension());
-        }                
+        }
+
+        public TBot_Brain()
+        {
+            StartTime = DateTime.Now;
+        }
 
         public Stream GetHtml(string content, bool htmlEncode = true)
         {
@@ -33,7 +40,9 @@ namespace TeamMentor.CoreLib
                                     ? tbotMainHtmlFile.fileContents()
                                     : "[TBot] could not find file: {0}".format(tbotMainHtmlFile);            
             
-            var html = tbotMainHtml.format((htmlEncode) ? content.htmlEncode() : content);		
+            var html = tbotMainHtml.format((htmlEncode) ? content.htmlEncode() : content);
+            var executionTime = DateTime.Now - StartTime;
+            html += "<hr>script executed in: {0}s".format(executionTime.TotalSeconds);
             return html.stream_UFT8();
         }
 
@@ -46,13 +55,7 @@ namespace TeamMentor.CoreLib
         public Stream Ask(string what)
         {            
             try
-            {                                
-                /*if (askFile.fileExists())
-                {
-                    var code = askFile.fileContents();
-                    var returnValue = code.compileAndExecuteCodeSnippet().str();
-                    return GetHtml(returnValue);
-                }*/                
+            {                                                
                 if (AvailableScripts.hasKey(what))
                 {
                     var csFile = AvailableScripts[what];
@@ -64,9 +67,7 @@ namespace TeamMentor.CoreLib
                         Razor.Compile(fileContents, csFile);
                         ScriptContentHashes.add(fileContentsHash);
                     }
-                    return GetHtml(Razor.Run(csFile), false);
-                    //return GetHtml(Razor.Parse(csFile.fileContents()));
-                    //return GetHtml("Found .cshtml file: " + csFile);
+                    return GetHtml(Razor.Run(csFile, new TM_REST()), false);
                 }
                 return GetHtml("Couldn't find requested question");            
             }
