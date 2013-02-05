@@ -59,9 +59,9 @@ namespace TeamMentor.CoreLib
 
         public static T argument<T>(this MethodInterceptionArgs args)
         {
-            var firstArgument = args.first_Argument();
-            if (firstArgument is T)
-                return (T) firstArgument;
+            foreach(var argument in args.Arguments)
+            if (argument is T)
+                return (T) argument;
             return default(T);
         }
     }

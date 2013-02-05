@@ -52,8 +52,8 @@ namespace TeamMentor.CoreLib
 		public List<TeamMentor_Article> GetGuidanceItemsInFolder(Guid folderId)		{ return tmXmlDatabase.tmGuidanceItems_InFolder(folderId);}  			
 		public List<TeamMentor_Article> GetGuidanceItemsInView(Guid viewId)			{ return tmXmlDatabase.getGuidanceItemsInView(viewId); }  	
 		public List<TeamMentor_Article> GetGuidanceItemsInViews(List<Guid> viewIds)	{ return tmXmlDatabase.getGuidanceItemsInViews(viewIds); }  	
-		public string		GetGuidanceItemHtml(Guid guidanceItemId)				{ return tmXmlDatabase.getGuidanceItemHtml(guidanceItemId);  }
-		public List<string> GetGuidanceItemsHtml(List<Guid> guidanceItemsIds)		{ return tmXmlDatabase.getGuidanceItemsHtml(guidanceItemsIds); }  	
+		public string		GetGuidanceItemHtml(Guid sessionId  , Guid guidanceItemId)				{ return tmXmlDatabase.getGuidanceItemHtml (sessionId, guidanceItemId);  }
+		public List<string> GetGuidanceItemsHtml(Guid sessionId , List<Guid> guidanceItemsIds)		{ return tmXmlDatabase.getGuidanceItemsHtml(sessionId, guidanceItemsIds); }  	
 		public List<TeamMentor_Article> GetAllGuidanceItems()						{ return tmXmlDatabase.tmGuidanceItems(); }  	
 		public List<TeamMentor_Article> GetGuidanceItemsInLibrary(Guid libraryId)	{ return tmXmlDatabase.tmGuidanceItems(libraryId);}  	
 		

@@ -1,7 +1,5 @@
 using System;
 using System.Web;
-using System.IO;
-using System.Security;
 using XssEncoder = Microsoft.Security.Application.Encoder;
 using O2.DotNetWrappers.ExtensionMethods;
 
@@ -45,7 +43,7 @@ namespace TeamMentor.CoreLib
 
 				O2.DotNetWrappers.Windows.Files.copyFolder(pathToGuidanceItemsFolder, folderToZip, true, true, ".git");
 				O2.DotNetWrappers.Windows.Files.copy(pathToLibraryXmlFile, folderToZip);
-				var memoryStream = new MemoryStream();
+				
 				new ICSharpCode.SharpZipLib.Zip.FastZip().CreateZip(zipFile, targetDir, true, "");
 				context.Response.ContentType = "application/zip";
 				context.Response.AddHeader("content-disposition", "filename={0}.zip".format(libraryName));

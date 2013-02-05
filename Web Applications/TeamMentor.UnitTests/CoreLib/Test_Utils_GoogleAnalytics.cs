@@ -49,7 +49,7 @@ namespace TeamMentor.UnitTests.CoreLib
 		[Test]
 		public void LogUserActivity()
 		{
-			"UnitTest".logActivity("LogUserActivity");
+			new TMUser().logUserActivity("UnitTest","LogUserActivity");
 			Assert.AreEqual(logCount_AtStart + 1, GoogleAnalytics.Current.LogCount);
 		}
 

@@ -27,7 +27,7 @@ namespace TeamMentor.CoreLib
             {
                 if (tmUser.notNull() && userGuid != Guid.Empty)
                 {
-                    "User Login".logActivity(tmUser.UserName);
+                    tmUser.logUserActivity("User Login", tmUser.UserName);
                     TM_UserData.Current.ActiveSessions.add(userGuid, tmUser);
                     return userGuid;
                 }
@@ -46,7 +46,7 @@ namespace TeamMentor.CoreLib
         {
             if (sessionId.validSession())
             {
-                "User Logout".logActivity(sessionId.session_UserName());
+                sessionId.session_TmUser().logUserActivity("User Logout", sessionId.session_UserName());
                 TM_UserData.Current.ActiveSessions.Remove(sessionId);
                 return true;
             }

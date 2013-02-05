@@ -9,7 +9,7 @@
     @foreach (var user in users)
     {
      <tr>
-     <td><a userid="@user.UserId">@user.UserName</a></td><td> @user.UserId</td><td id="CreatedDate">@user.CreatedDate</td><td id="Actions">@user.Email</td>
+     <td><a href="userData?userName=@user.UserName" userid="@user.UserId">@user.UserName</a></td><td> @user.UserId</td><td id="CreatedDate">@user.CreatedDate</td><td id="Actions">@user.Email</td>
      </tr>
     }
 </table>

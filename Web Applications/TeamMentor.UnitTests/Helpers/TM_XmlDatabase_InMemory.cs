@@ -20,8 +20,8 @@ namespace TeamMentor.UnitTests
 		[TestFixtureSetUp]		
 		public void TestFixtureSetUp()
 		{
-			tmXmlDatabase = new TM_Xml_Database(false);	            
-			//all these values should be null since we are running TM all in memory
+			tmXmlDatabase = new TM_Xml_Database();	 
+            //all these values should be null since we are running TM memory (default setting)
 			Assert.IsNull(tmXmlDatabase.Path_XmlDatabase		    , "Path_XmlDatabase");
 			Assert.IsNull(tmXmlDatabase.Path_XmlLibraries		    , "Path_XmlLibraries");
 			Assert.IsEmpty(tmXmlDatabase.Cached_GuidanceItems	    , "Cached_GuidanceItems");

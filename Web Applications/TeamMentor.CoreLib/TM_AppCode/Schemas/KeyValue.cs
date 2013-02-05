@@ -8,10 +8,7 @@ namespace TeamMentor.CoreLib
 	{
 		public TKey Key { get; set; }
 		public TValue Value { get; set; }
-
-		public KeyValue()
-		{
-		}
+		
 	}
 	public static class KeyValue_extensionMethods
 	{

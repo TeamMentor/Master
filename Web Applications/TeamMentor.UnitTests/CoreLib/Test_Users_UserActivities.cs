@@ -33,7 +33,7 @@ namespace TeamMentor.UnitTests.CoreLib
 		{
 			var name = "Test Name";
 			var details = "Test Details";
-			name.logActivity(details);
+			new TMUser().logUserActivity(name, details);
 			Assert.AreEqual(1, userActivities.ActivitiesLog.size());
 		}
 	}

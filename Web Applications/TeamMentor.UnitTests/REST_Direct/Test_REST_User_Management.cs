@@ -19,7 +19,7 @@ namespace TeamMentor.UnitTests.REST_Direct
 			//login with default value
 			var sessionId = TmRest.Login_using_Credentials(credentials);
 
-			Assert.AreNotEqual(sessionId, Guid.Empty);
+			Assert.AreNotEqual(sessionId, Guid.Empty);            
 			//login with a bad password
 			credentials.Password = "AAAA";
 			sessionId = TmRest.Login_using_Credentials(credentials);
@@ -39,7 +39,7 @@ namespace TeamMentor.UnitTests.REST_Direct
 			Assert.AreEqual(expectedHtml, responseHtml);
 			//need better way to do the test bellow so that it doesn't clash with the other tests running in parallel
 			/ *
-			"Test".logActivity("User Activity");
+			"Test".logUserActivity("User Activity");
 			600.wait();
 			responseHtml = moq_HttpContext.HttpContextBase.response_Read_All();
 			Assert.AreNotEqual(expectedHtml, responseHtml);* /

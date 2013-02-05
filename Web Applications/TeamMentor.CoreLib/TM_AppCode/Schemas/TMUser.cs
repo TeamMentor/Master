@@ -5,13 +5,7 @@ using System.Text;
 using System.Xml.Serialization;
 
 namespace TeamMentor.CoreLib
-{
-    [Serializable]        
-    public class Users
-    {
-        public List<string> UserNames { get; set; }        
-    }
-
+{    
     [Serializable]            
     public class TMUser
     {
@@ -33,11 +27,14 @@ namespace TeamMentor.CoreLib
         [XmlAttribute] public string    PostLoginScript      { get; set; }
         
 
-        [XmlElement]   public UserStats Stats				 { get; set; }
+        [XmlElement]   public UserStats             Stats	        { get; set; }
+        [XmlElement]   public List<UserActivity>    UserActivities  { get; set; }
 
         public TMUser()
         {
             ID = Guid.NewGuid();
+            UserActivities = new List<UserActivity>();
+
             Stats = new UserStats
                 {
                     CreationDate = DateTime.Now,

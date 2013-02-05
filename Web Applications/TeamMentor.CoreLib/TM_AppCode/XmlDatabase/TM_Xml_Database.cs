@@ -10,7 +10,7 @@ namespace TeamMentor.CoreLib
         public static TM_Xml_Database Current               { get; set; }
         //config
         public bool			UsingFileStorage				{ get; set; }   
-
+        public bool         ServerOnline                    { get; set; }
         //users
         public TM_UserData  UserData                        { get; set; }        
 
@@ -47,6 +47,7 @@ namespace TeamMentor.CoreLib
         {
             try
             {
+                ServerOnline = new O2.Kernel.CodeUtils.O2Kernel_Web().online();     // only check this once
                 Cached_GuidanceItems = new Dictionary<Guid, TeamMentor_Article>();
                 GuidanceItems_FileMappings = new Dictionary<Guid, string>();
                 GuidanceExplorers_XmlFormat = new Dictionary<Guid, guidanceExplorer>();

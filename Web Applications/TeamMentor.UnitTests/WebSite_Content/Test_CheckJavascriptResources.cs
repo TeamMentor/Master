@@ -39,11 +39,15 @@ namespace TeamMentor.UnitTests.WebSite_Content
 			var googleVersion = "http://www.google-analytics.com/ga.js".GET().fixCRLF();
 
 			Assert.That(tmVersion.valid()	, "ga.js tmVersion not valid");
-		    //TODO: if (online) // add check to see if we are online
+		    if( new O2.Kernel.CodeUtils.O2Kernel_Web().online())
 		    {
 		        Assert.That(googleVersion.valid(), "ga.js googleVersion not valid");
 		        Assert.AreEqual(tmVersion, googleVersion, "ga.js files didn't match");
-		    }   
+		    }
+		    else
+		    {
+		     Assert.Ignore("Ignoring Test because we are offline");   
+		    }
 		}		
 	}
 }

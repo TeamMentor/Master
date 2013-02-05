@@ -78,8 +78,8 @@ namespace TeamMentor.CoreLib
         [WebMethod(EnableSession = true)]	public List<TeamMentor_Article> GetGuidanceItemsInFolder(Guid folderId)		{	return javascriptProxy.GetGuidanceItemsInFolder(folderId);	}		
         [WebMethod(EnableSession = true)]	public List<TeamMentor_Article> GetGuidanceItemsInView(Guid viewId)			{	return javascriptProxy.GetGuidanceItemsInView(viewId);	}		
         [WebMethod(EnableSession = true)]	public List<TeamMentor_Article> GetGuidanceItemsInViews(List<Guid> viewIds)	{	return javascriptProxy.GetGuidanceItemsInViews(viewIds);	}		
-        [WebMethod(EnableSession = true)]	public string GetGuidanceItemHtml(Guid GuidanceItemId)						{	return javascriptProxy.GetGuidanceItemHtml(GuidanceItemId);	}				
-        [WebMethod(EnableSession = true)]	public List<String> GetGuidanceItemsHtml(List<Guid> GuidanceItemsIds)		{	return javascriptProxy.GetGuidanceItemsHtml(GuidanceItemsIds);	}
+        [WebMethod(EnableSession = true)]	public string GetGuidanceItemHtml(Guid GuidanceItemId)						{	return javascriptProxy.GetGuidanceItemHtml(tmAuthentication.sessionID, GuidanceItemId);	}				
+        [WebMethod(EnableSession = true)]	public List<String> GetGuidanceItemsHtml(List<Guid> GuidanceItemsIds)		{	return javascriptProxy.GetGuidanceItemsHtml(tmAuthentication.sessionID, GuidanceItemsIds);	}
         
         //both methods below will generate a JSON object with more than 1Mb (with the default SI library)
         [WebMethod(EnableSession = true)]	public List<TeamMentor_Article> GetAllGuidanceItems()						{	return javascriptProxy.GetAllGuidanceItems();	}

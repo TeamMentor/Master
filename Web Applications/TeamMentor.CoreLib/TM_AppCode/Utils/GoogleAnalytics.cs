@@ -67,14 +67,18 @@ namespace TeamMentor.CoreLib
 		{
 			if (Enabled.isFalse())
 				return this;
-
-			//if (page.ga_LogThisPageType().isFalse())
-			//	return this;
+		
 			
 			var gaRequest = ("{0}?utmdt={1}&utmp={2}&utmac={3}&utmcc={4}").format(
 								Analytics_Url, title, page, accountId, userCookie);
+
 			//this should register a new entry in the GoogleAnalytics account, but I'm not sure how we cancheck that it actually worked (the returning gif is the same for success or failure)
-		    O2Thread.mtaThread(() => gaRequest.info().GET());
+		    O2Thread.mtaThread(
+                () =>
+                    {
+                        if (TM_Xml_Database.Current.ServerOnline)
+                            gaRequest.info().GET();
+                    });
 			LogCount++;
 			return this;
 		}

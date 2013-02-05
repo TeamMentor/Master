@@ -7,9 +7,7 @@ using System.Web;
 using System.Web.Script.Serialization;
 using O2.DotNetWrappers.ExtensionMethods;
 using O2.DotNetWrappers.Windows;
-
-using O2.XRules.Database.APIs;
-using TeamMentor.CoreLib.WebServices;
+using TeamMentor.CoreLib;
 
 public class UserRequest
 {

@@ -104,15 +104,16 @@ namespace TeamMentor.CoreLib
         }
         
         [ReadArticles] 
-        public string getGuidanceItemHtml(Guid guidanceItemId)
+        public string getGuidanceItemHtml(Guid sessionId, Guid guidanceItemId)
         {            
 
             if (Cached_GuidanceItems.hasKey(guidanceItemId).isFalse())
                 return null;
 
             var article = Cached_GuidanceItems[guidanceItemId];
+            
 
-            "View Article Html".logActivity(article.Metadata.Title);
+            sessionId.session_TmUser().logUserActivity("View Article Html", article.Metadata.Title); 
             
             var articleContent = article.Content.Data.Value;
 
@@ -142,13 +143,13 @@ namespace TeamMentor.CoreLib
         }
 
         [ReadArticles]
-        public List<string> getGuidanceItemsHtml(List<Guid> guidanceItemsIds)
+        public List<string> getGuidanceItemsHtml(Guid sessionId, List<Guid> guidanceItemsIds)
         {
             var data = new List<string>();
             if (guidanceItemsIds.notNull())
                 foreach (var guidanceItemId in guidanceItemsIds)
                 {
-                    data.add(getGuidanceItemHtml(guidanceItemId));
+                    data.add(getGuidanceItemHtml(sessionId, guidanceItemId));
                 }
             return data;
         }

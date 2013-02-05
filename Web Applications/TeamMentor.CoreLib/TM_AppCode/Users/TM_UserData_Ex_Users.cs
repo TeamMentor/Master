@@ -125,7 +125,7 @@ namespace TeamMentor.CoreLib
                 if (TMConfig.Current.Eval_Accounts.Enabled)
                     if (tmUser.notNull() &&tmUser.Stats.ExpirationDate < DateTime.Now && tmUser.Stats.ExpirationDate != default(DateTime))
                     {
-                        "Account Expired".logActivity(tmUser.UserName);
+                        tmUser.logUserActivity("Account Expired",tmUser.UserName);
                         return Guid.Empty;
                     }
 

@@ -9,9 +9,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace urn.microsoft.guidanceexplorer.guidanceItem {
-    using System;
-    using System.Collections;
+namespace urn.microsoft.guidanceexplorer.guidanceItem {    
     using System.Collections.Generic;
     using System.IO;
     using System.Diagnostics;
@@ -26,7 +24,7 @@ namespace urn.microsoft.guidanceexplorer.guidanceItem {
     /// Regular expression: (content?)
     /// </para>
     /// </summary>
-    public partial class guidanceItem : XTypedElement, IXMetaData {
+    public class guidanceItem : XTypedElement, IXMetaData {
         
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         static Dictionary<XName, System.Type> localElementDictionary = new Dictionary<XName, System.Type>();
@@ -34,23 +32,15 @@ namespace urn.microsoft.guidanceexplorer.guidanceItem {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private static ContentModelEntity contentModel;
         
-         public static explicit operator guidanceItem(XElement xe) { return XTypedServices.ToXTypedElement<guidanceItem>(xe,LinqToXsdTypeManager.Instance as ILinqToXsdTypeManager); }
+        public static explicit operator guidanceItem(XElement xe) { return XTypedServices.ToXTypedElement<guidanceItem>(xe,LinqToXsdTypeManager.Instance); }
         
         static guidanceItem() {
             BuildElementDictionary();
             contentModel = new SequenceContentModelEntity(new NamedContentModelEntity(XName.Get("content", "urn:microsoft:guidanceexplorer:guidanceItem")));
         }
-        
-        /// <summary>
-        /// <para>
-        /// Regular expression: (content?)
-        /// </para>
-        /// </summary>
-        public guidanceItem() {
-        }
-        
-		
-		//DC: Extra parameter (manually added to support the 'phase' data) - need to created XSD to take this into account
+
+
+        //DC: Extra parameter (manually added to support the 'phase' data) - need to created XSD to take this into account
         public string phase {
             get {
                 XAttribute x = this.Attribute(XName.Get("phase", ""));
@@ -60,8 +50,8 @@ namespace urn.microsoft.guidanceexplorer.guidanceItem {
                 this.SetAttribute(XName.Get("phase", ""), value, XmlSchemaType.GetBuiltInSimpleType(XmlTypeCode.String).Datatype);
             }
         }
-		
-		public string libraryId {
+        
+        public string libraryId {
             get {
                 XAttribute x = this.Attribute(XName.Get("libraryId", ""));
                 return XTypedServices.ParseValue<string>(x, XmlSchemaType.GetBuiltInSimpleType(XmlTypeCode.String).Datatype);
@@ -70,7 +60,7 @@ namespace urn.microsoft.guidanceexplorer.guidanceItem {
                 this.SetAttribute(XName.Get("libraryId", ""), value, XmlSchemaType.GetBuiltInSimpleType(XmlTypeCode.String).Datatype);
             }
         }
-		
+        
         /// <summary>
         /// <para>
         /// Occurrence: optional
@@ -103,8 +93,8 @@ namespace urn.microsoft.guidanceexplorer.guidanceItem {
                 this.SetAttribute(XName.Get("id", ""), value, XmlSchemaType.GetBuiltInSimpleType(XmlTypeCode.String).Datatype);
             }
         }
-		
-		public string id_original {
+        
+        public string id_original {
             get {
                 XAttribute x = this.Attribute(XName.Get("id_original", ""));
                 return XTypedServices.ParseValue<string>(x, XmlSchemaType.GetBuiltInSimpleType(XmlTypeCode.String).Datatype);
@@ -226,7 +216,7 @@ namespace urn.microsoft.guidanceexplorer.guidanceItem {
         /// </summary>
         public string Priority {
             get {
-                XAttribute x = this.Attribute(XName.Get("Priority", ""));
+                XAttribute x = Attribute(XName.Get("Priority", ""));
                 return XTypedServices.ParseValue<string>(x, XmlSchemaType.GetBuiltInSimpleType(XmlTypeCode.String).Datatype);
             }
             set {
@@ -377,7 +367,7 @@ namespace urn.microsoft.guidanceexplorer.guidanceItem {
         }
         
         public override XTypedElement Clone() {
-            return XTypedServices.CloneXTypedElement<guidanceItem>(this);
+            return XTypedServices.CloneXTypedElement(this);
         }
         
         private static void BuildElementDictionary() {
@@ -394,28 +384,20 @@ namespace urn.microsoft.guidanceexplorer.guidanceItem {
     /// Regular expression: (guidanceItem)*
     /// </para>
     /// </summary>
-    public partial class NewDataSet : XTypedElement, IXMetaData {
+    public class NewDataSet : XTypedElement, IXMetaData {
         
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private XTypedList<guidanceItem> guidanceItemField;
+        private XTypedList<guidanceItem> _guidanceItemField;
         
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         static Dictionary<XName, System.Type> localElementDictionary = new Dictionary<XName, System.Type>();
         
-         public static explicit operator NewDataSet(XElement xe) { return XTypedServices.ToXTypedElement<NewDataSet>(xe,LinqToXsdTypeManager.Instance as ILinqToXsdTypeManager); }
+         public static explicit operator NewDataSet(XElement xe) { return XTypedServices.ToXTypedElement<NewDataSet>(xe,LinqToXsdTypeManager.Instance); }
         
         static NewDataSet() {
             BuildElementDictionary();
         }
-        
-        /// <summary>
-        /// <para>
-        /// Regular expression: (guidanceItem)*
-        /// </para>
-        /// </summary>
-        public NewDataSet() {
-        }
-        
+
         /// <summary>
         /// <para>
         /// Occurrence: required, choice
@@ -426,21 +408,21 @@ namespace urn.microsoft.guidanceexplorer.guidanceItem {
         /// </summary>
         public IList<guidanceItem> guidanceItem {
             get {
-                if ((this.guidanceItemField == null)) {
-                    this.guidanceItemField = new XTypedList<guidanceItem>(this, LinqToXsdTypeManager.Instance, XName.Get("guidanceItem", "urn:microsoft:guidanceexplorer:guidanceItem"));
+                if ((this._guidanceItemField == null)) {
+                    this._guidanceItemField = new XTypedList<guidanceItem>(this, LinqToXsdTypeManager.Instance, XName.Get("guidanceItem", "urn:microsoft:guidanceexplorer:guidanceItem"));
                 }
-                return this.guidanceItemField;
+                return this._guidanceItemField;
             }
             set {
                 if ((value == null)) {
-                    this.guidanceItemField = null;
+                    this._guidanceItemField = null;
                 }
                 else {
-                    if ((this.guidanceItemField == null)) {
-                        this.guidanceItemField = XTypedList<guidanceItem>.Initialize(this, LinqToXsdTypeManager.Instance, value, XName.Get("guidanceItem", "urn:microsoft:guidanceexplorer:guidanceItem"));
+                    if ((this._guidanceItemField == null)) {
+                        this._guidanceItemField = XTypedList<guidanceItem>.Initialize(this, LinqToXsdTypeManager.Instance, value, XName.Get("guidanceItem", "urn:microsoft:guidanceexplorer:guidanceItem"));
                     }
                     else {
-                        XTypedServices.SetList<guidanceItem>(this.guidanceItemField, value);
+                        XTypedServices.SetList(this._guidanceItemField, value);
                     }
                 }
             }
@@ -499,7 +481,7 @@ namespace urn.microsoft.guidanceexplorer.guidanceItem {
         }
         
         public override XTypedElement Clone() {
-            return XTypedServices.CloneXTypedElement<NewDataSet>(this);
+            return XTypedServices.CloneXTypedElement(this);
         }
         
         private static void BuildElementDictionary() {
@@ -515,7 +497,7 @@ namespace urn.microsoft.guidanceexplorer.guidanceItem {
         
         static Dictionary<XName, System.Type> elementDictionary = new Dictionary<XName, System.Type>();
         
-        private static XmlSchemaSet schemaSet;
+        private static XmlSchemaSet _schemaSet;
         
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         static LinqToXsdTypeManager typeManagerSingleton = new LinqToXsdTypeManager();
@@ -526,14 +508,14 @@ namespace urn.microsoft.guidanceexplorer.guidanceItem {
         
         XmlSchemaSet ILinqToXsdTypeManager.Schemas {
             get {
-                if ((schemaSet == null)) {
-                    XmlSchemaSet tempSet = new XmlSchemaSet();
-                    System.Threading.Interlocked.CompareExchange(ref schemaSet, tempSet, null);
+                if ((_schemaSet == null)) {
+                    var tempSet = new XmlSchemaSet();
+                    System.Threading.Interlocked.CompareExchange(ref _schemaSet, tempSet, null);
                 }
-                return schemaSet;
+                return _schemaSet;
             }
             set {
-                schemaSet = value;
+                _schemaSet = value;
             }
         }
         
@@ -567,7 +549,7 @@ namespace urn.microsoft.guidanceexplorer.guidanceItem {
         }
         
         protected internal static void AddSchemas(XmlSchemaSet schemas) {
-            schemas.Add(schemaSet);
+            schemas.Add(_schemaSet);
         }
         
         public static System.Type GetRootType() {
@@ -575,263 +557,262 @@ namespace urn.microsoft.guidanceexplorer.guidanceItem {
         }
     }
     
-    public partial class XRootNamespace {
+    public class XRootNamespace {
         
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private XDocument doc;
+        private XDocument _doc;
         
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private XTypedElement rootObject;
+        private XTypedElement _rootObject;
         
 
-    public guidanceItem guidanceItem {  get {return rootObject as guidanceItem; } }
+    public guidanceItem guidanceItem {  get {return _rootObject as guidanceItem; } }
 
-    public NewDataSet NewDataSet {  get {return rootObject as NewDataSet; } }
+    public NewDataSet NewDataSet {  get {return _rootObject as NewDataSet; } }
         
         private XRootNamespace() {
         }
         
         public XRootNamespace(guidanceItem root) {
-            this.doc = new XDocument(root.Untyped);
-            this.rootObject = root;
+            this._doc = new XDocument(root.Untyped);
+            this._rootObject = root;
         }
         
         public XRootNamespace(NewDataSet root) {
-            this.doc = new XDocument(root.Untyped);
-            this.rootObject = root;
+            this._doc = new XDocument(root.Untyped);
+            this._rootObject = root;
         }
         
         public XDocument XDocument {
             get {
-                return doc;
+                return _doc;
             }
         }
         
         public static XRootNamespace Load(string xmlFile) {
-            XRootNamespace root = new XRootNamespace();
-            root.doc = XDocument.Load(xmlFile);
-            XTypedElement typedRoot = XTypedServices.ToXTypedElement(root.doc.Root, LinqToXsdTypeManager.Instance);
+            var root = new XRootNamespace();
+            root._doc = XDocument.Load(xmlFile);
+            XTypedElement typedRoot = XTypedServices.ToXTypedElement(root._doc.Root, LinqToXsdTypeManager.Instance);
             if ((typedRoot == null)) {
                 throw new LinqToXsdException("Invalid root element in xml document.");
             }
-            root.rootObject = typedRoot;
+            root._rootObject = typedRoot;
             return root;
         }
         
         public static XRootNamespace Load(string xmlFile, LoadOptions options) {
-            XRootNamespace root = new XRootNamespace();
-            root.doc = XDocument.Load(xmlFile, options);
-            XTypedElement typedRoot = XTypedServices.ToXTypedElement(root.doc.Root, LinqToXsdTypeManager.Instance);
+            var root = new XRootNamespace();
+            root._doc = XDocument.Load(xmlFile, options);
+            XTypedElement typedRoot = XTypedServices.ToXTypedElement(root._doc.Root, LinqToXsdTypeManager.Instance);
             if ((typedRoot == null)) {
                 throw new LinqToXsdException("Invalid root element in xml document.");
             }
-            root.rootObject = typedRoot;
+            root._rootObject = typedRoot;
             return root;
         }
         
         public static XRootNamespace Load(TextReader textReader) {
-            XRootNamespace root = new XRootNamespace();
-            root.doc = XDocument.Load(textReader);
-            XTypedElement typedRoot = XTypedServices.ToXTypedElement(root.doc.Root, LinqToXsdTypeManager.Instance);
+            var root = new XRootNamespace();
+            root._doc = XDocument.Load(textReader);
+            XTypedElement typedRoot = XTypedServices.ToXTypedElement(root._doc.Root, LinqToXsdTypeManager.Instance);
             if ((typedRoot == null)) {
                 throw new LinqToXsdException("Invalid root element in xml document.");
             }
-            root.rootObject = typedRoot;
+            root._rootObject = typedRoot;
             return root;
         }
         
         public static XRootNamespace Load(TextReader textReader, LoadOptions options) {
-            XRootNamespace root = new XRootNamespace();
-            root.doc = XDocument.Load(textReader, options);
-            XTypedElement typedRoot = XTypedServices.ToXTypedElement(root.doc.Root, LinqToXsdTypeManager.Instance);
+            var root = new XRootNamespace();
+            root._doc = XDocument.Load(textReader, options);
+            XTypedElement typedRoot = XTypedServices.ToXTypedElement(root._doc.Root, LinqToXsdTypeManager.Instance);
             if ((typedRoot == null)) {
                 throw new LinqToXsdException("Invalid root element in xml document.");
             }
-            root.rootObject = typedRoot;
+            root._rootObject = typedRoot;
             return root;
         }
         
         public static XRootNamespace Load(XmlReader xmlReader) {
-            XRootNamespace root = new XRootNamespace();
-            root.doc = XDocument.Load(xmlReader);
-            XTypedElement typedRoot = XTypedServices.ToXTypedElement(root.doc.Root, LinqToXsdTypeManager.Instance);
+            var root = new XRootNamespace {_doc = XDocument.Load(xmlReader)};
+            XTypedElement typedRoot = XTypedServices.ToXTypedElement(root._doc.Root, LinqToXsdTypeManager.Instance);
             if ((typedRoot == null)) {
                 throw new LinqToXsdException("Invalid root element in xml document.");
             }
-            root.rootObject = typedRoot;
+            root._rootObject = typedRoot;
             return root;
         }
         
         public static XRootNamespace Parse(string text) {
-            XRootNamespace root = new XRootNamespace();
-            root.doc = XDocument.Parse(text);
-            XTypedElement typedRoot = XTypedServices.ToXTypedElement(root.doc.Root, LinqToXsdTypeManager.Instance);
+            var root = new XRootNamespace();
+            root._doc = XDocument.Parse(text);
+            XTypedElement typedRoot = XTypedServices.ToXTypedElement(root._doc.Root, LinqToXsdTypeManager.Instance);
             if ((typedRoot == null)) {
                 throw new LinqToXsdException("Invalid root element in xml document.");
             }
-            root.rootObject = typedRoot;
+            root._rootObject = typedRoot;
             return root;
         }
         
         public static XRootNamespace Parse(string text, LoadOptions options) {
-            XRootNamespace root = new XRootNamespace();
-            root.doc = XDocument.Parse(text, options);
-            XTypedElement typedRoot = XTypedServices.ToXTypedElement(root.doc.Root, LinqToXsdTypeManager.Instance);
+            var root = new XRootNamespace();
+            root._doc = XDocument.Parse(text, options);
+            XTypedElement typedRoot = XTypedServices.ToXTypedElement(root._doc.Root, LinqToXsdTypeManager.Instance);
             if ((typedRoot == null)) {
                 throw new LinqToXsdException("Invalid root element in xml document.");
             }
-            root.rootObject = typedRoot;
+            root._rootObject = typedRoot;
             return root;
         }
         
         public virtual void Save(string fileName) {
-            doc.Save(fileName);
+            _doc.Save(fileName);
         }
         
         public virtual void Save(TextWriter textWriter) {
-            doc.Save(textWriter);
+            _doc.Save(textWriter);
         }
         
         public virtual void Save(XmlWriter writer) {
-            doc.Save(writer);
+            _doc.Save(writer);
         }
         
         public virtual void Save(TextWriter textWriter, SaveOptions options) {
-            doc.Save(textWriter, options);
+            _doc.Save(textWriter, options);
         }
         
         public virtual void Save(string fileName, SaveOptions options) {
-            doc.Save(fileName, options);
+            _doc.Save(fileName, options);
         }
     }
     
-    public partial class XRoot {
+    public class XRoot {
         
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private XDocument doc;
+        private XDocument _doc;
         
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private XTypedElement rootObject;
+        private XTypedElement _rootObject;
         
 
-    public global::urn.microsoft.guidanceexplorer.guidanceItem.guidanceItem guidanceItem {  get {return rootObject as global::urn.microsoft.guidanceexplorer.guidanceItem.guidanceItem; } }
+    public guidanceItem guidanceItem {  get {return _rootObject as global::urn.microsoft.guidanceexplorer.guidanceItem.guidanceItem; } }
 
-    public global::urn.microsoft.guidanceexplorer.guidanceItem.NewDataSet NewDataSet {  get {return rootObject as global::urn.microsoft.guidanceexplorer.guidanceItem.NewDataSet; } }
+    public NewDataSet NewDataSet {  get {return _rootObject as global::urn.microsoft.guidanceexplorer.guidanceItem.NewDataSet; } }
         
         private XRoot() {
         }
         
         public XRoot(global::urn.microsoft.guidanceexplorer.guidanceItem.guidanceItem root) {
-            this.doc = new XDocument(root.Untyped);
-            this.rootObject = root;
+            this._doc = new XDocument(root.Untyped);
+            this._rootObject = root;
         }
         
         public XRoot(global::urn.microsoft.guidanceexplorer.guidanceItem.NewDataSet root) {
-            this.doc = new XDocument(root.Untyped);
-            this.rootObject = root;
+            this._doc = new XDocument(root.Untyped);
+            this._rootObject = root;
         }
         
         public XDocument XDocument {
             get {
-                return doc;
+                return _doc;
             }
         }
         
         public static XRoot Load(string xmlFile) {
-            XRoot root = new XRoot();
-            root.doc = XDocument.Load(xmlFile);
-            XTypedElement typedRoot = XTypedServices.ToXTypedElement(root.doc.Root, LinqToXsdTypeManager.Instance);
+            var root = new XRoot();
+            root._doc = XDocument.Load(xmlFile);
+            XTypedElement typedRoot = XTypedServices.ToXTypedElement(root._doc.Root, LinqToXsdTypeManager.Instance);
             if ((typedRoot == null)) {
                 throw new LinqToXsdException("Invalid root element in xml document.");
             }
-            root.rootObject = typedRoot;
+            root._rootObject = typedRoot;
             return root;
         }
         
         public static XRoot Load(string xmlFile, LoadOptions options) {
-            XRoot root = new XRoot();
-            root.doc = XDocument.Load(xmlFile, options);
-            XTypedElement typedRoot = XTypedServices.ToXTypedElement(root.doc.Root, LinqToXsdTypeManager.Instance);
+            var root = new XRoot();
+            root._doc = XDocument.Load(xmlFile, options);
+            XTypedElement typedRoot = XTypedServices.ToXTypedElement(root._doc.Root, LinqToXsdTypeManager.Instance);
             if ((typedRoot == null)) {
                 throw new LinqToXsdException("Invalid root element in xml document.");
             }
-            root.rootObject = typedRoot;
+            root._rootObject = typedRoot;
             return root;
         }
         
         public static XRoot Load(TextReader textReader) {
-            XRoot root = new XRoot();
-            root.doc = XDocument.Load(textReader);
-            XTypedElement typedRoot = XTypedServices.ToXTypedElement(root.doc.Root, LinqToXsdTypeManager.Instance);
+            var root = new XRoot();
+            root._doc = XDocument.Load(textReader);
+            XTypedElement typedRoot = XTypedServices.ToXTypedElement(root._doc.Root, LinqToXsdTypeManager.Instance);
             if ((typedRoot == null)) {
                 throw new LinqToXsdException("Invalid root element in xml document.");
             }
-            root.rootObject = typedRoot;
+            root._rootObject = typedRoot;
             return root;
         }
         
         public static XRoot Load(TextReader textReader, LoadOptions options) {
-            XRoot root = new XRoot();
-            root.doc = XDocument.Load(textReader, options);
-            XTypedElement typedRoot = XTypedServices.ToXTypedElement(root.doc.Root, LinqToXsdTypeManager.Instance);
+            var root = new XRoot();
+            root._doc = XDocument.Load(textReader, options);
+            XTypedElement typedRoot = XTypedServices.ToXTypedElement(root._doc.Root, LinqToXsdTypeManager.Instance);
             if ((typedRoot == null)) {
                 throw new LinqToXsdException("Invalid root element in xml document.");
             }
-            root.rootObject = typedRoot;
+            root._rootObject = typedRoot;
             return root;
         }
         
         public static XRoot Load(XmlReader xmlReader) {
-            XRoot root = new XRoot();
-            root.doc = XDocument.Load(xmlReader);
-            XTypedElement typedRoot = XTypedServices.ToXTypedElement(root.doc.Root, LinqToXsdTypeManager.Instance);
+            var root = new XRoot();
+            root._doc = XDocument.Load(xmlReader);
+            XTypedElement typedRoot = XTypedServices.ToXTypedElement(root._doc.Root, LinqToXsdTypeManager.Instance);
             if ((typedRoot == null)) {
                 throw new LinqToXsdException("Invalid root element in xml document.");
             }
-            root.rootObject = typedRoot;
+            root._rootObject = typedRoot;
             return root;
         }
         
         public static XRoot Parse(string text) {
-            XRoot root = new XRoot();
-            root.doc = XDocument.Parse(text);
-            XTypedElement typedRoot = XTypedServices.ToXTypedElement(root.doc.Root, LinqToXsdTypeManager.Instance);
+            var root = new XRoot();
+            root._doc = XDocument.Parse(text);
+            XTypedElement typedRoot = XTypedServices.ToXTypedElement(root._doc.Root, LinqToXsdTypeManager.Instance);
             if ((typedRoot == null)) {
                 throw new LinqToXsdException("Invalid root element in xml document.");
             }
-            root.rootObject = typedRoot;
+            root._rootObject = typedRoot;
             return root;
         }
         
         public static XRoot Parse(string text, LoadOptions options) {
-            XRoot root = new XRoot();
-            root.doc = XDocument.Parse(text, options);
-            XTypedElement typedRoot = XTypedServices.ToXTypedElement(root.doc.Root, LinqToXsdTypeManager.Instance);
+            var root = new XRoot();
+            root._doc = XDocument.Parse(text, options);
+            XTypedElement typedRoot = XTypedServices.ToXTypedElement(root._doc.Root, LinqToXsdTypeManager.Instance);
             if ((typedRoot == null)) {
                 throw new LinqToXsdException("Invalid root element in xml document.");
             }
-            root.rootObject = typedRoot;
+            root._rootObject = typedRoot;
             return root;
         }
         
         public virtual void Save(string fileName) {
-            doc.Save(fileName);
+            _doc.Save(fileName);
         }
         
         public virtual void Save(TextWriter textWriter) {
-            doc.Save(textWriter);
+            _doc.Save(textWriter);
         }
         
         public virtual void Save(XmlWriter writer) {
-            doc.Save(writer);
+            _doc.Save(writer);
         }
         
         public virtual void Save(TextWriter textWriter, SaveOptions options) {
-            doc.Save(textWriter, options);
+            _doc.Save(textWriter, options);
         }
         
         public virtual void Save(string fileName, SaveOptions options) {
-            doc.Save(fileName, options);
+            _doc.Save(fileName, options);
         }
     }
 }

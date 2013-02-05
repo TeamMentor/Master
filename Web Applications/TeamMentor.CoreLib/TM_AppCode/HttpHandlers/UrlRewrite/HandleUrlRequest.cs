@@ -12,16 +12,7 @@ namespace TeamMentor.CoreLib
 		public HttpContextBase context = HttpContextFactory.Current;
 		public HttpRequestBase request = HttpContextFactory.Request;
         public TM_WebServices tmWebServices;        
-
-        /*public HandleUrlRequest()
-        { 
-            //tmWebServices  = new TM_WebServices();
-
-            //tmWebServices.tmAuthentication = new TM_Authentication(tmWebServices);
-            //tmWebServices.tmAuthentication.disable_CSRF_Check = true;
-			//tmWebServices.tmAuthentication.mapUserRoles();
-        }*/
-
+        
         public void routeRequestUrl_for404()
         {
 			var fixedPath = request.Url.AbsolutePath.replace("/html_pages/Gui/", "/article/");   //deal with the cases where there is an relative link inside the html_pages/Gui viewer page
@@ -358,7 +349,7 @@ namespace TeamMentor.CoreLib
 
         private bool handleAction_Xsl(string data, string xsltToUse)
         {
-            //if (this.tmWebServices.tmAuthentication.sessionID. UserRole.ReadArticles
+            //if (this.TmWebServices.tmAuthentication.sessionID. UserRole.ReadArticles
             var xstlFile = context.Server.MapPath("\\xslt\\" + xsltToUse);
             if (xstlFile.fileExists())
             {
@@ -569,7 +560,7 @@ namespace TeamMentor.CoreLib
 		public bool redirectTo_DownloadLibrary(string data)
 		{
 		    // UserGroup.Admin.setThreadPrincipalWithRoles();      // to test for this (for now allow normal users to download libraries)
-		    // var currentUserRoles = tmWebServices.RBAC_CurrentPrincipal_Roles();
+		    // var currentUserRoles = TmWebServices.RBAC_CurrentPrincipal_Roles();
 
 			//var uploadToken = new TM_WebServices().GetUploadToken();
 		    var uploadToken = "";

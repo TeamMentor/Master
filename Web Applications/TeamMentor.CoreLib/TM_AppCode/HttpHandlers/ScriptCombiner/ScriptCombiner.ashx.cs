@@ -9,7 +9,7 @@ using O2.DotNetWrappers.ExtensionMethods;
 
 namespace TeamMentor.CoreLib
 {
-	public partial class ScriptCombiner : IHttpHandler
+	public class ScriptCombiner : IHttpHandler
 	{    
 		public static string   MappingsLocation			 {get;set;}
 		public static DateTime LastModified_HeaderDate	{ get; set; }
@@ -35,7 +35,7 @@ namespace TeamMentor.CoreLib
 			ScriptCombiner.MappingsLocation = "../javascript/_mappings/{0}.txt";				
 		}
 	
-		public void ProcessRequest(HttpContext __context)
+		public void ProcessRequest(HttpContext httpContext)
 		{				
 			this.context = HttpContextFactory.Current;		
 			var request = context.Request;        
@@ -141,16 +141,13 @@ namespace TeamMentor.CoreLib
 		{
 			var response = context.Response;
 
-			response.AppendHeader("Content-Length", bytes.Length.ToString());
+			response.AppendHeader("Content-Length", bytes.Length.str());
 		
 			response.ContentType = this.contentType;
 
-			if (isCompressed)
-				response.AppendHeader("Content-Encoding", "gzip");
-			else
-				response.AppendHeader("Content-Encoding", "utf-8");
-								
-			response.ContentEncoding = Encoding.Unicode;
+		    response.AppendHeader("Content-Encoding", isCompressed ? "gzip" : "utf-8");
+
+		    response.ContentEncoding = Encoding.Unicode;
 			response.OutputStream.Write(bytes, 0, bytes.Length);
 			response.Flush();
 		}
@@ -181,12 +178,11 @@ namespace TeamMentor.CoreLib
 		
 			if (setPath.fileExists())		
 				using (var setDefinition = File.OpenText(setPath))
-				{
-					string fileName = null;
+				{					
 					while (setDefinition.Peek() >= 0)
 					{
-						fileName = setDefinition.ReadLine();
-						if (!String.IsNullOrEmpty(fileName) && fileName.starts("#").isFalse())
+						var fileName = setDefinition.ReadLine();
+						if (fileName.valid() && fileName.starts("#").isFalse())
 							scripts.Add(fileName);					
 					}
 				}	

@@ -5,102 +5,74 @@ using O2.DotNetWrappers.ExtensionMethods;
 namespace TeamMentor.CoreLib
 {
     public class TM_Authentication
-    {
+    {        
+        public  TM_WebServices      TmWebServices { get; set; }    
+        public  bool                disable_Csrf_Check;
 
-        private Guid _sessionID;	// for unit tests
-        public TM_WebServices tmWebServices;
-        private HandleUrlRequest handleUrlRequest;
-        public bool disable_CSRF_Check;
-
-        public TM_Authentication(TM_WebServices _tmWebServices)
+        public TM_Authentication    (TM_WebServices tmWebServices)
         {
-            tmWebServices = _tmWebServices;
-            disable_CSRF_Check = false;
-			try
-			{
-				tmWebServices.javascriptProxy.adminSessionID = this.sessionID;
-			}
-			catch (Exception ex)	// this will happen on the unit tests
-			{
-				"TM_WebServices.ctor: {0}".error(ex.Message);
-			}				
-        }
+            TmWebServices = tmWebServices;
+            disable_Csrf_Check = false;
+            try
+            {
+                TmWebServices.javascriptProxy.adminSessionID = this.sessionID;
+            }
+            catch (Exception ex)	// this will happen on the unit tests
+            {
+                "TM_WebServices.ctor: {0}".error(ex.Message);
+            }				
+        }        
 
-        public TM_Authentication(HandleUrlRequest handleUrlRequest)
-        {
-            // TODO: Complete member initialization
-            this.handleUrlRequest = handleUrlRequest;
-        }
-
-
-        public Guid sessionID
+        public Guid                 sessionID
         {
             get
-            {
-                try
-                {
-                    // first check if there s a session variable already set
-                    if (tmWebServices.Session.notNull() && tmWebServices.Session["sessionID"].notNull())
-                        return (Guid)tmWebServices.Session["sessionID"];
-                    // then check the cookie
-					var sessionCookie = HttpContextFactory.Request.Cookies["Session"];
-                    if (sessionCookie.notNull() && sessionCookie.Value.isGuid())
-                        return sessionCookie.Value.guid();
-					var sessionHeader = HttpContextFactory.Request.Headers["Session"];
-                    if (sessionHeader.notNull() && sessionHeader.isGuid())
-                        return sessionHeader.guid();
-                    //if none is set, return an empty Guid	
-                    return Guid.Empty;
-                }
-                catch//(Exception ex) // this will happen on the unit tests
-                {
-                    //"sessionID.get: {0}".error(ex.Message);
-					//HttpContextFactory.Response.Write("\n\nERROR: {0} ---\n\n".format(ex.Message));
-                    return _sessionID;
-                }
-
+            {                
+                // first check if there s a session variable already set
+                //if (TmWebServices.Session.notNull() && TmWebServices.Session["sessionID"].notNull())
+                if (HttpContextFactory.Session.notNull() && HttpContextFactory.Session["sessionID"].notNull())
+                    return (Guid)TmWebServices.Session["sessionID"];
+                // then check the cookie
+                var sessionCookie = HttpContextFactory.Request.Cookies["Session"];
+                if (sessionCookie.notNull() && sessionCookie.Value.isGuid())
+                    return sessionCookie.Value.guid();
+                var sessionHeader = HttpContextFactory.Request.Headers["Session"];
+                if (sessionHeader.notNull() && sessionHeader.isGuid())
+                    return sessionHeader.guid();
+                //if none is set, return an empty Guid	
+                return Guid.Empty;                
             }
-
             set
-            {
-                //	MyContext.Session["sessionID"] = value;
+            {                
                 var previousSessionId = sessionID;
-                try
+             
+                if (HttpContextFactory.Session.notNull())
                 {
-                    if (tmWebServices.Session.notNull())
-                    {
-                        tmWebServices.Session["sessionID"] = value;
-                    }                    
-                    var sessionCookie = new HttpCookie("Session", value.str());
-                    sessionCookie.HttpOnly = true;
-					HttpContextFactory.Response.Cookies.Add(sessionCookie);                    
+                    HttpContextFactory.Session["sessionID"] = value;
+                }                    
+                var sessionCookie = new HttpCookie("Session", value.str());
+                sessionCookie.HttpOnly = true;
+                HttpContextFactory.Response.Cookies.Add(sessionCookie);                    
+             
+                if (value != Guid.Empty)
+                {					
+                    new UserRoleBaseSecurity().MapRolesBasedOnSessionGuid(value);
                 }
-                catch//(Exception ex) // this will happen on the unit tests
-                {
-                    _sessionID = value;
-                    //"sessionID.set: {0}".error(ex.Message);
-                }
-				if (value != Guid.Empty)
-				{					
-					new UserRoleBaseSecurity().MapRolesBasedOnSessionGuid(value);
-				}
                 else
                 {
                     previousSessionId.invalidateSession();
                 }
             }
         }
-
-        public TMUser currentUser
+        public TMUser               currentUser
         {
             get
             {
                 try
                 {
                     var tmUser = sessionID.session_TmUser();
-					if (tmUser.notNull())
-						tmUser.CSRF_Token = this.sessionID.str().hash().str();	
-					return tmUser;
+                    if (tmUser.notNull())
+                        tmUser.CSRF_Token = this.sessionID.str().hash().str();	
+                    return tmUser;
                 }
                 catch
                 {
@@ -108,31 +80,27 @@ namespace TeamMentor.CoreLib
                 }
             }
         }
-
-
-		public bool check_CSRF_Token()
-		{
-            if (disable_CSRF_Check)
+        public bool                 check_CSRF_Token()
+        {
+            if (disable_Csrf_Check)
                 return true;
-			var header_CSRF_Token = tmWebServices.Context.Request.Headers["CSRF-Token"];
-			if (header_CSRF_Token.valid())
-			{
+            var header_Csrf_Token = TmWebServices.Context.Request.Headers["CSRF-Token"];
+            if (header_Csrf_Token != null && header_Csrf_Token.valid())
+            {
                 //"[check_CSRF_Token] {0} == {1} : {2}".debug(header_CSRF_Token, sessionID.str().hash().str(), header_CSRF_Token == sessionID.str().hash().str());
-				if (header_CSRF_Token == sessionID.str().hash().str())			// interrestingly session.hash().str() produces a different value
-					return true;
-			}
-			return false;
-			//throw new SecurityException("Invalid CSRF Token");			
-		}
-
-		public TM_Authentication mapUserRoles()
-		{
-			return mapUserRoles(false);
-		}
-
-		public TM_Authentication mapUserRoles(bool _disable_CSRF_Check)
-		{
-			disable_CSRF_Check = _disable_CSRF_Check;
+                if (header_Csrf_Token == sessionID.str().hash().str())			// interrestingly session.hash().str() produces a different value
+                    return true;
+            }
+            return false;
+            //throw new SecurityException("Invalid CSRF Token");			
+        }
+        public TM_Authentication    mapUserRoles()
+        {
+            return mapUserRoles(false);
+        }
+        public TM_Authentication    mapUserRoles(bool _disable_CSRF_Check)
+        {
+            disable_Csrf_Check = _disable_CSRF_Check;
             //"[TM_Authentication] mapUserRoles".info();
             if (sessionID == Guid.Empty || sessionID.validSession() == false)
                 /*if (SingleSignOn.singleSignOn_Enabled)
@@ -145,17 +113,17 @@ namespace TeamMentor.CoreLib
                     sessionID = new WindowsAuthentication().authenticateUserBaseOn_ActiveDirectory();
                 }            
             
-			
+            
             var userGroup = UserGroup.None;
-			if (sessionID != Guid.Empty)
-			{                
-				if (check_CSRF_Token())		// only map the roles if the CSRF check passed
-				{
-					userGroup = new UserRoleBaseSecurity().MapRolesBasedOnSessionGuid(sessionID);					
-				}
+            if (sessionID != Guid.Empty)
+            {                
+                if (check_CSRF_Token())		// only map the roles if the CSRF check passed
+                {
+                    userGroup = new UserRoleBaseSecurity().MapRolesBasedOnSessionGuid(sessionID);					
+                }
                 //else
                 //    "[TM_Authentication] check_CSRF_Token failed".error();
-			}
+            }
             if (userGroup == UserGroup.None)
             {
                 if (TMConfig.Current.ShowContentToAnonymousUsers)
@@ -163,7 +131,7 @@ namespace TeamMentor.CoreLib
                 else
                     UserGroup.Anonymous.setThreadPrincipalWithRoles();
             }
-			return this;
-		}
-	}
+            return this;
+        }
+    }
 }

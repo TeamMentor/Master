@@ -56,8 +56,7 @@ namespace TeamMentor.CoreLib
 			Action<List<Folder_V3>, List<Folder_V3>> mapFolders = (folders, parentFolder) =>
 				{					
 					foreach(var folder in folders)
-					{ 			
-						var folderId = folder.folderId;			
+					{ 					
 						parentFolder.add(folder); 						
 						mapFolderViews(folder);
 					}				
@@ -78,14 +77,14 @@ namespace TeamMentor.CoreLib
 					 
 
 			Func<Guid,Library_V3> getLibrary_TreeStructure = 
-				(_libraryId)=>{			
-								var tmLibrary = javascriptProxy.GetLibraryById(_libraryId.str());
+				(id)=>{			
+								var tmLibrary = javascriptProxy.GetLibraryById(id.str());
 								if (tmLibrary.isNull())
 								{
-									"[in getLibraryFolderStructure] could not find library with id: {0}".error(_libraryId);
+									"[in getLibraryFolderStructure] could not find library with id: {0}".error(id);
 									return null;
 								}															
-								return mapLibrary(_libraryId, tmLibrary.caption);					
+								return mapLibrary(id, tmLibrary.caption);					
 							};
 			return getLibrary_TreeStructure(libraryId);
 		}

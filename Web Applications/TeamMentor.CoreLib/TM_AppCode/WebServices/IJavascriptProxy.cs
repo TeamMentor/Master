@@ -47,8 +47,8 @@ namespace TeamMentor.CoreLib
 		List<TeamMentor_Article> GetGuidanceItemsInFolder(Guid folderId);
 		List<TeamMentor_Article> GetGuidanceItemsInView(Guid viewId);
 		List<TeamMentor_Article> GetGuidanceItemsInViews(List<Guid> viewIds);			
-		string GetGuidanceItemHtml(Guid guidanceItemId);
-		List<string> GetGuidanceItemsHtml(List<Guid> guidanceItemsIds);
+		string GetGuidanceItemHtml(Guid sessionId, Guid guidanceItemId);
+		List<string> GetGuidanceItemsHtml(Guid sessionId, List<Guid> guidanceItemsIds);
 		List<TeamMentor_Article> GetAllGuidanceItems();
 		List<TeamMentor_Article> GetGuidanceItemsInLibrary(Guid libraryId);
 		
