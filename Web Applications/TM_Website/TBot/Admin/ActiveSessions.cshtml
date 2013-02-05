@@ -1,0 +1,13 @@
+﻿
+@using TeamMentor.CoreLib
+
+@{
+    var tmRest = (TM_REST) @Model;
+    UserGroup.Admin.setThreadPrincipalWithRoles();  //elevate privileges during dev
+}
+
+Here are the current active sessions:
+
+<h1>tmRest</h1>
+@tmRest.users()
+

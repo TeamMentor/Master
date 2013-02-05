@@ -66,4 +66,24 @@ namespace TeamMentor.CoreLib
 		}
 	}
 
+    [Serializable]
+	public sealed class TM_AdminAttribute : OnMethodBoundaryAspect
+	{				
+		public override void OnEntry(MethodExecutionArgs args)
+		{
+		    try
+		    {
+                UserRole.Admin.demand();
+                base.OnEntry(args);
+		    }
+		    catch (Exception)
+		    {
+		        var absolutePath = HttpContextFactory.Request.Url.AbsolutePath;
+		        HttpContextFactory.Response.Redirect("/Login?LoginReferer=" + absolutePath);		        
+		    }							
+
+			
+		}
+	}
+
 }

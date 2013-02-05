@@ -156,6 +156,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="TM_AppCode\ExtensionMethods\IREST_ExtensionMethods.cs" />
+    <Compile Include="TM_AppCode\WebServices_REST\Controllers\TM_REST_Sessions.cs" />
     <Compile Include="TM_AppCode\WebServices_REST\TBot\TBot_Brain.cs" />
     <Compile Include="TM_AppCode\WebServices_REST\TM_REST.cs" />
     <Compile Include="TM_AppCode\WebServices_REST\Controllers\TM_REST_Libraries.cs" />

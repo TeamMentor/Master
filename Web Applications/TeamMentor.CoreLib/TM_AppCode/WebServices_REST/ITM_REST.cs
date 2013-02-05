@@ -24,7 +24,11 @@ namespace TeamMentor.CoreLib
 		[OperationContract][WebGet	 (UriTemplate = "/logout"						)]	Guid		Logout();
 		[OperationContract][WebGet   (UriTemplate = "/login/{username}/{password}"	)]	Guid		Login(string username, string password);        
 		[OperationContract][WebInvoke(UriTemplate = "/login/", Method = "POST",ResponseFormat = WebMessageFormat.Json)]	Guid		Login_using_Credentials(TM_Credentials credentials);
-                
+        
+        //Active Sessions
+        [OperationContract][WebGet	 (UriTemplate = "/sessions/all"					)]	List<Guid>  ActiveSessions();
+        [OperationContract][WebGet	 (UriTemplate = "/sessions/{sessionId}"		    )]	TMUser      ActiveSession(string sessionId);
+ 
 		//User and RBAC
         [OperationContract][WebGet(UriTemplate = "/user/loggedIn"				)]	bool		    User_LoggedIn();
 		[OperationContract][WebGet(UriTemplate = "/user/name"					)]	string			RBAC_CurrentIdentity_Name();

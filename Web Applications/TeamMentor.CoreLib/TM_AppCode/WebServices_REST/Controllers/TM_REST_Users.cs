@@ -11,29 +11,7 @@ using O2.DotNetWrappers.ExtensionMethods;
 namespace TeamMentor.CoreLib
 {
 	public partial class TM_REST
-	{
-        public string			SessionId()
-		{			
-			return Session.SessionID;			
-		}
-        public Guid			    Login(string username, string password)
-		{
-			return TmWebServices.Login_PwdInClearText(username, password);
-		}
-		public Guid			    Login_using_Credentials(TM_Credentials credentials)
-		{
-			return TmWebServices.Login_PwdInClearText(credentials.UserName, credentials.Password);
-		}
-		public Guid				Logout()
-		{
-			return TmWebServices.Logout();
-		}
-
-	    public bool User_LoggedIn()
-	    {
-	        return TmWebServices.Current_User().notNull();
-	    }
-
+	{        
 	    //RBAC
 		public string			RBAC_CurrentIdentity_Name()
 		{
