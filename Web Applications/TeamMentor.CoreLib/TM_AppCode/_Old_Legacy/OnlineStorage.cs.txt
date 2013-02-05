@@ -1782,10 +1782,10 @@ public partial class GuidanceItem {
     
     private System.Xml.XmlAttribute[] anyAttrField;
     
-	
-	[System.Xml.Serialization.XmlAttributeAttribute()]
+    
+    [System.Xml.Serialization.XmlAttributeAttribute()]
     public string id_original { get; set;}    
-	
+    
     /// <remarks/>
     public string content {
         get {

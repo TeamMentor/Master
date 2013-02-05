@@ -778,8 +778,8 @@ namespace urn.microsoft.guidanceexplorer {
             }
         }
         
-		//DC: new one added to hold the folderId
-		public string folderId {
+        //DC: new one added to hold the folderId
+        public string folderId {
             get {
                 XAttribute x = this.Attribute(XName.Get("folderId", ""));
                 return XTypedServices.ParseValue<string>(x, XmlSchemaType.GetBuiltInSimpleType(XmlTypeCode.String).Datatype);
@@ -788,7 +788,7 @@ namespace urn.microsoft.guidanceexplorer {
                 this.SetAttribute(XName.Get("folderId", ""), value, XmlSchemaType.GetBuiltInSimpleType(XmlTypeCode.String).Datatype);
             }
         }
-		
+        
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         Dictionary<XName, System.Type> IXMetaData.LocalElementsDictionary {
             get {

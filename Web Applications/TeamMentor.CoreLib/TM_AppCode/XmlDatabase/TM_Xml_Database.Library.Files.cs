@@ -26,7 +26,7 @@ namespace TeamMentor.CoreLib
         [ReadArticles] 
         public static string Get_Path_To_File(this TM_Xml_Database tmDatabase, string fileKey)
         {
-			var filePath = TM_Xml_Database.Current.Path_XmlLibraries.pathCombine("_Images").pathCombine(fileKey);    
+            var filePath = TM_Xml_Database.Current.Path_XmlLibraries.pathCombine("_Images").pathCombine(fileKey);    
             if (filePath.fileExists())
                 return filePath;
 

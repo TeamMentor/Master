@@ -27,31 +27,31 @@ namespace TeamMentor.CoreLib
         [XmlAttribute] public string	CSRF_Token { get; set; }
         
         [XmlAttribute] public string    SSOKey               { get; set; }
-		[XmlAttribute] public string    PasswordHash         { get; set; }
+        [XmlAttribute] public string    PasswordHash         { get; set; }
         [XmlAttribute] public string    PostLoginView        { get; set; }
         [XmlAttribute] public string    PostLoginScript      { get; set; }
-		
+        
 
-		[XmlElement]   public UserStats Stats				 { get; set; }
+        [XmlElement]   public UserStats Stats				 { get; set; }
 
-		public TMUser()
-		{
-			Stats = new UserStats
-				{
-					CreationDate = DateTime.Now,
-					ExpirationDate = DateTime.Now.AddDays(TMConfig.Current.Eval_Accounts.Days)
-				};
-		}
+        public TMUser()
+        {
+            Stats = new UserStats
+                {
+                    CreationDate = DateTime.Now,
+                    ExpirationDate = DateTime.Now.AddDays(TMConfig.Current.Eval_Accounts.Days)
+                };
+        }
     }
 
-	public class UserStats
-	{
-		[XmlAttribute]	public DateTime ExpirationDate		{ get; set; }
-		[XmlAttribute]	public DateTime CreationDate		{ get; set; }		
-		[XmlAttribute]	public DateTime LastLogin			{ get; set; }
-		[XmlAttribute] public int       Stats_LoginOk		{ get; set; }
-		[XmlAttribute] public int       Stats_LoginFail     { get; set; }
-	}
+    public class UserStats
+    {
+        [XmlAttribute]	public DateTime ExpirationDate		{ get; set; }
+        [XmlAttribute]	public DateTime CreationDate		{ get; set; }		
+        [XmlAttribute]	public DateTime LastLogin			{ get; set; }
+        [XmlAttribute] public int       Stats_LoginOk		{ get; set; }
+        [XmlAttribute] public int       Stats_LoginFail     { get; set; }
+    }
 
 }
 

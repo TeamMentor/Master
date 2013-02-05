@@ -9,10 +9,10 @@ namespace TeamMentor.CoreLib
     public enum UserGroup
     {
         None = -1,
-		Anonymous = 0,
-		Admin = 1,
-		Reader = 2, 
-		Editor = 3,		
+        Anonymous = 0,
+        Admin = 1,
+        Reader = 2, 
+        Editor = 3,		
         Developer = 4               
     }
 
@@ -22,8 +22,8 @@ namespace TeamMentor.CoreLib
         ManageUsers,
         EditArticles,
         ReadArticles,
-		ReadArticlesTitles,
-		EditGui
+        ReadArticlesTitles,
+        EditGui
     }
 
     public class UserRolesMappings
@@ -34,9 +34,9 @@ namespace TeamMentor.CoreLib
         {
             Mappings = new Dictionary<UserGroup, List<UserRole>>();
             Mappings.Add(UserGroup.None  		, new List<UserRole>() { });
-			Mappings.Add(UserGroup.Anonymous    , new List<UserRole>() { UserRole.ReadArticlesTitles });
+            Mappings.Add(UserGroup.Anonymous    , new List<UserRole>() { UserRole.ReadArticlesTitles });
             Mappings.Add(UserGroup.Admin 		, new List<UserRole>() { UserRole.ReadArticlesTitles , UserRole.ReadArticles, UserRole.EditArticles, UserRole.ManageUsers , UserRole.Admin, });
-			Mappings.Add(UserGroup.Editor		, new List<UserRole>() { UserRole.ReadArticlesTitles , UserRole.ReadArticles, UserRole.EditArticles  });
+            Mappings.Add(UserGroup.Editor		, new List<UserRole>() { UserRole.ReadArticlesTitles , UserRole.ReadArticles, UserRole.EditArticles  });
             Mappings.Add(UserGroup.Reader		, new List<UserRole>() { UserRole.ReadArticlesTitles , UserRole.ReadArticles });            
         }
     }	
