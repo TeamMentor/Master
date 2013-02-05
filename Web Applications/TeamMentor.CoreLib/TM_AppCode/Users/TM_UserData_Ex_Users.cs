@@ -166,7 +166,14 @@ namespace TeamMentor.CoreLib
                 return tmUser.GroupID;
             return -1;
         }        
-
+        public static int           createTmUser(this TM_Xml_Database tmDb, NewUser newUser)
+        {			
+            if (newUser.groupId !=0)		// if there is a groupId provided we must check if the user has the manageUsers Priviledge						
+                UserRole.ManageUsers.demand();			
+            if (newUser.username.inValid() ||  TM_UserData.Current.TMUsers.user(newUser.username).notNull())
+                return 0;
+            return tmDb.newUser(newUser.username, newUser.password, newUser.email, newUser.firstname, newUser.lastname, newUser.note, newUser.title, newUser.company, newUser.groupId);						
+        }
         [ManageUsers]   public static TMUser        tmUser(this TM_Xml_Database tmDb, string name)
         {
             return TM_UserData.Current.TMUsers.user(name);
@@ -225,15 +232,7 @@ namespace TeamMentor.CoreLib
                 return true;
             }
             return false;
-        }
-        [ManageUsers]   public static int           createTmUser(this TM_Xml_Database tmDb, NewUser newUser)
-        {			
-            if (newUser.groupId !=0)		// if there is a groupId provided we must check if the user has the manageUsers Priviledge						
-                UserRole.ManageUsers.demand();			
-            if (newUser.username.inValid() ||  TM_UserData.Current.TMUsers.user(newUser.username).notNull())
-                return 0;
-            return tmDb.newUser(newUser.username, newUser.password, newUser.email, newUser.firstname, newUser.lastname, newUser.note, newUser.title, newUser.company, newUser.groupId);						
-        }									
+        }        									
         [ManageUsers]   public static List<int>     createTmUsers(this TM_Xml_Database tmDb, List<NewUser> newUsers)
         {
             return newUsers.Select(newUser => tmDb.createTmUser(newUser)).toList();

@@ -25,7 +25,7 @@ namespace TeamMentor.Website
 			tmConfig.Eval_Accounts.Enabled			= true;
 			tmConfig.Eval_Accounts.Days				= 15;
 
-		    tmConfig.TMDebugAndDev.EnableGZipForWebServices = true;
+	        tmConfig.TMDebugAndDev.EnableGZipForWebServices = false;//true;
             tmConfig.TMDebugAndDev.Enable302Redirects       = true;
 
 
