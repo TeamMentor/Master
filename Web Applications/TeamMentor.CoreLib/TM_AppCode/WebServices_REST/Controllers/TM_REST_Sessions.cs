@@ -29,9 +29,9 @@ namespace TeamMentor.CoreLib
         }
 
         [TM_Admin]
-        public List<Guid> ActiveSessions()
+        public List<string> ActiveSessions()
         {
-            return TmWebServices.GetActiveSessions();
+            return TmWebServices.GetActiveSessions().toStringList();
         }
         public TMUser ActiveSession(string sessionId)
         {

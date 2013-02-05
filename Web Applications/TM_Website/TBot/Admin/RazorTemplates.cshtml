@@ -1,0 +1,14 @@
+﻿
+@using TeamMentor.CoreLib
+<h2>Current Razor Templates</h2>
+@foreach (var item in TBot_Brain.AvailableScripts)
+{
+    var hasTemplate = TBot_Brain.TemplateService.HasTemplate(item.Value); 
+    @: [@hasTemplate] @item.Key : @item.Value     
+    {if (hasTemplate) 
+     { 
+        TBot_Brain.TemplateService.RemoveTemplate(item.Value);
+     }}
+}
+
+

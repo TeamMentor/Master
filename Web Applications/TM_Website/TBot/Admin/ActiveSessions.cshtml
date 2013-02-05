@@ -1,13 +1,9 @@
-﻿
-@using TeamMentor.CoreLib
-
-@{
-    var tmRest = (TM_REST) @Model;
-    UserGroup.Admin.setThreadPrincipalWithRoles();  //elevate privileges during dev
-}
-
+﻿@{    var tmRest = (TeamMentor.CoreLib.TM_REST) @Model; }
 Here are the current active sessions:
-
-<h1>tmRest</h1>
-@tmRest.users()
-
+<ul>
+    @foreach (var sessionId in tmRest.ActiveSessions())
+    {
+        var user = tmRest.ActiveSession(sessionId);
+        @: <li>@user.UserName with @sessionId</li>
+    }
+</ul>

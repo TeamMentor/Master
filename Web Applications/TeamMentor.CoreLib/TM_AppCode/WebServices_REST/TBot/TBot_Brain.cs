@@ -17,12 +17,14 @@ namespace TeamMentor.CoreLib
         public static string TBot_Scripts_Folder  = "/TBot";
         public static Dictionary<string,string> AvailableScripts     { get; set; }
         public static List<int>                 ScriptContentHashes  { get; set; }
+        public static ITemplateService          TemplateService { get; set; }
 
-        public DateTime     StartTime { get; set; }
-
+        public DateTime         StartTime       { get; set; }
+        
         static TBot_Brain()
         {
             ScriptContentHashes = new List<int>();
+            TemplateService  = (ITemplateService) typeof (Razor).prop("TemplateService");
             AvailableScripts = HttpContextFactory.Server.MapPath(TBot_Scripts_Folder)
                                                  .files(true, "*.cshtml")
                                                  .ToDictionary((file) => file.fileName_WithoutExtension());
@@ -30,7 +32,7 @@ namespace TeamMentor.CoreLib
 
         public TBot_Brain()
         {
-            StartTime = DateTime.Now;
+            StartTime = DateTime.Now;            
         }
 
         public Stream GetHtml(string content, bool htmlEncode = true)
@@ -59,15 +61,15 @@ namespace TeamMentor.CoreLib
                 if (AvailableScripts.hasKey(what))
                 {
                     var csFile = AvailableScripts[what];
-                    var templateService = (ITemplateService) typeof (Razor).prop("TemplateService");
+                    
                     var fileContents = csFile.fileContents();
                     var fileContentsHash = fileContents.hash();
-                    if (templateService.HasTemplate(csFile).isFalse() || ScriptContentHashes.contains(fileContentsHash).isFalse())
+                    if (TemplateService.HasTemplate(csFile).isFalse() || ScriptContentHashes.contains(fileContentsHash).isFalse())
                     {                        
                         Razor.Compile(fileContents, csFile);
                         ScriptContentHashes.add(fileContentsHash);
                     }
-                    return GetHtml(Razor.Run(csFile, new TM_REST()), false);
+                    return GetHtml(Razor.Run(csFile, new TM_REST()).trim(), false);
                 }
                 return GetHtml("Couldn't find requested question");            
             }
@@ -86,9 +88,7 @@ namespace TeamMentor.CoreLib
                 filesHtml += "<li><a href='/rest/tbot/ask/{0}'>{0}</a> - {1}</li>".format(items.Key, items.Value.fileContents().hash());                    
             }
             filesHtml += "</ul>";
-            return GetHtml(filesHtml, false);
-            
-        }
-        
+            return GetHtml(filesHtml, false);            
+        }                
     }
 }
