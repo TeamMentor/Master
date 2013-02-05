@@ -93,7 +93,7 @@
     <Compile Include="TM_AppCode\Schemas\Legacy\OnlineStorage_Library.cs" />
     <Compile Include="TM_AppCode\Schemas\Legacy\TM_Library.cs" />
     <Compile Include="TM_AppCode\Schemas\Library_V3.cs" />
-    <Compile Include="TM_AppCode\ExtensionMethods\TMUser_ExtensionMethods.cs" />
+    <Compile Include="TM_AppCode\Users\TMUser_ExtensionMethods.cs" />
     <Compile Include="TM_AppCode\ExtensionMethods\TM_Xml_Database_ExtensionMethods_GuiHelpers.cs" />
     <Compile Include="TM_AppCode\ExtensionMethods\TM_Xml_Database_JavascriptProxy_ExtensionMethods.cs" />
     <Compile Include="TM_AppCode\Global.asax.cs" />
@@ -102,9 +102,9 @@
     <Compile Include="TM_AppCode\TMConsts.cs" />
     <Compile Include="TM_AppCode\TM_StartUp.cs" />
     <Compile Include="TM_AppCode\Users\TM_UserData.cs" />
-    <Compile Include="TM_AppCode\Users\TM_Xml_Database_ExtensionMethods_ActiveSessions.cs" />
-    <Compile Include="TM_AppCode\Users\TM_Xml_Database_ExtensionMethods_Users.cs" />
-    <Compile Include="TM_AppCode\Users\TM_Xml_Database_ExtensionMethods_Users_Persistance.cs" />
+    <Compile Include="TM_AppCode\Users\TM_UserData_Ex_ActiveSessions.cs" />
+    <Compile Include="TM_AppCode\Users\TM_UserData_Ex_Users.cs" />
+    <Compile Include="TM_AppCode\Users\TM_UserData_Ex_Users_Persistance.cs" />
     <Compile Include="TM_AppCode\Users\UserActvities.cs" />
     <Compile Include="TM_AppCode\Utils\Git.cs" />
     <Compile Include="TM_AppCode\Utils\GoogleAnalytics.cs" />

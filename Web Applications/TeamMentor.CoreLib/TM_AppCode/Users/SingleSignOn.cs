@@ -90,7 +90,7 @@ namespace TeamMentor.CoreLib
                 return null;
             if (tmUser.SSOKey.isGuid().isFalse())
                 tmUser.SSOKey = Guid.NewGuid().str();
-            TM_UserData.Current.saveTmUserDataToDisk();
+            tmUser.saveTmUser();
             return MachineKey.Encode(tmUser.serialize(false).asciiBytes(),MachineKeyProtection.All);
         }
 

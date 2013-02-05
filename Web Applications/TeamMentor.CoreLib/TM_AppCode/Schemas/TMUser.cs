@@ -37,6 +37,7 @@ namespace TeamMentor.CoreLib
 
         public TMUser()
         {
+            ID = Guid.NewGuid();
             Stats = new UserStats
                 {
                     CreationDate = DateTime.Now,

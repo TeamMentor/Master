@@ -14,10 +14,7 @@ namespace TeamMentor.CoreLib
         
 //        [WebMethod(EnableSession = true)] [Admin]	                    			public string UseEnvironment_Moq()      		{   UnityInjection.useEnvironment_Moq(); 		return "using Moq Environment"; }
 //		[WebMethod(EnableSession = true)] [Admin]	                    			public string UseEnvironment_XmlDatabase()   	{   UnityInjection.useEnvironment_XmlDatabase();return "using XmlDatabase Environment"; }
-        [WebMethod(EnableSession = true)] [Admin]	            public string CurrentProxyType()        		{ 	return javascriptProxy.ProxyType; }
-        [WebMethod(EnableSession = true)] 						public string GetPasswordHash(string username, string password)		
-                                                                                                                                    {	return username.createPasswordHash(password); }
-        
+        [WebMethod(EnableSession = true)] [Admin]	            public string CurrentProxyType()        		{ 	return javascriptProxy.ProxyType; }        
         //Xml Database Specific
         [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_GetDatabasePath()		{	return TM_Xml_Database.Current.Path_XmlDatabase;	}
         [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_GetLibraryPath()		{	return TM_Xml_Database.Current.Path_XmlLibraries;	}		

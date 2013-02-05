@@ -24,16 +24,7 @@ namespace TeamMentor.CoreLib
     				return tmUser;
     		return null;
     	}
-    	public static bool delete(this List<TMUser> tmUsers, int id)
-    	{    		
-    		foreach(var tmUser in tmUsers)
-    			if (tmUser.UserID == id)
-    			{
-    				tmUsers.remove(tmUser);
-    				return true;
-    			}
-    		return false;
-    	}
+    	
     	public static bool updateUser(this List<TMUser> tmUsers, int userId, string userName, string firstname, string lastname, string title, string company, string email, int groupId)
     	{
     		var tmUser = tmUsers.user(userId);
@@ -50,14 +41,15 @@ namespace TeamMentor.CoreLib
 				tmUser.Title = 		Encoder.XmlEncode(title);
 				tmUser.Company = 	Encoder.XmlEncode(company);
 				tmUser.GroupID = 	groupId;
+    		    tmUser.saveTmUser();
     			return true;
     		}
     		return false;
     	}
 					
-		public static string createPasswordHash(this string username, string password)
+		public static string createPasswordHash(this TMUser tmUser, string password)
 		{
-			var stringToHash = username + password;
+			var stringToHash = tmUser.ID + tmUser.UserName + password;   // The password hash is made of a GUID, the Unique username, and a password
 			var sha256 = System.Security.Cryptography.SHA256.Create();
 			var hashBytes = sha256.ComputeHash(Encoding.ASCII.GetBytes(stringToHash));
 			var hashString = new StringBuilder();

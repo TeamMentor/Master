@@ -26,7 +26,7 @@ namespace TeamMentor.CoreLib
     	bool DeleteUser(int userId);    	
     	List<bool> DeleteUsers(List<int> userIds);    	
     	bool UpdateUser(int userId, string userName, string firstname, string lastname, string title, string company, string email, int groupId);
-		bool SetUserPasswordHash(int userId,  string passwordHash);
+		bool SetUserPassword(int userId,  string password);
 		string GetUserGroupName(int userId);
 		int GetUserGroupId(int userId);		
 		bool SetUserGroupId(int userId, int groupId);
@@ -35,8 +35,7 @@ namespace TeamMentor.CoreLib
 		
     	
     	//Session Management
-    	Guid Login(string username, string passwordHash);
-		Guid Login_PwdInClearText(string username, string passwordHash);		
+    	Guid Login(string username, string password);		
 		//Guid Current_AdminSessionID();
 		//List<string> GetCurrentUserRoles();
 		
@@ -48,14 +47,14 @@ namespace TeamMentor.CoreLib
 		List<TeamMentor_Article> GetGuidanceItemsInFolder(Guid folderId);
 		List<TeamMentor_Article> GetGuidanceItemsInView(Guid viewId);
 		List<TeamMentor_Article> GetGuidanceItemsInViews(List<Guid> viewIds);			
-		string GetGuidanceItemHtml(Guid GuidanceItemId);
-		List<string> GetGuidanceItemsHtml(List<Guid> GuidanceItemsIds);
+		string GetGuidanceItemHtml(Guid guidanceItemId);
+		List<string> GetGuidanceItemsHtml(List<Guid> guidanceItemsIds);
 		List<TeamMentor_Article> GetAllGuidanceItems();
 		List<TeamMentor_Article> GetGuidanceItemsInLibrary(Guid libraryId);
 		
 		//OnlineStorage
 		string GetAllUserLogs();
-		void LogUserGUID(string GUID);
+		void LogUserGUID(string guid);
     	//bool AuthorizedToUpload();
 		List<string> GetAllLibraryIds();
 		Library GetLibraryById  (string libraryId);

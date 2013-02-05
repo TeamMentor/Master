@@ -42,7 +42,7 @@ namespace TeamMentor.CoreLib
             }
             tmXmlDatabase.GuidanceExplorers_XmlFormat = tmXmlDatabase.Path_XmlLibraries.getGuidanceExplorerObjects();
             tmXmlDatabase.Path_XmlLibraries.loadGuidanceItemsFromCache();            
-            tmXmlDatabase.UserData.loadAndCheckUserDatabase();
+            tmXmlDatabase.UserData.loadTmUserData();
             return true;					
         }
         

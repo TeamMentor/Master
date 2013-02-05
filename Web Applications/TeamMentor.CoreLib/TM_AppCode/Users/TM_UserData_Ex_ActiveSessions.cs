@@ -4,7 +4,7 @@ using O2.DotNetWrappers.ExtensionMethods;
 
 namespace TeamMentor.CoreLib
 {
-    public static class TM_Xml_Database_ExtensionMethods_ActiveSessions
+    public static class TM_UserData_Ex_ActiveSessions
     {
         public static Dictionary<Guid, TMUser> activeSessions(this TM_Xml_Database tmDb)
         {
@@ -38,11 +38,11 @@ namespace TeamMentor.CoreLib
             }
             return Guid.Empty;
         }                                
-        public static bool              validSession        (this Guid sessionId)
+        public static bool              validSession         (this Guid sessionId)
         {
             return TM_UserData.Current.ActiveSessions.hasKey(sessionId);
         }
-        public static bool              invalidateSession   (this Guid sessionId)
+        public static bool              invalidateSession    (this Guid sessionId)
         {
             if (sessionId.validSession())
             {
@@ -52,37 +52,37 @@ namespace TeamMentor.CoreLib
             }
             return false;
         }        
-        public static TMUser            session_TmUser      (this Guid sessionId)
+        public static TMUser            session_TmUser       (this Guid sessionId)
         {
             if(sessionId.validSession())
                 return TM_UserData.Current.ActiveSessions[sessionId];
             return null;	
         }
-        public static string            session_UserName    (this Guid sessionId)
+        public static string            session_UserName     (this Guid sessionId)
         {			
             if(sessionId.validSession())
                 return sessionId.session_TmUser().UserName;
             return null;
         }
-        public static int               session_GroupID     (this Guid sessionId)
+        public static int               session_GroupID      (this Guid sessionId)
         { 
             var tmUser = sessionId.session_TmUser();
             if (tmUser != null)
                 return tmUser.GroupID;
             return -1;            
         }        
-        public static UserGroup         session_UserGroup   (this Guid sessionId)
+        public static UserGroup         session_UserGroup    (this Guid sessionId)
         {
             return (UserGroup)sessionId.session_GroupID();              
         }        
-        public static List<UserRole>    session_UserRoles   (this Guid sessionId)
+        public static List<UserRole>    session_UserRoles    (this Guid sessionId)
         {
             var userGroup = sessionId.session_UserGroup();
             if (UserRolesMappings.Mappings.hasKey(userGroup))
                 return UserRolesMappings.Mappings[userGroup];
             return new List<UserRole>();
         }        
-        public static bool              session_isAdmin     (this Guid sessionId)
+        public static bool              session_isAdmin      (this Guid sessionId)
         {
             return UserGroup.Admin == sessionId.session_UserGroup();
         }  

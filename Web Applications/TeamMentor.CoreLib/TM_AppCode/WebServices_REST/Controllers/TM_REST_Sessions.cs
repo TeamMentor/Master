@@ -13,11 +13,11 @@ namespace TeamMentor.CoreLib
         }
         public Guid		Login(string username, string password)
         {
-            return TmWebServices.Login_PwdInClearText(username, password);
+            return TmWebServices.Login(username, password);
         }
         public Guid		Login_using_Credentials(TM_Credentials credentials)
         {
-            return TmWebServices.Login_PwdInClearText(credentials.UserName, credentials.Password);
+            return TmWebServices.Login(credentials.UserName, credentials.Password);
         }
         public Guid		Logout()
         {

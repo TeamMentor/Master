@@ -18,10 +18,10 @@ namespace TeamMentor.UnitTests.XmlDatabase_InMemory
 			var user = "testUser_".add_RandomLetters(5);
 			var pwd = "bb";
 
-			var userId = tmXmlDatabase.newUser_ClearTextPassword(user, pwd);
+			var userId = tmXmlDatabase.newUser(user, pwd);
 			Assert.Greater(userId, 0, "userID");
 			
-			var sessionId = tmXmlDatabase.login_PwdInClearText(user, pwd);
+			var sessionId = tmXmlDatabase.login(user, pwd);
 			var userGroup = sessionId.session_UserGroup();					//new users currently default to Reader
 			var userRoles = sessionId.session_UserRoles();
 
