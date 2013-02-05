@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.ServiceModel;
-using System.ServiceModel.Activation;
 using System.Web;
 using FluentSharp;
 using O2.DotNetWrappers.ExtensionMethods;

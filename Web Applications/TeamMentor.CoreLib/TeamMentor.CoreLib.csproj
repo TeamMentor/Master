@@ -83,7 +83,7 @@
     <Compile Include="TM_AppCode\Authentication\ExtensionMethods\RoleBaseSecurity_ExtensionMethods.cs" />
     <Compile Include="TM_AppCode\Authentication\ExtensionMethods\SoapRequestUtils_ExtensionMethods.cs" />
     <Compile Include="TM_AppCode\Authentication\ExtensionMethods\TeamMentorUserManagement_ExtensionMethods.cs" />
-    <Compile Include="TM_AppCode\Authentication\SingleSignOn.cs" />
+    <Compile Include="TM_AppCode\Users\SingleSignOn.cs" />
     <Compile Include="TM_AppCode\Authentication\TM_Authentication.cs" />
     <Compile Include="TM_AppCode\Authentication\UserRoleBaseSecurity.cs" />
     <Compile Include="TM_AppCode\Authentication\UserRoles.cs" />
@@ -101,6 +101,7 @@
     <Compile Include="TM_AppCode\Schemas\View_V3.cs" />
     <Compile Include="TM_AppCode\TMConsts.cs" />
     <Compile Include="TM_AppCode\TM_StartUp.cs" />
+    <Compile Include="TM_AppCode\Users\TM_UserData.cs" />
     <Compile Include="TM_AppCode\Users\TM_Xml_Database_ExtensionMethods_ActiveSessions.cs" />
     <Compile Include="TM_AppCode\Users\TM_Xml_Database_ExtensionMethods_Users.cs" />
     <Compile Include="TM_AppCode\Users\TM_Xml_Database_ExtensionMethods_Users_Persistance.cs" />
@@ -166,7 +167,6 @@
     <Compile Include="TM_AppCode\WebServices_REST\Tests_RnD\REST_Tests.cs" />
     <Compile Include="TM_AppCode\WebServices_REST\Controllers\TM_REST_Users.cs" />
     <Compile Include="TM_AppCode\WebServices_REST\Models\TM_User.cs" />
-    <Compile Include="TM_AppCode\Users\TM_Xml_Database.Users.cs" />
     <Compile Include="TM_AppCode\XmlDatabase\TM_Xml_Database.Virtual_Articles.cs" />
     <Compile Include="TM_AppCode\XmlDatabase\TM_Xml_Database.Library.Files.cs" />
     <Compile Include="TM_AppCode\XmlDatabase\TM_Xml_Database.cs" />

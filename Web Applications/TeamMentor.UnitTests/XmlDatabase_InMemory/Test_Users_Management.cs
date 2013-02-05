@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security;
-using System.Text;
 using NUnit.Framework;
 using O2.DotNetWrappers.ExtensionMethods;
 using TeamMentor.CoreLib;
@@ -26,9 +22,9 @@ namespace TeamMentor.UnitTests.XmlDatabase_InMemory
 
 			Assert.IsNull(tmXmlDatabase.tmUser(testUserName), "testUserName shouldn't exist before create");
 			//create user
-			var userCount = tmXmlDatabase.TMUsers.size();
+			var userCount = tmXmlDatabase.UserData.TMUsers.size();
 			var userId = tmXmlDatabase.newUser(testUserName, passwordHash);			
-			Assert.AreEqual(userCount+1, tmXmlDatabase.TMUsers.size() , "TMUsers,size() after create");
+			Assert.AreEqual(userCount+1, tmXmlDatabase.UserData.TMUsers.size() , "TMUsers,size() after create");
 			var tmUser = tmXmlDatabase.tmUser(userId);
 			Assert.NotNull(tmUser, "tmUser was null after create");
 			Assert.AreEqual(tmUser.UserID, userId, "UserID");

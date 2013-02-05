@@ -1,5 +1,4 @@
-﻿using System;
-using System.Web;
+﻿using System.Web;
 using O2.Kernel;
 using O2.Kernel.InterfacesBaseImpl;
 using O2.DotNetWrappers.ExtensionMethods;
@@ -25,8 +24,9 @@ namespace TeamMentor.CoreLib
         }
         public void Application_Start()
         {
-            PublicDI.log.LogRedirectionTarget = new Logger_Memory();
-            TM_REST.SetRouteTable();			
+            PublicDI.log.LogRedirectionTarget = new Logger_Memory();            
+            new TM_Xml_Database(true);                                  // Create FileSystem Based database
+            TM_REST.SetRouteTable();			                        // Set REST routes
         }
         public void Application_End()
         {

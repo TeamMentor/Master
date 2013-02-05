@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.ServiceModel;
-using System.ServiceModel.Web;
-using System.Text;
-using O2.DotNetWrappers.DotNet;
 using O2.DotNetWrappers.ExtensionMethods;
 
 namespace TeamMentor.CoreLib

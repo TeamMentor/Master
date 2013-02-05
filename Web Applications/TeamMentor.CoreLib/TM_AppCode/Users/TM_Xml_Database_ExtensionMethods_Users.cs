@@ -1,25 +1,26 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Permissions;
 using Microsoft.Security.Application;
 using O2.DotNetWrappers.ExtensionMethods;
 
 namespace TeamMentor.CoreLib
 {
     public static class TM_Xml_Database_ExtensionMethods_Users
-    {   		
-        public static int           createDefaultAdminUser(this TM_Xml_Database tmDb)
+    {
+        public static int           FORCED_MILLISEC_DELAY_ON_LOGIN_ACTION = 500;
+
+        public static int           createDefaultAdminUser      (this TM_Xml_Database tmDb)
         {  
             var tmConfig = TMConfig.Current;
             lock (tmConfig)
             {
                 UserGroup.Admin.setThreadPrincipalWithRoles();
 
-                var defaultAdminUser_name = tmConfig.DefaultAdminUserName;
-                var defaultAdminUser_pwd = tmConfig.DefaultAdminPassword;
-                var passwordHash = defaultAdminUser_name.createPasswordHash(defaultAdminUser_pwd);
-                var adminUser = tmDb.tmUser(defaultAdminUser_name);
+                var defaultAdminUser_Name = tmConfig.DefaultAdminUserName;
+                var defaultAdminUser_Pwd = tmConfig.DefaultAdminPassword;
+                var passwordHash = defaultAdminUser_Name.createPasswordHash(defaultAdminUser_Pwd);
+                var adminUser = tmDb.tmUser(defaultAdminUser_Name);
                 
                 if (adminUser.notNull())
                 {
@@ -30,42 +31,42 @@ namespace TeamMentor.CoreLib
                     return adminUser.UserID;
                 }				
 
-                var userId = tmDb.newUser(defaultAdminUser_name, passwordHash, 1);
+                var userId = tmDb.newUser(defaultAdminUser_Name, passwordHash, 1);
                 UserGroup.Anonymous.setThreadPrincipalWithRoles();
                 return userId;
             }            
         }        
-        public static TMUser        tmUser(this string name)
+        public static TMUser        tmUser                      (this string name)
         {
             return TM_Xml_Database.Current.tmUser(name);
         }        
-        public static List<int>     userIds(this List<TMUser> tmUsers)
+        public static List<int>     userIds                     (this List<TMUser> tmUsers)
         {
             return (from tmUser in tmUsers
                     where tmUser.notNull()
                     select tmUser.UserID).toList();
         }        
-        public static int           newUser(this TM_Xml_Database tmDb)
+        public static int           newUser                     (this TM_Xml_Database tmDb)
         {
             return tmDb.newUser("test_user_{0}".format(5.randomLetters()));
         }        
-        public static int           newUser(this TM_Xml_Database tmDb, string  username)
+        public static int           newUser                     (this TM_Xml_Database tmDb, string  username)
         {
             return tmDb.newUser(username, username.createPasswordHash(5.randomLetters()));
         }        
-        public static int           newUser_ClearTextPassword(this TM_Xml_Database tmDb, string  username, string password)
+        public static int           newUser_ClearTextPassword   (this TM_Xml_Database tmDb, string  username, string password)
         {
             return tmDb.newUser(username, username.createPasswordHash(password));
         }        
-        public static int           newUser(this TM_Xml_Database tmDb, string  username, string passwordHash)
+        public static int           newUser                     (this TM_Xml_Database tmDb, string  username, string passwordHash)
         {
             return tmDb.newUser(username,passwordHash, 0);
         }        
-        public static int           newUser(this TM_Xml_Database tmDb, string  username, string passwordHash, int groupId)
+        public static int           newUser                     (this TM_Xml_Database tmDb, string  username, string passwordHash, int groupId)
         {
             return tmDb.newUser(username, passwordHash, "","","","", "","",groupId);
         }        
-        public static int           newUser(this TM_Xml_Database tmDb, string  username, string passwordHash, string email, string firstname, string lastname, string note , string title, string company, int groupId)
+        public static int           newUser                     (this TM_Xml_Database tmDb, string  username, string passwordHash, string email, string firstname, string lastname, string note , string title, string company, int groupId)
         {			
             var userId = Guid.NewGuid().hash();  //10000000.random();//10.randomNumbers().toInt();
             if (userId < 0)						// find a .net that does this (maybe called 'invert')
@@ -89,33 +90,31 @@ namespace TeamMentor.CoreLib
                 PasswordHash = passwordHash
             };										
             
-            TM_Xml_Database.Current.TMUsers.Add(tmUser);
-            //tmDb.setUserPassword_PwdInClearText(username, passwordHash);
-            //tmDb.setUserPassword(username, passwordHash);
+            TM_UserData.Current.TMUsers.Add(tmUser);            
         
             //save it
-            tmDb.saveTmUserDataToDisk();   // saved on setUserPassword
+            TM_UserData.Current.saveTmUserDataToDisk();   // saved on setUserPassword
         
             
             return userId;    		
         }				                
-        public static bool          setUserPassword(this TM_Xml_Database tmDb, int userId, string passwordHash)
+        public static bool          setUserPassword             (this TM_Xml_Database tmDb, int userId, string passwordHash)
         {
             var tmUser = tmDb.tmUser(userId);
             return tmDb.setUserPassword(tmUser, passwordHash);
         }        
-        public static bool          setUserPassword(this TM_Xml_Database tmDb, string username, string passwordHash)
+        public static bool          setUserPassword             (this TM_Xml_Database tmDb, string username, string passwordHash)
         {
             var tmUser = tmDb.tmUser(username);
             return tmDb.setUserPassword(tmUser, passwordHash);
         }
-        public static bool          setCurrentUserPassword(this TM_Xml_Database tmDb, TM_Authentication tmAuthentication, string passwordHash)
+        public static bool          setCurrentUserPassword      (this TM_Xml_Database tmDb, TM_Authentication tmAuthentication, string passwordHash)
         {
             var tmUser = tmAuthentication.currentUser;
             if (tmUser.notNull())
             {
                 tmUser.PasswordHash = passwordHash;
-                tmDb.saveTmUserDataToDisk(); 
+                TM_UserData.Current.saveTmUserDataToDisk(); 
                 return true;
             }
             return false;
@@ -124,12 +123,12 @@ namespace TeamMentor.CoreLib
         {
             return tmDb.setUserPassword(username,username.createPasswordHash(password));    		
         }    	
-        public static Guid          login(this TM_Xml_Database tmDb, string username, string passwordHash)
-        {
-            tmDb.sleep(TM_Xml_Database.FORCED_MILLISEC_DELAY_ON_LOGIN_ACTION, false);      // to slow down brute force attacks
+        public static Guid          login                       (this TM_Xml_Database tmDb, string username, string passwordHash)
+        {            
+            tmDb.sleep(FORCED_MILLISEC_DELAY_ON_LOGIN_ACTION, false);      // to slow down brute force attacks
             if (username.valid() && passwordHash.valid())
             {
-                var tmUser = tmDb.TMUsers.user(username);
+                var tmUser = TM_UserData.Current.TMUsers.user(username);
                 
                 if (TMConfig.Current.Eval_Accounts.Enabled)
                     if (tmUser.notNull() &&tmUser.Stats.ExpirationDate < DateTime.Now 
@@ -139,25 +138,24 @@ namespace TeamMentor.CoreLib
                         return Guid.Empty;
                     }
 
-                if (tmUser.notNull() && tmUser.PasswordHash == passwordHash)
-                    //if (TM_Xml_Database.Current.TMUsersPasswordHashes[username] == passwordHash)					
-                    return tmDb.registerUserSession(tmUser, Guid.NewGuid());
+                if (tmUser.notNull() && tmUser.PasswordHash == passwordHash)                    
+                    return tmUser.registerUserSession(Guid.NewGuid());
             }
             return Guid.Empty;    			
         }
-        public static Guid          login_PwdInClearText(this TM_Xml_Database tmDb, string username, string password)
+        public static Guid          login_PwdInClearText        (this TM_Xml_Database tmDb, string username, string password)
         {
-            tmDb.sleep(TM_Xml_Database.FORCED_MILLISEC_DELAY_ON_LOGIN_ACTION, false);  // to slow down brute force attacks
+            tmDb.sleep(FORCED_MILLISEC_DELAY_ON_LOGIN_ACTION, false);  // to slow down brute force attacks
             if (username.valid() && password.valid())
             {
-                var tmUser = tmDb.TMUsers.user(username);
+                var tmUser = TM_UserData.Current.TMUsers.user(username);
                 if (tmUser.notNull() && tmUser.PasswordHash == username.createPasswordHash(password))
                 //if (TM_Xml_Database.Current.TMUsersPasswordHashes[username] == username.createPasswordHash(password))
-                    return tmDb.registerUserSession(tmUser, Guid.NewGuid());
+                    return tmUser.registerUserSession(Guid.NewGuid());
             }
             return Guid.Empty;    			
         }    	                
-        public static List<int>     createTmUsers(this TM_Xml_Database tmDb, string batchUserData) 
+        public static List<int>     createTmUsers               (this TM_Xml_Database tmDb, string batchUserData) 
         {						
             var newUsers = new List<NewUser>();
             foreach(var line in batchUserData.fixCRLF().split_onLines())
@@ -175,14 +173,14 @@ namespace TeamMentor.CoreLib
             } 
             return tmDb.createTmUsers(newUsers);
         }
-        public static string        getUserGroupName(this TM_Xml_Database tmDb, int userId)
+        public static string        getUserGroupName            (this TM_Xml_Database tmDb, int userId)
         {
             var tmUser = tmDb.tmUser(userId);
             if (tmUser.notNull())
                 return tmUser.userGroup().str();
             return null;
         }        
-        public static int           getUserGroupId(this TM_Xml_Database tmDb, int userId)
+        public static int           getUserGroupId              (this TM_Xml_Database tmDb, int userId)
         {			
             var tmUser = tmDb.tmUser(userId);
             if (tmUser.notNull())
@@ -192,22 +190,20 @@ namespace TeamMentor.CoreLib
 
         [ManageUsers]   public static TMUser        tmUser(this TM_Xml_Database tmDb, string name)
         {
-            return TM_Xml_Database.Current.TMUsers.user(name);
+            return TM_UserData.Current.TMUsers.user(name);
         }
         [ManageUsers]   public static TMUser        tmUser(this TM_Xml_Database tmDb, int userId)
         {
-            return TM_Xml_Database.Current.TMUsers.user(userId);
+            return TM_UserData.Current.TMUsers.user(userId);
         }        
-        [ManageUsers]   public static List<TMUser>  tmUsers(this List<int> usersId)
+        [ManageUsers]   public static List<TMUser> tmUsers(this List<int> usersId)
         {
-            var tmUsers = new List<TMUser>();
-            foreach(var userId in usersId)								
-                tmUsers.Add(TM_Xml_Database.Current.TMUsers.user(userId));
-            return tmUsers;
-        }                
-        [ManageUsers]   public static List<TMUser>  tmUsers(this TM_Xml_Database tmDb)
+            return usersId.Select(userId => TM_UserData.Current.TMUsers.user(userId)).toList();
+        }
+
+        [ManageUsers]   public static List<TMUser> tmUsers(this TM_Xml_Database tmDb)
         {
-            return TM_Xml_Database.Current.TMUsers.toList();
+            return TM_UserData.Current.TMUsers.toList();
         }        
         [ManageUsers]   public static bool          setUserPassword(this TM_Xml_Database tmDb, TMUser tmUser, string passwordHash)
         {		
@@ -215,33 +211,31 @@ namespace TeamMentor.CoreLib
             if (tmUser.notNull())
             {
                 tmUser.PasswordHash = passwordHash;
-                tmDb.saveTmUserDataToDisk(); 
+                TM_UserData.Current.saveTmUserDataToDisk(); 
                 return true;
             }
             return false;    		
         }                
-        [ManageUsers]   public static List<bool>    deleteTmUsers(this TM_Xml_Database tmDb, List<int> userIds)
+        [ManageUsers]   public static List<bool> deleteTmUsers(this TM_Xml_Database tmDb, List<int> userIds)
         {
-            var results = new List<bool>();
-            foreach(var userId in userIds)
-                results.Add(tmDb.deleteTmUser(userId));
-            return results;			
-        }				
+            return userIds.Select(userId => tmDb.deleteTmUser(userId)).toList();
+        }
+
         [ManageUsers]   public static bool          deleteTmUser(this TM_Xml_Database tmDb, int userId)
         {
-            var result = TM_Xml_Database.Current.TMUsers.delete(userId);
+            var result = TM_UserData.Current.TMUsers.delete(userId);
             if (result)
-                tmDb.saveTmUserDataToDisk(); 
+                TM_UserData.Current.saveTmUserDataToDisk(); 
             return result;
         }		
         [ManageUsers]   public static bool          updateTmUser(this TM_Xml_Database tmDb, int userId, string userName, string firstname, string lastname, string title, string company, string email, int groupId)
         {
-            var result = TM_Xml_Database.Current.TMUsers.updateUser(userId, userName, firstname, lastname,  title, company, email, groupId);
+            var result = TM_UserData.Current.TMUsers.updateUser(userId, userName, firstname, lastname,  title, company, email, groupId);
             if (result) //save it			
-                tmDb.saveTmUserDataToDisk(); 
+                TM_UserData.Current.saveTmUserDataToDisk(); 
             return result;
         }		                
-        [ManageUsers]   public static List<string>  getUserRoles(this TM_Xml_Database tmDb, int userId)
+        [ManageUsers]   public static List<string> getUserRoles(this TM_Xml_Database tmDb, int userId)
         {
             var tmUser = tmDb.tmUser(userId);
             if (tmUser.notNull()) 
@@ -254,7 +248,7 @@ namespace TeamMentor.CoreLib
             if (tmUser.notNull()) 
             {
                 tmUser.GroupID = groupId;
-                tmDb.saveTmUserDataToDisk(); 
+                TM_UserData.Current.saveTmUserDataToDisk(); 
                 return true;
             }
             return false;
@@ -263,23 +257,21 @@ namespace TeamMentor.CoreLib
         {			
             if (newUser.groupId !=0)		// if there is a groupId provided we must check if the user has the manageUsers Priviledge						
                 UserRole.ManageUsers.demand();			
-            if (newUser.username.inValid() ||  tmDb.TMUsers.user(newUser.username).notNull())
+            if (newUser.username.inValid() ||  TM_UserData.Current.TMUsers.user(newUser.username).notNull())
                 return 0;
             return tmDb.newUser(newUser.username, newUser.passwordHash, newUser.email, newUser.firstname, newUser.lastname, newUser.note, newUser.title, newUser.company, newUser.groupId);						
         }									
-        [ManageUsers]   public static List<int>     createTmUsers(this TM_Xml_Database tmDb, List<NewUser> newUsers)
-        {						
-            var newUsersIds = new List<int>();
-            foreach(var newUser in newUsers)
-                newUsersIds.Add(tmDb.createTmUser(newUser));
-            return newUsersIds;
-        }				
+        [ManageUsers]   public static List<int> createTmUsers(this TM_Xml_Database tmDb, List<NewUser> newUsers)
+        {
+            return newUsers.Select(newUser => tmDb.createTmUser(newUser)).toList();
+        }
+
         [Admin]         public static TMUser        set_PostLoginView(this TMUser tmUser, string postLoginView)
         {
             if (tmUser.notNull())
             {
                 tmUser.PostLoginView = postLoginView;
-                TM_Xml_Database.Current.saveTmUserDataToDisk();
+                TM_UserData.Current.saveTmUserDataToDisk();
             }
             return tmUser;
         }
@@ -288,7 +280,7 @@ namespace TeamMentor.CoreLib
             if (tmUser.notNull())
             {
                 tmUser.PostLoginScript = postLoginScript;
-                TM_Xml_Database.Current.saveTmUserDataToDisk();
+                TM_UserData.Current.saveTmUserDataToDisk();
             }
             return tmUser;
         }

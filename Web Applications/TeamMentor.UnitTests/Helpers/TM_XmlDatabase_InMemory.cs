@@ -20,14 +20,13 @@ namespace TeamMentor.UnitTests
 		[TestFixtureSetUp]		
 		public void TestFixtureSetUp()
 		{
-			tmXmlDatabase = new TM_Xml_Database(false);	
-
+			tmXmlDatabase = new TM_Xml_Database(false);	            
 			//all these values should be null since we are running TM all in memory
-			Assert.IsNull(tmXmlDatabase.Path_XmlDatabase		, "Path_XmlDatabase");
-			Assert.IsNull(tmXmlDatabase.Path_XmlLibraries		, "Path_XmlLibraries");
-			Assert.IsEmpty(tmXmlDatabase.Cached_GuidanceItems	, "Cached_GuidanceItems");
-			Assert.IsEmpty(tmXmlDatabase.ActiveSessions			, "ActiveSessions");
-			Assert.AreEqual(tmXmlDatabase.TMUsers.size(),1		, "TMUsers");				// there should be admin
+			Assert.IsNull(tmXmlDatabase.Path_XmlDatabase		    , "Path_XmlDatabase");
+			Assert.IsNull(tmXmlDatabase.Path_XmlLibraries		    , "Path_XmlLibraries");
+			Assert.IsEmpty(tmXmlDatabase.Cached_GuidanceItems	    , "Cached_GuidanceItems");
+			Assert.IsEmpty(tmXmlDatabase.UserData.ActiveSessions    , "ActiveSessions");
+			Assert.AreEqual(tmXmlDatabase.UserData.TMUsers.size(),1 , "TMUsers");				// there should be admin
 		}
 	}
 }

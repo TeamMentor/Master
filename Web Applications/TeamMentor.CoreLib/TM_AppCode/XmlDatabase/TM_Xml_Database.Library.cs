@@ -11,7 +11,9 @@ namespace TeamMentor.CoreLib
     public partial class TM_Xml_Database 
     {
         public  bool setLibraryPath_and_LoadDataIntoMemory(string xmlDatabasePath, string libraryPath, string userDataPath)
-        {						
+        {
+            var tmXmlDatabase = Current;
+		    
             if (libraryPath.dirExists().isFalse())						
             {
                 libraryPath = xmlDatabasePath.pathCombine(libraryPath);
@@ -22,28 +24,25 @@ namespace TeamMentor.CoreLib
                 userDataPath = xmlDatabasePath.pathCombine(userDataPath);
                 userDataPath.createDir();  // make sure it exists
             }
-            Current.Path_XmlLibraries = libraryPath;
-            Current.Path_UserData     = userDataPath;
+            tmXmlDatabase.Path_XmlDatabase          = xmlDatabasePath;
+            tmXmlDatabase.Path_XmlLibraries         = libraryPath;
+            tmXmlDatabase.UserData.Path_UserData    = userDataPath;
 
             return loadDataIntoMemory();
-        }
+        }                
         
         public  bool loadDataIntoMemory()
-        {
-            return loadDataIntoMemory(Path_XmlDatabase, Path_XmlLibraries, Path_UserData);			
-        }		
-        
-        public  bool loadDataIntoMemory(string pathXmlDatabase, string pathXmlLibraries, string pathUserData)
         {	
-            if(pathXmlDatabase.dirExists().isFalse())
+            var tmXmlDatabase = Current;
+
+            if(tmXmlDatabase.Path_XmlDatabase.dirExists().isFalse())
             {
-                "[TM_Xml_Database] in loadDataIntoMemory, provided pathXmlDatabase didn't exist: {0}".error(pathXmlDatabase);
+                "[TM_Xml_Database] in loadDataIntoMemory, provided pathXmlDatabase didn't exist: {0}".error(tmXmlDatabase.Path_XmlDatabase);
                 return false;
             }
-            TM_Xml_Database.Current.GuidanceExplorers_XmlFormat = pathXmlLibraries.getGuidanceExplorerObjects();
-            pathXmlLibraries.loadGuidanceItemsFromCache();
-            //mapGuidanceItemsViews();
-            loadAndCheckUserDatabase(pathUserData);
+            tmXmlDatabase.GuidanceExplorers_XmlFormat = tmXmlDatabase.Path_XmlLibraries.getGuidanceExplorerObjects();
+            tmXmlDatabase.Path_XmlLibraries.loadGuidanceItemsFromCache();            
+            tmXmlDatabase.UserData.loadAndCheckUserDatabase();
             return true;					
         }
         
@@ -704,7 +703,7 @@ namespace TeamMentor.CoreLib
                         if (tmDatabase.xmlDB_Libraries_ImportFromZip(installUrl, ""))
                         {
                             "[handleDefaultInstallActions]  library {0} installed ok".info(defaultLibrary);
-                            tmDatabase.reloadData();
+                            tmDatabase.ReloadData();
                         }
                         else
                             "[handleDefaultInstallActions]  failed to install default library {0}".error(defaultLibrary);

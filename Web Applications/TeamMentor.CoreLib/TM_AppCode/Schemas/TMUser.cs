@@ -15,6 +15,7 @@ namespace TeamMentor.CoreLib
     [Serializable]            
     public class TMUser
     {
+        [XmlAttribute] public Guid		ID { get; set; }
         [XmlAttribute] public int		UserID { get; set; }
         [XmlAttribute] public string	UserName { get; set; }
         [XmlAttribute] public string	FirstName { get; set; }

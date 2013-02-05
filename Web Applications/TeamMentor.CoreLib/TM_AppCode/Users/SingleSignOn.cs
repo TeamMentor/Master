@@ -67,7 +67,7 @@ namespace TeamMentor.CoreLib
                     var decodedToken = decodeSSOToken(ssoToken);
                     var decodedUser = decodedToken.deserialize<TMUser>(false);
                     if (decodedUser.notNull())
-                        foreach (var tmUser in TM_Xml_Database.Current.TMUsers)
+                        foreach (var tmUser in TM_UserData.Current.TMUsers)
                             if (decodedUser.SSOKey == tmUser.SSOKey)                            
                                 return tmUser;                        
                 }
@@ -90,7 +90,7 @@ namespace TeamMentor.CoreLib
                 return null;
             if (tmUser.SSOKey.isGuid().isFalse())
                 tmUser.SSOKey = Guid.NewGuid().str();
-            TM_Xml_Database.Current.saveTmUserDataToDisk();
+            TM_UserData.Current.saveTmUserDataToDisk();
             return MachineKey.Encode(tmUser.serialize(false).asciiBytes(),MachineKeyProtection.All);
         }
 

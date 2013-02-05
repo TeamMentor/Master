@@ -23,7 +23,7 @@ namespace TeamMentor.CoreLib
         [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_GetLibraryPath()		{	return TM_Xml_Database.Current.Path_XmlLibraries;	}		
         [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_ReloadData()			{	
                                                                                                                                         guiObjectsCacheOK = false; 
-                                                                                                                                        return  TM_Xml_Database.Current.reloadData(null); 
+                                                                                                                                        return  TM_Xml_Database.Current.ReloadData(null); 
                                                                                                                                     }
         [WebMethod(EnableSession = true)] [Admin]	            public bool XmlDatabase_ImportLibrary_fromZipFile(string pathToZipFile, string unzipPassword)
                                                                                                                                     {
@@ -36,7 +36,7 @@ namespace TeamMentor.CoreLib
                                                                                                                                     }
         [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_SetLibraryPath(string libraryPath)		
                                                                                                                                     {	guiObjectsCacheOK = false; 
-                                                                                                                                        return  TM_Xml_Database.Current.reloadData(libraryPath); 
+                                                                                                                                        return  TM_Xml_Database.Current.ReloadData(libraryPath); 
                                                                                                                                     }
 
         [WebMethod(EnableSession = true)] public List<Guid>     XmlDatabase_GuidanceItems_SearchTitleAndHtml(List<Guid> guidanceItemsIds, string searchText)		{	 return  TM_Xml_Database.Current.guidanceItems_SearchTitleAndHtml(guidanceItemsIds,searchText); }																																		

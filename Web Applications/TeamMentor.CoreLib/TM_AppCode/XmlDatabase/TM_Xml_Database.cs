@@ -1,66 +1,47 @@
 using System;
 using System.Collections.Generic;
-using System.Security.Permissions;
 using O2.DotNetWrappers.ExtensionMethods;
 using urn.microsoft.guidanceexplorer;
-using Items = O2.DotNetWrappers.DotNet.Items;
 
 namespace TeamMentor.CoreLib
 {	
     public partial class TM_Xml_Database 
-    {		
-        public static TM_Xml_Database _current;
-
+    {		    
+        public static TM_Xml_Database Current               { get; set; }
         //config
-        public bool			UsingFileStorage				{ get; set; }
+        public bool			UsingFileStorage				{ get; set; }   
 
         //users
-        public List<TMUser>	TMUsers							{ get; set; }
-        //public Items TMUsersPasswordHashes { get; set; }
+        public TM_UserData  UserData                        { get; set; }        
 
-        //articles
-        public Dictionary<Guid, TMUser>				ActiveSessions				{ get; set; }		
-        public Dictionary<Guid, guidanceExplorer>	GuidanceExplorers_XmlFormat { get; set; }	
-        public Dictionary<Guid, string>				GuidanceItems_FileMappings	{ get; set; }			
-        public Dictionary<Guid, TeamMentor_Article>	Cached_GuidanceItems		{ get; set; }
-
-        public Dictionary<Guid, VirtualArticleAction> VirtualArticles			{ get; set; }
-        
-                
-                                    
+        //articles        
+        public Dictionary<Guid, guidanceExplorer>	    GuidanceExplorers_XmlFormat { get; set; }	
+        public Dictionary<Guid, string>				    GuidanceItems_FileMappings	{ get; set; }			
+        public Dictionary<Guid, TeamMentor_Article>	    Cached_GuidanceItems		{ get; set; }
+        public Dictionary<Guid, VirtualArticleAction>   VirtualArticles			{ get; set; }
+                                                            
         public string 	Path_XmlDatabase 		        { get; set; }					
-        public string 	Path_XmlLibraries 		        { get; set; }
-        public string 	Path_UserData 		            { get; set; }	
+        public string 	Path_XmlLibraries 		        { get; set; }        
         public List<TM_Library> Libraries  				{  get { 	return this.tmLibraries(); } }
         public List<Folder_V3> 	Folders  				{  get { 	return this.tmFolders(); } } 		
         public List<View_V3> 	Views  					{  get { 	return this.tmViews(); } } 
-        public List<TeamMentor_Article> GuidanceItems	{  get {	return this.tmGuidanceItems(); } } 
-                                
+        public List<TeamMentor_Article> GuidanceItems	{  get {	return this.tmGuidanceItems(); } }
 
-        [Log("TM_Xml_Database Setup")]
-        
+        /*static TM_Xml_Database()
+        {
+            Current = new TM_Xml_Database();        
+        }*/
 
-        public TM_Xml_Database() : this(true)
+        [Log("TM_Xml_Database Setup")]        
+        public TM_Xml_Database() : this(false)          // defaults to creating a TM_Instance in memory    
         {
         }
-
         public TM_Xml_Database(bool useFileStorage)
         {
             UsingFileStorage = useFileStorage;
-            TM_Xml_Database.Current = this;
+            Current = this;
             Setup();
-        }
-
-        public static TM_Xml_Database Current
-        {
-            get
-            {
-                return _current.isNull()
-                           ? new TM_Xml_Database()
-                           : _current;
-            }
-            set { _current = value; }
-        }
+        }        
 
         public TM_Xml_Database Setup()
         {
@@ -70,13 +51,11 @@ namespace TeamMentor.CoreLib
                 GuidanceItems_FileMappings = new Dictionary<Guid, string>();
                 GuidanceExplorers_XmlFormat = new Dictionary<Guid, guidanceExplorer>();
 
-                TMUsers = new List<TMUser>();
-                //TMUsersPasswordHashes = new Items();
-                ActiveSessions = new Dictionary<Guid, TMUser>();
+                UserData = new TM_UserData(UsingFileStorage);
 
                 if (UsingFileStorage)
                 {
-                    this.setPathsAndloadData();
+                    SetPathsAndloadData();
                     this.handleDefaultInstallActions();
                     this.xmlDB_Load_GuidanceItems();					
                 }
@@ -89,20 +68,17 @@ namespace TeamMentor.CoreLib
             }
             return this;
         } 
-        
-        
 
-
-        public void setPathsAndloadData()
+        public void     SetPathsAndloadData()
         {            
             try
             {
                 var tmComfig            = TMConfig.Current;
-                var xmlDatabasePath     = tmComfig.xmlDatabasePath();;
+                var xmlDatabasePath     = tmComfig.xmlDatabasePath();
                 var xmlLibraryPath      = tmComfig.XmlLibrariesPath;
-                var userDataPath        = tmComfig.UserDataPath;
-                TM_Xml_Database.Current.Path_XmlDatabase = xmlDatabasePath;
-                TM_Xml_Database.Current.setLibraryPath_and_LoadDataIntoMemory(xmlDatabasePath, xmlLibraryPath, userDataPath);
+                var userDataPath        = tmComfig.UserDataPath;                
+                
+                setLibraryPath_and_LoadDataIntoMemory(xmlDatabasePath, xmlLibraryPath, userDataPath);
 
                 "[TM_Xml_Database][setDataFromCurrentScript] TM_Xml_Database.Path_XmlDatabase: {0}" .debug(xmlDatabasePath);
                 "[TM_Xml_Database][setDataFromCurrentScript] TMConfig.Current.XmlLibrariesPath: {0}".debug(xmlLibraryPath);
@@ -113,15 +89,14 @@ namespace TeamMentor.CoreLib
             {
                 "[TM_Xml_Database] static .ctor: {0} \n\n".error(ex.Message, ex.StackTrace);
             }
-        }
-        
-        public string reloadData()
+        }        
+        public string   ReloadData()
         {
-            return reloadData(null);
+            return ReloadData(null);
         }				
     
         [Admin]
-        public string reloadData(string newLibraryPath)
+        public string   ReloadData(string newLibraryPath)
         {	
             "In Reload data".info();
             if (newLibraryPath.notNull())
