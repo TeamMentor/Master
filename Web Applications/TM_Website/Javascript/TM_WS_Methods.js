@@ -53,10 +53,10 @@ function deleteUser(userId, callback)
     invokeWebService( url, params, callback, defaultErrorHandler);
 }
 
-function createUser(username , passwordHash,  email, firstname, lastname, note, callback)
+function createUser(username , password,  email, firstname, lastname, note, callback)
 {
     var url = TM.tmWebServices + 'CreateUser';
-    var params = "{ newUser: { 	username: '"+  username+ "', passwordHash: '"+  passwordHash + "',email:  '"+ email+ "', firstname:  '"+ firstname+ "',lastname:  '"+ lastname+ "',note: '"+  note+ "' } }";
+    var params = "{ newUser: { 	username: '"+  username+ "', password: '"+  password + "',email:  '"+ email+ "', firstname:  '"+ firstname+ "',lastname:  '"+ lastname+ "',note: '"+  note+ "' } }";
     invokeWebService( url, params, callback, defaultErrorHandler);	
 }
 
@@ -78,16 +78,14 @@ function updateUser(userId, userName, firstname, lastname, title, company, email
 
 function updateCurrentUserPassword(userName, newPassword, callback)
 {
-    var url = TM.tmWebServices + 'SetCurrentUserPasswordHash';	
-    var passwordHash = SHA256(userName + newPassword);
-    var params =  JSON.stringify( { passwordHash : passwordHash  } );		
+    var url = TM.tmWebServices + 'SetCurrentUserPassword';
+    var params =  JSON.stringify( { password : password  } );
     invokeWebService( url, params, callback, defaultErrorHandler);
 }
 function updateUserPassword(userId, userName, newPassword, callback)
 {
-    var url = TM.tmWebServices + 'SetUserPasswordHash';	
-    var passwordHash = SHA256(userName + newPassword);
-    var params =  JSON.stringify( { userId : userId  ,passwordHash : passwordHash  } );		
+    var url = TM.tmWebServices + 'SetUserPassword';
+    var params =  JSON.stringify( { userId : userId  ,password : password  } );
     invokeWebService( url, params, callback, defaultErrorHandler);
 }
 //config
@@ -164,8 +162,7 @@ function updateGuidanceItem(guidanceItem, callback)
 function login(username, password, callback)
 {	
     var url = TM.tmWebServices + 'Login';
-    var passwordHash = SHA256(username + password);
-    var params =  JSON.stringify( { username : username  , passwordHash : passwordHash } );	
+    var params =  JSON.stringify( { username : username  , password : password } );
     invokeWebService( url, params, callback, defaultErrorHandler);
 }
 

@@ -68,8 +68,7 @@
                     ,	createAccount	: function(username, password)
                             {
                                 var that = this;
-                                var passwordHash = opener.SHA256(username+ password);
-                                opener.createUser(username, passwordHash, "", "", "", 'created from nUnitTest', function(result) 
+                                opener.createUser(username, password, "", "", "", 'created from nUnitTest', function(result)
                                         {
                                             if (result.d > 0)
                                             {

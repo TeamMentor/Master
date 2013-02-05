@@ -3,9 +3,8 @@ module("TM WebServices - Admin User (privs needed)");
 
 var create_User = function(username, callback)
 	{
-		var password	 = QUnit.randomString();		
-		var passwordHash = SHA256(username + password);		
-		TM.WebServices.WS_Users.createUser(username, passwordHash, "", "", "", "", callback);					
+		var password	 = QUnit.randomString();
+		TM.WebServices.WS_Users.createUser(username, password, "", "", "", "", callback);
 	};
 
 asyncTest("user_by_Name", function() 	

@@ -25,7 +25,7 @@
                 
                 
                 //HubSpot is disabled
-                $(".FormSubmitButton").click();
+                //$(".FormSubmitButton").click();
                 //$('#HubSpotResult').fadeIn().fadeOut(2000);
             }
         }
@@ -35,8 +35,7 @@
             //alert('submiting form');
             jQuery('#signupContent').hide();
             jQuery('#signupMessage').show();
-            jQuery('#signupMessage').html('<br/><h2>Creating user</h2> Please wait...').css('color','black');			
-            var passwordHash = SHA256(username+ password);
+            jQuery('#signupMessage').html('<br/><h2>Creating user</h2> Please wait...').css('color','black');
             var email = jQuery('#ctl00_ContentPlaceHolder1_EmailBox').attr('value');
             var firstName = jQuery('#ctl00_ContentPlaceHolder1_FNameBox').attr('value');
             var lastName = jQuery('#ctl00_ContentPlaceHolder1_LNameBox').attr('value');			
@@ -63,7 +62,7 @@
             
             setTimeout(
                 function() {
-                                createUser(username, passwordHash, email, firstName, lastName, 'created from web', signupResult);														
+                                createUser(username, password, email, firstName, lastName, 'created from web', signupResult);
                             }, 200);
         }
     
@@ -181,8 +180,6 @@
                 <td align="right"><br /><input type="submit" value="Sign Up" onclick ="submitForm_Signup()" id="ctl00_ContentPlaceHolder1_SignUp" /></td>
             </tr>
         </table>
-
-        <input type="hidden" name="ctl00$ContentPlaceHolder1$PasswordHash" id="ctl00_ContentPlaceHolder1_PasswordHash" />
 
     </div>
 

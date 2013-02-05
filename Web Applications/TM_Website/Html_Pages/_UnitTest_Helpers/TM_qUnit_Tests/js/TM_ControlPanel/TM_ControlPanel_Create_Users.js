@@ -14,16 +14,15 @@ asyncTest("Create testUsers", function()
 					})
 			};
 		var createDefaultUser = function(username, password, groupdId)
-			{
-				var passwordHash = SHA256(username+ password);
-				TM.WebServices.WS_Users.createUser(username,passwordHash,"","","","",function(userID) 
+			{				
+				TM.WebServices.WS_Users.createUser(username,password,"","","","",function(userID) 
 					{			
 						ok(true, "created user: " + username);
 						if (userID >0)
 							setGroupId(userID, groupdId);
 						if(++usersCreated ===3)
 							start();
-					})								
+					});								
 				
 			};
 

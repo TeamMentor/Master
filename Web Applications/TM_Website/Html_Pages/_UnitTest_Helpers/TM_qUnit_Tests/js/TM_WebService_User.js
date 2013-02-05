@@ -19,7 +19,7 @@ asyncTest("getTime", function()
 asyncTest("CreateUser", function() 
 	{
 		var username 	 = QUnit.randomString();
-		var passwordHash = QUnit.randomString();
+		var password     = QUnit.randomString();
 		var email 		 = QUnit.randomString();
 		var firstname	 = QUnit.randomString();
 		var lastname 	 = QUnit.randomString();
@@ -27,49 +27,48 @@ asyncTest("CreateUser", function()
 		
 		var callback = function(newUserId)
 			{				
-				ok(newUserId > 0 , "new user id ok: " + newUserId)
+				ok(newUserId > 0 , "new user id ok: " + newUserId);
 				start();
 			};
 		notEqual(username, "qunit_" , "random username created");			
-		TM.WebServices.WS_Users.createUser(username, passwordHash, email, firstname, lastname, note, callback);
+		TM.WebServices.WS_Users.createUser(username, password, email, firstname, lastname, note, callback);
 	});
 
 	
 asyncTest("login - fail", function() 	
 	{
 		var username 	 = QUnit.randomString();
-		var passwordHash = QUnit.randomString();
+		var password = QUnit.randomString();
 		
 		var callback = function(sessionId)
 			{				
-				equal(sessionId, TM.Const.emptyGuid, "sessionId was an Empty GUI")
+				equal(sessionId, TM.Const.emptyGuid, "sessionId was an Empty GUI");
 				start();
 			};		
-		TM.WebServices.WS_Users.login(username, passwordHash,callback);
+		TM.WebServices.WS_Users.login(username, password,callback);
 	});
 	
 asyncTest("login - ok", function() 	
 	{
 		stop();
 		var username 	 = QUnit.randomString();
-		var password	 = QUnit.randomString();		
-		var passwordHash = SHA256(username + password);
+		var password	 = QUnit.randomString();
 		
 		var login_callback = function(sessionId)
 			{					
-				notEqual(sessionId, TM.Const.emptyGuid, "sessionId was NOT an empty GUI")
+				notEqual(sessionId, TM.Const.emptyGuid, "sessionId was NOT an empty GUI");
 				start();
 			};		
 		
 		var createUser_callback = function(newUserId)
 			{						
-				ok(newUserId > 0 , "new user id ok: " + newUserId)
+				ok(newUserId > 0 , "new user id ok: " + newUserId);
 				//equal(sessionId, TM.Const.emptyGuid, "sessionId was an Empty GUI")
 				TM.WebServices.WS_Users.login(username, password,login_callback);
 				start();
 			};		
 			
-		TM.WebServices.WS_Users.createUser(username, passwordHash, "", "", "", "", createUser_callback);	
+		TM.WebServices.WS_Users.createUser(username, password, "", "", "", "", createUser_callback);
 		
 	});	
 
@@ -77,8 +76,7 @@ asyncTest("get currentUser details", function()
 	{
 		stop();
 		var username 	 = QUnit.randomString();
-		var password	 = QUnit.randomString();		
-		var passwordHash = SHA256(username + password);
+		var password	 = QUnit.randomString();
 		
 		var currentUser_callback = function(userDetails)
 			{								
@@ -86,21 +84,21 @@ asyncTest("get currentUser details", function()
 				equal(userDetails.UserName, username, "UserName & username matched");				
 				ok 	 (userDetails.UserID > 0 , 		  "UserID was > 0");				
 				start();
-			}
+			};
 			
 		var login_callback = function(sessionId)
 			{					
-				notEqual(sessionId, TM.Const.emptyGuid, "sessionId was NOT an empty GUI")
+				notEqual(sessionId, TM.Const.emptyGuid, "sessionId was NOT an empty GUI");
 				TM.WebServices.WS_Users.currentUser(currentUser_callback);
 			};		
 		
 		var createUser_callback = function(newUserId)
 			{						
-				ok(newUserId > 0 , "new user id ok: " + newUserId)
+				ok(newUserId > 0 , "new user id ok: " + newUserId);
 				//equal(sessionId, TM.Const.emptyGuid, "sessionId was an Empty GUI")
 				TM.WebServices.WS_Users.login(username, password,login_callback);
 				start();
 			};		
 			
-		TM.WebServices.WS_Users.createUser(username, passwordHash, "", "", "", "", createUser_callback);			
+		TM.WebServices.WS_Users.createUser(username, password, "", "", "", "", createUser_callback);
 	});	

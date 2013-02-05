@@ -166,14 +166,14 @@ TM.WebServices.WS_Data.getJsTreeWithFolders = function(callback)
 //***********************
 //TM.WebServices.WS_Users
 //***********************
-TM.WebServices.WS_Users.createUser = function(username , passwordHash,  email, firstname, lastname, note, callback)
+TM.WebServices.WS_Users.createUser = function(username , password,  email, firstname, lastname, note, callback)
     {		
-        var params =  { newUser: { 		username: username, 
-                                        passwordHash: passwordHash,
-                                        email: email, 
-                                        firstname:  firstname,
-                                        lastname:  lastname,
-                                        note: note				} };
+        var params =  { newUser: { 		username    : username,
+                                        password    : password,
+                                        email       : email,
+                                        firstname   : firstname,
+                                        lastname    : lastname,
+                                        note        : note	} };
         TM.WebServices.Helper.invoke_TM_WebService(
             'CreateUser', 
             params, 		
@@ -200,8 +200,7 @@ TM.WebServices.WS_Users.login = function(username, password, callback)
     {			
         if(isUndefined(callback))
             callback = function() {};
-        var passwordHash = SHA256(username + password)	
-        var params =  { username : username  , passwordHash : passwordHash } ;			
+        var params =  { username : username  , password : password } ;
         
         TM.WebServices.Helper.invoke_TM_WebService(
             'Login', 
