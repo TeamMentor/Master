@@ -1,5 +1,6 @@
-﻿@{    var tmRest = (TeamMentor.CoreLib.TM_REST) @Model; }
-Here are the current active sessions:
+﻿
+@{    var tmRest = (TeamMentor.CoreLib.TM_REST) @Model; }
+Here are the current active TM sessions:
 <ul>
     @foreach (var sessionId in tmRest.ActiveSessions())
     {

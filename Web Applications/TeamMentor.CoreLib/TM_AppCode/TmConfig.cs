@@ -8,7 +8,8 @@ namespace TeamMentor.CoreLib
 	{
 		public bool			UseAppDataFolder			{ get; set; }
         public string       TMLibraryDataVirtualPath    { get; set; }
-		public string 		XmlLibrariesPath 	        { get; set; }		
+		public string 		XmlLibrariesPath 	        { get; set; }
+		public string 		UserDataPath 	            { get; set; }		
 		public string 		DefaultAdminUserName        { get; set; }
 		public string 		DefaultAdminPassword        { get; set; }	
 		public string 		GitHubPassword		        { get; set; }	
@@ -134,11 +135,12 @@ namespace TeamMentor.CoreLib
 	{		
 		public static TMConfig setDefaultValues(this TMConfig tmConfig)
 		{									
-            tmConfig.TMLibraryDataVirtualPath = "..\\..";
-			tmConfig.XmlLibrariesPath = "TM_Library";
-			tmConfig.DefaultAdminUserName = "admin";
-			tmConfig.DefaultAdminPassword = "!!tmadmin";
-            tmConfig.LibrariesUploadedFiles = "LibrariesUploadedFiles";
+            tmConfig.TMLibraryDataVirtualPath   = "..\\..";
+			tmConfig.XmlLibrariesPath           = "TM_Library";
+		    tmConfig.UserDataPath               = "UserData";
+			tmConfig.DefaultAdminUserName       = "admin";
+			tmConfig.DefaultAdminPassword       = "!!tmadmin";
+            tmConfig.LibrariesUploadedFiles     = "LibrariesUploadedFiles";
 
 			tmConfig.WindowsAuthentication = new TMConfig.WindowsAuthentication_Config()
 				{

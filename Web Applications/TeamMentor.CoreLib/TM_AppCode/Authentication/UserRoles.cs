@@ -39,53 +39,5 @@ namespace TeamMentor.CoreLib
 			Mappings.Add(UserGroup.Editor		, new List<UserRole>() { UserRole.ReadArticlesTitles , UserRole.ReadArticles, UserRole.EditArticles  });
             Mappings.Add(UserGroup.Reader		, new List<UserRole>() { UserRole.ReadArticlesTitles , UserRole.ReadArticles });            
         }
-    }
-	
-	//Helper attributes
-	[Serializable]
-	public sealed class AdminAttribute : CodeAccessSecurityAttribute
-	{		
-		
-		/*public AdminAttribute() : base(SecurityAction.Demand) //this doesn't work :(
-		{
-		}*/
-		
-		public AdminAttribute(SecurityAction action) : base(action)
-		{						
-		}
-		
-		public override System.Security.IPermission CreatePermission()
-		{
-			PrincipalPermission principalPerm = new PrincipalPermission(null, "Admin");
-			return principalPerm;    
-		}
-	}
-	
-	[Serializable]	
-	public sealed class EditArticlesAttribute : CodeAccessSecurityAttribute
-	{		
-						
-		public EditArticlesAttribute(SecurityAction action) : base(action)
-		{						
-		}
-		
-		public override System.Security.IPermission CreatePermission()
-		{
-			return new PrincipalPermission(null, "EditArticles");			
-		}
-	}
-	[Serializable]	
-	public sealed class ReadArticlesAttribute : CodeAccessSecurityAttribute
-	{		
-						
-		public ReadArticlesAttribute(SecurityAction action) : base(action)
-		{						
-		}
-		
-		public override System.Security.IPermission CreatePermission()
-		{
-			return new PrincipalPermission(null, "ReadArticles");			
-		}
-	}
-	
+    }	
 }

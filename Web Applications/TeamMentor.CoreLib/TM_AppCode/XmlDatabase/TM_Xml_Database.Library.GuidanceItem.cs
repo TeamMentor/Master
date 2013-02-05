@@ -201,7 +201,7 @@ namespace TeamMentor.CoreLib
 			return guidanceItemV3;
 		}
 		
-		//[PrincipalPermission(SecurityAction.Demand, Role = "EditArticles")]
+		//[EditArticles]
 		public static TeamMentor_Article xmlDB_GuidanceItem(this TM_Xml_Database tmDatabase, Guid guidanceItemId, string fullPath)
 		{
 			try
@@ -272,7 +272,7 @@ namespace TeamMentor.CoreLib
 
 	public static class TM_Xml_Database_ExtensionMethods_XmlDataSources_GuidanceItem
 	{
-		[PrincipalPermission(SecurityAction.Demand, Role = "EditArticles")]
+		[EditArticles]
 		public static TeamMentor_Article xmlDB_RandomGuidanceItem(this TM_Xml_Database tmDatabase)
 		{
 			return tmDatabase.xmlDB_NewGuidanceItem(Guid.Empty,
@@ -291,7 +291,7 @@ namespace TeamMentor.CoreLib
 													Guid.NewGuid());
 		}
 		
-		[PrincipalPermission(SecurityAction.Demand, Role = "EditArticles")]
+		[EditArticles]
 		public static TeamMentor_Article xmlDB_NewGuidanceItem(this TM_Xml_Database tmDatabase, Guid guidanceItemId, 
 															   string title, string images,
 //															   DateTime lastUpdate, 
@@ -365,7 +365,7 @@ namespace TeamMentor.CoreLib
             return article.xmlDB_Save_Article(article.Metadata.Library_Id, tmDatabase);
         }
 
-		[PrincipalPermission(SecurityAction.Demand, Role = "EditArticles")]
+		[EditArticles]
 		public static bool xmlDB_Save_Article(this TeamMentor_Article article, Guid libraryId, TM_Xml_Database tmDatabase)
 		{
             if (libraryId == Guid.Empty)
@@ -401,7 +401,7 @@ namespace TeamMentor.CoreLib
 			return false;
 		}
 		
-        [PrincipalPermission(SecurityAction.Demand, Role = "EditArticles")]
+        [EditArticles]
 		public static bool xmlDB_Delete_GuidanceItems(this TM_Xml_Database tmDatabase, List<Guid> guidanceItemIds)
 		{
 			var result = true;
@@ -413,7 +413,7 @@ namespace TeamMentor.CoreLib
 			return result;
 		}
 
-		[PrincipalPermission(SecurityAction.Demand, Role = "EditArticles")]
+		[EditArticles]
 		public static bool xmlDB_Delete_GuidanceItem(this TM_Xml_Database tmDatabase, Guid guidanceItemId)
 		{
 			var guidanceItemXmlPath = tmDatabase.removeGuidanceItemFileMapping(guidanceItemId);
@@ -429,14 +429,14 @@ namespace TeamMentor.CoreLib
 			return true;
 		}
 				
-        [PrincipalPermission(SecurityAction.Demand, Role = "ReadArticles")]
+        [ReadArticles]
 		public static string xmlDB_guidanceItemXml(this TM_Xml_Database tmDatabase, Guid guidanceItemId)
 		{
 			var guidanceXmlPath = tmDatabase.getXmlFilePathForGuidanceId(guidanceItemId);
 			return guidanceXmlPath.fileContents();//.xmlFormat();
 		}
 
-        [Admin(SecurityAction.Demand)]	
+        [Admin]	                    	
         public static string xmlDB_guidanceItemPath(this TM_Xml_Database tmDatabase, Guid guidanceItemId)
         {
             if (TM_Xml_Database.Current.GuidanceItems_FileMappings.hasKey(guidanceItemId))                            

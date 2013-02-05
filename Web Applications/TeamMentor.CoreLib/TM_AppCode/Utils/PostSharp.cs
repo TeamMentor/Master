@@ -86,4 +86,58 @@ namespace TeamMentor.CoreLib
 		}
 	}
 
+    [Serializable]
+	public sealed class AdminAttribute : OnMethodBoundaryAspect
+	{				
+		public override void OnEntry(MethodExecutionArgs args)
+		{		    
+            UserRole.Admin.demand();
+            base.OnEntry(args);
+		}
+	}
+    [Serializable]
+	public sealed class EditArticlesAttribute : OnMethodBoundaryAspect
+	{				
+		public override void OnEntry(MethodExecutionArgs args)
+		{		    
+            UserRole.EditArticles.demand();
+            base.OnEntry(args);
+		}
+	}
+    [Serializable]
+	public sealed class EditGuiAttribute : OnMethodBoundaryAspect
+	{				
+		public override void OnEntry(MethodExecutionArgs args)
+		{		    
+            UserRole.EditGui.demand();
+            base.OnEntry(args);
+		}
+	}
+    [Serializable]
+	public sealed class ManageUsersAttribute : OnMethodBoundaryAspect
+	{				
+		public override void OnEntry(MethodExecutionArgs args)
+		{		    
+            UserRole.ManageUsers.demand();
+            base.OnEntry(args);
+		}
+	}
+    [Serializable]
+	public sealed class ReadArticlesAttribute : OnMethodBoundaryAspect
+	{				
+		public override void OnEntry(MethodExecutionArgs args)
+		{		    
+            UserRole.ReadArticles.demand();
+            base.OnEntry(args);
+		}
+	}
+    [Serializable]
+	public sealed class ReadArticlesTitlesAttribute : OnMethodBoundaryAspect
+	{				
+		public override void OnEntry(MethodExecutionArgs args)
+		{		    
+            UserRole.ReadArticlesTitles.demand();
+            base.OnEntry(args);
+		}
+	}
 }

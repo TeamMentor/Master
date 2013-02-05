@@ -41,19 +41,19 @@ namespace TeamMentor.CoreLib
 			return TM_Xml_Database.Current.tmUser(name);
 		}
 
-		[PrincipalPermission(SecurityAction.Demand, Role = "ManageUsers")] 
+		[ManageUsers] 
 		public static TMUser tmUser(this TM_Xml_Database tmDb, string name)
 		{
 			return TM_Xml_Database.Current.TMUsers.user(name);
 		}
 
-		[PrincipalPermission(SecurityAction.Demand, Role = "ManageUsers")]
+		[ManageUsers]
 		public static TMUser tmUser(this TM_Xml_Database tmDb, int userId)
 		{
 			return TM_Xml_Database.Current.TMUsers.user(userId);
 		}
 		
-		[PrincipalPermission(SecurityAction.Demand, Role = "ManageUsers")] 
+		[ManageUsers] 
 		public static List<TMUser> tmUsers(this List<int> usersId)
 		{
 			var tmUsers = new List<TMUser>();
@@ -62,7 +62,7 @@ namespace TeamMentor.CoreLib
 			return tmUsers;
 		}
 				
-		[PrincipalPermission(SecurityAction.Demand, Role = "ManageUsers")] 
+		[ManageUsers] 
 		public static List<TMUser> tmUsers(this TM_Xml_Database tmDb)
 		{
 			return TM_Xml_Database.Current.TMUsers.toList();
@@ -159,7 +159,7 @@ namespace TeamMentor.CoreLib
             return false;
         }
         
-		[PrincipalPermission(SecurityAction.Demand, Role = "ManageUsers")] 
+		[ManageUsers] 
 		public static bool setUserPassword(this TM_Xml_Database tmDb, TMUser tmUser, string passwordHash)
 		{		
 			"in setUserPassword".info();
@@ -185,8 +185,7 @@ namespace TeamMentor.CoreLib
 		public static bool setUserPassword_PwdInClearText(this TM_Xml_Database tmDb, string username, string password)
 		{
 			return tmDb.setUserPassword(username,username.createPasswordHash(password));    		
-		}
-    	
+		}    	
 		public static Guid login(this TM_Xml_Database tmDb, string username, string passwordHash)
 		{
 			tmDb.sleep(TM_Xml_Database.FORCED_MILLISEC_DELAY_ON_LOGIN_ACTION, false);      // to slow down brute force attacks
@@ -220,45 +219,37 @@ namespace TeamMentor.CoreLib
 			}
 			return Guid.Empty;    			
 		}    	
-
-		[PrincipalPermission(SecurityAction.Demand, Role = "ManageUsers")] 		
-		public static List<bool> deleteTmUsers(this TM_Xml_Database tmDb, List<int> userIds)
+		        
+		[ManageUsers]   public static List<bool> deleteTmUsers(this TM_Xml_Database tmDb, List<int> userIds)
 		{
 			var results = new List<bool>();
 			foreach(var userId in userIds)
 				results.Add(tmDb.deleteTmUser(userId));
 			return results;			
-		}
-		
-		[PrincipalPermission(SecurityAction.Demand, Role = "ManageUsers")] 
-		public static bool deleteTmUser(this TM_Xml_Database tmDb, int userId)
+		}				
+		[ManageUsers]   public static bool deleteTmUser(this TM_Xml_Database tmDb, int userId)
 		{
 			var result = TM_Xml_Database.Current.TMUsers.delete(userId);
 			if (result)
 				tmDb.saveTmUserDataToDisk(); 
 			return result;
-		}
-		
-		//[PrincipalPermission(SecurityAction.Demand, Role = "Admin")] 
-		public static int createTmUser(this TM_Xml_Database tmDb, NewUser newUser)
+		}		
+		[Admin]         public static int createTmUser(this TM_Xml_Database tmDb, NewUser newUser)
 		{			
 			if (newUser.groupId !=0)		// if there is a groupId provided we must check if the user has the manageUsers Priviledge						
 				UserRole.ManageUsers.demand();			
 			if (newUser.username.inValid() ||  tmDb.TMUsers.user(newUser.username).notNull())
 				return 0;
 			return tmDb.newUser(newUser.username, newUser.passwordHash, newUser.email, newUser.firstname, newUser.lastname, newUser.note, newUser.title, newUser.company, newUser.groupId);						
-		}							
-		
-		[PrincipalPermission(SecurityAction.Demand, Role = "Admin")] 
+		}									
+		[Admin] 
 		public static List<int> createTmUsers(this TM_Xml_Database tmDb, List<NewUser> newUsers)
 		{						
 			var newUsersIds = new List<int>();
 			foreach(var newUser in newUsers)
 				newUsersIds.Add(tmDb.createTmUser(newUser));
 			return newUsersIds;
-		}
-		
-		
+		}				
 		public static List<int> createTmUsers(this TM_Xml_Database tmDb, string batchUserData) 
 		{						
 			var newUsers = new List<NewUser>();
@@ -277,7 +268,7 @@ namespace TeamMentor.CoreLib
 			} 
 			return tmDb.createTmUsers(newUsers);
 		}
-		[PrincipalPermission(SecurityAction.Demand, Role = "ManageUsers")] 
+		[ManageUsers] 
 		public static bool updateTmUser(this TM_Xml_Database tmDb, int userId, string userName, string firstname, string lastname, string title, string company, string email, int groupId)
 		{
 			var result = TM_Xml_Database.Current.TMUsers.updateUser(userId, userName, firstname, lastname,  title, company, email, groupId);
@@ -302,7 +293,7 @@ namespace TeamMentor.CoreLib
 			return -1;
 		}
 		
-		[PrincipalPermission(SecurityAction.Demand, Role = "ManageUsers")] 
+		[ManageUsers] 
 		public static List<string> getUserRoles(this TM_Xml_Database tmDb, int userId)
 		{
 			var tmUser = tmDb.tmUser(userId);
@@ -311,7 +302,7 @@ namespace TeamMentor.CoreLib
 			return new List<string>();
 		}
 		
-		[PrincipalPermission(SecurityAction.Demand, Role = "ManageUsers")] 
+		[ManageUsers] 
 		public static bool setUserGroupId(this TM_Xml_Database tmDb, int userId, int groupId)
 		{			
 			var tmUser = tmDb.tmUser(userId);
@@ -324,7 +315,7 @@ namespace TeamMentor.CoreLib
 			return false;
 		}
 		//
-		[PrincipalPermission(SecurityAction.Demand, Role = "Admin")]
+		[Admin]
 		public static TMUser set_PostLoginView(this TMUser tmUser, string postLoginView)
 		{
 			if (tmUser.notNull())
@@ -335,7 +326,7 @@ namespace TeamMentor.CoreLib
 			return tmUser;
 		}
 
-		[PrincipalPermission(SecurityAction.Demand, Role = "Admin")]
+		[Admin]
 		public static TMUser set_PostLoginScript(this TMUser tmUser, string postLoginScript)
 		{
 			if (tmUser.notNull())

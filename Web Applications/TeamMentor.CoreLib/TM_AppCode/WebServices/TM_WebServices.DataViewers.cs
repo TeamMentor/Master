@@ -156,7 +156,7 @@ namespace TeamMentor.CoreLib
 		
 		//********  DataEdition
 /*		[WebMethod(EnableSession= true)]
-		[EditArticles(SecurityAction.Demand)]
+		[EditArticles]	                     
 		public bool UpdateGuidanceItemHtml(Guid guidanceItemId, string htmlContent)
 		{
 			var guidanceItem = javascriptProxy.GetGuidanceItemById(guidanceItemId.str());
@@ -192,14 +192,14 @@ namespace TeamMentor.CoreLib
 		}
 		
 		[WebMethod(EnableSession= true)]
-		[EditArticles(SecurityAction.Demand)]
+		[EditArticles]	                     
 		public ChangedPage logPageUserComment(Guid guidanceItemId, string userComment)
 		{
             return new PagesHistory().logPageChange(guidanceItemId, tmAuthentication.currentUser.UserName, tmAuthentication.sessionID, "", userComment, "");
 		}
 			
 		[WebMethod(EnableSession= true)]
-		[EditArticles(SecurityAction.Demand)]
+		[EditArticles]	                     
 		public ChangedPage logPageUserActivity(Guid guidanceItemId, string userActivity)
 		{
             return new PagesHistory().logPageChange(guidanceItemId, tmAuthentication.currentUser.UserName, tmAuthentication.sessionID, "", "", userActivity);			

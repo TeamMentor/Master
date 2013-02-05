@@ -7,7 +7,7 @@ namespace TeamMentor.CoreLib
 {
     public static class TM_Xml_Database_ExtensionMethods_Library_Files
     {
-        [PrincipalPermission(SecurityAction.Demand, Role = "Admin")] 
+        [Admin] 
         public static bool upload_File_to_Library(this TM_Xml_Database tmDatabase, Guid libraryId, string filename, byte[] fileContents)
         { 
             var targetLibrary = tmDatabase.tmLibrary(libraryId);
@@ -23,7 +23,7 @@ namespace TeamMentor.CoreLib
             return false;
         }
 
-        [PrincipalPermission(SecurityAction.Demand, Role = "ReadArticles")] 
+        [ReadArticles] 
         public static string Get_Path_To_File(this TM_Xml_Database tmDatabase, string fileKey)
         {
 			var filePath = TM_Xml_Database.Current.Path_XmlLibraries.pathCombine("_Images").pathCombine(fileKey);    
@@ -51,7 +51,7 @@ namespace TeamMentor.CoreLib
             return null;
         }
 
-        [PrincipalPermission(SecurityAction.Demand, Role = "ReadArticles")] 
+        [ReadArticles] 
         public static string Get_Path_To_File(this TM_Xml_Database tmDatabase, Guid itemGuid, string fileName)
         { 
             var library = tmDatabase.tmLibrary(itemGuid);

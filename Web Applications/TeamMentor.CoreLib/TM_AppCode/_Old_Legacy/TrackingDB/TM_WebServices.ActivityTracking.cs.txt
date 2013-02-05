@@ -23,35 +23,35 @@ namespace TeamMentor.CoreLib.WebServices
     public partial class TM_WebServices 
     {							
 		[WebMethod(EnableSession= true)] 
-		[Admin(SecurityAction.Demand)]	
+		[Admin]	                    	
 		public string GetPostData()
 		{
 			return HttpContextFactory.Current.GetPostDataAsString();
 		}	
 		
 		[WebMethod(EnableSession= true)] 
-		[Admin(SecurityAction.Demand)]	
+		[Admin]	                    	
 		public RequestData GetRequestData()
 		{
             return activityTracking.GetRequestData(tmAuthentication.sessionID, tmAuthentication.currentUser.UserName);
 		}
 		 
 		[WebMethod(EnableSession= true)] 
-		[Admin(SecurityAction.Demand)]	
+		[Admin]	                    	
 		public List<RequestData> GetPastRequests()
 		{			
 			return activityTracking.PastRequests;
 		}
 		  
 		[WebMethod(EnableSession= true)] 
-		[Admin(SecurityAction.Demand)]	
+		[Admin]	                    	
 		public RequestData GetLastRequest()
 		{
 			return activityTracking.GetLastRequest();			
 		}
 		
 		[WebMethod(EnableSession = true)] 
-		[Admin(SecurityAction.Demand)]	
+		[Admin]	                    	
 		public JsDataTable JsDataTableWithPastRequests()
 		{			
 			var jsDataTable =  new JsDataTable();
@@ -62,7 +62,7 @@ namespace TeamMentor.CoreLib.WebServices
 		}
 		
 /*		[WebMethod(EnableSession = true)]
-		[Admin(SecurityAction.Demand)]			
+		[Admin]	                    			
 		public List<ChangedPage> GetPagesHistory()
 		{
 			return new PagesHistory().getPages();

@@ -6,8 +6,13 @@ using System.Xml.Serialization;
 
 namespace TeamMentor.CoreLib
 {
-    [System.SerializableAttribute()]        
-    //[System.Xml.Serialization.XmlTypeAttribute(Namespace = "https://TeamMentor.securityinnovation.com:13415/")]
+    [Serializable]        
+    public class Users
+    {
+        public List<string> UserNames { get; set; }        
+    }
+
+    [Serializable]            
     public class TMUser
     {
         [XmlAttribute] public int		UserID { get; set; }

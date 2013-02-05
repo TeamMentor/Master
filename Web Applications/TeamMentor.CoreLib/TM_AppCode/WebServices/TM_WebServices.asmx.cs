@@ -34,28 +34,28 @@ namespace TeamMentor.CoreLib
         [WebMethod(EnableSession = true)]											public TMUser CreateUser_Random()      						{   return javascriptProxy.CreateUser_Random(); 	}		
         
         //******** javascriptProxy User Management   (all demand admin privs)     
-        [WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public TMUser GetUser_byID(int userId)        				{   return javascriptProxy.GetUser_byID(userId);    }
-        [WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public List<TMUser> GetUsers_byID(List<int> userIds)      	{   return javascriptProxy.GetUsers_byID(userIds);  }
-        [WebMethod(EnableSession = true)]   [Admin(SecurityAction.Demand)]			public TMUser GetUser_byName(string name)					{   return javascriptProxy.GetUser_byName(name);    }
-        [WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public List<TMUser> GetUsers()        						{   return javascriptProxy.GetUsers();        		}         
+        [WebMethod(EnableSession = true)]	[Admin]	                    			public TMUser GetUser_byID(int userId)        				{   return javascriptProxy.GetUser_byID(userId);    }
+        [WebMethod(EnableSession = true)]	[Admin]	                    			public List<TMUser> GetUsers_byID(List<int> userIds)      	{   return javascriptProxy.GetUsers_byID(userIds);  }
+        [WebMethod(EnableSession = true)]   [Admin]	                    			public TMUser GetUser_byName(string name)					{   return javascriptProxy.GetUser_byName(name);    }
+        [WebMethod(EnableSession = true)]	[Admin]	                    			public List<TMUser> GetUsers()        						{   return javascriptProxy.GetUsers();        		}         
 
-        [WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public List<TMUser> CreateUsers(List<NewUser> newUsers)    	{	return javascriptProxy.CreateUsers(newUsers).tmUsers();        }        
-        [WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public List<TMUser> BatchUserCreation(string batchUserData) {	return javascriptProxy.BatchUserCreation(batchUserData).tmUsers();  }        
-        [WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public bool DeleteUser(int userId)	        				{	return javascriptProxy.DeleteUser(userId);        }
-        [WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public List<bool> DeleteUsers(List<int> userIds)        	{	return javascriptProxy.DeleteUsers(userIds);        }
-        [WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public bool UpdateUser(int userId, string userName, 
+        [WebMethod(EnableSession = true)]	[Admin]	                    			public List<TMUser> CreateUsers(List<NewUser> newUsers)    	{	return javascriptProxy.CreateUsers(newUsers).tmUsers();        }        
+        [WebMethod(EnableSession = true)]	[Admin]	                    			public List<TMUser> BatchUserCreation(string batchUserData) {	return javascriptProxy.BatchUserCreation(batchUserData).tmUsers();  }        
+        [WebMethod(EnableSession = true)]	[Admin]	                    			public bool DeleteUser(int userId)	        				{	return javascriptProxy.DeleteUser(userId);        }
+        [WebMethod(EnableSession = true)]	[Admin]	                    			public List<bool> DeleteUsers(List<int> userIds)        	{	return javascriptProxy.DeleteUsers(userIds);        }
+        [WebMethod(EnableSession = true)]	[Admin]	                    			public bool UpdateUser(int userId, string userName, 
                                                                                                            string firstname, string lastname, 
                                                                                                            string title, string company, 
                                                                                                            string email, int groupId) 			{	return javascriptProxy.UpdateUser(userId, userName, firstname, lastname, title, company, email, groupId);        }
 
-        [WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public bool         SetUserPasswordHash(int userId,  string passwordHash) 	{ 	return javascriptProxy.SetUserPasswordHash(userId, passwordHash) ;        }		
-        [WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public int          GetUserGroupId(int userId)        						{	return javascriptProxy.GetUserGroupId(userId);        }
-        [WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public string       GetUserGroupName(int userId)        					{	return javascriptProxy.GetUserGroupName(userId);        }
-        [WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public bool         SetUserGroupId(int userId, int roleId)  				{	return javascriptProxy.SetUserGroupId(userId, roleId);        }
-        [WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public List<string> GetUserRoles(int userId)								{	return javascriptProxy.GetUserRoles(userId);        }
+        [WebMethod(EnableSession = true)]	[Admin]	                    			public bool         SetUserPasswordHash(int userId,  string passwordHash) 	{ 	return javascriptProxy.SetUserPasswordHash(userId, passwordHash) ;        }		
+        [WebMethod(EnableSession = true)]	[Admin]	                    			public int          GetUserGroupId(int userId)        						{	return javascriptProxy.GetUserGroupId(userId);        }
+        [WebMethod(EnableSession = true)]	[Admin]	                    			public string       GetUserGroupName(int userId)        					{	return javascriptProxy.GetUserGroupName(userId);        }
+        [WebMethod(EnableSession = true)]	[Admin]	                    			public bool         SetUserGroupId(int userId, int roleId)  				{	return javascriptProxy.SetUserGroupId(userId, roleId);        }
+        [WebMethod(EnableSession = true)]	[Admin]	                    			public List<string> GetUserRoles(int userId)								{	return javascriptProxy.GetUserRoles(userId);        }
 
-        [WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public TMUser       SetUser_PostLoginView   (string userName, string postLoginView)	    {	return userName.tmUser().set_PostLoginView(postLoginView);        }
-        [WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public TMUser       SetUser_PostLoginScript (string userName, string postLoginScript)   {	return userName.tmUser().set_PostLoginScript(postLoginScript);    }
+        [WebMethod(EnableSession = true)]	[Admin]	                    			public TMUser       SetUser_PostLoginView   (string userName, string postLoginView)	    {	return userName.tmUser().set_PostLoginView(postLoginView);        }
+        [WebMethod(EnableSession = true)]	[Admin]	                    			public TMUser       SetUser_PostLoginScript (string userName, string postLoginScript)   {	return userName.tmUser().set_PostLoginScript(postLoginScript);    }
         
         
         
@@ -98,9 +98,9 @@ namespace TeamMentor.CoreLib
         
 
         //demand Admin privs
-        [WebMethod(EnableSession = true)]	[Admin(SecurityAction.Demand)]			public string GetAllUserLogs()		{				return javascriptProxy.GetAllUserLogs();		}		
-        [WebMethod(EnableSession = true)] 	[Admin(SecurityAction.Demand)]			public List<Guid> GetActiveSessions()									{ 	return TM_Xml_Database.Current.activeSessions().Keys.ToList(); }
-        [WebMethod(EnableSession = true)] 	[Admin(SecurityAction.Demand)]			public TMUser	  GetActiveSession(Guid sessionID)						
+        [WebMethod(EnableSession = true)]	[Admin]	                    			public string GetAllUserLogs()		{				return javascriptProxy.GetAllUserLogs();		}		
+        [WebMethod(EnableSession = true)] 	[Admin]	                    			public List<Guid> GetActiveSessions()									{ 	return TM_Xml_Database.Current.activeSessions().Keys.ToList(); }
+        [WebMethod(EnableSession = true)] 	[Admin]	                    			public TMUser	  GetActiveSession(Guid sessionID)						
                                                                                         {
                                                                                             var activeSessions = TM_Xml_Database.Current.activeSessions();
                                                                                             if (activeSessions.ContainsKey(sessionID))
@@ -110,20 +110,20 @@ namespace TeamMentor.CoreLib
         
         
         //demand EditArticles privs
-        [WebMethod(EnableSession = true)] 	[EditArticles(SecurityAction.Demand)]	public Library_V3 CreateLibrary(Library library)	{ this.resetCache(); return javascriptProxy.CreateLibrary(library);		}				
-        [WebMethod(EnableSession = true)] 	[EditArticles(SecurityAction.Demand)]	public bool UpdateLibrary(Library library) 			{ this.resetCache(); return javascriptProxy.UpdateLibrary(library); }		
-        [WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public bool UnDeleteLibrary(Guid libraryId)			{ return javascriptProxy.UnDeleteLibrary(libraryId);				}
-        [WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public List<TM_Library> GetDeletedLibraries() 		{ return javascriptProxy.GetDeletedLibraries();  }
-        [WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public bool DeleteDeletedLibraries()				{ return javascriptProxy.DeleteDeletedLibraries();  }		
-        [WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public View_V3 CreateView(Guid folderId, View view) { this.resetCache(); return javascriptProxy.CreateView(folderId,view);  }
-        [WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public bool UpdateView(View view)													    { this.resetCache(); return javascriptProxy.UpdateView(view);		}
-        [WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public bool AddGuidanceItemsToView(Guid viewId,  List<Guid> guidanceItemIds)		    { this.resetCache(); return javascriptProxy.AddGuidanceItemsToView(viewId, guidanceItemIds);		}
-        [WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public bool RemoveGuidanceItemsFromView(Guid viewId, List<Guid> guidanceItemIds)	    { this.resetCache(); return javascriptProxy.RemoveGuidanceItemsFromView(viewId, guidanceItemIds);		}		
-        [WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public bool RemoveViewFromFolder(Guid libraryId, Guid viewId)    					    { this.resetCache(); return javascriptProxy.RemoveViewFromFolder(libraryId, viewId); }  	
-        [WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public bool MoveViewToFolder(Guid viewId, Guid targetFolderId, Guid targetLibraryId)    { this.resetCache(); return javascriptProxy.MoveViewToFolder(viewId, targetFolderId, targetLibraryId); }  	
-        [WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public Guid CreateGuidanceItem(GuidanceItem_V3 guidanceItem)						    { this.resetCache(); return javascriptProxy.CreateGuidanceItem(guidanceItem); 	}
-        [WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public Guid CreateArticle(TeamMentor_Article article)					                { this.resetCache(); return javascriptProxy.CreateArticle(article); 	}
-        [WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public Guid CreateArticle_Simple(Guid libraryId, string title, string dataType, string htmlCode)					       
+        [WebMethod(EnableSession = true)] 	[EditArticles]	                        public Library_V3 CreateLibrary(Library library)	{ this.resetCache(); return javascriptProxy.CreateLibrary(library);		}				
+        [WebMethod(EnableSession = true)] 	[EditArticles]	                     	public bool UpdateLibrary(Library library) 			{ this.resetCache(); return javascriptProxy.UpdateLibrary(library); }		
+        [WebMethod(EnableSession = true)]	[EditArticles]	                     	public bool UnDeleteLibrary(Guid libraryId)			{ return javascriptProxy.UnDeleteLibrary(libraryId);				}
+        [WebMethod(EnableSession = true)]	[EditArticles]	                     	public List<TM_Library> GetDeletedLibraries() 		{ return javascriptProxy.GetDeletedLibraries();  }
+        [WebMethod(EnableSession = true)]	[EditArticles]	                     	public bool DeleteDeletedLibraries()				{ return javascriptProxy.DeleteDeletedLibraries();  }		
+        [WebMethod(EnableSession = true)]	[EditArticles]	                     	public View_V3 CreateView(Guid folderId, View view) { this.resetCache(); return javascriptProxy.CreateView(folderId,view);  }
+        [WebMethod(EnableSession = true)]	[EditArticles]	                     	public bool UpdateView(View view)													    { this.resetCache(); return javascriptProxy.UpdateView(view);		}
+        [WebMethod(EnableSession = true)]	[EditArticles]	                     	public bool AddGuidanceItemsToView(Guid viewId,  List<Guid> guidanceItemIds)		    { this.resetCache(); return javascriptProxy.AddGuidanceItemsToView(viewId, guidanceItemIds);		}
+        [WebMethod(EnableSession = true)]	[EditArticles]	                     	public bool RemoveGuidanceItemsFromView(Guid viewId, List<Guid> guidanceItemIds)	    { this.resetCache(); return javascriptProxy.RemoveGuidanceItemsFromView(viewId, guidanceItemIds);		}		
+        [WebMethod(EnableSession = true)]	[EditArticles]	                     	public bool RemoveViewFromFolder(Guid libraryId, Guid viewId)    					    { this.resetCache(); return javascriptProxy.RemoveViewFromFolder(libraryId, viewId); }  	
+        [WebMethod(EnableSession = true)]	[EditArticles]	                     	public bool MoveViewToFolder(Guid viewId, Guid targetFolderId, Guid targetLibraryId)    { this.resetCache(); return javascriptProxy.MoveViewToFolder(viewId, targetFolderId, targetLibraryId); }  	
+        [WebMethod(EnableSession = true)]	[EditArticles]	                     	public Guid CreateGuidanceItem(GuidanceItem_V3 guidanceItem)						    { this.resetCache(); return javascriptProxy.CreateGuidanceItem(guidanceItem); 	}
+        [WebMethod(EnableSession = true)]	[EditArticles]	                     	public Guid CreateArticle(TeamMentor_Article article)					                { this.resetCache(); return javascriptProxy.CreateArticle(article); 	}
+        [WebMethod(EnableSession = true)]	[EditArticles]	                     	public Guid CreateArticle_Simple(Guid libraryId, string title, string dataType, string htmlCode)					       
                                                                                         { 
                                                                                             this.resetCache(); 
                                                                                             var article = new TeamMentor_Article();
@@ -134,18 +134,18 @@ namespace TeamMentor.CoreLib
                                                                                             return javascriptProxy.CreateArticle(article); 
                                                                                         }
         
-        [WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public bool UpdateGuidanceItem(TeamMentor_Article guidanceItem)						
+        [WebMethod(EnableSession = true)]	[EditArticles]	                     	public bool UpdateGuidanceItem(TeamMentor_Article guidanceItem)						
                                                                                         { 
                                                                                             this.resetCache();
                                                                                             var result = javascriptProxy.UpdateGuidanceItem(guidanceItem); 	
                                                                                             return result;
                                                                                         }	
 
-        [WebMethod(EnableSession = true)]   [EditArticles(SecurityAction.Demand)]   public bool SetArticleHtml (Guid articleId,string htmlContent)					        
+        [WebMethod(EnableSession = true)]   [EditArticles]	                        public bool SetArticleHtml (Guid articleId,string htmlContent)					        
                                                                                         {
                                                                                             return SetArticleContent(articleId, "html", htmlContent);
                                                                                         }
-        [WebMethod(EnableSession = true)]   [EditArticles(SecurityAction.Demand)]   public bool SetArticleContent (Guid articleId, string dataType,  string content)					        
+        [WebMethod(EnableSession = true)]   [EditArticles]	                        public bool SetArticleContent (Guid articleId, string dataType,  string content)					        
                                                                                         { 
                                                                                             resetCache();
                                                                                             var article = javascriptProxy.GetGuidanceItemById(articleId.str());
@@ -158,16 +158,16 @@ namespace TeamMentor.CoreLib
                                                                                             return false;
                                                                                         }
 
-        [WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public bool DeleteGuidanceItem(Guid guidanceItemId)											{ resetCache(); return javascriptProxy.DeleteGuidanceItem(guidanceItemId); 	}			
-        [WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public bool DeleteGuidanceItems(List<Guid> guidanceItemIds)									{ resetCache(); return javascriptProxy.DeleteGuidanceItems(guidanceItemIds); 	}			
-        [WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public bool RenameFolder(Guid libraryId, Guid folderId , string newFolderName) 				{ resetCache(); return javascriptProxy.RenameFolder(libraryId, folderId,newFolderName ); } 		
-        [WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public Folder_V3 CreateFolder(Guid libraryId, Guid parentFolderId, string newFolderName) 	{ resetCache(); return javascriptProxy.CreateFolder(libraryId ,parentFolderId, newFolderName ); } 		
-        [WebMethod(EnableSession = true)]	[EditArticles(SecurityAction.Demand)]	public bool DeleteFolder(Guid libraryId, Guid folderId) 							 	 	{ resetCache(); return javascriptProxy.DeleteFolder(libraryId ,folderId ); } 				
+        [WebMethod(EnableSession = true)]	[EditArticles]	                     	public bool DeleteGuidanceItem(Guid guidanceItemId)											{ resetCache(); return javascriptProxy.DeleteGuidanceItem(guidanceItemId); 	}			
+        [WebMethod(EnableSession = true)]	[EditArticles]	                     	public bool DeleteGuidanceItems(List<Guid> guidanceItemIds)									{ resetCache(); return javascriptProxy.DeleteGuidanceItems(guidanceItemIds); 	}			
+        [WebMethod(EnableSession = true)]	[EditArticles]	                     	public bool RenameFolder(Guid libraryId, Guid folderId , string newFolderName) 				{ resetCache(); return javascriptProxy.RenameFolder(libraryId, folderId,newFolderName ); } 		
+        [WebMethod(EnableSession = true)]	[EditArticles]	                     	public Folder_V3 CreateFolder(Guid libraryId, Guid parentFolderId, string newFolderName) 	{ resetCache(); return javascriptProxy.CreateFolder(libraryId ,parentFolderId, newFolderName ); } 		
+        [WebMethod(EnableSession = true)]	[EditArticles]	                     	public bool DeleteFolder(Guid libraryId, Guid folderId) 							 	 	{ resetCache(); return javascriptProxy.DeleteFolder(libraryId ,folderId ); } 				
 
         
         
         //Extra (not in Javascript proxy (move to separate file if more than a couple are needed)
-        [WebMethod(EnableSession = true)] [EditArticles(SecurityAction.Demand)]		public bool DeleteLibrary(Guid libraryId)
+        [WebMethod(EnableSession = true)] [EditArticles]	                     		public bool DeleteLibrary(Guid libraryId)
         {
             this.resetCache();
             if (javascriptProxy.GetLibraryById(libraryId.str()).isNull())
@@ -177,7 +177,7 @@ namespace TeamMentor.CoreLib
             var libraryDeleted = javascriptProxy.GetLibraryById(libraryId.str());
             return libraryDeleted.isNull();// || libraryDeleted.delete;
         }		
-        [WebMethod(EnableSession = true)] [EditArticles(SecurityAction.Demand)]	    public bool RenameLibrary(Guid libraryId, string newName)
+        [WebMethod(EnableSession = true)] [EditArticles]	                     	    public bool RenameLibrary(Guid libraryId, string newName)
         {
             this.resetCache();
             if (javascriptProxy.GetLibraryById(libraryId.str()).isNull())
@@ -185,7 +185,7 @@ namespace TeamMentor.CoreLib
             var libraryToRename = new Library  { id = libraryId.str(), caption = newName };
             return javascriptProxy.UpdateLibrary(libraryToRename);			
         }
-        [WebMethod(EnableSession = true)] [EditArticles(SecurityAction.Demand)]		public List<Guid> DeleteTempLibraries()
+        [WebMethod(EnableSession = true)] [EditArticles]	                     		public List<Guid> DeleteTempLibraries()
         {
             var deletedLibraries = new List<Guid>();
             foreach(var library in javascriptProxy.GetLibraries())
@@ -197,7 +197,7 @@ namespace TeamMentor.CoreLib
         
         
 /*		[WebMethod(EnableSession = true)]
-        [EditArticles(SecurityAction.Demand)]	
+        [EditArticles]	                     	
         public bool RenameGuidanceItemTitle(Guid guidanceItemId, string title)
         {			
             this.resetCache();

@@ -626,6 +626,7 @@
     <Content Include="TBot\Questions\version.cshtml" />
     <Content Include="TBot\Admin\ActiveSessions.cshtml" />
     <Content Include="TBot\Admin\RazorTemplates.cshtml" />
+    <Content Include="TBot\Admin\IISSessions.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="TBot\Tests\" />

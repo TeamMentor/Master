@@ -7,14 +7,14 @@ namespace TeamMentor.CoreLib
 	{
         public static int FORCED_MILLISEC_DELAY_ON_LOGIN_ACTION = 500;
 
-		public static void loadTmUserObjects(string xmlDatabasePath)
+		public static void loadTmUserObjects(string userDataPath)
 		{
-			if(xmlDatabasePath.dirExists().isFalse())
+			if(userDataPath.dirExists().isFalse())
 			{
-				"[TM_Xml_Database_ExtensionMethods_Users_Persistance] in loadTmUserObjects, provided xmlDatabasePath didn't exist: {0}".error(xmlDatabasePath);
+				"[TM_Xml_Database_ExtensionMethods_Users_Persistance] in loadTmUserObjects, provided userDataPath didn't exist: {0}".error(userDataPath);
 				return;
 			}
-			var tmUsersXmlFile = xmlDatabasePath.getTmUsersXmlFile();
+			var tmUsersXmlFile = userDataPath.getTmUsersXmlFile();
 			//var tmUsersPasswordsXmlFile = xmlDatabasePath.getTmUsersPasswordsXmlFile();
 			if(tmUsersXmlFile.fileExists().isFalse())			
 				new List<TMUser>().saveAs(tmUsersXmlFile);
@@ -26,9 +26,9 @@ namespace TeamMentor.CoreLib
 			//TM_Xml_Database.Current.TMUsersPasswordHashes = tmUsersPasswordsXmlFile.load<O2.DotNetWrappers.DotNet.Items>();				
 		}
 
-		public static void loadAndCheckUserDatabase(string xmlDatabasePath)
+		public static void loadAndCheckUserDatabase(string userDataPath)
 		{
-			loadTmUserObjects(xmlDatabasePath);
+			loadTmUserObjects(userDataPath);
 			//check for invalid users
 			foreach (var tmUser in TM_Xml_Database.Current.TMUsers.toList())
 				if (tmUser.UserID == 0)
@@ -36,18 +36,18 @@ namespace TeamMentor.CoreLib
 					"[loadAndCheckUserDatabase] there was an account with userId=0, so removing it".error();
 					TM_Xml_Database.Current.TMUsers.remove(tmUser);
 				}
-			saveTmUserObjects(xmlDatabasePath);
+			saveTmUserObjects(userDataPath);
 		}
 
-		//[PrincipalPermission(SecurityAction.Demand, Role = "ManageUsers")] 
-		public static void saveTmUserObjects(string xmlDatabasePath)
+		//[ManageUsers] 
+		public static void saveTmUserObjects(string userDataPath)
 		{
 			if (TM_Xml_Database.Current.UsingFileStorage)
 			{
 				"in saveTmUserObjects".info();
-				lock (xmlDatabasePath)
+				lock (userDataPath)
 				{
-					var tmUsersXmlFile = xmlDatabasePath.getTmUsersXmlFile();
+					var tmUsersXmlFile = userDataPath.getTmUsersXmlFile();
 					//var tmUsersPasswordsXmlFile = xmlDatabasePath.getTmUsersPasswordsXmlFile();
 					TM_Xml_Database.Current.TMUsers.saveAs(tmUsersXmlFile);
 					//TM_Xml_Database.Current.TMUsersPasswordHashes.saveAs(tmUsersPasswordsXmlFile);

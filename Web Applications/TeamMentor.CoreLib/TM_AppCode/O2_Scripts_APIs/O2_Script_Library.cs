@@ -4,7 +4,7 @@ using TeamMentor.CoreLib;
 
 namespace FluentSharp
 {
-    [Admin(SecurityAction.Demand)]    
+    [Admin]    
     public class O2_Script_Library
     {
         public static string ping()

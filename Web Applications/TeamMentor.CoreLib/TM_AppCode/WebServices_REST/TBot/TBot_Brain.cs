@@ -10,7 +10,7 @@ using RazorEngine.Templating;
 
 namespace TeamMentor.CoreLib
 {
-    //[PrincipalPermission(SecurityAction.Demand, Role = "Admin")] 
+    //[Admin] 
     public class TBot_Brain
     {
         public static string TBot_Main_HTML_Page    = "/TBot/TbotMain.html";

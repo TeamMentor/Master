@@ -289,7 +289,7 @@ namespace TeamMentor.CoreLib
 			return null;
 		}
 
-		[Admin(SecurityAction.Demand)]
+		[Admin]	                    
 		public static bool xmlDB_Libraries_ImportFromZip(this TM_Xml_Database tmDatabase, string zipFileToImport, string unzipPassword)
 		{
             try

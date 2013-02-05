@@ -10,24 +10,30 @@ namespace TeamMentor.CoreLib
 {	
 	public partial class TM_Xml_Database 
 	{
-		public  bool setLibraryPath_and_LoadDataIntoMemory(string libraryPath)
-		{			
-			//"in setLibraryPath: {0}".info(libraryPath);
+		public  bool setLibraryPath_and_LoadDataIntoMemory(string xmlDatabasePath, string libraryPath, string userDataPath)
+		{						
 			if (libraryPath.dirExists().isFalse())						
 			{
-				libraryPath = TM_Xml_Database.Current.Path_XmlDatabase.pathCombine(libraryPath);
+				libraryPath = xmlDatabasePath.pathCombine(libraryPath);
 				libraryPath.createDir();  // make sure it exists
 			}
-			TM_Xml_Database.Current.Path_XmlLibraries = libraryPath;
+            if (userDataPath.dirExists().isFalse())						
+			{
+				userDataPath = xmlDatabasePath.pathCombine(userDataPath);
+				userDataPath.createDir();  // make sure it exists
+			}
+			Current.Path_XmlLibraries = libraryPath;
+			Current.Path_UserData     = userDataPath;
+
 			return loadDataIntoMemory();
 		}
 		
 		public  bool loadDataIntoMemory()
 		{
-			return loadDataIntoMemory(Path_XmlDatabase, Path_XmlLibraries);			
+			return loadDataIntoMemory(Path_XmlDatabase, Path_XmlLibraries, Path_UserData);			
 		}		
 		
-		public  bool loadDataIntoMemory(string pathXmlDatabase, string pathXmlLibraries)
+		public  bool loadDataIntoMemory(string pathXmlDatabase, string pathXmlLibraries, string pathUserData)
 		{	
 			if(pathXmlDatabase.dirExists().isFalse())
 			{
@@ -37,7 +43,7 @@ namespace TeamMentor.CoreLib
 			TM_Xml_Database.Current.GuidanceExplorers_XmlFormat = pathXmlLibraries.getGuidanceExplorerObjects();
 			pathXmlLibraries.loadGuidanceItemsFromCache();
 			//mapGuidanceItemsViews();
-			loadAndCheckUserDatabase(pathXmlDatabase);
+			loadAndCheckUserDatabase(pathUserData);
 			return true;					
 		}
 		
@@ -89,7 +95,7 @@ namespace TeamMentor.CoreLib
 		}		
 */		
 		//move to  extension methods
-		[PrincipalPermission(SecurityAction.Demand, Role = "ReadArticles")] 
+		[ReadArticles] 
 		public TeamMentor_Article getGuidanceItem(Guid guidanceItemId)
 		{
 			if (Cached_GuidanceItems.hasKey(guidanceItemId).isFalse())
@@ -98,7 +104,7 @@ namespace TeamMentor.CoreLib
 			return Cached_GuidanceItems[guidanceItemId];			
 		}
 		
-		[PrincipalPermission(SecurityAction.Demand, Role = "ReadArticles")] 
+		[ReadArticles] 
 		public string getGuidanceItemHtml(Guid guidanceItemId)
 		{            
 
@@ -136,7 +142,7 @@ namespace TeamMentor.CoreLib
             }			
 		}
 
-		[PrincipalPermission(SecurityAction.Demand, Role = "ReadArticles")]
+		[ReadArticles]
 		public List<string> getGuidanceItemsHtml(List<Guid> guidanceItemsIds)
 		{
 			var data = new List<string>();
@@ -154,7 +160,7 @@ namespace TeamMentor.CoreLib
 	
 	public static class TM_Xml_Database_ExtensionMethods_TM_Library
 	{
-		//[PrincipalPermission(SecurityAction.Demand, Role = "ReadArticles")] 
+		//[ReadArticles] 
 		public static List<TM_Library> tmLibraries(this TM_Xml_Database tmDatabase)
 		{
 			var libraries = new List<TM_Library>();
@@ -417,16 +423,14 @@ namespace TeamMentor.CoreLib
 	//******************* TM_GuidanceItem
 	
 	public static class TM_Xml_Database_ExtensionMethods_TM_GuidanceItems
-	{
-		//[PrincipalPermission(SecurityAction.Demand, Role = "ReadArticles")] 	
-		[PrincipalPermission(SecurityAction.Demand, Role = "ReadArticlesTitles")] 			
+	{		
+		[ReadArticlesTitles] 			
 		public static List<TeamMentor_Article> tmGuidanceItems(this TM_Xml_Database tmDatabase)
 		{			
 			return tmDatabase.xmlDB_GuidanceItems();						
 		}
 		
-		[PrincipalPermission(SecurityAction.Demand, Role = "ReadArticles")] 
-		//[PrincipalPermission(SecurityAction.Demand, Role = "ReadArticlesTitles")] 	
+		[ReadArticles] 		
 		public static TeamMentor_Article tmGuidanceItem(this TM_Xml_Database tmDatabase, Guid id)
 		{
 			if (TM_Xml_Database.Current.Cached_GuidanceItems.hasKey(id))

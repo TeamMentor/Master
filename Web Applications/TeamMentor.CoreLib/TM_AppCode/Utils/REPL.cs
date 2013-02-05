@@ -12,7 +12,7 @@ namespace TeamMentor.CoreLib
 		//public static List<Thread> ExecutionThreads = new List<Thread>();		
 		public static int MAX_EXECUTION_TIME = 20000;
 		
-		[Admin(SecurityAction.Demand)]
+		[Admin]	                    
 		public static string executeSnippet(string snippet)
 		{
 			"[REPL] executing snippet with size: {0}".info(snippet.size());
