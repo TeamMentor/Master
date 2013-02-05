@@ -7,13 +7,13 @@ namespace TeamMentor.CoreLib
 {
 	public static class TM_Xml_Database_ExtensionMethods_GuiHelpers
 	{
-		public static List<Library_V3> getFolderStructure_Libraries(this IJavascriptProxy javascriptProxy, TM_GUI_Objects guiObjects)
+		public static List<Library_V3> getFolderStructure_Libraries(this TM_Xml_Database_JavaScriptProxy javascriptProxy, TM_GUI_Objects guiObjects)
 		{
 			return (from library in javascriptProxy.GetLibraries()
 				    select javascriptProxy.getFolderStructure_Library(library.Id,guiObjects)).toList();
 		}
 		
-		public static Library_V3 getFolderStructure_Library(this IJavascriptProxy javascriptProxy, Guid libraryId, TM_GUI_Objects guiObjects)
+		public static Library_V3 getFolderStructure_Library(this TM_Xml_Database_JavaScriptProxy javascriptProxy, Guid libraryId, TM_GUI_Objects guiObjects)
 		{
 			//pre-create this mapping since the view retrieval was a massive performance bottle neck
 			var allViews = new Dictionary<Guid, View_V3>();
@@ -89,7 +89,7 @@ namespace TeamMentor.CoreLib
 			return getLibrary_TreeStructure(libraryId);
 		}
 		
-		public static List<Guid> getGuidanceItemsIds_NotInViews(this IJavascriptProxy javascriptProxy, Guid libraryId)
+		public static List<Guid> getGuidanceItemsIds_NotInViews(this TM_Xml_Database_JavaScriptProxy javascriptProxy, Guid libraryId)
 		{					
 			var guidanceInViews = (from view in javascriptProxy.GetViews()
 								   where view.libraryId == libraryId

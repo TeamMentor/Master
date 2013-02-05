@@ -5,7 +5,7 @@ using O2.DotNetWrappers.ExtensionMethods;
 
 namespace TeamMentor.CoreLib
 {
-	public class TM_Xml_Database_JavaScriptProxy : IJavascriptProxy
+	public class TM_Xml_Database_JavaScriptProxy 
 	{
 		public TM_Xml_Database tmXmlDatabase {get;set;}		
 		public string ProxyType  { get; set; }    	
