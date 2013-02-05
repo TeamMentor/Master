@@ -625,10 +625,11 @@
     <Content Include="TBot\Users\user.cshtml" />
     <Content Include="TBot\Questions\version.cshtml" />
     <Content Include="TBot\Admin\ActiveSessions.cshtml" />
-    <Content Include="TBot\Questions\_ViewStart.cshtml" />
     <Content Include="TBot\Admin\RazorTemplates.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="TBot\Tests\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TeamMentor.CoreLib\TeamMentor.CoreLib.csproj">
       <Project>{87BACB04-640F-44ED-8F01-45224D52A883}</Project>
