@@ -9,7 +9,7 @@ using TeamMentor.CoreLib;
 namespace TeamMentor.UnitTests.CoreLib
 {
 	[TestFixture]
-	public class Test_Users_UserActivities
+	public class Test_Users_UserActivities : TM_XmlDatabase_InMemory
 	{
 		public UserActivities userActivities;		
 

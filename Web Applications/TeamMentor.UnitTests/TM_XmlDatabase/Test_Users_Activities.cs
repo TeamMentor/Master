@@ -5,7 +5,7 @@ using TeamMentor.CoreLib;
 namespace TeamMentor.UnitTests
 {
     [TestFixture]
-    public class Test_UserActivities  : TM_XmlDatabase_InMemory
+    public class Test_Users_Activities  : TM_XmlDatabase_InMemory
     {
         [Test]
         public void NewUserActivityData()
