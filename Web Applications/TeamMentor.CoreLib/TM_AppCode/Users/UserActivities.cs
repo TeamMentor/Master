@@ -34,7 +34,7 @@ namespace TeamMentor.CoreLib
         [LogTo_GoogleAnalytics]
         public UserActivity LogUserActivity(TMUser tmUser , UserActivity userActivity)
         {
-            if (tmUser.notNull())
+            if (tmUser.notNull() && tmUser.ID != Guid.Empty)
             {                
                 tmUser.UserActivities.Add(userActivity);
                 tmUser.saveTmUser();
