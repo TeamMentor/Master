@@ -9,17 +9,14 @@ namespace TeamMentor.CoreLib
     public partial class TM_WebServices 
     {		
         
-        [WebMethod(EnableSession = true)] public string GetTime() 						{   return "...Via Proxy:" + javascriptProxy.GetTime(); }
+        [WebMethod(EnableSession = true)] public string GetTime() 						{   return "...Via Proxy:" + DateTime.Now.str(); }  	         
         [WebMethod(EnableSession = true)] public string Ping(string message)  			{   return "received ping: {0}".format(message); }
         
-//        [WebMethod(EnableSession = true)] [Admin]	                    			public string UseEnvironment_Moq()      		{   UnityInjection.useEnvironment_Moq(); 		return "using Moq Environment"; }
-//		[WebMethod(EnableSession = true)] [Admin]	                    			public string UseEnvironment_XmlDatabase()   	{   UnityInjection.useEnvironment_XmlDatabase();return "using XmlDatabase Environment"; }
-        [WebMethod(EnableSession = true)] [Admin]	            public string CurrentProxyType()        		{ 	return javascriptProxy.ProxyType; }        
         //Xml Database Specific
         [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_GetDatabasePath()		{	return TM_Xml_Database.Current.Path_XmlDatabase;	}
         [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_GetLibraryPath()		{	return TM_Xml_Database.Current.Path_XmlLibraries;	}		
         [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_ReloadData()			{	
-                                                                                                                                        guiObjectsCacheOK = false; 
+                                                                                                                                        guiObjectsCacheOk = false; 
                                                                                                                                         return  TM_Xml_Database.Current.ReloadData(null); 
                                                                                                                                     }
         [WebMethod(EnableSession = true)] [Admin]	            public bool XmlDatabase_ImportLibrary_fromZipFile(string pathToZipFile, string unzipPassword)
@@ -32,7 +29,7 @@ namespace TeamMentor.CoreLib
                                                                                                                                         return false;																																		
                                                                                                                                     }
         [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_SetLibraryPath(string libraryPath)		
-                                                                                                                                    {	guiObjectsCacheOK = false; 
+                                                                                                                                    {	guiObjectsCacheOk = false; 
                                                                                                                                         return  TM_Xml_Database.Current.ReloadData(libraryPath); 
                                                                                                                                     }
 
@@ -160,7 +157,7 @@ namespace TeamMentor.CoreLib
         }
         [WebMethod(EnableSession = true)]		                public bool IsGuidMappedInThisServer(Guid guid)
                                                 {
-                                                    if (GetGuidanceItemById(guid.str()).notNull())
+                                                    if (GetGuidanceItemById(guid).notNull())
                                                         return true;
                                                     if (TM_Xml_Database.Current.get_GuidRedirect(guid).valid())
                                                         return true;

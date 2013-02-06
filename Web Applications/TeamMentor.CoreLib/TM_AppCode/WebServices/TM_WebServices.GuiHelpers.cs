@@ -14,24 +14,24 @@ namespace TeamMentor.CoreLib
 		{
             var libraryId = this.GetCurrentSessionLibrary();
             if (libraryId == Guid.Empty)
-			    return javascriptProxy.getFolderStructure_Libraries(GetGUIObjects());
-            return javascriptProxy.getFolderStructure_Library(libraryId, GetGUIObjects()).wrapOnList();
+			    return this.getFolderStructure_Libraries(GetGUIObjects());
+            return this.getFolderStructure_Library(libraryId, GetGUIObjects()).wrapOnList();
 		}
 		
 		[WebMethod(EnableSession= true)]
 		public Library_V3 GetFolderStructure_Library(Guid libraryId)
 		{
-			return javascriptProxy.getFolderStructure_Library(libraryId, GetGUIObjects());
+			return this.getFolderStructure_Library(libraryId, GetGUIObjects());
 		}
 		
 		//********  Gui Objects
 		
 		//******** New Data Transfer mode based on String indexes
 		
-		public static TM_GUI_Objects last_GUI_Objects = null;		// this will need to be updated when changes are made
-		public static bool guiObjectsCacheOK = false;
+		public static TM_GUI_Objects last_Gui_Objects = null;		
+		public static bool           guiObjectsCacheOk = false;
 		
-		public void resetCache() {  	guiObjectsCacheOK = false;  }
+		public void resetCache()     {  	guiObjectsCacheOk = false;  }
         
         [WebMethod(EnableSession = true)]
         public Guid GetCurrentSessionLibrary()
@@ -42,11 +42,11 @@ namespace TeamMentor.CoreLib
             {
                 var libraryValue = Session["Library"].str();
                 var library = (libraryValue.isGuid())
-                                    ? javascriptProxy.GetLibraryById(libraryValue)
-                                    : javascriptProxy.GetLibraryByName(libraryValue);
+                                    ? GetLibraryById(libraryValue.guid())
+                                    : GetLibraryByName(libraryValue);
                 if (library.notNull())
                 {
-                    guiObjectsCacheOK = false;
+                    guiObjectsCacheOk = false;
                     return library.id.guid();
                 }
                 "[GetCurrentSessionLibrary] could not find library for provided value: {0}".error(libraryValue);
@@ -57,9 +57,9 @@ namespace TeamMentor.CoreLib
 		[WebMethod(EnableSession= true)]
 		public bool ClearGUIObjects()
 		{
-			last_GUI_Objects = null;
-			guiObjectsCacheOK = false;
-			return last_GUI_Objects.isNull();
+			last_Gui_Objects = null;
+			guiObjectsCacheOk = false;
+			return last_Gui_Objects.isNull();
 		}
 		
 		[WebMethod(EnableSession= true)]
@@ -71,13 +71,13 @@ namespace TeamMentor.CoreLib
             var libraryId = GetCurrentSessionLibrary();
 
             
-		    if (guiObjectsCacheOK &&  last_GUI_Objects.notNull())		// returns cached version on next calls
-                return last_GUI_Objects; 
+		    if (guiObjectsCacheOk &&  last_Gui_Objects.notNull())		// returns cached version on next calls
+                return last_Gui_Objects; 
 				
 			var guiObjects = new TM_GUI_Objects();
             var guidanceItems = (libraryId == Guid.Empty) 
-                                        ? javascriptProxy.GetAllGuidanceItems_XmlDB()
-                                        : javascriptProxy.GetGuidanceItemsInLibrary(libraryId);
+                                        ? tmXmlDatabase.tmGuidanceItems()
+                                        : GetGuidanceItemsInLibrary(libraryId);
             foreach (var row in guidanceItems)      
 			{  
 				var guidanceItemMappings = "{0},{1},{2},{3},{4},{5},{6}".format(
@@ -91,10 +91,10 @@ namespace TeamMentor.CoreLib
 												guiObjects.add_UniqueString(row.Metadata.Category));
 				
 				guiObjects.GuidanceItemsMappings.Add(guidanceItemMappings);												
-			};
-			last_GUI_Objects = guiObjects;
+			}
+			last_Gui_Objects = guiObjects;
 			//for the big library this is now a 360k string
-			guiObjectsCacheOK = true;
+			guiObjectsCacheOk = true;
 			return guiObjects;
 		}
 		
@@ -117,9 +117,7 @@ namespace TeamMentor.CoreLib
         [WebMethod]
         public bool Upload_File_To_Library(Guid libraryId, string filename, byte[] contents)
         {
-            return javascriptProxy.tmXmlDatabase.upload_File_to_Library(libraryId, filename, contents);
-            //javascriptProxy.UploadImageToLibrary(filename, contents);
-            //javascriptProxy.tmXmlDatabase.PaUploadImageToLibrary(filename, contents);
+            return tmXmlDatabase.upload_File_to_Library(libraryId, filename, contents);            
         }
 	}
 }

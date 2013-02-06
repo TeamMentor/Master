@@ -20,11 +20,11 @@ namespace TeamMentor.CoreLib
         {			
             var jsTree = new JsTree();            
             Func<Guid, List<Folder_V3>, JsTreeNode, List<Guid>> mapFolders = null;
-            Func<Guid, Guid, List<Guid>, JsTreeNode, List<Guid>> mapViews = null;
+            Func<Guid, Guid, List<Guid>, JsTreeNode, List<Guid>> mapViews;
 
             //precalculate for performance reasons
             var allViews = new Dictionary<Guid, View_V3>();
-            foreach(var view in javascriptProxy.GetViews())
+            foreach(var view in GetViews())
                 if (allViews.hasKey(view.viewId))
                     "[getFolderStructure_Library] duplicate viewID: {0} from Library {0}".format(view.viewId, view.libraryId);  // this should be moved into a TM Library health check
                 else
@@ -56,7 +56,9 @@ namespace TeamMentor.CoreLib
                         var folderNode = targetNode.add_Node(folder.name);						
                         folderNode.state = "closed";
                         folderNode.data.icon = "/Images/FolderIcon.png";
+                        // ReSharper disable AccessToModifiedClosure
                         subFolderViewsId.AddRange(mapFolders(libraryId, folder.subFolders, folderNode));
+                        // ReSharper restore AccessToModifiedClosure
                         var viewIds = (from view in folder.views
                                        select view.viewId).toList();
                         subFolderViewsId.AddRange(mapViews(libraryId, folderId, viewIds, folderNode));
@@ -70,15 +72,15 @@ namespace TeamMentor.CoreLib
             var sessionLibraryId = GetCurrentSessionLibrary();
 
             var libraries = (sessionLibraryId == Guid.Empty)
-                                ? javascriptProxy.GetLibraries()
-                                : javascriptProxy.GetLibraryById(sessionLibraryId).wrapOnList();
+                                ? tmXmlDatabase.tmLibraries()
+                                : tmXmlDatabase.tmLibrary(sessionLibraryId).wrapOnList();
 
             foreach(var library in libraries)
             {				
                 var libraryNode =jsTree.add_Node(library.Caption);
                 //var mappedFolders = new Dictionary<string, List<Folder_V3>>();				
-                mapFolders(library.Id, javascriptProxy.GetFolders(library.Id), libraryNode);
-                mapViews(library.Id, Guid.Empty, javascriptProxy.GetViewsInLibraryRoot(library.Id.str()).guids(), libraryNode);
+                mapFolders(library.Id, GetFolders(library.Id), libraryNode);
+                mapViews(library.Id, Guid.Empty, GetViewsInLibraryRoot(library.Id).guids(), libraryNode);
                 //libraryNode.state = "open";
                 libraryNode.state = "closed";				
                 libraryNode.data.icon = "/Images/SingleLibrary.png";
@@ -93,7 +95,7 @@ namespace TeamMentor.CoreLib
         
         [WebMethod(EnableSession = true)]	public JsDataTable JsDataTableWithAllGuidanceItemsInViews()
         { 
-            var rawGuidanceItems = javascriptProxy.GetAllGuidanceItemsInViews_XmlDB();
+            var rawGuidanceItems = tmXmlDatabase.getAllGuidanceItemsInViews();
             //var rawGuidanceItems = tmXmlDatabase.getGuidanceItemsInViews(viewIds);
             return getDataTableFromGuidanceItems(rawGuidanceItems);
         }	

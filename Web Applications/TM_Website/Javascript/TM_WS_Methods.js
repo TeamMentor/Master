@@ -107,7 +107,7 @@ function getTime(callback)
 function getGuidanceItemHtml(id, callback)
 {
     var url = TM.tmWebServices + 'GetGuidanceItemHtml';
-    var params = "{ GuidanceItemId : '" + id + "'}";
+    var params = "{ guidanceItemId : '" + id + "'}";
     invokeWebService( url, params, callback, defaultErrorHandler);
 }
 

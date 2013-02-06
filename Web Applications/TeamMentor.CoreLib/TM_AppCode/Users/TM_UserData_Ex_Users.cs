@@ -133,7 +133,8 @@ namespace TeamMentor.CoreLib
                     return tmUser.registerUserSession(Guid.NewGuid());
             }
             return Guid.Empty;    			
-        }        
+        }
+
         public static List<int>     createTmUsers               (this TM_Xml_Database tmDb, string batchUserData) 
         {						
             var newUsers = new List<NewUser>();

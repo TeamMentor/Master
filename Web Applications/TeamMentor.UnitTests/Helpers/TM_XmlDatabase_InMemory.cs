@@ -14,13 +14,12 @@ namespace TeamMentor.UnitTests
 		
 		public TM_XmlDatabase_InMemory()
 		{
-			
+			tmXmlDatabase = new TM_Xml_Database();	 
 		}
 
 		[TestFixtureSetUp]		
 		public void TestFixtureSetUp()
-		{
-			tmXmlDatabase = new TM_Xml_Database();	 
+		{			
             //all these values should be null since we are running TM memory (default setting)
 			Assert.IsNull(tmXmlDatabase.Path_XmlDatabase		    , "Path_XmlDatabase");
 			Assert.IsNull(tmXmlDatabase.Path_XmlLibraries		    , "Path_XmlLibraries");

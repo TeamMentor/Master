@@ -24,11 +24,11 @@ namespace TeamMentor.CoreLib
         }
         public View_V3              View(string viewId)
         {
-            return TmWebServices.GetViewById(viewId);
+            return TmWebServices.GetViewById(viewId.guid());
         }        
         public string               Article(string articleId)
         {
-            var article = TmWebServices.GetGuidanceItemById(articleId);
+            var article = TmWebServices.GetGuidanceItemById(articleId.guid());
             return article.serialize(false);
             //			return article;		// this was failing
         }

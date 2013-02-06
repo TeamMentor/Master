@@ -6,21 +6,13 @@ namespace TeamMentor.CoreLib
 {
     public class TM_Authentication
     {        
-        public  TM_WebServices      TmWebServices { get; set; }    
-        public  bool                disable_Csrf_Check;
+        public  TM_WebServices      TmWebServices        { get; set; }    
+        public  bool                Disable_Csrf_Check  { get; set; }    
 
         public TM_Authentication    (TM_WebServices tmWebServices)
         {
             TmWebServices = tmWebServices;
-            disable_Csrf_Check = false;
-            try
-            {
-                TmWebServices.javascriptProxy.adminSessionID = this.sessionID;
-            }
-            catch (Exception ex)	// this will happen on the unit tests
-            {
-                "TM_WebServices.ctor: {0}".error(ex.Message);
-            }				
+            Disable_Csrf_Check = false;	
         }        
 
         public Guid                 sessionID
@@ -82,7 +74,7 @@ namespace TeamMentor.CoreLib
         }
         public bool                 check_CSRF_Token()
         {
-            if (disable_Csrf_Check)
+            if (Disable_Csrf_Check)
                 return true;
             var header_Csrf_Token = TmWebServices.Context.Request.Headers["CSRF-Token"];
             if (header_Csrf_Token != null && header_Csrf_Token.valid())
@@ -98,10 +90,9 @@ namespace TeamMentor.CoreLib
         {
             return mapUserRoles(false);
         }
-        public TM_Authentication    mapUserRoles(bool _disable_CSRF_Check)
+        public TM_Authentication    mapUserRoles(bool disable_Csrf_Check)
         {
-            disable_Csrf_Check = _disable_CSRF_Check;
-            //"[TM_Authentication] mapUserRoles".info();
+            Disable_Csrf_Check = disable_Csrf_Check;            
             if (sessionID == Guid.Empty || sessionID.validSession() == false)
                 /*if (SingleSignOn.singleSignOn_Enabled)
                 {
@@ -120,9 +111,7 @@ namespace TeamMentor.CoreLib
                 if (check_CSRF_Token())		// only map the roles if the CSRF check passed
                 {
                     userGroup = new UserRoleBaseSecurity().MapRolesBasedOnSessionGuid(sessionID);					
-                }
-                //else
-                //    "[TM_Authentication] check_CSRF_Token failed".error();
+                }                
             }
             if (userGroup == UserGroup.None)
             {
@@ -132,6 +121,11 @@ namespace TeamMentor.CoreLib
                     UserGroup.Anonymous.setThreadPrincipalWithRoles();
             }
             return this;
+        }
+        public Guid                 logout()
+        {
+            sessionID = Guid.Empty;
+            return sessionID;
         }
     }
 }

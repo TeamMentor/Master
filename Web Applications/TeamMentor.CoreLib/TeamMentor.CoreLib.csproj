@@ -122,6 +122,9 @@
     <Compile Include="TM_AppCode\Schemas\GuidanceItem_V3.cs" />
     <Content Include="TM_AppCode\WebServices\IJavascriptProxy.cs.txt" />
     <None Include="TM_AppCode\MoqObjects.cs.txt" />
+    <Compile Include="TM_AppCode\WebServices\TM_WebServices.Libraries.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <None Include="TM_AppCode\_Old_Legacy\LinqDB.cs.txt" />
     <None Include="TM_AppCode\_Old_Legacy\OnlineStorage.cs.txt" />
     <Content Include="TM_AppCode\_Old_Legacy\TeamMentorSecurity.cs.txt" />
@@ -156,6 +159,12 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="TM_AppCode\ExtensionMethods\IREST_ExtensionMethods.cs" />
+    <Compile Include="TM_AppCode\WebServices\TM_WebServices.Session.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="TM_AppCode\WebServices\TM_WebServices.Users.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="TM_AppCode\WebServices_REST\Controllers\TM_REST_Sessions.cs" />
     <Compile Include="TM_AppCode\WebServices_REST\TBot\TBot_Brain.cs" />
     <Compile Include="TM_AppCode\WebServices_REST\TM_REST.cs" />

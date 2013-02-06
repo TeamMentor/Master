@@ -318,7 +318,7 @@ namespace TeamMentor.CoreLib
 			var guid = tmWebServices.getGuidForMapping(data);
 			if (guid != Guid.Empty)
 			{
-				var article = tmWebServices.GetGuidanceItemById(guid.str());
+				var article = tmWebServices.GetGuidanceItemById(guid);
 
 				var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
 				var serializedData = serializer.Serialize(article);
@@ -337,7 +337,7 @@ namespace TeamMentor.CoreLib
         private bool handleAction_Image(string data)
         {            
             
-            var imagePath = tmWebServices.javascriptProxy.tmXmlDatabase.Get_Path_To_File(data);            
+            var imagePath = TM_Xml_Database.Current.Get_Path_To_File(data);            
             if (imagePath.fileExists())
             {
                 context.Response.ContentType = "image/{0}".format(data.extension().removeFirstChar());
@@ -427,7 +427,7 @@ namespace TeamMentor.CoreLib
             if (guid != Guid.Empty)
             {
                 context.Response.ContentType = "text/html";
-                var article = tmWebServices.GetGuidanceItemById(guid.str());
+                var article = tmWebServices.GetGuidanceItemById(guid);
                 var htmlTemplateFile = (article.Content.DataType.lower() == "wikitext") 
                                             ? @"\Html_Pages\Gui\Pages\article_wikiText.html" 
                                             : @"\Html_Pages\Gui\Pages\article_Html.html";
@@ -446,7 +446,7 @@ namespace TeamMentor.CoreLib
 			if ( data.isGuid())
 			{				
 				var guid = data.guid();
-				if (tmWebServices.GetGuidanceItemById(guid.str()).isNull())
+				if (tmWebServices.GetGuidanceItemById(guid).isNull())
 				{
 					var redirectTarget = tmWebServices.VirtualArticle_Get_GuidRedirect(guid);
 					if (redirectTarget.valid())
