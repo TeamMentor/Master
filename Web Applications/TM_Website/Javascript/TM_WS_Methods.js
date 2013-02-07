@@ -79,13 +79,13 @@ function updateUser(userId, userName, firstname, lastname, title, company, email
 function updateCurrentUserPassword(userName, newPassword, callback)
 {
     var url = TM.tmWebServices + 'SetCurrentUserPassword';
-    var params =  JSON.stringify( { password : password  } );
+    var params =  JSON.stringify( { password : newPassword  } );
     invokeWebService( url, params, callback, defaultErrorHandler);
 }
 function updateUserPassword(userId, userName, newPassword, callback)
 {
     var url = TM.tmWebServices + 'SetUserPassword';
-    var params =  JSON.stringify( { userId : userId  ,password : password  } );
+    var params =  JSON.stringify( { userId : userId  ,password : newPassword  } );
     invokeWebService( url, params, callback, defaultErrorHandler);
 }
 //config
