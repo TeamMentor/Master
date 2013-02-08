@@ -10,23 +10,23 @@ namespace TeamMentor.CoreLib
     public partial class TM_WebServices
     {
         //********  Libraries		
-        [WebMethod(EnableSession = true)]	public List<TM_Library> GetLibraries()										{	return tmXmlDatabase.tmLibraries();         }
-        [WebMethod(EnableSession = true)]	public List<Folder_V3> 	GetAllFolders()										{	return tmXmlDatabase.tmFolders();           }  	
-        [WebMethod(EnableSession = true)]	public List<View_V3> 	GetViews()										    {	return tmXmlDatabase.tmViews();	    	    }		
-        [WebMethod(EnableSession = true)]	public List<Folder_V3>  GetFolders(Guid libraryId)							{	return tmXmlDatabase.tmFolders(libraryId);  }  			
-        [WebMethod(EnableSession = true)]	public List<TeamMentor_Article> GetGuidanceItemsInFolder(Guid folderId)		{	return tmXmlDatabase.tmGuidanceItems_InFolder(folderId);    }  			
-        [WebMethod(EnableSession = true)]	public List<TeamMentor_Article> GetGuidanceItemsInView(Guid viewId)			{	return tmXmlDatabase.getGuidanceItemsInView(viewId);        }  	
-        [WebMethod(EnableSession = true)]	public List<TeamMentor_Article> GetGuidanceItemsInViews(List<Guid> viewIds)	{	return tmXmlDatabase.getGuidanceItemsInViews(viewIds);      }  	
-        [WebMethod(EnableSession = true)]	public string GetGuidanceItemHtml(Guid guidanceItemId)						{	return tmXmlDatabase.getGuidanceItemHtml (tmAuthentication.sessionID, guidanceItemId);	    }				
-        [WebMethod(EnableSession = true)]	public List<String> GetGuidanceItemsHtml(List<Guid> guidanceItemsIds)		{	return tmXmlDatabase.getGuidanceItemsHtml(tmAuthentication.sessionID, guidanceItemsIds);	}                
+        [WebMethod(EnableSession = true)]	public List<TM_Library>         GetLibraries()										{	return tmXmlDatabase.tmLibraries();         }
+        [WebMethod(EnableSession = true)]	public List<Folder_V3> 	        GetAllFolders()										{	return tmXmlDatabase.tmFolders();           }  	
+        [WebMethod(EnableSession = true)]	public List<View_V3> 	        GetViews()										    {	return tmXmlDatabase.tmViews();	    	    }		
+        [WebMethod(EnableSession = true)]	public List<Folder_V3>          GetFolders(Guid libraryId)							{	return tmXmlDatabase.tmFolders(libraryId);  }  			
+        [WebMethod(EnableSession = true)]	public List<TeamMentor_Article> GetGuidanceItemsInFolder(Guid folderId)		        {	return tmXmlDatabase.tmGuidanceItems_InFolder(folderId);    }  			
+        [WebMethod(EnableSession = true)]	public List<TeamMentor_Article> GetGuidanceItemsInView(Guid viewId)			        {	return tmXmlDatabase.getGuidanceItemsInView(viewId);        }  	
+        [WebMethod(EnableSession = true)]	public List<TeamMentor_Article> GetGuidanceItemsInViews(List<Guid> viewIds)	        {	return tmXmlDatabase.getGuidanceItemsInViews(viewIds);      }  	
+        [WebMethod(EnableSession = true)]	public string                   GetGuidanceItemHtml(Guid guidanceItemId)			{	return tmXmlDatabase.getGuidanceItemHtml (tmAuthentication.sessionID, guidanceItemId);	    }				
+        [WebMethod(EnableSession = true)]	public List<String>             GetGuidanceItemsHtml(List<Guid> guidanceItemsIds)	{	return tmXmlDatabase.getGuidanceItemsHtml(tmAuthentication.sessionID, guidanceItemsIds);	}                
         
-        [WebMethod(EnableSession = true)]	public List<View_V3>      GetViewsInLibraryRoot(Guid libraryId)		 		{	return tmXmlDatabase.tmViews_InLibraryRoot(libraryId);  }
-        [WebMethod(EnableSession = true)]	public View_V3            GetViewById(Guid viewId)		 					{	return tmXmlDatabase.tmView(viewId);                    }  	
+        [WebMethod(EnableSession = true)]	public List<View_V3>             GetViewsInLibraryRoot(Guid libraryId)		 		{	return tmXmlDatabase.tmViews_InLibraryRoot(libraryId);  }
+        [WebMethod(EnableSession = true)]	public View_V3                  GetViewById(Guid viewId)		 					{	return tmXmlDatabase.tmView(viewId);                    }  	
                 
-        [WebMethod(EnableSession = true)] 	public List<String>       GetAllLibraryIds   () 						    { return tmXmlDatabase.tmLibraries().ids().toStringList();  }
-        [WebMethod(EnableSession = true)] 	public Library            GetLibraryById     (Guid libraryId) 				{ return tmXmlDatabase.tmLibrary(libraryId).library(tmXmlDatabase);	    }  	
-        [WebMethod(EnableSession = true)] 	public Library            GetLibraryByName   (string libraryName) 			{ return tmXmlDatabase.tmLibrary(libraryName).library(tmXmlDatabase);	}  	
-        [WebMethod(EnableSession = true)]	public TeamMentor_Article GetGuidanceItemById(Guid guidanceItemId)		    { return tmXmlDatabase.tmGuidanceItem(guidanceItemId);                  }  	
+        [WebMethod(EnableSession = true)] 	public List<String>             GetAllLibraryIds   () 						        { return tmXmlDatabase.tmLibraries().ids().toStringList();  }
+        [WebMethod(EnableSession = true)] 	public Library                  GetLibraryById     (Guid libraryId) 				{ return tmXmlDatabase.tmLibrary(libraryId).library(tmXmlDatabase);	    }  	
+        [WebMethod(EnableSession = true)] 	public Library                  GetLibraryByName   (string libraryName) 			{ return tmXmlDatabase.tmLibrary(libraryName).library(tmXmlDatabase);	}  	
+        [WebMethod(EnableSession = true)]	public TeamMentor_Article       GetGuidanceItemById(Guid guidanceItemId)		    { return tmXmlDatabase.tmGuidanceItem(guidanceItemId);                  }  	
 
         [WebMethod(EnableSession = true)] 	[EditArticles]	                        public Library_V3 CreateLibrary(Library library)	{ this.resetCache(); return tmXmlDatabase.xmlDB_NewGuidanceExplorer(library.id.guid(), library.caption).libraryV3();                            }  	
         [WebMethod(EnableSession = true)] 	[EditArticles]	                     	public bool UpdateLibrary(Library library) 			{ this.resetCache(); return tmXmlDatabase.xmlDB_UpdateGuidanceExplorer(library.id.guid(), library.caption, library.delete).notNull();           }  	                        

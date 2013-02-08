@@ -486,7 +486,7 @@ namespace TeamMentor.CoreLib
 
         public static string sanitizeHtmlContent(this string htmlContent)
         {
-            return Sanitizer.GetSafeHtmlFragment(htmlContent);;
+            return Sanitizer.GetSafeHtmlFragment(htmlContent);
 
 /*			if (htmlContent.valid())
             {

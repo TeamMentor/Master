@@ -1,8 +1,5 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Security.Permissions;
 
 namespace TeamMentor.CoreLib
 {
@@ -28,16 +25,43 @@ namespace TeamMentor.CoreLib
 
     public class UserRolesMappings
     {
-        public static Dictionary<UserGroup, List<UserRole>> Mappings;
+        public static Dictionary<UserGroup, List<UserRole>> Mappings { get; set; }
 
         static UserRolesMappings()
         {
-            Mappings = new Dictionary<UserGroup, List<UserRole>>();
-            Mappings.Add(UserGroup.None  		, new List<UserRole>() { });
-            Mappings.Add(UserGroup.Anonymous    , new List<UserRole>() { UserRole.ReadArticlesTitles });
-            Mappings.Add(UserGroup.Admin 		, new List<UserRole>() { UserRole.ReadArticlesTitles , UserRole.ReadArticles, UserRole.EditArticles, UserRole.ManageUsers , UserRole.Admin, });
-            Mappings.Add(UserGroup.Editor		, new List<UserRole>() { UserRole.ReadArticlesTitles , UserRole.ReadArticles, UserRole.EditArticles  });
-            Mappings.Add(UserGroup.Reader		, new List<UserRole>() { UserRole.ReadArticlesTitles , UserRole.ReadArticles });            
+            Mappings = new Dictionary<UserGroup, List<UserRole>>
+                {
+                    {UserGroup.None, 
+                        new List<UserRole>()},
+                    {UserGroup.Anonymous, 
+                        new List<UserRole>
+                            {
+                                UserRole.ReadArticlesTitles
+                            }},
+                    {UserGroup.Admin,
+                        new List<UserRole>
+                            {
+                                UserRole.ReadArticlesTitles,
+                                UserRole.ReadArticles,
+                                UserRole.EditArticles,
+                                UserRole.ManageUsers,
+                                UserRole.Admin,
+                            }
+                    },
+                    {UserGroup.Editor,
+                        new List<UserRole>
+                            {
+                                UserRole.ReadArticlesTitles, 
+                                UserRole.ReadArticles, 
+                                UserRole.EditArticles
+                            }},
+                    {UserGroup.Reader, 
+                        new List<UserRole>
+                            {
+                                UserRole.ReadArticlesTitles, 
+                                UserRole.ReadArticles
+                            }}
+                };
         }
     }	
 }

@@ -26,12 +26,12 @@ namespace TeamMentor.CoreLib
 		
 		public string currentIdentity_Name()
 		{
-			return System.Threading.Thread.CurrentPrincipal.Identity.Name;
+			return Thread.CurrentPrincipal.Identity.Name;
 		}
 		
 		public bool currentIdentity_IsAuthenticated()
 		{
-			return System.Threading.Thread.CurrentPrincipal.Identity.IsAuthenticated;
+			return Thread.CurrentPrincipal.Identity.IsAuthenticated;
 		}
 		
 		public string[] currentPrincipal_Roles()

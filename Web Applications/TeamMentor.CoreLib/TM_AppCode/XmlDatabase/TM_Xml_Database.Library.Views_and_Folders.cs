@@ -323,7 +323,7 @@ namespace TeamMentor.CoreLib
 		{						
 			var folders = new List<urn.microsoft.guidanceexplorer.Folder>() ;
 			if (folderToMap.isNull())
-				return new List<urn.microsoft.guidanceexplorer.Folder>() ;;
+				return new List<urn.microsoft.guidanceexplorer.Folder>() ;
 			return folderToMap.folder1;
 			/*return folderToMap;
 			foreach(var folder in foldersToMap)

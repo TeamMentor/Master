@@ -25,8 +25,8 @@ namespace TeamMentor.CoreLib
                     return (Guid)TmWebServices.Session["sessionID"];
                 // then check the cookie
                 var sessionCookie = HttpContextFactory.Request.Cookies["Session"];
-                if (sessionCookie.notNull() && sessionCookie.Value.isGuid())
-                    return sessionCookie.Value.guid();
+                if (sessionCookie.notNull() && sessionCookie.value().isGuid())
+                    return sessionCookie.value().guid();
                 var sessionHeader = HttpContextFactory.Request.Headers["Session"];
                 if (sessionHeader.notNull() && sessionHeader.isGuid())
                     return sessionHeader.guid();
@@ -41,8 +41,10 @@ namespace TeamMentor.CoreLib
                 {
                     HttpContextFactory.Session["sessionID"] = value;
                 }                    
-                var sessionCookie = new HttpCookie("Session", value.str());
-                sessionCookie.HttpOnly = true;
+                var sessionCookie = new HttpCookie("Session", value.str())
+                    {
+                        HttpOnly = true
+                    };
                 HttpContextFactory.Response.Cookies.Add(sessionCookie);                    
              
                 if (value != Guid.Empty)
@@ -63,7 +65,7 @@ namespace TeamMentor.CoreLib
                 {
                     var tmUser = sessionID.session_TmUser();
                     if (tmUser.notNull())
-                        tmUser.CSRF_Token = this.sessionID.str().hash().str();	
+                        tmUser.CSRF_Token = sessionID.str().hash().str();	
                     return tmUser;
                 }
                 catch

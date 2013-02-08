@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Permissions;
-using System.Text;
 using O2.DotNetWrappers.ExtensionMethods;
 using RazorEngine;
 using RazorEngine.Templating;
@@ -13,8 +11,8 @@ namespace TeamMentor.CoreLib
     //[Admin] 
     public class TBot_Brain
     {
-        public static string TBot_Main_HTML_Page    = "/TBot/TbotMain.html";
-        public static string TBot_Scripts_Folder  = "/TBot";
+        public static string TBOT_MAIN_HTML_PAGE    = "/TBot/TbotMain.html";
+        public static string TBOT_SCRIPTS_FOLDER  = "/TBot";
         public static Dictionary<string,string> AvailableScripts     { get; set; }
         public static List<int>                 ScriptContentHashes  { get; set; }
         public static ITemplateService          TemplateService { get; set; }
@@ -25,7 +23,7 @@ namespace TeamMentor.CoreLib
         {
             ScriptContentHashes = new List<int>();
             TemplateService  = (ITemplateService) typeof (Razor).prop("TemplateService");
-            AvailableScripts = HttpContextFactory.Server.MapPath(TBot_Scripts_Folder)
+            AvailableScripts = HttpContextFactory.Server.MapPath(TBOT_SCRIPTS_FOLDER)
                                                  .files(true, "*.cshtml")
                                                  .ToDictionary((file) => file.fileName_WithoutExtension());
         }
@@ -37,7 +35,7 @@ namespace TeamMentor.CoreLib
 
         public Stream GetHtml(string content, bool htmlEncode = true)
         {
-            var tbotMainHtmlFile = HttpContextFactory.Server.MapPath(TBot_Main_HTML_Page);
+            var tbotMainHtmlFile = HttpContextFactory.Server.MapPath(TBOT_MAIN_HTML_PAGE);
             var tbotMainHtml = (tbotMainHtmlFile.fileExists())
                                     ? tbotMainHtmlFile.fileContents()
                                     : "[TBot] could not find file: {0}".format(tbotMainHtmlFile);            
@@ -82,11 +80,9 @@ namespace TeamMentor.CoreLib
 
         public Stream List()
         {                        
-            var filesHtml = "Here are the commands I found:<ul>";
-            foreach (var items in AvailableScripts)
-            {                
-                filesHtml += "<li><a href='/rest/tbot/ask/{0}'>{0}</a> - {1}</li>".format(items.Key, items.Value.fileContents().hash());                    
-            }
+            var filesHtml = AvailableScripts.Aggregate("Here are the commands I found:<ul>", 
+                                (current, items) => current + "<li><a href='/rest/tbot/ask/{0}'>{0}</a> - {1}</li>"
+                                                                .format(items.Key, items.Value.fileContents().hash()));
             filesHtml += "</ul>";
             return GetHtml(filesHtml, false);            
         }                

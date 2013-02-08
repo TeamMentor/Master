@@ -24,7 +24,7 @@ namespace TeamMentor.CoreLib
                 if (adminUser.notNull())
                 {
                     if (adminUser.PasswordHash.notValid())
-                        adminUser.PasswordHash = adminUser.createPasswordHash(defaultAdminUser_Pwd);;
+                        adminUser.PasswordHash = adminUser.createPasswordHash(defaultAdminUser_Pwd);
                     adminUser.Stats.ExpirationDate = default(DateTime);                    
                     return adminUser.UserID;
                 }				

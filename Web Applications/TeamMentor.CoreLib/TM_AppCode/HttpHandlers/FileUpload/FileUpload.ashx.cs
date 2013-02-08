@@ -10,7 +10,12 @@ namespace TeamMentor.CoreLib
 {
     public class FileUpload : IHttpHandler
     {        
-        public static List<Guid> UploadTokens = new List<Guid>();
+        public static List<Guid> UploadTokens { get; set; }
+
+        static FileUpload()
+        {
+            UploadTokens = new List<Guid>();
+        }
 
         public void ProcessRequest(HttpContext context)
         {
@@ -24,9 +29,9 @@ namespace TeamMentor.CoreLib
 
 
             if (context.Request["qqfile"].inValid())
-                return;            
+                return;
 
-            var message = "...";
+            string message;
             var result = true;
 
             //calculate target folder
@@ -59,16 +64,16 @@ namespace TeamMentor.CoreLib
         public bool saveFile(HttpContext context, string targetFile)
         {
             var request = context.Request;
-            byte[] buffer = new byte[request.ContentLength];
-            using (BinaryReader br = new BinaryReader(request.InputStream))
-                br.Read(buffer, 0, buffer.Length);
+            var buffer = new byte[request.ContentLength];
+            using (var binaryReader = new BinaryReader(request.InputStream))
+                binaryReader.Read(buffer, 0, buffer.Length);
 
 
-            FileStream fs = new FileStream(targetFile, FileMode.Create,
+            var fileStream = new FileStream(targetFile, FileMode.Create,
                 FileAccess.ReadWrite);
-            BinaryWriter bw = new BinaryWriter(fs);
-            bw.Write(buffer);
-            bw.Close();
+            var binaryWriter = new BinaryWriter(fileStream);
+            binaryWriter.Write(buffer);
+            binaryWriter.Close();
             return true;
         }
         public bool IsReusable
