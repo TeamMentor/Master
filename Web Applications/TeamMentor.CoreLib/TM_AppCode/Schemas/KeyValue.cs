@@ -1,5 +1,6 @@
-using System;
+/*using System;
 using System.Collections.Generic;
+using System.Linq;
 using O2.DotNetWrappers.ExtensionMethods;
 
 namespace TeamMentor.CoreLib
@@ -14,15 +15,9 @@ namespace TeamMentor.CoreLib
 	{
 		public static List<KeyValue<TKey, TValue>> ConvertDictionary<TKey, TValue>(this Dictionary<TKey, TValue> dictionary)
 		{
-
 			try
 			{
-				var keyValueList = new List<KeyValue<TKey, TValue>>();
-				foreach (TKey key in dictionary.Keys)
-				{
-					keyValueList.Add(new KeyValue<TKey, TValue> { Key = key, Value = dictionary[key] });
-				}
-				return keyValueList;
+			    return dictionary.Keys.Select(key => new KeyValue<TKey, TValue> {Key = key, Value = dictionary[key]}).ToList();
 			}
 			catch (Exception ex)
 			{
@@ -31,4 +26,4 @@ namespace TeamMentor.CoreLib
 			}
 		}
 	}
-}
+}*/

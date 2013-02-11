@@ -31,11 +31,6 @@ namespace TeamMentor.CoreLib
 		{
 			return TmWebServices.RBAC_IsAdmin();
 		}
-		public string			RBAC_SessionCookie()
-		{
-			return TmWebServices.RBAC_SessionCookie();
-		}
-
 		//Admin: User Management
 
 		/*public TM_User				users_New()

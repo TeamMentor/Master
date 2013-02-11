@@ -63,10 +63,10 @@ namespace TeamMentor.CoreLib
     //load and save functionality
     public partial class TMConfig
     {	
-        static string		_baseFolder;
-        static TMConfig		_current;
-        
-        public static string BaseFolder 
+        private static string		_baseFolder;
+        private static TMConfig		_current;
+
+        public static string    BaseFolder 
         { 
             get {
                     if (_baseFolder.isNull())
@@ -78,62 +78,53 @@ namespace TeamMentor.CoreLib
                     _baseFolder = value;
                 }
         }
-
-        public static String AppData_Folder 
+        public static String    AppData_Folder 
         {
             get { return BaseFolder.pathCombine("App_Data"); }
         }
-
-        public static string Location	
+        public static string    Location	
         {
             get
             {				
                 return BaseFolder.pathCombine("TMConfig.config");
             }
-        }				
-        
-        public static TMConfig Current 
+        }				        
+        public static TMConfig  Current 
         { 
             get
-            {					
-                //return TMConfig.Location.load<TMConfig>() ?? new TMConfig();                
+            {					                
                 if (_current.isNull())
                     loadConfig();
                 return _current;
             }
+            set { _current = value; }
         }
-
-        public static TMConfig loadConfig()
-        {
-            if (TMConfig.Location.fileExists())
-                _current = TMConfig.Location.load<TMConfig>();
+        public static TMConfig  loadConfig()
+        {            
+            if (Location.fileExists())
+                _current = Location.load<TMConfig>();
             else
             {
-                "In TMConfig.loadConfig, provided location was not found(returning default object): {0}".debug(TMConfig.Location);
+                "In TMConfig.loadConfig, provided location was not found(returning default object): {0}".debug(Location);
                 _current = new TMConfig();
             }
             return _current;
         }
 
-        private TMConfig ensureDefaultValues()
-        {
-            throw new NotImplementedException();
-        }
-        
         public TMConfig()
         {
             this.setDefaultValues();
         }				
-                                
+                                                
         public bool SaveTMConfig()
         {
-            return this.saveAs(TMConfig.Location);			
+            return this.saveAs(Location);			
         }
     }
 
     public static class TmConfig_ExtensionMethods
     {		
-        public static TMConfig setDefaultValues(this TMConfig tmConfig)
+        public static TMConfig  setDefaultValues(this TMConfig tmConfig)
         {									
             tmConfig.TMLibraryDataVirtualPath   = "..\\..";
             tmConfig.XmlLibrariesPath           = "TM_Library";
@@ -142,20 +133,20 @@ namespace TeamMentor.CoreLib
             tmConfig.DefaultAdminPassword       = "!!tmadmin";
             tmConfig.LibrariesUploadedFiles     = "LibrariesUploadedFiles";
 
-            tmConfig.WindowsAuthentication = new TMConfig.WindowsAuthentication_Config()
+            tmConfig.WindowsAuthentication = new TMConfig.WindowsAuthentication_Config
                 {
                     Enabled = false,
                     ReaderGroup = "TM_Reader",
                     EditorGroup = "TM_Editor",
                     AdminGroup = "TM_Admin"
                 };
-            tmConfig.TMDebugAndDev = new TMConfig.TMDebugAndDev_Config()
+            tmConfig.TMDebugAndDev = new TMConfig.TMDebugAndDev_Config
                 {
                     Enable302Redirects = true,
                     EnableGZipForWebServices = true
                 };
 
-            tmConfig.OnInstallation = new TMConfig.OnInstallation_Config()
+            tmConfig.OnInstallation = new TMConfig.OnInstallation_Config
                 {
                     ForceAdminPasswordReset = true,
                     DefaultLibraryToInstall_Name = "",
@@ -167,22 +158,19 @@ namespace TeamMentor.CoreLib
 
             return tmConfig;	
         }
-
-        public static string virtualPathMapping(this TMConfig tmConfig)
+        public static string    virtualPathMapping(this TMConfig tmConfig)
         {
             if (tmConfig.TMLibraryDataVirtualPath.valid())
                 return tmConfig.TMLibraryDataVirtualPath;
             return TMConsts.VIRTUAL_PATH_MAPPING;
         }
-
-        public static string xmlDatabasePath(this TMConfig tmConfig)
+        public static string    xmlDatabasePath(this TMConfig tmConfig)
         {
             if (tmConfig.UseAppDataFolder)
                 return TMConfig.AppData_Folder.pathCombine(TMConsts.XML_DATABASE_VIRTUAL_PATH);
             return tmConfig.rootDataFolder().pathCombine(TMConsts.XML_DATABASE_VIRTUAL_PATH_LEGACY).fullPath();
         }
-
-        public static string rootDataFolder(this TMConfig tmConfig)
+        public static string    rootDataFolder(this TMConfig tmConfig)
         {									
             //set xmlDatabasePath based on virtualPathMapping			
             var virtualPathMapping = tmConfig.virtualPathMapping();			

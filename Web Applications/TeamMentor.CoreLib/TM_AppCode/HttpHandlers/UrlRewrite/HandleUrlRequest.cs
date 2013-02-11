@@ -7,16 +7,20 @@ using System.Security;
 
 namespace TeamMentor.CoreLib
 {
-	public class HandleUrlRequest
-	{
-		public HttpContextBase context = HttpContextFactory.Current;
-		public HttpRequestBase request = HttpContextFactory.Request;
+    public class HandleUrlRequest
+    {
+        public HttpContextBase context = HttpContextFactory.Current;
+        public HttpRequestBase request = HttpContextFactory.Request;
         public TM_WebServices tmWebServices;        
         
         public void routeRequestUrl_for404()
         {
-			var fixedPath = request.Url.AbsolutePath.replace("/html_pages/Gui/", "/article/");   //deal with the cases where there is an relative link inside the html_pages/Gui viewer page
-            handleUrlRewrite(fixedPath);
+            if (request.Url != null)
+            {
+                var fixedPath = request.Url.AbsolutePath.replace("/html_pages/Gui/", "/article/");
+                    //deal with the cases where there is an relative link inside the html_pages/Gui viewer page
+                handleUrlRewrite(fixedPath);
+            }
         }
         public void routeRequestUrl()
         {
@@ -28,10 +32,13 @@ namespace TeamMentor.CoreLib
         {			            
             if (TMConfig.Current.SSL_RedirectHttpToHttps && !context.Request.IsLocal && !context.Request.IsSecureConnection)
             {
-				string redirectUrl = request.Url.ToString().Replace("http://", "https://");
-				"Redirecting current request to https: {0}".info(context.Request.Url);
-                context.Response.Redirect(redirectUrl);
-                return true;
+                if (request.Url != null)
+                {
+                    var redirectUrl = request.Url.ToString().Replace("http://", "https://");
+                    "Redirecting current request to https: {0}".info(context.Request.Url);
+                    context.Response.Redirect(redirectUrl);
+                    return true;
+                }
             }
             return false;
         }
@@ -40,9 +47,9 @@ namespace TeamMentor.CoreLib
         {
             try
             {
-                if (shouldSkipCurrentRequest())
-                    return;
-				var absolutePath = uri.notNull() ? uri.AbsolutePath : request.Url.AbsolutePath;
+                if (shouldSkipCurrentRequest() || request.Url == null)
+                    return;                
+                var absolutePath = uri.notNull() ? uri.AbsolutePath : request.Url.AbsolutePath;
                 
                 //if (absolutePath.starts("/html_pages/Gui/")) //deal with the cases where there is an relative link inside the html_pages/Gui viewer page
                 //    absolutePath = absolutePath.replace("/html_pages/Gui/", "/article/");   
@@ -69,10 +76,12 @@ namespace TeamMentor.CoreLib
                 if (action.valid() && handleRequest(action, data))    //if we did process it , end the request here
                     endResponse();                    
             }                        
-		}
+        }
 
         public bool shouldSkipCurrentRequest()
         {
+            if (request.Url == null)
+                return false;
             var path = context.Request.PhysicalPath;
             var extension = path.extension();
             switch (extension)
@@ -88,15 +97,15 @@ namespace TeamMentor.CoreLib
                 //default:
                 //    return false;
             }
-			var absolutePath = request.Url.AbsolutePath;
+            var absolutePath = request.Url.AbsolutePath;
             if (absolutePath.lower().contains("/images/"))
                 return true;
             return false;
         }
 
         //All mappings are here
-		public bool handleRequest(string action , string data)
-		{
+        public bool handleRequest(string action , string data)
+        {
             try
             {
                 tmWebServices = new TM_WebServices(true);       // enable webservices access (and security checks with CSRF disabled)
@@ -125,7 +134,7 @@ namespace TeamMentor.CoreLib
                         return handleAction_Xsl(data, "Notepad_Edit.xslt");                        
                     case "viewer":
                     case "article":
-						return handle_ArticleViewRequest(data);                                     
+                        return handle_ArticleViewRequest(data);                                     
                     case "edit":
                     case "editor":
                         return transfer_ArticleEditor(data);                    
@@ -158,27 +167,27 @@ namespace TeamMentor.CoreLib
                         return redirectTo_DebugPage();
                     case "library":
                         return redirectTo_SetLibrary(data);					
-					case "library_download":
-					case "download_library":
-						return redirectTo_DownloadLibrary(data);
+                    case "library_download":
+                    case "download_library":
+                        return redirectTo_DownloadLibrary(data);
                     case "sso":
                         return handleAction_SSO();                                                            
                 }
-				
-				tmWebServices.tmAuthentication.mapUserRoles(false);			 // enable  CSRF protection
-				switch (action.lower())
-				{
-					case "external":
-						return showVirtualArticleExternal(data);
-					case "virtualarticles":
-						return showVirtualArticles();
-					case "addvirtualarticle":
-						return addVirtualArticleMapping(data);
-					case "removevirtualarticle":
-						return removeVirtualArticleMapping(data);
-					default:
-						return false;  
-				}
+                
+                tmWebServices.tmAuthentication.mapUserRoles(false);			 // enable  CSRF protection
+                switch (action.lower())
+                {
+                    case "external":
+                        return showVirtualArticleExternal(data);
+                    case "virtualarticles":
+                        return showVirtualArticles();
+                    case "addvirtualarticle":
+                        return addVirtualArticleMapping(data);
+                    case "removevirtualarticle":
+                        return removeVirtualArticleMapping(data);
+                    default:
+                        return false;  
+                }
             }                
             catch (Exception ex)
             {
@@ -192,7 +201,7 @@ namespace TeamMentor.CoreLib
                 }
             }                                    
             return false;			
-		}
+        }
 
         public bool reload_Config()
         {
@@ -200,140 +209,140 @@ namespace TeamMentor.CoreLib
             return redirectTo_HomePage();
         }
 
-		//Virtual Articles
-		public bool showVirtualArticles()
-		{
-			var virtualArticles = tmWebServices.VirtualArticle_GetCurrentMappings();
-			var xmlContent = virtualArticles.serialize(false);
-			context.Response.ContentType = "text/xml";
-			context.Response.Write(xmlContent);
-			return true;
-		}
-		public bool addVirtualArticleMapping(string data)
-		{
-			tmWebServices.VirtualArticle_GetCurrentMappings();  // will trigger an authorization check if needed
-			try
-			{
-				Action<VirtualArticleAction> outputVirtualArticleActionAsXml = 
-						(virtualArticleAction)=> {
-													context.Response.ContentType = "text/xml";
-													var xml = virtualArticleAction.serialize(false);
-													context.Response.Write(xml);
-												};
-				var mappings = data.split(",");
-				if (mappings.size() == 2)				
-				{					
-					var guid1 = mappings[0].guid();   //will throw exception if guid not valid
-					if (guid1 != Guid.Empty)
-					{
-						if (mappings[1].isGuid())		  // VIRTUAL ID
-						{
-							var guid2 = mappings[1].guid();
-							if (guid2 != Guid.Empty)
-							{
-								var virtualArticleAction = tmWebServices.VirtualArticle_Add_Mapping_VirtualId(guid1, guid2);
-								outputVirtualArticleActionAsXml(virtualArticleAction);
-								return true;
-							}
-						}
-						else
-						{
-							var redirectUrl = "http://{0}/article/{1}".format(mappings[1], guid1);
-							var virtualArticleAction = tmWebServices.VirtualArticle_Add_Mapping_Redirect(guid1, redirectUrl);
-							outputVirtualArticleActionAsXml(virtualArticleAction);
-						}
-					}
-				}
-				else if (mappings.size() == 3)
-				{
-					var guid1 = mappings[0].guid();
-					if (mappings[2].isGuid())				// EXTERNAL ARTICLE
-					{
-						var tmServer = mappings[1].uri();
-						var guid2 = mappings[2].guid();
-						if (guid1 != Guid.Empty && guid2 != Guid.Empty && tmServer.notNull())
-						{
-							var virtualArticleAction = tmWebServices.VirtualArticle_Add_Mapping_ExternalArticle(guid1, tmServer.str(), guid2);
-							outputVirtualArticleActionAsXml(virtualArticleAction);
-							return true;
-						}
-					}
-					else								 // EXTERNAL SERVICE
-					{
-						var service = mappings[1];
-						var serviceData = mappings[2];
-						var virtualArticleAction = tmWebServices.VirtualArticle_Add_Mapping_ExternalService(guid1, service, serviceData);
-						outputVirtualArticleActionAsXml(virtualArticleAction);						
-						return true;
-					}					
-				}
-			}
-			catch (Exception ex)
-			{
-				ex.log();
-			}			
-			return true;
-		}
-		public bool removeVirtualArticleMapping(string data)
-		{
-			if (data.isGuid())
-			{
-				if (tmWebServices.VirtualArticle_Remove_Mapping(data.guid()))
-				{
-					context.Response.Write("Mapping removed");
-					return true;
-				}
-			}
-			context.Response.Write("Provided mapping data could not be parsed");
-			return true;
-		}
-		public bool showVirtualArticleExternal(string data)
-		{
-			var mappings = data.split(",");
-			{
-				if (mappings.size() == 2)
-				{
-					var service = mappings[0];
-					var serviceData = mappings[1];
-					var article = tmWebServices.VirtualArticle_CreateArticle_from_ExternalServiceData(service, serviceData);
-					if (article.isNull())
-						context.Response.Write("There was a problem fetching the requested data");
-					else 
-					{
-						context.Response.ContentType = "text/html";						
-						var htmlTemplateFile = @"\Html_Pages\Gui\Pages\article_Html.html";
-						var htmlTemplate = context.Server.MapPath(htmlTemplateFile).fileContents();
+        //Virtual Articles
+        public bool showVirtualArticles()
+        {
+            var virtualArticles = tmWebServices.VirtualArticle_GetCurrentMappings();
+            var xmlContent = virtualArticles.serialize(false);
+            context.Response.ContentType = "text/xml";
+            context.Response.Write(xmlContent);
+            return true;
+        }
+        public bool addVirtualArticleMapping(string data)
+        {
+            tmWebServices.VirtualArticle_GetCurrentMappings();  // will trigger an authorization check if needed
+            try
+            {
+                Action<VirtualArticleAction> outputVirtualArticleActionAsXml = 
+                        (virtualArticleAction)=> {
+                                                    context.Response.ContentType = "text/xml";
+                                                    var xml = virtualArticleAction.serialize(false);
+                                                    context.Response.Write(xml);
+                                                };
+                var mappings = data.split(",");
+                if (mappings.size() == 2)				
+                {					
+                    var guid1 = mappings[0].guid();   //will throw exception if guid not valid
+                    if (guid1 != Guid.Empty)
+                    {
+                        if (mappings[1].isGuid())		  // VIRTUAL ID
+                        {
+                            var guid2 = mappings[1].guid();
+                            if (guid2 != Guid.Empty)
+                            {
+                                var virtualArticleAction = tmWebServices.VirtualArticle_Add_Mapping_VirtualId(guid1, guid2);
+                                outputVirtualArticleActionAsXml(virtualArticleAction);
+                                return true;
+                            }
+                        }
+                        else
+                        {
+                            var redirectUrl = "http://{0}/article/{1}".format(mappings[1], guid1);
+                            var virtualArticleAction = tmWebServices.VirtualArticle_Add_Mapping_Redirect(guid1, redirectUrl);
+                            outputVirtualArticleActionAsXml(virtualArticleAction);
+                        }
+                    }
+                }
+                else if (mappings.size() == 3)
+                {
+                    var guid1 = mappings[0].guid();
+                    if (mappings[2].isGuid())				// EXTERNAL ARTICLE
+                    {
+                        var tmServer = mappings[1].uri();
+                        var guid2 = mappings[2].guid();
+                        if (guid1 != Guid.Empty && guid2 != Guid.Empty && tmServer.notNull())
+                        {
+                            var virtualArticleAction = tmWebServices.VirtualArticle_Add_Mapping_ExternalArticle(guid1, tmServer.str(), guid2);
+                            outputVirtualArticleActionAsXml(virtualArticleAction);
+                            return true;
+                        }
+                    }
+                    else								 // EXTERNAL SERVICE
+                    {
+                        var service = mappings[1];
+                        var serviceData = mappings[2];
+                        var virtualArticleAction = tmWebServices.VirtualArticle_Add_Mapping_ExternalService(guid1, service, serviceData);
+                        outputVirtualArticleActionAsXml(virtualArticleAction);						
+                        return true;
+                    }					
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.log();
+            }			
+            return true;
+        }
+        public bool removeVirtualArticleMapping(string data)
+        {
+            if (data.isGuid())
+            {
+                if (tmWebServices.VirtualArticle_Remove_Mapping(data.guid()))
+                {
+                    context.Response.Write("Mapping removed");
+                    return true;
+                }
+            }
+            context.Response.Write("Provided mapping data could not be parsed");
+            return true;
+        }
+        public bool showVirtualArticleExternal(string data)
+        {
+            var mappings = data.split(",");
+            {
+                if (mappings.size() == 2)
+                {
+                    var service = mappings[0];
+                    var serviceData = mappings[1];
+                    var article = tmWebServices.VirtualArticle_CreateArticle_from_ExternalServiceData(service, serviceData);
+                    if (article.isNull())
+                        context.Response.Write("There was a problem fetching the requested data");
+                    else 
+                    {
+                        context.Response.ContentType = "text/html";						
+                        var htmlTemplateFile = @"\Html_Pages\Gui\Pages\article_Html.html";
+                        var htmlTemplate = context.Server.MapPath(htmlTemplateFile).fileContents();
 
-						var htmlContent = htmlTemplate.replace("#ARTICLE_TITLE", article.Metadata.Title)
-													  .replace("#ARTICLE_HTML", article.Content.Data.Value);
-						context.Response.Write(htmlContent);           
-					}					
-				}
-			}
-			return true;
-		}
+                        var htmlContent = htmlTemplate.replace("#ARTICLE_TITLE", article.Metadata.Title)
+                                                      .replace("#ARTICLE_HTML", article.Content.Data.Value);
+                        context.Response.Write(htmlContent);           
+                    }					
+                }
+            }
+            return true;
+        }
         //handlers
-		private bool handleAction_JsonP(string data)
-		{
-			var guid = tmWebServices.getGuidForMapping(data);
-			if (guid != Guid.Empty)
-			{
-				var article = tmWebServices.GetGuidanceItemById(guid);
+        private bool handleAction_JsonP(string data)
+        {
+            var guid = tmWebServices.getGuidForMapping(data);
+            if (guid != Guid.Empty)
+            {
+                var article = tmWebServices.GetGuidanceItemById(guid);
 
-				var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
-				var serializedData = serializer.Serialize(article);
-				var callbackRaw = context.Request["callback"];
-				if (callbackRaw.valid())
-				{
-					var callbackFunction = Encoder.JavaScriptEncode(callbackRaw, false);
-					context.Response.Write("{0}({1})".format(callbackFunction, serializedData));
-				}
-				else
-					context.Response.Write(serializedData);
-				return true;
-			}
-			return false;
-		}
+                var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+                var serializedData = serializer.Serialize(article);
+                var callbackRaw = context.Request["callback"];
+                if (callbackRaw.valid())
+                {
+                    var callbackFunction = Encoder.JavaScriptEncode(callbackRaw, false);
+                    context.Response.Write("{0}({1})".format(callbackFunction, serializedData));
+                }
+                else
+                    context.Response.Write(serializedData);
+                return true;
+            }
+            return false;
+        }
         private bool handleAction_Image(string data)
         {            
             
@@ -361,8 +370,8 @@ namespace TeamMentor.CoreLib
                     if (xmlContent.valid())
                     {
                         //var xslTransform = new System.Xml.Xsl.XslTransform();
-						var xslTransform = new System.Xml.Xsl.XslCompiledTransform();
-						
+                        var xslTransform = new System.Xml.Xsl.XslCompiledTransform();
+                        
                         xslTransform.Load(xstlFile);
 
                         var xmlReader = new System.Xml.XmlTextReader(new StringReader(xmlContent));
@@ -385,8 +394,7 @@ namespace TeamMentor.CoreLib
 
         private bool handleAction_Create(string data)
         {
-            var article = new TeamMentor_Article();
-            article.Metadata.Title = data.urlDecode();
+            var article = new TeamMentor_Article {Metadata = {Title = data.urlDecode()}};
             var xmlContent = article.serialize(false)
                                     .add_Xslt("Article_Edit.xslt"); 
             context.Response.ContentType = "application/xml";
@@ -441,23 +449,23 @@ namespace TeamMentor.CoreLib
                 transfer_ArticleViewer();
             return true;
         }
-		private bool handle_ArticleViewRequest(string data)
-		{			
-			if ( data.isGuid())
-			{				
-				var guid = data.guid();
-				if (tmWebServices.GetGuidanceItemById(guid).isNull())
-				{
-					var redirectTarget = tmWebServices.VirtualArticle_Get_GuidRedirect(guid);
-					if (redirectTarget.valid())
-					{
-						context.Response.Redirect(redirectTarget);
-						return false;
-					}
-				}
-			}
-			return transfer_ArticleViewer();       
-		}		
+        private bool handle_ArticleViewRequest(string data)
+        {			
+            if ( data.isGuid())
+            {				
+                var guid = data.guid();
+                if (tmWebServices.GetGuidanceItemById(guid).isNull())
+                {
+                    var redirectTarget = tmWebServices.VirtualArticle_Get_GuidRedirect(guid);
+                    if (redirectTarget.valid())
+                    {
+                        context.Response.Redirect(redirectTarget);
+                        return false;
+                    }
+                }
+            }
+            return transfer_ArticleViewer();       
+        }		
         private bool handleAction_Content(string data)
         { 
             var guid = tmWebServices.getGuidForMapping(data);
@@ -495,13 +503,13 @@ namespace TeamMentor.CoreLib
             context.Server.Transfer("/html_pages/Gui/TeamMentor.html");            
             return false;
         }
-		public bool transfer_ArticleViewer()
-		{			
-			context.Server.Transfer("/html_pages/GuidanceItemViewer/GuidanceItemViewer.html");						
+        public bool transfer_ArticleViewer()
+        {			
+            context.Server.Transfer("/html_pages/GuidanceItemViewer/GuidanceItemViewer.html");						
             return false;    
-		}        
+        }        
         public bool transfer_ArticleEditor(string data)
-		{         
+        {         
             var guid = tmWebServices.getGuidForMapping(data);
             if (guid == Guid.Empty)
                 return transfer_ArticleViewer();
@@ -510,22 +518,24 @@ namespace TeamMentor.CoreLib
 
             context.Server.Transfer("/html_pages/GuidanceItemEditor/GuidanceItemEditor.html");
             return false;    
-		}
-        public bool transfer_Login()	
-		{
-			var loginReferer = context.Request.QueryString["LoginReferer"];
-			var redirectTarget =  (loginReferer.notNull() && loginReferer.StartsWith("/"))
-										? loginReferer
-										: context.Request.Url.AbsolutePath;
-			if (redirectTarget.lower() == "/login")
-				redirectTarget = "/";
-			context.Response.Redirect("/Html_Pages/Gui/Pages/login.html?LoginReferer=" + redirectTarget);
-	        //context.Response.ContentType = "text/html";    
-			//context.Server.Transfer("/Html_Pages/Gui/Pages/login.html");
+        }
+        public bool transfer_Login()
+        {
+            if (context.Request.Url == null)
+                return false;
+            var loginReferer = context.Request.QueryString["LoginReferer"];
+            var redirectTarget =  (loginReferer.notNull() && loginReferer.StartsWith("/"))
+                                        ? loginReferer
+                                        : context.Request.Url.AbsolutePath;
+            if (redirectTarget.lower() == "/login")
+                redirectTarget = "/";
+            context.Response.Redirect("/Html_Pages/Gui/Pages/login.html?LoginReferer=" + redirectTarget);
+            //context.Response.ContentType = "text/html";    
+            //context.Server.Transfer("/Html_Pages/Gui/Pages/login.html");
             //context.Session["LoginReferer"] = context.Request.Url.AbsolutePath;
             return true; 
-		}
-		
+        }
+        
 
 
         public bool handle_LoginOK()
@@ -539,34 +549,34 @@ namespace TeamMentor.CoreLib
         }
 
         public bool redirectTo_HomePage()
-		{	            
-		    context.Response.Redirect("/");                        	
+        {	            
+            context.Response.Redirect("/");                        	
             return false; 
-		}
+        }
 
         public bool redirectTo_Login()
-		{	            
-		    context.Response.Redirect("/Login");                        	
+        {	            
+            context.Response.Redirect("/Login");                        	
             return false; 
-		}
+        }
         
         public bool redirectTo_Logout()
-		{	
+        {	
             tmWebServices.Logout();
-		    context.Response.Redirect("/");                        	
+            context.Response.Redirect("/");                        	
             return false; 
-		}
+        }
 
-		public bool redirectTo_DownloadLibrary(string data)
-		{
-		    // UserGroup.Admin.setThreadPrincipalWithRoles();      // to test for this (for now allow normal users to download libraries)
-		    // var currentUserRoles = TmWebServices.RBAC_CurrentPrincipal_Roles();
+        public bool redirectTo_DownloadLibrary(string data)
+        {
+            // UserGroup.Admin.setThreadPrincipalWithRoles();      // to test for this (for now allow normal users to download libraries)
+            // var currentUserRoles = TmWebServices.RBAC_CurrentPrincipal_Roles();
 
-			//var uploadToken = new TM_WebServices().GetUploadToken();
-		    var uploadToken = "";
-			context.Response.Redirect("/Aspx_Pages/Library_Download.ashx?library={0}&uploadToken={1}".format(data, uploadToken));
-			return false;
-		}
+            //var uploadToken = new TM_WebServices().GetUploadToken();
+            var uploadToken = "";
+            context.Response.Redirect("/Aspx_Pages/Library_Download.ashx?library={0}&uploadToken={1}".format(data, uploadToken));
+            return false;
+        }
 
         public bool redirectTo_Wsdl()
         {
@@ -575,31 +585,31 @@ namespace TeamMentor.CoreLib
         }
 
         public bool redirectTo_ControlPanel(bool includeExtraTag)
-		{			
+        {			
             var adminUrl = "/html_pages/ControlPanel/controlpanel.html" + ((includeExtraTag) ? "?extra" : "");
-			context.Response.Redirect(adminUrl);
+            context.Response.Redirect(adminUrl);
             return false;    
-		}
+        }
                        
         public bool redirectTo_Article(string article)
-		{			
-			context.Response.Redirect("/article/{0}".format(article));
+        {			
+            context.Response.Redirect("/article/{0}".format(article));
             return false;    
-		}        
+        }        
 
         public bool redirectTo_DebugPage()
-		{			
-			context.Response.Redirect("/Aspx_Pages/Debug.aspx");
+        {			
+            context.Response.Redirect("/Aspx_Pages/Debug.aspx");
             return false;    
-		}   
+        }   
 
         public bool redirectTo_SetLibrary(string libraryIdOrName)
-		{			
-			context.Response.Redirect("/aspx_pages/SetLibrary.aspx?Library={0}".format(libraryIdOrName));
+        {			
+            context.Response.Redirect("/aspx_pages/SetLibrary.aspx?Library={0}".format(libraryIdOrName));
             return false;    
-		}           
+        }           
         
-	}
+    }
 
     public static class HelperExtensionMethods
     {

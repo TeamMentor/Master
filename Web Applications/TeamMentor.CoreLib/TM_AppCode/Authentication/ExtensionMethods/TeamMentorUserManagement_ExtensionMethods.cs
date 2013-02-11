@@ -55,7 +55,6 @@ namespace TeamMentor.CoreLib
         {
             return (UserGroup)tmUser.GroupID;
         }
-
         public static List<UserRole> userRoles(this TMUser tmUser)
         {
             return UserRolesMappings.Mappings[tmUser.userGroup()];
@@ -64,8 +63,7 @@ namespace TeamMentor.CoreLib
 		{
 			return (from role in userRoles
 					select role.str()).toList();
-		}
-		
+		}		
     }
 
   /*  public static class TeamMentorUserManagement_AuthenticationManagement
@@ -112,35 +110,29 @@ namespace TeamMentor.CoreLib
         {
             return userRoles.ToArray().toStringArray();
         }
-
         public static string[] toStringArray(this UserRole[] userRoles)
         {
             return (from userRole in userRoles
                     select userRole.ToString()).ToArray();
-        }
-		
+        }		
 		public static void demand(this UserRole userRole)
         {
 			userRole.str().demand();             
-        }
-		
+        }		
 		public static void demand(this string userRole)
         {
              new PrincipalPermission(null, userRole).Demand();
-        }
-		
+        }		
 		public static void demand(this UserGroup userGroup)
 		{
 			foreach(var userRole in userGroup.userRoles())
 				userRole.demand();
 			
-		}
-		
+		}		
 		public static bool currentUserHasRole(this UserRole userRole)
 		{
 			return userRole.str().currentUserHasRole();
-		}
-		
+		}		
 		public static bool currentUserHasRole(this string userRole)
 		{
 			try

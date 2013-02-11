@@ -78,8 +78,11 @@ namespace TeamMentor.CoreLib
             }
             catch (Exception)
             {
-                var absolutePath = HttpContextFactory.Request.Url.AbsolutePath;
-                HttpContextFactory.Response.Redirect("/Login?LoginReferer=" + absolutePath);		        
+                if (HttpContextFactory.Request.Url != null)
+                {
+                    var absolutePath = HttpContextFactory.Request.Url.AbsolutePath;
+                    HttpContextFactory.Response.Redirect("/Login?LoginReferer=" + absolutePath);
+                }
             }							
 
             
@@ -139,5 +142,37 @@ namespace TeamMentor.CoreLib
             UserRole.ReadArticlesTitles.demand();
             base.OnEntry(args);
         }
+    }
+
+    //asserts  : there is a possible race condition here if the user is able to make more requests into the same thread
+
+    [Serializable]
+    public sealed class Assert_Editor : OnMethodBoundaryAspect
+    {				
+        public object lockThread;
+        public override void OnEntry(MethodExecutionArgs args)
+        {
+            UserGroup.Editor.setPrivileges();            
+            base.OnEntry(args);            
+        }
+        public override void  OnExit(MethodExecutionArgs args)
+        {
+            UserGroup.Anonymous.setPrivileges();
+ 	         base.OnExit(args);
+        }        
+    }
+    [Serializable]
+    public sealed class Assert_Admin : OnMethodBoundaryAspect
+    {				
+        public override void OnEntry(MethodExecutionArgs args)
+        {
+            UserGroup.Admin.setPrivileges();
+            base.OnEntry(args);
+        }
+        public override void  OnExit(MethodExecutionArgs args)
+        {
+            UserGroup.Anonymous.setPrivileges();
+ 	         base.OnExit(args);
+        }        
     }
 }

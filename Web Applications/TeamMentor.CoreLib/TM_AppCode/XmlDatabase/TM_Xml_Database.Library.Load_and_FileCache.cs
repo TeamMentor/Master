@@ -37,17 +37,16 @@ namespace TeamMentor.CoreLib
 
 	public static class TM_Xml_Database_ExtensionMethods_Load_and_FileCache
 	{
-		public static Thread Save_GuidanceItemsCache;
+		public static Thread thread_Save_GuidanceItemsCache;
 
-		public static TM_Xml_Database setGuidanceExplorerObjects(this TM_Xml_Database tmDatabase)
+		public static TM_Xml_Database                    setGuidanceExplorerObjects     (this TM_Xml_Database tmDatabase)
 		{			
 			//"in setGuidanceExplorerObjects".info();
 			var pathXmlLibraries = TM_Xml_Database.Current.Path_XmlLibraries;
 			TM_Xml_Database.Current.GuidanceExplorers_XmlFormat = pathXmlLibraries.getGuidanceExplorerObjects();				
 			return tmDatabase;
-		}
-		
-		public static guidanceExplorer getGuidanceExplorerObject(this string xmlFile)
+		}		
+		public static guidanceExplorer                   getGuidanceExplorerObject      (this string xmlFile)
 		{			
 			try
 			{
@@ -60,52 +59,49 @@ namespace TeamMentor.CoreLib
 				"[getGuidanceExplorerObject]: {0}".error(ex.Message);
 			}
 			return null;
-		}
-		
-		public static Dictionary<Guid, guidanceExplorer> addGuidanceExplorerObject(this Dictionary<Guid, guidanceExplorer> guidanceExplorers, string xmlFile)
+		}		
+		public static Dictionary<Guid, guidanceExplorer> addGuidanceExplorerObject      (this Dictionary<Guid, guidanceExplorer> guidanceExplorers, string xmlFile)
 		{
 			var guidanceExplorer = xmlFile.getGuidanceExplorerObject();
 			return guidanceExplorers.addGuidanceExplorerObject(guidanceExplorer);			
-		}
-		
-		public static Dictionary<Guid, guidanceExplorer> addGuidanceExplorerObject(this Dictionary<Guid, guidanceExplorer> guidanceExplorers, guidanceExplorer _guidanceExplorer)
+		}		
+		public static Dictionary<Guid, guidanceExplorer> addGuidanceExplorerObject      (this Dictionary<Guid, guidanceExplorer> guidanceExplorers, guidanceExplorer newGuidanceExplorer)
 		{
-			if (_guidanceExplorer.notNull())
+			if (newGuidanceExplorer.notNull())
 			{			
 				try
 				{
-					var libraryGuid = _guidanceExplorer.library.name.guid();
+					var libraryGuid = newGuidanceExplorer.library.name.guid();
 					
 					//check if the name is already there
 					foreach(guidanceExplorer guidanceExplorer in guidanceExplorers.Values)
 					{						
-						if (guidanceExplorer.library.caption == _guidanceExplorer.library.caption)
+						if (guidanceExplorer.library.caption == newGuidanceExplorer.library.caption)
 						{
-							"[addGuidanceExplorerObject]: Skipping load due to duplicate Library name '{0}' was in both library {1} and {2}".error(guidanceExplorer.library.caption, guidanceExplorer.library.name,  _guidanceExplorer.library.name);
+							"[addGuidanceExplorerObject]: Skipping load due to duplicate Library name '{0}' was in both library {1} and {2}".error(guidanceExplorer.library.caption, guidanceExplorer.library.name,  newGuidanceExplorer.library.name);
 							return guidanceExplorers;
 						}
 					}
 					//check if the guid is already there
 					if (guidanceExplorers.hasKey(libraryGuid))
 					{
-						"[addGuidanceExplorerObject]: for {0} , duplicate LibraryID detected, assiging a new Library Id: {0}".error(_guidanceExplorer.library.caption, libraryGuid);
+						"[addGuidanceExplorerObject]: for {0} , duplicate LibraryID detected, assiging a new Library Id: {0}".error(newGuidanceExplorer.library.caption, libraryGuid);
 						libraryGuid = Guid.NewGuid();
-						_guidanceExplorer.library.name = libraryGuid.str();
-						"[addGuidanceExplorerObject]: new ID for library {0} is now {1}".error(_guidanceExplorer.library.caption, libraryGuid);
-						_guidanceExplorer.xmlDB_Save_GuidanceExplorer(TM_Xml_Database.Current, false);
+						newGuidanceExplorer.library.name = libraryGuid.str();
+						"[addGuidanceExplorerObject]: new ID for library {0} is now {1}".error(newGuidanceExplorer.library.caption, libraryGuid);
+						newGuidanceExplorer.xmlDB_Save_GuidanceExplorer(TM_Xml_Database.Current, false);
 					}					
-					guidanceExplorers.Add(libraryGuid, _guidanceExplorer);
+					guidanceExplorers.Add(libraryGuid, newGuidanceExplorer);
 
 				}
 				catch//(Exception ex)
 				{
-					"[addGuidanceExplorerObject] error importing guidanceExplorer: {0}".error(_guidanceExplorer);
+					"[addGuidanceExplorerObject] error importing guidanceExplorer: {0}".error(newGuidanceExplorer);
 				}
 			}
 			return guidanceExplorers;
-		}
-		
-		public static Dictionary<Guid, guidanceExplorer> getGuidanceExplorerObjects(this string pathXmlLibraries)
+		}		
+		public static Dictionary<Guid, guidanceExplorer> getGuidanceExplorerObjects     (this string pathXmlLibraries)
 		{			
 			//"in getGuidanceExplorerObjects".info();
 			var guidanceExplorers = new Dictionary<Guid,guidanceExplorer>();
@@ -125,15 +121,13 @@ namespace TeamMentor.CoreLib
 				}
 			}
 			return guidanceExplorers;			
-		}
-		
-		public static string getCacheLocation(this string pathXmlLibraries) //, TM_Library library)
+		}		
+		public static string                             getCacheLocation               (this string pathXmlLibraries) //, TM_Library library)
 		{
 			
 			return pathXmlLibraries.pathCombine("Cache_guidanceItems.cacheXml");//.format(library.Caption));
-		}
-		
-		public static string loadGuidanceItemsFromCache(this string pathXmlLibraries)
+		}		
+		public static string                             loadGuidanceItemsFromCache     (this string pathXmlLibraries)
 		{
 			//"Loading items from cache".info();
 			var chacheFile = pathXmlLibraries.getCacheLocation();			
@@ -156,9 +150,8 @@ namespace TeamMentor.CoreLib
                 }
 			}
 			return pathXmlLibraries;
-		}
-		
-		public static string saveGuidanceItemsToCache(this string pathXmlLibraries)
+		}		
+		public static string                             saveGuidanceItemsToCache       (this string pathXmlLibraries)
 		{
 			var cacheFile = pathXmlLibraries.getCacheLocation();			
 			var o2Timer = new O2Timer("saveGuidanceItemsToCache").start();
@@ -168,43 +161,44 @@ namespace TeamMentor.CoreLib
 			}
 			o2Timer.stop();
 			return pathXmlLibraries;
-		}			
-		
-		public static TM_Xml_Database clear_GuidanceItemsCache(this TM_Xml_Database tmDatabase)
+		}					
+		public static TM_Xml_Database                    clear_GuidanceItemsCache       (this TM_Xml_Database tmDatabase)
 		{
 			"[TM_Xml_Database] clear_GuidanceItemsCache".info();
 			TM_Xml_Database.Current.Cached_GuidanceItems.Clear();            
 			return tmDatabase;
 		}		
-
-		public static TM_Xml_Database queue_Save_GuidanceItemsCache(this TM_Xml_Database tmDatabase)
+		public static TM_Xml_Database                    queue_Save_GuidanceItemsCache  (this TM_Xml_Database tmDatabase)
 		{
-			// do this on a separate thread so that we don't hang the current request
-			var enabled = true;
-			if (enabled && Save_GuidanceItemsCache.isNull())
-				Save_GuidanceItemsCache = O2Thread.mtaThread(
-					()=>{
-							tmDatabase.sleep(1000,false);
-							tmDatabase.save_GuidanceItemsCache();
-							Save_GuidanceItemsCache = null;
-						});
-			return tmDatabase;
+            if (tmDatabase.UsingFileStorage)
+            { 
+			    // do this on a separate thread so that we don't hang the current request			
+                if (thread_Save_GuidanceItemsCache.isNull())
+                { 
+				    thread_Save_GuidanceItemsCache = O2Thread.mtaThread(
+					    ()=>{
+							    tmDatabase.sleep(1000,false);
+							    tmDatabase.save_GuidanceItemsCache();
+							    thread_Save_GuidanceItemsCache = null;
+						    });
+            
+                }			
+            }
+            return tmDatabase;
 		}
-		public static TM_Xml_Database save_GuidanceItemsCache(this TM_Xml_Database tmDatabase)
+		public static TM_Xml_Database                    save_GuidanceItemsCache        (this TM_Xml_Database tmDatabase)
 		{
 			"[TM_Xml_Database] save_GuidanceItemsCache".info();
 			TM_Xml_Database.Current.Path_XmlLibraries.saveGuidanceItemsToCache();
 			return tmDatabase;
-		}
-		
-		public static TM_Xml_Database load_GuidanceItemsCache(this TM_Xml_Database tmDatabase)
+		}		
+		public static TM_Xml_Database                    load_GuidanceItemsCache        (this TM_Xml_Database tmDatabase)
 		{
 			"[TM_Xml_Database] load_GuidanceItemsCache".info();
 			TM_Xml_Database.Current.Path_XmlLibraries.loadGuidanceItemsFromCache();
 			return tmDatabase;
-		}
-		
-		public static TM_Xml_Database reCreate_GuidanceItemsCache(this TM_Xml_Database tmDatabase)
+		}		
+		public static TM_Xml_Database                    reCreate_GuidanceItemsCache    (this TM_Xml_Database tmDatabase)
 		{
 			"[TM_Xml_Database] reCreate_GuidanceItemsCache".info();
 			var cacheFile = TM_Xml_Database.Current.Path_XmlLibraries.getCacheLocation();			
@@ -213,9 +207,8 @@ namespace TeamMentor.CoreLib
 			tmDatabase.clear_GuidanceItemsCache(); 	
 			return tmDatabase.xmlDB_Load_GuidanceItems();
 			//return tmDatabase.load_GuidanceItemsCache();			
-		}
-		
-		public static TeamMentor_Article update_Cache_GuidanceItems(this TeamMentor_Article guidanceItem,  TM_Xml_Database tmDatabase)
+		}		
+		public static TeamMentor_Article                 update_Cache_GuidanceItems     (this TeamMentor_Article guidanceItem,  TM_Xml_Database tmDatabase)
         {
             guidanceItem.htmlEncode(); // ensure MetaData is encoded
 
@@ -228,14 +221,12 @@ namespace TeamMentor.CoreLib
 			tmDatabase.queue_Save_GuidanceItemsCache();
 			
 			return guidanceItem;
-		}	
-	
-		public static Dictionary<Guid, string> guidanceItemsFileMappings(this TM_Xml_Database tmDatabase)
+		}		
+		public static Dictionary<Guid, string>           guidanceItemsFileMappings      (this TM_Xml_Database tmDatabase)
 		{
 			return TM_Xml_Database.Current.GuidanceItems_FileMappings;
-		}
-		
-		public static string removeGuidanceItemFileMapping(this TM_Xml_Database tmDatabase, Guid guidanceItemId)
+		}		
+		public static string                             removeGuidanceItemFileMapping  (this TM_Xml_Database tmDatabase, Guid guidanceItemId)
 		{
 			if (TM_Xml_Database.Current.GuidanceItems_FileMappings.hasKey(guidanceItemId))
 			{
@@ -244,14 +235,12 @@ namespace TeamMentor.CoreLib
 				return xmlPath;
 			}
 			return null;
-		}
-		
-		public static string getXmlFilePathForGuidanceId(this TM_Xml_Database tmDatabase, Guid guidanceItemId)
+		}		
+		public static string                             getXmlFilePathForGuidanceId    (this TM_Xml_Database tmDatabase, Guid guidanceItemId)
 		{
 			return tmDatabase.getXmlFilePathForGuidanceId(guidanceItemId, Guid.Empty);
-		}
-		
-		public static string getXmlFilePathForGuidanceId(this TM_Xml_Database tmDatabase, Guid guidanceItemId, Guid libraryId)	
+		}		
+		public static string                             getXmlFilePathForGuidanceId    (this TM_Xml_Database tmDatabase, Guid guidanceItemId, Guid libraryId)	
 		{		
 			//first see if we already have this mapping
 			if (TM_Xml_Database.Current.GuidanceItems_FileMappings.hasKey(guidanceItemId))

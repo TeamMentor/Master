@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using O2.DotNetWrappers.DotNet;
 using O2.DotNetWrappers.ExtensionMethods;
 using urn.microsoft.guidanceexplorer;
 
@@ -7,10 +8,13 @@ namespace TeamMentor.CoreLib
 {	
     public partial class TM_Xml_Database 
     {		    
-        public static TM_Xml_Database Current               { get; set; }
+        public static TM_Xml_Database Current                   { get; set; }
+        public static bool            SkipServerOnlineCheck     { get; set;  }
+
         //config
         public bool			UsingFileStorage				{ get; set; }   
         public bool         ServerOnline                    { get; set; }
+        
         //users
         public TM_UserData  UserData                        { get; set; }        
 
@@ -26,28 +30,23 @@ namespace TeamMentor.CoreLib
         public List<Folder_V3> 	Folders  				{  get { 	return this.tmFolders(); } } 		
         public List<View_V3> 	Views  					{  get { 	return this.tmViews(); } } 
         public List<TeamMentor_Article> GuidanceItems	{  get {	return this.tmGuidanceItems(); } }
-
-        /*static TM_Xml_Database()
-        {
-            Current = new TM_Xml_Database();        
-        }*/
-
+      
         [Log("TM_Xml_Database Setup")]        
-        public TM_Xml_Database() : this(false)          // defaults to creating a TM_Instance in memory    
+        public TM_Xml_Database          () : this(false)          // defaults to creating a TM_Instance in memory    
         {
         }
-        public TM_Xml_Database(bool useFileStorage)
+        public TM_Xml_Database          (bool useFileStorage)
         {
             UsingFileStorage = useFileStorage;
             Current = this;
             Setup();
-        }        
+        }
 
-        public TM_Xml_Database Setup()
+        [Admin] public TM_Xml_Database  Setup()
         {
+            O2Thread.mtaThread(CheckIfServerIsOnline);           
             try
             {
-                ServerOnline = new O2.Kernel.CodeUtils.O2Kernel_Web().online();     // only check this once
                 Cached_GuidanceItems = new Dictionary<Guid, TeamMentor_Article>();
                 GuidanceItems_FileMappings = new Dictionary<Guid, string>();
                 GuidanceExplorers_XmlFormat = new Dictionary<Guid, guidanceExplorer>();
@@ -69,8 +68,13 @@ namespace TeamMentor.CoreLib
             }
             return this;
         } 
-
-        public void     SetPathsAndloadData()
+        [Admin] public void             CheckIfServerIsOnline()
+        {
+            if (SkipServerOnlineCheck)
+                return;
+            ServerOnline = new O2.Kernel.CodeUtils.O2Kernel_Web().online();     // only check this once
+        }
+        [Admin] public void             SetPathsAndloadData()
         {            
             try
             {
@@ -91,13 +95,11 @@ namespace TeamMentor.CoreLib
                 "[TM_Xml_Database] static .ctor: {0} \n\n".error(ex.Message, ex.StackTrace);
             }
         }        
-        public string   ReloadData()
+        [Admin] public string           ReloadData()
         {
             return ReloadData(null);
-        }				
-    
-        [Admin]
-        public string   ReloadData(string newLibraryPath)
+        }				    
+        [Admin] public string           ReloadData(string newLibraryPath)
         {	
             "In Reload data".info();
             if (newLibraryPath.notNull())
@@ -127,7 +129,7 @@ namespace TeamMentor.CoreLib
             this.createDefaultAdminUser();	// make sure this user exists		
             */
             return "In the library '{0}' there are {1} library(ies), {2} views and {3} GuidanceItems".
-                        format(TM_Xml_Database.Current.Path_XmlLibraries.directoryName(), Libraries.size(), Views.size(), GuidanceItems.size());
+                        format(Current.Path_XmlLibraries.directoryName(), Libraries.size(), Views.size(), GuidanceItems.size());
         }
         
     }		

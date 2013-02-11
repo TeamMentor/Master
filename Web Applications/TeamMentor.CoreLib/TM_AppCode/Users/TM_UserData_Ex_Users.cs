@@ -14,9 +14,7 @@ namespace TeamMentor.CoreLib
         {  
             var tmConfig = TMConfig.Current;
             lock (tmConfig)
-            {
-                UserGroup.Admin.setThreadPrincipalWithRoles();
-
+            {                
                 var defaultAdminUser_Name = tmConfig.DefaultAdminUserName;
                 var defaultAdminUser_Pwd = tmConfig.DefaultAdminPassword;                
                 var adminUser = tmDb.tmUser(defaultAdminUser_Name);
@@ -29,11 +27,11 @@ namespace TeamMentor.CoreLib
                     return adminUser.UserID;
                 }				
 
-                var userId = tmDb.newUser(defaultAdminUser_Name, defaultAdminUser_Pwd, 1);
-                UserGroup.Anonymous.setThreadPrincipalWithRoles();
+                var userId = tmDb.newUser(defaultAdminUser_Name, defaultAdminUser_Pwd, 1);                
                 return userId;
             }            
         }        
+
         public static TMUser        tmUser                      (this string name)
         {
             return TM_Xml_Database.Current.tmUser(name);

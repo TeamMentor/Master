@@ -27,7 +27,7 @@ namespace TeamMentor.CoreLib
 		}
 		public static VirtualArticleAction add_Mapping_VirtualId(this TM_Xml_Database tmXmlDatabase, Guid id, Guid virtualId)
 		{
-			var virtualAction = new VirtualArticleAction()
+			var virtualAction = new VirtualArticleAction
 										{
 											Id = id,
 											Action = "Virtual_Id",
@@ -39,7 +39,7 @@ namespace TeamMentor.CoreLib
 		}
 		public static VirtualArticleAction add_Mapping_Redirect(this TM_Xml_Database tmXmlDatabase, Guid id, Uri redirectUri)
 		{
-			var virtualAction = new VirtualArticleAction()
+			var virtualAction = new VirtualArticleAction
 										{
 											Id = id,
 											Action = "Redirect",
@@ -51,7 +51,7 @@ namespace TeamMentor.CoreLib
 		}
 		public static VirtualArticleAction add_Mapping_ExternalArticle(this TM_Xml_Database tmXmlDatabase, Guid id, string tmServer, Guid externalId)
 		{
-			var virtualAction = new VirtualArticleAction()
+			var virtualAction = new VirtualArticleAction
 									{
 										Id = id,
 										Action = "ExternalArticle",
@@ -64,7 +64,7 @@ namespace TeamMentor.CoreLib
 		}
 		public static VirtualArticleAction add_Mapping_ExternalService(this TM_Xml_Database tmXmlDatabase, Guid id, string service, string data)
 		{
-			var virtualAction = new VirtualArticleAction()
+			var virtualAction = new VirtualArticleAction
 									{
 										Id = id,
 										Action = "ExternalService",
@@ -176,9 +176,8 @@ namespace TeamMentor.CoreLib
 			{
 				Func<string, string, TeamMentor_Article> createArticleFromUrl = 
 					(title, url) =>	{
-										var externalArticle = new TeamMentor_Article();
-										externalArticle.Metadata.Title = title;
-										System.Net.WebClient webClient = new System.Net.WebClient();
+										var externalArticle = new TeamMentor_Article {Metadata = {Title = title}};
+					               	    var webClient = new System.Net.WebClient();
 										webClient.Headers.Add("User-Agent", "TeamMentor");
 										var htmlContent = webClient.DownloadString(url);
 										var sanitizedHtml = Microsoft.Security.Application.Sanitizer.GetSafeHtmlFragment(htmlContent);										
@@ -204,9 +203,8 @@ namespace TeamMentor.CoreLib
 					case "msdn":
 						{
 
-							var externalArticle = new TeamMentor_Article();
-							externalArticle.Metadata.Title = "From MSDN: " + service;
-							var msdnUrl = "http://msdn.microsoft.com/en-us/library/{0}.aspx".format(serviceData);
+							var externalArticle = new TeamMentor_Article {Metadata = {Title = "From MSDN: " + service}};
+						    var msdnUrl = "http://msdn.microsoft.com/en-us/library/{0}.aspx".format(serviceData);
 						
 							externalArticle.Content.Data.Value = @"<IFrame src='{0}'/ id='msdnContent' style='width:99%;height:500px' frameborder='0'></IFrame>
 																	<script>$('#msdnContent').height(document.height-180)</script>".format(msdnUrl);

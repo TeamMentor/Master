@@ -42,20 +42,20 @@ namespace TeamMentor.CoreLib
 	{
 		private const int EOF = -1;
 
-		private StreamReader sr;
-		private StreamWriter sw;
-		private int theA;
-		private int theB;
-		private int theLookahead = EOF;
+		private StreamReader _sr;
+		private StreamWriter _sw;
+		private int _theA;
+		private int _theB;
+		private int _theLookahead = EOF;
 
 		public string Minify(string src)
 		{
-			MemoryStream srcStream = new MemoryStream(Encoding.Unicode.GetBytes(src));
-			MemoryStream tgStream = new MemoryStream(8092);
+			var srcStream = new MemoryStream(Encoding.Unicode.GetBytes(src));
+			var tgStream = new MemoryStream(8092);
 
-			using (sr = new StreamReader(srcStream, Encoding.Unicode))
+			using (_sr = new StreamReader(srcStream, Encoding.Unicode))
 			{
-				using (sw = new StreamWriter(tgStream, Encoding.Unicode))
+				using (_sw = new StreamWriter(tgStream, Encoding.Unicode))
 				{
 					jsmin();
 				}
@@ -72,27 +72,20 @@ namespace TeamMentor.CoreLib
 
 		private void jsmin()
 		{
-			theA = '\n';
+			_theA = '\n';
 			action(3);
-			while (theA != EOF)
+			while (_theA != EOF)
 			{
-				switch (theA)
+				switch (_theA)
 				{
 					case ' ':
+				        {
+				            action(isAlphanum(_theB) ? 1 : 2);
+				            break;
+				        }
+				    case '\n':
 						{
-							if (isAlphanum(theB))
-							{
-								action(1);
-							}
-							else
-							{
-								action(2);
-							}
-							break;
-						}
-					case '\n':
-						{
-							switch (theB)
+							switch (_theB)
 							{
 								case '{':
 								case '[':
@@ -109,27 +102,20 @@ namespace TeamMentor.CoreLib
 										break;
 									}
 								default:
-									{
-										if (isAlphanum(theB))
-										{
-											action(1);
-										}
-										else
-										{
-											action(2);
-										}
-										break;
-									}
+							        {
+							            action(isAlphanum(_theB) ? 1 : 2);
+							            break;
+							        }
 							}
 							break;
 						}
 					default:
 						{
-							switch (theB)
+							switch (_theB)
 							{
 								case ' ':
 									{
-										if (isAlphanum(theA))
+										if (isAlphanum(_theA))
 										{
 											action(1);
 											break;
@@ -139,7 +125,7 @@ namespace TeamMentor.CoreLib
 									}
 								case '\n':
 									{
-										switch (theA)
+										switch (_theA)
 										{
 											case '}':
 											case ']':
@@ -153,17 +139,10 @@ namespace TeamMentor.CoreLib
 													break;
 												}
 											default:
-												{
-													if (isAlphanum(theA))
-													{
-														action(1);
-													}
-													else
-													{
-														action(3);
-													}
-													break;
-												}
+										        {
+										            action(isAlphanum(_theA) ? 1 : 3);
+										            break;
+										        }
 										}
 										break;
 									}
@@ -191,63 +170,63 @@ namespace TeamMentor.CoreLib
 		{
 			if (d <= 1)
 			{
-				put(theA);
+				put(_theA);
 			}
 			if (d <= 2)
 			{
-				theA = theB;
-				if (theA == '\'' || theA == '"')
+				_theA = _theB;
+				if (_theA == '\'' || _theA == '"')
 				{
 					for (;;)
 					{
-						put(theA);
-						theA = get();
-						if (theA == theB)
+						put(_theA);
+						_theA = get();
+						if (_theA == _theB)
 						{
 							break;
 						}
-						if (theA <= '\n')
+						if (_theA <= '\n')
 						{
-							throw new Exception(string.Format("Error: JSMIN unterminated string literal: {0}\n", theA));
+							throw new Exception(string.Format("Error: JSMIN unterminated string literal: {0}\n", _theA));
 						}
-						if (theA == '\\')
+						if (_theA == '\\')
 						{
-							put(theA);
-							theA = get();
+							put(_theA);
+							_theA = get();
 						}
 					}
 				}
 			}
 			if (d <= 3)
 			{
-				theB = next();
-				if (theB == '/' && (theA == '(' || theA == ',' || theA == '=' ||
-				                    theA == '[' || theA == '!' || theA == ':' ||
-				                    theA == '&' || theA == '|' || theA == '?' ||
-				                    theA == '{' || theA == '}' || theA == ';' ||
-				                    theA == '\n'))
+				_theB = next();
+				if (_theB == '/' && (_theA == '(' || _theA == ',' || _theA == '=' ||
+				                    _theA == '[' || _theA == '!' || _theA == ':' ||
+				                    _theA == '&' || _theA == '|' || _theA == '?' ||
+				                    _theA == '{' || _theA == '}' || _theA == ';' ||
+				                    _theA == '\n'))
 				{
-					put(theA);
-					put(theB);
+					put(_theA);
+					put(_theB);
 					for (;;)
 					{
-						theA = get();
-						if (theA == '/')
+						_theA = get();
+						if (_theA == '/')
 						{
 							break;
 						}
-						else if (theA == '\\')
+						if (_theA == '\\')
 						{
-							put(theA);
-							theA = get();
+							put(_theA);
+							_theA = get();
 						}
-						else if (theA <= '\n')
+						else if (_theA <= '\n')
 						{
-							throw new Exception(string.Format("Error: JSMIN unterminated Regular Expression literal : {0}.\n", theA));
+							throw new Exception(string.Format("Error: JSMIN unterminated Regular Expression literal : {0}.\n", _theA));
 						}
-						put(theA);
+						put(_theA);
 					}
-					theB = next();
+					_theB = next();
 				}
 			}
 		}
@@ -311,8 +290,8 @@ namespace TeamMentor.CoreLib
 
 		private int peek()
 		{
-			theLookahead = get();
-			return theLookahead;
+			_theLookahead = get();
+			return _theLookahead;
 		}
 
 		/* get -- return the next character from stdin. Watch out for lookahead. If
@@ -322,11 +301,11 @@ namespace TeamMentor.CoreLib
 
 		private int get()
 		{
-			int c = theLookahead;
-			theLookahead = EOF;
+			int c = _theLookahead;
+			_theLookahead = EOF;
 			if (c == EOF)
 			{
-				c = sr.Read();
+				c = _sr.Read();
 			}
 			if (c >= ' ' || c == '\n' || c == EOF)
 			{
@@ -341,7 +320,7 @@ namespace TeamMentor.CoreLib
 
 		private void put(int c)
 		{
-			sw.Write((char) c);
+			_sw.Write((char) c);
 		}
 
 		/* isAlphanum -- return true if the character is a letter, digit, underscore,

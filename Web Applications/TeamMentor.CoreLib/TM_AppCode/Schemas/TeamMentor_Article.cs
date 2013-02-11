@@ -2,14 +2,9 @@
 using System.Xml;
 using System.Xml.Serialization;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using O2.DotNetWrappers.ExtensionMethods;
-
-using urn.microsoft.guidanceexplorer.guidanceItem;
 using System.Web.Script.Serialization;
 using Microsoft.Security.Application;
-//O2File:C:\_WorkDir\O2\O2 Install\_TeamMentor\TeamMentor-Dinis-Dev-Fork\Web Applications\TeamMentor.CoreLib\TM_AppCode\Schemas\GuidanceItem.cs
 
 namespace TeamMentor.CoreLib
 {
@@ -96,8 +91,8 @@ namespace TeamMentor.CoreLib
 
         public TeamMentor_Article_Content()
         { 
-            this.Data = new XmlDocument().CreateCDataSection("");
-            this.DataType = "Html";
+            Data = new XmlDocument().CreateCDataSection("");
+            DataType = "Html";
         }
 
 	}
@@ -129,39 +124,41 @@ namespace TeamMentor.CoreLib
 		public TeamMentor_Article transform()
 		{
 			// fix the issue with older SI Library Articles
-			if (this.phase == null)
+			if (phase == null)
 			{
-				this.phase		= this.Rule_Type;
-				this.Rule_Type  = this.Type;
+			    phase	    = Rule_Type;
+				Rule_Type   = Type;
 			}
-            var teamMentor_Article = new TeamMentor_Article();
-            teamMentor_Article.Metadata = new TeamMentor_Article_Metadata()
-				                                {
-					                                Id			 = this.id.guid(),
-					                                Id_History   = this.id_Original,
-                                                    Library_Id   = this.libraryId.guid(),
-					                                Title		 = this.title,
-					                                Category	 = this.Category,
-					                                Phase		 = this.phase,
-					                                Technology   = this.Technology,
-					                                Type		 = this.Rule_Type,					                                
-					                                Author		 = this.Author,					
-					                                Priority	 = this.Priority,
-					                                Status		 = this.Status,
-					                                Source		 = this.Source,
+            var teamMentor_Article = new TeamMentor_Article
+                {
+                    Metadata = new TeamMentor_Article_Metadata
+                        {
+                            Id          = id.guid(),
+                            Id_History  = id_Original,
+                            Library_Id  = libraryId.guid(),
+                            Title       = title,
+                            Category    = Category,
+                            Phase       = phase,
+                            Technology  = Technology,
+                            Type        = Rule_Type,
+                            Author      = Author,
+                            Priority    = Priority,
+                            Status      = Status,
+                            Source      = Source,
 
-				                                    DirectLink      = "",
-                                                    Tag             = "",
-                                                    Security_Demand = "",
-				                                };
+                            DirectLink = "",
+                            Tag = "",
+                            Security_Demand = "",
+                        },
+                    Content = new TeamMentor_Article_Content
+                        {
+                            Sanitized = true,
+                            DataType = "Html",
+                            Data = {Value = content}
+                        }
+                };
 
-            teamMentor_Article.Content = new TeamMentor_Article_Content()
-                                                {
-                                                    Sanitized    = true,
-                                                    DataType     = "Html"                                                                                                                
-                                                };
-            teamMentor_Article.Content.Data.Value = this.content;
-            teamMentor_Article.setHashes();
+		    teamMentor_Article.setHashes();
             teamMentor_Article.htmlEncode();            //encode contents
             return teamMentor_Article;
 		}
@@ -177,7 +174,7 @@ namespace TeamMentor.CoreLib
         }
 
 
-        public static guidanceItem transform_into_guidanceItem(this TeamMentor_Article article)
+/*        public static guidanceItem transform_into_guidanceItem(this TeamMentor_Article article)
         {
             if (article.isNull())
                 return null;
@@ -194,7 +191,7 @@ namespace TeamMentor.CoreLib
 
                         content     =   article.Content.Data.Value
                     };
-        }
+        }*/
 
         public static TeamMentor_Article teamMentor_Article(this string pathToXmlFile)
         { 

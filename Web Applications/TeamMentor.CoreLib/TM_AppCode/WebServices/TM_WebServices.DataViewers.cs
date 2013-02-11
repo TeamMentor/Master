@@ -18,9 +18,11 @@ namespace TeamMentor.CoreLib
         
         [WebMethod(EnableSession = true)]   public JsTree JsTreeWithFoldersAndGuidanceItems()
         {			
+            // ReSharper disable JoinDeclarationAndInitializer
             var jsTree = new JsTree();            
-            Func<Guid, List<Folder_V3>, JsTreeNode, List<Guid>> mapFolders = null;
+            Func<Guid, List<Folder_V3>, JsTreeNode, List<Guid>> mapFolders = null;            
             Func<Guid, Guid, List<Guid>, JsTreeNode, List<Guid>> mapViews;
+            // ReSharper restore JoinDeclarationAndInitializer
 
             //precalculate for performance reasons
             var allViews = new Dictionary<Guid, View_V3>();
@@ -57,7 +59,9 @@ namespace TeamMentor.CoreLib
                         folderNode.state = "closed";
                         folderNode.data.icon = "/Images/FolderIcon.png";
                         // ReSharper disable AccessToModifiedClosure
+                        // ReSharper disable PossibleNullReferenceException
                         subFolderViewsId.AddRange(mapFolders(libraryId, folder.subFolders, folderNode));
+                        // ReSharper restore PossibleNullReferenceException
                         // ReSharper restore AccessToModifiedClosure
                         var viewIds = (from view in folder.views
                                        select view.viewId).toList();

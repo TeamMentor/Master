@@ -1,5 +1,4 @@
-﻿using System.Security.Permissions;
-using O2.DotNetWrappers.ExtensionMethods;
+﻿using O2.DotNetWrappers.ExtensionMethods;
 using TeamMentor.CoreLib;
 
 namespace FluentSharp

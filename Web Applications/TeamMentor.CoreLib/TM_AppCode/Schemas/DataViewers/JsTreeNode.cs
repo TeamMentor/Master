@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Script.Serialization;
 
 namespace TeamMentor.CoreLib
@@ -34,7 +35,7 @@ namespace TeamMentor.CoreLib
 		
 		public JsTreeNode(string title, string id) : this(title)
 		{
-			this.attr.id = id;
+			attr.id = id;
 		}
 		
 		public override string ToString()
@@ -76,13 +77,10 @@ namespace TeamMentor.CoreLib
 		
 		public static List<JsTreeNode> add_Nodes(this JsTree jsTree, params string[] titles)
 		{
-			var newJsTreeNodes = new List<JsTreeNode>();
-			foreach(var title in titles)
-				newJsTreeNodes.Add(jsTree.add_Node(title));
-			return newJsTreeNodes;
+		    return titles.Select(title => jsTree.add_Node(title)).ToList();
 		}
-		
-		public static JsTreeNode add_Node(this JsTreeNode jsTreeNode, string title)
+
+	    public static JsTreeNode add_Node(this JsTreeNode jsTreeNode, string title)
 		{
 			return jsTreeNode.add_Node(title, "");
 		}
@@ -96,10 +94,7 @@ namespace TeamMentor.CoreLib
 		
 		public static List<JsTreeNode> add_Nodes(this JsTreeNode jsTreeNode, params string[] titles)
 		{
-			var newJsTreeNodes = new List<JsTreeNode>();
-			foreach(var title in titles)
-				newJsTreeNodes.Add(jsTreeNode.add_Node(title));
-			return newJsTreeNodes;
+		    return titles.Select(title => jsTreeNode.add_Node(title)).ToList();
 		}
 	}
 }

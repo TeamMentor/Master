@@ -32,12 +32,12 @@ namespace TeamMentor.CoreLib
 		}
 		public ScriptCombiner()
 		{
-			ScriptCombiner.MappingsLocation = "../javascript/_mappings/{0}.txt";				
+			MappingsLocation = "../javascript/_mappings/{0}.txt";				
 		}
 	
 		public void ProcessRequest(HttpContext httpContext)
 		{				
-			this.context = HttpContextFactory.Current;		
+			context = HttpContextFactory.Current;		
 			var request = context.Request;        
 			var response = context.Response;		
 			response.Clear();
@@ -76,46 +76,46 @@ namespace TeamMentor.CoreLib
 				switch(request.QueryString["ct"])
 				{
 					case "css": 
-						this.contentType = "text/css";
+						contentType = "text/css";
 						minifyCode = false;
 						break;
 					default:
-						this.contentType = "application/x-javascript";
+						contentType = "application/x-javascript";
 						break;
 				}
 				// Decide if browser supports compressed response
-				bool isCompressed = this.CanGZip(context.Request);
+				bool isCompressed = CanGZip(context.Request);
 
-				using (MemoryStream memoryStream = new MemoryStream(8092))
+				using (var memoryStream = new MemoryStream(8092))
 				{
 					// Decide regular stream or gzip stream based on whether the response can be compressed or not
 					//using (Stream writer = isCompressed ?  (Stream)(new GZipStream(memoryStream, CompressionMode.Compress)) : memoryStream)
 					using (Stream writer = isCompressed ? (Stream)(new ICSharpCode.SharpZipLib.GZip.GZipOutputStream(memoryStream)) : memoryStream)
 					{
 						// Read the files into one big string
-						this.allScripts = new StringBuilder();
-						this.filesProcessed = GetScriptFileNames(setName);
-						foreach (string fileName in this.filesProcessed)
+						allScripts = new StringBuilder();
+						filesProcessed = GetScriptFileNames(setName);
+						foreach (string fileName in filesProcessed)
 						{
 							var fullPath = context.Server.MapPath(fileName.trim());
 
 							if (fullPath.fileExists())
 							{
-								this.allScripts.AppendLine("\n\n/********************************** ");
-								this.allScripts.AppendLine(" *****    " + fileName);
-								this.allScripts.AppendLine(" **********************************/\n\n");
-								this.allScripts.AppendLine(File.ReadAllText(fullPath));
+								allScripts.AppendLine("\n\n/********************************** ");
+								allScripts.AppendLine(" *****    " + fileName);
+								allScripts.AppendLine(" **********************************/\n\n");
+								allScripts.AppendLine(File.ReadAllText(fullPath));
 							}
 						}
 
-						var codeToSend = this.allScripts.ToString();
+						var codeToSend = allScripts.ToString();
 
 						if (minifyCode)
 						{
 							// Minify the combined script files and remove comments and white spaces
 							var minifier = new JavaScriptMinifier();
-							this.minifiedCode = minifier.Minify(codeToSend);
-							codeToSend = this.minifiedCode;
+							minifiedCode = minifier.Minify(codeToSend);
+							codeToSend = minifiedCode;
 						}
 
 						// Send minfied string to output stream
@@ -124,8 +124,8 @@ namespace TeamMentor.CoreLib
 					}				
 
 					// Generate the response
-					byte[] responseBytes = memoryStream.ToArray();
-					this.WriteBytes(responseBytes, isCompressed);
+					var responseBytes = memoryStream.ToArray();
+					WriteBytes(responseBytes, isCompressed);
 
 				}
 			}
@@ -143,7 +143,7 @@ namespace TeamMentor.CoreLib
 
 			response.AppendHeader("Content-Length", bytes.Length.str());
 		
-			response.ContentType = this.contentType;
+			response.ContentType = contentType;
 
 		    response.AppendHeader("Content-Encoding", isCompressed ? "gzip" : "utf-8");
 
@@ -172,7 +172,7 @@ namespace TeamMentor.CoreLib
 			var httpContext = HttpContextFactory.Current;	//HttpContext.Current
 		
 			var scripts = new System.Collections.Generic.List<string>();		
-			var resolvedFile = ScriptCombiner.MappingsLocation.format(setName);		
+			var resolvedFile = MappingsLocation.format(setName);		
 		
 			string setPath = httpContext.Server.MapPath(resolvedFile);		
 		

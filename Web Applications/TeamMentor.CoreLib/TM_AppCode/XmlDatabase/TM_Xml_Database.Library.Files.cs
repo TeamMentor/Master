@@ -1,5 +1,4 @@
 using System;
-using System.Security.Permissions;
 using O2.DotNetWrappers.ExtensionMethods;
 
 
@@ -36,9 +35,8 @@ namespace TeamMentor.CoreLib
                 var item = splitedFileKey[0].trim();
                 var fileName = splitedFileKey[1].trim();
                 if (item.isGuid())
-                    return tmDatabase.Get_Path_To_File(item.guid(), fileName);   
-                else
-                    return tmDatabase.Get_Path_To_File(item, fileName);
+                    return tmDatabase.Get_Path_To_File(item.guid(), fileName);                   
+                return tmDatabase.Get_Path_To_File(item, fileName);
             }
 
 

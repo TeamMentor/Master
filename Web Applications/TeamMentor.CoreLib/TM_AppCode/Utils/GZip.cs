@@ -21,7 +21,7 @@ namespace TeamMentor.CoreLib
 				return;
 			try
 			{
-				if (request.ContentType.lower().starts(new List<string>() {"text/xml", "application/json"}))
+				if (request.ContentType.lower().starts(new List<string> {"text/xml", "application/json"}))
 				{
 					string acceptEncoding = request.Headers["Accept-Encoding"];
 

@@ -15,6 +15,7 @@ namespace TeamMentor.CoreLib
 		
 		public static Library_V3 getFolderStructure_Library(this TM_WebServices tmWebServices, Guid libraryId, TM_GUI_Objects guiObjects)
 		{
+            // ReSharper disable AccessToModifiedClosure
 			//pre-create this mapping since the view retrieval was a massive performance bottle neck
 			var allViews = new Dictionary<Guid, View_V3>();
 			foreach(var view in tmWebServices.GetViews())
@@ -43,7 +44,8 @@ namespace TeamMentor.CoreLib
 								}
 								return views;
 							};
-
+            // ReSharper disable PossibleNullReferenceException
+            // ReSharper disable ImplicitlyCapturedClosure
 			mapFolderViews = 
 				(folder) => {		 			 
 								 var mappedViews = mapViews(folder.views.guids());
@@ -51,30 +53,27 @@ namespace TeamMentor.CoreLib
 								 folder.views.add(mappedViews);								 
 								 foreach(var subFolder in folder.subFolders)
 									mapFolderViews(subFolder);
-							};
-				
-			Action<List<Folder_V3>, List<Folder_V3>> mapFolders = (folders, parentFolder) =>
+							};                        
+			Action<List<Folder_V3>, List<Folder_V3>> mapFolders = (folders, parentFolder) =>            
 				{					
 					foreach(var folder in folders)
 					{ 					
 						parentFolder.add(folder); 						
 						mapFolderViews(folder);
 					}				
-				};
-			 
+				};            
 			Func<Guid,string, Library_V3> mapLibrary = 
-				(_libraryId, libraryName)=> {
-										var libraryV3 = new Library_V3() 
-													{
-														libraryId = _libraryId,
+				(library_Id, libraryName)=> {
+										var libraryV3 = new Library_V3
+										    {
+														libraryId = library_Id,
 														name = libraryName
 													};												
-										mapFolders(tmWebServices.GetFolders(_libraryId), libraryV3.subFolders); 
+										mapFolders(tmWebServices.GetFolders(library_Id), libraryV3.subFolders); 
 										libraryV3.views.add(mapViews(tmWebServices.GetViewsInLibraryRoot(libraryId).guids()));
-										libraryV3.guidanceItems = tmWebServices.getGuidanceItemsIds_NotInViews(_libraryId);
+										libraryV3.guidanceItems = tmWebServices.getGuidanceItemsIds_NotInViews(library_Id);
 										return libraryV3;
-									};
-					 
+									};			
 
 			Func<Guid,Library_V3> getLibrary_TreeStructure = 
 				(id)=>{			
@@ -87,6 +86,9 @@ namespace TeamMentor.CoreLib
 								return mapLibrary(id, tmLibrary.caption);					
 							};
 			return getLibrary_TreeStructure(libraryId);
+            // ReSharper restore PossibleNullReferenceException				            
+			// ReSharper restore ImplicitlyCapturedClosure		 
+            // ReSharper restore AccessToModifiedClosure
 		}
 		
 		public static List<Guid> getGuidanceItemsIds_NotInViews(this TM_WebServices tmWebServices, Guid libraryId)

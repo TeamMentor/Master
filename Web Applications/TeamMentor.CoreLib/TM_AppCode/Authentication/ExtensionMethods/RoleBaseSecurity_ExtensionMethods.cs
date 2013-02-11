@@ -18,6 +18,10 @@ namespace TeamMentor.CoreLib
             return newPrincipal;			
         }				
 		
+        public static IPrincipal setPrivileges(this UserGroup userGroup)
+        {
+            return userGroup.setThreadPrincipalWithRoles();
+        }
 		public static IPrincipal setThreadPrincipalWithRoles(this UserGroup userGroup)
 		{
 			return userGroup.userRoles().ToArray().toStringArray().setThreadPrincipalWithRoles();

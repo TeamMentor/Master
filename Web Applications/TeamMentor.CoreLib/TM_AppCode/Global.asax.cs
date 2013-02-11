@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Web;
 using O2.DotNetWrappers.ExtensionMethods;
-using O2.Kernel;
-using O2.Kernel.InterfacesBaseImpl;
 
 namespace TeamMentor.CoreLib
 {

@@ -1,10 +1,9 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using System.Security.Permissions; 
 using Microsoft.Security.Application;
 using O2.DotNetWrappers.ExtensionMethods;
-using urn.microsoft.guidanceexplorer.guidanceItem;
+//using urn.microsoft.guidanceexplorer.guidanceItem;
 
 namespace TeamMentor.CoreLib
 {	
@@ -128,8 +127,8 @@ namespace TeamMentor.CoreLib
                     {
                         if (TMConfig.Current.SanitizeHtmlContent && article.Content.Sanitized.isFalse())
                             return articleContent.sanitizeHtmlContent();
-                        else
-                            return articleContent.fixXmlDoubleEncodingIssue();                            
+                        
+                        return articleContent.fixXmlDoubleEncodingIssue();                            
                     }
                 case "safehtml":
                     {
@@ -166,12 +165,12 @@ namespace TeamMentor.CoreLib
             var libraries = new List<TM_Library>();
             try
             {
-                foreach(var _guidanceExplorer in tmDatabase.xmlDB_GuidanceExplorers())
-                    libraries.Add(new TM_Library()
-                                        {
-                                            Id = _guidanceExplorer.library.name.guid(), 
-                                            Caption = _guidanceExplorer.library.caption
-                                        });
+                libraries.AddRange(tmDatabase.xmlDB_GuidanceExplorers()
+                         .Select(guidanceExplorer => new TM_Library
+                                                            {
+                                                                Id = guidanceExplorer.library.name.guid(), 
+                                                                Caption = guidanceExplorer.library.caption
+                                                            }));
             }
             catch(Exception ex)
             {
@@ -214,11 +213,12 @@ namespace TeamMentor.CoreLib
             return (from library in libraries
                     select library.Caption).toList();
         }	
-        public static TM_Library new_TmLibrary(this TM_Xml_Database tmDatabase)
+
+        [EditArticles]  public static TM_Library new_TmLibrary(this TM_Xml_Database tmDatabase)
         {
             return tmDatabase.new_TmLibrary("temp_lib_{0}".format(6.randomLetters()));
         }		
-        public static TM_Library new_TmLibrary(this TM_Xml_Database tmDatabase, string libraryCaption )
+        [EditArticles]  public static TM_Library new_TmLibrary(this TM_Xml_Database tmDatabase, string libraryCaption )
         {
             var existingLibrary = tmDatabase.tmLibrary(libraryCaption);
             if (existingLibrary.notNull())
@@ -236,26 +236,26 @@ namespace TeamMentor.CoreLib
     public static class TM_Xml_Database_ExtensionMethods_Folder_V3
     {
         //gets all folders (recursive search)
-        public static List<Folder_V3> tmFolders(this TM_Xml_Database tmDatabase)
+        public static List<Folder_V3>   tmFolders(this TM_Xml_Database tmDatabase)
         {
             var tmFolders = new List<Folder_V3>();
             foreach(var tmLibrary in tmDatabase.tmLibraries())
                 tmFolders.add(tmDatabase.tmFolders_All(tmLibrary.Id));
             return tmFolders;
         }		
-        public static List<Folder_V3> tmFolders(this TM_Library tmLibrary, TM_Xml_Database tmDatabase )
+        public static List<Folder_V3>   tmFolders(this TM_Library tmLibrary, TM_Xml_Database tmDatabase )
         {
             return tmDatabase.tmFolders(tmLibrary);
         }		
-        public static List<Folder_V3> tmFolders(this TM_Xml_Database tmDatabase, TM_Library tmLibrary)
+        public static List<Folder_V3>   tmFolders(this TM_Xml_Database tmDatabase, TM_Library tmLibrary)
         {
             return tmDatabase.tmFolders(tmLibrary.Id);
         }		
-        public static List<Folder_V3> tmFolders(this TM_Xml_Database tmDatabase, Guid libraryId)
+        public static List<Folder_V3>   tmFolders(this TM_Xml_Database tmDatabase, Guid libraryId)
         {
             return tmDatabase.tmFolders(libraryId, tmDatabase.xmlDB_Folders(libraryId));
         }			
-        public static List<Folder_V3> tmFolders(this TM_Xml_Database tmDatabase, Guid libraryId, IList<urn.microsoft.guidanceexplorer.Folder> folders)
+        public static List<Folder_V3>   tmFolders(this TM_Xml_Database tmDatabase, Guid libraryId, IList<urn.microsoft.guidanceexplorer.Folder> folders)
         {
             var tmFolders = new List<Folder_V3>();
             if (libraryId == Guid.Empty || folders.isNull())
@@ -267,7 +267,7 @@ namespace TeamMentor.CoreLib
             }
             return tmFolders;									
         }		
-        public static Folder_V3 tmFolder(this urn.microsoft.guidanceexplorer.Folder folder, Guid libraryId, TM_Xml_Database tmDatabase)
+        public static Folder_V3         tmFolder(this urn.microsoft.guidanceexplorer.Folder folder, Guid libraryId, TM_Xml_Database tmDatabase)
         {
             if (folder.isNull())
                 return null;
@@ -281,10 +281,10 @@ namespace TeamMentor.CoreLib
                         subFolders = tmDatabase.tmFolders(libraryId, folder.folder1)						
                     };
             foreach(var view in folder.view)				
-                tmFolder.views.Add(new View_V3 () { viewId = view.id.guid()});	
+                tmFolder.views.Add(new View_V3  { viewId = view.id.guid()});	
             return tmFolder;
         }
-        public static List<Folder_V3> tmFolders_All(this TM_Xml_Database tmDatabase, Guid libraryId)
+        public static List<Folder_V3>   tmFolders_All(this TM_Xml_Database tmDatabase, Guid libraryId)
         {	
             var tmFolders = new List<Folder_V3>();
             Action<List<Folder_V3>> mapFolder = null;
@@ -299,31 +299,27 @@ namespace TeamMentor.CoreLib
             mapFolder(tmDatabase.tmFolders(libraryId));
             return tmFolders;
         }				
-        public static Folder_V3 tmFolder(this TM_Library tmLibrary, Guid folderId, TM_Xml_Database tmDatabase )
+        public static Folder_V3         tmFolder(this TM_Library tmLibrary, Guid folderId, TM_Xml_Database tmDatabase )
         {
             return tmDatabase.tmFolder(tmLibrary.Id, folderId);
         }		
-        public static Folder_V3 tmFolder(this TM_Xml_Database tmDatabase, Guid libraryId, Guid folderId)
+        public static Folder_V3         tmFolder(this TM_Xml_Database tmDatabase, Guid libraryId, Guid folderId)
         {
             return (from tmFolder in tmDatabase.tmFolders_All(libraryId)
                     where tmFolder.folderId == folderId
                     select tmFolder).first();
         }		
-        public static Folder_V3 tmFolder(this TM_Xml_Database tmDatabase, Guid libraryId, string name)
+        public static Folder_V3         tmFolder(this TM_Xml_Database tmDatabase, Guid libraryId, string name)
         {
             return (from tmFolder in tmDatabase.tmFolders_All(libraryId)
                     where tmFolder.name == name
                     select tmFolder).first();
         }		
-        public static Folder_V3 tmFolder(this TM_Xml_Database tmDatabase, Guid folderId)
+        public static Folder_V3         tmFolder(this TM_Xml_Database tmDatabase, Guid folderId)
         {
-            foreach(var tmLibrary in tmDatabase.tmLibraries())
-            {
-                var tmFolder = tmDatabase.tmFolder(tmLibrary.Id, folderId);
-                if (tmFolder.notNull())
-                    return tmFolder;
-            }
-            return null;
+            return tmDatabase.tmLibraries()
+                             .Select        (tmLibrary => tmDatabase.tmFolder(tmLibrary.Id, folderId))
+                             .FirstOrDefault(tmFolder  => tmFolder.notNull());
         }
     }
     
@@ -331,24 +327,24 @@ namespace TeamMentor.CoreLib
     
     public static class TM_Xml_Database_ExtensionMethods_TM_View
     {
-        public static List<View_V3> tmViews(this TM_Xml_Database tmDatabase)
+        public static List<View_V3>     tmViews(this TM_Xml_Database tmDatabase)
         {
             var tmViews = new List<View_V3>();
             foreach(var tmLibrary in tmDatabase.tmLibraries())
                 tmViews.add(tmDatabase.tmViews(tmLibrary));
             return tmViews;
         }		
-        public static List<View_V3> tmViews(this TM_Xml_Database tmDatabase, TM_Library tmLibrary)
+        public static List<View_V3>     tmViews(this TM_Xml_Database tmDatabase, TM_Library tmLibrary)
         {
             return tmDatabase.tmViews(tmLibrary.Id);
         }		
-        public static List<View_V3> tmViews(this TM_Xml_Database tmDatabase, Guid libraryId)
+        public static List<View_V3>     tmViews(this TM_Xml_Database tmDatabase, Guid libraryId)
         {
             var tmViews = tmDatabase.tmViews(libraryId, tmDatabase.xmlDB_Folders(libraryId));					
             tmViews.AddRange(tmDatabase.tmViews_InLibraryRoot(libraryId));
             return tmViews;			
         }
-        public static List<View_V3> tmViews_InLibraryRoot(this TM_Xml_Database tmDatabase, Guid libraryId)		
+        public static List<View_V3>     tmViews_InLibraryRoot(this TM_Xml_Database tmDatabase, Guid libraryId)		
         {
             var tmViews  = new List<View_V3>();
             var guidanceExplorer = tmDatabase.xmlDB_GuidanceExplorer(libraryId);
@@ -358,7 +354,7 @@ namespace TeamMentor.CoreLib
             return tmViews;
             
         }		
-        public static List<View_V3> tmViews(this TM_Xml_Database tmDatabase, Guid libraryId ,  IList<urn.microsoft.guidanceexplorer.Folder> folders)
+        public static List<View_V3>     tmViews(this TM_Xml_Database tmDatabase, Guid libraryId ,  IList<urn.microsoft.guidanceexplorer.Folder> folders)
         {
             var tmViews = new List<View_V3>();							
             foreach(var folder in folders)
@@ -369,24 +365,24 @@ namespace TeamMentor.CoreLib
             }
             return tmViews;									
         }		
-        public static View_V3 tmView(this TM_Xml_Database tmDatabase, Guid viewId)
+        public static View_V3           tmView(this TM_Xml_Database tmDatabase, Guid viewId)
         {			
             return (from view in tmDatabase.tmViews()
                     where view.viewId == viewId
                     select view).first();					
         }		
-        public static List<TeamMentor_Article> getGuidanceItemsInViews(this TM_Xml_Database tmDatabase, List<View> views)
+        public static List<TeamMentor_Article>  getGuidanceItemsInViews(this TM_Xml_Database tmDatabase, List<View> views)
         {
             var viewIds = (from view in views select view.id.guid()).toList();
             return tmDatabase.getGuidanceItemsInViews(viewIds);
         }		
-        public static List<TeamMentor_Article> getGuidanceItemsInViews(this TM_Xml_Database tmDatabase, List<Guid> viewIds)
+        public static List<TeamMentor_Article>  getGuidanceItemsInViews(this TM_Xml_Database tmDatabase, List<Guid> viewIds)
         {
             return (from viewId in viewIds
                     from guidanceItemV3 in tmDatabase.getGuidanceItemsInView(viewId)
                     select guidanceItemV3).toList();
         }		
-        public static List<TeamMentor_Article> getGuidanceItemsInView(this TM_Xml_Database tmDatabase, Guid viewId)
+        public static List<TeamMentor_Article>  getGuidanceItemsInView(this TM_Xml_Database tmDatabase, Guid viewId)
         {		
             var tmView = tmDatabase.tmView(viewId);
             if (tmView.notNull())
@@ -404,7 +400,7 @@ namespace TeamMentor.CoreLib
             "[TM_Xml_Database] getGuidanceItemsInView, requested viewId was not mapped: {0}".error(viewId);
             return new List<TeamMentor_Article>();
         }		
-        public static List<TeamMentor_Article> getAllGuidanceItemsInViews(this TM_Xml_Database tmDatabase)
+        public static List<TeamMentor_Article>  getAllGuidanceItemsInViews(this TM_Xml_Database tmDatabase)
         {
             //return (from viewId in TM_Xml_Database.Current.GuidanceItems_InViews.Keys
             //		from guidanceItem in TM_Xml_Database.Current.GuidanceItems_InViews[viewId]
@@ -416,15 +412,9 @@ namespace TeamMentor.CoreLib
     //******************* TM_GuidanceItem
     
     public static class TM_Xml_Database_ExtensionMethods_TM_GuidanceItems
-    {		
-        [ReadArticlesTitles] 			
-        public static List<TeamMentor_Article> tmGuidanceItems(this TM_Xml_Database tmDatabase)
-        {			
-            return tmDatabase.xmlDB_GuidanceItems();						
-        }
-        
-        [ReadArticles] 		
-        public static TeamMentor_Article tmGuidanceItem(this TM_Xml_Database tmDatabase, Guid id)
+    {	
+        //needs the ReadArticlesTitles privildge because of the GetGuiObjects method
+	    [ReadArticlesTitles] public static TeamMentor_Article           tmGuidanceItem (this TM_Xml_Database tmDatabase, Guid id)
         {
             if (TM_Xml_Database.Current.Cached_GuidanceItems.hasKey(id))
             {
@@ -436,21 +426,23 @@ namespace TeamMentor.CoreLib
                 return externalArticle;
 
             return null;
-        }
-        
-        public static List<TeamMentor_Article> tmGuidanceItems(this TM_Xml_Database tmDatabase, TM_Library tmLibrary)
+        }        
+        [ReadArticlesTitles] public static List<TeamMentor_Article>     tmGuidanceItems(this TM_Xml_Database tmDatabase)
+        {			
+            return tmDatabase.xmlDB_GuidanceItems();						
+        }                
+        [ReadArticlesTitles] 	public static List<TeamMentor_Article>  tmGuidanceItems(this TM_Xml_Database tmDatabase, TM_Library tmLibrary)
         {
             return tmDatabase.tmGuidanceItems(tmLibrary.Id);
-        }
-        
-        public static List<TeamMentor_Article> tmGuidanceItems(this TM_Xml_Database tmDatabase, Guid libraryId)
+        }        
+        [ReadArticlesTitles] 	public static List<TeamMentor_Article>  tmGuidanceItems(this TM_Xml_Database tmDatabase, Guid libraryId)
         {			
             return (from guidanceItem in TM_Xml_Database.Current.Cached_GuidanceItems.Values
                     where guidanceItem.Metadata.Library_Id == libraryId
                     select guidanceItem).toList();		
-        }				
-        
-        public static List<TeamMentor_Article> tmGuidanceItems_InFolder(this TM_Xml_Database tmDatabase, Guid folderId)
+        }				        
+
+        [ReadArticles] 	public static List<TeamMentor_Article>  tmGuidanceItems_InFolder(this TM_Xml_Database tmDatabase, Guid folderId)
         {				
             var folder = tmDatabase.xmlDB_Folder(folderId);			
             var foldersToMap = tmDatabase.xmlDB_Folders_All(folder);			
@@ -458,9 +450,13 @@ namespace TeamMentor.CoreLib
                     from view in folderToMap.view
                     from guidanceItem in tmDatabase.getGuidanceItemsInView(view.id.guid())
                     select guidanceItem).Distinct().toList();
-        }
+        }        
+        [ReadArticles] 	public static string                    sanitizeHtmlContent(this string htmlContent)
+        {
+            return Sanitizer.GetSafeHtmlFragment(htmlContent);
+        }		
 
-        public static Guid createGuidanceItem(this TM_Xml_Database tmDatabase, GuidanceItem_V3 guidanceItemV3)
+        [EditArticles] 	public static Guid                      createGuidanceItem(this TM_Xml_Database tmDatabase, GuidanceItem_V3 guidanceItemV3)
         {
             if (guidanceItemV3.libraryId == Guid.Empty)
             {
@@ -483,24 +479,6 @@ namespace TeamMentor.CoreLib
                                                                 guidanceItemV3.libraryId);
             return guidanceItem.Metadata.Id;
         }
-
-        public static string sanitizeHtmlContent(this string htmlContent)
-        {
-            return Sanitizer.GetSafeHtmlFragment(htmlContent);
-
-/*			if (htmlContent.valid())
-            {
-
-                htmlContent = htmlContent.replace("href=\"ruledisplay:", "href=\"?#ruledisplay:"); // hack to make sure the current xrefs don't get removed by GetSafeHtmlFragment
-            
-                return htmlContent;
-                //bug in GetSafeHtmlFragment , so for now disabled this
-
-                var sanitizedContent = Sanitizer.GetSafeHtmlFragment(htmlContent);
-                return sanitizedContent;
-            }
-            return htmlContent;*/
-        }		
     }
     
     
@@ -508,7 +486,7 @@ namespace TeamMentor.CoreLib
     
     public static class TM_Xml_Database_ExtensionMethods_ObjectConversion
     {
-        public static TM_GuidanceItem tmGuidanceItem(this guidanceItem _guidanceItem)
+        /*public static TM_GuidanceItem tmGuidanceItem(this guidanceItem _guidanceItem)
         {
             return new TM_GuidanceItem()
                             {
@@ -567,10 +545,10 @@ namespace TeamMentor.CoreLib
                                 libraryId 				= _guidanceItem.libraryId.guid()
                             };			
         }
-        
+        */
         public static TM_GuidanceItem tmGuidanceItem(this GuidanceItem_V3 guidanceItemV3)
         {
-            return new TM_GuidanceItem()
+            return new TM_GuidanceItem
                             {
                                 Id = guidanceItemV3.guidanceItemId,
                                 Id_Original = guidanceItemV3.guidanceItemId_Original,
@@ -612,23 +590,24 @@ namespace TeamMentor.CoreLib
 
         public static View_V3 tmView(this urn.microsoft.guidanceexplorer.View view, Guid libraryId, Guid folderId)
         {
-            var tmView = new View_V3()
+            var tmView = new View_V3
                             {	
                                 libraryId = libraryId,
                                 folderId = folderId,
                                 viewId= view.id.guid(),	
                                 caption = view.caption,
                                 author = view.author,																															
-                            };
+                            };            
             if(view.items.notNull())
-                foreach(var item in view.items.item)
-                    tmView.guidanceItems.add(item.guid());
+                if(view.items.item.notNull())
+                    foreach(var item in view.items.item)
+                        tmView.guidanceItems.add(item.guid());
             return tmView;
         }
         
         public static urn.microsoft.guidanceexplorer.View view(this View tmView)
         {
-            return new urn.microsoft.guidanceexplorer.View()
+            return new urn.microsoft.guidanceexplorer.View
                         {				
                             caption = tmView.caption,							
                             author = tmView.creator,
@@ -648,7 +627,7 @@ namespace TeamMentor.CoreLib
         {
             if (tmLibrary.isNull())
                 return null;
-            return new Library()
+            return new Library
                 {	
                     caption = tmLibrary.Caption,  
                     id = tmLibrary.Id.str(),

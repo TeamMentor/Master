@@ -9,11 +9,10 @@ namespace TeamMentor.CoreLib
 		[XmlAttribute] public string Caption { get; set; }
 	}
 
-	public partial class User
+/*	public class User
 	{
-
 		/// <remarks/>
-		public int UserI		{ get; set; }
+		public int    UserId	{ get; set; }
 		public string UserName	{ get; set; }
 		public string Password	{ get; set; }		
 		public string email		{ get; set; }
@@ -24,7 +23,7 @@ namespace TeamMentor.CoreLib
 		public string Title		{ get; set; }		
 		public string Company	{ get; set; }
 		[XmlElementAttribute(IsNullable = true)] public Nullable<DateTime> ExpirationDate { get; set; }		
-	}
+	}*/
 
 
 

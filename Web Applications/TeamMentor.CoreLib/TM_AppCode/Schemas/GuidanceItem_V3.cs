@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Xml;
 using O2.DotNetWrappers.ExtensionMethods;
 
 namespace TeamMentor.CoreLib
@@ -16,7 +14,6 @@ namespace TeamMentor.CoreLib
         public string creatorCaption { get; set; }
         public string title { get; set; }
         public string images { get; set; }
-//		public DateTime lastUpdate { get; set; }
         public string topic { get; set; }
         public string technology { get; set; }
         public string category { get; set; }
@@ -27,13 +24,13 @@ namespace TeamMentor.CoreLib
         public string author { get; set; }
         public bool delete { get; set; }
         public string htmlContent { get; set; }
-		 
+         
         public GuidanceItem_V3()
         {
             //guidanceItemId= Guid.Empty.next(7.randomNumbers().toInt());			
             guidanceItemId = Guid.NewGuid();
         }
-		
+        
         public GuidanceItem_V3(GuidanceItem guidanceItem)
         {			
             guidanceItemId 			= guidanceItem.id.guid();
@@ -47,13 +44,13 @@ namespace TeamMentor.CoreLib
 //			lastUpdate 		= guidanceItem.lastUpdate;
             delete 			= guidanceItem.delete;
             htmlContent		= guidanceItem.content.sanitizeHtmlContent();
-			
+            
             //use reflection to set these values
             foreach(var attribute in guidanceItem.AnyAttr)			
                 this.prop(attribute.Name.lowerCaseFirstLetter(), attribute.Value);							
         }
-		
-        public GuidanceItem getGuidanceItem()
+        
+        /*public GuidanceItem getGuidanceItem()
             //this one has quite a bit of logic (some of it hard-coded). Note that JSON was not able to handle the XMLDocument
         {						
             var guidanceItem = newGuidanceItemObject(guidanceItemId, title, guidanceType , libraryId, creatorId, creatorCaption ,htmlContent ,images );
@@ -68,10 +65,10 @@ namespace TeamMentor.CoreLib
                 .ToArray();			
             return guidanceItem;			
         }
-		
+        
         private GuidanceItem newGuidanceItemObject(Guid id, string title, Guid guidanceType, Guid library, Guid creator, string creatorCaption, string content, string images) //, DateTime lastUpdate)
         {
-            var guidanceItem = new GuidanceItem() { id =id.str(),  													
+            var guidanceItem = new GuidanceItem { id =id.str(),  													
                 title = title, 
                 guidanceType = guidanceType.str(),	
                 library = library.str(),
@@ -82,6 +79,6 @@ namespace TeamMentor.CoreLib
                 //lastUpdate = lastUpdate
             };
             return guidanceItem;
-        }
+        }*/
     }
 }

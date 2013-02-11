@@ -30,7 +30,7 @@ namespace TeamMentor.CoreLib
         {
             if (tmUser.isNull())
                 return null;
-            return new TM_User()
+            return new TM_User
                 {
                     UserId		= tmUser.UserID,
                     UserName	= tmUser.UserName,
@@ -43,7 +43,7 @@ namespace TeamMentor.CoreLib
         }
         public static NewUser newUser(this TM_User user)
         {
-            return new NewUser()
+            return new NewUser
                 {
                     username = user.UserName,
                     email = user.Email,

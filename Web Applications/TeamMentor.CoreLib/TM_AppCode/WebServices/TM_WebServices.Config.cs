@@ -41,9 +41,7 @@ namespace TeamMentor.CoreLib
         [WebMethod(EnableSession = true)] public bool           RBAC_CurrentIdentity_IsAuthenticated()	                {	return new UserRoleBaseSecurity().currentIdentity_IsAuthenticated(); }
         [WebMethod(EnableSession = true)] public List<string>   RBAC_CurrentPrincipal_Roles()		                    {	return new UserRoleBaseSecurity().currentPrincipal_Roles().toList(); }
         [WebMethod(EnableSession = true)] public bool           RBAC_HasRole(string role)					            {	return RBAC_CurrentPrincipal_Roles().contains(role); }
-        [WebMethod(EnableSession = true)] public bool           RBAC_IsAdmin()											{	return RBAC_CurrentPrincipal_Roles().contains("Admin"); }
-        [WebMethod(EnableSession = true)] public string         RBAC_SessionCookie()						            {	return HttpContextFactory.Request.Cookies["Session"].notNull() 
-                                                                                                                                    ? HttpContextFactory.Request.Cookies["Session"].Value : ""; }
+        [WebMethod(EnableSession = true)] public bool           RBAC_IsAdmin()											{	return RBAC_CurrentPrincipal_Roles().contains("Admin"); }        
 
         [WebMethod(EnableSession = true)]		                public Guid		SSO_AuthenticateUser(string ssoToken)            {   return new SingleSignOn().authenticateUserBasedOn_SSOToken(ssoToken); }
         [WebMethod(EnableSession = true)] [Admin]			    public string	SSO_GetSSOTokenForUser(string userName)          {   return new SingleSignOn().getSSOTokenForUser(userName); }
@@ -102,14 +100,14 @@ namespace TeamMentor.CoreLib
                                                                                         var logData = O2.Kernel.PublicDI.log.LogRedirectionTarget.prop("LogData").str() ;
                                                                                         return logData;
                                                                                     }        
-        [WebMethod(EnableSession = true)] [Admin]	           public List<KeyValue<Guid, string>>				Data_GuidanceItems_FileMappings()        
+/*        [WebMethod(EnableSession = true)] [Admin]	           public List<KeyValue<Guid, string>>				Data_GuidanceItems_FileMappings()        
                                                                                     {
                                                                                         return TM_Xml_Database.Current.GuidanceItems_FileMappings.ConvertDictionary();
                                                                                     }		
         [WebMethod(EnableSession = true)] [Admin]	           public List<KeyValue<Guid, TeamMentor_Article>> Data_GuidanceItems_Cached_GuidanceItems()        
                                                                                     {
                                                                                         return TM_Xml_Database.Current.Cached_GuidanceItems.ConvertDictionary();
-                                                                                    }
+                                                                                    }*/
         
         [WebMethod(EnableSession = true)] [Admin]	           public string		REPL_ExecuteSnippet(string snippet)        
                                                                                     {

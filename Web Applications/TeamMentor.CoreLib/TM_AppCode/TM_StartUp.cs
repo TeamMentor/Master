@@ -1,6 +1,4 @@
 ﻿using System.Web;
-using O2.Kernel;
-using O2.Kernel.InterfacesBaseImpl;
 using O2.DotNetWrappers.ExtensionMethods;
 
 namespace TeamMentor.CoreLib
@@ -22,12 +20,17 @@ namespace TeamMentor.CoreLib
         public void Session_End()
         {
         }
-        public void Application_Start()
-        {
-            PublicDI.log.LogRedirectionTarget = new Logger_Memory();            
-            new TM_Xml_Database(true);                                  // Create FileSystem Based database
+        
+        [Assert_Admin]                      // impersonate an admin to load the database
+        public void Application_Start()     
+        {            
+            // ReSharper disable ObjectCreationAsStatement
+            if (HttpContextFactory.Context.Server.MachineName == "WIN-FGNQ5AARJ8O")
+                "".popupWindow().add_LogViewer();            
+            new TM_Xml_Database(true);                                  // Create FileSystem Based database            
             TM_REST.SetRouteTable();			                        // Set REST routes
-        }
+            // ReSharper restore ObjectCreationAsStatement
+        } 
         public void Application_End()
         {
         }

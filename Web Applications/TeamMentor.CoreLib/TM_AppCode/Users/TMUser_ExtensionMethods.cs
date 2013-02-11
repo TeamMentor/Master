@@ -12,20 +12,15 @@ namespace TeamMentor.CoreLib
     	// it is better to do this since we can return null tmUsers.Where((tmUser)=> tmUser.UserName == name).First()
     	public static TMUser user(this List<TMUser> tmUsers, string name)
     	{
-    		foreach(var tmUser in tmUsers)
-    			if (tmUser.UserName == name)
-    				return tmUser;
-    		return null;
-    	}				
-		public static TMUser user(this List<TMUser> tmUsers, int id)
-    	{
-    		foreach(var tmUser in tmUsers)
-    			if (tmUser.UserID == id)
-    				return tmUser;
-    		return null;
+    	    return tmUsers.FirstOrDefault(tmUser => tmUser.UserName == name);
     	}
-    	
-    	public static bool updateUser(this List<TMUser> tmUsers, int userId, string userName, string firstname, string lastname, string title, string company, string email, int groupId)
+
+	    public static TMUser user(this List<TMUser> tmUsers, int id)
+	    {
+	        return tmUsers.FirstOrDefault(tmUser => tmUser.UserID == id);
+	    }
+
+	    public static bool updateUser(this List<TMUser> tmUsers, int userId, string userName, string firstname, string lastname, string title, string company, string email, int groupId)
     	{
     		var tmUser = tmUsers.user(userId);
     		if (tmUser.isNull())

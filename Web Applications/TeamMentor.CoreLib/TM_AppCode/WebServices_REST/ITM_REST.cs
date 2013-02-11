@@ -35,8 +35,7 @@ namespace TeamMentor.CoreLib
 		[OperationContract][WebGet(UriTemplate = "/user/isAuthenticated"	    )]	bool			RBAC_CurrentIdentity_IsAuthenticated();
 		[OperationContract][WebGet(UriTemplate = "/user/roles"					)]	List<string>	RBAC_CurrentPrincipal_Roles();
 		[OperationContract][WebGet(UriTemplate = "/user/hasRole/{role}"			)]	bool			RBAC_HasRole(string role);
-		[OperationContract][WebGet(UriTemplate = "/user/isAdmin"				)]	bool			RBAC_IsAdmin();
-		[OperationContract][WebGet(UriTemplate = "/user/sessionCookie"			)]	string			RBAC_SessionCookie();	
+		[OperationContract][WebGet(UriTemplate = "/user/isAdmin"				)]	bool			RBAC_IsAdmin();		
 	 
 
 		//Admin: User Management				

@@ -1,5 +1,4 @@
 using System;
-using System.Security.Permissions;
 using System.Threading;
 using System.Web.Script.Serialization;
 using O2.DotNetWrappers.DotNet;
@@ -16,7 +15,7 @@ namespace TeamMentor.CoreLib
 		public static string executeSnippet(string snippet)
 		{
 			"[REPL] executing snippet with size: {0}".info(snippet.size());
-			object executionResult = "";
+			object executionResult;
 			var compileError = "";
 			Action<string> onCompileOk = (msg) => { };
 			Action<string> onCompileFail = (msg) => { compileError = msg; };
@@ -27,7 +26,7 @@ namespace TeamMentor.CoreLib
 				executionResult = result.notNull() ? result : "";
 
 			if (executionResult is string)
-				return (string)executionResult;
+				return executionResult.str();
 			try
 			{
 				return new JavaScriptSerializer().Serialize(executionResult);
