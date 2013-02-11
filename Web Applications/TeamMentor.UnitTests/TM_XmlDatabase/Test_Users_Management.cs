@@ -3,7 +3,7 @@ using NUnit.Framework;
 using O2.DotNetWrappers.ExtensionMethods;
 using TeamMentor.CoreLib;
 
-namespace TeamMentor.UnitTests.XmlDatabase_InMemory
+namespace TeamMentor.UnitTests
 {
 	[TestFixture]
 	class Test_Users_Management : TM_XmlDatabase_InMemory

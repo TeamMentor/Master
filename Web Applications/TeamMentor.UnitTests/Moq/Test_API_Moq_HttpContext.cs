@@ -1,11 +1,11 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using O2.DotNetWrappers.ExtensionMethods;
 using O2.FluentSharp;
 using TeamMentor.CoreLib;
 
-namespace TeamMentor.UnitTests.Helpers
+namespace TeamMentor.UnitTests
 {
-	[TestClass]
+	[TestFixture]
 	public class Test_API_Moq_HttpContext
 	{
 		static Test_API_Moq_HttpContext()
@@ -13,7 +13,7 @@ namespace TeamMentor.UnitTests.Helpers
 			HttpContextFactory.Context = new API_Moq_HttpContext().httpContext();		
 		}
 
-		[TestMethod]
+		[Test]
 		public void Test_HttpContext_CoreObjectsExist()
 		{
 			Assert.IsNotNull(HttpContextFactory.Context					, "Context");
@@ -25,7 +25,7 @@ namespace TeamMentor.UnitTests.Helpers
 			Assert.IsNotNull(HttpContextFactory.Context.Session			, "Session");
 		}
 
-		[TestMethod]
+		[Test]
 		public void Test_Http_Headers()
 		{
 			var request  = HttpContextFactory.Context.Request;
@@ -43,6 +43,5 @@ namespace TeamMentor.UnitTests.Helpers
 			Assert.AreEqual(name, firstKey						, "first Name");			
 			Assert.AreEqual(value, response_Headers[firstKey]	, "first Value");
 		}
-
 	}
 }

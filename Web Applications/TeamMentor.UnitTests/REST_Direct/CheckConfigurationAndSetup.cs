@@ -1,30 +1,30 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using O2.FluentSharp;
 using TeamMentor.CoreLib;
 
 namespace TeamMentor.UnitTests
 {
-	[TestClass]
+	[TestFixture]
 	public class CheckConfigurationAndSetup 
 	{
 		public static ITM_REST RestAdmin { get; set; }
 
-		[ClassInitialize]
-		public static void Initialize(TestContext context)
+		[SetUp]
+		public static void Setup()
 		{			
 			HttpContextFactory.Context = new API_Moq_HttpContext().httpContext();
 			TMConfig.Current.UseAppDataFolder = true;
 			RestAdmin = new TM_REST();
 		}
 
-		[TestMethod]
+		[Test]
 		public void Test_Version()
 		{
 			var version = RestAdmin.Version();
 			Assert.IsNotNull(version, "Version was null");
 			"version (direct access): {0}".writeLine_Trace(version);
 		}
-		[TestMethod]
+		[Test]
 		public void Test_SessionID()
 		{
 			var sessionId = RestAdmin.SessionId();
@@ -32,7 +32,7 @@ namespace TeamMentor.UnitTests
 			"sessionId (direct access): {0}".writeLine_Trace(sessionId);
 		}
 
-		[ClassCleanup]
-		public static void Cleanup() { }
+		[TearDown]
+		public static void TearDown() { }
 	}
 }

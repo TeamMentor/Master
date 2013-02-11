@@ -7,14 +7,17 @@ using O2.DotNetWrappers.ExtensionMethods;
 using TeamMentor.CoreLib;
 
 namespace TeamMentor.UnitTests
-{
+{    
 	public class TM_XmlDatabase_InMemory
 	{
 		public TM_Xml_Database tmXmlDatabase;
 		
 		public TM_XmlDatabase_InMemory()
 		{
-			tmXmlDatabase = new TM_Xml_Database();	 
+		    UserGroup.Admin.setThreadPrincipalWithRoles();
+			tmXmlDatabase = new TM_Xml_Database();
+            UserGroup.Anonymous.setThreadPrincipalWithRoles();
+		    //new TM_TestLibrary().CreateTestDatabase(tmXmlDatabase);
 		}
 
 		[TestFixtureSetUp]		
@@ -27,5 +30,6 @@ namespace TeamMentor.UnitTests
 			Assert.IsEmpty(tmXmlDatabase.UserData.ActiveSessions    , "ActiveSessions");
 			Assert.AreEqual(tmXmlDatabase.UserData.TMUsers.size(),1 , "TMUsers");				// there should be admin
 		}
+
 	}
 }

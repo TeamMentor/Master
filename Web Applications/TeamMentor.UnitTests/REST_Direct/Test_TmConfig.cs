@@ -1,20 +1,20 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using O2.DotNetWrappers.ExtensionMethods;
 using TeamMentor.CoreLib;
 
-namespace TeamMentor.UnitTests.REST_Direct
+namespace TeamMentor.UnitTests
 {
-	[TestClass]
+	[TestFixture]
 	public class Admin_REST_Class : TM_Rest_Direct
 	{
-		[TestMethod]
+		[Test]
 		public void Test_LoadTmConfig()
 		{
 			var tmConfig = TMConfig.Current;
 			Assert.IsNotNull(tmConfig);
 		}
 
-		[TestMethod]
+		[Test]
 		public void Test_DefaultSettings()
 		{
 			var tmConfig = TMConfig.Current;
@@ -22,7 +22,7 @@ namespace TeamMentor.UnitTests.REST_Direct
 			Assert.IsFalse(tmConfig.WindowsAuthentication.Enabled, "tmConfig.WindowsAuthentication.Enabled");
 		}
 			
-		[TestMethod]
+		[Test]
 		public void Test_CrossDomainAccess()
 		{
 			var response = HttpContextFactory.Response;

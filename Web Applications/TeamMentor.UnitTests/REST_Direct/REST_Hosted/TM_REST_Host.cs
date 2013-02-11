@@ -1,8 +1,9 @@
 ﻿using System;
 using System.ServiceModel.Web;
 using O2.DotNetWrappers.ExtensionMethods;
+using TeamMentor.CoreLib;
 
-namespace TeamMentor.CoreLib
+namespace TeamMentor.UnitTests
 {
 	public class TM_REST_Host
 	{

@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using TeamMentor.CoreLib;
+﻿using TeamMentor.CoreLib;
 using O2.FluentSharp;
 
 namespace TeamMentor.UnitTests
@@ -17,7 +16,7 @@ namespace TeamMentor.UnitTests
 			IrestAdmin = new TM_REST();
 		}
 
-		public static void WCFHost_Start(TestContext context)
+		public static void WCFHost_Start()
 		{
 			"Starting Host".writeLine_Trace();
 			HttpContextFactory.Context = new API_Moq_HttpContext().httpContext();

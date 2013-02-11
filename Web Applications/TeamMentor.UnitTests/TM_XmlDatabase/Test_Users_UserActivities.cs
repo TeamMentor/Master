@@ -6,7 +6,7 @@ using NUnit.Framework;
 using O2.DotNetWrappers.ExtensionMethods;
 using TeamMentor.CoreLib;
 
-namespace TeamMentor.UnitTests.CoreLib
+namespace TeamMentor.UnitTests
 {
 	[TestFixture]
 	public class Test_Users_UserActivities : TM_XmlDatabase_InMemory

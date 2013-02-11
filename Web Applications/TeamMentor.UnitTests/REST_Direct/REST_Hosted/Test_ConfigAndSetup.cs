@@ -1,33 +1,34 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using O2.DotNetWrappers.ExtensionMethods;
 using O2.FluentSharp;
 
 namespace TeamMentor.UnitTests
 {	
-	[TestClass,Ignore]
+	[TestFixture,Ignore]
 	public class Test_ConfigAndSetup : TM_Rest_Hosted
 	{
-		[TestMethod]
+        [SetUp]
+		public static void Initialize()
+		{
+			WCFHost_Start();
+		}
+
+		[Test]
 		public void CheckWebServiceHost()
 		{
 			var html = TmRestHost.BaseAddress.append("/Version").getHtml();
-			html.valid().assert_True("Html fetch failed");
+		    Assert.IsTrue(html.valid(), "Html fetch failed");
 			//test version
 			var version = IrestAdmin.Version();
-			version.assert_IsNotNull("Version was null");
+			Assert.NotNull(version,"Version was null");
 			"version (hosted access): {0}".writeLine_Trace(version);
 			//test sessionID
 			var sessionId = IrestAdmin.SessionId();
-			sessionId.assert_IsNotNull("sessionID was null");
+			Assert.NotNull(sessionId, "sessionID was null");
 			"sessionID (hosted access): {0}".writeLine_Trace(sessionId);
 		}
-
-		[ClassInitialize]
-		public static void Initialize(TestContext context)
-		{
-			WCFHost_Start(context);
-		}
-		[ClassCleanup]
+		
+		[TearDown]
 		public static void Cleanup()
 		{
 			WCFHost_Stop();
