@@ -2,34 +2,89 @@
 //Code based on example from: Password Minder Internals http://msdn.microsoft.com/en-us/magazine/cc163913.aspx
 
 using System;
+using System.IO;
 using System.Security.Cryptography;
+using System.Text;
 using O2.DotNetWrappers.ExtensionMethods;
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable SuggestUseVarKeywordEvident
 namespace TeamMentor.CoreLib
 {
+    public static class SHA256_ExtensionMethods
+    {
+        public static string hash_SHA256(this string text, string salt)
+        {
+            var stringToHash = text + salt;
+            var sha256 = SHA256.Create();
+            var hashBytes = sha256.ComputeHash(stringToHash.asciiBytes());
+            var hashString = new StringBuilder();
+            foreach (byte b in hashBytes)
+                hashString.Append(b.ToString("x2"));
+            return hashString.str();
+        }
+    }
+
     public static class PBKDF2_ExtensionMethods
     {
         public static int DEFAULT_PBKDF2_INTERACTIONS = 20000;
         public static int DEFAULT_PBKDF2_BYTES = 64 ;
 
-        public static string get_PBKDF2_Hash(this string password, Guid salt)
+        public static string hash_PBKDF2(this string password, Guid salt)
         {
-            return password.get_PBKDF2_Hash(salt.str());
+            return password.hash_PBKDF2(salt.str());
         }
 
-        public static string get_PBKDF2_Hash(this string password, string salt)
+        public static string hash_PBKDF2(this string password, string salt)
         {
-            return password.get_PBKDF2_Hash(salt, DEFAULT_PBKDF2_INTERACTIONS, DEFAULT_PBKDF2_BYTES);
+            return password.hash_PBKDF2(salt, DEFAULT_PBKDF2_INTERACTIONS, DEFAULT_PBKDF2_BYTES);
         }
 
-        public static string get_PBKDF2_Hash(this string password, string salt, int iterations, int howManyBytes)
+        public static string hash_PBKDF2(this string password, string salt, int iterations, int howManyBytes)
         {
             var bytes = PBKDF2.GetBytes(password.asciiBytes(), salt.asciiBytes(), iterations, howManyBytes);
             return bytes.base64Encode();
         }
     }
+
+    public class EncyptDecrypt
+    {
+        
+        //based on code sample from https://teammentor.net/article/244d7faf-c64e-4df8-88e1-1d72228392bf (Decrypt a String via a Block Cipher Using AES)
+        public static string DecryptString(string ciphertext, byte[] sKey, byte[] sIV)
+        {
+            // The default AES key size under the .NET framework is 256.  The following
+            // call will create an AES crypto provider and create a random initialization
+            // vector and key. The crypto mode defaults to CBC ensuring the proper chaining
+             // of data to mitigate repetition of cipher text blocks.
+            var rijndaelAlg = Rijndael.Create();            //Set secret key For AES algorithm.
+            rijndaelAlg.Key = sKey;                         //Set initialization vector.
+            rijndaelAlg.IV = sIV;
+            //Create a memorystream to which we'll decrypt our input string
+            var ms = new MemoryStream();
+            var ecs = new CryptoStream(ms, rijndaelAlg.CreateDecryptor(), CryptoStreamMode.Write);
+            //Because the input string is passed in as a Base64 encoded value we decode prior writing to
+             //the decryptor stream.
+            ecs.Write(Convert.FromBase64String(ciphertext), 0, Convert.FromBase64String(ciphertext).Length);
+            ecs.Close();
+            return Encoding.ASCII.GetString(ms.ToArray());
+        }
+        
+        public static string EncryptString(string ciphertext, byte[] sKey, byte[] sIV)
+        {			
+            var rijndaelAlg = Rijndael.Create();    //Set secret key For AES algorithm.
+            rijndaelAlg.Key = sKey;                 //Set initialization vector.
+            rijndaelAlg.IV = sIV;                   //Create a memorystream to which we'll decrypt our input string
+            var ms = new MemoryStream();
+            var ecs = new CryptoStream(ms, rijndaelAlg.CreateEncryptor(), CryptoStreamMode.Write);            
+            ecs.Write(Encoding.ASCII.GetBytes(ciphertext), 0, Encoding.ASCII.GetBytes(ciphertext).Length);
+            ecs.Close();
+            return Convert.ToBase64String(ms.ToArray());
+        }
+
+    }
+
+
 
     // implementation of PKCS#5 v2.0
     // Password Based Key Derivation Function 2
@@ -48,7 +103,7 @@ namespace TeamMentor.CoreLib
         public static byte[] GetBytes(string password, byte[] salt, int iterations, int howManyBytes)
         {
             return GetBytes(
-                System.Text.Encoding.UTF8.GetBytes(password),
+                Encoding.UTF8.GetBytes(password),
                 salt, iterations, howManyBytes);
         }
         public static byte[] GetBytes(byte[] password, byte[] salt, int iterations, int howManyBytes)

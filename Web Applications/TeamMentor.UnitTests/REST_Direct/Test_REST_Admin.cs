@@ -5,7 +5,7 @@ using O2.DotNetWrappers.ExtensionMethods;
 using O2.Kernel;
 using TeamMentor.CoreLib;
 
-namespace TeamMentor.UnitTests.Rest
+namespace TeamMentor.UnitTests.REST
 {
     [TestFixture]
     public class Test_REST_Admin : TM_Rest_Direct

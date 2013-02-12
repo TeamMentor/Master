@@ -42,16 +42,14 @@ namespace TeamMentor.CoreLib
         }
                     
         public static string createPasswordHash(this TMUser tmUser, string password)
-        {		    		    
-            return password.get_PBKDF2_Hash(tmUser.ID);       
+        {		    		                
+            // first we hash the password with the user's name as salt (what used to happen before the )           
+            var sha256Hash = tmUser.UserName.hash_SHA256(password);
             
-            /*var stringToHash = tmUser.ID + tmUser.UserName + password;   // The password hash is made of a GUID, the Unique username, and a password
-            var sha256 = System.Security.Cryptography.SHA256.Create();
-            var hashBytes = sha256.ComputeHash(Encoding.ASCII.GetBytes(stringToHash));
-            var hashString = new StringBuilder();
-            foreach (byte b in hashBytes)
-                hashString.Append(b.ToString("x2"));
-            return hashString.ToString();*/
+            //then we create a PBKDF2 hash using the user's ID (as GUID) as salt
+            var passwordHash = sha256Hash.hash_PBKDF2(tmUser.ID);
+
+            return passwordHash;
         }
         public static List<string> toStringList(this List<Guid> guids)
         {

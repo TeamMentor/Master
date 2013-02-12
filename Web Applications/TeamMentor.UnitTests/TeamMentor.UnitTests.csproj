@@ -79,7 +79,9 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CoreLib\Test_Crypto.cs" />
     <Compile Include="CoreLib\Test_Email.cs" />
+    <Compile Include="CoreLib\Test_TM_SecretData.cs" />
     <Compile Include="TM_XmlDatabase\Test_LoadLibrariesFromDisk.cs" />
     <Compile Include="TM_XmlDatabase\Test_TM_TestData.cs" />
     <Compile Include="TM_XmlDatabase\Test_Users_UserActivities.cs" />

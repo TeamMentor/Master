@@ -1,23 +1,26 @@
 ﻿using System;
 using System.Net.Mail;
 using System.Net.Mime;
-using O2.DotNetWrappers.Network;
 
 namespace TeamMentor.CoreLib
 {
     public class SendEmails
-    {        
-        public static string SmtpServer            { get; set; }
-        public static string SmtpServer_Username   { get; set; }
-        public static string SmtpServer_Password   { get; set; }
-        public static string From                  { get; set; }
+    {                
+        public string From          { get; set; }
+        public string Smtp_Server   { get; set; }
+        public string Smtp_UserName { get; set; }
+        public string Smtp_Password { get; set; }
 
-        static SendEmails()
-        {
-            SmtpServer          = "smtp.sendgrid.net";
-            SmtpServer_Username = "TeamMentor";
-            SmtpServer_Password = "";
+        public SendEmails()
+        {            
             From = "TM_Security_Dude@securityinnovation.com";
+        }
+
+        public SendEmails(string smtpServer, string smtpUserName, string smtpPassword ) : this()
+        {
+            Smtp_Server     = smtpServer;
+            Smtp_UserName   = smtpUserName;
+            Smtp_Password   = smtpPassword;
         }
 
         public bool send_TestEmail()
@@ -28,9 +31,7 @@ namespace TeamMentor.CoreLib
         public bool send(string to, string subject, string message, bool htmlMessage = false)
         {
             try
-            {
-                var stmpServerOnline = Mail.isMailServerOnline(SmtpServer);                
-                
+            {                
                 var mailMsg = new MailMessage();
 
                 // To
@@ -43,8 +44,8 @@ namespace TeamMentor.CoreLib
                 if (htmlMessage)                                
                     mailMsg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(message, null,MediaTypeNames.Text.Html));                
                 // Init SmtpClient and send
-                var smtpClient = new SmtpClient(SmtpServer, 587);
-                var credentials = new System.Net.NetworkCredential(SmtpServer_Username, SmtpServer_Password);
+                var smtpClient = new SmtpClient(Smtp_Server, 587);
+                var credentials = new System.Net.NetworkCredential(Smtp_UserName, Smtp_Password);
                 smtpClient.Credentials = credentials;
 
                 smtpClient.Send(mailMsg);                                

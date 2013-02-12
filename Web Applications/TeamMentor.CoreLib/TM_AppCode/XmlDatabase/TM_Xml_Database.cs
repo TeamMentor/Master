@@ -16,7 +16,7 @@ namespace TeamMentor.CoreLib
         public bool         ServerOnline                    { get; set; }
         
         //users
-        public TM_UserData  UserData                        { get; set; }        
+        public TM_UserData  UserData                        { get; set; }         
 
         //articles        
         public Dictionary<Guid, guidanceExplorer>	    GuidanceExplorers_XmlFormat { get; set; }	

@@ -52,7 +52,7 @@ namespace TeamMentor.UnitTests
             {
                 var now = DateTime.Now;
                 var interactions = i * 5000;                
-                var passwordHash = password.get_PBKDF2_Hash(salt, interactions,64);
+                var passwordHash = password.hash_PBKDF2(salt, interactions,64);
                 var timeSpan = DateTime.Now - now;	            
                 "password: {0}\ninteractions: {1}  timespan: {2}\n".info(passwordHash, interactions, timeSpan);
                 
@@ -70,7 +70,7 @@ namespace TeamMentor.UnitTests
                 (password, salt) =>
                     {
                         var now = DateTime.Now;
-                        var passwordHash = password.get_PBKDF2_Hash(salt);
+                        var passwordHash = password.hash_PBKDF2(salt);
                         var timeSpan = DateTime.Now - now;	            
 
                         Assert.NotNull  (passwordHash);

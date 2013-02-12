@@ -2,7 +2,7 @@
 using O2.DotNetWrappers.ExtensionMethods;
 using TeamMentor.CoreLib;
 
-namespace TeamMentor.UnitTests
+namespace TeamMentor.UnitTests.CoreLib
 {
 	[TestFixture]
 	public class Test_Utils_GoogleAnalytics : TM_XmlDatabase_InMemory
