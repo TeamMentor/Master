@@ -79,18 +79,18 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TM_XmlDatabase\Test_LoadLibrariesFromDisk.cs" />
     <Compile Include="TM_XmlDatabase\Test_TM_TestData.cs" />
     <Compile Include="TM_XmlDatabase\Test_Users_UserActivities.cs" />
     <Compile Include="CoreLib\Test_Utils_GoogleAnalytics.cs" />
     <Compile Include="_Test_ConfigAndHelpers\Tests_Config.cs" />
     <Compile Include="_Test_ConfigAndHelpers\TM_XmlDatabase_InMemory.cs" />
-    <Compile Include="Moq\Test_API_Moq_HttpContext.cs" />
+    <Compile Include="_Test_ConfigAndHelpers\Moq\Test_API_Moq_HttpContext.cs" />
     <Compile Include="_Test_ConfigAndHelpers\TM_Rest_Hosted.cs" />
     <Compile Include="_Test_ConfigAndHelpers\TM_Rest_Direct.cs" />
     <Compile Include="REST_Direct\RBAC_Functions.cs" />
-    <Compile Include="Moq\API_Moq_HttpContext.cs" />
+    <Compile Include="_Test_ConfigAndHelpers\Moq\API_Moq_HttpContext.cs" />
     <Compile Include="REST_Direct\CheckConfigurationAndSetup.cs" />
-    <Compile Include="ExtensionMethods\Trace_ExtensionMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="REST_Direct\REST_Hosted\TM_REST_Host.cs" />
     <Compile Include="REST_Direct\Test_REST_Admin.cs" />
@@ -103,9 +103,6 @@
     <Compile Include="WebSite_Content\Test_CheckJavascriptResources.cs" />
     <Compile Include="TM_XmlDatabase\Test_Users_Rbac.cs" />
     <Compile Include="CoreLib\Test_JavascriptCombiner.cs" />
-    <Compile Include="_Old_Version_To_Implement\SecurityInnovation.TeamMentor.WebClient.JavascriptProxy.XmlDatabase.DbEngine.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <None Include="_Old_Version_To_Implement\SecurityInnovation.TeamMentor.WebClient.JavascriptProxy.XmlDatabase.Libraries.cs">
       <SubType>Code</SubType>
     </None>

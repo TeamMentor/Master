@@ -3,6 +3,8 @@ using System.Security;
 using NUnit.Framework;
 using O2.DotNetWrappers.ExtensionMethods;
 using TeamMentor.CoreLib;
+using urn.microsoft.guidanceexplorer;
+using View = TeamMentor.CoreLib.View;
 
 namespace TeamMentor.UnitTests
 {
@@ -37,9 +39,8 @@ namespace TeamMentor.UnitTests
 
         [Test]
         public void CreateLibrary()
-        {
-            
-            //Create Library
+        {            
+            //Create Test Library
             var library = tmXmlDatabase.new_TmLibrary(library_Name);
 
             Assert.NotNull (library);
@@ -78,7 +79,6 @@ namespace TeamMentor.UnitTests
             Assert.AreEqual(1, foldersInLibraryStructure.size());
             Assert.AreEqual(1, viewsInLibraryStructure.size());
             Assert.AreEqual(1, foldersInFolder.size());
-
             
             //Create Articles
             var newArticle = tmXmlDatabase.xmlDB_RandomGuidanceItem(library.Id);
@@ -87,11 +87,28 @@ namespace TeamMentor.UnitTests
             Assert.NotNull (newArticle);
             Assert.IsTrue  (result);
 
-            "****** Here is the guidanceExplorer Xml".info();
-            guidanceExplorer.toXml().info();
+           
+            //Test serialization
 
-            
-        }
+            var serializedXml = guidanceExplorer.toXml();            
+            guidanceExplorer = serializedXml.deserialize<guidanceExplorer>(false);
+
+            Assert.IsNotNull (guidanceExplorer);
+            Assert.IsNotNull (guidanceExplorer.library);
+            Assert.IsNotNull (guidanceExplorer.library.libraryStructure);
+            Assert.IsNotEmpty(guidanceExplorer.library.libraryStructure.view);
+
+            var view = guidanceExplorer.library.libraryStructure.view.first();
+
+            Assert.IsNotNull (view);
+            Assert.AreEqual  (view.caption , view_In_Library_Name);
+            Assert.AreEqual  (view.id      , newViewInLibrary.id);
+            Assert.IsNotEmpty(view.items.item);
+            Assert.AreEqual  (view.items.item.first(), newArticle.Metadata.Id.str());
+
+            "## For reference, here is the guidanceExplorer Xml ##".line().info();
+            serializedXml.info();   
+        }        
     }
 
 }

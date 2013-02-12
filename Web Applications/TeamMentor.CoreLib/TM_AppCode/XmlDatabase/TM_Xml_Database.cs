@@ -37,22 +37,26 @@ namespace TeamMentor.CoreLib
         }
         public TM_Xml_Database          (bool useFileStorage)
         {
+            O2Thread.mtaThread(CheckIfServerIsOnline);
             UsingFileStorage = useFileStorage;
             Current = this;
             Setup();
         }
 
-        [Admin] public TM_Xml_Database  Setup()
+        [Admin] public TM_Xml_Database ResetDatabase()
         {
-            O2Thread.mtaThread(CheckIfServerIsOnline);           
+            Cached_GuidanceItems        = new Dictionary<Guid, TeamMentor_Article>();
+            GuidanceItems_FileMappings  = new Dictionary<Guid, string>();
+            GuidanceExplorers_XmlFormat = new Dictionary<Guid, guidanceExplorer>();
+            UserData                    = new TM_UserData(UsingFileStorage);
+            return this;
+        }
+
+        [Admin] public TM_Xml_Database  Setup()
+        {                       
             try
             {
-                Cached_GuidanceItems = new Dictionary<Guid, TeamMentor_Article>();
-                GuidanceItems_FileMappings = new Dictionary<Guid, string>();
-                GuidanceExplorers_XmlFormat = new Dictionary<Guid, guidanceExplorer>();
-
-                UserData = new TM_UserData(UsingFileStorage);
-
+                ResetDatabase();
                 if (UsingFileStorage)
                 {
                     SetPathsAndloadData();

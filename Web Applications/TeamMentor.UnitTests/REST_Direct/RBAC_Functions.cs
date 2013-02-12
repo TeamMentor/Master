@@ -1,6 +1,5 @@
 ﻿using NUnit.Framework;
 using O2.DotNetWrappers.ExtensionMethods;
-using O2.FluentSharp;
 using TeamMentor.CoreLib;
 
 namespace TeamMentor.UnitTests
@@ -31,7 +30,7 @@ namespace TeamMentor.UnitTests
             var users = TmRest.users();
             Assert.IsNotNull(users, "users object was null");
             Assert.IsTrue(users.size() > 0 , "users object was empty");
-            "There were {0} users fetched: {0}".writeLine_Trace(users.size());
+            "There were {0} users fetched: {0}".info(users.size());
         }		
     }
 }

@@ -6,7 +6,7 @@ using O2.DotNetWrappers.ExtensionMethods;
 namespace urn.microsoft.guidanceexplorer 
 {
     [Serializable]
-    [XmlRoot(Namespace="urn:microsoft:guidanceexplorer")]
+    //[XmlRoot(Namespace="urn:microsoft:guidanceexplorer")]
     public class guidanceExplorer
     {
         [XmlAttribute] public string           name                { get; set; }
@@ -79,7 +79,7 @@ namespace urn.microsoft.guidanceexplorer
     }
     public class Items 
     {
-        public List<string>     item                { get; set; }
+        [XmlElement(ElementName = "item")] public List<string>     item  { get; set; }
 
         public Items()
         {

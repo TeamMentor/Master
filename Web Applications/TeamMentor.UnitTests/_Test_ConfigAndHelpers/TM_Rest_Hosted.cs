@@ -1,4 +1,5 @@
-﻿using TeamMentor.CoreLib;
+﻿using O2.DotNetWrappers.ExtensionMethods;
+using TeamMentor.CoreLib;
 using O2.FluentSharp;
 
 namespace TeamMentor.UnitTests
@@ -18,7 +19,7 @@ namespace TeamMentor.UnitTests
 
 		public static void WCFHost_Start()
 		{
-			"Starting Host".writeLine_Trace();
+			"Starting Host".info();
 			HttpContextFactory.Context = new API_Moq_HttpContext().httpContext();
 			TmRestHost = new TM_REST_Host().StartHost();
 			IrestAdmin = TmRestHost.GetProxy();
@@ -27,7 +28,7 @@ namespace TeamMentor.UnitTests
 
 		public static void WCFHost_Stop()
 		{
-			"Stopping Host".writeLine_Trace();
+			"Stopping Host".info();
 			TmRestHost.StoptHost();
 		}
 	}

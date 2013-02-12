@@ -1,12 +1,8 @@
 ﻿using System;
-using System.IO;
 using NUnit.Framework;
-using O2.DotNetWrappers.DotNet;
-using O2.DotNetWrappers.ExtensionMethods;
-using O2.FluentSharp;
 using TeamMentor.CoreLib;
 
-namespace TeamMentor.UnitTests
+namespace TeamMentor.UnitTests.REST
 {
 	[TestFixture]
 	public class Test_REST_User_Management : TM_Rest_Direct
@@ -15,7 +11,7 @@ namespace TeamMentor.UnitTests
 		public void Login()
 		{
 			var tmConfig = TMConfig.Current;
-			var credentials = new TM_Credentials() { UserName = tmConfig.DefaultAdminUserName, Password = tmConfig.DefaultAdminPassword};
+			var credentials = new TM_Credentials { UserName = tmConfig.DefaultAdminUserName, Password = tmConfig.DefaultAdminPassword};
 			//login with default value
 			var sessionId = TmRest.Login_using_Credentials(credentials);
 

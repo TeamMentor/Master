@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using O2.DotNetWrappers.ExtensionMethods;
 using O2.FluentSharp;
 using TeamMentor.CoreLib;
 
@@ -22,14 +23,14 @@ namespace TeamMentor.UnitTests
 		{
 			var version = RestAdmin.Version();
 			Assert.IsNotNull(version, "Version was null");
-			"version (direct access): {0}".writeLine_Trace(version);
+			"version (direct access): {0}".info(version);
 		}
 		[Test]
 		public void Test_SessionID()
 		{
 			var sessionId = RestAdmin.SessionId();
 			Assert.IsNotNull(sessionId, "SessionId was null");
-			"sessionId (direct access): {0}".writeLine_Trace(sessionId);
+			"sessionId (direct access): {0}".info(sessionId);
 		}
 
 		[TearDown]
