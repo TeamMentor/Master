@@ -671,8 +671,7 @@ namespace TeamMentor.CoreLib
             var tmConfig = tmDatabase.tmConfig();
             var defaultLibrary = tmConfig.OnInstallation.DefaultLibraryToInstall_Name;
             if (defaultLibrary.valid())
-            {
-                UserGroup.Admin.setThreadPrincipalWithRoles();		//elevate privileges to install library
+            {                
                 try
                 {
                     var library = tmDatabase.tmLibrary(defaultLibrary);
@@ -692,11 +691,7 @@ namespace TeamMentor.CoreLib
                 catch (Exception ex)
                 {
                     ex.log("[in handleDefaultInstallActions]");
-                }
-                finally
-                {
-                    UserGroup.Anonymous.setThreadPrincipalWithRoles();		// reset back user roles
-                }				
+                }                
             }
             return tmDatabase;
         }

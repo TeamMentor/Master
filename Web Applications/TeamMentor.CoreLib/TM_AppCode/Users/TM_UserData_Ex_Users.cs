@@ -21,9 +21,10 @@ namespace TeamMentor.CoreLib
                 
                 if (adminUser.notNull())
                 {
-                    if (adminUser.PasswordHash.notValid())
+                    if (adminUser.PasswordHash.notValid() || tmConfig.OnInstallation.ForceAdminPasswordReset)
                         adminUser.PasswordHash = adminUser.createPasswordHash(defaultAdminUser_Pwd);
-                    adminUser.Stats.ExpirationDate = default(DateTime);                    
+                    adminUser.Stats.ExpirationDate = default(DateTime);
+                    adminUser.saveTmUser();
                     return adminUser.UserID;
                 }				
 

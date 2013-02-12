@@ -36,7 +36,12 @@ namespace TeamMentor.Website
 
 			//TM Security
 			tmConfig.SSL_RedirectHttpToHttps		= true;
-			
+
+            //OnInstallation
+	        tmConfig.OnInstallation.ForceAdminPasswordReset          = true;
+	        tmConfig.OnInstallation.DefaultLibraryToInstall_Name     = "Top Vulnerabilities";
+            tmConfig.OnInstallation.DefaultLibraryToInstall_Location = "https://github.com/TeamMentor/Library_Top_Vulnerabilities/zipball/master";
+
 	    }
     }
 }
