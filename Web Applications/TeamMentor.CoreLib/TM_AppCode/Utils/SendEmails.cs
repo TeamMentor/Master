@@ -28,7 +28,12 @@ namespace TeamMentor.CoreLib
             return send(From, "Test Email", "From TeamMentor");
         }
 
-        public bool send(string to, string subject, string message, bool htmlMessage = false)
+        public bool send(string to, string subject, string message)
+        {
+            return send(to, subject, message, false);
+        }
+
+        public bool send(string to, string subject, string message, bool htmlMessage)
         {
             try
             {                

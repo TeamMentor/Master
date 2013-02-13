@@ -7,12 +7,17 @@ namespace TeamMentor.UnitTests
     public class TM_XmlDatabase_InMemory
     {
         public TM_Xml_Database tmXmlDatabase;
+
         
         public TM_XmlDatabase_InMemory()
         {
-            UserGroup.Admin.setThreadPrincipalWithRoles();
+            SetupDatabase();            
+        }
+
+        [Assert_Admin]
+        public void SetupDatabase()
+        {
             tmXmlDatabase = new TM_Xml_Database();
-            UserGroup.Anonymous.setThreadPrincipalWithRoles();
             //new TM_TestLibrary().CreateTestDatabase(tmXmlDatabase);
         }
 

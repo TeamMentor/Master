@@ -1,6 +1,4 @@
-﻿
-//Code based on example from: Password Minder Internals http://msdn.microsoft.com/en-us/magazine/cc163913.aspx
-
+﻿//Code based on example from: Password Minder Internals http://msdn.microsoft.com/en-us/magazine/cc163913.aspx
 using System;
 using System.IO;
 using System.Security.Cryptography;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Permissions;
 using O2.DotNetWrappers.ExtensionMethods;
 using PostSharp.Aspects;
 
@@ -165,7 +166,7 @@ namespace TeamMentor.CoreLib
     public sealed class Assert_Admin : OnMethodBoundaryAspect
     {				
         public override void OnEntry(MethodExecutionArgs args)
-        {
+        {            
             UserGroup.Admin.setPrivileges();
             base.OnEntry(args);
         }

@@ -5,6 +5,9 @@ namespace TeamMentor.CoreLib
 {
     public class TM_StartUp
     {
+        public Tracking_Application     TrackingApplication   { get; set; }
+        public TM_Xml_Database          TmXmlDatabase         { get; set; }
+
         public void SetupEvents()
         {
             TMEvents.OnSession_Start            .add(Session_Start);
@@ -23,16 +26,16 @@ namespace TeamMentor.CoreLib
         
         [Assert_Admin]                      // impersonate an admin to load the database
         public void Application_Start()     
-        {            
-            // ReSharper disable ObjectCreationAsStatement
-            if (HttpContextFactory.Context.Server.MachineName == "WIN-FGNQ5AARJ8O")
-                "".popupWindow().add_LogViewer();            
-            new TM_Xml_Database(true);                                  // Create FileSystem Based database            
-            TM_REST.SetRouteTable();			                        // Set REST routes
-            // ReSharper restore ObjectCreationAsStatement
+        {                                    
+            //if (HttpContextFactory.Context.Server.MachineName == "WIN-FGNQ5AARJ8O")
+            //    "".popupWindow().add_LogViewer();                        
+            TmXmlDatabase           = new  TM_Xml_Database(true);                                   // Create FileSystem Based database            
+            TrackingApplication     = new Tracking_Application(TmXmlDatabase.Path_XmlDatabase);    // Enabled Application Tracking
+            TM_REST.SetRouteTable();			                                                    // Set REST routes            
         } 
         public void Application_End()
         {
+            TrackingApplication.stop();
         }
         public void Application_Error()
         {            
@@ -41,9 +44,13 @@ namespace TeamMentor.CoreLib
             {				
                 new HandleUrlRequest().routeRequestUrl_for404();
             }
+            if (lastError is System.Security.SecurityException)
+            {
+               // HttpContextFactory.Response.Redirect("~/Error/Permission.aspx");
+            }
+			    
             "LastError: {0}".error(lastError);
-        }   
-        
+        }           
         public void Application_BeginRequest()
         {
             ResponseHeaders.addDefaultResponseHeaders();

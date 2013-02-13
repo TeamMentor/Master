@@ -35,12 +35,13 @@
     <Reference Include="AntiXssLibrary, Version=4.2.0.0, Culture=neutral, PublicKeyToken=d127efab8a9c114f, processorArchitecture=MSIL">
       <HintPath>..\packages\AntiXSS.4.2.1\lib\net40\AntiXssLibrary.dll</HintPath>
     </Reference>
-    <Reference Include="FluentSharp.BCL, Version=5.0.1.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
+    <Reference Include="FluentSharp.BCL, Version=5.1.0.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\FluentSharp.BCL.5.0.44\lib\net35\FluentSharp.BCL.dll</HintPath>
+      <HintPath>..\packages\FluentSharp.BCL.5.0.52\lib\net35\FluentSharp.BCL.dll</HintPath>
     </Reference>
-    <Reference Include="FluentSharp.CoreLib, Version=5.0.1.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
-      <HintPath>..\packages\FluentSharp.CoreLib.5.0.44\lib\net35\FluentSharp.CoreLib.dll</HintPath>
+    <Reference Include="FluentSharp.CoreLib, Version=5.1.0.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\FluentSharp.CoreLib.5.0.52\lib\net35\FluentSharp.CoreLib.dll</HintPath>
     </Reference>
     <Reference Include="HtmlAgilityPack">
       <HintPath>..\packages\HtmlAgilityPack.1.4.6\lib\Net40\HtmlAgilityPack.dll</HintPath>
@@ -170,6 +171,8 @@
     </Compile>
     <Compile Include="TM_AppCode\WebServices_REST\Controllers\TM_REST_Sessions.cs" />
     <Compile Include="TM_AppCode\WebServices_REST\TBot\TBot_Brain.cs" />
+    <Compile Include="TM_AppCode\Tracking\Tracking_Application.cs" />
+    <Compile Include="TM_AppCode\WebServices_REST\TBot\TBot_WorkerThread.cs" />
     <Compile Include="TM_AppCode\WebServices_REST\TM_REST.cs" />
     <Compile Include="TM_AppCode\WebServices_REST\Controllers\TM_REST_Libraries.cs" />
     <Compile Include="TM_AppCode\WebServices_REST\Models\TM_Credentials.cs" />

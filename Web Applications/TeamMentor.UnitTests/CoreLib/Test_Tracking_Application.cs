@@ -1,0 +1,45 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using NUnit.Framework;
+using O2.DotNetWrappers.ExtensionMethods;
+using TeamMentor.CoreLib;
+
+namespace TeamMentor.UnitTests.CoreLib
+{
+    [TestFixture]
+    class Test_Tracking_Application : TM_XmlDatabase_InMemory
+    {
+        public Tracking_Application trackingApplication;
+
+        public Test_Tracking_Application()
+        {
+            var testDir         = "_Test_Tracking_Application".tempDir(false);            
+            trackingApplication = new Tracking_Application(testDir);
+
+            Assert.IsTrue       (testDir.dirExists());
+            Assert.IsNotNull    (trackingApplication.Name);
+            Assert.IsNotNull    (trackingApplication.Location);
+            Assert.AreNotEqual  (testDir, trackingApplication.Location);
+            Assert.IsTrue       (trackingApplication.Location.dirExists());
+            Assert.IsEmpty      (trackingApplication.Location.files());
+
+            "Tracking Application TempDir: {0}".info(trackingApplication.Location);            
+        }
+
+        [Test]
+        public void StartAndStop()
+        {
+            //trackingApplication.start();
+
+            trackingApplication.stop();
+
+            var trackingFiles = trackingApplication.Location.files();
+
+            Assert.IsNotEmpty(trackingFiles);
+
+            trackingApplication.Location.startProcess();            
+        }
+    }
+}

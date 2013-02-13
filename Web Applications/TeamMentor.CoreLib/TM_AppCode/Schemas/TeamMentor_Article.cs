@@ -21,7 +21,9 @@ namespace TeamMentor.CoreLib
         public TeamMentor_Article()
         { 
             Metadata = new TeamMentor_Article_Metadata();
-            Content = new TeamMentor_Article_Content();            
+            Content = new TeamMentor_Article_Content();
+
+            Metadata.Id = Guid.NewGuid();
         }
     }
 

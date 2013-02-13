@@ -33,7 +33,12 @@ namespace TeamMentor.CoreLib
             StartTime = DateTime.Now;            
         }
 
-        public Stream GetHtml(string content, bool htmlEncode = true)
+        public Stream GetHtml(string content)
+        {
+            return GetHtml(content, true);
+        }
+
+        public Stream GetHtml(string content, bool htmlEncode)
         {
             var tbotMainHtmlFile = HttpContextFactory.Server.MapPath(TBOT_MAIN_HTML_PAGE);
             var tbotMainHtml = (tbotMainHtmlFile.fileExists())

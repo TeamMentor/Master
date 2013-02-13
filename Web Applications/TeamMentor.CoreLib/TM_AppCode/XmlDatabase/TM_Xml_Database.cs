@@ -8,24 +8,24 @@ namespace TeamMentor.CoreLib
 {	
     public partial class TM_Xml_Database 
     {		    
-        public static TM_Xml_Database Current                   { get; set; }
-        public static bool            SkipServerOnlineCheck     { get; set;  }
+        public static TM_Xml_Database   Current               { get; set; }
+        public static bool              SkipServerOnlineCheck { get; set;  }
 
         //config
-        public bool			UsingFileStorage				{ get; set; }   
-        public bool         ServerOnline                    { get; set; }
+        public bool			            UsingFileStorage	  { get; set; }   
+        public bool                     ServerOnline          { get; set; }
         
-        //users
-        public TM_UserData  UserData                        { get; set; }         
+        //users and tracking
+        public TM_UserData              UserData              { get; set; }         
 
         //articles        
         public Dictionary<Guid, guidanceExplorer>	    GuidanceExplorers_XmlFormat { get; set; }	
         public Dictionary<Guid, string>				    GuidanceItems_FileMappings	{ get; set; }			
         public Dictionary<Guid, TeamMentor_Article>	    Cached_GuidanceItems		{ get; set; }
-        public Dictionary<Guid, VirtualArticleAction>   VirtualArticles			{ get; set; }
+        public Dictionary<Guid, VirtualArticleAction>   VirtualArticles			    { get; set; }
                                                             
-        public string 	Path_XmlDatabase 		        { get; set; }					
-        public string 	Path_XmlLibraries 		        { get; set; }        
+        public string 	        Path_XmlDatabase 		{ get; set; }					
+        public string 	        Path_XmlLibraries 		{ get; set; }        
         public List<TM_Library> Libraries  				{  get { 	return this.tmLibraries(); } }
         public List<Folder_V3> 	Folders  				{  get { 	return this.tmFolders(); } } 		
         public List<View_V3> 	Views  					{  get { 	return this.tmViews(); } } 
@@ -48,7 +48,7 @@ namespace TeamMentor.CoreLib
             Cached_GuidanceItems        = new Dictionary<Guid, TeamMentor_Article>();
             GuidanceItems_FileMappings  = new Dictionary<Guid, string>();
             GuidanceExplorers_XmlFormat = new Dictionary<Guid, guidanceExplorer>();
-            UserData                    = new TM_UserData(UsingFileStorage);
+            UserData                    = new TM_UserData(UsingFileStorage);            
             return this;
         }
 
@@ -61,10 +61,10 @@ namespace TeamMentor.CoreLib
                 {
                     SetPathsAndloadData();
                     this.handleDefaultInstallActions();
-                    this.xmlDB_Load_GuidanceItems();					
+                    this.xmlDB_Load_GuidanceItems();                                 
                 }
 
-                this.createDefaultAdminUser(); // make sure this user exists						
+                this.createDefaultAdminUser(); // make sure this user exists
             }
             catch(Exception ex)
             {

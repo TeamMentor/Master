@@ -9,6 +9,7 @@ namespace TeamMentor.CoreLib
         public string 	                Path_UserData 	    { get; set; }	
         public List<TMUser>	            TMUsers			    { get; set; }
         public TM_SecretData            SecretData          { get; set; }
+        
         public Dictionary<Guid, TMUser>	ActiveSessions	    { get; set; }
         public bool                     UsingFileStorage    { get; set; }
         
@@ -25,9 +26,9 @@ namespace TeamMentor.CoreLib
 
         public TM_UserData SetUp()
         {            
-            TMUsers         = new List<TMUser>();            
-            ActiveSessions  = new Dictionary<Guid, TMUser>();
-            SecretData      = this.secretData_Load();
+            TMUsers             = new List<TMUser>();            
+            ActiveSessions      = new Dictionary<Guid, TMUser>();
+            SecretData          = this.secretData_Load();            
             return this;
         }
     }

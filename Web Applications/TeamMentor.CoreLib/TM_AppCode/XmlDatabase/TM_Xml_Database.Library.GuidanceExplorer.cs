@@ -93,12 +93,20 @@ namespace TeamMentor.CoreLib
                 }
             }
             return null;
-        }		
-        public static guidanceExplorer       xmlDB_Save_GuidanceExplorer(this TM_Library tmLibrary, TM_Xml_Database tmDatabase,  bool reloadGuidanceItemsMappings = true)
+        }
+        public static guidanceExplorer       xmlDB_Save_GuidanceExplorer(this TM_Library tmLibrary, TM_Xml_Database tmDatabase)
+        {
+            return tmLibrary.xmlDB_Save_GuidanceExplorer(tmDatabase, true);
+        }
+        public static guidanceExplorer       xmlDB_Save_GuidanceExplorer(this TM_Library tmLibrary, TM_Xml_Database tmDatabase,  bool reloadGuidanceItemsMappings)
         {
             return tmDatabase.xmlDB_Save_GuidanceExplorer(tmLibrary.Id,  reloadGuidanceItemsMappings);			
-        }		
-        public static guidanceExplorer       xmlDB_Save_GuidanceExplorer(this TM_Xml_Database tmDatabase, Guid libraryId,  bool reloadGuidanceItemsMappings = true)
+        }
+        public static guidanceExplorer       xmlDB_Save_GuidanceExplorer(this TM_Xml_Database tmDatabase, Guid libraryId)
+        {
+            return tmDatabase.xmlDB_Save_GuidanceExplorer(libraryId, true);
+        }
+        public static guidanceExplorer       xmlDB_Save_GuidanceExplorer(this TM_Xml_Database tmDatabase, Guid libraryId,  bool reloadGuidanceItemsMappings)
         {
             var guidanceExplorer = tmDatabase.xmlDB_GuidanceExplorer(libraryId);
             return guidanceExplorer.xmlDB_Save_GuidanceExplorer(tmDatabase, reloadGuidanceItemsMappings);	
