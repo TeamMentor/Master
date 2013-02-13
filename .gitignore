@@ -11,12 +11,15 @@ webEditorSecretData.config
 *.user
 *.nupkg
 obj
-bin
+
 .idea
 
 #Debug
 /Tools/_temp
 
+Web Applications/TeamMentor.CoreLib/bin/Debug
+Web Applications/TeamMentor.CoreLib/bin/Release
+Web Applications/TM_API/bin
+Web Applications/TeamMentor.UnitTests/bin/
 
-
-
+Web Applications/TM_Website/bin/*.xml
