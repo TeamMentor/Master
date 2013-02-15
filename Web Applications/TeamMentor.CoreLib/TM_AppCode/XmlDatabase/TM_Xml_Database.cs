@@ -97,7 +97,7 @@ namespace TeamMentor.CoreLib
             }
             catch(Exception ex)
             {
-                "[TM_Xml_Database] static .ctor: {0} \n\n".error(ex.Message, ex.StackTrace);
+                "[TM_Xml_Database] SetPathsAndloadData .ctor: {0} \n\n {1}".error(ex.Message, ex.StackTrace);
             }
         }        
         [Admin] public string           ReloadData()
