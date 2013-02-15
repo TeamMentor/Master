@@ -668,14 +668,19 @@ namespace TeamMentor.CoreLib
     {
         public static TM_Xml_Database handleDefaultInstallActions(this TM_Xml_Database tmDatabase)
         {
-            var tmConfig = tmDatabase.tmConfig();
-            var defaultLibrary = tmConfig.OnInstallation.DefaultLibraryToInstall_Name;
-            if (defaultLibrary.valid())
-            {                
-                try
+            try
+            {
+                "In handleDefaultInstallActions".info();
+                var tmConfig = tmDatabase.tmConfig();
+                var defaultLibrary = tmConfig.OnInstallation.DefaultLibraryToInstall_Name;
+                if (defaultLibrary.valid())
                 {
-                    if (tmDatabase.tmLibraries().notEmpty())            // don't install default library if there are already libraries there
+                    var tmLibraries = tmDatabase.tmLibraries();
+                    if (tmLibraries.notEmpty()) // don't install default library if there are already libraries there                        
+                    {
+                        "There were {0} libraries found, so skipping handleDefaultInstallActions".info(tmLibraries.size());
                         return tmDatabase;
+                    }
                     var library = tmDatabase.tmLibrary(defaultLibrary); // check if default library exists, and if it doesn't, download and install it
                     if (library.isNull())
                     {
@@ -688,12 +693,12 @@ namespace TeamMentor.CoreLib
                         }
                         else
                             "[handleDefaultInstallActions]  failed to install default library {0}".error(defaultLibrary);
-                    }
+                    }                                
                 }
-                catch (Exception ex)
-                {
-                    ex.log("[in handleDefaultInstallActions]");
-                }                
+            }
+            catch (Exception ex)
+            {
+                ex.log("[in handleDefaultInstallActions]");
             }
             return tmDatabase;
         }

@@ -27,8 +27,11 @@ namespace TeamMentor.CoreLib
         [Assert_Admin]                      // impersonate an admin to load the database
         public void Application_Start()     
         {                                    
+
             //if (HttpContextFactory.Context.Server.MachineName == "WIN-FGNQ5AARJ8O")
-            //    "".popupWindow().add_LogViewer();                        
+            if (HttpContextFactory.Context.Request.IsLocal)                
+                "".popupWindow().add_LogViewer();          
+              
             TmXmlDatabase           = new  TM_Xml_Database(true);                                   // Create FileSystem Based database            
             TrackingApplication     = new Tracking_Application(TmXmlDatabase.Path_XmlDatabase);    // Enabled Application Tracking
             TM_REST.SetRouteTable();			                                                    // Set REST routes            
