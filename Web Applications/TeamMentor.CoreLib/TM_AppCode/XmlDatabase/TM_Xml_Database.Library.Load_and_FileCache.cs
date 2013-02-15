@@ -110,7 +110,7 @@ namespace TeamMentor.CoreLib
         {
             Func<string, bool> isGuidanceExplorerFile = 
                 (file)=>{
-                            var fileContents = file.fileContents();
+                            var fileContents = file.fileContents().fixCRLF();
                             var secondLine  = fileContents.lines().second();
                             return secondLine.starts("<guidanceExplorer");
                         };
@@ -136,15 +136,15 @@ namespace TeamMentor.CoreLib
                 guidanceExplorers.addGuidanceExplorerObject(xmlFile);
             return guidanceExplorers;			
         }		
-        public static string                             getCacheLocation               (this string pathXmlLibraries) //, TM_Library library)
+        public static string                             getCacheLocation               (this TM_Xml_Database tmDatabase) //, TM_Library library)
         {
-            
-            return pathXmlLibraries.pathCombine("Cache_guidanceItems.cacheXml");//.format(library.Caption));
+            var pathXmlDatabase = tmDatabase.Path_XmlDatabase;
+            return pathXmlDatabase.pathCombine("Cache_guidanceItems.cacheXml");//.format(library.Caption));
         }		
-        public static string                             loadGuidanceItemsFromCache     (this string pathXmlLibraries)
+        public static TM_Xml_Database                    load_GuidanceItemsFromCache     (this TM_Xml_Database tmDatabase)
         {
-            //"Loading items from cache".info();
-            var chacheFile = pathXmlLibraries.getCacheLocation();			
+            //"Loading items from cache".info();            
+            var chacheFile = tmDatabase.getCacheLocation();			
             if (chacheFile.fileExists().isFalse())
                 "[TM_Xml_Database] in loadGuidanceItemsFromCache, cached file not found: {0}".error(chacheFile);
             else
@@ -163,18 +163,18 @@ namespace TeamMentor.CoreLib
                     o2Timer.stop();
                 }
             }
-            return pathXmlLibraries;
+            return tmDatabase;
         }		
-        public static string                             saveGuidanceItemsToCache       (this string pathXmlLibraries)
+        public static TM_Xml_Database                    save_GuidanceItemsToCache       (this TM_Xml_Database tmDatabase)
         {
-            var cacheFile = pathXmlLibraries.getCacheLocation();			
+            var cacheFile = tmDatabase.getCacheLocation();			
             var o2Timer = new O2Timer("saveGuidanceItemsToCache").start();
             lock (TM_Xml_Database.Current.Cached_GuidanceItems)
             {
                 TM_Xml_Database.Current.Cached_GuidanceItems.Values.toList().saveAs(cacheFile);
             }
             o2Timer.stop();
-            return pathXmlLibraries;
+            return tmDatabase;
         }					
         public static TM_Xml_Database                    clear_GuidanceItemsCache       (this TM_Xml_Database tmDatabase)
         {
@@ -192,30 +192,18 @@ namespace TeamMentor.CoreLib
                     thread_Save_GuidanceItemsCache = O2Thread.mtaThread(
                         ()=>{
                                 tmDatabase.sleep(1000,false);
-                                tmDatabase.save_GuidanceItemsCache();
+                                tmDatabase.save_GuidanceItemsToCache();
                                 thread_Save_GuidanceItemsCache = null;
                             });
             
                 }			
             }
             return tmDatabase;
-        }
-        public static TM_Xml_Database                    save_GuidanceItemsCache        (this TM_Xml_Database tmDatabase)
-        {
-            "[TM_Xml_Database] save_GuidanceItemsCache".info();
-            TM_Xml_Database.Current.Path_XmlLibraries.saveGuidanceItemsToCache();
-            return tmDatabase;
-        }		
-        public static TM_Xml_Database                    load_GuidanceItemsCache        (this TM_Xml_Database tmDatabase)
-        {
-            "[TM_Xml_Database] load_GuidanceItemsCache".info();
-            TM_Xml_Database.Current.Path_XmlLibraries.loadGuidanceItemsFromCache();
-            return tmDatabase;
-        }		
+        }       
         public static TM_Xml_Database                    reCreate_GuidanceItemsCache    (this TM_Xml_Database tmDatabase)
         {
             "[TM_Xml_Database] reCreate_GuidanceItemsCache".info();
-            var cacheFile = TM_Xml_Database.Current.Path_XmlLibraries.getCacheLocation();			
+            var cacheFile = tmDatabase.getCacheLocation();			
             Files.deleteFile(cacheFile);
             "cache file deleted:{0}".info(!cacheFile.fileExists());
             tmDatabase.clear_GuidanceItemsCache(); 	

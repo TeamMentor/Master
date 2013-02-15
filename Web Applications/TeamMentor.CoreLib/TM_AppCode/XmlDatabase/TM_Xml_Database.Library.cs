@@ -40,7 +40,7 @@ namespace TeamMentor.CoreLib
                 return false;
             }
             tmXmlDatabase.GuidanceExplorers_XmlFormat = tmXmlDatabase.Path_XmlLibraries.getGuidanceExplorerObjects();
-            tmXmlDatabase.Path_XmlLibraries.loadGuidanceItemsFromCache();            
+            tmXmlDatabase.load_GuidanceItemsFromCache();
             tmXmlDatabase.UserData.loadTmUserData();
             return true;					
         }
@@ -674,7 +674,9 @@ namespace TeamMentor.CoreLib
             {                
                 try
                 {
-                    var library = tmDatabase.tmLibrary(defaultLibrary);
+                    if (tmDatabase.tmLibraries().notEmpty())            // don't install default library if there are already libraries there
+                        return tmDatabase;
+                    var library = tmDatabase.tmLibrary(defaultLibrary); // check if default library exists, and if it doesn't, download and install it
                     if (library.isNull())
                     {
                         var installUrl = tmConfig.OnInstallation.DefaultLibraryToInstall_Location;

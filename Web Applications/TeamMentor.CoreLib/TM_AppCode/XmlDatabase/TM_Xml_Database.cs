@@ -59,9 +59,10 @@ namespace TeamMentor.CoreLib
                 ResetDatabase();
                 if (UsingFileStorage)
                 {
-                    SetPathsAndloadData();
+                    SetPathsAndloadData();                    
                     this.handleDefaultInstallActions();
                     this.xmlDB_Load_GuidanceItems();                                 
+                    
                 }
 
                 this.createDefaultAdminUser(); // make sure this user exists

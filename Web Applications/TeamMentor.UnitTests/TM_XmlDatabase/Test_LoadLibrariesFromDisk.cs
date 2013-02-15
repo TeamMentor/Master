@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using O2.DotNetWrappers.ExtensionMethods;
@@ -116,7 +115,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             //LoadGuidanceExplorerFiles();
             TM_Xml_Database.Current.Path_XmlLibraries = LibraryPath;
             tmXmlDatabase.xmlDB_Load_GuidanceItems();
-            tmXmlDatabase.Path_XmlLibraries.loadGuidanceItemsFromCache();            
+            tmXmlDatabase.load_GuidanceItemsFromCache();            
 
             var guidanceItems = tmXmlDatabase.tmGuidanceItems();
             var firstGuidanceItem = guidanceItems.first();

@@ -6,7 +6,7 @@ namespace TeamMentor.CoreLib
     //used to track and save application specific data
     public class Tracking_Application
     {
-        public static string DEFAULT_APPLICATION_LOGS_FOLDER_NAME = "Application Logs";
+        public static string DEFAULT_APPLICATION_LOGS_FOLDER_NAME = "Application_Logs";
 
         public string Name              { get; set; }
         public string Location          { get; set; }
