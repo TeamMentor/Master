@@ -136,8 +136,7 @@ namespace TeamMentor.CoreLib
             }
             catch (Exception ex)
             {
-                ex.log("[TM_Xml_Database] login");
-                throw;
+                ex.log("[TM_Xml_Database] login");                
             }
             return Guid.Empty;    			
         }

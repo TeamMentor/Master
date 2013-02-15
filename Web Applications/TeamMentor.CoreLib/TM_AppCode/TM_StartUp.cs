@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System;
+using System.Web;
 using O2.DotNetWrappers.ExtensionMethods;
 
 namespace TeamMentor.CoreLib
@@ -26,12 +27,18 @@ namespace TeamMentor.CoreLib
         
         [Assert_Admin]                      // impersonate an admin to load the database
         public void Application_Start()     
-        {                                    
-
-            //if (HttpContextFactory.Context.Server.MachineName == "WIN-FGNQ5AARJ8O")
-            if (HttpContextFactory.Context.Request.IsLocal)                
-                "".popupWindow().add_LogViewer();          
-              
+        {
+            try
+            {
+                //if (HttpContextFactory.Context.Server.MachineName == "WIN-FGNQ5AARJ8O")
+                if (HttpContextFactory.Context.Request.IsLocal)                
+                    "".popupWindow().add_LogViewer();          
+            }
+            catch (Exception ex)
+            {
+                ex.log();
+            }
+                          
             TmXmlDatabase           = new  TM_Xml_Database(true);                                   // Create FileSystem Based database            
             TrackingApplication     = new Tracking_Application(TmXmlDatabase.Path_XmlDatabase);    // Enabled Application Tracking
             TM_REST.SetRouteTable();			                                                    // Set REST routes            
@@ -51,7 +58,7 @@ namespace TeamMentor.CoreLib
             {
                // HttpContextFactory.Response.Redirect("~/Error/Permission.aspx");
             }
-			    
+                
             "LastError: {0}".error(lastError);
         }           
         public void Application_BeginRequest()
