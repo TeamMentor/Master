@@ -115,21 +115,29 @@ namespace TeamMentor.CoreLib
             return tmDb.setUserPassword(username,password);    		
         }    	
         public static Guid          login                       (this TM_Xml_Database tmDb, string username, string password)
-        {            
-            tmDb.sleep(FORCED_MILLISEC_DELAY_ON_LOGIN_ACTION, false);      // to slow down brute force attacks
-            if (username.valid() && password.valid())
+        {
+            try
             {
-                var tmUser = TM_UserData.Current.TMUsers.user(username);
+                tmDb.sleep(FORCED_MILLISEC_DELAY_ON_LOGIN_ACTION, false);      // to slow down brute force attacks
+                if (username.valid() && password.valid())
+                {
+                    var tmUser = TM_UserData.Current.TMUsers.user(username);
                 
-                if (TMConfig.Current.Eval_Accounts.Enabled)
-                    if (tmUser.notNull() &&tmUser.Stats.ExpirationDate < DateTime.Now && tmUser.Stats.ExpirationDate != default(DateTime))
-                    {
-                        tmUser.logUserActivity("Account Expired",tmUser.UserName);
-                        return Guid.Empty;
-                    }
+                    if (TMConfig.Current.Eval_Accounts.Enabled)
+                        if (tmUser.notNull() &&tmUser.Stats.ExpirationDate < DateTime.Now && tmUser.Stats.ExpirationDate != default(DateTime))
+                        {
+                            tmUser.logUserActivity("Account Expired",tmUser.UserName);
+                            return Guid.Empty;
+                        }
 
-                if (tmUser.notNull() && tmUser.PasswordHash == tmUser.createPasswordHash(password)) 
-                    return tmUser.registerUserSession(Guid.NewGuid());
+                    if (tmUser.notNull() && tmUser.PasswordHash == tmUser.createPasswordHash(password)) 
+                        return tmUser.registerUserSession(Guid.NewGuid());
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.log("[TM_Xml_Database] login");
+                throw;
             }
             return Guid.Empty;    			
         }
