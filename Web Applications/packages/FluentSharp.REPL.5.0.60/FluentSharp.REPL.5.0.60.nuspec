@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
-<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>FluentSharp.REPL</id>
-    <version>5.0.52</version>
+    <version>5.0.60</version>
     <title>FluentSharp - C# REPL</title>
     <authors>O2 Platform</authors>
     <owners>O2 Platform</owners>
@@ -24,9 +24,11 @@ This is the FluentSharp REPL which provides a C# REPL enviroment (REPL is Read E
     <language>en-GB</language>
     <tags>Fluent OWASP O2Platform Security</tags>
     <dependencies>
-      <dependency id="FluentSharp.BCL" />
-      <dependency id="FluentSharp.CoreLib" />
-      <dependency id="O2.Platform.External.SharpDevelop" />
+      <group targetFramework=".NETFramework3.5">
+        <dependency id="FluentSharp.BCL" />
+        <dependency id="FluentSharp.CoreLib" />
+        <dependency id="O2.Platform.External.SharpDevelop" />
+      </group>
     </dependencies>
     <frameworkAssemblies>
       <frameworkAssembly assemblyName="System.Windows.Forms" targetFramework="" />

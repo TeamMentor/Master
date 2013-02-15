@@ -11,7 +11,7 @@ namespace TeamMentor.UnitTests
         [SetUp]
         public void RunBeforeAllTests()
         {
-            O2ConfigSettings.checkForTempDirMaxSizeCheck = false;
+            O2ConfigSettings.CheckForTempDirMaxSizeCheck = false;
             PublicDI        .log.writeToDebug(true);                     // redirect log messages to debug (so that it shows up in unit tests results)            
             TM_Xml_Database .SkipServerOnlineCheck = true;       
             TMConfig        .Current               = new TMConfig();     // set to default values                        

@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
-<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>O2.Platform.External.SharpDevelop</id>
-    <version>5.0.12</version>
+    <version>5.0.60</version>
     <title>O2.Platform - SharpDevelop Editor Fork</title>
     <authors>O2 Platform</authors>
     <owners>O2 Platform</owners>
@@ -22,8 +22,10 @@ Uses the FluentSharp APIs</description>
     <language>en-GB</language>
     <tags>Fluent OWASP O2Platform Security</tags>
     <dependencies>
-      <dependency id="FluentSharp.BCL" />
-      <dependency id="FluentSharp.CoreLib" />
+      <group targetFramework=".NETFramework3.5">
+        <dependency id="FluentSharp.BCL" />
+        <dependency id="FluentSharp.CoreLib" />
+      </group>
     </dependencies>
     <frameworkAssemblies>
       <frameworkAssembly assemblyName="System.Windows.Forms" targetFramework="" />
