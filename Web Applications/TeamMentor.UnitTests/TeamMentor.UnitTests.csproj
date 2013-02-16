@@ -37,29 +37,41 @@
     <SkipPostSharp>False</SkipPostSharp>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FluentSharp.BCL, Version=5.1.0.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
-      <HintPath>..\packages\FluentSharp.BCL.5.0.60\lib\net35\FluentSharp.BCL.dll</HintPath>
+    <Reference Include="FluentSharp.BCL, Version=5.1.1.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\FluentSharp.BCL.5.0.71\lib\net35\FluentSharp.BCL.dll</HintPath>
     </Reference>
-    <Reference Include="FluentSharp.CoreLib, Version=5.1.0.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
-      <HintPath>..\packages\FluentSharp.CoreLib.5.0.60\lib\net35\FluentSharp.CoreLib.dll</HintPath>
+    <Reference Include="FluentSharp.CoreLib, Version=5.1.1.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\FluentSharp.CoreLib.5.0.71\lib\net35\FluentSharp.CoreLib.dll</HintPath>
     </Reference>
-    <Reference Include="FluentSharp.REPL, Version=5.1.0.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
-      <ExecutableExtension>.exe</ExecutableExtension>
-      <HintPath>..\packages\FluentSharp.REPL.5.0.60\lib\net35\FluentSharp.REPL.exe</HintPath>
+    <Reference Include="FluentSharp.NGit">
+      <HintPath>..\packages\FluentSharp.NGit.5.0.66\lib\net40\FluentSharp.NGit.dll</HintPath>
     </Reference>
+    <Reference Include="FluentSharp.REPL, Version=5.1.1.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\FluentSharp.REPL.5.0.71\lib\net35\FluentSharp.REPL.exe</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.84.0.0, Culture=neutral, PublicKeyToken=1b03e6acf1164f73" />
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Mono.Posix, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL" />
+    <Reference Include="Mono.Security, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL" />
     <Reference Include="Moq">
       <HintPath>..\packages\Moq.4.0.10827\lib\NET40\Moq.dll</HintPath>
     </Reference>
+    <Reference Include="NGit, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="NSch, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
     </Reference>
-    <Reference Include="O2_Platform_External_SharpDevelop, Version=5.1.0.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
-      <HintPath>..\packages\O2.Platform.External.SharpDevelop.5.0.60\lib\net35\O2_Platform_External_SharpDevelop.dll</HintPath>
+    <Reference Include="O2_Platform_External_SharpDevelop, Version=5.1.1.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\O2.Platform.External.SharpDevelop.5.0.71\lib\net35\O2_Platform_External_SharpDevelop.dll</HintPath>
     </Reference>
     <Reference Include="PostSharp, Version=2.1.0.0, Culture=neutral, PublicKeyToken=b13fd38b8f9c99d7, processorArchitecture=MSIL">
       <HintPath>..\packages\PostSharp.2.1.7.28\lib\net20\PostSharp.dll</HintPath>
     </Reference>
+    <Reference Include="Sharpen, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -87,6 +99,7 @@
     <Compile Include="TM_XmlDatabase\Test_TM_TestData.cs" />
     <Compile Include="TM_XmlDatabase\Test_Users_UserActivities.cs" />
     <Compile Include="CoreLib\Test_Utils_GoogleAnalytics.cs" />
+    <Compile Include="_Temp\NGitAPI_ExtraExensionMethods.cs" />
     <Compile Include="_Test_ConfigAndHelpers\Tests_Config.cs" />
     <Compile Include="_Test_ConfigAndHelpers\TM_XmlDatabase_InMemory.cs" />
     <Compile Include="_Test_ConfigAndHelpers\Moq\Test_API_Moq_HttpContext.cs" />
@@ -133,6 +146,15 @@
   <ItemGroup>
     <None Include="_Old_Version_To_Implement\SecurityInnovation.TeamMentor.WebClient.JavascriptProxy.XmlDatabase.Authentication.cs.txt" />
     <None Include="_Old_Version_To_Implement\SecurityInnovation.TeamMentor.WebClient.JavascriptProxy.XmlDatabase.Temp_Libraries.cs.txt" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="NGit_Dlls\ICSharpCode.SharpZipLib.dll" />
+    <Content Include="NGit_Dlls\Mono.Posix.dll" />
+    <Content Include="NGit_Dlls\Mono.Security.dll" />
+    <Content Include="NGit_Dlls\NGit.dll" />
+    <Content Include="NGit_Dlls\NSch.dll" />
+    <Content Include="NGit_Dlls\Sharpen.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\PostSharp.2.1.7.28\tools\PostSharp.targets" Condition="Exists('..\packages\PostSharp.2.1.7.28\tools\PostSharp.targets')" />
