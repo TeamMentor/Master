@@ -14,8 +14,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamMentor.UnitTests", "TeamMentor.UnitTests\TeamMentor.UnitTests.csproj", "{04B01F87-4467-454F-B9F3-305647BB4E86}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TM_API", "TM_API\TM_API.csproj", "{747D3FB6-784F-4C43-8304-97171C7485ED}"
-EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = TM_Website.vsmdi
@@ -59,16 +57,6 @@ Global
 		{04B01F87-4467-454F-B9F3-305647BB4E86}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{04B01F87-4467-454F-B9F3-305647BB4E86}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{04B01F87-4467-454F-B9F3-305647BB4E86}.Release|x86.ActiveCfg = Release|Any CPU
-		{747D3FB6-784F-4C43-8304-97171C7485ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{747D3FB6-784F-4C43-8304-97171C7485ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{747D3FB6-784F-4C43-8304-97171C7485ED}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{747D3FB6-784F-4C43-8304-97171C7485ED}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{747D3FB6-784F-4C43-8304-97171C7485ED}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{747D3FB6-784F-4C43-8304-97171C7485ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{747D3FB6-784F-4C43-8304-97171C7485ED}.Release|Any CPU.Build.0 = Release|Any CPU
-		{747D3FB6-784F-4C43-8304-97171C7485ED}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{747D3FB6-784F-4C43-8304-97171C7485ED}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{747D3FB6-784F-4C43-8304-97171C7485ED}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
