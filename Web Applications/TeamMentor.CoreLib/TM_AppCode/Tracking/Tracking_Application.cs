@@ -22,9 +22,7 @@ namespace TeamMentor.CoreLib
         public static Tracking_Application start(this Tracking_Application tracking, string baseFolder)
         {
             try
-            {
-                var now = DateTime.Now;
-                var test = now.str(); 
+            {                                
                 tracking.Name        = DateTime.Now.str().safeFileName();
                 tracking.Location    = baseFolder.pathCombine(Tracking_Application.DEFAULT_APPLICATION_LOGS_FOLDER_NAME)
                                                  .pathCombine(tracking.Name);
@@ -41,18 +39,21 @@ namespace TeamMentor.CoreLib
         {
             try
             {
-                var logFile = tracking.Location.pathCombine("ApplicationLog.txt");
-                "Saving Application Tracking Log to: {0}".info(logFile);
                 var logData = O2.Kernel.PublicDI.log.LogRedirectionTarget.prop("LogData").str() ;
-                logData.saveAs(logFile);
-    
+                if (logData.notNull())
+                {
+                    var logFile = tracking.Location.pathCombine("ApplicationLog.txt");
+                    "Saving Application Tracking Log to: {0}".info(logFile);
 
-                var tmArticle = new TeamMentor_Article 
-                                    {
-                                        Metadata = { Title = "Log Files"} ,
-                                        Content =  { Data  = { Value = logData } } 
-                                    };
-                tmArticle.saveAs(logFile + ".xml");
+                    var tmArticle = new TeamMentor_Article
+                        {
+                            Metadata = {Title = "Log Files"},
+                            Content = {Data = {Value = logData}}
+                        };
+                    tmArticle.saveAs(logFile + ".xml");
+
+                    logData.saveAs(logFile);
+                }
             }
             catch (Exception ex)
             {

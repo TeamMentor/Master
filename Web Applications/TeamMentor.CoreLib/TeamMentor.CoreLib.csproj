@@ -41,6 +41,9 @@
     <Reference Include="FluentSharp.CoreLib, Version=5.1.0.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
       <HintPath>..\packages\FluentSharp.CoreLib.5.0.60\lib\net35\FluentSharp.CoreLib.dll</HintPath>
     </Reference>
+    <Reference Include="FluentSharp.NGit">
+      <HintPath>..\packages\FluentSharp.NGit.5.0.66\lib\net40\FluentSharp.NGit.dll</HintPath>
+    </Reference>
     <Reference Include="HtmlAgilityPack">
       <HintPath>..\packages\HtmlAgilityPack.1.4.6\lib\Net40\HtmlAgilityPack.dll</HintPath>
     </Reference>
@@ -132,8 +135,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TM_AppCode\Schemas\DataViewers\JsDataTable.cs" />
     <Compile Include="TM_AppCode\Schemas\DataViewers\JsTreeNode.cs" />
-    <Content Include="TM_AppCode\Schemas\Legacy\GuidanceItem.cs.txt" />
-    <Content Include="TM_AppCode\Schemas\Legacy\library.cs.txt" />
+    <None Include="TM_AppCode\Schemas\Legacy\GuidanceItem.cs.txt" />
+    <None Include="TM_AppCode\Schemas\Legacy\library.cs.txt" />
     <Compile Include="TM_AppCode\Schemas\TeamMentor_Article.cs" />
     <Compile Include="TM_AppCode\Schemas\TMUser.cs" />
     <Compile Include="TM_AppCode\TmConfig.cs" />

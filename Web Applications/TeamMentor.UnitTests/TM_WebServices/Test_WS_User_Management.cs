@@ -3,7 +3,7 @@ using NUnit.Framework;
 using O2.FluentSharp;
 using TeamMentor.CoreLib;
 
-namespace TeamMentor.UnitTests
+namespace TeamMentor.UnitTests.TM_XmlDatabase
 {
     [TestFixture]
     public class Test_WS_User_Management : TM_XmlDatabase_InMemory

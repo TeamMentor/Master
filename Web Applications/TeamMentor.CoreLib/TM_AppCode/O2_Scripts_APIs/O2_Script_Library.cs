@@ -31,7 +31,7 @@ HttpContext.Current.script_Me().waitForClose();
 return ""done"";
 //using System.Web;
 //O2Ref:FluentSharp.BCL.dll
-//O2Ref:FluentSharp.REPL.dll";
+//O2Ref:FluentSharp.REPL.exe";
         }
 
         public static string script_Database()
@@ -42,7 +42,7 @@ return ""done"";
 //using TeamMentor.CoreLib;
 //O2Ref:TeamMentor.Corelib.dll
 //O2Ref:FluentSharp.BCL.dll
-//O2Ref:FluentSharp.REPL.dll";            
+//O2Ref:FluentSharp.REPL.exe";            
         }        
     }
 }

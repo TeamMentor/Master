@@ -6,11 +6,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamMentor.CoreLib", "TeamMentor.CoreLib\TeamMentor.CoreLib.csproj", "{87BACB04-640F-44ED-8F01-45224D52A883}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{105CB348-1652-4F01-8063-51B0F2E09930}"
-	ProjectSection(SolutionItems) = preProject
-		Local.testsettings = Local.testsettings
-		TM_Website.vsmdi = TM_Website.vsmdi
-		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamMentor.UnitTests", "TeamMentor.UnitTests\TeamMentor.UnitTests.csproj", "{04B01F87-4467-454F-B9F3-305647BB4E86}"
 EndProject

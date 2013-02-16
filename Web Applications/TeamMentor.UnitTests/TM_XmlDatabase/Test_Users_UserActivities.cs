@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using O2.DotNetWrappers.ExtensionMethods;
 using TeamMentor.CoreLib;
 
-namespace TeamMentor.UnitTests
+namespace TeamMentor.UnitTests.TM_XmlDatabase
 {
 	[TestFixture]
 	public class Test_Users_UserActivities : TM_XmlDatabase_InMemory

@@ -28,7 +28,7 @@ namespace TeamMentor.UnitTests
 		[Test]
 		public void Test_Http_Headers()
 		{
-			var request  = HttpContextFactory.Context.Request;
+			//var request  = HttpContextFactory.Context.Request;
 			var response = HttpContextFactory.Context.Response;
 
 			var request_Headers  = HttpContextFactory.Context.Request.Headers;

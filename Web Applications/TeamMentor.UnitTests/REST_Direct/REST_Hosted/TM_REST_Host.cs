@@ -3,7 +3,7 @@ using System.ServiceModel.Web;
 using O2.DotNetWrappers.ExtensionMethods;
 using TeamMentor.CoreLib;
 
-namespace TeamMentor.UnitTests
+namespace TeamMentor.UnitTests.REST
 {
 	public class TM_REST_Host
 	{

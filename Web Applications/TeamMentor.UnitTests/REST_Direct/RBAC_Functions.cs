@@ -2,7 +2,7 @@
 using O2.DotNetWrappers.ExtensionMethods;
 using TeamMentor.CoreLib;
 
-namespace TeamMentor.UnitTests
+namespace TeamMentor.UnitTests.REST
 {
     [TestFixture]
     public class RBAC_Functions : TM_Rest_Direct

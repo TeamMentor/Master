@@ -2,7 +2,7 @@
 using TeamMentor.CoreLib;
 using O2.FluentSharp;
 
-namespace TeamMentor.UnitTests
+namespace TeamMentor.UnitTests.REST
 {
 	
 	public class TM_Rest_Hosted

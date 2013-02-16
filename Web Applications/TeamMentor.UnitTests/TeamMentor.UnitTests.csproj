@@ -83,6 +83,7 @@
     <Compile Include="CoreLib\Test_TM_SecretData.cs" />
     <Compile Include="CoreLib\Test_Tracking_Application.cs" />
     <Compile Include="TM_XmlDatabase\Test_LoadLibrariesFromDisk.cs" />
+    <Compile Include="TM_XmlDatabase\Test_NGit_Support.cs" />
     <Compile Include="TM_XmlDatabase\Test_TM_TestData.cs" />
     <Compile Include="TM_XmlDatabase\Test_Users_UserActivities.cs" />
     <Compile Include="CoreLib\Test_Utils_GoogleAnalytics.cs" />

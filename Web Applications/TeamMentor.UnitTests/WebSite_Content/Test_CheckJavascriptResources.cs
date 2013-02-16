@@ -1,9 +1,8 @@
 ﻿using NUnit.Framework;
 using O2.DotNetWrappers.ExtensionMethods;
-using O2.Kernel;
 using TeamMentor.CoreLib;
 
-namespace TeamMentor.UnitTests
+namespace TeamMentor.UnitTests.WebSite_Content
 {
     [TestFixture]
     public class Test_CheckJavascriptResources 

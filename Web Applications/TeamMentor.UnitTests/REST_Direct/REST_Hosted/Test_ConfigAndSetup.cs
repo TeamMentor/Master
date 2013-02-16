@@ -1,8 +1,8 @@
 ﻿using NUnit.Framework;
 using O2.DotNetWrappers.ExtensionMethods;
-using O2.FluentSharp;
 
-namespace TeamMentor.UnitTests
+namespace TeamMentor.UnitTests.REST
+
 {	
     [TestFixture,Ignore]
     public class Test_ConfigAndSetup : TM_Rest_Hosted

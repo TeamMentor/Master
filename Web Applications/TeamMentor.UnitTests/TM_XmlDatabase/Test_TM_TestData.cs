@@ -6,7 +6,7 @@ using TeamMentor.CoreLib;
 using urn.microsoft.guidanceexplorer;
 using View = TeamMentor.CoreLib.View;
 
-namespace TeamMentor.UnitTests
+namespace TeamMentor.UnitTests.TM_XmlDatabase
 {
     public class TM_TestLibrary
     {

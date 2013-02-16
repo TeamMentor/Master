@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using TeamMentor.CoreLib;
 
-namespace TeamMentor.UnitTests
+namespace TeamMentor.UnitTests.TM_XmlDatabase
 {
     [TestFixture]
     public class Test_Users_Activities  : TM_XmlDatabase_InMemory
