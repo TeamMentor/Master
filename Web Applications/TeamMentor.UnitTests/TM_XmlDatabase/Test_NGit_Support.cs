@@ -4,7 +4,7 @@ using O2.FluentSharp;
 
 namespace TeamMentor.UnitTests.TM_XmlDatabase
 {
-    [TestFixture]
+    [TestFixture,Ignore]
     public class Test_NGit_Support
     {
         public string TempRepo   { get; set; }
@@ -34,7 +34,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         public void CreateLocalTestRepo()
         {
             "TestRepo is: {0}".info(TempRepo);
-            
+            //NGitApi.script_Me().waitForClose();
             //Creating a local temp Repo
             Assert.IsFalse(TempRepo.isGitRepository() , "Should not be a repo");
             NGitApi.init(TempRepo);                        
