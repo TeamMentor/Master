@@ -167,13 +167,16 @@ namespace TeamMentor.CoreLib
         }		
         public static TM_Xml_Database                    save_GuidanceItemsToCache       (this TM_Xml_Database tmDatabase)
         {
-            var cacheFile = tmDatabase.getCacheLocation();			
-            var o2Timer = new O2Timer("saveGuidanceItemsToCache").start();
-            lock (TM_Xml_Database.Current.Cached_GuidanceItems)
+            if (tmDatabase.UsingFileStorage)
             {
-                TM_Xml_Database.Current.Cached_GuidanceItems.Values.toList().saveAs(cacheFile);
+                var cacheFile = tmDatabase.getCacheLocation();
+                var o2Timer = new O2Timer("saveGuidanceItemsToCache").start();
+                lock (TM_Xml_Database.Current.Cached_GuidanceItems)
+                {
+                    TM_Xml_Database.Current.Cached_GuidanceItems.Values.toList().saveAs(cacheFile);
+                }
+                o2Timer.stop();
             }
-            o2Timer.stop();
             return tmDatabase;
         }					
         public static TM_Xml_Database                    clear_GuidanceItemsCache       (this TM_Xml_Database tmDatabase)

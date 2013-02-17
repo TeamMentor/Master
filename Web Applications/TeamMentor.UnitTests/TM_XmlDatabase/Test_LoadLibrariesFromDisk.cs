@@ -114,8 +114,8 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         {
             //LoadGuidanceExplorerFiles();
             TM_Xml_Database.Current.Path_XmlLibraries = LibraryPath;
-            tmXmlDatabase.xmlDB_Load_GuidanceItems();
-            tmXmlDatabase.load_GuidanceItemsFromCache();            
+            tmXmlDatabase.setGuidanceExplorerObjects();
+            tmXmlDatabase.xmlDB_Load_GuidanceItems();            
 
             var guidanceItems = tmXmlDatabase.tmGuidanceItems();
             var firstGuidanceItem = guidanceItems.first();
