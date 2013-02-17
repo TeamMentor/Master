@@ -12,21 +12,33 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
 
         public Test_NGit_Support()
         {
-            TempRepo = "_tempRepo".tempDir(false);
+            TempRepo = "_tempRepo".tempDir(true);
             NGitApi = new API_NGit();
+        }
+
+        [Test]
+        public void CreateRepoUsingNGit()
+        {
+            var testRepo2 = "_tempRepo".tempDir(true);
+            testRepo2.info();
+            "IsGitrepo: {0}".info(testRepo2.isGitRepository());
+            Assert.IsFalse(testRepo2.isGitRepository() , "Should not be a repo");
+            var initCommand = NGit.Api.Git.Init();
+            initCommand.SetDirectory(testRepo2);            
+            initCommand.Call();
+            "IsGitrepo: {0}".info(testRepo2.isGitRepository());
+            Assert.IsTrue(testRepo2.isGitRepository() , "Should not be a repo");
         }
 
         [Test]
         public void CreateLocalTestRepo()
         {
             "TestRepo is: {0}".info(TempRepo);
-            "Parent Dir exists: {0}".info(TempRepo.parentFolder().dirExists());
-            TempRepo.parentFolder().createDir();
-            "Parent Dir exists: {0}".info(TempRepo.parentFolder().dirExists());
+            
             //Creating a local temp Repo
-            Assert.IsFalse(TempRepo.isGitRepository());              
-            NGitApi.init(TempRepo);            
-            Assert.IsTrue(TempRepo.isGitRepository());            
+            Assert.IsFalse(TempRepo.isGitRepository() , "Should not be a repo");
+            NGitApi.init(TempRepo);                        
+            Assert.IsTrue(TempRepo.isGitRepository(), "Should be a repo");            
             Assert.IsNull(NGitApi.head());
 
             //Adding a file (using method 1)
