@@ -635,6 +635,7 @@
     <Content Include="TBot\Admin\RazorTemplates.cshtml" />
     <Content Include="TBot\Admin\IISSessions.cshtml" />
     <Content Include="TBot\Users\userData.cshtml" />
+    <Content Include="TBot\NGit\GitStatus.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="TBot\Tests\" />

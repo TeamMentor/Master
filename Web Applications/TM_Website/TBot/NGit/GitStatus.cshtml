@@ -1,0 +1,16 @@
+﻿
+@using O2.DotNetWrappers.ExtensionMethods
+@using TeamMentor.CoreLib
+@using O2.FluentSharp
+
+@{
+    var userData = TM_UserData.Current;
+    var userDataLocation = userData.Path_UserData;
+    var userGit = userDataLocation.git_Open();
+}
+<h2>Git Status</h2>
+
+User Data @userDataLocation  , Repo is Git: @userDataLocation.isGitRepository()
+Status: @userGit.status();
+
+
