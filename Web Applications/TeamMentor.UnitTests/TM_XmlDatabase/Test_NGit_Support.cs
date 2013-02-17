@@ -18,7 +18,11 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
 
         [Test]
         public void CreateLocalTestRepo()
-        {            
+        {
+            "TestRepo is: {0}".info(TempRepo);
+            "Parent Dir exists: {0}".info(TempRepo.parentFolder().dirExists());
+            TempRepo.parentFolder().createDir();
+            "Parent Dir exists: {0}".info(TempRepo.parentFolder().dirExists());
             //Creating a local temp Repo
             Assert.IsFalse(TempRepo.isGitRepository());              
             NGitApi.init(TempRepo);            
