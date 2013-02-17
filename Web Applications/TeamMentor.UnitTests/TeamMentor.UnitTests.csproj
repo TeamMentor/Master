@@ -45,8 +45,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\FluentSharp.CoreLib.5.0.71\lib\net35\FluentSharp.CoreLib.dll</HintPath>
     </Reference>
-    <Reference Include="FluentSharp.NGit">
-      <HintPath>..\packages\FluentSharp.NGit.5.0.66\lib\net40\FluentSharp.NGit.dll</HintPath>
+    <Reference Include="FluentSharp.NGit, Version=5.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\FluentSharp.NGit.5.0.71\lib\net40\FluentSharp.NGit.dll</HintPath>
     </Reference>
     <Reference Include="FluentSharp.REPL, Version=5.1.1.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
