@@ -113,6 +113,7 @@
     <Compile Include="TM_AppCode\Utils\GoogleAnalytics.cs" />
     <Compile Include="TM_AppCode\Utils\GZip.cs" />
     <Compile Include="TM_AppCode\Schemas\KeyValue.cs" />
+    <Compile Include="TM_AppCode\Utils\NGit.cs" />
     <Compile Include="TM_AppCode\Utils\PostSharp.cs" />
     <Compile Include="TM_AppCode\Utils\REPL.cs" />
     <Compile Include="TM_AppCode\Utils\ResponseHeaders.cs" />
