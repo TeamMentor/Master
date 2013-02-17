@@ -6,11 +6,26 @@
 @{
     var userData = TM_UserData.Current;
     var userDataLocation = userData.Path_UserData;
-    var userGit = userDataLocation.git_Open();
+//    var userGit = userDataLocation.git_Open();
+    var userStatus = userDataLocation.isGitRepository() ? userDataLocation.git_Open().status() : "(folder is not a repository)";
+
+    var xmlLibraryLocation = TM_Xml_Database.Current.Path_XmlLibraries;
+    var libraryStatus = xmlLibraryLocation.isGitRepository() ? xmlLibraryLocation.git_Open().status() : "(folder is not a repository)";
 }
 <h2>Git Status</h2>
+<h4>User Data</h4>
+<ul>
+    Location: @userDataLocation  , is Git: @userDataLocation.isGitRepository()
+   
+    Repo Status:<pre>@userStatus.trim()</pre>
+</ul>
 
-User Data @userDataLocation  , Repo is Git: @userDataLocation.isGitRepository()
-Status: @userGit.status();
+<h4>Xml Library Data</h4>
+<ul>
+Location: @xmlLibraryLocation  , is Git: @xmlLibraryLocation.isGitRepository()
+   
+Repo Status:<pre>@libraryStatus.trim()</pre>
+</ul>
+
 
 

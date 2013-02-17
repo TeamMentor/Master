@@ -40,24 +40,21 @@ namespace TeamMentor.CoreLib
             }
             return userData;
         }*/
-
 	    public static string getTmUserXmlFile(this TMUser tmUser)
 	    {
             return TM_UserData.Current.Path_UserData.pathCombine("{0}.userData.xml".format(tmUser.ID));
 	    }
-
 	    public static TMUser   saveTmUser(this TMUser tmUser)
         {
             if (TM_Xml_Database.Current.UsingFileStorage)
             {                
                 lock (tmUser)
                 {                    
-                    tmUser.saveAs(tmUser.getTmUserXmlFile());                    
+                    tmUser.saveAs(tmUser.getTmUserXmlFile());
                 }
             }
             return tmUser;
         }
-
         public static bool delete(this List<TMUser> tmUsers, int id)
     	{    		
     		foreach(var tmUser in tmUsers)
