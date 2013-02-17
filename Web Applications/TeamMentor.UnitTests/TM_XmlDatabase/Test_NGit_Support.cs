@@ -4,7 +4,7 @@ using O2.FluentSharp;
 
 namespace TeamMentor.UnitTests.TM_XmlDatabase
 {
-    [TestFixture,Ignore]
+    [TestFixture]
     public class Test_NGit_Support
     {
         public string TempRepo   { get; set; }
