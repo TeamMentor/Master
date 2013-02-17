@@ -51,13 +51,14 @@
       <ExecutableExtension>.exe</ExecutableExtension>
       <HintPath>..\packages\FluentSharp.REPL.5.0.73\lib\net35\FluentSharp.REPL.exe</HintPath>
     </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Mono.Posix, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL" />
     <Reference Include="Mono.Security, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL" />
     <Reference Include="Moq">
       <HintPath>..\packages\Moq.4.0.10827\lib\NET40\Moq.dll</HintPath>
     </Reference>
-    <Reference Include="NGit, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="NGit, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="NSch, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
