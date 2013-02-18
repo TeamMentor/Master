@@ -21,13 +21,19 @@ namespace TeamMentor.CoreLib
         
         static TBot_Brain()
         {
-            ScriptContentHashes = new List<int>();
-            TemplateService  = (ITemplateService) typeof (Razor).prop("TemplateService");
-            AvailableScripts = HttpContextFactory.Server.MapPath(TBOT_SCRIPTS_FOLDER)
-                                                 .files(true, "*.cshtml")
-                                                 .ToDictionary((file) => file.fileName_WithoutExtension());
+            try
+            {
+                ScriptContentHashes = new List<int>();
+                TemplateService  = (ITemplateService) typeof (Razor).prop("TemplateService");
+                AvailableScripts = GetAvailableScripts();
+            }
+            catch (Exception ex)
+            {
+                ex.log();
+            }
+            
         }
-
+        
         public TBot_Brain()
         {
             StartTime = DateTime.Now;            
@@ -37,7 +43,6 @@ namespace TeamMentor.CoreLib
         {
             return GetHtml(content, true);
         }
-
         public Stream GetHtml(string content, bool htmlEncode)
         {
             var tbotMainHtmlFile = HttpContextFactory.Server.MapPath(TBOT_MAIN_HTML_PAGE);
@@ -50,13 +55,11 @@ namespace TeamMentor.CoreLib
             html += "<hr>script executed in: {0}s".format(executionTime.TotalSeconds);
             return html.stream_UFT8();
         }
-
         public Stream RenderPage()
         {
             var message = "this is some message";
             return GetHtml(message);
         }
-
         public Stream Ask(string what)
         {            
             try
@@ -82,14 +85,26 @@ namespace TeamMentor.CoreLib
             }     
             
         }
-
         public Stream List()
-        {                        
+        {           
+             
             var filesHtml = AvailableScripts.Aggregate("Here are the commands I found:<ul>", 
                                 (current, items) => current + "<li><a href='/rest/tbot/ask/{0}'>{0}</a> - {1}</li>"
                                                                 .format(items.Key, items.Value.fileContents().hash()));
             filesHtml += "</ul>";
             return GetHtml(filesHtml, false);            
-        }                
+        }
+
+
+        public static Dictionary<string, string> GetAvailableScripts()
+        {
+            var files = HttpContextFactory.Server.MapPath(TBOT_SCRIPTS_FOLDER)
+                                          .files(true, "*.cshtml");
+            var mappings = new Dictionary<string, string>();
+            foreach (var file in files)
+                mappings.add(file.fileName_WithoutExtension(), file);
+            return mappings;
+            //return files.toDictionary((file) => file.fileName_WithoutExtension()); //this doesn't handle duplicate files names
+        }
     }
 }

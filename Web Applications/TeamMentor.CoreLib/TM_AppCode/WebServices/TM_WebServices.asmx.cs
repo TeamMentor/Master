@@ -6,16 +6,17 @@ namespace TeamMentor.CoreLib
     [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
     [System.ComponentModel.ToolboxItem(false)]
     [System.Web.Script.Services.ScriptService]
-    public partial class TM_WebServices : WebService 
-    {		
-        //public TM_Xml_Database_JavaScriptProxy javascriptProxy	{ get; set; }		
-        public TM_Authentication    tmAuthentication				{ get; set; }
-        public TM_Xml_Database      tmXmlDatabase                   { get; set;}		
+    public partial class TM_WebServices : WebService
+    {
+        public TM_Authentication    tmAuthentication;
+        public TM_Xml_Database      tmXmlDatabase;
+        public TM_UserData          userData;
 
         [LogUrl("WebService")]
         public TM_WebServices() : this(false)
         {
-            tmXmlDatabase =  TM_Xml_Database.Current;			
+            tmXmlDatabase = TM_Xml_Database.Current;			
+            userData      = tmXmlDatabase  .UserData;
         }
 
         

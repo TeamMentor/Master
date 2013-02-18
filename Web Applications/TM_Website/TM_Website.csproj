@@ -569,7 +569,6 @@
     <Content Include="Javascript\_mappings\HomePage_JS.txt" />
     <Content Include="Javascript\_mappings\HomePage_JS_TM.txt" />
     <Content Include="TBot\Questions\hello.cshtml" />
-    <Content Include="TBot\Questions\testB.cshtml" />
     <Content Include="TBot\Questions\theTime.cshtml" />
     <Content Include="TBot\TBotMain.html" />
     <Content Include="Web.config">
@@ -626,16 +625,17 @@
     <Content Include="TmConfig.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="packages.config" />
     <Content Include="TBot\Users\users.cshtml" />
-    <Content Include="TBot\Users\user_new.cshtml" />
-    <Content Include="TBot\Users\user.cshtml" />
+    <Content Include="TBot\Users\user_new.cshtml.txt" />
+    <Content Include="TBot\Users\user.cshtml.txt" />
     <Content Include="TBot\Questions\version.cshtml" />
     <Content Include="TBot\Admin\ActiveSessions.cshtml" />
-    <Content Include="TBot\Admin\RazorTemplates.cshtml" />
+    <Content Include="TBot\Admin\RazorTemplates.cshtml.txt" />
     <Content Include="TBot\Admin\IISSessions.cshtml" />
     <Content Include="TBot\Users\userData.cshtml" />
     <Content Include="TBot\NGit\GitStatus.cshtml" />
+    <Content Include="TBot\Admin\hello.cshtml" />
+    <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="TBot\Tests\" />

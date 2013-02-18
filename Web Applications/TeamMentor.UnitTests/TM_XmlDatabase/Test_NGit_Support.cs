@@ -43,7 +43,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
 
             //Adding a file (using method 1)
             NGitApi.create_File("testFile.txt", "some Text");
-            NGitApi.add_and_commit_using_Status();
+            NGitApi.add_and_Commit_using_Status();
             var head1 = NGitApi.head();
             Assert.IsNotNull(head1);
                         

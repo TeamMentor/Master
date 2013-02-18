@@ -6,8 +6,8 @@ namespace TeamMentor.UnitTests
 {    
     public class TM_XmlDatabase_InMemory
     {
-        public TM_Xml_Database tmXmlDatabase;
-
+        public TM_Xml_Database  tmXmlDatabase;
+        public TM_UserData      userData;
         
         public TM_XmlDatabase_InMemory()
         {
@@ -17,7 +17,8 @@ namespace TeamMentor.UnitTests
         [Assert_Admin]
         public void SetupDatabase()
         {
-            tmXmlDatabase = new TM_Xml_Database();
+            tmXmlDatabase   = new TM_Xml_Database();
+            userData        = tmXmlDatabase.UserData; 
             //new TM_TestLibrary().CreateTestDatabase(tmXmlDatabase);
         }
 

@@ -38,18 +38,17 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="FluentSharp.BCL, Version=5.1.1.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
-      <HintPath>..\packages\FluentSharp.BCL.5.0.73\lib\net35\FluentSharp.BCL.dll</HintPath>
+      <HintPath>..\packages\FluentSharp.BCL.5.0.75\lib\net35\FluentSharp.BCL.dll</HintPath>
     </Reference>
     <Reference Include="FluentSharp.CoreLib, Version=5.1.1.1, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\FluentSharp.CoreLib.5.0.73\lib\net35\FluentSharp.CoreLib.dll</HintPath>
+      <HintPath>..\packages\FluentSharp.CoreLib.5.0.76\lib\net35\FluentSharp.CoreLib.dll</HintPath>
     </Reference>
     <Reference Include="FluentSharp.NGit, Version=5.1.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\FluentSharp.NGit.5.0.73\lib\net40\FluentSharp.NGit.dll</HintPath>
+      <HintPath>..\packages\FluentSharp.NGit.5.0.76\lib\net40\FluentSharp.NGit.dll</HintPath>
     </Reference>
     <Reference Include="FluentSharp.REPL, Version=5.1.1.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
       <ExecutableExtension>.exe</ExecutableExtension>
-      <HintPath>..\packages\FluentSharp.REPL.5.0.73\lib\net35\FluentSharp.REPL.exe</HintPath>
+      <HintPath>..\packages\FluentSharp.REPL.5.0.75\lib\net35\FluentSharp.REPL.exe</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
@@ -64,7 +63,7 @@
       <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="O2_Platform_External_SharpDevelop, Version=5.1.1.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
-      <HintPath>..\packages\O2.Platform.External.SharpDevelop.5.0.73\lib\net35\O2_Platform_External_SharpDevelop.dll</HintPath>
+      <HintPath>..\packages\O2.Platform.External.SharpDevelop.5.0.75\lib\net35\O2_Platform_External_SharpDevelop.dll</HintPath>
     </Reference>
     <Reference Include="PostSharp, Version=2.1.0.0, Culture=neutral, PublicKeyToken=b13fd38b8f9c99d7, processorArchitecture=MSIL">
       <HintPath>..\packages\PostSharp.2.1.7.28\lib\net20\PostSharp.dll</HintPath>
@@ -95,8 +94,10 @@
     <Compile Include="TM_XmlDatabase\Test_LoadLibrariesFromDisk.cs" />
     <Compile Include="TM_XmlDatabase\Test_NGit_Support.cs" />
     <Compile Include="TM_XmlDatabase\Test_TM_TestData.cs" />
+    <Compile Include="TM_XmlDatabase\Test_UserData_GitStorage.cs" />
     <Compile Include="TM_XmlDatabase\Test_Users_UserActivities.cs" />
     <Compile Include="CoreLib\Test_Utils_GoogleAnalytics.cs" />
+    <Compile Include="_Temp\FluentSharp_ExtensionMethods_To_add.cs" />
     <Compile Include="_Temp\NGitAPI_ExtraExensionMethods.cs" />
     <Compile Include="_Test_ConfigAndHelpers\Tests_Config.cs" />
     <Compile Include="_Test_ConfigAndHelpers\TM_XmlDatabase_InMemory.cs" />

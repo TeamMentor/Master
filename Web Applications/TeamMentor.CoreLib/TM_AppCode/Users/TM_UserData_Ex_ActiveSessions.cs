@@ -10,7 +10,7 @@ namespace TeamMentor.CoreLib
         {
             try
             {                
-                return TM_Xml_Database.Current.UserData.ActiveSessions;
+                return  TM_UserData.Current.ActiveSessions;
             }
             catch (Exception ex)
             {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using O2.FluentSharp;
 
 namespace TeamMentor.CoreLib
 {
@@ -12,6 +13,9 @@ namespace TeamMentor.CoreLib
         
         public Dictionary<Guid, TMUser>	ActiveSessions	    { get; set; }
         public bool                     UsingFileStorage    { get; set; }
+        public bool                     AutoGitCommit       { get; set; }
+        public API_NGit                 NGit                { get; set; }
+        
         
         public TM_UserData() : this (false)
         {
@@ -21,14 +25,27 @@ namespace TeamMentor.CoreLib
         {
             Current = this;
             UsingFileStorage = useFileStorage;
-            SetUp();
+            ResetData();
+        }
+
+        public TM_UserData ResetData()
+        {
+            TMUsers             = new List<TMUser>();            
+            ActiveSessions      = new Dictionary<Guid, TMUser>();
+            SecretData          = this.secretData_Load();
+            AutoGitCommit       = TMConfig.Current.Git.AutoCommit_UserData;
+            return this;
         }
 
         public TM_UserData SetUp()
-        {            
-            TMUsers             = new List<TMUser>();            
-            ActiveSessions      = new Dictionary<Guid, TMUser>();
-            SecretData          = this.secretData_Load();            
+        {
+            return SetUp(true);
+        }
+        public TM_UserData SetUp(bool createDefaultAdminUser)
+        {   
+            this.setupGitSupport();
+            if (createDefaultAdminUser)
+                this.createDefaultAdminUser();  // make sure the admin user exists and is configured            
             return this;
         }
     }

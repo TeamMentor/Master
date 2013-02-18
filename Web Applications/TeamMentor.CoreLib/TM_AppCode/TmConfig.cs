@@ -25,6 +25,7 @@ namespace TeamMentor.CoreLib
         public WindowsAuthentication_Config WindowsAuthentication		{ get; set; }						
         public TMDebugAndDev_Config			TMDebugAndDev				{ get; set; }
         public Eval_Accounts_Config			Eval_Accounts				{ get; set; }
+        public Git_Config			        Git				            { get; set; }
         
 
         public class WindowsAuthentication_Config
@@ -55,7 +56,13 @@ namespace TeamMentor.CoreLib
         public class Eval_Accounts_Config
         {
             public bool Enabled { get; set; }
-            public int  Days { get; set; }
+            public int  Days    { get; set; }
+        }
+
+        public class Git_Config
+        {
+            public bool AutoCommit_UserData     { get; set; }
+            public bool AutoCommit_LibraryData  { get; set; }
         }
     }
     
@@ -126,36 +133,41 @@ namespace TeamMentor.CoreLib
     {		
         public static TMConfig  setDefaultValues(this TMConfig tmConfig)
         {									
-            tmConfig.TMLibraryDataVirtualPath   = "..\\..";
-            tmConfig.XmlLibrariesPath           = "TM_Library";
-            tmConfig.UserDataPath               = "User_Data";
-            tmConfig.DefaultAdminUserName       = "admin";
-            tmConfig.DefaultAdminPassword       = "!!tmadmin";
-            tmConfig.LibrariesUploadedFiles     = "LibrariesUploadedFiles";
+            tmConfig.TMLibraryDataVirtualPath       = "..\\..";
+            tmConfig.XmlLibrariesPath               = "TM_Library";
+            tmConfig.UserDataPath                   = "User_Data";
+            tmConfig.DefaultAdminUserName           = "admin";
+            tmConfig.DefaultAdminPassword           = "!!tmadmin";
+            tmConfig.LibrariesUploadedFiles         = "LibrariesUploadedFiles";
 
             tmConfig.WindowsAuthentication = new TMConfig.WindowsAuthentication_Config
                 {
-                    Enabled = false,
-                    ReaderGroup = "TM_Reader",
-                    EditorGroup = "TM_Editor",
-                    AdminGroup = "TM_Admin"
+                    Enabled                         = false,
+                    ReaderGroup                     = "TM_Reader",
+                    EditorGroup                     = "TM_Editor",
+                    AdminGroup                      = "TM_Admin"
                 };
             tmConfig.TMDebugAndDev = new TMConfig.TMDebugAndDev_Config
                 {
-                    Enable302Redirects = true,
-                    EnableGZipForWebServices = true
+                    Enable302Redirects              = true,
+                    EnableGZipForWebServices        = true
                 };
 
             tmConfig.OnInstallation = new TMConfig.OnInstallation_Config
                 {
-                    ForceAdminPasswordReset = true,
-                    DefaultLibraryToInstall_Name = "",
+                    ForceAdminPasswordReset          = true,
+                    DefaultLibraryToInstall_Name     = "",
                     DefaultLibraryToInstall_Location = ""
+                };
+            tmConfig.Git            = new TMConfig.Git_Config
+                {
+                    AutoCommit_LibraryData          = true,
+                    AutoCommit_UserData             = true
                 };
 
             tmConfig.REST			= new TMConfig.REST_Config();
             tmConfig.Eval_Accounts  = new TMConfig.Eval_Accounts_Config();
-
+            
             return tmConfig;	
         }
         public static string    virtualPathMapping(this TMConfig tmConfig)

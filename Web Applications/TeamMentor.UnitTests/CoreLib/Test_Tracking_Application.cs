@@ -37,9 +37,7 @@ namespace TeamMentor.UnitTests.CoreLib
 
             var trackingFiles = trackingApplication.Location.files();
 
-            Assert.IsNotEmpty(trackingFiles);
-
-            trackingApplication.Location.startProcess();            
+            Assert.IsNotEmpty(trackingFiles);            
         }
     }
 }

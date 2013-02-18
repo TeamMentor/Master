@@ -15,10 +15,10 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
 			var user = "testUser_".add_RandomLetters(5);
 			var pwd = "bb";
 
-			var userId = tmXmlDatabase.newUser(user, pwd);
+			var userId = userData.newUser(user, pwd);
 			Assert.Greater(userId, 0, "userID");
 			
-			var sessionId = tmXmlDatabase.login(user, pwd);
+			var sessionId = userData.login(user, pwd);
 			var userGroup = sessionId.session_UserGroup();					//new users currently default to Reader
 			var userRoles = sessionId.session_UserRoles();
 
@@ -91,13 +91,13 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
 			var tmpPassword = "".add_RandomLetters(20);
 			var testGroupId = 10;
 
-			Func<int> createUser		  = () => tmXmlDatabase.newUser(tempUserName, tmpPassword);
-			Func<int> createUser_In_Group = () => tmXmlDatabase.newUser(tempUserName, tmpPassword, testGroupId);	
+			Func<int> createUser		  = () => userData.newUser(tempUserName, tmpPassword);
+			Func<int> createUser_In_Group = () => userData.newUser(tempUserName, tmpPassword, testGroupId);	
 			
 
 			//Readers cannot get users
 			UserGroup.Reader.setThreadPrincipalWithRoles();
-			Assert.Throws<SecurityException>(() => tmXmlDatabase.tmUser(111111111), "Reader: GetUser_byID");
+			Assert.Throws<SecurityException>(() => userData.tmUser(111111111), "Reader: GetUser_byID");
 
 			//Anonymous can create users
 			UserGroup.Anonymous.setThreadPrincipalWithRoles();
@@ -107,14 +107,14 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
 
 			// confirm that new user role is 2 (Reader)
 			UserGroup.Admin.setThreadPrincipalWithRoles();
-			var tmUser = tmXmlDatabase.tmUser(userId);
+			var tmUser = userData.tmUser(userId);
 			Assert.AreEqual(tmUser.GroupID, 2, "Anonymous created user: group id");
 
 			//only admins can delete user
-			UserGroup.Anonymous	.setThreadPrincipalWithRoles();	Assert.Throws<SecurityException>(() => tmXmlDatabase.deleteTmUser(userId), "Anonymous: DeleteUser");
-			UserGroup.Reader	.setThreadPrincipalWithRoles();	Assert.Throws<SecurityException>(() => tmXmlDatabase.deleteTmUser(userId), "Reader	 : DeleteUser");
-			UserGroup.Editor	.setThreadPrincipalWithRoles(); Assert.Throws<SecurityException>(() => tmXmlDatabase.deleteTmUser(userId), "Editor	 : DeleteUser");
-			UserGroup.Admin		.setThreadPrincipalWithRoles(); Assert.DoesNotThrow(			 () => tmXmlDatabase.deleteTmUser(userId), "Admin    : DeleteUser");
+			UserGroup.Anonymous	.setThreadPrincipalWithRoles();	Assert.Throws<SecurityException>(() => userData.deleteTmUser(userId), "Anonymous: DeleteUser");
+			UserGroup.Reader	.setThreadPrincipalWithRoles();	Assert.Throws<SecurityException>(() => userData.deleteTmUser(userId), "Reader	 : DeleteUser");
+			UserGroup.Editor	.setThreadPrincipalWithRoles(); Assert.Throws<SecurityException>(() => userData.deleteTmUser(userId), "Editor	 : DeleteUser");
+			UserGroup.Admin		.setThreadPrincipalWithRoles(); Assert.DoesNotThrow(			 () => userData.deleteTmUser(userId), "Admin    : DeleteUser");
 
 			//check that only admins can create users with GroupId specificed			
 			
@@ -127,17 +127,17 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
 			UserGroup.Admin		.setThreadPrincipalWithRoles();
 			userId = createUser_In_Group();
 			Assert.That(userId > 0, "Admin: CreateUser with groupID");
-			tmUser = tmXmlDatabase.tmUser(userId);
+			tmUser = userData.tmUser(userId);
 			Assert.AreEqual(tmUser.GroupID, testGroupId, "Admin created user: group id");
-			var result = tmXmlDatabase.deleteTmUser(userId);
+			var result = userData.deleteTmUser(userId);
 			Assert.That(result, "user delete failed");
 
 			//check that only admins can call BatchUserCreation
 			var batchUserCreation = "";			
-			UserGroup.Anonymous	.setThreadPrincipalWithRoles(); Assert.Throws<SecurityException>(() => tmXmlDatabase.createTmUsers(batchUserCreation), "Anonymous: BatchUserCreation");
-			UserGroup.Reader	.setThreadPrincipalWithRoles(); Assert.Throws<SecurityException>(() => tmXmlDatabase.createTmUsers(batchUserCreation), "Reader	  : BatchUserCreation");
-			UserGroup.Editor	.setThreadPrincipalWithRoles(); Assert.Throws<SecurityException>(() => tmXmlDatabase.createTmUsers(batchUserCreation), "Editor   : BatchUserCreation");
-			UserGroup.Admin		.setThreadPrincipalWithRoles(); Assert.DoesNotThrow(			 () => tmXmlDatabase.createTmUsers(batchUserCreation), "Admin	  : BatchUserCreation");
+			UserGroup.Anonymous	.setThreadPrincipalWithRoles(); Assert.Throws<SecurityException>(() => userData.createTmUsers(batchUserCreation), "Anonymous: BatchUserCreation");
+			UserGroup.Reader	.setThreadPrincipalWithRoles(); Assert.Throws<SecurityException>(() => userData.createTmUsers(batchUserCreation), "Reader	  : BatchUserCreation");
+			UserGroup.Editor	.setThreadPrincipalWithRoles(); Assert.Throws<SecurityException>(() => userData.createTmUsers(batchUserCreation), "Editor   : BatchUserCreation");
+			UserGroup.Admin		.setThreadPrincipalWithRoles(); Assert.DoesNotThrow(			 () => userData.createTmUsers(batchUserCreation), "Admin	  : BatchUserCreation");
 		}
 
 	}

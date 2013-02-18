@@ -15,24 +15,20 @@ namespace TeamMentor.CoreLib
         {            
             From = "TM_Security_Dude@securityinnovation.com";
         }
-
         public SendEmails(string smtpServer, string smtpUserName, string smtpPassword ) : this()
         {
             Smtp_Server     = smtpServer;
             Smtp_UserName   = smtpUserName;
             Smtp_Password   = smtpPassword;
         }
-
         public bool send_TestEmail()
         {
             return send(From, "Test Email", "From TeamMentor");
         }
-
         public bool send(string to, string subject, string message)
         {
             return send(to, subject, message, false);
         }
-
         public bool send(string to, string subject, string message, bool htmlMessage)
         {
             try

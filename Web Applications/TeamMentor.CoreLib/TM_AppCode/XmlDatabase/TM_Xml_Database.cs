@@ -64,8 +64,7 @@ namespace TeamMentor.CoreLib
                     this.xmlDB_Load_GuidanceItems();                                 
                     
                 }
-
-                this.createDefaultAdminUser(); // make sure this user exists
+                UserData.SetUp();                
             }
             catch(Exception ex)
             {
