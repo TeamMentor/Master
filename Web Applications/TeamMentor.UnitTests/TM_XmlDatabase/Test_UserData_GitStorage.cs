@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using O2.DotNetWrappers.ExtensionMethods;
 using O2.FluentSharp;
 using TeamMentor.CoreLib;
@@ -8,14 +9,24 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
     [TestFixture]
     public class Test_UserData_GitStorage
     {
+        public TM_UserData  userData;
+        public API_NGit     nGit;
+        [SetUp]
+        public void setUp()
+        {
+            //create temp repo with no Admin user
+            userData = new TM_UserData(true)
+                                {
+                                    Path_UserData = "nonGitRepo".tempDir()
+                                };                                    
+            userData .SetUp(false); 
+            nGit     = userData.NGit;           
+        }
 
         [Test][Assert_Admin] public void CheckNonGitRepoDoesntCommit()
-        {            
-            var userData = new TM_UserData(true)
-                                 {
-                                    Path_UserData = "nonGitRepo".tempDir(),
-                                    AutoGitCommit = false
-                                 };                        
+        {
+            userData.Path_UserData = "nonGitRepo".tempDir();
+            userData.AutoGitCommit = false;
 
             Assert.IsTrue   (userData.UsingFileStorage);
             Assert.IsTrue   (userData.Path_UserData.dirExists());            
@@ -32,13 +43,8 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         }
         [Test][Assert_Admin] public void ManualyGitCommitNewUsers()
         {
-            var userData    = new TM_UserData(true)
-                                    {
-                                        Path_UserData = "nonGitRepo".tempDir(),
-                                        AutoGitCommit = false                       // so that the .newUser() call doesn't trigger a Git Commit
-                                    };                        
-        
-            var nGit        = userData.Path_UserData.git_Init();
+            userData.AutoGitCommit = false;                           
+            //nGit        = userData.Path_UserData.git_Init();
 
             Assert.IsNotNull(nGit);
             Assert.IsTrue   (userData.Path_UserData.isGitRepository());
@@ -61,36 +67,25 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             "Head is now: {0}".info(nGit.head());
         }
         [Test][Assert_Admin] public void CheckGitRepoDoesCommits_OnNewUser()
-        {
-            var userData        = new TM_UserData(true)
-                                        {
-                                            Path_UserData = "nonGitRepo".tempDir()
-                                        }                                    
-                                        .SetUp();
+        {                        
+            Assert.IsTrue       (userData.AutoGitCommit);
             
-            Assert.IsTrue        (userData.AutoGitCommit);
-
-            var nGit            = userData.NGit;
-            Assert.IsNotNull     (nGit.head());
+            userData            .newUser();            // adding a user
+            Assert.IsNotNull    (nGit.head());
+            userData            .newUser();            // adding another user
 
             var headBeforeUser  = nGit.head();
-            userData             .newUser();
+            userData            .newUser();
             var headAfterUser   = nGit.head();
 
-            Assert.IsFalse       (nGit.head().isNull());
-            Assert.AreNotEqual   (headBeforeUser, headAfterUser , "Git Head value should be different after a TMUser create");
+            Assert.IsFalse      (nGit.head().isNull());
+            Assert.AreNotEqual  (headBeforeUser, headAfterUser , "Git Head value should be different after a TMUser create");
+            Assert.AreNotEqual  (2, nGit.commits().size());
         }
         [Test][Assert_Admin] public void CheckGitRepoDoesCommits_OnUserSave()
         {
-            var userData        = new TM_UserData(true)
-                                        {
-                                            Path_UserData = "nonGitRepo".tempDir()
-                                        }                                    
-                                        .SetUp();
-
             Assert.IsTrue       (userData.AutoGitCommit);
-                        
-            var nGit            = userData.NGit;           
+             
             var tmUser          = userData.newUser().tmUser();
             var headBeforeSave  = nGit.head();
             
@@ -102,14 +97,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Assert.AreNotEqual  (headBeforeSave, headAfterSave , "Git Head value should be different after a TMUser save");
         }
         [Test][Assert_Admin] public void CheckGitRepoDoesCommits_OnUserAddAndDelete()
-        {
-            var userData        = new TM_UserData(true)
-                                        {
-                                            Path_UserData = "nonGitRepo".tempDir()                                            
-                                        }                                    
-                                        .SetUp(false);                        
-                        
-            var nGit                    = userData.NGit;           
+        {                        
             var tmUser                  = userData.newUser().tmUser();
             var commitsAfterNewUser     = nGit.commits().size();
             tmUser                      .deleteTmUser();
@@ -122,6 +110,16 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             
             Assert.IsEmpty(nGit.status());
             
+        }
+        [Test][Assert_Admin] public void CheckActivitiesLogging()
+        {
+            var tmUser = userData.newUser().tmUser();
+
+            Assert.AreEqual(1, nGit.commits().size());
+            var sessionId = tmUser.login();
+            Assert.AreNotEqual(Guid.Empty, sessionId);
+
+
         }
     }
 }

@@ -6,18 +6,26 @@ namespace TeamMentor.CoreLib
 {
     public static class TM_UserData_Ex_ActiveSessions
     {
-        public static Dictionary<Guid, TMUser> activeSessions(this TM_Xml_Database tmDb)
+        public static Dictionary<Guid, TMUser> activeSessions(this TM_UserData userData)
         {
             try
             {                
-                return  TM_UserData.Current.ActiveSessions;
+                return  userData.ActiveSessions;
             }
             catch (Exception ex)
             {
                 ex.log("[TM_UserData] activeSessions");
                 return null;
             }                        
-        }		        
+        }
+        public static Guid login(this TMUser tmUser)
+        {
+            return tmUser.login(Guid.NewGuid());
+        }
+        public static Guid login(this TMUser tmUser, Guid guid)
+        {
+            return tmUser.registerUserSession(Guid.NewGuid());
+        }
         public static Guid              registerUserSession  (this string userName, Guid userGuid)
         {
             var tmUser = userName.tmUser();			

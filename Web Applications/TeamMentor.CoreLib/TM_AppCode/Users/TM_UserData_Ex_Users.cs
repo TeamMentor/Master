@@ -163,7 +163,7 @@ namespace TeamMentor.CoreLib
                         }
 
                     if (tmUser.notNull() && tmUser.PasswordHash == tmUser.createPasswordHash(password)) 
-                        return tmUser.registerUserSession(Guid.NewGuid());
+                        return tmUser.login(Guid.NewGuid());
                 }
             }
             catch (Exception ex)

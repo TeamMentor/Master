@@ -16,9 +16,9 @@ namespace TeamMentor.CoreLib
         [WebMethod(EnableSession = true)]	public bool SetCurrentUserPassword(string password)			        {	return userData.setCurrentUserPassword(tmAuthentication , password);        }
 
         //Move these to separate file
-        [WebMethod(EnableSession = true)] 	[Admin]	   public List<Guid> GetActiveSessions()				    { 	return TM_Xml_Database.Current.activeSessions().Keys.ToList(); }
+        [WebMethod(EnableSession = true)] 	[Admin]	   public List<Guid> GetActiveSessions()				    { 	return userData.activeSessions().Keys.ToList(); }
         [WebMethod(EnableSession = true)] 	[Admin]	   public TMUser	 GetActiveSession(Guid sessionId)		{
-                                                                                                                    var activeSessions = TM_Xml_Database.Current.activeSessions();
+                                                                                                                    var activeSessions = userData.activeSessions();
                                                                                                                     if (activeSessions.ContainsKey(sessionId))
                                                                                                                         return activeSessions[sessionId];
                                                                                                                     return null;
