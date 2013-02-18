@@ -175,5 +175,5 @@ namespace TeamMentor.CoreLib
             UserGroup.Anonymous.setPrivileges();
  	         base.OnExit(args);
         }        
-    }
+    }    
 }

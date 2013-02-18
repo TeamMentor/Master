@@ -26,18 +26,9 @@ namespace TeamMentor.CoreLib
         }
         
         [Assert_Admin]                      // impersonate an admin to load the database
-        public void Application_Start()     
+        public void Application_Start()
         {
-            if (false)
-                try
-                {                
-                    if (HttpContextFactory.Context.Request.IsLocal)                
-                        "".popupWindow().add_LogViewer();          
-                }
-                catch (Exception ex)
-                {
-                    ex.log();
-                }
+            //O2_Utils.showLogViewer_if_LocalHost();                
                           
             TmXmlDatabase           = new  TM_Xml_Database(true);                                   // Create FileSystem Based database            
             TrackingApplication     = new Tracking_Application(TmXmlDatabase.Path_XmlDatabase);    // Enabled Application Tracking

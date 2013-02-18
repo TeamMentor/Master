@@ -7,9 +7,7 @@ using O2.DotNetWrappers.ExtensionMethods;
 namespace TeamMentor.CoreLib
 {
     public static class TM_UserData_Ex_Users
-    {
-        public static int           FORCED_MILLISEC_DELAY_ON_LOGIN_ACTION = 500;
-
+    {        
         public static int           createDefaultAdminUser      (this TM_UserData userData)
         {  
             var tmConfig = TMConfig.Current;
@@ -23,7 +21,7 @@ namespace TeamMentor.CoreLib
                 {
                     if (adminUser.PasswordHash.notValid() || tmConfig.OnInstallation.ForceAdminPasswordReset)
                         adminUser.PasswordHash = adminUser.createPasswordHash(defaultAdminUser_Pwd);
-                    adminUser.Stats.ExpirationDate = default(DateTime);
+                    adminUser.AccountStatus.ExpirationDate = default(DateTime);
                     adminUser.saveTmUser();
                     return adminUser.UserID;
                 }				
@@ -145,33 +143,7 @@ namespace TeamMentor.CoreLib
             return (from tmUser in tmUsers
                     where tmUser.notNull()
                     select tmUser.UserID).toList();
-        }        
-        public static Guid          login                       (this TM_UserData userData, string username, string password)
-        {
-            try
-            {
-                userData.sleep(FORCED_MILLISEC_DELAY_ON_LOGIN_ACTION, false);      // to slow down brute force attacks
-                if (username.valid() && password.valid())
-                {
-                    var tmUser = TM_UserData.Current.TMUsers.user(username);
-                
-                    if (TMConfig.Current.Eval_Accounts.Enabled)
-                        if (tmUser.notNull() &&tmUser.Stats.ExpirationDate < DateTime.Now && tmUser.Stats.ExpirationDate != default(DateTime))
-                        {
-                            tmUser.logUserActivity("Account Expired",tmUser.UserName);
-                            return Guid.Empty;
-                        }
-
-                    if (tmUser.notNull() && tmUser.PasswordHash == tmUser.createPasswordHash(password)) 
-                        return tmUser.login(Guid.NewGuid());
-                }
-            }
-            catch (Exception ex)
-            {
-                ex.log("[TM_Xml_Database] login");                
-            }
-            return Guid.Empty;    			
-        }
+        }           
         
         public static string        getUserGroupName            (this TM_UserData userData, int userId)
         {

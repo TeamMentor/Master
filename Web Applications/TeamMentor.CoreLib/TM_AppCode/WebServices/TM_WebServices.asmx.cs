@@ -14,15 +14,14 @@ namespace TeamMentor.CoreLib
 
         [LogUrl("WebService")]
         public TM_WebServices() : this(false)
-        {
-            tmXmlDatabase = TM_Xml_Database.Current;			
-            userData      = tmXmlDatabase  .UserData;
+        {            
         }
 
         
         public TM_WebServices(bool disable_Csrf_Check)
-        {			
-            //javascriptProxy		= new TM_Xml_Database_JavaScriptProxy(); 
+        {
+			tmXmlDatabase = TM_Xml_Database.Current;			
+            userData      = tmXmlDatabase  .userData();            
             tmAuthentication	= new TM_Authentication(this).mapUserRoles(disable_Csrf_Check);
             GZip.setGZipCompression_forAjaxRequests();						
         }                             

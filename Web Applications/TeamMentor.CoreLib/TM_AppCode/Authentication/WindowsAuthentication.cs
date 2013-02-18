@@ -49,7 +49,7 @@ namespace TeamMentor.CoreLib
 								LastName = "",
 								GroupID = (int)calculateUserGroupBasedOnWindowsIdentity()
 							};
-					return tmUser.registerUserSession(Guid.NewGuid());
+					return tmUser.login(Guid.NewGuid());
 				}
 			}
 			return Guid.Empty;

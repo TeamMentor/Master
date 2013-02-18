@@ -95,6 +95,7 @@
     <Compile Include="TM_XmlDatabase\Test_NGit_Support.cs" />
     <Compile Include="TM_XmlDatabase\Test_TM_TestData.cs" />
     <Compile Include="TM_XmlDatabase\Test_UserData_GitStorage.cs" />
+    <Compile Include="TM_XmlDatabase\Test_Users_Sessions.cs" />
     <Compile Include="TM_XmlDatabase\Test_Users_UserActivities.cs" />
     <Compile Include="CoreLib\Test_Utils_GoogleAnalytics.cs" />
     <Compile Include="_Temp\FluentSharp_ExtensionMethods_To_add.cs" />

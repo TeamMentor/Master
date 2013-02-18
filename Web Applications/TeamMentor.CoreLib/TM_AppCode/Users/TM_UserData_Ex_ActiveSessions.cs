@@ -5,55 +5,94 @@ using O2.DotNetWrappers.ExtensionMethods;
 namespace TeamMentor.CoreLib
 {
     public static class TM_UserData_Ex_ActiveSessions
-    {
-        public static Dictionary<Guid, TMUser> activeSessions(this TM_UserData userData)
-        {
-            try
-            {                
-                return  userData.ActiveSessions;
-            }
-            catch (Exception ex)
-            {
-                ex.log("[TM_UserData] activeSessions");
-                return null;
-            }                        
-        }
-        public static Guid login(this TMUser tmUser)
-        {
-            return tmUser.login(Guid.NewGuid());
-        }
-        public static Guid login(this TMUser tmUser, Guid guid)
-        {
-            return tmUser.registerUserSession(Guid.NewGuid());
-        }
-        public static Guid              registerUserSession  (this string userName, Guid userGuid)
-        {
-            var tmUser = userName.tmUser();			
-            return tmUser.registerUserSession(userGuid);
-        }
-        public static Guid              registerUserSession  (this string userName, Guid userGuid, int groupId)
-        {
-            var tmUser = userName.tmUser();
-            tmUser.GroupID = groupId;
-            return tmUser.registerUserSession(userGuid);
-        }
-        public static Guid              registerUserSession  (this TMUser tmUser, Guid userGuid)
+    {   
+        public static int               FORCED_MILLISEC_DELAY_ON_LOGIN_ACTION = 500;
+
+        public static Guid              login (this TM_UserData userData, string username, string password)
         {
             try
             {
-                if (tmUser.notNull() && userGuid != Guid.Empty)
+                userData.sleep(FORCED_MILLISEC_DELAY_ON_LOGIN_ACTION, false);      // to slow down brute force attacks
+                if (username.valid() && password.valid())
                 {
-                    tmUser.logUserActivity("User Login", tmUser.UserName);
-                    TM_UserData.Current.ActiveSessions.add(userGuid, tmUser);
-                    return userGuid;
+                    var tmUser = userData.TMUsers.user(username);
+                
+                    if (TMConfig.Current.Eval_Accounts.Enabled)
+                        if (tmUser.notNull() && 
+                            tmUser.AccountStatus.ExpirationDate < DateTime.Now && 
+                            tmUser.AccountStatus.ExpirationDate != default(DateTime))
+                        {
+                            tmUser.logUserActivity("Account Expired",tmUser.UserName);
+                            return Guid.Empty;
+                        }
+
+                    if (tmUser.notNull() && 
+                        tmUser.PasswordHash == tmUser.createPasswordHash(password))
+                    {
+                        return tmUser.login(Guid.NewGuid());
+                    }
                 }
             }
             catch (Exception ex)
             {
-                ex.log();
+                ex.log("[TM_Xml_Database] login");                
+            }
+            return Guid.Empty;    			
+        }
+        public static Guid              login (this TMUser tmUser)                                         
+        {
+            return tmUser.login(Guid.NewGuid());
+        }        
+        public static Guid              login (this TMUser tmUser, Guid sessionId)                         
+        {
+            return TM_UserData.Current.login(tmUser, sessionId);
+        }
+        public static Guid              login (this TM_UserData userData,TMUser tmUser, Guid sessionId)    
+        {
+            try
+            {
+                if (tmUser.notNull() && sessionId != Guid.Empty)
+                {
+                    tmUser.Stats.LastLogin = DateTime.Now;
+                    tmUser.Stats.LoginOk++;
+                    tmUser.logUserActivity("User Login", tmUser.UserName);
+                    userData.ActiveSessions.add(sessionId, tmUser);
+                    return sessionId;
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.log("[TM_UserData][login]");
             }
             return Guid.Empty;
-        }                                
+        }
+        public static bool              logout(this Guid sessionId)                                        
+        {
+            return sessionId.session_TmUser()
+                            .logout(sessionId);
+        }
+        public static bool              logout(this TMUser tmUser, Guid sessionId)                         
+        {
+            return TM_UserData.Current.logout(tmUser, sessionId);
+        }
+        public static bool              logout(this TM_UserData userData, TMUser tmUser, Guid sessionId)   
+        {
+            try
+            {
+                if (tmUser.notNull() && sessionId.validSession())
+                {
+                    tmUser.logUserActivity("User Logout", tmUser.UserName);
+                    userData.ActiveSessions.Remove(sessionId);
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.log("[TM_UserData] invalidateSession");
+            }
+            return false;
+        }
+             
         public static bool              validSession         (this Guid sessionId)
         {
             try
@@ -66,23 +105,6 @@ namespace TeamMentor.CoreLib
             }             
             return false;
         }
-        public static bool              invalidateSession    (this Guid sessionId)
-        {
-            try
-            {
-                if (sessionId.validSession())
-                {
-                    sessionId.session_TmUser().logUserActivity("User Logout", sessionId.session_UserName());
-                    TM_UserData.Current.ActiveSessions.Remove(sessionId);
-                    return true;
-                }
-            }
-            catch (Exception ex)
-            {
-                ex.log("[TM_UserData] invalidateSession");
-            }
-            return false;
-        }        
         public static TMUser            session_TmUser       (this Guid sessionId)
         {
             try

@@ -45,7 +45,7 @@ namespace TeamMentor.CoreLib
                     var tmUser = getUserFromSSOToken(ssoToken);
                     if (tmUser.notNull())
                     {
-                        var sessionId = tmUser.registerUserSession(Guid.NewGuid());
+                        var sessionId = tmUser.login(Guid.NewGuid());
                         new TM_WebServices().tmAuthentication.sessionID = sessionId;
                         return sessionId;
                     }

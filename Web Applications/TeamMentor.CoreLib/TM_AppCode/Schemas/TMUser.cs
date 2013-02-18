@@ -15,16 +15,15 @@ namespace TeamMentor.CoreLib
         [XmlAttribute] public string	Title { get; set; }
         [XmlAttribute] public string	Company { get; set; }
         [XmlAttribute] public string	EMail { get; set; }
-        [XmlAttribute] public int		GroupID { get; set; }
-        [XmlAttribute] public bool		IsActive { get; set; }
-        [XmlAttribute] public string	CSRF_Token { get; set; }
-        
+        [XmlAttribute] public int		GroupID { get; set; }        
+        [XmlAttribute] public string	CSRF_Token { get; set; }        
+
         [XmlAttribute] public string    SSOKey               { get; set; }
         [XmlAttribute] public string    PasswordHash         { get; set; }
         [XmlAttribute] public string    PostLoginView        { get; set; }
         [XmlAttribute] public string    PostLoginScript      { get; set; }
         
-
+        [XmlElement]   public UserAccountStatus     AccountStatus	{ get; set; }
         [XmlElement]   public UserStats             Stats	        { get; set; }
         [XmlElement]   public List<UserActivity>    UserActivities  { get; set; }
 
@@ -32,22 +31,33 @@ namespace TeamMentor.CoreLib
         {
             ID = Guid.NewGuid();
             UserActivities = new List<UserActivity>();
-
-            Stats = new UserStats
-                {
-                    CreationDate = DateTime.Now,
-                    ExpirationDate = DateTime.Now.AddDays(TMConfig.Current.Eval_Accounts.Days)
-                };
+            AccountStatus  = new UserAccountStatus
+                                    {
+                                        ExpirationDate  = DateTime.Now.AddDays(TMConfig.Current.Eval_Accounts.Days),
+                                        PasswordExpired = false,
+                                        UserEnabled     = true
+                                    };
+            Stats          = new UserStats
+                                    {
+                                        CreationDate = DateTime.Now                                        
+                                    };
         }
     }
 
-    public class UserStats
+    public class UserAccountStatus
     {
         [XmlAttribute]	public DateTime ExpirationDate		{ get; set; }
+        [XmlAttribute]	public bool     PasswordExpired		{ get; set; }
+        [XmlAttribute]	public bool     UserEnabled		{ get; set; }
+        
+    }
+    public class UserStats
+    {
+        
         [XmlAttribute]	public DateTime CreationDate		{ get; set; }		
         [XmlAttribute]	public DateTime LastLogin			{ get; set; }
-        [XmlAttribute] public int       Stats_LoginOk		{ get; set; }
-        [XmlAttribute] public int       Stats_LoginFail     { get; set; }
+        [XmlAttribute] public int       LoginOk		        { get; set; }
+        [XmlAttribute] public int       LoginFail           { get; set; }
     }
 
 }

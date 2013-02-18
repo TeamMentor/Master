@@ -134,7 +134,16 @@ namespace TeamMentor.CoreLib
             */
             return "In the library '{0}' there are {1} library(ies), {2} views and {3} GuidanceItems".
                         format(Current.Path_XmlLibraries.directoryName(), Libraries.size(), Views.size(), GuidanceItems.size());
+        }        
+    }
+
+    public static class TM_Xml_Database_ExtensionMethods
+    {
+        public static TM_UserData userData(this TM_Xml_Database tmDatabase)
+        {
+            return tmDatabase.notNull()
+                       ? tmDatabase.UserData
+                       : null;
         }
-        
-    }		
+    }
 }

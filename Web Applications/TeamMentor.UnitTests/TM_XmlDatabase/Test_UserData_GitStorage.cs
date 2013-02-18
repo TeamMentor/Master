@@ -118,7 +118,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Assert.AreEqual(1, nGit.commits().size());
             var sessionId = tmUser.login();
             Assert.AreNotEqual(Guid.Empty, sessionId);
-
+            
 
         }
     }

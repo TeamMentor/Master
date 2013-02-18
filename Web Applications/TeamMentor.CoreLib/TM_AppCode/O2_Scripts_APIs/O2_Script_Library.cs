@@ -17,7 +17,7 @@ namespace FluentSharp
             return @"return ""{0}"";".format(methodNames);
         }
 
-        public static string openLogViewer()
+        public static string openLshowLogViewer_if_LocalHostogViewer()
         {
             return  @"
 return ""LogViewer"".popupWindow().add_LogViewer();

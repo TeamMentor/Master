@@ -81,6 +81,7 @@
   <ItemGroup>
     <Compile Include="TM_AppCode\Authentication\ExtensionMethods\RoleBaseSecurity_ExtensionMethods.cs" />
     <Compile Include="TM_AppCode\Authentication\ExtensionMethods\TeamMentorUserManagement_ExtensionMethods.cs" />
+    <Compile Include="TM_AppCode\O2_Scripts_APIs\O2_Utils.cs" />
     <Compile Include="TM_AppCode\Users\TM_SecretData.cs" />
     <Compile Include="TM_AppCode\Utils\Crypto.cs" />
     <Compile Include="TM_AppCode\Schemas\Legacy\guidanceexplorer.cs" />

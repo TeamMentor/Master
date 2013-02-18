@@ -27,15 +27,5 @@ namespace TeamMentor.CoreLib
         {
             return TmWebServices.Current_User().notNull();
         }
-
-        [TM_Admin]
-        public List<string> ActiveSessions()
-        {
-            return TmWebServices.GetActiveSessions().toStringList();
-        }
-        public TMUser ActiveSession(string sessionId)
-        {
-            return sessionId.isGuid() ? TmWebServices.GetActiveSession(sessionId.guid()) : null;
-        }
     }
 }

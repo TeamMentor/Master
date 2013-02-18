@@ -47,14 +47,10 @@ namespace TeamMentor.CoreLib
                     };
                 HttpContextFactory.Response.Cookies.Add(sessionCookie);                    
              
-                if (value != Guid.Empty)
-                {					
+                if (value == Guid.Empty)
+                    previousSessionId.logout();				
+                else    
                     new UserRoleBaseSecurity().MapRolesBasedOnSessionGuid(value);
-                }
-                else
-                {
-                    previousSessionId.invalidateSession();
-                }
             }
         }
         public TMUser               currentUser
