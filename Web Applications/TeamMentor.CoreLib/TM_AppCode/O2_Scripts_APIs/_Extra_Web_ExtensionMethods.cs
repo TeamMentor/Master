@@ -1,10 +1,28 @@
-﻿using System.Web;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
 
 //From FluentSharp.BCL WebEncoding.cs file
 
 namespace O2.DotNetWrappers.ExtensionMethods
 {
-    public static class Extra_Cookies
+    public static class Extra_ExtensionMethods_Collections
+    {
+        public static List<string>  toStringList(this List<Guid> guids)
+        {
+            return (from guid in guids
+                    select guid.str()).toList();
+        }
+
+        public static bool notContains(this List<string> list, string stringToNotFind)
+        {
+            return list.contains(stringToNotFind).isFalse();
+        }
+
+    }
+
+    public static class Extra_ExtensioMethods_Cookies
     {
         public static string value(this HttpCookie httpCookie)
         {

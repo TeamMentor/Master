@@ -19,8 +19,8 @@ namespace TeamMentor.CoreLib
                 
                 if (adminUser.notNull())
                 {
-                    if (adminUser.PasswordHash.notValid() || tmConfig.OnInstallation.ForceAdminPasswordReset)
-                        adminUser.PasswordHash = adminUser.createPasswordHash(defaultAdminUser_Pwd);
+                    if (adminUser.SecretData.PasswordHash.notValid() || tmConfig.OnInstallation.ForceAdminPasswordReset)
+                        adminUser.SecretData.PasswordHash = adminUser.createPasswordHash(defaultAdminUser_Pwd);
                     adminUser.AccountStatus.ExpirationDate = default(DateTime);
                     adminUser.saveTmUser();
                     return adminUser.UserID;
@@ -81,7 +81,7 @@ namespace TeamMentor.CoreLib
                 Title 		 = Encoder.XmlEncode(title), 										
                 EMail 		 = Encoder.XmlEncode(email) ?? "",                
             };
-            tmUser.PasswordHash = tmUser.createPasswordHash(password);
+            tmUser.SecretData.PasswordHash = tmUser.createPasswordHash(password);
             userData.TMUsers.Add(tmUser);            
         
             //save it
@@ -93,7 +93,7 @@ namespace TeamMentor.CoreLib
         {			
             if (newUser.groupId !=0)		// if there is a groupId provided we must check if the user has the manageUsers Priviledge						
                 UserRole.ManageUsers.demand();			
-            if (newUser.username.inValid() ||  TM_UserData.Current.TMUsers.user(newUser.username).notNull())
+            if (newUser.username.inValid() ||  newUser.username.tmUser().notNull())
                 return 0;
             return userData.newUser(newUser.username, newUser.password, newUser.email, newUser.firstname, newUser.lastname, newUser.note, newUser.title, newUser.company, newUser.groupId);						
         }
@@ -131,7 +131,7 @@ namespace TeamMentor.CoreLib
             var tmUser = tmAuthentication.currentUser;
             if (tmUser.notNull())
             {
-                tmUser.PasswordHash = tmUser.createPasswordHash(password);
+                tmUser.SecretData.PasswordHash = tmUser.createPasswordHash(password);
                 tmUser.saveTmUser();
                 return true;
             }
@@ -143,8 +143,7 @@ namespace TeamMentor.CoreLib
             return (from tmUser in tmUsers
                     where tmUser.notNull()
                     select tmUser.UserID).toList();
-        }           
-        
+        }                   
         public static string        getUserGroupName            (this TM_UserData userData, int userId)
         {
             var tmUser = userData.tmUser(userId);
@@ -158,22 +157,22 @@ namespace TeamMentor.CoreLib
             if (tmUser.notNull())
                 return tmUser.GroupID;
             return -1;
-        }        
+        }                
 
         
-        [ManageUsers]   public static TMUser        tmUser              (this TM_UserData userData, string name)
+        public static TMUser        tmUser              (this TM_UserData userData, string userName)
         {
-            return TM_UserData.Current.TMUsers.user(name);
+            return userData.TMUsers.Where((tmUser) => tmUser.UserName == userName).first() ;
         }
-        [ManageUsers]   public static TMUser        tmUser              (this TM_UserData userData, int userId)
+        public static TMUser        tmUser              (this TM_UserData userData, int userId)
         {
-            return TM_UserData.Current.TMUsers.user(userId);
+            return userData.TMUsers.Where((tmUser) => tmUser.UserID == userId).first() ;
         }        
-        [ManageUsers]   public static List<TMUser>  tmUsers             (this List<int> usersId)
+        public static List<TMUser>  tmUsers             (this List<int> usersId)
         {
-            return usersId.Select(userId => TM_UserData.Current.TMUsers.user(userId)).toList();
+            return usersId.Select(userId => userId.tmUser()).toList();
         }
-        [ManageUsers]   public static List<TMUser>  tmUsers             (this TM_UserData userData)
+        public static List<TMUser>  tmUsers             (this TM_UserData userData)
         {
             return TM_UserData.Current.TMUsers.toList();
         }        
@@ -186,7 +185,7 @@ namespace TeamMentor.CoreLib
             "in setUserPassword".info();
             if (tmUser.notNull())
             {
-                tmUser.PasswordHash = tmUser.createPasswordHash(password);
+                tmUser.SecretData.PasswordHash = tmUser.createPasswordHash(password);
                 tmUser.saveTmUser();
                 return true;
             }
@@ -202,7 +201,7 @@ namespace TeamMentor.CoreLib
         }        
         [ManageUsers]   public static bool          updateTmUser        (this TM_UserData userData, int userId, string userName, string firstname, string lastname, string title, string company, string email, int groupId)
         {
-            return TM_UserData.Current.TMUsers.updateUser(userId, userName, firstname, lastname,  title, company, email, groupId);
+            return userData.tmUser(userId).updateTmUser(userName, firstname, lastname,  title, company, email, groupId);
         }		                
         [ManageUsers]   public static List<string>  getUserRoles        (this TM_UserData userData, int userId)
         {

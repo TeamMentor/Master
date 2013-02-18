@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Microsoft.Security.Application;
 using O2.DotNetWrappers.ExtensionMethods;
 using O2.FluentSharp;
 
@@ -6,7 +7,7 @@ namespace TeamMentor.CoreLib
 {
     public static class TM_UserData_Ex_Users_Persistance
     {	
-        public static TM_UserData   loadTmUserData(this TM_UserData userData)
+        public static TM_UserData   loadTmUserData   (this TM_UserData userData)
         {
             userData.TMUsers = new List<TMUser>();	        
             if (userData.Path_UserData.dirExists().isFalse())
@@ -25,11 +26,11 @@ namespace TeamMentor.CoreLib
             }
             return userData;
         }                       
-        public static string        getTmUserXmlFile(this TMUser tmUser)
+        public static string        getTmUserXmlFile (this TMUser tmUser)
         {
             return TM_UserData.Current.Path_UserData.pathCombine("{0}.userData.xml".format(tmUser.ID));
         }
-        public static TMUser        saveTmUser(this TMUser tmUser)
+        public static TMUser        saveTmUser       (this TMUser tmUser)
         {
             if (TM_UserData.Current.UsingFileStorage)
             {                
@@ -41,8 +42,7 @@ namespace TeamMentor.CoreLib
             }
             return tmUser;
         }
-
-        public static bool          deleteTmUser(this TM_UserData userData, TMUser tmUser)
+        public static bool          deleteTmUser     (this TM_UserData userData, TMUser tmUser)
         {    		
             if (tmUser.notNull())
             {
@@ -59,8 +59,28 @@ namespace TeamMentor.CoreLib
             }
             return false;
         }
+        public static bool          updateTmUser     (this TMUser tmUser, string userName, string firstname, string lastname, string title, string company, string email, int groupId)
+        {                         
+            if (tmUser.isNull())
+                return false;
+            if (tmUser.UserName == userName)
+            {
+                tmUser.EMail = Encoder.XmlEncode(email);
+                tmUser.UserName = Encoder.XmlEncode(userName);
+                tmUser.FirstName = Encoder.XmlEncode(firstname);
+                tmUser.LastName = Encoder.XmlEncode(lastname);
+                tmUser.Title = Encoder.XmlEncode(title);
+                tmUser.Company = Encoder.XmlEncode(company);
+                tmUser.GroupID = groupId > -1 ? groupId : tmUser.GroupID;
+                tmUser.saveTmUser();
+                return true;
+            }
+            else
+                "[updateTmUser] provided username didn't match provided tmUser".error();
+            return false;
+        }
 
-        public static TM_UserData   setupGitSupport(this TM_UserData userData)
+        public static TM_UserData   setupGitSupport  (this TM_UserData userData)
         {
             if (userData.AutoGitCommit)
             {
@@ -77,14 +97,12 @@ namespace TeamMentor.CoreLib
             }
             return userData;
         }
-
-
-        public static TMUser        triggerGitCommit(this TMUser tmUser)
+        public static TMUser        triggerGitCommit (this TMUser tmUser)
         {
             TM_UserData.Current.triggerGitCommit();
             return tmUser;
         }
-        public static TM_UserData   triggerGitCommit(this TM_UserData userData)
+        public static TM_UserData   triggerGitCommit (this TM_UserData userData)
         {
             if (userData.AutoGitCommit)
                 userData.NGit.add_and_Commit_using_Status();

@@ -45,7 +45,7 @@ namespace TeamMentor.CoreLib
 
         [WebMethod(EnableSession = true)]		                public Guid		SSO_AuthenticateUser(string ssoToken)            {   return new SingleSignOn().authenticateUserBasedOn_SSOToken(ssoToken); }
         [WebMethod(EnableSession = true)] [Admin]			    public string	SSO_GetSSOTokenForUser(string userName)          {   return new SingleSignOn().getSSOTokenForUser(userName); }
-        [WebMethod(EnableSession = true)] [Admin]			    public TMUser	SSO_GetUserFromSSOToken(string ssoToken)         {   return new SingleSignOn().getUserFromSSOToken(ssoToken); }                
+        [WebMethod(EnableSession = true)] [Admin]			    public TM_User	SSO_GetUserFromSSOToken(string ssoToken)         {   return new SingleSignOn().getUserFromSSOToken(ssoToken).user(); }                
                                                                                                                 
         [WebMethod(EnableSession = true)] [Admin]		        public string		GitHub_Pull_Origin()	            {	return Git.syncWithGitHub_Pull_Origin();  }
         [WebMethod(EnableSession = true)] [Admin]		        public string		GitHub_Push_Origin()	            {	return Git.syncWithGitHub_Push_Origin();  }

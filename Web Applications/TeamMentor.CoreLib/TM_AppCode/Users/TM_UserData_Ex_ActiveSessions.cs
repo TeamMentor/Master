@@ -1,4 +1,4 @@
-    using System;
+using System;
 using System.Collections.Generic;
 using O2.DotNetWrappers.ExtensionMethods;
 
@@ -6,30 +6,28 @@ namespace TeamMentor.CoreLib
 {
     public static class TM_UserData_Ex_ActiveSessions
     {   
-        public static int               FORCED_MILLISEC_DELAY_ON_LOGIN_ACTION = 500;
-
         public static Guid              login (this TM_UserData userData, string username, string password)
         {
             try
-            {
-                userData.sleep(FORCED_MILLISEC_DELAY_ON_LOGIN_ACTION, false);      // to slow down brute force attacks
+            {                
                 if (username.valid() && password.valid())
                 {
-                    var tmUser = userData.TMUsers.user(username);
-                
-                    if (TMConfig.Current.Eval_Accounts.Enabled)
-                        if (tmUser.notNull() && 
-                            tmUser.AccountStatus.ExpirationDate < DateTime.Now && 
-                            tmUser.AccountStatus.ExpirationDate != default(DateTime))
-                        {
-                            tmUser.logUserActivity("Account Expired",tmUser.UserName);
-                            return Guid.Empty;
-                        }
+                    var tmUser = userData.tmUser(username);
 
-                    if (tmUser.notNull() && 
-                        tmUser.PasswordHash == tmUser.createPasswordHash(password))
+                    if (tmUser.notNull())
                     {
-                        return tmUser.login(Guid.NewGuid());
+                        if (TMConfig.Current.Eval_Accounts.Enabled)
+                            if (tmUser.AccountStatus.ExpirationDate < DateTime.Now &&
+                                tmUser.AccountStatus.ExpirationDate != default(DateTime))
+                            {
+                                tmUser.logUserActivity("Account Expired", tmUser.UserName);
+                                return Guid.Empty;
+                            }
+
+                        var sessionId = (tmUser.SecretData.PasswordHash == tmUser.createPasswordHash(password))
+                                            ? Guid.NewGuid()
+                                            : Guid.Empty;
+                        return tmUser.login(sessionId);                        
                     }
                 }
             }
@@ -51,13 +49,17 @@ namespace TeamMentor.CoreLib
         {
             try
             {
-                if (tmUser.notNull() && sessionId != Guid.Empty)
+                if (tmUser.notNull())
                 {
-                    tmUser.Stats.LastLogin = DateTime.Now;
-                    tmUser.Stats.LoginOk++;
-                    tmUser.logUserActivity("User Login", tmUser.UserName);
-                    userData.ActiveSessions.add(sessionId, tmUser);
-                    return sessionId;
+                    if (sessionId != Guid.Empty)
+                    {
+                        tmUser.Stats.LastLogin = DateTime.Now;
+                        tmUser.Stats.LoginOk++;
+                        tmUser.logUserActivity("User Login", tmUser.UserName);
+                        userData.ActiveSessions.add(sessionId, tmUser);
+                        return sessionId;
+                    }
+                    tmUser.Stats.LoginFail++;
                 }
             }
             catch (Exception ex)
@@ -65,6 +67,10 @@ namespace TeamMentor.CoreLib
                 ex.log("[TM_UserData][login]");
             }
             return Guid.Empty;
+        }
+        public static bool              logout(this TMUser tmUser)
+        {
+            return tmUser.logout(tmUser.session_sessionId());
         }
         public static bool              logout(this Guid sessionId)                                        
         {
@@ -81,7 +87,7 @@ namespace TeamMentor.CoreLib
             {
                 if (tmUser.notNull() && sessionId.validSession())
                 {
-                    tmUser.logUserActivity("User Logout", tmUser.UserName);
+                    tmUser.logUserActivity("User Logout", tmUser.UserName);                    
                     userData.ActiveSessions.Remove(sessionId);
                     return true;
                 }
@@ -92,7 +98,7 @@ namespace TeamMentor.CoreLib
             }
             return false;
         }
-             
+                     
         public static bool              validSession         (this Guid sessionId)
         {
             try
@@ -153,6 +159,19 @@ namespace TeamMentor.CoreLib
         {
             return UserGroup.Admin == sessionId.session_UserGroup();
         }  
-
+        public static Guid              session_sessionId    (this TMUser tmUser)
+        {
+            try
+            {
+                foreach(var item in TM_UserData.Current.ActiveSessions)
+                    if (item.Value == tmUser)
+                        return item.Key;                
+            }
+            catch (Exception ex)
+            {
+                ex.log();                
+            }
+            return Guid.Empty;
+        }        
     }
 }

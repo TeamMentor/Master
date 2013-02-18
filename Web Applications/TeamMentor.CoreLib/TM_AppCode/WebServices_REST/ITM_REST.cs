@@ -55,7 +55,7 @@ namespace TeamMentor.CoreLib
 
         [OperationContract] [WebGet(UriTemplate = "/admin/script/{name}")]	    string		Admin_InvokeScript(string name);
 		//Views 
-		[OperationContract] [WebGet(UriTemplate = "/users/.html"			)]  Stream		users_html();
+		//[OperationContract] [WebGet(UriTemplate = "/users/.html"			)]  Stream		users_html();
 
 		//UserActivities 
 		//[OperationContract] [WebGet(UriTemplate = "/users/activites"		)]  Stream		users_Activities();

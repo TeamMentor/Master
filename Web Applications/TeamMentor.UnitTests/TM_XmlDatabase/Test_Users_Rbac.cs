@@ -96,8 +96,8 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
 			
 
 			//Readers cannot get users
-			UserGroup.Reader.setThreadPrincipalWithRoles();
-			Assert.Throws<SecurityException>(() => userData.tmUser(111111111), "Reader: GetUser_byID");
+			//UserGroup.Reader.setThreadPrincipalWithRoles();
+			//Assert.Throws<SecurityException>(() => userData.tmUser(111111111), "Reader: GetUser_byID");
 
 			//Anonymous can create users
 			UserGroup.Anonymous.setThreadPrincipalWithRoles();

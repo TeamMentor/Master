@@ -14,7 +14,7 @@ namespace TeamMentor.UnitTests
 		public static void Setup()
 		{			
 			HttpContextFactory.Context = new API_Moq_HttpContext().httpContext();
-			TMConfig.Current.UseAppDataFolder = true;
+			//TMConfig.Current.UseAppDataFolder = true;
 			RestAdmin = new TM_REST();
 		}
 

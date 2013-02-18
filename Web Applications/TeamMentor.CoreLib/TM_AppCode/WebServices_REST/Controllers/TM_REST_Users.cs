@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using O2.DotNetWrappers.ExtensionMethods;
 
@@ -43,19 +42,19 @@ namespace TeamMentor.CoreLib
 		}
 		public TM_User			user(string userNameOrId)
 		{
-			var user = TmWebServices.GetUser_byID(userNameOrId.toInt()).user();
+		    var user = TmWebServices.GetUser_byID(userNameOrId.toInt());
 			if (user.notNull())
 				return user;
-			return TmWebServices.GetUser_byName(userNameOrId).user();
+		    return TmWebServices.GetUser_byName(userNameOrId);
 		}
 		public List<TM_User>	users(string usersIds)
 		{
 			var ids = usersIds.split(",").Select((id) => id.toInt()).toList();
-			return TmWebServices.GetUsers_byID(ids).users();
+		    return TmWebServices.GetUsers_byID(ids);
 		}				
 		public List<TM_User>	users()
 		{
-			return TmWebServices.GetUsers().users();
+		    return TmWebServices.GetUsers();
 		}
 
 		public bool				    DeleteUser(string userId)
@@ -69,15 +68,15 @@ namespace TeamMentor.CoreLib
 			var groupId = -1; //not implemented for now
 			return TmWebServices.UpdateUser(user.UserId, user.UserName, user.FirstName, user.LastName, user.Title, user.Company,user.Email, groupId);
 		}
-		public Stream       users_html()
+/*		public Stream       users_html()
 		{
 			//var xml = users().toXml();
 			//var html = xml.xsl_Transform();
 			var html = "test";
 			this.response_ContentType_Html();
 			return html.stream_UFT8();
-		}
-		public static int   loopCount = 0;
+		}*/
+		//public static int   loopCount = 0;
 
 /*		public Stream       users_Activities()
 		{
