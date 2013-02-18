@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>FluentSharp.REPL</id>
-    <version>5.0.73</version>
+    <version>5.0.75</version>
     <title>FluentSharp - C# REPL</title>
     <authors>O2 Platform</authors>
     <owners>O2 Platform</owners>
