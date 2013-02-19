@@ -260,7 +260,7 @@
                         }
                         else
                         {																							
-                            $("#notAViewerErrorMessage").show().html("<h2>Access denied.</h2><br/><p>Please close this window or <a href='javascript:TM.Gui.Dialog.loginPage()'>login</a></p>");
+                            $("#notAViewerErrorMessage").show().html("<h2>Access denied.</h2><br/><p>Please close this window or <a href='/Login'>login</a></p>");
                         }
                     
                         /*if(TM.Gui.CurrentUser.isEditor() )				
@@ -291,7 +291,7 @@
                         if($.browser.msie)	
                             "SidePanel".$().width(170)*/
                         TM.Gui.ShowProgressBar.close();
-                        $("#SI_Footer").bottom(0).width("100%").absolute()
+                        $("#SI_Footer").bottom(0).width("100%").relative()
                     });
 
         
@@ -373,7 +373,7 @@
         <br />
         <div id="SI_Footer">
             <hr />
-            TeamMentor © 2007-2012 all rights reserved - a <a href="http://www.securityinnovation.com/" target="_blank">Security Innovation</a>  eKnowledge Product | <a href="mailto:teammentor@securityinnovation.com">Contact Us</a>
+            TeamMentor &copy; 2007-2013 all rights reserved - a <a href="http://www.securityinnovation.com/" target="_blank">Security Innovation</a>  eKnowledge Product | <a href="mailto:teammentor@securityinnovation.com">Contact Us</a>
         </div>
     </body>
 </html>
