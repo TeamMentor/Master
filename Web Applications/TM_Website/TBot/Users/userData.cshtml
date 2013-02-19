@@ -5,7 +5,7 @@
 @{
     var userData = TM_UserData.Current;
     var userName   = System.Web.HttpContext.Current.Request["userName"];
-    var tmUser = userData.TMUsers.user(userName);
+    var tmUser = userData.tmUser(userName);
 
     Func<long, string> toDate = (date) => DateTime.FromFileTimeUtc(date).str();
 }

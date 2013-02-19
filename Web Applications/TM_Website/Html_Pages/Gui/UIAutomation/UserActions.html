@@ -68,7 +68,7 @@
                     ,	createAccount	: function(username, password)
                             {
                                 var that = this;
-                                opener.createUser(username, password, "", "", "", 'created from nUnitTest', function(result)
+                                opener.createUser(username, password, "TM_Security_Dude@securityinnovation.com", "", "", 'created from nUnitTest', function(result)
                                         {
                                             if (result.d > 0)
                                             {
@@ -138,9 +138,9 @@
                                     opener.TM.Gui.Dialog.alertUser("QA: you need to be admin to delete users")
                                 else
                                     opener.getUser(userName, function(data) 
-                                        {
-                                            var userID = data.d.UserID;
-                                            opener.deleteUser(userID, function()
+                                        {                                            
+                                            var userId = data.d.UserId;
+                                            opener.deleteUser(userId, function()
                                                 {
                                                     opener.TM.Gui.Dialog.alertUser("QA: user deleted");													
                                                 });

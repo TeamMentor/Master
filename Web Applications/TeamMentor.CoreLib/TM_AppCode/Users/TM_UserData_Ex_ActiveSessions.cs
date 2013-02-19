@@ -78,6 +78,8 @@ namespace TeamMentor.CoreLib
                         tmUser.Stats.LoginOk++;
                         tmUser.logUserActivity("User Login", tmUser.UserName);
                         userData.ActiveSessions.add(sessionId, tmUser);
+
+                        SendEmails.SendEmailToTM("User Login: {0}".format(tmUser.UserName), tmUser.toXml());
                         return sessionId;
                     }
                     tmUser.Stats.LoginFail++;
@@ -110,6 +112,8 @@ namespace TeamMentor.CoreLib
                 {
                     tmUser.logUserActivity("User Logout", tmUser.UserName);                    
                     userData.ActiveSessions.Remove(sessionId);
+
+                    SendEmails.SendEmailToTM("User Logout: {0}".format(tmUser.UserName), tmUser.toXml());
                     return true;
                 }
             }

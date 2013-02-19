@@ -21,15 +21,15 @@
 		
 		var editUser = function(userId)
 			{				
-				var userData = jlinq.from(allUserData).equals("UserID", userId).first()
+				var userData = jlinq.from(allUserData).equals("UserId", userId).first()
 				"editUserDiv".$().load('/Html_Pages/ControlPanel/ManageUsers/EditUser.html?time=' + new Date().getTime(), 
 									   function() { loadUserData(userData, refreshUserTable)} );
-				//alert(userData.UserID);
+				//alert(userData.UserId);
 			}
 			
 		var deleteSelectedUser = function(userId)
 		{
-			var userData = jlinq.from(allUserData).equals("UserID", userId).first()
+			var userData = jlinq.from(allUserData).equals("UserId", userId).first()
 			description = "user: '{0}'".format(userData.UserName);
 			TM.Gui.Dialog.deleteConfirmation(description, function() { deleteUser(userId, loadUserData) } );
 		}
@@ -103,7 +103,7 @@
 
 		<table id="userTable">
 			<tr style="text-align : 'left'">
-				<th>UserID</th>
+				<th>UserId</th>
 				<th>UserName</th>				
 				<th>FirstName</th>
 				<th>LastName</th>
@@ -118,7 +118,7 @@
 			
 			{#foreach $T as record}
 			<tr>
-				<td>{$T.record.UserID}</td>
+				<td>{$T.record.UserId}</td>
 				<td>{$T.record.UserName}</td>
 				<td>{$T.record.FirstName}</td>
 				<td>{$T.record.LastName}</td>
@@ -129,8 +129,8 @@
 				<td>{$T.record.GroupName}</td>
 				<!--<td>{$T.record.IsActive}</td>
 				<td>{$T.record.ExpirationDate}</td>-->				
-				<td><a href=# onclick="javascript: editUser({$T.record.UserID});return false">edit</a>
-					<a href=# onclick="javascript:jQuery(this).closest('tr').css('color', 'red'); deleteSelectedUser({$T.record.UserID});return false">delete</a>
+				<td><a href=# onclick="javascript: editUser({$T.record.UserId});return false">edit</a>
+					<a href=# onclick="javascript:jQuery(this).closest('tr').css('color', 'red'); deleteSelectedUser({$T.record.UserId});return false">delete</a>
 					</td>
 			</tr>
 			{#/for}

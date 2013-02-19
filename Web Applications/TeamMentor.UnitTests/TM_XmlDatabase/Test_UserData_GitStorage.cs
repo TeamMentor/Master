@@ -6,7 +6,7 @@ using TeamMentor.CoreLib;
 
 namespace TeamMentor.UnitTests.TM_XmlDatabase
 {
-    [TestFixture]
+    [TestFixture, Ignore]
     public class Test_UserData_GitStorage
     {
         public TM_UserData  userData;

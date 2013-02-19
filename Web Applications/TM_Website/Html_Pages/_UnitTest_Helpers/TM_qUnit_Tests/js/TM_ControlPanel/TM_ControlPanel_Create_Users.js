@@ -99,7 +99,7 @@ asyncTest("Delete Temp Users", function()
 					}
 				$(users).each(function(index, userData) 
 					{					
-						deleteUser(userData.UserID, function(data) { onDelete(data.d, userData.UserName);});								
+						deleteUser(userData.UserId, function(data) { onDelete(data.d, userData.UserName);});								
 					});	
 			   
 			}

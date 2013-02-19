@@ -82,7 +82,7 @@ asyncTest("get currentUser details", function()
 			{								
 				ok(userDetails, "got userDetails");
 				equal(userDetails.UserName, username, "UserName & username matched");				
-				ok 	 (userDetails.UserID > 0 , 		  "UserID was > 0");				
+				ok 	 (userDetails.UserId > 0 , 		  "UserId was > 0");				
 				start();
 			};
 			

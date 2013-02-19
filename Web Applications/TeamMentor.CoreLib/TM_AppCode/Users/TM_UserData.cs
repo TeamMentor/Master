@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using O2.DotNetWrappers.ExtensionMethods;
 using O2.FluentSharp;
 
 namespace TeamMentor.CoreLib
@@ -32,11 +33,8 @@ namespace TeamMentor.CoreLib
         {
             TMUsers             = new List<TMUser>();            
             ActiveSessions      = new Dictionary<Guid, TMUser>();
-            SecretData          = this.secretData_Load();
-            AutoGitCommit       = TMConfig.Current.Git.AutoCommit_UserData;
-
-            this.secretDataScript_Invoke();
-
+            SecretData          = new TM_SecretData();
+            AutoGitCommit       = TMConfig.Current.Git.AutoCommit_UserData;           
             return this;
         }
 
@@ -45,10 +43,21 @@ namespace TeamMentor.CoreLib
             return SetUp(true);
         }
         public TM_UserData SetUp(bool createDefaultAdminUser)
-        {   
-            this.setupGitSupport();
-            if (createDefaultAdminUser)
-                this.createDefaultAdminUser();  // make sure the admin user exists and is configured            
+        {
+            try
+            {
+                this.setupGitSupport();
+                this.SecretData = this.secretData_Load();
+                this.secretDataScript_Invoke();
+            
+            
+                if (createDefaultAdminUser)
+                    this.createDefaultAdminUser();  // make sure the admin user exists and is configured                            
+            }
+            catch (Exception ex)
+            {
+                ex.log("[In TM_UserData SetUp]");
+            }            
             return this;
         }
     }

@@ -33,7 +33,7 @@ asyncTest("user_by_Id", function()
 			{											
 				ok(userDetails, "got user details:" + userDetails);				
 				ok(userDetails.UserName == username 		, "UserName was good");
-				ok(userDetails.UserID == _userId		, "UserId was good");
+				ok(userDetails.UserId == _userId		, "UserId was good");
 				start();
 			}
 			
@@ -114,7 +114,7 @@ asyncTest("delete qUnitTest users", function()
 		{
 			var userToDelete = usersToDelete.pop();
 			ok(userToDelete.UserName, "deleting user: " + userToDelete.UserName);
-			TM.WebServices.WS_Users.deleteUser(userToDelete.UserID, 
+			TM.WebServices.WS_Users.deleteUser(userToDelete.UserId, 
 				function(result)	{
 										ok(result, "deleted ok user: " + userToDelete.UserName);
 										deleteUsers(usersToDelete);

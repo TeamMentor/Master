@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+﻿using System;
+using System.Security.Cryptography;
 using O2.DotNetWrappers.ExtensionMethods;
 
 namespace TeamMentor.CoreLib
@@ -35,12 +36,28 @@ namespace TeamMentor.CoreLib
 
         public static TM_SecretData secretData_Load(this TM_UserData userData)
         {
-            if (userData.UsingFileStorage)
+            try
             {
-                var secretDataFile = userData.secretData_FileLocation();
-                if (secretDataFile.fileExists())
-                    return secretDataFile.load<TM_SecretData>();
+                 if (userData.UsingFileStorage)
+                {
+                    var secretDataFile = userData.secretData_FileLocation();
+                    if (secretDataFile.fileExists())
+                        return secretDataFile.load<TM_SecretData>();
+                    if (secretDataFile.notNull())
+                    {
+                        var secretData = new TM_SecretData();
+                        secretDataFile.parentFolder().createDir();
+                        secretData.saveAs(secretDataFile);
+                        userData.triggerGitCommit();
+                        return secretData;
+                    }
+                }
             }
+            catch (Exception ex)
+            {
+                ex.log("in TM_SecretData secretData_Load");
+            }
+           
             return new TM_SecretData();
         }
 
