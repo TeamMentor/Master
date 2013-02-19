@@ -27,7 +27,7 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             var userId      = tmWebServices.CreateUser(newUser);
             var tmUser      = userId.tmUser();
 
-            Assert.Less     (0, userId);
+            Assert.Greater  (userId, 0);
             Assert.NotNull  (tmUser);
             Assert.AreEqual (userId, tmUser.UserID);
 
@@ -58,13 +58,13 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             var sessionId_OriginalPassword    = tmWebServices.Login(newUser.username, originalPassword);
             HttpContextFactory.Context       .addCookieFromResponseToRequest("Session");
             var currentUser_OriginalPassword  = tmWebServices.Current_User();
-            var changePasswordResult          = tmWebServices.SetCurrentUserPassword(newPassword);
+            var changePasswordResult          = tmWebServices.SetCurrentUserPassword(originalPassword,newPassword);
             var sessionId_NewPassword         = tmWebServices.Login(newUser.username, newPassword);
             var currentUser_NewPassword       = tmWebServices.Current_User();
             var sessionId_OriginalPassword2   = tmWebServices.Login(newUser.username, originalPassword);
             var currentUser_OriginalPassword2 = tmWebServices.Current_User();
 
-            Assert.Less       (0, userId);
+            Assert.Greater    (userId, 0);
             Assert.AreNotEqual(Guid.Empty,sessionId_OriginalPassword  , "Login with original password");   
             Assert.NotNull    (currentUser_OriginalPassword           , "Current User Not Set (original password)");
             Assert.IsTrue     (changePasswordResult                   , "Change password result");
@@ -81,7 +81,27 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             var originalPassword = newUser.password;
             var newPassword      = "Abcmfl!@#";
             
-            var sessionId_OriginalPassword    = tmWebServices.Login(newUser.username, originalPassword);
+            var sessionId_OriginalPassword           = tmWebServices.Login(newUser.username, originalPassword);
+            var changePasswordResult_NoOriginalPwd   = tmWebServices.SetCurrentUserPassword(newPassword     , newPassword);
+            var changePasswordResult_WithOriginalPwd = tmWebServices.SetCurrentUserPassword(originalPassword, newPassword);
+
+            Assert.Greater    (userId, 0);
+            Assert.AreNotEqual(Guid.Empty,sessionId_OriginalPassword  , "Login with original password");   
+            Assert.IsFalse    (changePasswordResult_NoOriginalPwd     , "Change password result (no original password");
+            Assert.IsTrue     (changePasswordResult_WithOriginalPwd   , "Change password result (with original password");
+        }
+        [Test] public void CheckCurrentUserCSRFToken()
+        {
+            var newUser     = newTempUser();
+            var userId      = tmWebServices.CreateUser(newUser);
+            var sessionId   = tmWebServices.Login(newUser.username, newUser.password);
+            HttpContextFactory.Context     .addCookieFromResponseToRequest("Session");
+            var currentUser = tmWebServices.Current_User();
+            
+            Assert.Greater  (userId, 0);
+            Assert.IsNotNull(currentUser.CSRF_Token                                 , "CSRF_Token was not set");
+            Assert.AreEqual (sessionId.str().hash().str(), currentUser.CSRF_Token   , "CSRF_Token didn't match");
+            
         }
 
         //Helper methods

@@ -126,14 +126,17 @@ namespace TeamMentor.CoreLib
             return userData.tmUser(username)
                            .setPassword(password);
         }
-        public static bool          setCurrentUserPassword      (this TM_UserData userData, TM_Authentication tmAuthentication, string password)
+        public static bool          setCurrentUserPassword      (this TM_UserData userData, TM_Authentication tmAuthentication, string currentPassword, string newPassword)
         {
             var tmUser = tmAuthentication.currentUser;
             if (tmUser.notNull())
             {
-                tmUser.SecretData.PasswordHash = tmUser.createPasswordHash(password);
-                tmUser.saveTmUser();
-                return true;
+                if (tmUser.SecretData.PasswordHash == tmUser.createPasswordHash(currentPassword))
+                {
+                    tmUser.SecretData.PasswordHash = tmUser.createPasswordHash(newPassword);
+                    tmUser.saveTmUser();
+                    return true;
+                }
             }
             return false;
         }                	

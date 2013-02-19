@@ -76,10 +76,10 @@ function updateUser(userId, userName, firstname, lastname, title, company, email
 }
 
 
-function updateCurrentUserPassword(userName, newPassword, callback)
+function updateCurrentUserPassword(userName, currentPassword, newPassword, callback)
 {
     var url = TM.tmWebServices + 'SetCurrentUserPassword';
-    var params =  JSON.stringify( { password : newPassword  } );
+    var params =  JSON.stringify( { currentPassword : currentPassword, newPassword : newPassword  } );
     invokeWebService( url, params, callback, defaultErrorHandler);
 }
 function updateUserPassword(userId, userName, newPassword, callback)

@@ -17,6 +17,7 @@ namespace TeamMentor.CoreLib
         [DataMember]	public string	Company		{ get; set; }
         [DataMember]	public string	Title		{ get; set; }
         [DataMember]	public Int64	CreatedDate	{ get; set; }
+        [DataMember]    public string   CSRF_Token  { get; set; } 
     }
 
 
@@ -39,7 +40,8 @@ namespace TeamMentor.CoreLib
                     LastName	= tmUser.LastName,                    
                     Title		= tmUser.Title,
                     UserId		= tmUser.UserID,
-                    UserName	= tmUser.UserName
+                    UserName	= tmUser.UserName,
+                    CSRF_Token  = tmUser.CSRF_Token
                 };
         }
         public static NewUser newUser(this TM_User user)
