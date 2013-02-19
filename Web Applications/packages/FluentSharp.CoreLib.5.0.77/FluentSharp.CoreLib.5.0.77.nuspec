@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>FluentSharp.CoreLib</id>
-    <version>5.0.76</version>
+    <version>5.0.77</version>
     <title>FluentSharp - CoreLib</title>
     <authors>O2 Platform</authors>
     <owners>O2 Platform</owners>
@@ -21,6 +21,9 @@
     <copyright>O2 Platform 2012</copyright>
     <language>en-GB</language>
     <tags>Fluent OWASP O2Platform Security</tags>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System.Drawing" targetFramework="" />
+    </frameworkAssemblies>
     <references>
       <reference file="FluentSharp.CoreLib.dll" />
     </references>

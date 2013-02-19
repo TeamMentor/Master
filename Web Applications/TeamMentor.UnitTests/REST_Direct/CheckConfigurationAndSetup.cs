@@ -3,7 +3,7 @@ using O2.DotNetWrappers.ExtensionMethods;
 using O2.FluentSharp;
 using TeamMentor.CoreLib;
 
-namespace TeamMentor.UnitTests
+namespace TeamMentor.UnitTests.REST
 {
 	[TestFixture]
 	public class CheckConfigurationAndSetup 

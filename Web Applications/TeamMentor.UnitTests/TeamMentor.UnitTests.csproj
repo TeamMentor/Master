@@ -41,7 +41,7 @@
       <HintPath>..\packages\FluentSharp.BCL.5.0.75\lib\net35\FluentSharp.BCL.dll</HintPath>
     </Reference>
     <Reference Include="FluentSharp.CoreLib, Version=5.1.1.1, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
-      <HintPath>..\packages\FluentSharp.CoreLib.5.0.76\lib\net35\FluentSharp.CoreLib.dll</HintPath>
+      <HintPath>..\packages\FluentSharp.CoreLib.5.0.77\lib\net35\FluentSharp.CoreLib.dll</HintPath>
     </Reference>
     <Reference Include="FluentSharp.NGit, Version=5.1.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\FluentSharp.NGit.5.0.76\lib\net40\FluentSharp.NGit.dll</HintPath>

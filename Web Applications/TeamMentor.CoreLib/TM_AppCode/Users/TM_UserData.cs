@@ -34,6 +34,9 @@ namespace TeamMentor.CoreLib
             ActiveSessions      = new Dictionary<Guid, TMUser>();
             SecretData          = this.secretData_Load();
             AutoGitCommit       = TMConfig.Current.Git.AutoCommit_UserData;
+
+            this.secretDataScript_Invoke();
+
             return this;
         }
 

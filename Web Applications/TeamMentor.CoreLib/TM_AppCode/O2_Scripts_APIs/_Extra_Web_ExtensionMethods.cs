@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using O2.DotNetWrappers.ExtensionMethods;
 
 
-namespace O2.DotNetWrappers.ExtensionMethods
+namespace FluentSharp
 {
     public static class Extra_ExtensionMethods_Collections
     {

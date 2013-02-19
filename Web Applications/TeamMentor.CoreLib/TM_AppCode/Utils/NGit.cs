@@ -1,6 +1,6 @@
 ﻿using O2.FluentSharp;
 
-namespace TeamMentor.CoreLib.TM_AppCode.Utils
+namespace TeamMentor.CoreLib
 {
     public class NGit
     {

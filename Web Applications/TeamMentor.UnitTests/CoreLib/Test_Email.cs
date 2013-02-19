@@ -27,8 +27,7 @@ namespace TeamMentor.UnitTests.CoreLib
 
         [Test]
         public void Send_Test_Email()
-        {
-            
+        {            
             var stmpServerOnline = Mail.isMailServerOnline(sendEmails.Smtp_Server);
             Assert.IsTrue(stmpServerOnline);
             var sendResult = new SendEmails().send(to, subject, message);
