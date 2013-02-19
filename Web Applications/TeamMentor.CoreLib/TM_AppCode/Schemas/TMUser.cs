@@ -48,6 +48,7 @@ namespace TeamMentor.CoreLib
     public class UserSecretData
     {
         [XmlAttribute]	public string   PasswordHash		{ get; set; }
+        [XmlAttribute]	public Guid     SingleUseLoginToken	{ get; set; }
         [XmlAttribute]	public string   DecryptionKey       { get; set; }        
     }
     public class UserAccountStatus

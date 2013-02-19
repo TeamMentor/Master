@@ -6,6 +6,29 @@ namespace TeamMentor.CoreLib
 {
     public static class TM_UserData_Ex_ActiveSessions
     {   
+        public static Guid              login_Using_LoginToken (this TM_UserData userData, string username, Guid loginToken)
+        {
+            try
+            {
+                if (username.valid() && loginToken != Guid.Empty)
+                {
+                    var tmUser = userData.tmUser(username);
+                    if (tmUser.notNull())
+                    {
+                        if (tmUser.SecretData.SingleUseLoginToken == loginToken)
+                        {
+                            tmUser.SecretData.SingleUseLoginToken = Guid.Empty;
+                            return tmUser.login();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.log("[TM_Xml_Database] login_Using_LoginToken"); 
+            }
+            return Guid.Empty;    			
+        }
         public static Guid              login (this TM_UserData userData, string username, string password)
         {
             try

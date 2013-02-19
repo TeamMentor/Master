@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using O2.DotNetWrappers.ExtensionMethods;
 
 namespace TeamMentor.CoreLib
@@ -26,6 +25,14 @@ namespace TeamMentor.CoreLib
         public bool     User_LoggedIn()
         {
             return TmWebServices.Current_User().notNull();
+        }
+        public Guid     GetLoginToken(string username)
+        {
+            return TmWebServices.GetLoginToken(username);
+        }
+        public Guid     Login_Using_LoginToken(string username, string loginToken)
+        {
+            return TmWebServices.Login_Using_LoginToken(username, loginToken.guid());            
         }
     }
 }

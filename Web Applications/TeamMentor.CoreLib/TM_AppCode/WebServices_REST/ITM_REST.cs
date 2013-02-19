@@ -20,10 +20,13 @@ namespace TeamMentor.CoreLib
 		[OperationContract][WebGet(UriTemplate = "/article/html/{articleId}")]	string				Article_Html(string articleId);
 
 		//User Session
-		[OperationContract][WebGet	 (UriTemplate = "/sessionId"					)]	string		SessionId();
-		[OperationContract][WebGet	 (UriTemplate = "/logout"						)]	Guid		Logout();
-		[OperationContract][WebGet   (UriTemplate = "/login/{username}/{password}"	)]	Guid		Login(string username, string password);        
+		[OperationContract][WebGet	 (UriTemplate = "/sessionId"					    )]	string		SessionId();
+		[OperationContract][WebGet	 (UriTemplate = "/logout"						     )]	Guid		Logout();
+		[OperationContract][WebGet   (UriTemplate = "/login/{username}/{password}"	     )]	Guid		Login(string username, string password);        
+        [OperationContract][WebGet   (UriTemplate = "/loginToken/{username}"	         )]	Guid		GetLoginToken(string username);                
+        [OperationContract][WebGet   (UriTemplate = "/loginToken/{username}/{loginToken}")]	Guid		Login_Using_LoginToken(string username, string loginToken);
 		[OperationContract][WebInvoke(UriTemplate = "/login/", Method = "POST",ResponseFormat = WebMessageFormat.Json)]	Guid		Login_using_Credentials(TM_Credentials credentials);
+        
         
         //Active Sessions
 //        [OperationContract][WebGet	 (UriTemplate = "/sessions/all"					)]	List<string>    ActiveSessions();

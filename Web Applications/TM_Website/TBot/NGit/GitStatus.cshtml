@@ -8,7 +8,7 @@
     var userDataLocation = userData.Path_UserData;
 //    var userGit = userDataLocation.git_Open();
     var userStatus  = userDataLocation.isGitRepository() ? userDataLocation.git_Open().status()  : "(folder is not a repository)";
-    var userRefLogs = userDataLocation.isGitRepository() ? userDataLocation.git_Open().refLogs().take(2).join("".line()) : "(folder is not a repository)";
+    var userRefLogs = userDataLocation.isGitRepository() ? userDataLocation.git_Open().refLogs().take(50).join("".line()) : "(folder is not a repository)";
     var xmlLibraryLocation = TM_Xml_Database.Current.Path_XmlLibraries;
     var libraryStatus = xmlLibraryLocation.isGitRepository() ? xmlLibraryLocation.git_Open().status() : "(folder is not a repository)";
 }

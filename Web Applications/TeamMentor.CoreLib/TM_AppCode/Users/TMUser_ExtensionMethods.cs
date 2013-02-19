@@ -6,7 +6,7 @@ namespace TeamMentor.CoreLib
 {
     public static class TMUser_ExtensionMethods
     {
-        public static bool      account_Expired(this TMUser tmUser)
+        public static bool      account_Expired    (this TMUser tmUser)
         {
             if (tmUser.isNull())
                 return true;
@@ -15,13 +15,13 @@ namespace TeamMentor.CoreLib
                     tmUser.AccountStatus.ExpirationDate != default(DateTime);
             return false;
         }
-        public static bool      password_Expired(this TMUser tmUser)
+        public static bool      password_Expired   (this TMUser tmUser)
         {
             if (tmUser.isNull())
                 return true;
             return tmUser.AccountStatus.PasswordExpired;            
         }
-        public static TMUser    expire_Account(this TMUser tmUser)
+        public static TMUser    expire_Account     (this TMUser tmUser)
         {
             if (tmUser.notNull())
             {
@@ -30,7 +30,7 @@ namespace TeamMentor.CoreLib
             }
             return tmUser;
         }
-        public static TMUser    expire_Password(this TMUser tmUser)
+        public static TMUser    expire_Password    (this TMUser tmUser)
         {
             if (tmUser.notNull())
             {
@@ -39,7 +39,7 @@ namespace TeamMentor.CoreLib
             }
             return tmUser;
         }
-        public static string    createPasswordHash(this TMUser tmUser, string password)
+        public static string    createPasswordHash (this TMUser tmUser, string password)
         {		    		                
             // first we hash the password with the user's name as salt (what used to happen before the )           
             var sha256Hash = tmUser.UserName.hash_SHA256(password);
@@ -49,5 +49,13 @@ namespace TeamMentor.CoreLib
 
             return passwordHash;
         }
+
+        public static Guid      current_SingleUseLoginToken(this TMUser tmUser)
+        {
+            if (tmUser.SecretData.SingleUseLoginToken == Guid.Empty)
+                tmUser.SecretData.SingleUseLoginToken = Guid.NewGuid();
+            return tmUser.SecretData.SingleUseLoginToken;
+        }
+
     }	
 }

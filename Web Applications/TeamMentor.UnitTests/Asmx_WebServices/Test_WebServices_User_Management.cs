@@ -103,7 +103,27 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             Assert.AreEqual (sessionId.str().hash().str(), currentUser.CSRF_Token   , "CSRF_Token didn't match");
             
         }
+        [Test] public void SingleUseLoginToken()
+        {
+            var newUser       = newTempUser();
+            var tmUser        = tmWebServices.CreateUser(newUser).tmUser();
 
+            var loginToken_BeforeSet    = tmUser.SecretData.SingleUseLoginToken;
+            var loginToken_BeforeUse    = tmUser.current_SingleUseLoginToken();
+            var loginToken              = tmUser.SecretData.SingleUseLoginToken;
+            var sessionId_UsingToken    = tmWebServices.Login_Using_LoginToken(tmUser.UserName, loginToken);
+            var loginToken_AfterUse     = tmUser.SecretData.SingleUseLoginToken;
+            var loginToken_NextRequest  = tmUser.current_SingleUseLoginToken();
+
+            Assert.AreEqual   (Guid.Empty, loginToken_BeforeSet , "loginToken_BeforeSet");
+            Assert.AreNotEqual(Guid.Empty, loginToken_BeforeUse , "loginToken_BeforeUse");
+            Assert.AreEqual   (loginToken, loginToken_BeforeUse , "loginToken_BeforeUse");
+            Assert.AreNotEqual(Guid.Empty, sessionId_UsingToken , "sessionId_UsingToken");
+            Assert.AreEqual   (Guid.Empty, loginToken_AfterUse  , "loginToken_AfterUse");
+            Assert.AreNotEqual(Guid.Empty, loginToken_NextRequest, "loginToken_NextRequest is Empty");
+            Assert.AreNotEqual(loginToken, loginToken_NextRequest, "loginToken_NextRequest should be new");
+            
+        }
         //Helper methods
         public NewUser newTempUser()
         {
