@@ -42,7 +42,7 @@ namespace TeamMentor.CoreLib
 			var response = context.Response;		
 			response.Clear();
 
-			if (TMConfig.Current.TMDebugAndDev.Enable302Redirects && send304Redirect())
+			if (TMConfig.Current.TMSetup.Enable302Redirects && send304Redirect())
 			{
 				context.Response.StatusCode = 304;
 				context.Response.StatusDescription = "Not Modified";

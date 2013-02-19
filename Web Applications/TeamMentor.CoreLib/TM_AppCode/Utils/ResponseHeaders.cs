@@ -17,7 +17,7 @@ namespace TeamMentor.CoreLib
 			HttpContextFactory.Response.AddHeader("Strict-Transport-Security", "max-age=60000");
 
 			//Allow Cross Domain Requests
-			if (TMConfig.Current.REST.AllowCrossDomainAccess)
+			if (TMConfig.Current.TMSecurity.REST_AllowCrossDomainAccess)
 			{
 				HttpContextFactory.Response.AddHeader("Access-Control-Allow-Origin" , "*");
 				HttpContextFactory.Response.AddHeader("Access-Control-Allow-Methods", "PUT, GET, POST, DELETE, OPTIONS");

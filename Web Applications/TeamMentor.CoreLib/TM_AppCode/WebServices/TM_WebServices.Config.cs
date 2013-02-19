@@ -72,7 +72,7 @@ namespace TeamMentor.CoreLib
         
         [WebMethod(EnableSession = true)] [Admin]	            public string		Get_Libraries_Zip_Folder()
                                                                                     {
-                                                                                        var librariesZipsFolder = TMConfig.Current.LibrariesUploadedFiles;
+                                                                                        var librariesZipsFolder = TMConfig.Current.TMSetup.LibrariesUploadedFiles;
                                                                                         return TM_Xml_Database.Current.Path_XmlDatabase.fullPath().pathCombine(librariesZipsFolder).fullPath();
                                                                                     }		
         [WebMethod(EnableSession = true)] [Admin]	            public List<string> Get_Libraries_Zip_Folder_Files()
@@ -82,7 +82,7 @@ namespace TeamMentor.CoreLib
         [WebMethod(EnableSession = true)] [Admin]	            public string		Set_Libraries_Zip_Folder(string folder)
                                                                                     {
                                                                                         var tmConfig = TMConfig.Current;
-                                                                                        tmConfig.LibrariesUploadedFiles = folder;
+                                                                                        tmConfig.TMSetup.LibrariesUploadedFiles = folder;
                                                                                         //folder.createDir();
                                                                                         if (tmConfig.SaveTMConfig())																																										
                                                                                             return "Path set to '{0}' which currently has {1} files".format(folder.fullPath(), folder.files().size());

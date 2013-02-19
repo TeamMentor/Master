@@ -24,4 +24,19 @@ namespace TeamMentor.CoreLib
         public static HttpServerUtilityBase Server      {	get { return Current.Server;    } }
         public static HttpSessionStateBase  Session		{   get { return Current.Session;   } }
     }
+
+
+    public static class HttpContextFactory_ExtensionMethods
+    {
+        public static HttpContextBase addCookieFromResponseToRequest(this HttpContextBase httpContext, string cookieName)
+        {
+            if (httpContext.Response.hasCookie(cookieName))
+            {
+                var cookieValue = httpContext.Response.cookie(cookieName);
+                var newCookie = new HttpCookie(cookieName, cookieValue);
+                httpContext.Request.Cookies.Add(newCookie);
+            }
+            return httpContext;
+        }
+    }
 }

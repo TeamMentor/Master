@@ -34,7 +34,7 @@ namespace TeamMentor.CoreLib
             UserActivities  = new List<UserActivity>();
             AccountStatus   = new UserAccountStatus
                                     {
-                                        ExpirationDate  = DateTime.Now.AddDays(TMConfig.Current.Eval_Accounts.Days),
+                                        ExpirationDate  = DateTime.Now.AddDays(TMConfig.Current.TMSecurity.EvalAccounts_Days),
                                         PasswordExpired = false,
                                         UserEnabled     = true
                                     };

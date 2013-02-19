@@ -12,7 +12,7 @@ namespace TeamMentor.UnitTests.REST
 
 		public TM_Rest_Hosted()
 		{
-			TMConfig.Current.UseAppDataFolder = true;									// set the TM XMl Database folder to be 
+			TMConfig.Current.TMSetup.UseAppDataFolder = true;									// set the TM XMl Database folder to be 
 			HttpContextFactory.Context = new API_Moq_HttpContext().httpContext();		
 			IrestAdmin = new TM_REST();
 		}

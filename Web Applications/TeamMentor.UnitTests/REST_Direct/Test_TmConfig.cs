@@ -18,8 +18,8 @@ namespace TeamMentor.UnitTests.REST
 		public void Test_DefaultSettings()
 		{
 			var tmConfig = TMConfig.Current;
-			Assert.IsFalse(tmConfig.ShowContentToAnonymousUsers, "ShowContentToAnonymousUsers");
-			Assert.IsFalse(tmConfig.WindowsAuthentication.Enabled, "tmConfig.WindowsAuthentication.Enabled");
+			Assert.IsFalse(tmConfig.TMSecurity.Show_ContentToAnonymousUsers, "ShowContentToAnonymousUsers");
+			Assert.IsFalse(tmConfig.WindowsAuthentication.Enabled          , "tmConfig.WindowsAuthentication.Enabled");
 		}
 			
 		[Test]
@@ -31,7 +31,7 @@ namespace TeamMentor.UnitTests.REST
 			ResponseHeaders.addDefaultResponseHeaders();
 			Assert.AreEqual(3, headers.size()	, "two headers expected");
 
-			TMConfig.Current.REST.AllowCrossDomainAccess = true;
+			TMConfig.Current.TMSecurity.REST_AllowCrossDomainAccess = true;
 			ResponseHeaders.addDefaultResponseHeaders();
 			Assert.AreEqual(6, headers.size()	, "five headers expected");
 			Assert.AreEqual("Access-Control-Allow-Origin", headers.Keys[3]);

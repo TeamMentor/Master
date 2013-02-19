@@ -1,8 +1,6 @@
 using System;
-using System.Linq;
-using System.Collections.Generic;
 using O2.DotNetWrappers.ExtensionMethods;
-using Encoder = Microsoft.Security.Application.Encoder;
+
 
 namespace TeamMentor.CoreLib
 {
@@ -10,9 +8,37 @@ namespace TeamMentor.CoreLib
     {
         public static bool      account_Expired(this TMUser tmUser)
         {
+            if (tmUser.isNull())
+                return true;
+            if (TMConfig.Current.TMSecurity.EvalAccounts_Enabled)
+            return tmUser.AccountStatus.ExpirationDate < DateTime.Now &&
+                    tmUser.AccountStatus.ExpirationDate != default(DateTime);
             return false;
-        }   
-
+        }
+        public static bool      password_Expired(this TMUser tmUser)
+        {
+            if (tmUser.isNull())
+                return true;
+            return tmUser.AccountStatus.PasswordExpired;            
+        }
+        public static TMUser    expire_Account(this TMUser tmUser)
+        {
+            if (tmUser.notNull())
+            {
+                tmUser.AccountStatus.ExpirationDate = DateTime.Now;
+                10.sleep();
+            }
+            return tmUser;
+        }
+        public static TMUser    expire_Password(this TMUser tmUser)
+        {
+            if (tmUser.notNull())
+            {
+                tmUser.AccountStatus.PasswordExpired = true;
+                10.sleep();
+            }
+            return tmUser;
+        }
         public static string    createPasswordHash(this TMUser tmUser, string password)
         {		    		                
             // first we hash the password with the user's name as salt (what used to happen before the )           

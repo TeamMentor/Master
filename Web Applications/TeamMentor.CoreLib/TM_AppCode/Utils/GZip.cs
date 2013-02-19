@@ -17,7 +17,7 @@ namespace TeamMentor.CoreLib
         public static void setGZipCompression_forAjaxRequests(HttpRequestBase request, HttpResponseBase response)			
         {
             //based on code from http://geekswithblogs.net/rashid/archive/2007/09/15/Compress-Asp.net-Ajax-Web-Service-Response---Save-Bandwidth.aspx
-            if (TMConfig.Current.TMDebugAndDev.EnableGZipForWebServices.isFalse())
+            if (TMConfig.Current.TMSetup.EnableGZipForWebServices.isFalse())
                 return;
             try
             {

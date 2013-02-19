@@ -113,7 +113,7 @@ namespace TeamMentor.CoreLib
             }
             if (userGroup == UserGroup.None)
             {
-                if (TMConfig.Current.ShowContentToAnonymousUsers)
+                if (TMConfig.Current.TMSecurity.Show_ContentToAnonymousUsers)
                     UserGroup.Reader.setThreadPrincipalWithRoles();
                 else
                     UserGroup.Anonymous.setThreadPrincipalWithRoles();

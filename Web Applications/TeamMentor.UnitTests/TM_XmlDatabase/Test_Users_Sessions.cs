@@ -74,13 +74,15 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Assert.AreEqual    (1, stats.LoginFail);
 
             //test as Admin      
-            
-            var sessionId =  userData.login(tmConfig.DefaultAdminUserName, tmConfig.DefaultAdminPassword);  // login using user and good pwd
-            tmUser = sessionId.session_TmUser();
-            stats  = tmUser.Stats;
+            var adminName        = tmConfig.TMSecurity.Default_AdminUserName;
+            var adminPwd         = tmConfig.TMSecurity.Default_AdminPassword;
+            var sessionId        =  userData.login(adminName, adminPwd);  // login using user and good pwd
+            tmUser               = sessionId.session_TmUser();
+            stats                = tmUser.Stats;
             var currentLoginOk   = stats.LoginOk;
             var currentLoginFail = stats.LoginFail;
-            sessionId =  userData.login(tmConfig.DefaultAdminUserName, tmConfig.DefaultAdminPassword);      // login again using user and good pwd
+            sessionId            =  userData.login(adminName, adminPwd);      // login again using user and good pwd
+
             Assert.AreNotEqual (Guid.Empty, sessionId, "failed to login as default admin user");
             Assert.AreNotEqual (default(DateTime), stats.LastLogin);
             Assert.AreEqual    (currentLoginOk+1, stats.LoginOk   , "[admin] stats.LoginOk ");
@@ -94,10 +96,48 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
 
         [Test] public void UserAccount_Expired()
         {
+            tmConfig.TMSecurity.EvalAccounts_Enabled  = true;
+            tmConfig.TMSecurity.EvalAccounts_Days     = 15;
+            Assert.AreEqual(15  , TMConfig.Current.TMSecurity.EvalAccounts_Days    , "Eval_Accounts.Days");
+            Assert.AreEqual(true, TMConfig.Current.TMSecurity.EvalAccounts_Enabled , "Eval_Accounts.Enabled");
+
             var tmUser = userData.newUser().tmUser();
             
-            Assert.IsFalse(tmUser.account_Expired());
+            Assert.IsFalse (tmUser.account_Expired(), "New user should not be expired");
 
-        }        
+            Assert.AreEqual(tmUser.AccountStatus.ExpirationDate                        .ToLongDateString(), 
+                            DateTime.Now.AddDays(tmConfig.TMSecurity.EvalAccounts_Days).ToLongDateString());
+
+            tmUser.expire_Account();    
+
+            Assert.IsTrue (tmUser.account_Expired(), "user should be expired");
+
+            tmConfig.TMSecurity.EvalAccounts_Enabled = false;
+            Assert.IsFalse (tmUser.account_Expired() ,"expiration check should be disabled");
+        }
+
+        [Test]
+        public void UserPassword_Expired()
+        {
+            var tmUser        = userData.newUser().tmUser();
+
+            Assert.IsFalse    (tmUser.password_Expired());
+
+            tmUser            .expire_Password();
+
+            Assert.IsTrue     (tmUser.password_Expired());
+
+            var newPassword   = "QAsdf1234!";
+            tmUser            .setPassword(newPassword);    
+  
+            Assert.IsFalse    (tmUser.password_Expired(), "Password expiry should not be set after password change");
+            Assert.AreNotEqual(Guid.Empty               , userData.login(tmUser.UserName, newPassword));
+        }
+
+        [Test, Ignore("under dev")]
+        public void PasswordComplexity()
+        {
+            
+        }
     }
 }

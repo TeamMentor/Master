@@ -16,13 +16,11 @@ namespace TeamMentor.CoreLib
 
                     if (tmUser.notNull())
                     {
-                        if (TMConfig.Current.Eval_Accounts.Enabled)
-                            if (tmUser.AccountStatus.ExpirationDate < DateTime.Now &&
-                                tmUser.AccountStatus.ExpirationDate != default(DateTime))
-                            {
-                                tmUser.logUserActivity("Account Expired", tmUser.UserName);
-                                return Guid.Empty;
-                            }
+                        if (tmUser.account_Expired())
+                        {
+                            tmUser.logUserActivity("Account Expired", tmUser.UserName);
+                            return Guid.Empty;
+                        }
 
                         var sessionId = (tmUser.SecretData.PasswordHash == tmUser.createPasswordHash(password))
                                             ? Guid.NewGuid()

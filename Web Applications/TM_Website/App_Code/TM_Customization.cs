@@ -21,13 +21,15 @@ namespace TeamMentor.Website
 
 	    public void CustomizeTMConfig()
 	    {	
-	    	//General TM Configuration
-			tmConfig.ShowContentToAnonymousUsers	= false;
-			tmConfig.Eval_Accounts.Enabled			= true;
-			tmConfig.Eval_Accounts.Days				= 15;
+	    	//TM Security
+            tmConfig.TMSecurity.SSL_RedirectHttpToHttps		    = false;    // true
+			tmConfig.TMSecurity.Show_ContentToAnonymousUsers	= false;
+			tmConfig.TMSecurity.EvalAccounts_Enabled			= true;
+			tmConfig.TMSecurity.EvalAccounts_Days				= 15;
 
-	        tmConfig.TMDebugAndDev.EnableGZipForWebServices = false;//true;
-            tmConfig.TMDebugAndDev.Enable302Redirects       = true;
+            //General TM Configuration
+	        tmConfig.TMSetup.EnableGZipForWebServices           = false;    // true
+            tmConfig.TMSetup.Enable302Redirects                 = true;
 
 
 			//Google Analytics
@@ -35,8 +37,8 @@ namespace TeamMentor.Website
 			googleAnalytics.Enabled					= true;
 			googleAnalytics.LogWebServicesCalls		= true;
 
-			//TM Security
-			tmConfig.SSL_RedirectHttpToHttps		= true;
+			
+			
 
             //OnInstallation
 	        tmConfig.OnInstallation.ForceAdminPasswordReset          = true;

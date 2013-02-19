@@ -16,7 +16,7 @@ namespace TeamMentor.CoreLib
         }
         public static void loadConfiguration()
         {
-            singleSignOn_Enabled = TMConfig.Current.SingleSignOn_Enabled;
+            singleSignOn_Enabled = TMConfig.Current.TMSecurity.SingleSignOn_Enabled;
         }
 
         public Guid authenticateUserBasedOn_SSOToken()
@@ -38,7 +38,7 @@ namespace TeamMentor.CoreLib
         {
             try
             {
-                if (TMConfig.Current.SingleSignOn_Enabled.isFalse())                
+                if (TMConfig.Current.TMSecurity.SingleSignOn_Enabled.isFalse())                
                     "SSO request received but TMConfig.Current.SingleSignOn_Enabled is not set".error();
                 else
                 {

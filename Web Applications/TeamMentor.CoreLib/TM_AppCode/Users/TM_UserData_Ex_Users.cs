@@ -13,9 +13,9 @@ namespace TeamMentor.CoreLib
             var tmConfig = TMConfig.Current;
             lock (tmConfig)
             {                
-                var defaultAdminUser_Name = tmConfig.DefaultAdminUserName;
-                var defaultAdminUser_Pwd = tmConfig.DefaultAdminPassword;                
-                var adminUser = userData.tmUser(defaultAdminUser_Name);
+                var defaultAdminUser_Name = tmConfig.TMSecurity.Default_AdminUserName;
+                var defaultAdminUser_Pwd  = tmConfig.TMSecurity.Default_AdminPassword;                
+                var adminUser            = userData.tmUser(defaultAdminUser_Name);
                 
                 if (adminUser.notNull())
                 {
@@ -118,13 +118,13 @@ namespace TeamMentor.CoreLib
         
         public static bool          setUserPassword             (this TM_UserData userData, int userId, string password)
         {
-            var tmUser = userData.tmUser(userId);
-            return userData.setUserPassword(tmUser, password);
+            return userData.tmUser(userId)
+                           .setPassword(password);
         }        
         public static bool          setUserPassword             (this TM_UserData userData, string username, string password)
         {
-            var tmUser = userData.tmUser(username);
-            return userData.setUserPassword(tmUser, password);
+            return userData.tmUser(username)
+                           .setPassword(password);
         }
         public static bool          setCurrentUserPassword      (this TM_UserData userData, TM_Authentication tmAuthentication, string password)
         {
@@ -158,8 +158,6 @@ namespace TeamMentor.CoreLib
                 return tmUser.GroupID;
             return -1;
         }                
-
-        
         public static TMUser        tmUser              (this TM_UserData userData, string userName)
         {
             return userData.TMUsers.Where((tmUser) => tmUser.UserName == userName).first() ;
@@ -175,22 +173,23 @@ namespace TeamMentor.CoreLib
         public static List<TMUser>  tmUsers             (this TM_UserData userData)
         {
             return TM_UserData.Current.TMUsers.toList();
-        }        
-        [ManageUsers]   public static List<int>     createTmUsers       (this TM_UserData userData, List<NewUser> newUsers)
-        {
-            return newUsers.Select(newUser => userData.createTmUser(newUser)).toList();
-        }
-        [ManageUsers]   public static bool          setUserPassword     (this TM_UserData userData, TMUser tmUser, string password)
-        {		
-            "in setUserPassword".info();
+        }                
+        public static bool          setPassword         (this TMUser tmUser, string password)
+        {		            
             if (tmUser.notNull())
-            {
-                tmUser.SecretData.PasswordHash = tmUser.createPasswordHash(password);
+            {                
+                tmUser.SecretData.PasswordHash       = tmUser.createPasswordHash(password);
+                tmUser.AccountStatus.PasswordExpired = false;
                 tmUser.saveTmUser();
                 return true;
             }
             return false;    		
         }                
+
+        [ManageUsers]   public static List<int>     createTmUsers       (this TM_UserData userData, List<NewUser> newUsers)
+        {
+            return newUsers.Select(newUser => userData.createTmUser(newUser)).toList();
+        }
         [ManageUsers]   public static List<bool>    deleteTmUsers       (this TM_UserData userData, List<int> userIds)
         {
             return userIds.Select(userId => userData.deleteTmUser(userId)).toList();

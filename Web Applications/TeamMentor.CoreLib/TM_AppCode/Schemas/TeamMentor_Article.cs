@@ -215,7 +215,7 @@ namespace TeamMentor.CoreLib
                     metaData.prop(prop.Name, Encoder.HtmlEncode(value)); 
                 }
             }
-            if (TMConfig.Current.SanitizeHtmlContent)
+            if (TMConfig.Current.TMSecurity.Sanitize_HtmlContent)
             {
                 article.Content.Data.Value = Sanitizer.GetSafeHtmlFragment(article.Content.Data.Value);
                 article.Content.Sanitized = true;

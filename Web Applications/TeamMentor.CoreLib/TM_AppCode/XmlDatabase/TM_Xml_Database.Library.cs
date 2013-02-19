@@ -125,7 +125,7 @@ namespace TeamMentor.CoreLib
                     return articleContent;
                 case "html":
                     {
-                        if (TMConfig.Current.SanitizeHtmlContent && article.Content.Sanitized.isFalse())
+                        if (TMConfig.Current.TMSecurity.Sanitize_HtmlContent && article.Content.Sanitized.isFalse())
                             return articleContent.sanitizeHtmlContent();
                         
                         return articleContent.fixXmlDoubleEncodingIssue();                            

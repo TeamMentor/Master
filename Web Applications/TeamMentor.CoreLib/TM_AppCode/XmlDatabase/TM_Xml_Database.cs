@@ -84,8 +84,8 @@ namespace TeamMentor.CoreLib
             {
                 var tmComfig            = TMConfig.Current;
                 var xmlDatabasePath     = tmComfig.xmlDatabasePath();
-                var xmlLibraryPath      = tmComfig.XmlLibrariesPath;
-                var userDataPath        = tmComfig.UserDataPath;                
+                var xmlLibraryPath      = tmComfig.TMSetup.XmlLibrariesPath;
+                var userDataPath        = tmComfig.TMSetup.UserDataPath;                
                 
                 setLibraryPath_and_LoadDataIntoMemory(xmlDatabasePath, xmlLibraryPath, userDataPath);
 
@@ -109,7 +109,7 @@ namespace TeamMentor.CoreLib
             if (newLibraryPath.notNull())
             {
                 var tmConfig = TMConfig.Current;
-                tmConfig.XmlLibrariesPath = newLibraryPath;
+                tmConfig.TMSetup.XmlLibrariesPath = newLibraryPath;
                 tmConfig.SaveTMConfig();			
             }
             

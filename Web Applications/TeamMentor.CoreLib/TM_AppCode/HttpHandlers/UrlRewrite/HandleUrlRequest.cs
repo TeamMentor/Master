@@ -30,7 +30,7 @@ namespace TeamMentor.CoreLib
 
         private bool redirectedToSLL()
         {			            
-            if (TMConfig.Current.SSL_RedirectHttpToHttps && !context.Request.IsLocal && !context.Request.IsSecureConnection)
+            if (TMConfig.Current.TMSecurity.SSL_RedirectHttpToHttps && !context.Request.IsLocal && !context.Request.IsSecureConnection)
             {
                 if (request.Url != null)
                 {

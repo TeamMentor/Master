@@ -18,7 +18,7 @@ namespace TeamMentor.UnitTests.REST
             tmXmlDatabase = new TM_Xml_Database(false);	
             UserGroup.Anonymous.setThreadPrincipalWithRoles();
 
-            TMConfig.Current.UseAppDataFolder = true;									// set the TM XMl Database folder to be 
+            TMConfig.Current.TMSetup.UseAppDataFolder = true;									// set the TM XMl Database folder to be 
             moq_HttpContext                   = new API_Moq_HttpContext();
             HttpContextFactory.Context        = moq_HttpContext.httpContext();			
             TmRest = new TM_REST();

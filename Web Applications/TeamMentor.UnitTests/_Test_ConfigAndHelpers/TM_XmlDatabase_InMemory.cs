@@ -20,7 +20,7 @@ namespace TeamMentor.UnitTests
         {
             tmXmlDatabase   = new TM_Xml_Database();
             userData        = tmXmlDatabase.UserData;
-            tmConfig        = new TMConfig();
+            tmConfig        = TMConfig.Current = new TMConfig();
             //new TM_TestLibrary().CreateTestDatabase(tmXmlDatabase);
         }
 
