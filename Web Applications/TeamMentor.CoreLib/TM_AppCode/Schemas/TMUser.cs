@@ -40,7 +40,7 @@ namespace TeamMentor.CoreLib
                                     };
             Stats           = new UserStats
                                     {
-                                        CreationDate = DateTime.Now                                        
+                                        CreationDate = DateTime.Now                                       
                                     };
         }
     }

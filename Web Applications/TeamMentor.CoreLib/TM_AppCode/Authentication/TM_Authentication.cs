@@ -19,17 +19,19 @@ namespace TeamMentor.CoreLib
         {
             get
             {                
-                // first check if there s a session variable already set
-                //if (TmWebServices.Session.notNull() && TmWebServices.Session["sessionID"].notNull())
+                // first check if there s a session variable already set                
                 if (HttpContextFactory.Session.notNull() && HttpContextFactory.Session["sessionID"].notNull())
                     return (Guid)TmWebServices.Session["sessionID"];
+
                 // then check the cookie
                 var sessionCookie = HttpContextFactory.Request.Cookies["Session"];
                 if (sessionCookie.notNull() && sessionCookie.value().isGuid())
                     return sessionCookie.value().guid();
+
                 var sessionHeader = HttpContextFactory.Request.Headers["Session"];
                 if (sessionHeader.notNull() && sessionHeader.isGuid())
                     return sessionHeader.guid();
+
                 //if none is set, return an empty Guid	
                 return Guid.Empty;                
             }
@@ -37,15 +39,11 @@ namespace TeamMentor.CoreLib
             {                
                 var previousSessionId = sessionID;
              
-                if (HttpContextFactory.Session.notNull())
-                {
+                if (HttpContextFactory.Session.notNull())                
                     HttpContextFactory.Session["sessionID"] = value;
-                }                    
-                var sessionCookie = new HttpCookie("Session", value.str())
-                    {
-                        HttpOnly = true
-                    };
-                HttpContextFactory.Response.Cookies.Add(sessionCookie);                    
+
+                HttpContextFactory.Response.set_Cookie("Session", value.str()).httpOnly();
+                HttpContextFactory.Request .set_Cookie("Session", value.str()).httpOnly();   
              
                 if (value == Guid.Empty)
                     previousSessionId.logout();				

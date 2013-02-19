@@ -79,9 +79,9 @@ namespace TeamMentor.CoreLib
                 Company 	 = Encoder.XmlEncode(company),
                 GroupID 	 = groupId,
                 Title 		 = Encoder.XmlEncode(title), 										
-                EMail 		 = Encoder.XmlEncode(email) ?? "",                
+                EMail 		 = Encoder.XmlEncode(email) ?? "",                     
             };
-            tmUser.SecretData.PasswordHash = tmUser.createPasswordHash(password);
+            tmUser.SecretData.PasswordHash = tmUser.createPasswordHash(password);            
             userData.TMUsers.Add(tmUser);            
         
             //save it

@@ -32,25 +32,26 @@ namespace TeamMentor.CoreLib
                 return null;
             return new TM_User
                 {
-                    UserId		= tmUser.UserID,
-                    UserName	= tmUser.UserName,
+                    CreatedDate = tmUser.Stats.CreationDate.ToFileTimeUtc(),
+                    Company		= tmUser.Company,
                     Email		= tmUser.EMail,
                     FirstName	= tmUser.FirstName,
-                    LastName	= tmUser.LastName,
-                    Company		= tmUser.Company,
-                    Title		= tmUser.Title
+                    LastName	= tmUser.LastName,                    
+                    Title		= tmUser.Title,
+                    UserId		= tmUser.UserID,
+                    UserName	= tmUser.UserName
                 };
         }
         public static NewUser newUser(this TM_User user)
         {
             return new NewUser
                 {
-                    username = user.UserName,
+                    company = user.Company,                    
                     email = user.Email,
                     firstname = user.FirstName,
                     lastname = user.LastName,
-                    title = user.Title,
-                    company = user.Company
+                    title = user.Title,                    
+                    username = user.UserName,
                 };
         }
     }

@@ -93,7 +93,6 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Assert.AreEqual    (currentLoginOk  + 1, stats.LoginOk);
             Assert.AreEqual    (currentLoginFail +1, stats.LoginFail , "[admin] stats.LoginFail should");
         }
-
         [Test] public void UserAccount_Expired()
         {
             tmConfig.TMSecurity.EvalAccounts_Enabled  = true;
@@ -115,9 +114,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             tmConfig.TMSecurity.EvalAccounts_Enabled = false;
             Assert.IsFalse (tmUser.account_Expired() ,"expiration check should be disabled");
         }
-
-        [Test]
-        public void UserPassword_Expired()
+        [Test] public void UserPassword_Expired()
         {
             var tmUser        = userData.newUser().tmUser();
 
@@ -132,8 +129,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
   
             Assert.IsFalse    (tmUser.password_Expired(), "Password expiry should not be set after password change");
             Assert.AreNotEqual(Guid.Empty               , userData.login(tmUser.UserName, newPassword));
-        }
-
+        }        
         [Test, Ignore("under dev")]
         public void PasswordComplexity()
         {

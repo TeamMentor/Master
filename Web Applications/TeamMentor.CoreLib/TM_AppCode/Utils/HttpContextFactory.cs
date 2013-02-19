@@ -33,8 +33,13 @@ namespace TeamMentor.CoreLib
             if (httpContext.Response.hasCookie(cookieName))
             {
                 var cookieValue = httpContext.Response.cookie(cookieName);
-                var newCookie = new HttpCookie(cookieName, cookieValue);
-                httpContext.Request.Cookies.Add(newCookie);
+                if (httpContext.Request.hasCookie(cookieName))
+                    httpContext.Request.Cookies[cookieName].value(cookieValue);
+                else
+                {
+                    var newCookie = new HttpCookie(cookieName, cookieValue);
+                    httpContext.Request.Cookies.Add(newCookie);
+                }
             }
             return httpContext;
         }
