@@ -117,11 +117,36 @@ namespace TeamMentor.CoreLib
 You can login with your {2} account at http://www.teammentor.net
 
 TeamMentor Team.
-".format(tmUser.FirstName, tmUser.LastName, tmUser.UserName);
+                ".format(tmUser.FirstName, tmUser.LastName, tmUser.UserName);
                 SendEmailToEmail(tmUser.EMail, "Welcome to TeamMentor", userMessage);
                 userMessage = "(sent to: {0})\n\n{1}".format(tmUser.EMail, userMessage);
                 SendEmailToTM("(user email) Welcome to TeamMentor", userMessage);
             }
+
+        }
+
+        [Assert_Admin]
+        public static bool SendLoginTokenToUser(TMUser tmUser)
+        {
+            try
+            {                 
+var userMessage =
+@"Hi {0} {1} A Login token was requested for your account.
+
+You can login with your {2} account using http://www.teammentor.net/rest/{2}/{3})
+
+TeamMentor Team.
+             ".format(tmUser.FirstName, tmUser.LastName, tmUser.UserName, tmUser.current_SingleUseLoginToken());
+             SendEmailToEmail(tmUser.EMail, "TeamMentor Login Link", userMessage);
+             userMessage = "(sent to: {0})\n\n{1}".format(tmUser.EMail, userMessage);
+             SendEmailToTM("(user email) Welcome to TeamMentor", userMessage);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                ex.log();
+            }
+            return false;
 
         }
 

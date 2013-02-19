@@ -25,6 +25,7 @@ namespace TeamMentor.CoreLib
 		[OperationContract][WebGet   (UriTemplate = "/login/{username}/{password}"	     )]	Guid		Login(string username, string password);        
         [OperationContract][WebGet   (UriTemplate = "/loginToken/{username}"	         )]	Guid		GetLoginToken(string username);                
         [OperationContract][WebGet   (UriTemplate = "/loginToken/{username}/{loginToken}")]	Guid		Login_Using_LoginToken(string username, string loginToken);
+        [OperationContract][WebGet   (UriTemplate = "/sendLoginToken/{username}")]	        bool		SendLoginTokenForUser(string username);
 		[OperationContract][WebInvoke(UriTemplate = "/login/", Method = "POST",ResponseFormat = WebMessageFormat.Json)]	Guid		Login_using_Credentials(TM_Credentials credentials);
         
         

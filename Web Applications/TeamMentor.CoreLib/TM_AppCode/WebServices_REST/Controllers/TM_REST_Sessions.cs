@@ -34,5 +34,13 @@ namespace TeamMentor.CoreLib
         {
             return TmWebServices.Login_Using_LoginToken(username, loginToken.guid());            
         }
+
+        public bool SendLoginTokenForUser(string userName)
+        {
+            var tmUser = userName.tmUser();
+            if(tmUser.notNull())
+                return SendEmails.SendLoginTokenToUser(tmUser);
+            return true;
+        }
     }
 }
