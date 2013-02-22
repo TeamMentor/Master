@@ -622,9 +622,6 @@
     <None Include="Html_Pages\ControlPanel\WebEditor\codeMirror\baboon_vector.svg" />
     <Content Include="Html_Pages\ControlPanel\WebEditor\WebEditorService.ashx" />
     <None Include="Javascript\FireBug\skin\xp\roundCorner.svg" />
-    <Content Include="TmConfig.config">
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="TBot\Users\users.cshtml" />
     <Content Include="TBot\Users\user_new.cshtml.txt" />
     <Content Include="TBot\Users\user.cshtml.txt" />

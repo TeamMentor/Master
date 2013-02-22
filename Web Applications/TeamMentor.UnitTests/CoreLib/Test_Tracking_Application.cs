@@ -20,12 +20,12 @@ namespace TeamMentor.UnitTests.CoreLib
 
             Assert.IsTrue       (testDir.dirExists());
             Assert.IsNotNull    (trackingApplication.Name);
-            Assert.IsNotNull    (trackingApplication.Location);
-            Assert.AreNotEqual  (testDir, trackingApplication.Location);
-            Assert.IsTrue       (trackingApplication.Location.dirExists());
-            Assert.IsEmpty      (trackingApplication.Location.files());
+            Assert.IsNotNull    (trackingApplication.LogFilePath);
+            Assert.AreNotEqual  (testDir, trackingApplication.LogFilesLocation);
+            Assert.IsTrue       (trackingApplication.LogFilesLocation.dirExists());            
+            Assert.IsEmpty      (trackingApplication.LogFilesLocation.files());
 
-            "Tracking Application TempDir: {0}".info(trackingApplication.Location);            
+            "Tracking Application TempDir: {0}".info(trackingApplication.LogFilesLocation);            
         }
 
         [Test]
@@ -35,9 +35,9 @@ namespace TeamMentor.UnitTests.CoreLib
 
             trackingApplication.stop();
 
-            var trackingFiles = trackingApplication.Location.files();
+            //var trackingFiles = trackingApplication.LogFilesLocation.files();
 
-            Assert.IsNotEmpty(trackingFiles);            
+            Assert.IsNotEmpty(trackingApplication.LogFilePath);            
         }
     }
 }

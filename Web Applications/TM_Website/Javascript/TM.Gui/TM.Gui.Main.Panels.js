@@ -304,16 +304,17 @@ TM.Gui.Main.Panels.enableChromeCPUSpikeBugFix = function()
                     TM.Gui.DataTable.currentDataTable.fnClearTable();
                     $("#MainTMGui").fadeOut();
                 }
-            }
+            };
         
         var removeFix = function()
             {
                 $("#MainTMGui").fadeIn();
                 TM.Events.onDisplayDataTable();
-            }
+            };
 
-        if($.browser.safari)
-        {
+        
+        if($.browser.safari !== undefined)
+        {            
             TM.Events.onLoginDialogOpen .add(applyFix) ;
             TM.Events.onLoginDialogClose.add(removeFix) ;
 

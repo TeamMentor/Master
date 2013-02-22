@@ -110,10 +110,12 @@
             $(".ItemContent td").css("border","solid 0px");
             $(".ItemContent input").css("font-size","12px");
 
-
-            $(".SignupTable").find("input").focus(function () { $("#guidanceItems").hide() })  // to deal with DataTable bug
-            $(".SignupTable").find("input").focusout(function () { $("#guidanceItems").show() })
-
+            if($.browser.safari !== undefined) 
+            {
+                $(".SignupTable").find("input").focus(function() { $("#guidanceItems").hide(); });  // to deal with DataTable bug
+                $(".SignupTable").find("input").focusout(function() { $("#guidanceItems").show(); });
+            }
+        
             $("#HubSpotFormDiv").hide();
             $("#HubSpotResult").hide();
     });

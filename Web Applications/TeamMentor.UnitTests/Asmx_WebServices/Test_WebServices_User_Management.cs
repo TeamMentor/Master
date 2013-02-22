@@ -73,6 +73,20 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             Assert.AreEqual   (Guid.Empty,sessionId_OriginalPassword2 , "Login with original password after change");   
             Assert.IsNull     (currentUser_OriginalPassword2          , "Current User Not Set (original password after change)");
         }
+
+        [Test]
+        public void NewPasswordMustBeDifferentFromOlderPassword()
+        {
+            var newUser     = newTempUser();
+            var userId      = tmWebServices.CreateUser(newUser);
+            var sessionId   = tmWebServices.Login(newUser.username, newUser.password );
+            var changePasswordResult  = tmWebServices.SetCurrentUserPassword(newUser.password , newUser.password );
+
+            Assert.Greater    (userId, 0);     
+            Assert.AreNotEqual(Guid.Empty,sessionId  , "Login with original password");   
+            Assert.IsFalse    (changePasswordResult  , "Change password should be false if passwords are the same");
+        }
+
         [Test] public void RequireOldPasswordBeforeChangingIntoNewOne()
         {
             var newUser     = newTempUser();

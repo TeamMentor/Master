@@ -8,7 +8,7 @@ using RazorEngine.Templating;
 
 namespace TeamMentor.CoreLib
 {
-    //[Admin] 
+    [Admin] 
     public class TBot_Brain
     {
         public static string TBOT_MAIN_HTML_PAGE    = "/TBot/TbotMain.html";

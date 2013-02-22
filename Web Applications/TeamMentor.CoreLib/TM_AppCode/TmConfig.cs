@@ -47,7 +47,7 @@ namespace TeamMentor.CoreLib
         public class Git_Config
         {
             public bool         AutoCommit_UserData         { get; set; }
-            public bool         AutoCommit_LibraryData      { get; set; }
+            //public bool         AutoCommit_LibraryData      { get; set; }         // not implemented in 3.3
         }
         public class OnInstallation_Config
         {
@@ -98,13 +98,14 @@ namespace TeamMentor.CoreLib
             set { _current = value; }
         }
         public static TMConfig      loadConfig()    
-        {            
+        {             
             if (Location.fileExists())
                 _current = Location.load<TMConfig>();
             else
             {
-                "In TMConfig.loadConfig, provided location was not found(returning default object): {0}".debug(Location);
+             //   "In TMConfig.loadConfig, provided location was not found(returning default object): {0}".debug(Location);
                 _current = new TMConfig();
+                _current.SaveTMConfig();
             }
             return _current;
         }
@@ -116,7 +117,9 @@ namespace TeamMentor.CoreLib
                                                 
         public bool SaveTMConfig()
         {
-            return this.saveAs(Location);			
+            if (Location.valid())
+                return this.saveAs(Location);
+            return false;
         }
     }
 
@@ -127,7 +130,7 @@ namespace TeamMentor.CoreLib
             tmConfig.TMSetup = new TMConfig.TMSetup_Config
                 {
                     TMLibraryDataVirtualPath    = "..\\..",
-                    XmlLibrariesPath            = "TM_Library",
+                    XmlLibrariesPath            = "TM_Libraries",
                     UserDataPath                = "User_Data",
                     LibrariesUploadedFiles      = "LibrariesUploadedFiles",
                     Enable302Redirects          = true,
@@ -155,13 +158,13 @@ namespace TeamMentor.CoreLib
 
             tmConfig.OnInstallation = new TMConfig.OnInstallation_Config
                 {
-                    ForceAdminPasswordReset          = true,
+                    ForceAdminPasswordReset          = false,
                     DefaultLibraryToInstall_Name     = "",
                     DefaultLibraryToInstall_Location = ""
                 };
             tmConfig.Git            = new TMConfig.Git_Config
                 {
-                    AutoCommit_LibraryData          = true,
+                    //AutoCommit_LibraryData          = true,
                     AutoCommit_UserData             = true
                 };
             

@@ -134,9 +134,13 @@ namespace TeamMentor.CoreLib
             {
                 if (tmUser.SecretData.PasswordHash == tmUser.createPasswordHash(currentPassword))
                 {
-                    tmUser.SecretData.PasswordHash = tmUser.createPasswordHash(newPassword);
-                    tmUser.saveTmUser();
-                    return true;
+                    var newPasswordHash =  tmUser.createPasswordHash(newPassword);
+                    if (newPasswordHash != tmUser.SecretData.PasswordHash)
+                    {
+                        tmUser.SecretData.PasswordHash = tmUser.createPasswordHash(newPassword);
+                        tmUser.saveTmUser();
+                        return true;
+                    }
                 }
             }
             return false;

@@ -22,7 +22,8 @@ namespace TeamMentor.CoreLib
         {
         }
         public void Session_End()
-        {
+        {            
+            TrackingApplication.saveLog();
         }
         
         [Assert_Admin]                      // impersonate an admin to load the database
@@ -32,14 +33,15 @@ namespace TeamMentor.CoreLib
                           
             TmXmlDatabase           = new  TM_Xml_Database(true);                                   // Create FileSystem Based database            
             TrackingApplication     = new Tracking_Application(TmXmlDatabase.Path_XmlDatabase);    // Enabled Application Tracking
-            TM_REST.SetRouteTable();			                                                    // Set REST routes            
+            TM_REST.SetRouteTable();	// Set REST routes            
+            TrackingApplication.saveLog();
         } 
         public void Application_End()
         {
             TrackingApplication.stop();
         }
         public void Application_Error()
-        {            
+        {              
             var lastError = HttpContextFactory.Server.GetLastError();
             if (lastError is HttpException && (lastError as HttpException).GetHttpCode() == 404)
             {				
@@ -51,6 +53,7 @@ namespace TeamMentor.CoreLib
             }
                 
             "LastError: {0}".error(lastError);
+            TrackingApplication.saveLog();
         }           
         public void Application_BeginRequest()
         {

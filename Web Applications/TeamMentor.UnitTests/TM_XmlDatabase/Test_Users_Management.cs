@@ -41,9 +41,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             tmUser = userData.tmUser(userId);
             Assert.IsNull(tmUser, "tmUser should be null after delete");			
         }
-
-        [Test]
-        public void PBKDF2_Multiple()
+        [Test] public void PBKDF2_Multiple()
         {
             var password = "!1234567!";
             var salt = Guid.NewGuid().str();	        
@@ -62,9 +60,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
                 Assert.Greater  (timeSpan.TotalMilliseconds, 50); // slowest calculation should be slower than 50 milliseconds
             }
         }
-
-        [Test]
-        public void PBKDF2_Default()
+        [Test] public void PBKDF2_Default()
         {
             Action<string,string> checkPassword = 
                 (password, salt) =>

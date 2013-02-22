@@ -9,7 +9,8 @@ namespace TeamMentor.CoreLib
         public static string DEFAULT_APPLICATION_LOGS_FOLDER_NAME = "Application_Logs";
 
         public string Name              { get; set; }
-        public string Location          { get; set; }
+        public string LogFilesLocation  { get; set; }
+        public string LogFilePath       { get; set; }
 
         public Tracking_Application(string baseFolder)
         {
@@ -23,11 +24,11 @@ namespace TeamMentor.CoreLib
         {
             try
             {                                
-                tracking.Name        = DateTime.Now.str().safeFileName();
-                tracking.Location    = baseFolder.pathCombine(Tracking_Application.DEFAULT_APPLICATION_LOGS_FOLDER_NAME)
-                                                 .pathCombine(tracking.Name);
+                tracking.LogFilesLocation  = baseFolder.pathCombine(Tracking_Application.DEFAULT_APPLICATION_LOGS_FOLDER_NAME);
+                tracking.LogFilesLocation.createDir();
 
-                tracking.Location.createDir();
+                tracking.Name        = DateTime.Now.str().safeFileName();
+                tracking.LogFilePath = tracking.LogFilesLocation.pathCombine("{0}_TMApplicationLogs.txt".format(tracking.Name));                
             }
             catch (Exception ex)
             {
@@ -39,21 +40,7 @@ namespace TeamMentor.CoreLib
         {
             try
             {
-                var logData = O2.Kernel.PublicDI.log.LogRedirectionTarget.prop("LogData").str() ;
-                if (logData.notNull())
-                {
-                    var logFile = tracking.Location.pathCombine("ApplicationLog.txt");
-                    "Saving Application Tracking Log to: {0}".info(logFile);
-
-                    var tmArticle = new TeamMentor_Article
-                        {
-                            Metadata = {Title = "Log Files"},
-                            Content = {Data = {Value = logData}}
-                        };
-                    tmArticle.saveAs(logFile + ".xml");
-
-                    logData.saveAs(logFile);
-                }
+                return tracking.saveLog();
             }
             catch (Exception ex)
             {
@@ -61,8 +48,25 @@ namespace TeamMentor.CoreLib
             }
             return tracking;
         }
-        public static  Tracking_Application save(this Tracking_Application tracking)
+        public static  Tracking_Application saveLog(this Tracking_Application tracking)
         {
+            var logData = O2.Kernel.PublicDI.log.LogRedirectionTarget.prop("LogData").str() ;
+            if (logData.notNull())
+            {
+                //tracking.Name        = DateTime.Now.str().safeFileName();
+                var logFile = tracking.LogFilePath;
+                //var logFile = tracking.Location.pathCombine("ApplicationLog.txt");
+                "Saving Application Tracking Log to: {0}".info(logFile);
+
+                var tmArticle = new TeamMentor_Article
+                    {
+                        Metadata = {Title = "Log Files"},
+                        Content = {Data = {Value = logData}}
+                    };
+                tmArticle.saveAs(logFile + ".xml");
+
+                logData.saveAs(logFile);
+            }
             return tracking;
         }
     }

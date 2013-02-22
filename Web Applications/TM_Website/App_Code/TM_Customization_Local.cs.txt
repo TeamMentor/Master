@@ -1,0 +1,41 @@
+﻿using TeamMentor.CoreLib;
+
+namespace TeamMentor.Website
+{
+    //this file should not be commmited to the main GitHub TM Repo
+    public class TM_Customization_Local
+    {
+        public TMConfig			tmConfig;	    
+        
+
+        public TM_Customization_Local()
+        {
+            tmConfig = TMConfig.Current;			
+        }
+        
+        public void CustomizeTMConfig()
+        {
+		    //TM Security
+            tmConfig.TMSecurity.SSL_RedirectHttpToHttps		    = false;    // true
+            tmConfig.TMSecurity.Show_ContentToAnonymousUsers	= false;
+            tmConfig.TMSecurity.EvalAccounts_Enabled			= true;
+            tmConfig.TMSecurity.EvalAccounts_Days				= 15;
+
+            //General TM Configuration
+            tmConfig.TMSetup.EnableGZipForWebServices           = false;    // true
+            tmConfig.TMSetup.Enable302Redirects                 = true;
+
+
+            //user data (debug www.teammentor.net install)
+            tmConfig.TMSetup.UserDataPath     = @"E:\TeamMentor\_TM_Clients\Site_www.teammentor.net";
+            tmConfig.TMSetup.XmlLibrariesPath = @"E:\teammentor\_TM_Libraries\Lib_All";
+
+			//OnInstallation
+            tmConfig.OnInstallation.ForceAdminPasswordReset          = true;
+            tmConfig.OnInstallation.DefaultLibraryToInstall_Name     = "Top Vulnerabilities";
+            tmConfig.OnInstallation.DefaultLibraryToInstall_Location = "https://github.com/TeamMentor/Library_Top_Vulnerabilities/zipball/master";
+
+
+        }
+    }
+}
