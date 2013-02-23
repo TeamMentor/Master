@@ -6,7 +6,7 @@ using TeamMentor.CoreLib;
 
 namespace TeamMentor.UnitTests.TM_XmlDatabase
 {
-    [TestFixture, Ignore]
+    [TestFixture]
     public class Test_UserData_GitStorage
     {
         public TM_UserData  userData;
@@ -20,7 +20,9 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
                                     Path_UserData = "nonGitRepo".tempDir()
                                 };                                    
             userData .SetUp(false); 
-            nGit     = userData.NGit;           
+            nGit     = userData.NGit;     
+
+            Assert.AreEqual(1, nGit.commits().size() , "there should be one commit of the TMSecretData.config file");
         }
 
         [Test][Assert_Admin] public void CheckNonGitRepoDoesntCommit()
@@ -38,32 +40,31 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             var users = userData.tmUsers();
             Assert.IsNotEmpty(users, "There should be at least one user (the admin)");
             Assert.IsNotEmpty(userData.Path_UserData.files());                        
-            Assert.AreEqual  (2,userData.Path_UserData.files().size());
+            Assert.AreEqual  (3,userData.Path_UserData.files().size());
             Assert.IsFalse   (userData.Path_UserData.isGitRepository());            
         }
         [Test][Assert_Admin] public void ManualyGitCommitNewUsers()
         {
-            userData.AutoGitCommit = false;                           
-            //nGit        = userData.Path_UserData.git_Init();
+            userData.AutoGitCommit = false;
+            var head1              = nGit.head();
 
             Assert.IsNotNull(nGit);
             Assert.IsTrue   (userData.Path_UserData.isGitRepository());
-            Assert.IsTrue   (nGit.head().isNull());
+            Assert.IsFalse   (head1.isNull());
             
-            var tmUser      = userData.newUser().tmUser();
-            
+            var tmUser      = userData.newUser().tmUser();            
             var userXmlFile = tmUser.getTmUserXmlFile().fileName();
-            var untracked   = nGit.status_Untracked();
+            var untracked   = nGit.status_Untracked();            
             
             Assert.AreEqual (1,untracked.size());
             Assert.AreEqual (userXmlFile, untracked.first());
 
-            nGit.add_and_Commit_using_Status();
-            
-            untracked       = nGit.status_Untracked();
-            Assert.AreEqual (0,untracked.size());
-            Assert.IsFalse  (nGit.head().isNull());
-                        
+            nGit.add_and_Commit_using_Status();            
+            untracked         = nGit.status_Untracked();
+            var head2         = nGit.head();
+            Assert.AreEqual   (0,untracked.size());
+            Assert.IsFalse    (nGit.head().isNull());
+            Assert.AreNotEqual(head1, head2);
             "Head is now: {0}".info(nGit.head());
         }
         [Test][Assert_Admin] public void CheckGitRepoDoesCommits_OnNewUser()
@@ -105,21 +106,18 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
 
             nGit.refLogs().toString().info();
 
-            Assert.AreEqual(1, commitsAfterNewUser    , "There should be 1 commits after user create");
-            Assert.AreEqual(2, commitsAfterDeleteUser , "There should be 2 commits after user delete");
+            Assert.AreEqual(2, commitsAfterNewUser    , "There should be 2 commits after user create");
+            Assert.AreEqual(3, commitsAfterDeleteUser , "There should be 3 commits after user delete");
             
             Assert.IsEmpty(nGit.status());
             
         }
         [Test][Assert_Admin] public void CheckActivitiesLogging()
         {
-            var tmUser = userData.newUser().tmUser();
-
-            Assert.AreEqual(1, nGit.commits().size());
+            var tmUser = userData.newUser().tmUser();            
+            Assert.AreEqual(2, nGit.commits().size());
             var sessionId = tmUser.login();
             Assert.AreNotEqual(Guid.Empty, sessionId);
-            
-
         }
     }
 }
