@@ -652,6 +652,11 @@ window.TM.Gui.LibraryTree.createContextMenu = function(node)    {
 
     if (window.TM.Gui.CurrentUser.isEditor() === false)
     {
+        items =
+        {            
+            showDirectLink:         { label: "Show Direct Link",            action: window.TM.Gui.LibraryTree.showDirectLink } ,
+            showDirectLinkForDevs:  { label: "Show Reading View Link",      action: window.TM.Gui.LibraryTree.showDirectLinkForDevs }
+        };
         return items;
     }
     if (window.TM.Gui.editMode === false)
