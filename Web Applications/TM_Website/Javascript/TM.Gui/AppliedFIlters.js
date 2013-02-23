@@ -289,6 +289,8 @@ TM.Gui.AppliedFilters.add_Filter_Category = function(value, pinned)
             setPivotPanelFilter(value, "Category", "5", true , false);		
     }
 
+
+
 TM.Gui.AppliedFilters.MapFiltersFromUrl = function () 
     {                
         var commands = window.location.hash.slice(1).split("&");    
@@ -310,8 +312,12 @@ TM.Gui.AppliedFilters.MapFiltersFromUrl = function ()
                     case "category":
                         setPivotPanelFilter(value, "Category", 5, true , true, true);
                         break;
+                    case "search":
+                        $("#SearchTextBox").val(value);
+                        break;
                 }
             }         
         });
     }
-        
+
+//TM.Gui.AppliedFilters.MapFiltersFromUrl = {};        

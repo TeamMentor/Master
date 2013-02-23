@@ -11,7 +11,7 @@ TM.Gui.TextSearch.getCurrentFilteredGuidanceItemsIds = function()
             return jlinq.from(aaData)
                         .select(function() 
                             { 
-                                return this[6]
+                                return this[6];
                             });
         }
         catch(exception)
