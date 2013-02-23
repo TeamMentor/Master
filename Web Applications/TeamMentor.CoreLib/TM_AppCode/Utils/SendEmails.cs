@@ -16,12 +16,15 @@ namespace TeamMentor.CoreLib
         public SendEmails()
         {            
             From = "TM_Security_Dude@securityinnovation.com";
-            var secretData = TM_Xml_Database.Current.UserData.SecretData;
-            if (secretData.notNull())
-            {
-                Smtp_Server = secretData.SMTP_Server;
-                Smtp_UserName = secretData.SMTP_UserName;
-                Smtp_Password = secretData.SMTP_Password;
+            if (TM_Xml_Database.Current.notNull())
+            { 
+                var secretData = TM_Xml_Database.Current.UserData.SecretData;
+                if (secretData.notNull())
+                {
+                    Smtp_Server = secretData.SMTP_Server;
+                    Smtp_UserName = secretData.SMTP_UserName;
+                    Smtp_Password = secretData.SMTP_Password;
+                }
             }
         }
         public SendEmails(string smtpServer, string smtpUserName, string smtpPassword ) : this()
@@ -30,11 +33,19 @@ namespace TeamMentor.CoreLib
             Smtp_UserName   = smtpUserName;
             Smtp_Password   = smtpPassword;
         }
+
+        public bool sendEmailDisabled()
+        {
+            return Smtp_Server.isNull() ||
+                   Smtp_UserName.isNull() ||
+                   Smtp_Password.isNull();
+        }
+
         public bool send_TestEmail()
         {
             return send("Test Email", "From TeamMentor");
         }        
-
+        
         public bool send(string subject, string message)
         {
             return send(From, subject, message, false);
@@ -47,9 +58,9 @@ namespace TeamMentor.CoreLib
         {
             try
             {
-                if (Smtp_Password.notValid())
+                if (sendEmailDisabled())
                 {
-                    "Can't sent email because the Smtp_Password is not set".error();
+                    //"Can't sent email because the Smtp_Password is not set".error();
                     return false;
                 }
                 "Sending email:\n  to: {0}\n  from: {0}\n  subject: {0} ".info(to, subject, message);
