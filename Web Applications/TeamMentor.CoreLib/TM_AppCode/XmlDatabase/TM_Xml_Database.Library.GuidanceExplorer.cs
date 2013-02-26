@@ -314,8 +314,12 @@ namespace TeamMentor.CoreLib
         [Admin]	                    
         public static bool xmlDB_Libraries_ImportFromZip(this TM_Xml_Database tmDatabase, string zipFileToImport, string unzipPassword)
         {
+            var result = false;
             try
-            {
+            {    
+                var currentLibraryPath = tmDatabase.Path_XmlLibraries;
+                if (currentLibraryPath.isNull())
+                    return false;
                 if (zipFileToImport.isUri())
                 {
                     "[xmlDB_Libraries_ImportFromZip] provided value was an URL so, downloading it: {0}".info(zipFileToImport);
@@ -326,8 +330,7 @@ namespace TeamMentor.CoreLib
                 if (zipFileToImport.fileExists().isFalse())
                     "[xmlDB_Libraries_ImportFromZip] could not find file to import".error(zipFileToImport);
                 else
-                {
-                    var currentLibraryPath = TM_Xml_Database.Current.Path_XmlLibraries;
+                {                    
                     // handle the zips we get from GitHub
 
                     var tempDir = @"..\_".add_RandomLetters(3).tempDir(false).fullPath(); //trying to make the unzip path as small as possible
@@ -337,42 +340,51 @@ namespace TeamMentor.CoreLib
                     var gitZipFolderName = tempDir.folders().first().folderName();				// the first folder should be the one created by gitHub's zip
                     var xmlFile_Location1 = tempDir.pathCombine(gitZipFolderName + ".xml");
                     var xmlFile_Location2 = tempDir.pathCombine(gitZipFolderName).pathCombine(gitZipFolderName + ".xml");
-                    if (xmlFile_Location1.fileExists() || xmlFile_Location2.fileExists())		// if these exists here, just copy the unziped files directly
-                    { 
-                        Files.copyFolder(tempDir,currentLibraryPath,true,true,".git");
+                    if (xmlFile_Location1.fileExists() || xmlFile_Location2.fileExists())
+                        // if these exists here, just copy the unziped files directly
+                    {
+                        Files.copyFolder(tempDir, currentLibraryPath, true, true, ".git");
                         if (xmlFile_Location1.fileExists())
                             Files.copy(xmlFile_Location1, currentLibraryPath.pathCombine(gitZipFolderName));
-                        return true;
+                        result = true;
                     }
-                    //if (zipFileToImport.extension() == ".master")					
-                    var gitZipDir = tempDir.pathCombine(gitZipFolderName);
-                    foreach (var libraryFolder in gitZipDir.folders())
+                    else
                     {
-                        var libraryName = libraryFolder.folderName();
-                        var targetFolder = currentLibraryPath.pathCombine(libraryName);
-                            
-                        //default behaviour is to override the existing libraries
-                        Files.copyFolder(libraryFolder, currentLibraryPath);
+                        //if (zipFileToImport.extension() == ".master")					
+                        var gitZipDir = tempDir.pathCombine(gitZipFolderName);
+                        foreach (var libraryFolder in gitZipDir.folders())
+                        {
+                            var libraryName = libraryFolder.folderName();
+                            var targetFolder = currentLibraryPath.pathCombine(libraryName);
 
-                        //handle the case where the xml file is located outside the library folder
-                        var libraryXmlFile = gitZipDir.pathCombine("{0}.xml".format(libraryName));
-                        if (libraryXmlFile.fileExists())
-                            Files.copy(libraryXmlFile, targetFolder);			// put it in the Library folder which is where it really should be															
-                    }
-                    var virtualMappings = gitZipDir.pathCombine("Virtual_Articles.xml");
-                    if (virtualMappings.fileExists())
-                    {
-                        Files.copy(virtualMappings, currentLibraryPath);			// copy virtual mappings if it exists
-                        tmDatabase.mapVirtualArticles();
-                    }
-                    return true;				
+                            //default behaviour is to override the existing libraries
+                            Files.copyFolder(libraryFolder, currentLibraryPath);
+
+                            //handle the case where the xml file is located outside the library folder
+                            var libraryXmlFile = gitZipDir.pathCombine("{0}.xml".format(libraryName));
+                            if (libraryXmlFile.fileExists())
+                                Files.copy(libraryXmlFile, targetFolder);
+                                    // put it in the Library folder which is where it really should be															
+                        }
+                        var virtualMappings = gitZipDir.pathCombine("Virtual_Articles.xml");
+                        if (virtualMappings.fileExists())
+                        {
+                            Files.copy(virtualMappings, currentLibraryPath); // copy virtual mappings if it exists
+                            tmDatabase.mapVirtualArticles();
+                        }
+                        result = true;
+                    }   
                 }
             }
             catch (Exception ex)
             { 
                 ex.log("[xmlDB_Libraries_ImportFromZip]");
             }
-            return false;
+
+            if (result)
+                tmDatabase.loadLibraryDataFromDisk();                
+
+            return result;
         }				
     }
 }

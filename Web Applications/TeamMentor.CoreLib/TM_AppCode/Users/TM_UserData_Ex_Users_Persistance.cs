@@ -75,8 +75,8 @@ namespace TeamMentor.CoreLib
                 tmUser.saveTmUser();
                 return true;
             }
-            else
-                "[updateTmUser] provided username didn't match provided tmUser".error();
+            
+            "[updateTmUser] provided username didn't match provided tmUser".error();
             return false;
         }
 

@@ -12,7 +12,7 @@ namespace TeamMentor.CoreLib
         public  bool setLibraryPath_and_LoadDataIntoMemory(string xmlDatabasePath, string libraryPath, string userDataPath)
         {
             var tmXmlDatabase = Current;
-		    
+            
             if (libraryPath.dirExists().isFalse())						
             {
                 libraryPath = xmlDatabasePath.pathCombine(libraryPath);
@@ -28,8 +28,7 @@ namespace TeamMentor.CoreLib
             tmXmlDatabase.UserData.Path_UserData    = userDataPath;
 
             return loadDataIntoMemory();
-        }                
-        
+        }                        
         public  bool loadDataIntoMemory()
         {	
             var tmXmlDatabase = Current;
@@ -39,59 +38,11 @@ namespace TeamMentor.CoreLib
                 "[TM_Xml_Database] in loadDataIntoMemory, provided pathXmlDatabase didn't exist: {0}".error(tmXmlDatabase.Path_XmlDatabase);
                 return false;
             }
-            tmXmlDatabase.GuidanceExplorers_XmlFormat = tmXmlDatabase.Path_XmlLibraries.getGuidanceExplorerObjects();
-            tmXmlDatabase.load_GuidanceItemsFromCache();
+            tmXmlDatabase.loadLibraryDataFromDisk();
             tmXmlDatabase.UserData.loadTmUserData();
             return true;					
-        }
-        
-/*		public static void mapGuidanceItemsViews()
-        {		
-            //" *** in mapGuidanceItemsViews".error();
-            GuidanceItems_InViews.Clear();
-            var o2Timer = new O2Timer("mapGuidanceItemsViews").start();
-            var foundIDs = 0;
-            var notFoundIDs = 0;			
-            
-            foreach(var library in GuidanceExplorers_XmlFormat.Values)
-                foreach(var view in this.tmViews(library.name.guid()))
-                {
-                    view.str().info();
-                }
-            /*
-            foreach(var guidanceExplorer in GuidanceExplorers_XmlFormat.Values)
-            {
-                try
-                {
-                    if (guidanceExplorer.library.libraryStructure.folder.notNull())					
-                        foreach(var folder in guidanceExplorer.library.libraryStructure.folder)
-                            foreach(var view in folder.view)
-                            {								
-                                //"mapping view: {0} - view: {1} in folder: {2}".info(view.id, view.caption, folder.caption);								
-                                if (view.items.notNull())								
-                                    foreach(var item in view.items.item)
-                                        if(Cached_GuidanceItems.hasKey(item.guid()))
-                                        {
-                                            GuidanceItems_InViews.add(view.id.guid(), Cached_GuidanceItems[item.guid()]);
-                                            foundIDs++;								
-                                        }	
-                                        else							
-                                            notFoundIDs++;
-                                    //" --- couldn't find view item with id: {0}".error(item);							
-                            }							
-                }
-                catch(Exception ex)
-                {
-                    "in mapGuidanceItemsViews:{0}".error(ex.Message);
-                    //guidanceExplorer.details();
-                    return;
-                }
-            }* /
-            //o2Timer.start();
-            //"found guidanceItems for: {0} view mappings".info(foundIDs);
-            //"couldn't find guidanceItems for: {0} view mappings".error(notFoundIDs);			
-        }		
-*/		
+        }        
+                
         //move to  extension methods
         [ReadArticles] 
         public TeamMentor_Article getGuidanceItem(Guid guidanceItemId)
@@ -414,7 +365,7 @@ namespace TeamMentor.CoreLib
     public static class TM_Xml_Database_ExtensionMethods_TM_GuidanceItems
     {	
         //needs the ReadArticlesTitles privildge because of the GetGuiObjects method
-	    [ReadArticlesTitles] public static TeamMentor_Article           tmGuidanceItem (this TM_Xml_Database tmDatabase, Guid id)
+        [ReadArticlesTitles] public static TeamMentor_Article           tmGuidanceItem (this TM_Xml_Database tmDatabase, Guid id)
         {
             if (TM_Xml_Database.Current.Cached_GuidanceItems.hasKey(id))
             {

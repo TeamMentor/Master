@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
+using System.Security;
 using NUnit.Framework;
 using O2.DotNetWrappers.ExtensionMethods;
 
@@ -43,6 +41,16 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             Assert.IsFalse(typeNames.contains("TMUser")   , "TMUser object must not be exposed on a WebService (since it contains all user info, including its passwordHash)");
             
             //returnTypeMappings["TMUser"].names().toString().info();            
+        }
+
+        [Test]
+        public void TestSecurityDemandsOnWebServices()
+        {
+            Assert.Throws<SecurityException>(() => tmWebServices.XmlDatabase_ImportLibrary_fromZipFile(null, null));
+            Assert.Throws<SecurityException>(() => tmWebServices.XmlDatabase_SetLibraryPath(null));
+            Assert.Throws<SecurityException>(() => tmWebServices.XmlDatabase_ReloadData());
+            Assert.Throws<SecurityException>(() => tmWebServices.XmlDatabase_GetLibraryPath());
+            Assert.Throws<SecurityException>(() => tmWebServices.XmlDatabase_GetDatabasePath());                    
         }
     }
 }

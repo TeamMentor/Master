@@ -8,48 +8,49 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
 {
     [TestFixture]
     public class Test_LoadLibrariesFromDisk  : TM_XmlDatabase_InMemory
-    {
-        public string LibraryPath { get; set; }
-
+    {        
+                
         public Test_LoadLibrariesFromDisk()
         {            
-            var assembly		 = this.type().Assembly;
+           // var assembly		 = this.type().Assembly;
 
-            var dllLocation		 = assembly.CodeBase.subString(8);
+            //var dllLocation		 = assembly.CodeBase.subString(8);
+            /*
             var webApplications  = dllLocation.parentFolder()
                                               .pathCombine(@"\..\..\..\..");
             LibraryPath          = webApplications.pathCombine(@"Library_Data\XmlDatabase\TM_Libraries");
-            "calculated libraryPath: {0}".info(LibraryPath);            
+            "calculated libraryPath: {0}".info(LibraryPath);            */
+            Install_LibraryFromZip_OWASP();            
         }
 
         [SetUp]
         public void Setup()
         {      
-            UserGroup.Admin.setThreadPrincipalWithRoles();          // impersonate an Admin  
-            if (LibraryPath.dirExists().isFalse())
-                Assert.Ignore("Couldn't find library path, so skipping assemby load tests");                                    
-            tmXmlDatabase.ResetDatabase();                          // reset Xml Database
+            //UserGroup.Admin.setThreadPrincipalWithRoles();          // impersonate an Admin  
+            //if (LibraryPath.dirExists().isFalse())
+            //    Assert.Ignore("Couldn't find library path, so skipping assemby load tests");                                    
+            //tmXmlDatabase.ResetDatabase();                          // reset Xml Database
         }        
         [TearDown]
         public void TearDown()
         {
-            tmXmlDatabase.ResetDatabase();                         // reset Xml Database
+            //tmXmlDatabase.ResetDatabase();                         // reset Xml Database
         }
 
         [Test] public void GetGuidanceExplorerFilesInPath()
         {
-            var xmlFiles = LibraryPath.getGuidanceExplorerFilesInPath();
+            var xmlFiles = tmXmlDatabase.Path_XmlLibraries.getGuidanceExplorerFilesInPath();
             Assert.IsNotEmpty(xmlFiles);
             foreach (var xmlFile in xmlFiles)
-            {                
-                var fileContents = xmlFile.fileContents();
+            {
+                var fileContents = xmlFile.fileContents().fixCRLF();
                 var secondLine  = fileContents.lines().second();
                 Assert.That(secondLine.starts("<guidanceExplorer"));                                                            
             }
         }
         [Test] public void LoadGuidanceExplorerFilesDirectly()
         {
-            foreach (var xmlFile in LibraryPath.getGuidanceExplorerFilesInPath())
+            foreach (var xmlFile in tmXmlDatabase.Path_XmlLibraries.getGuidanceExplorerFilesInPath())
             {
                 "Loading libraryXmlFile: {0}".info(xmlFile.fileName());                
                 var guidanceExplorer = xmlFile.getGuidanceExplorerObject();
@@ -57,26 +58,21 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             }
         }
         [Test] public void LoadGuidanceExplorerFiles()
-        {
-            TM_Xml_Database.Current.Path_XmlLibraries = LibraryPath;
+        {            
             tmXmlDatabase.setGuidanceExplorerObjects();
-            var xmlFiles    = LibraryPath.getGuidanceExplorerFilesInPath();
+            var xmlFiles    = tmXmlDatabase.Path_XmlLibraries.getGuidanceExplorerFilesInPath();
             var tmLibraries = tmXmlDatabase.tmLibraries();
             Assert.AreEqual(xmlFiles.size(), tmLibraries.size());
         }
         [Test] public void Test_getGuidanceExplorerObjects()
         {
-            LoadGuidanceExplorerFiles();
-
             var guidanceExplorers = tmXmlDatabase.Path_XmlLibraries.getGuidanceExplorerObjects();			
             Assert.IsNotNull(guidanceExplorers, "guidanceExplorers");
             Assert.That(guidanceExplorers.size()>0 , "guidanceExplorers was empty");			
             Assert.That(tmXmlDatabase.GuidanceExplorers_XmlFormat.size() > 0, "GuidanceExplorers_XmlFormat was empty");    		
         }    	    	
         [Test] public void Test_getLibraries()
-        { 
-            LoadGuidanceExplorerFiles();
-
+        {             
             var guidanceExplorers = tmXmlDatabase.GuidanceExplorers_XmlFormat.Values.toList();
             var tmLibraries = tmXmlDatabase.tmLibraries();
             Assert.IsNotNull(tmLibraries,"tmLibraries"); 
@@ -89,9 +85,10 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         }    	     	   
         [Test] public void Test_getFolders()
         {
-            LoadGuidanceExplorerFiles();
+           // LoadGuidanceExplorerFiles();
             //var guidanceExplorers = TM_Xml_Database.loadGuidanceExplorerObjects();    		
             var libraryId = tmXmlDatabase.GuidanceExplorers_XmlFormat.Keys.first();
+            Assert.AreNotEqual(Guid.Empty, libraryId, "Library id was empty");
             var guidanceExplorerFolders = tmXmlDatabase.GuidanceExplorers_XmlFormat[libraryId].library.libraryStructure.folder;    		
             Assert.That(guidanceExplorerFolders.size() > 0,"guidanceExplorerFolders was empty");
             
@@ -110,10 +107,10 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
                 Assert.That(tmFolder.libraryId == libraryId, "libraryId");	
             }      		
         }     	
-        [Test] public void Test_getGuidanceHtml()
+        [Test][Assert_Editor]
+        public void Test_getGuidanceHtml()
         {
-            //LoadGuidanceExplorerFiles();
-            TM_Xml_Database.Current.Path_XmlLibraries = LibraryPath;
+            //LoadGuidanceExplorerFiles();            
             tmXmlDatabase.setGuidanceExplorerObjects();
             tmXmlDatabase.xmlDB_Load_GuidanceItems();            
 
@@ -128,6 +125,9 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Assert.IsNotNull(html, "html");    		
             Assert.That(html.valid(), "html was empty");    		
         }
+
+
+        
 
     }
 }

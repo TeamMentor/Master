@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Security.Permissions;
 using O2.DotNetWrappers.ExtensionMethods;
 using PostSharp.Aspects;
 

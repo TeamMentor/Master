@@ -40,6 +40,12 @@ namespace TeamMentor.CoreLib
     {
         public static Thread thread_Save_GuidanceItemsCache;
 
+        public static TM_Xml_Database                    loadLibraryDataFromDisk        (this TM_Xml_Database tmXmlDatabase)
+        {
+            tmXmlDatabase.GuidanceExplorers_XmlFormat = tmXmlDatabase.Path_XmlLibraries.getGuidanceExplorerObjects();
+            tmXmlDatabase.load_GuidanceItemsFromCache();
+            return tmXmlDatabase;
+        }
         public static TM_Xml_Database                    setGuidanceExplorerObjects     (this TM_Xml_Database tmDatabase)
         {			
             //"in setGuidanceExplorerObjects".info();

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using O2.FluentSharp;
+﻿using O2.FluentSharp;
 using TeamMentor.CoreLib;
 
 namespace TeamMentor.UnitTests

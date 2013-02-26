@@ -13,25 +13,16 @@ namespace TeamMentor.CoreLib
         [WebMethod(EnableSession = true)] public string Ping(string message)  			{   return "received ping: {0}".format(message); }
         
         //Xml Database Specific
-        [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_GetDatabasePath()		{	return TM_Xml_Database.Current.Path_XmlDatabase;	}
-        [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_GetLibraryPath()		{	return TM_Xml_Database.Current.Path_XmlLibraries;	}		
+        [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_GetDatabasePath()		{	return tmXmlDatabase.Path_XmlDatabase;	}
+        [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_GetLibraryPath()		{	return tmXmlDatabase.Path_XmlLibraries;	}		
         [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_ReloadData()			{	
-                                                                                                                                        guiObjectsCacheOk = false; 
-                                                                                                                                        return  TM_Xml_Database.Current.ReloadData(null); 
-                                                                                                                                    }
-        [WebMethod(EnableSession = true)] [Admin]	            public bool XmlDatabase_ImportLibrary_fromZipFile(string pathToZipFile, string unzipPassword)
-                                                                                                                                    {
-                                                                                                                                        if (TM_Xml_Database.Current.xmlDB_Libraries_ImportFromZip(pathToZipFile, unzipPassword))
-                                                                                                                                        {
-                                                                                                                                            XmlDatabase_ReloadData();
-                                                                                                                                            return true;
-                                                                                                                                        }
-                                                                                                                                        return false;																																		
-                                                                                                                                    }
-        [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_SetLibraryPath(string libraryPath)		
-                                                                                                                                    {	guiObjectsCacheOk = false; 
-                                                                                                                                        return  TM_Xml_Database.Current.ReloadData(libraryPath); 
-                                                                                                                                    }
+                                                                                                                    guiObjectsCacheOk = false; 
+                                                                                                                    return  tmXmlDatabase.ReloadData(null); 
+                                                                                                                }
+        [WebMethod(EnableSession = true)] [Admin]	            public bool XmlDatabase_ImportLibrary_fromZipFile(string pathToZipFile, string unzipPassword) { return TM_Xml_Database.Current.xmlDB_Libraries_ImportFromZip(pathToZipFile, unzipPassword); }                                                                                                                                     
+        [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_SetLibraryPath(string libraryPath)	{	guiObjectsCacheOk = false; 
+                                                                                                                                    return  TM_Xml_Database.Current.ReloadData(libraryPath); 
+                                                                                                                                }
 
         [WebMethod(EnableSession = true)] public List<Guid>     XmlDatabase_GuidanceItems_SearchTitleAndHtml(List<Guid> guidanceItemsIds, string searchText)		{	 return  TM_Xml_Database.Current.guidanceItems_SearchTitleAndHtml(guidanceItemsIds,searchText); }																																		
         [WebMethod(EnableSession = true)] public string         XmlDatabase_GetGuidanceItemXml(Guid guidanceItemId)	    {	return  TM_Xml_Database.Current.xmlDB_guidanceItemXml(guidanceItemId); }        

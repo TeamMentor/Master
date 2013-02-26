@@ -26,11 +26,11 @@ namespace TeamMentor.CoreLib
                                                             
         public string 	        Path_XmlDatabase 		{ get; set; }					
         public string 	        Path_XmlLibraries 		{ get; set; }        
-        public List<TM_Library> Libraries  				{  get { 	return this.tmLibraries(); } }
+/*        public List<TM_Library> Libraries  				{  get { 	return this.tmLibraries(); } }
         public List<Folder_V3> 	Folders  				{  get { 	return this.tmFolders(); } } 		
         public List<View_V3> 	Views  					{  get { 	return this.tmViews(); } } 
         public List<TeamMentor_Article> GuidanceItems	{  get {	return this.tmGuidanceItems(); } }
-      
+  */    
         [Log("TM_Xml_Database Setup")]        
         public TM_Xml_Database          () : this(false)          // defaults to creating a TM_Instance in memory    
         {
@@ -49,6 +49,11 @@ namespace TeamMentor.CoreLib
             GuidanceItems_FileMappings  = new Dictionary<Guid, string>();
             GuidanceExplorers_XmlFormat = new Dictionary<Guid, guidanceExplorer>();
             UserData                    = new TM_UserData(UsingFileStorage);            
+
+            /*Libraries.Clear();
+            Folders.Clear();
+            Views.Clear();
+            GuidanceItems.Clear();*/
             return this;
         }
 
@@ -61,7 +66,7 @@ namespace TeamMentor.CoreLib
                 {
                     SetPathsAndloadData();                    
                     this.handleDefaultInstallActions();
-                    this.xmlDB_Load_GuidanceItems();                                 
+                    this.xmlDB_Load_GuidanceItems();
                     
                 }
                 UserData.SetUp();                
@@ -113,12 +118,12 @@ namespace TeamMentor.CoreLib
                 tmConfig.SaveTMConfig();			
             }
             
-            GuidanceItems_FileMappings.Clear();
+            /*GuidanceItems_FileMappings.Clear();
             GuidanceExplorers_XmlFormat.Clear();								
             Libraries.Clear();
             Folders.Clear();
             Views.Clear();
-            GuidanceItems.Clear();
+            GuidanceItems.Clear();*/
             
             /*if(newLibraryPath.valid())
                 setLibraryPath_and_LoadDataIntoMemory(newLibraryPath);
@@ -133,7 +138,11 @@ namespace TeamMentor.CoreLib
             this.createDefaultAdminUser();	// make sure this user exists		
             */
             return "In the library '{0}' there are {1} library(ies), {2} views and {3} GuidanceItems".
-                        format(Current.Path_XmlLibraries.directoryName(), Libraries.size(), Views.size(), GuidanceItems.size());
+                        //format(Current.Path_XmlLibraries.directoryName(), Libraries.size(), Views.size(), GuidanceItems.size());
+                        format(Current.Path_XmlLibraries.directoryName(), 
+                               this.tmLibraries().size(), 
+                               this.tmViews().size(),
+                               this.tmGuidanceItems().size());
         }        
     }
 
