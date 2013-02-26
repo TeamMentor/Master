@@ -22,8 +22,7 @@ namespace TeamMentor.UnitTests.CoreLib
             Assert.IsNotNull    (trackingApplication.Name);
             Assert.IsNotNull    (trackingApplication.LogFilePath);
             Assert.AreNotEqual  (testDir, trackingApplication.LogFilesLocation);
-            Assert.IsTrue       (trackingApplication.LogFilesLocation.dirExists());            
-            Assert.IsEmpty      (trackingApplication.LogFilesLocation.files());
+            Assert.IsTrue       (trackingApplication.LogFilesLocation.dirExists());                        
 
             "Tracking Application TempDir: {0}".info(trackingApplication.LogFilesLocation);            
         }
