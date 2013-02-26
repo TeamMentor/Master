@@ -26,7 +26,8 @@ namespace O2.FluentSharp
         public HttpResponseBase HttpResponseBase  	{ get; set; }  
         
         public String BaseDir						{ get;set; }
-        
+        public Uri    RequestUrl                    { get; set; }   
+
         public API_Moq_HttpContext() : this(null)
         {			
         }
@@ -67,28 +68,37 @@ namespace O2.FluentSharp
             var genericIdentity = new GenericIdentity("genericIdentity");
             var genericPrincipal = new GenericPrincipal(genericIdentity, new string[] {});
             MockContext.Setup(context => context.User).Returns(genericPrincipal);	     	
-            MockContext.Setup(context => context.Cache).Returns(HttpRuntime.Cache);
-            MockContext.Setup(context => context.Server.MapPath(It.IsAny<string>())).Returns((string path) =>  BaseDir.pathCombine(path));
+            MockContext.Setup(context => context.Cache).Returns(HttpRuntime.Cache);            
             
             //Request
-            MockRequest.Setup(request =>request.InputStream	).Returns(new MemoryStream()); 
-            MockRequest.Setup(request =>request.Cookies		).Returns(new HttpCookieCollection()); 
-            MockRequest.Setup(request =>request.Headers		).Returns(new NameValueCollection()); 
-            MockRequest.Setup(request =>request.QueryString	).Returns(new NameValueCollection()); 
-            MockRequest.Setup(request =>request.Form		).Returns(new NameValueCollection()); 
-            MockRequest.Setup(request =>request.ContentType	).Returns(""); 
-            
+            MockRequest.Setup(request =>request.InputStream	      ).Returns(new MemoryStream()); 
+            MockRequest.Setup(request =>request.Cookies		      ).Returns(new HttpCookieCollection()); 
+            MockRequest.Setup(request =>request.Headers		      ).Returns(new NameValueCollection()); 
+            MockRequest.Setup(request =>request.QueryString	      ).Returns(new NameValueCollection()); 
+            MockRequest.Setup(request =>request.Form		      ).Returns(new NameValueCollection()); 
+            MockRequest.Setup(request =>request.ContentType	      ).Returns(""); 
+            MockRequest.Setup(request =>request.Url	              ).Returns(()=> RequestUrl); 
+            MockRequest.Setup(request =>request.IsLocal	          ).Returns(()=> RequestUrl.Host == "localhost" || RequestUrl.Host=="127.0.0.1"); 
+            MockRequest.Setup(request =>request.IsSecureConnection).Returns(()=> RequestUrl.Scheme.lower() == "https");
+                
             
             //Response
-            var outputStream = new MemoryStream();			
+            var outputStream = new MemoryStream();
+            var redirectTarget = "";
             MockResponse.SetupGet(response => response.Cache        ).Returns(new Mock<HttpCachePolicyBase>().Object);
             MockResponse.Setup   (response => response.Cookies      ).Returns(new HttpCookieCollection()); 	     	
             MockResponse.Setup   (response => response.Headers      ).Returns(new NameValueCollection());
             MockResponse.Setup   (response => response.OutputStream ).Returns(outputStream);
-            MockResponse.Setup   (response => response.Write        (It.IsAny<string>())).Callback(
-                                                                    (string code) => outputStream.Write(code.asciiBytes(), 0, code.size()));
-            MockResponse.Setup   (response => response.AddHeader    (It.IsAny<string>(), It.IsAny<string>())).Callback(
-                                                                    (string name,string value) => MockResponse.Object.Headers.Add(name,value));			
+            MockResponse.Setup   (response => response.Write        (It.IsAny<string>())                    ).Callback((string code)              => outputStream.Write(code.asciiBytes(), 0, code.size()));
+            MockResponse.Setup   (response => response.AddHeader    (It.IsAny<string>(), It.IsAny<string>())).Callback((string name,string value) => MockResponse.Object.Headers.Add(name,value));
+            MockResponse.Setup   (response => response.Redirect     (It.IsAny<string>())                    ).Callback((string target) =>{redirectTarget = target; });
+            
+            MockResponse.Setup   (response => response.IsRequestBeingRedirected ).Returns(() => redirectTarget.valid());
+            MockResponse.Setup   (response => response.RedirectLocation         ).Returns(() => redirectTarget);
+            
+            //Server
+            MockServer.Setup(server => server.MapPath (It.IsAny<string>())).Returns ((string path)   =>  BaseDir.pathCombine(path));
+            MockServer.Setup(server => server.Transfer(It.IsAny<string>())).Callback((string target) =>  redirectTarget = target  );   // use the redirectTarget to hold this value
             //Session
             MockSession.Setup   (session => session.SessionID       ).Returns("".add_RandomLetters(15)); 
             //var writer = new StringWriter();

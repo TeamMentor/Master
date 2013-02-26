@@ -30,6 +30,10 @@ namespace TeamMentor.CoreLib
         {
             return TmWebServices.GetLoginToken(username);
         }
+        public Guid     GetPasswordResetToken(string username)
+        {
+            return TmWebServices.GetPasswordResetToken(username);
+        }        
         public Guid     Login_Using_LoginToken(string username, string loginToken)
         {
             return TmWebServices.Login_Using_LoginToken(username, loginToken.guid());            

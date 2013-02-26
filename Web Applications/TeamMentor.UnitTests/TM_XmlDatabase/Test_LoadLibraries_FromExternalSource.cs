@@ -10,15 +10,8 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         [Test]
         public void DownloadAndInstallLibraryFromZip()
         {
-            /*tmXmlDatabase.Path_XmlLibraries = "_TempXmlLibraries".tempDir();
-            var pathToGitHubZipBall = "https://github.com/TeamMentor/Library_Top_Vulnerabilities/zipball/master";
-            var tmLibraries_Before = tmXmlDatabase.tmLibraries();
-            var result = tmXmlDatabase.xmlDB_Libraries_ImportFromZip(pathToGitHubZipBall, "");
-            
-            var tmLibraries_After = tmXmlDatabase.tmLibraries();            
-            Assert.IsEmpty(tmLibraries_Before, "No Libraries should be there before install");
-            Assert.IsTrue(result , "xmlDB_Libraries_ImportFromZip");
-            */
+            if(new O2.Kernel.CodeUtils.O2Kernel_Web().online().isFalse())
+                Assert.Ignore("Ignoring Test because we are offline");   
 
             var tmLibraries_Before = tmXmlDatabase.tmLibraries();            
 

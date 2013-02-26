@@ -7,8 +7,11 @@ namespace TeamMentor.CoreLib
     
     public partial class TM_WebServices  // Users
     {
+        [WebMethod(EnableSession = true)]											public bool PasswordReset(string userName, Guid token, string newPassword)	 {   return userData.passwordReset(userName, token, newPassword);	 }
+
         [WebMethod(EnableSession = true)]											public int CreateUser(NewUser newUser)      				 {   return userData.createTmUser(newUser);	                        }
         [WebMethod(EnableSession = true)]											public TM_User CreateUser_Random()      					 {   return userData.tmUser(userData.newUser()).user();	            }		
+        [WebMethod(EnableSession = true)]	[Admin]	                    			public Guid GetPasswordResetToken(string userName)           {   return userName.tmUser().current_PasswordResetToken();         }
         [WebMethod(EnableSession = true)]	[Admin]	                    			public Guid GetLoginToken(string userName)        			 {   return userName.tmUser().current_SingleUseLoginToken();        }
         [WebMethod(EnableSession = true)]	[Admin]	                    			public TM_User GetUser_byID(int userId)        				 {   return userData.tmUser(userId).user();                         }
         [WebMethod(EnableSession = true)]	[Admin]	                    			public List<TM_User> GetUsers_byID(List<int> userIds)      	 {   return userIds.tmUsers().users();                              }

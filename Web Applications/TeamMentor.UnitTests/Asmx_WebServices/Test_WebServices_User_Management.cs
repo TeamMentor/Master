@@ -138,6 +138,32 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             Assert.AreNotEqual(loginToken, loginToken_NextRequest, "loginToken_NextRequest should be new");
             
         }
+        [Test] public void PasswordResetToken()
+        {            
+            var newUser       = newTempUser();
+            var newPassword     = "123SAFsi!";
+            var oldPassword     = newUser.password;
+            var tmUser        = tmWebServices.CreateUser(newUser).tmUser();
+
+            var token_BeforeSet    = tmUser.SecretData.PasswordResetToken;
+            var token_BeforeUse    = tmUser.current_PasswordResetToken();
+            var token              = tmUser.current_PasswordResetToken();
+            var result             = tmWebServices.PasswordReset(tmUser.UserName, token,newPassword);
+            var token_AfterUse     = tmUser.SecretData.PasswordResetToken;
+            var token_NextRequest  = tmUser.current_PasswordResetToken();
+            var sessionId_NewPwd   = tmWebServices.Login(tmUser.UserName, newPassword);
+            var sessionId_OldPwd   = tmWebServices.Login(tmUser.UserName, oldPassword);            
+
+            Assert.AreEqual   (Guid.Empty, token_BeforeSet  , "loginToken_BeforeSet");
+            Assert.AreNotEqual(Guid.Empty, token_BeforeUse  , "loginToken_BeforeUse");
+            Assert.AreEqual   (token, token_BeforeUse       , "loginToken_BeforeUse");
+            Assert.IsTrue     (result                       , "change password result");
+            Assert.AreEqual   (Guid.Empty, token_AfterUse   , "loginToken_AfterUse");
+            Assert.AreNotEqual(Guid.Empty, token_NextRequest, "loginToken_NextRequest is Empty");
+            Assert.AreNotEqual(token, token_NextRequest     , "loginToken_NextRequest should be new");
+            Assert.AreNotEqual(Guid.Empty, sessionId_NewPwd , "sessionId with new password");
+            Assert.AreEqual   (Guid.Empty, sessionId_OldPwd , "sessionId with old password");
+        }
         //Helper methods
         public NewUser newTempUser()
         {

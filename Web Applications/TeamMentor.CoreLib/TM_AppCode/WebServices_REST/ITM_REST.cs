@@ -20,9 +20,10 @@ namespace TeamMentor.CoreLib
 		[OperationContract][WebGet(UriTemplate = "/article/html/{articleId}")]	string				Article_Html(string articleId);
 
 		//User Session
-		[OperationContract][WebGet	 (UriTemplate = "/sessionId"					    )]	string		SessionId();
+		[OperationContract][WebGet	 (UriTemplate = "/sessionId"					     )]	string		SessionId();
 		[OperationContract][WebGet	 (UriTemplate = "/logout"						     )]	Guid		Logout();
 		[OperationContract][WebGet   (UriTemplate = "/login/{username}/{password}"	     )]	Guid		Login(string username, string password);        
+        [OperationContract][WebGet   (UriTemplate = "/passwordResetToken/{username}"	 )]	Guid		GetPasswordResetToken(string username);                                    
         [OperationContract][WebGet   (UriTemplate = "/loginToken/{username}"	         )]	Guid		GetLoginToken(string username);                
         [OperationContract][WebGet   (UriTemplate = "/loginToken/{username}/{loginToken}")]	Guid		Login_Using_LoginToken(string username, string loginToken);
         [OperationContract][WebGet   (UriTemplate = "/sendLoginToken/{username}")]	        bool		SendLoginTokenForUser(string username);

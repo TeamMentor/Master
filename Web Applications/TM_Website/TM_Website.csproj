@@ -228,6 +228,7 @@
     <Content Include="Html_Pages\Gui\Dialogs\Dialog with not a lot of content.html" />
     <Content Include="Html_Pages\Gui\Dialogs\Login.Html" />
     <Content Include="Html_Pages\Gui\Dialogs\Signup.html" />
+    <Content Include="Html_Pages\Gui\Pages\passwordReset.html" />
     <Content Include="Html_Pages\_UnitTest_Helpers\TestPages\PageWithBootstrap.htm" />
     <Content Include="Html_Pages\_UnitTest_Helpers\TestPages\PageWithJQuery.htm" />
     <Content Include="Html_Pages\_UnitTest_Helpers\TestPages\EmptyPage.htm" />

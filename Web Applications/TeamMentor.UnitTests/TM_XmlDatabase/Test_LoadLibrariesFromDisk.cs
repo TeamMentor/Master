@@ -12,14 +12,9 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
                 
         public Test_LoadLibrariesFromDisk()
         {            
-           // var assembly		 = this.type().Assembly;
+           if(new O2.Kernel.CodeUtils.O2Kernel_Web().online().isFalse())
+                Assert.Ignore("Ignoring Test because we are offline");   
 
-            //var dllLocation		 = assembly.CodeBase.subString(8);
-            /*
-            var webApplications  = dllLocation.parentFolder()
-                                              .pathCombine(@"\..\..\..\..");
-            LibraryPath          = webApplications.pathCombine(@"Library_Data\XmlDatabase\TM_Libraries");
-            "calculated libraryPath: {0}".info(LibraryPath);            */
             Install_LibraryFromZip_OWASP();            
         }
 

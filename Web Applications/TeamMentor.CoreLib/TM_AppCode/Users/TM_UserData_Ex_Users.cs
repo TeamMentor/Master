@@ -145,7 +145,25 @@ namespace TeamMentor.CoreLib
             }
             return false;
         }                	
-
+        public static bool          passwordReset               (this TM_UserData userData, string userName, Guid token, string newPassword)
+        {
+            var tmUser = userName.tmUser();
+            if (tmUser.notNull())
+            {
+                if (tmUser.SecretData.PasswordResetToken == token)
+                {                    
+                    var newPasswordHash =  tmUser.createPasswordHash(newPassword);
+                    if (newPasswordHash != tmUser.SecretData.PasswordHash)
+                    {
+                        tmUser.SecretData.PasswordHash = tmUser.createPasswordHash(newPassword);
+                        tmUser.saveTmUser();
+                        tmUser.SecretData.PasswordResetToken = Guid.Empty;
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
         public static List<int>     userIds                     (this List<TMUser> tmUsers)
         {
             return (from tmUser in tmUsers

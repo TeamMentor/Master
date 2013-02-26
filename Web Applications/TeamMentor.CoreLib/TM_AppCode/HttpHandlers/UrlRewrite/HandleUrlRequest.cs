@@ -146,8 +146,10 @@ namespace TeamMentor.CoreLib
                         return redirectTo_ControlPanel(true);
                     case "reload_config":
                         return reload_Config();
+                    case "passwordreset":
+                        return transfer_PasswordReset();
                     case "login":
-                        return transfer_Login();
+                        return redirect_Login();
                     case "login_ok":
                         return handle_LoginOK();   
                     case "logout":
@@ -192,7 +194,7 @@ namespace TeamMentor.CoreLib
             catch (Exception ex)
             {
                 if (ex is SecurityException)
-                    return transfer_Login();
+                    return redirect_Login();
               //      return redirectTo_Login();
                 if (ex.Message != "Thread was being aborted.")
                 {
@@ -496,8 +498,7 @@ namespace TeamMentor.CoreLib
         {
             tmWebServices.XmlDatabase_ReloadData();
             return redirectTo_HomePage();
-        }
-        
+        }        
         public bool transfer_TeamMentorGui()
         {
             context.Server.Transfer("/html_pages/Gui/TeamMentor.html");            
@@ -519,7 +520,12 @@ namespace TeamMentor.CoreLib
             context.Server.Transfer("/html_pages/GuidanceItemEditor/GuidanceItemEditor.html");
             return false;    
         }
-        public bool transfer_Login()
+        public bool transfer_PasswordReset()
+        {                            
+            context.Server.Transfer("/Html_Pages/Gui/Pages/passwordReset.html");
+            return false;
+        }
+        public bool redirect_Login()
         {
             if (context.Request.Url == null)
                 return false;
@@ -535,9 +541,6 @@ namespace TeamMentor.CoreLib
             //context.Session["LoginReferer"] = context.Request.Url.AbsolutePath;
             return true; 
         }
-        
-
-
         public bool handle_LoginOK()
         {
             var loginReferer = context.Request.QueryString["LoginReferer"];
@@ -547,26 +550,22 @@ namespace TeamMentor.CoreLib
                 context.Response.Redirect("/");
             return true;
         }
-
         public bool redirectTo_HomePage()
         {	            
             context.Response.Redirect("/");                        	
             return false; 
         }
-
         public bool redirectTo_Login()
         {	            
             context.Response.Redirect("/Login");                        	
             return false; 
-        }
-        
+        }        
         public bool redirectTo_Logout()
         {	
             tmWebServices.Logout();
             context.Response.Redirect("/");                        	
             return false; 
         }
-
         public bool redirectTo_DownloadLibrary(string data)
         {
             // UserGroup.Admin.setThreadPrincipalWithRoles();      // to test for this (for now allow normal users to download libraries)
@@ -577,32 +576,27 @@ namespace TeamMentor.CoreLib
             context.Response.Redirect("/Aspx_Pages/Library_Download.ashx?library={0}&uploadToken={1}".format(data, uploadToken));
             return false;
         }
-
         public bool redirectTo_Wsdl()
         {
             context.Response.Redirect("/Aspx_Pages/TM_WebServices.asmx");
             return false;
         }
-
         public bool redirectTo_ControlPanel(bool includeExtraTag)
         {			
             var adminUrl = "/html_pages/ControlPanel/controlpanel.html" + ((includeExtraTag) ? "?extra" : "");
             context.Response.Redirect(adminUrl);
             return false;    
-        }
-                       
+        }                       
         public bool redirectTo_Article(string article)
         {			
             context.Response.Redirect("/article/{0}".format(article));
             return false;    
         }        
-
         public bool redirectTo_DebugPage()
         {			
             context.Response.Redirect("/Aspx_Pages/Debug.aspx");
             return false;    
         }   
-
         public bool redirectTo_SetLibrary(string libraryIdOrName)
         {			
             context.Response.Redirect("/aspx_pages/SetLibrary.aspx?Library={0}".format(libraryIdOrName));

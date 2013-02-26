@@ -57,5 +57,12 @@ namespace TeamMentor.CoreLib
             return tmUser.SecretData.SingleUseLoginToken;
         }
 
+        public static Guid      current_PasswordResetToken(this TMUser tmUser)
+        {
+            if (tmUser.SecretData.PasswordResetToken == Guid.Empty)
+                tmUser.SecretData.PasswordResetToken = Guid.NewGuid();
+            return tmUser.SecretData.PasswordResetToken;
+        }
+
     }	
 }
