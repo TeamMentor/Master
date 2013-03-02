@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Web;
 using O2.DotNetWrappers.ExtensionMethods;
 using Microsoft.Security.Application;
@@ -9,10 +10,57 @@ namespace TeamMentor.CoreLib
 {
     public class HandleUrlRequest
     {
+        public static Dictionary<string, string> Server_Transfers   { get; set; }
+        public static Dictionary<string, string> Response_Redirects { get; set; }
+
         public HttpContextBase context = HttpContextFactory.Current;
         public HttpRequestBase request = HttpContextFactory.Request;
-        public TM_WebServices tmWebServices;        
-        
+        public TM_WebServices tmWebServices;
+
+        static HandleUrlRequest()
+        {
+            Server_Transfers = new Dictionary<string, string>();
+            Response_Redirects = new Dictionary<string, string>();
+            setDefault_Redirects_and_Transfers();
+        }
+
+        public static void setDefault_Redirects_and_Transfers()
+        {
+            Server_Transfers.add("teammentor", "/html_pages/Gui/TeamMentor.html")
+                            .add("articleviewer", "/html_pages/GuidanceItemViewer/GuidanceItemViewer.html")
+                            .add("articleeditor", "/html_pages/GuidanceItemEditor/GuidanceItemEditor.html")
+                            .add("passwordreset", "/Html_Pages/Gui/Pages/passwordReset.html")
+                            .add("passwordforgot", "/Html_Pages/Gui/Pages/passwordForgot.html");
+            Response_Redirects.add("csharprepl", "/html_pages/ControlPanel/CSharp_REPL/Repl.html")
+                              .add("tbot","/rest/tbot/list");            
+        }
+        public bool transfer_Request(string action)
+        {
+            var handled = false;
+            if (Server_Transfers.hasKey(action))
+            {
+                context.Server.Transfer(Server_Transfers[action]);
+                handled = true;
+            }
+            return handled; //end request
+        }
+        public bool response_Redirect(string action)
+        {
+            var handled = false;
+            if (Response_Redirects.hasKey(action))
+            {
+                context.Response.Redirect(Response_Redirects[action]);
+                handled = true;
+            }
+            return handled; //end request
+        }
+
+        /*public bool transfer_TeamMentorGui()
+        {
+            context.Server.Transfer("/html_pages/Gui/TeamMentor.html");            
+            return false;
+        }*/        
+
         public void routeRequestUrl_for404()
         {
             if (request.Url != null)
@@ -27,22 +75,39 @@ namespace TeamMentor.CoreLib
             if (redirectedToSLL().isFalse())
                 handleUrlRewrite(context.Request.Url);
         }
-
-        private bool redirectedToSLL()
+        public bool redirectedToSLL()
         {			            
-            if (TMConfig.Current.TMSecurity.SSL_RedirectHttpToHttps && !context.Request.IsLocal && !context.Request.IsSecureConnection)
+            if (TMConfig.Current.TMSecurity.SSL_RedirectHttpToHttps && 
+                context.Request.IsLocal.isFalse() && 
+                context.Request.IsSecureConnection.isFalse())
             {
                 if (request.Url != null)
                 {
-                    var redirectUrl = request.Url.ToString().Replace("http://", "https://");
-                    "Redirecting current request to https: {0}".info(context.Request.Url);
-                    context.Response.Redirect(redirectUrl);
-                    return true;
+                    if (sslPageIsAvailable())           // addresses issue that happened when an SSL redirection was set for a server without SSL configured
+                    {
+                        var redirectUrl = request.Url.ToString().Replace("http://", "https://");
+                        "Redirecting current request to https: {0}".info(context.Request.Url);
+                        context.Response.Redirect(redirectUrl);
+                        return true;
+                    }
+                    "[redirectedToSLL] redirection failed because https server was not found!".error();
                 }
             }
             return false;
         }
-        
+
+        public bool sslPageIsAvailable()
+        {
+            if (request.Url != null)
+            {
+                var currentServer = request.Url.str().remove(request.Url.PathAndQuery)
+                                                     .Replace("http://", "https://");
+                var response = currentServer.GET();
+                return response.valid();
+            }
+            return false;
+        }
+
         public void handleUrlRewrite(Uri uri)
         {
             try
@@ -62,7 +127,6 @@ namespace TeamMentor.CoreLib
                     ex.log("[in handleUrlRewrite]");
             }
         }
-
         public void handleUrlRewrite(string path)
         {
             if(path.starts("/"))
@@ -77,7 +141,6 @@ namespace TeamMentor.CoreLib
                     endResponse();                    
             }                        
         }
-
         public bool shouldSkipCurrentRequest()
         {
             if (request.Url == null)
@@ -112,12 +175,19 @@ namespace TeamMentor.CoreLib
                 action = Encoder.HtmlEncode(action);
                 data = Encoder.HtmlEncode(data).replace("%20"," ");
                 if (action.isGuid() & data.inValid())                
-                    return redirectTo_Article(action);                                    
+                    return redirectTo_Article(action);
+
+                if (transfer_Request(action.lower()))
+                    return false;                       // end request
+                if (response_Redirect(action.lower()))
+                    return true;                        // end request
+                
                 switch (action.lower())
                 {
-                    case "gui":
-                    case "teammentor":
-                        return transfer_TeamMentorGui();
+                    //case "gui":
+                    //case "teammentor":
+                    //    return transfer_Request(action.lower());
+                        //return transfer_TeamMentorGui();
                     case "raw":                        
                         return handleAction_Raw(data);                                                      
                     case "html":
@@ -146,8 +216,10 @@ namespace TeamMentor.CoreLib
                         return redirectTo_ControlPanel(true);
                     case "reload_config":
                         return reload_Config();
-                    case "passwordreset":
+                    /*case "passwordreset":
                         return transfer_PasswordReset();
+                    case "passwordforgot":
+                        return transfer_PasswordForgot();*/
                     case "login":
                         return redirect_Login();
                     case "login_ok":
@@ -204,6 +276,7 @@ namespace TeamMentor.CoreLib
             }                                    
             return false;			
         }
+        
 
         public bool reload_Config()
         {
@@ -498,17 +571,13 @@ namespace TeamMentor.CoreLib
         {
             tmWebServices.XmlDatabase_ReloadData();
             return redirectTo_HomePage();
-        }        
-        public bool transfer_TeamMentorGui()
-        {
-            context.Server.Transfer("/html_pages/Gui/TeamMentor.html");            
-            return false;
-        }
+        }      
         public bool transfer_ArticleViewer()
-        {			
-            context.Server.Transfer("/html_pages/GuidanceItemViewer/GuidanceItemViewer.html");						
+        {
+            transfer_Request("articleViewer");
+            //context.Server.Transfer("/html_pages/GuidanceItemViewer/GuidanceItemViewer.html");						
             return false;    
-        }        
+        }          
         public bool transfer_ArticleEditor(string data)
         {         
             var guid = tmWebServices.getGuidForMapping(data);
@@ -516,15 +585,20 @@ namespace TeamMentor.CoreLib
                 return transfer_ArticleViewer();
 
             tmWebServices.XmlDatabase_GetGuidanceItemXml(guid); // will trigger an Security exception if the user if not authorized
-
-            context.Server.Transfer("/html_pages/GuidanceItemEditor/GuidanceItemEditor.html");
+            transfer_Request("articleEditor");
+            //context.Server.Transfer("/html_pages/GuidanceItemEditor/GuidanceItemEditor.html");            
             return false;    
         }
-        public bool transfer_PasswordReset()
+        /*public bool transfer_PasswordReset()
         {                            
             context.Server.Transfer("/Html_Pages/Gui/Pages/passwordReset.html");
             return false;
         }
+        public bool transfer_PasswordForgot()
+        {                            
+            context.Server.Transfer("/Html_Pages/Gui/Pages/passwordForgot.html");
+            return false;
+        } */       
         public bool redirect_Login()
         {
             if (context.Request.Url == null)
@@ -543,11 +617,17 @@ namespace TeamMentor.CoreLib
         }
         public bool handle_LoginOK()
         {
-            var loginReferer = context.Request.QueryString["LoginReferer"];
-            if (loginReferer.notNull() && loginReferer.StartsWith("/"))
-                context.Response.Redirect(loginReferer);
-            else
-                context.Response.Redirect("/");
+            var loginReferer = context.Request.QueryString["LoginReferer"].replace("//","/");
+            var referTarget = (loginReferer.notNull() && loginReferer.StartsWith("/"))
+                                    ? loginReferer
+                                    : "/";
+            // ensures we are redirecting into the current domain (and fixes unvalidated redirect vuln in pre 3.3)
+            var currentRequest = context.Request.Url;
+            if (currentRequest.notNull())
+            {
+                var sameDomainUrl = currentRequest.str().remove(currentRequest.PathAndQuery) + referTarget;
+                context.Response.Redirect(sameDomainUrl);
+            }
             return true;
         }
         public bool redirectTo_HomePage()
