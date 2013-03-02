@@ -38,6 +38,5 @@ namespace TeamMentor.UnitTests.REST
             Assert.AreEqual("pong", result);
             
         }
-
     }
 }

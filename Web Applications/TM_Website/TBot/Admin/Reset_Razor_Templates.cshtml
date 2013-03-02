@@ -1,10 +1,15 @@
 ﻿
 @using TeamMentor.CoreLib
+@using O2.DotNetWrappers.ExtensionMethods
+@{
+    var webRoot = TMConfig.BaseFolder;
+}
 <h2>Current Razor Templates</h2>
+
 @foreach (var item in TBot_Brain.AvailableScripts)
 {
     var hasTemplate = TBot_Brain.TemplateService.HasTemplate(item.Value); 
-    @: [@hasTemplate] @item.Key : @item.Value     
+    @: [@hasTemplate] @item.Key : @item.Value.remove(webRoot)     
     {if (hasTemplate) 
      { 
         TBot_Brain.TemplateService.RemoveTemplate(item.Value);

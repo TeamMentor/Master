@@ -23,11 +23,13 @@ namespace TeamMentor.CoreLib
 		[OperationContract][WebGet	 (UriTemplate = "/sessionId"					     )]	string		SessionId();
 		[OperationContract][WebGet	 (UriTemplate = "/logout"						     )]	Guid		Logout();
 		[OperationContract][WebGet   (UriTemplate = "/login/{username}/{password}"	     )]	Guid		Login(string username, string password);        
-        [OperationContract][WebGet   (UriTemplate = "/passwordResetToken/{username}"	 )]	Guid		GetPasswordResetToken(string username);                                    
+        [OperationContract][WebGet   (UriTemplate = "/passwordResetToken/{username}"	 )]	Guid		GetPasswordResetToken(string username);                                            
         [OperationContract][WebGet   (UriTemplate = "/loginToken/{username}"	         )]	Guid		GetLoginToken(string username);                
         [OperationContract][WebGet   (UriTemplate = "/loginToken/{username}/{loginToken}")]	Guid		Login_Using_LoginToken(string username, string loginToken);
         [OperationContract][WebGet   (UriTemplate = "/sendLoginToken/{username}")]	        bool		SendLoginTokenForUser(string username);
 		[OperationContract][WebInvoke(UriTemplate = "/login/", Method = "POST",ResponseFormat = WebMessageFormat.Json)]	Guid		Login_using_Credentials(TM_Credentials credentials);
+
+        
         
         
         //Active Sessions
@@ -49,9 +51,10 @@ namespace TeamMentor.CoreLib
 		//[OperationContract] [WebGet	  (UriTemplate = "/users/{usersIds}"	)]					List<TM_User>	users(string usersIds);
 		[OperationContract] [WebGet	  (UriTemplate = "/users"				)]						List<TM_User>	users();
 
-		[OperationContract] [WebInvoke(UriTemplate = "/user/update"			,	Method = "PUT", ResponseFormat = WebMessageFormat.Json)]	bool		user_Update(TM_User user);
-		[OperationContract] [WebInvoke(UriTemplate = "/user/new"			,	Method = "PUT", ResponseFormat = WebMessageFormat.Json)]	int			user_New(TM_User user);
-		[OperationContract] [WebInvoke(UriTemplate = "/user/delete/{userId}",	Method = "PUT", ResponseFormat = WebMessageFormat.Json)]	bool		DeleteUser(string userId);
+//these need CRSF protection
+//		[OperationContract] [WebInvoke(UriTemplate = "/user/update"			,	Method = "PUT", ResponseFormat = WebMessageFormat.Json)]	bool		user_Update(TM_User user);
+//		[OperationContract] [WebInvoke(UriTemplate = "/user/new"			,	Method = "PUT", ResponseFormat = WebMessageFormat.Json)]	int			user_New(TM_User user);
+//		[OperationContract] [WebInvoke(UriTemplate = "/user/delete/{userId}",	Method = "PUT", ResponseFormat = WebMessageFormat.Json)]	bool		DeleteUser(string userId);
 		
 
 		//Admin
@@ -65,12 +68,13 @@ namespace TeamMentor.CoreLib
 		//UserActivities 
 		//[OperationContract] [WebGet(UriTemplate = "/users/activites"		)]  Stream		users_Activities();
 
-
         //TBot
-        [OperationContract] [WebGet(UriTemplate = "/tbot"	        )]      Stream		Show_TBot();
-        [OperationContract] [WebGet(UriTemplate = "/tbot/list"      )]	    Stream		List_TBot_Questions();
-        [OperationContract] [WebGet(UriTemplate = "/tbot/ask/{what}")]	    Stream		Ast_TBot (string what);
+        [OperationContract] [WebGet(UriTemplate = "/tbot"	        )]      Stream		TBot_Show();
+        [OperationContract] [WebGet(UriTemplate = "/tbot/list"      )]	    Stream		TBot_List();
+        [OperationContract] [WebGet(UriTemplate = "/tbot/run/{what}")]	    Stream		TBot_Run (string what);
         
-        
+        //html page redirects
+        [OperationContract][WebGet   (UriTemplate = "/redirect/passwordReset/{username}" )]	void		Redirect_ToPasswordReset(string username);                                    
+        [OperationContract][WebGet   (UriTemplate = "/redirect/login/{referer}" )]	        void		Redirect_Login(string referer);
 	}	
 }

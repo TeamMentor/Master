@@ -7,8 +7,7 @@ using RazorEngine;
 using RazorEngine.Templating;
 
 namespace TeamMentor.CoreLib
-{
-    [Admin] 
+{    
     public class TBot_Brain
     {
         public static string TBOT_MAIN_HTML_PAGE    = "/TBot/TbotMain.html";
@@ -34,6 +33,7 @@ namespace TeamMentor.CoreLib
             
         }
         
+        [Admin]
         public TBot_Brain()
         {
             StartTime = DateTime.Now;            
@@ -60,7 +60,7 @@ namespace TeamMentor.CoreLib
             var message = "this is some message";
             return GetHtml(message);
         }
-        public Stream Ask(string what)
+        public Stream Run(string what)
         {            
             try
             {                                                
@@ -77,7 +77,7 @@ namespace TeamMentor.CoreLib
                     }
                     return GetHtml(Razor.Run(csFile, new TM_REST()).trim(), false);
                 }
-                return GetHtml("Couldn't find requested question");            
+                return GetHtml("Couldn't find requested actions");            
             }
             catch (Exception ex)
             {
@@ -86,15 +86,13 @@ namespace TeamMentor.CoreLib
             
         }
         public Stream List()
-        {           
-             
+        {                        
             var filesHtml = AvailableScripts.Aggregate("Here are the commands I found:<ul>", 
-                                (current, items) => current + "<li><a href='/rest/tbot/ask/{0}'>{0}</a> - {1}</li>"
+                                (current, items) => current + "<li><a href='/rest/tbot/run/{0}'>{0}</a> - {1}</li>"
                                                                 .format(items.Key, items.Value.fileContents().hash()));
             filesHtml += "</ul>";
             return GetHtml(filesHtml, false);            
         }
-
 
         public static Dictionary<string, string> GetAvailableScripts()
         {

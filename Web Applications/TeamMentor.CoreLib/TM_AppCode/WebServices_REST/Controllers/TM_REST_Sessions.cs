@@ -33,7 +33,7 @@ namespace TeamMentor.CoreLib
         public Guid     GetPasswordResetToken(string username)
         {
             return TmWebServices.GetPasswordResetToken(username);
-        }        
+        }       
         public Guid     Login_Using_LoginToken(string username, string loginToken)
         {
             return TmWebServices.Login_Using_LoginToken(username, loginToken.guid());            
@@ -45,6 +45,16 @@ namespace TeamMentor.CoreLib
             if(tmUser.notNull())
                 return SendEmails.SendLoginTokenToUser(tmUser);
             return true;
+        }
+
+        public void     Redirect_Login(string referer)
+        {
+            HttpContextFactory.Response.Redirect("/Login?LoginReferer={0}".format(referer));
+        }
+        public void     Redirect_ToPasswordReset(string userName)
+        {
+            var redirectUrl = "/PasswordReset/{0}/{1}".format(userName.urlEncode(), GetPasswordResetToken(userName));
+            HttpContextFactory.Response.Redirect(redirectUrl);
         }
     }
 }

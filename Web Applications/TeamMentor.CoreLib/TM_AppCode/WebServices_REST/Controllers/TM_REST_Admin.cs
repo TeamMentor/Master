@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Security;
 using System.Web;
 using FluentSharp;
 using O2.DotNetWrappers.ExtensionMethods;
@@ -43,22 +44,38 @@ namespace TeamMentor.CoreLib
 	        
 	    }
 
-	    public Stream Show_TBot()
+	    public Stream TBot_Show()
 	    {
-	        this.response_ContentType_Html();
-	        return new TBot_Brain().RenderPage();
+	        try
+	        {
+                this.response_ContentType_Html();
+	            return new TBot_Brain().RenderPage();
+	        }
+	        catch(SecurityException)
+	        {              
+	            Redirect_Login("/tbot");	            	            
+	        }	       
+            return null;
 	    }
 
-	    public Stream Ast_TBot(string what)
+	    public Stream TBot_Run(string what)
 	    {
             this.response_ContentType_Html();
-            return new TBot_Brain().Ask(what);
+            return new TBot_Brain().Run(what);
 	    }
 
-        public Stream List_TBot_Questions()
+        public Stream TBot_List()
 	    {
-            this.response_ContentType_Html();
-            return new TBot_Brain().List();
+            try
+            {
+                this.response_ContentType_Html();
+                return new TBot_Brain().List();
+            }
+	        catch (SecurityException)
+	        {
+                Redirect_Login("/tbot");           
+	        }
+            return null;
 	    }
 
 	}
