@@ -229,9 +229,9 @@ TM.WebServices.WS_Users.logout = function(username, password, callback)
             });		
     };
 
-TM.WebServices.WS_Users.passwordReset= function(username, userToken, newPassword, callback)
+TM.WebServices.WS_Users.passwordReset= function(userName, userToken, newPassword, callback)
     {
-        var params =  { username : username  , token : userToken, newPassword : newPassword } ;
+        var params =  { userName : userName  , token : userToken, newPassword : newPassword } ;
         
         TM.WebServices.Helper.invoke_TM_WebService(
             'PasswordReset', 

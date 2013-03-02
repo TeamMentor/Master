@@ -42,7 +42,7 @@ namespace TeamMentor.UnitTests.CoreLib
             Assert.IsFalse(result_AAABBBCCC , "result_AAABBBCCC");
             // ReSharper restore InconsistentNaming
 
-            handleUrlRequest.handleRequest("TeamMentor", "");            
+            //handleUrlRequest.handleRequest("TeamMentor", "");            
         }
 
         [Test]
@@ -79,6 +79,35 @@ namespace TeamMentor.UnitTests.CoreLib
             handleUrlRequest.handleRequest("passwordreset", resetToken);
             var expectedRedirect = "/Html_Pages/Gui/Pages/passwordReset.html";
             Assert.AreEqual (expectedRedirect,context.Response.RedirectLocation ,"Password redirect location");
-        }    
+        }
+        [Test]
+        public void Check_ServerTransfers()
+        {
+            var serverTransfers = HandleUrlRequest.Server_Transfers;
+            
+            Assert.IsNotEmpty(serverTransfers);
+            foreach (var mapping in serverTransfers)
+            {
+                handleUrlRequest.handleRequest(mapping.Key, "");
+                "{0} -> {1} : {2}".info(mapping.Key, mapping.Value, context.Response.RedirectLocation);
+                Assert.AreEqual(mapping.Value, context.Response.RedirectLocation);                
+            }
+        }
+
+        [Test]
+        public void Check_ResponseRedirects()
+        {
+            var responseRedirects = HandleUrlRequest.Response_Redirects;            
+            Assert.IsNotEmpty(responseRedirects);
+            foreach (var mapping in responseRedirects)
+            {
+                context.Response.Redirect("");
+                Assert.IsFalse(context.Response.IsRequestBeingRedirected);                
+                handleUrlRequest.handleRequest(mapping.Key, "");
+                "{0} -> {1} : {2}".info(mapping.Key, mapping.Value, context.Response.RedirectLocation);
+                Assert.IsTrue(context.Response.IsRequestBeingRedirected , "IsRequestBeingRedirected");                
+                Assert.AreEqual(mapping.Value, context.Response.RedirectLocation);                
+            }
+        }
     }
 }

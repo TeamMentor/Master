@@ -107,6 +107,7 @@
     <Compile Include="TM_AppCode\Users\TM_UserData_Ex_Users.cs" />
     <Compile Include="TM_AppCode\Users\TM_UserData_Ex_Users_Persistance.cs" />
     <Compile Include="TM_AppCode\Users\UserActivities.cs" />
+    <Compile Include="TM_AppCode\Schemas\EmailMessage.cs" />
     <Compile Include="TM_AppCode\Utils\Git.cs" />
     <Compile Include="TM_AppCode\Utils\GoogleAnalytics.cs" />
     <Compile Include="TM_AppCode\Utils\GZip.cs" />

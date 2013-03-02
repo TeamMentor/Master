@@ -1,17 +1,27 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Mail;
 using System.Net.Mime;
 using O2.DotNetWrappers.DotNet;
 using O2.DotNetWrappers.ExtensionMethods;
+using O2.DotNetWrappers.Network;
 
 namespace TeamMentor.CoreLib
 {
     public class SendEmails
-    {                
+    {   
+        public static List<EmailMessage> Sent_EmailMessages { get; set; }
+     
         public string From          { get; set; }
         public string Smtp_Server   { get; set; }
         public string Smtp_UserName { get; set; }
         public string Smtp_Password { get; set; }
+
+        static SendEmails()
+        {
+            Sent_EmailMessages = new List<EmailMessage>();
+        }
+
 
         public SendEmails()
         {            
@@ -33,13 +43,7 @@ namespace TeamMentor.CoreLib
             Smtp_UserName   = smtpUserName;
             Smtp_Password   = smtpPassword;
         }
-
-        public bool sendEmailDisabled()
-        {
-            return Smtp_Server.isNull() ||
-                   Smtp_UserName.isNull() ||
-                   Smtp_Password.isNull();
-        }
+        
 
         public bool send_TestEmail()
         {
@@ -54,33 +58,48 @@ namespace TeamMentor.CoreLib
         {
             return send(to, subject, message, false);
         }
+
         public bool send(string to, string subject, string message, bool htmlMessage)
         {
+            var emailMessage = new EmailMessage 
+                                    {
+                                        To = to, 
+                                        From = this.From, 
+                                        Subject = subject, 
+                                        Message = message, 
+                                        HtmlMessage = htmlMessage
+                                    };
+            return send(emailMessage);
+        }
+        
+        //Refactor into SMTP class
+        public bool send(EmailMessage emailMessage)
+        {
+            Sent_EmailMessages.Add(emailMessage);
             try
             {
-                if (sendEmailDisabled())
-                {
-                    //"Can't sent email because the Smtp_Password is not set".error();
-                    return false;
+                if (this.offlineMode())
+                {                    
+                    return false;   
                 }
-                "Sending email:\n  to: {0}\n  from: {0}\n  subject: {0} ".info(to, subject, message);
+                "Sending email:\n  to: {0}\n  from: {0}\n  subject: {0} ".info(emailMessage.To, emailMessage.Subject, emailMessage.Message);
                 var mailMsg = new MailMessage();
 
-                message += "Send by TeamMentor. ".format().lineBefore().lineBefore();
+                emailMessage.Message += "Send by TeamMentor. ".format().lineBefore().lineBefore();
                 // To
-                mailMsg.To.Add(new MailAddress(to));
+                mailMsg.To.Add(new MailAddress(emailMessage.To));
                 // From
-                mailMsg.From = new MailAddress(From);
+                mailMsg.From = new MailAddress(emailMessage.From);
                 // Subject and multipart/alternative Body
-                mailMsg.Subject = subject;                
-                if (htmlMessage)
+                mailMsg.Subject = emailMessage.Subject;                
+                if (emailMessage.HtmlMessage)
                 {
-                    mailMsg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(message, null, MediaTypeNames.Text.Plain));
-                    mailMsg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(message, null, MediaTypeNames.Text.Html));
+                    mailMsg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(emailMessage.Message, null, MediaTypeNames.Text.Plain));
+                    mailMsg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(emailMessage.Message, null, MediaTypeNames.Text.Html));
                 }
                 else
                 {
-                    mailMsg.Body = message;
+                    mailMsg.Body = emailMessage.Message;
                 }
                 // Init SmtpClient and send
                 var smtpClient = new SmtpClient(Smtp_Server, 587);
@@ -96,7 +115,6 @@ namespace TeamMentor.CoreLib
                 return false;
             }
         }
-
         public static void SendEmailToTM(string subject, TMUser tmUser)
         {
             var tmMessage =
@@ -160,7 +178,6 @@ TeamMentor Team.
             return false;
 
         }
-
         public static void SendEmailToTM(string subject, string message)
         {
             O2Thread.mtaThread(
@@ -188,6 +205,17 @@ TeamMentor Team.
                             ex.log("in SendEmailToTM");
                         }
                     });
+        }
+    }
+
+    public static class SendEmail_ExtensionMethods
+    {
+        public static bool offlineMode(this SendEmails sendEmails)
+        {
+            return sendEmails.Smtp_Server.notValid() ||
+                   sendEmails.Smtp_UserName.notValid() ||
+                   sendEmails.Smtp_Password.notValid() ||
+                   new Web().online().isFalse();  
         }
     }
 }

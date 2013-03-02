@@ -228,6 +228,7 @@
     <Content Include="Html_Pages\Gui\Dialogs\Dialog with not a lot of content.html" />
     <Content Include="Html_Pages\Gui\Dialogs\Login.Html" />
     <Content Include="Html_Pages\Gui\Dialogs\Signup.html" />
+    <Content Include="Html_Pages\Gui\Pages\passwordForgot.html" />
     <Content Include="Html_Pages\Gui\Pages\passwordReset.html" />
     <Content Include="Html_Pages\_UnitTest_Helpers\TestPages\PageWithBootstrap.htm" />
     <Content Include="Html_Pages\_UnitTest_Helpers\TestPages\PageWithJQuery.htm" />
@@ -628,7 +629,7 @@
     <Content Include="TBot\Users\user.cshtml.txt" />
     <Content Include="TBot\Questions\version.cshtml" />
     <Content Include="TBot\Admin\ActiveSessions.cshtml" />
-    <Content Include="TBot\Admin\RazorTemplates.cshtml.txt" />
+    <None Include="TBot\Admin\Reset_Razor_Templates.cshtml" />
     <Content Include="TBot\Admin\IISSessions.cshtml" />
     <Content Include="TBot\Users\userData.cshtml" />
     <Content Include="TBot\NGit\GitStatus.cshtml" />
