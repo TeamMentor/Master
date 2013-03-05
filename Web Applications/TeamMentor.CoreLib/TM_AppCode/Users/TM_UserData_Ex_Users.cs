@@ -20,13 +20,16 @@ namespace TeamMentor.CoreLib
                 if (adminUser.notNull())
                 {
                     if (adminUser.SecretData.PasswordHash.notValid() || tmConfig.OnInstallation.ForceAdminPasswordReset)
-                        adminUser.SecretData.PasswordHash = adminUser.createPasswordHash(defaultAdminUser_Pwd);
-                    adminUser.AccountStatus.ExpirationDate = default(DateTime);
-                    adminUser.saveTmUser();
+                    {
+                        adminUser.SecretData.PasswordHash = adminUser.createPasswordHash(defaultAdminUser_Pwd);                        
+                        //adminUser.AccountStatus.ExpirationDate = default(DateTime);    
+                        adminUser.saveTmUser();
+                    }                    
                     return adminUser.UserID;
                 }				
 
                 var userId = userData.newUser(defaultAdminUser_Name, defaultAdminUser_Pwd, 1);                
+                userId.tmUser().AccountStatus.ExpirationDate = default(DateTime);               // so that the admin user doesn't expire by default
                 return userId;
             }            
         }        

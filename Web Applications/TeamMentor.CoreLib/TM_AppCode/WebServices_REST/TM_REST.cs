@@ -1,9 +1,15 @@
-﻿using System.ServiceModel;
+﻿using System;
+using System.ServiceModel;
 using System.ServiceModel.Activation;
+using System.ServiceModel.Channels;
+using System.ServiceModel.Description;
+using System.ServiceModel.Dispatcher;
+using System.ServiceModel.Web;
 using System.Web;
 using System.Web.Routing;
+using O2.DotNetWrappers.ExtensionMethods;
 
-namespace TeamMentor.CoreLib
+namespace TeamMentor.CoreLib  
 {
     [ServiceBehavior				(InstanceContextMode = InstanceContextMode.PerCall			  ), 
      AspNetCompatibilityRequirements(RequirementsMode	 = AspNetCompatibilityRequirementsMode.Allowed)]
@@ -11,6 +17,10 @@ namespace TeamMentor.CoreLib
     {
         public static string urlPath		= "REST";
         public static string urlPath_Tests	= "REST_Tests";
+        public static TMWebServiceHostFactory webServiceHostFactory;
+        public static ServiceRoute            serviceRoute;
+        public static ServiceHostBase         serviceHostBase;
+
 
         public HttpContextBase		Context			 { get; set; }	
         public HttpSessionStateBase Session			 { get; set; }	
@@ -28,15 +38,77 @@ namespace TeamMentor.CoreLib
         
         public static void SetRouteTable()
         {
-            var webServiceHostFactory = new WebServiceHostFactory();
-            var serviceRoute = new ServiceRoute(urlPath, webServiceHostFactory, typeof (TM_REST));            
-            RouteTable.Routes.Add(serviceRoute);            
+            webServiceHostFactory = new TMWebServiceHostFactory();
+            serviceRoute = new ServiceRoute(urlPath, webServiceHostFactory, typeof (TM_REST));            
+            RouteTable.Routes.Add(serviceRoute);                        
             //RouteTable.Routes.Add(new ServiceRoute(urlPath_Tests, new WebServiceHostFactory(), typeof(REST_Tests)));						
-        }
-
-                        
+        }                        
     }
 
+    public class TMWebServiceHostFactory : WebServiceHostFactory
+    {        
 
+        public override ServiceHostBase CreateServiceHost(string serviceType, Uri[] baseAddresses)
+        {
+            
+            TM_REST.serviceHostBase = base.CreateServiceHost(serviceType, baseAddresses);
+            //behaviours = servicehostBase.Description.Behaviors;
+            //behaviours.Add(new TMWebHttpBehavior());
+
+            var serviceDebugBehaviour = TM_REST.serviceHostBase.Description.Behaviors.Find<ServiceDebugBehavior>();
+            
+            serviceDebugBehaviour.IncludeExceptionDetailInFaults = true;
+
+            return TM_REST.serviceHostBase;
+
+            /*var tmWebServiceHost =  new TMWebServiceHost(serviceType, baseAddresses);
+            //var endpoints = webServiceHost.Description.Endpoints;
+            //var serviceEndpoint = new ServiceEndpoint();
+            //endpoints.first().Behaviors.Add(new TMWebHttpBehavior());
+            return tmWebServiceHost;    */
+        }
+
+        protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
+        {
+            var serviceHost = base.CreateServiceHost(serviceType, baseAddresses);
+            return serviceHost;
+        }
+    }
+
+    /*public class TMWebServiceHost : WebServiceHost
+    {
+        public TMWebServiceHost(string serviceType, Uri[] baseAddresses) : base(serviceType,baseAddresses)
+        {
+            
+        }
+
+        public override void AddServiceEndpoint(ServiceEndpoint endpoint)
+        {
+            base.AddServiceEndpoint(endpoint);            
+        }
+    }
+
+    public class TMWebHttpBehavior : WebHttpBehavior
+    {
+        protected override void AddServerErrorHandlers(ServiceEndpoint endpoint, EndpointDispatcher endpointDispatcher)
+        {        
+            endpointDispatcher.ChannelDispatcher.ErrorHandlers.Clear();
+            endpointDispatcher.ChannelDispatcher.ErrorHandlers.Add(new TMErrorHandler());
+        }
+    }
+
+    public class TMErrorHandler : IErrorHandler
+    {
+        public bool HandleError(Exception error)
+        {
+            return true;
+        }
+
+        public void ProvideFault(Exception error, MessageVersion version, ref Message fault)
+        {
+            
+        }
+    }
+    */
 }
     

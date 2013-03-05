@@ -80,13 +80,14 @@ namespace TeamMentor.CoreLib
             if (Disable_Csrf_Check)
                 return true;
             var header_Csrf_Token = TmWebServices.Context.Request.Headers["CSRF-Token"];
+            var sessionIdHash = sessionID.str().hash().str();
             if (header_Csrf_Token != null && header_Csrf_Token.valid())
             {
-                //"[check_CSRF_Token] {0} == {1} : {2}".debug(header_CSRF_Token, sessionID.str().hash().str(), header_CSRF_Token == sessionID.str().hash().str());
+                "[check_CSRF_Token] {0} == {1} : {2}".debug(header_Csrf_Token, sessionID.str().hash().str(), header_Csrf_Token == sessionID.str().hash().str());
                 if (header_Csrf_Token == sessionID.str().hash().str())			// interrestingly session.hash().str() produces a different value
                     return true;
             }
-            "[TM_Authentication] check_CSRF_Token failed".error();
+            "[TM_Authentication] check_CSRF_Token failed, header_Csrf_Token: {0} sessionIDHash: {1}".error(header_Csrf_Token, sessionIdHash);
             return false;
             //throw new SecurityException("Invalid CSRF Token");			
         }

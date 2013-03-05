@@ -28,7 +28,7 @@ namespace TeamMentor.UnitTests.REST
 		public TM_REST_Host StartHost()
 		{						
 			Host = new WebServiceHost(typeof (TM_REST), BaseAddress);						
-			Host.Open();						
+			Host.Open();						            
 			return this;
 		}
 
