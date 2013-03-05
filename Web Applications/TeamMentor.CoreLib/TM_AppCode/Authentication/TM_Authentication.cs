@@ -7,8 +7,9 @@ namespace TeamMentor.CoreLib
 {
     public class TM_Authentication
     {        
-        public  TM_WebServices      TmWebServices        { get; set; }    
-        public  bool                Disable_Csrf_Check  { get; set; }    
+        public static bool          Global_Disable_Csrf_Check   { get; set; }    
+        public  TM_WebServices      TmWebServices               { get; set; }    
+        public  bool                Disable_Csrf_Check          { get; set; }    
 
         public TM_Authentication    (TM_WebServices tmWebServices)
         {
@@ -71,6 +72,11 @@ namespace TeamMentor.CoreLib
         }
         public bool                 check_CSRF_Token()
         {
+            if (Global_Disable_Csrf_Check)
+            {
+                "[TM_Authentication] Global_Disable_Csrf_Check was set".error();
+                return true;
+            }
             if (Disable_Csrf_Check)
                 return true;
             var header_Csrf_Token = TmWebServices.Context.Request.Headers["CSRF-Token"];
@@ -104,14 +110,18 @@ namespace TeamMentor.CoreLib
             
             
             var userGroup = UserGroup.None;
+            "".line().info();
+            ">> SessionID: {0} ".info(sessionID);
+            ">> URL: {0}".info(HttpContextFactory.Request.Url);
             if (sessionID != Guid.Empty)
             {                
                 if (check_CSRF_Token())		// only map the roles if the CSRF check passed
                 {
+                    "[TM_Authentication] check_CSRF_Token OK".debug();
                     userGroup = new UserRoleBaseSecurity().MapRolesBasedOnSessionGuid(sessionID);					
                 }                
             }
-            "[TM_Authentication] userGroup for sessionID: {0} : {1}".error(sessionID, userGroup);
+            "[TM_Authentication][1] userGroup for sessionID: {0} : {1}".debug(sessionID, userGroup);
             if (userGroup == UserGroup.None)
             {
                 if (TMConfig.Current.TMSecurity.Show_ContentToAnonymousUsers)
@@ -119,6 +129,7 @@ namespace TeamMentor.CoreLib
                 else
                     UserGroup.Anonymous.setThreadPrincipalWithRoles();
             }
+            "[TM_Authentication][2] userGroup for sessionID: {0} : {1}".debug(sessionID, userGroup);
             return this;
         }
         public Guid                 logout()
