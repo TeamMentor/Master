@@ -126,7 +126,7 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             var loginToken_AfterUse     = tmUser.SecretData.SingleUseLoginToken;
             var loginToken_NextRequest  = tmUser.current_SingleUseLoginToken();
 
-            Assert.AreEqual   (Guid.Empty, loginToken_BeforeSet , "loginToken_BeforeSet");
+            Assert.AreNotEqual(Guid.Empty, loginToken_BeforeSet , "loginToken_BeforeSet");
             Assert.AreNotEqual(Guid.Empty, loginToken_BeforeUse , "loginToken_BeforeUse");
             Assert.AreEqual   (loginToken, loginToken_BeforeUse , "loginToken_BeforeUse");
             Assert.AreNotEqual(Guid.Empty, sessionId_UsingToken , "sessionId_UsingToken");
@@ -151,7 +151,7 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             var sessionId_NewPwd   = tmWebServices.Login(tmUser.UserName, newPassword);
             var sessionId_OldPwd   = tmWebServices.Login(tmUser.UserName, oldPassword);            
 
-            Assert.AreEqual   (Guid.Empty, token_BeforeSet  , "loginToken_BeforeSet");
+            Assert.AreNotEqual(Guid.Empty, token_BeforeSet  , "loginToken_BeforeSet");
             Assert.AreNotEqual(Guid.Empty, token_BeforeUse  , "loginToken_BeforeUse");
             Assert.AreEqual   (token, token_BeforeUse       , "loginToken_BeforeUse");
             Assert.IsTrue     (result                       , "change password result");

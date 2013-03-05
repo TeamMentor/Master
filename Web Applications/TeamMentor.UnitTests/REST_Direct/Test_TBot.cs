@@ -23,9 +23,14 @@ namespace TeamMentor.UnitTests.REST_Direct
         }
 
         [Test]
-        public void RaiseExceptionOnNoAdmin()
+        public void RedirectToLoginOnNoAdmin()
         {
-            Assert.Throws<SecurityException>(() => TmRest.TBot_Show());
+            var response = HttpContextFactory.Response;
+            Assert.IsFalse  (response.IsRequestBeingRedirected);
+            Assert.AreEqual ("", response.RedirectLocation);            
+            TmRest.TBot_Show();
+            Assert.IsTrue   (response.IsRequestBeingRedirected);
+            Assert.AreEqual ("/Login?LoginReferer=/tbot", response.RedirectLocation);            
         }
 
         [Test][Assert_Admin]
@@ -36,7 +41,7 @@ namespace TeamMentor.UnitTests.REST_Direct
             Assert.IsNotNull(tbotMainHtmlFile             , "tbotMainHtmlFile was null");
             Assert.IsTrue   (tbotMainHtmlFile.fileExists(), "tbotMainHtmlFile didn't exist");
             Assert.IsNotNull(showTbotHtml);
-            Assert.IsTrue   (showTbotHtml.contains("bootstrap-combined.min.css"), "Couldn't find bootstrap-combined.min.css");            
+            Assert.IsTrue   (showTbotHtml.contains("bootstrap.min.css"), "Couldn't find bootstrap.min.css");            
         }
 
         [Test]
@@ -44,7 +49,7 @@ namespace TeamMentor.UnitTests.REST_Direct
         public void EmailMessages()
         {
             var tbotBrain = new TBot_Brain();
-            var html = tbotBrain.ExecuteRazorPage("emailMessages");
+            var html = tbotBrain.ExecuteRazorPage("EmailMessages");
             Assert.IsNotNull(html);
             html.info();
             //"test webBrowser".popupWindow().add_WebBrowser().set_Html(html).waitForClose();

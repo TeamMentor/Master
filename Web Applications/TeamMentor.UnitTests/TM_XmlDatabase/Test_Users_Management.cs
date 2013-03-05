@@ -36,6 +36,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             sessionId = userData.login(testUserName, "BAD PWD");
             Assert.AreEqual(Guid.Empty, sessionId, "session id should be empty");
 
+            UserGroup.Admin.setThreadPrincipalWithRoles();  //assert admin so that we can delete the user
             //delete user			
             var result = userData.deleteTmUser(tmUser.UserID);
             Assert.That(result, "User delete");
