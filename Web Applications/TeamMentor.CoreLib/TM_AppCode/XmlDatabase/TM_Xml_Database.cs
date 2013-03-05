@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using O2.DotNetWrappers.DotNet;
 using O2.DotNetWrappers.ExtensionMethods;
+using O2.FluentSharp;
 using urn.microsoft.guidanceexplorer;
 
 namespace TeamMentor.CoreLib
@@ -14,11 +15,13 @@ namespace TeamMentor.CoreLib
         //config
         public bool			            UsingFileStorage	  { get; set; }   
         public bool                     ServerOnline          { get; set; }
+        public bool                     AutoGitCommit         { get; set; }
         
         //users and tracking
-        public TM_UserData              UserData              { get; set; }         
+        public TM_UserData              UserData              { get; set; }                 
 
-        //articles        
+        //Xml Library and Articles        
+        public API_NGit                 NGit                  { get; set; }
         public Dictionary<Guid, guidanceExplorer>	    GuidanceExplorers_XmlFormat { get; set; }	
         public Dictionary<Guid, string>				    GuidanceItems_FileMappings	{ get; set; }			
         public Dictionary<Guid, TeamMentor_Article>	    Cached_GuidanceItems		{ get; set; }
@@ -90,8 +93,10 @@ namespace TeamMentor.CoreLib
                 var tmComfig            = TMConfig.Current;
                 var xmlDatabasePath     = tmComfig.xmlDatabasePath();
                 var xmlLibraryPath      = tmComfig.TMSetup.XmlLibrariesPath;
-                var userDataPath        = tmComfig.TMSetup.UserDataPath;                
-                
+                var userDataPath        = tmComfig.TMSetup.UserDataPath;
+
+                AutoGitCommit = tmComfig.Git.AutoCommit_LibraryData;
+
                 setLibraryPath_and_LoadDataIntoMemory(xmlDatabasePath, xmlLibraryPath, userDataPath);
 
                 "[TM_Xml_Database][setDataFromCurrentScript] TM_Xml_Database.Path_XmlDatabase: {0}" .debug(xmlDatabasePath);

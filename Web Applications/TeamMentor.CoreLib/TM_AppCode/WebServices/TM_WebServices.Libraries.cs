@@ -20,7 +20,7 @@ namespace TeamMentor.CoreLib
         [WebMethod(EnableSession = true)]	public string                   GetGuidanceItemHtml(Guid guidanceItemId)			{	return tmXmlDatabase.getGuidanceItemHtml (tmAuthentication.sessionID, guidanceItemId);	    }				
         [WebMethod(EnableSession = true)]	public List<String>             GetGuidanceItemsHtml(List<Guid> guidanceItemsIds)	{	return tmXmlDatabase.getGuidanceItemsHtml(tmAuthentication.sessionID, guidanceItemsIds);	}                
         
-        [WebMethod(EnableSession = true)]	public List<View_V3>             GetViewsInLibraryRoot(Guid libraryId)		 		{	return tmXmlDatabase.tmViews_InLibraryRoot(libraryId);  }
+        [WebMethod(EnableSession = true)]	public List<View_V3>            GetViewsInLibraryRoot(Guid libraryId)		 		{	return tmXmlDatabase.tmViews_InLibraryRoot(libraryId);  }
         [WebMethod(EnableSession = true)]	public View_V3                  GetViewById(Guid viewId)		 					{	return tmXmlDatabase.tmView(viewId);                    }  	
                 
         [WebMethod(EnableSession = true)] 	public List<String>             GetAllLibraryIds   () 						        { return tmXmlDatabase.tmLibraries().ids().toStringList();  }
@@ -59,7 +59,10 @@ namespace TeamMentor.CoreLib
         [WebMethod(EnableSession = true)]	[EditArticles]	                     	public bool UpdateGuidanceItem(TeamMentor_Article guidanceItem)						
                                                                                         { 
                                                                                             resetCache();
-                                                                                            return guidanceItem.xmlDB_Save_Article(tmXmlDatabase); 
+                                                                                            
+                                                                                            var result = guidanceItem.xmlDB_Save_Article(tmXmlDatabase); 
+                                                                                            this.LogUserActivity("Update Article", "{0} - {1}  [{2}".format(guidanceItem.Metadata.Id, guidanceItem.Metadata.Title, result));
+                                                                                            return result;
                                                                                         }                                                                                                
         [WebMethod(EnableSession = true)]   [EditArticles]	                        public bool SetArticleHtml (Guid articleId,string htmlContent)					        
                                                                                         {

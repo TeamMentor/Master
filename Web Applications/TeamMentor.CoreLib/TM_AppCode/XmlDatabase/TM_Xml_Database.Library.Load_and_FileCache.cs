@@ -4,11 +4,33 @@ using System.Linq;
 using O2.DotNetWrappers.ExtensionMethods;
 using O2.DotNetWrappers.DotNet;
 using O2.DotNetWrappers.Windows;
+using O2.FluentSharp;
 using urn.microsoft.guidanceexplorer;
 using System.Threading;
 
 namespace TeamMentor.CoreLib
-{	
+{
+    public static class TM_Xml_Database_Git
+    {
+        public static TM_Xml_Database setupGitSupport(this TM_Xml_Database tmDatabase)
+        {            
+            if (tmDatabase.AutoGitCommit)
+            {
+                tmDatabase.NGit = tmDatabase.Path_XmlLibraries.isGitRepository() 
+                                        ? tmDatabase.Path_XmlLibraries.git_Open() 
+                                        : tmDatabase.Path_XmlLibraries.git_Init();
+                tmDatabase.triggerGitCommit();
+            }
+            return tmDatabase;        
+        }
+        public static TM_Xml_Database   triggerGitCommit (this TM_Xml_Database tmDatabase)
+        {
+            if (tmDatabase.AutoGitCommit)
+                if (tmDatabase.NGit.status().valid())
+                    tmDatabase.NGit.add_and_Commit_using_Status();
+            return tmDatabase;
+        }
+    }
 
     // this is a (bit) time consumining (less 1s for 8000 files), so it should only be done once (this is another good cache target)
     public static class TM_Xml_Database_Load_and_FileCache_Utils
@@ -180,6 +202,7 @@ namespace TeamMentor.CoreLib
                 lock (TM_Xml_Database.Current.Cached_GuidanceItems)
                 {
                     TM_Xml_Database.Current.Cached_GuidanceItems.Values.toList().saveAs(cacheFile);
+                    tmDatabase.triggerGitCommit();
                 }
                 o2Timer.stop();
             }

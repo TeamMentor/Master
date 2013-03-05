@@ -25,7 +25,6 @@ namespace TeamMentor.CoreLib
         {
             Current = new UserActivities();
         }
-
         public UserActivities()
         {
             ActivitiesLog = new List<UserActivity>();
@@ -42,10 +41,23 @@ namespace TeamMentor.CoreLib
             ActivitiesLog.Add(userActivity);			
             return userActivity;
         }
+
+
     }
 
     public static class UserActivities_ExtensionMethods
-    {        
+    {
+        public static UserActivity LogUserActivity(this TM_WebServices tm_WebServices, string name, string detail)
+        {
+            var currentUser = tm_WebServices.Current_User();
+            if (currentUser.notNull())
+            {
+                currentUser.UserName.tmUser().logUserActivity(name, detail);
+            }
+            return null;
+
+        }
+
         public static UserActivity logUserActivity(this TMUser tmUser , string name, string detail)
         {
             var userActivites = UserActivities.Current;

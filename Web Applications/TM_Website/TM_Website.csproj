@@ -652,6 +652,8 @@
     <Content Include="TBot\Messaging\Send_EmailMessage.cshtml" />
     <Content Include="TBot\Views\GitDiff_UserData_Commit.cshtml" />
     <Content Include="TBot\Views\GitDiff_UserData_File.cshtml" />
+    <Content Include="TBot\Views\GitDiff_XmlDatabase_File.cshtml" />
+    <Content Include="TBot\Views\GitDiff_XmlDatabase_Commit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="TBot\NGit\" />

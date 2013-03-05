@@ -47,7 +47,7 @@ namespace TeamMentor.CoreLib
         public class Git_Config
         {
             public bool         AutoCommit_UserData         { get; set; }
-            //public bool         AutoCommit_LibraryData      { get; set; }         // not implemented in 3.3
+            public bool         AutoCommit_LibraryData      { get; set; }         // not implemented in 3.3
         }
         public class OnInstallation_Config
         {
@@ -164,7 +164,7 @@ namespace TeamMentor.CoreLib
                 };
             tmConfig.Git            = new TMConfig.Git_Config
                 {
-                    //AutoCommit_LibraryData          = true,
+                    AutoCommit_LibraryData          = true,
                     AutoCommit_UserData             = true
                 };
             

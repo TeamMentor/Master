@@ -3,6 +3,8 @@ using System.Linq;
 using System.Collections.Generic;
 using Microsoft.Security.Application;
 using O2.DotNetWrappers.ExtensionMethods;
+using O2.FluentSharp;
+
 //using urn.microsoft.guidanceexplorer.guidanceItem;
 
 namespace TeamMentor.CoreLib
@@ -38,11 +40,14 @@ namespace TeamMentor.CoreLib
                 "[TM_Xml_Database] in loadDataIntoMemory, provided pathXmlDatabase didn't exist: {0}".error(tmXmlDatabase.Path_XmlDatabase);
                 return false;
             }
+            tmXmlDatabase.setupGitSupport();
             tmXmlDatabase.loadLibraryDataFromDisk();
             tmXmlDatabase.UserData.loadTmUserData();
             return true;					
-        }        
-                
+        }
+
+        
+
         //move to  extension methods
         [ReadArticles] 
         public TeamMentor_Article getGuidanceItem(Guid guidanceItemId)

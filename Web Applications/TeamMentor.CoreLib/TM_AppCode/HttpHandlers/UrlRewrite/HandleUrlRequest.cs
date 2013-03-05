@@ -39,6 +39,7 @@ namespace TeamMentor.CoreLib
         public bool transfer_Request(string action)
         {
             var handled = false;
+            action = action.lower();
             if (Server_Transfers.hasKey(action))
             {
                 context.Server.Transfer(Server_Transfers[action]);
