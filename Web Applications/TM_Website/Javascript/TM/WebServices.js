@@ -242,6 +242,18 @@ TM.WebServices.WS_Users.passwordReset= function(userName, userToken, newPassword
                 });		
     };
 
+TM.WebServices.WS_Users.passwordForgot = function(userName, email, callback) 
+    {        
+        var params =  { userName : userName  , email : email} ;        
+        TM.WebServices.Helper.invoke_TM_WebService(
+            'SendPasswordReminder', 
+            params, 
+            function()
+                {                    
+                    callback();
+                });		
+    };
+
 TM.WebServices.WS_Users.currentUser = function(callback)
     {				
         TM.WebServices.Helper.invoke_TM_WebService('Current_User', {} , callback);		

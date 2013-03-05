@@ -1,2 +1,0 @@
-﻿<h1>Creating a new Random User</h1>
-@Model.result

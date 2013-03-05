@@ -1,15 +1,27 @@
-﻿@using TeamMentor.CoreLib;
+﻿
+@using TeamMentor.CoreLib
+@using FluentSharp
+
 @{
-    var rest_Admin = new TM_REST();
-    UserGroup.Admin.setThreadPrincipalWithRoles(); //elevate privileges during dev
-    var users = rest_Admin.users();
+    var tmRest = (TeamMentor.CoreLib.TM_REST) @Model;
+    var users  = tmRest.users();
 }
-<h1>Here are the current users:</h1>
-<table border="1">
-    @foreach (var user in users)
-    {
-     <tr>
-     <td><a href="userData?userName=@user.UserName" userid="@user.UserId">@user.UserName</a></td><td> @user.UserId</td><td id="CreatedDate">@user.CreatedDate</td><td id="Actions">@user.Email</td>
-     </tr>
-    }
-</table>
+<h4>Current users:</h4>
+
+    <table class="table table-striped table-condensed">
+        <tr>
+            <th>Name</th>            
+            <th>User Id</th>
+            <th>Created</th>            
+            <th>Email</th>            
+        </tr>   
+        @foreach (var user in users)
+        {
+            <tr>
+                <td><a href="userData?userName=@user.UserName&max=50" userid="@user.UserId">@user.UserName</a></td>                
+                <td> @user.UserId</td>
+                <td id="CreatedDate">@user.CreatedDate.fromFileTimeUtc()</td>
+                <td id="Actions">@user.Email</td>
+            </tr>
+        }
+    </table>

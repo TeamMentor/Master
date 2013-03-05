@@ -1,0 +1,31 @@
+﻿
+@using TeamMentor.CoreLib
+@using O2.DotNetWrappers.ExtensionMethods
+@{
+    var baseFolder = TBot_Brain.TBotScriptsFolder();
+    var scripts = TBot_Brain.TBotScriptsFiles();
+    var mappedScripts = new Dictionary<string, List<string>> ();    
+    foreach (var script in scripts)
+    {
+        mappedScripts.add(script.parentFolder().remove(baseFolder).removeFirstChar(), script.fileName_WithoutExtension());
+    }
+    mappedScripts.remove("Views");  // don't show the views
+}
+<h4>Available TBot Commands</h4>
+
+<p>
+    Welcome to the TBot control center, please chose the command to execute:
+</p>
+
+<table class="table"> 
+    @foreach (var item in mappedScripts)
+    {
+        <tr>
+            <td><b>@item.Key</b></td>        
+            @foreach (var command in item.Value)
+            {
+                <td><a href="/rest/tbot/run/@command">@command</a></td>
+            }                               
+        </tr>
+        }
+</table>

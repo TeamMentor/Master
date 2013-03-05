@@ -45,7 +45,12 @@
 			
 			TM.WebServices.WS_Users.login(username, password, loginResponse);			
 		}
-		
+
+		function passwordForgot() 
+		{
+		    window.location = "/passwordForgot";
+		}
+
 		if (typeof(loginDialog) != "undefined")
 			loginDialog.remove();
 		if (typeof(signupDialog) != "undefined")
@@ -53,19 +58,19 @@
 			
 		$(function()
 			{					
-				$("*").eq(0).css('overflow','hidden')
+				$("*").eq(0).css('overflow','hidden');
 				
 				delete (TM.Debug.LastLoginResult);
 				var dialogOptions = { 	
 											title:'Login into TeamMentor'
 										,	modal: true		
-										,	buttons: { " login" : loginUser}
+										,	buttons: { " Password forgot" : passwordForgot, " Login" : loginUser }
 										,	width: '400px'
 										, 	open:  TM.Events.onLoginDialogOpen	
 										, 	close: function()
 													{														
 														TM.Gui.CurrentUser.loadUserData();
-														TM.Events.onLoginDialogClose()
+														TM.Events.onLoginDialogClose();
 													}
 									};				
 				
@@ -76,6 +81,8 @@
 					
 				$('#UsernameBox').keypress(function(e)  { if(e.which == 13) { loginUser(); } });
 				$('#PasswordBox').keypress(function(e)  { if(e.which == 13) { loginUser(); } });
+		    
+                loginDialog.parent().find("button").first().absolute().left(10)
 				
 			});
 	</script>
@@ -86,5 +93,5 @@
 		<br />
 		<span id="passwordLabel" style="display:inline-block;width:130px;">Password:</span><input name="ctl00$ContentPlaceHolder1$PasswordBox" type="password" id="PasswordBox" class="otherTextBox" style="width:200px;" /><br />		
 		<br />		
-		<span class="errorMessageLogin" id ="errorMessageLogin" ></span>
+	    <span class="errorMessageLogin" id ="errorMessageLogin" ></span>        
 	</div>
