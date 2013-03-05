@@ -105,7 +105,7 @@ namespace TeamMentor.CoreLib
 
         public static TM_UserData   setupGitSupport  (this TM_UserData userData)
         {
-            if (userData.AutoGitCommit)
+            if (userData.UsingFileStorage && userData.AutoGitCommit && userData.Path_UserData.notNull())
             {
                 if (userData.Path_UserData.isGitRepository())
                 {
@@ -128,7 +128,8 @@ namespace TeamMentor.CoreLib
         public static TM_UserData   triggerGitCommit (this TM_UserData userData)
         {
             if (userData.AutoGitCommit)
-                userData.NGit.add_and_Commit_using_Status();
+                if(userData.NGit.status().valid())
+                    userData.NGit.add_and_Commit_using_Status();
             return userData;
         }
     }

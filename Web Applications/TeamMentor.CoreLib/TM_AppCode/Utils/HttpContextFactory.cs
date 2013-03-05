@@ -8,7 +8,7 @@ namespace TeamMentor.CoreLib
     {
         private static HttpContextBase _context; 		
 
-        public static HttpContextBase Current
+        public static HttpContextBase       Current
         {
             get
             {

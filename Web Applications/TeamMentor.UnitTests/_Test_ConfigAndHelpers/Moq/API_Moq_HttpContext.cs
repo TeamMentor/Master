@@ -76,6 +76,8 @@ namespace O2.FluentSharp
             MockRequest.Setup(request =>request.Headers		      ).Returns(new NameValueCollection()); 
             MockRequest.Setup(request =>request.QueryString	      ).Returns(new NameValueCollection()); 
             MockRequest.Setup(request =>request.Form		      ).Returns(new NameValueCollection()); 
+            MockRequest.Setup(request =>request.ServerVariables   ).Returns(new NameValueCollection()); 
+            
             MockRequest.Setup(request =>request.ContentType	      ).Returns(""); 
             MockRequest.Setup(request =>request.Url	              ).Returns(()=> RequestUrl); 
             MockRequest.Setup(request =>request.IsLocal	          ).Returns(()=> RequestUrl.Host == "localhost" || RequestUrl.Host=="127.0.0.1"); 

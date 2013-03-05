@@ -24,6 +24,13 @@ namespace TeamMentor.UnitTests.CoreLib
         }
 
         [Test]
+        public void Check_TM_Server_URL()
+        {
+            var tmServerUrl = SendEmails.TM_Server_URL;
+            Assert.IsNull(tmServerUrl);     //shouldn't be set unless the HttpContext exists
+        }
+
+        [Test]
         public void Send_Test_Email()
         {
             var sentEmailMessages   = SendEmails.Sent_EmailMessages;

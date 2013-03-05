@@ -6,34 +6,31 @@ using TeamMentor.CoreLib;
 namespace TeamMentor.UnitTests.REST
 {
 	[TestFixture]
-	public class CheckConfigurationAndSetup 
+	public class CheckConfigurationAndSetup : TM_Rest_Direct
 	{
-		public static ITM_REST RestAdmin { get; set; }
+		//public static ITM_REST RestAdmin { get; set; }
 
-		[SetUp]
+		/*[SetUp]
 		public static void Setup()
 		{			
 			HttpContextFactory.Context = new API_Moq_HttpContext().httpContext();
 			//TMConfig.Current.UseAppDataFolder = true;
-			RestAdmin = new TM_REST();
-		}
+			//RestAdmin = new TM_REST();
+		}*/
 
-		[Test]
-		public void Test_Version()
+		[Test] public void Test_Version()
 		{
-			var version = RestAdmin.Version();
+			var version = TmRest.Version();
 			Assert.IsNotNull(version, "Version was null");
 			"version (direct access): {0}".info(version);
 		}
-		[Test]
-		public void Test_SessionID()
+		[Test] public void Test_SessionID()
 		{
-			var sessionId = RestAdmin.SessionId();
+			var sessionId = TmRest.SessionId();
 			Assert.IsNotNull(sessionId, "SessionId was null");
 			"sessionId (direct access): {0}".info(sessionId);
-		}
-
-		[TearDown]
-		public static void TearDown() { }
+		}	    
+	    /*[TearDown]
+		public static void TearDown() { }*/
 	}
 }

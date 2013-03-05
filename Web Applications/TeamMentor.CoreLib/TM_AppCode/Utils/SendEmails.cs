@@ -22,15 +22,20 @@ namespace TeamMentor.CoreLib
             Sent_EmailMessages = new List<EmailMessage>();
             try
             {
+                if (HttpContextFactory.Context.isNull())
+                    return;
                 var request = HttpContextFactory.Request;
                 var scheme = request.IsSecureConnection ? "https" : "http";
-                TM_Server_URL = "{0}://{1}:{2}".format(scheme, 
-                                                       request.ServerVariables["Server_Name"],
-                                                       request.ServerVariables["Server_Port"]);
+                var serverName = request.ServerVariables["Server_Name"];
+                var serverPort = request.ServerVariables["Server_Port"];
+                if (serverName.notNull() && serverPort.notNull())
+                    TM_Server_URL = "{0}://{1}:{2}".format(scheme, serverName, serverPort);
+                else
+                    TM_Server_URL = "{0}://localhost".format(scheme);
             }
             catch (Exception ex)
             {
-                ex.log();
+                ex.log("[SendEmails] static ctor");
             }
         }
 
