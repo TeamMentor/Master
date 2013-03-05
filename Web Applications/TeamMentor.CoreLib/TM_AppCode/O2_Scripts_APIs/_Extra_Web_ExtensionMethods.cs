@@ -1,12 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using O2.DotNetWrappers.ExtensionMethods;
 
 
 namespace FluentSharp
 {
+
+    public static class Extra_ExtensionMethods_Web
+    {
+        public static WebHeaderCollection HEAD_Headers(this Uri uri)
+        {
+            var request = (HttpWebRequest) WebRequest.Create(uri);
+            request.Timeout = 1000;
+            request.AllowAutoRedirect = false;            
+            request.Method = "HEAD";
+            try
+            {
+                return request.GetResponse().Headers;                                
+            }
+            catch (WebException wex)
+            {                
+                return null;
+            }
+        }
+        public static bool HEAD(this Uri uri)
+        {
+            return uri.HEAD_Headers().notNull();
+        }
+    }
+
+    public static class Extra_ExtensionMethods_DateTime
+    {
+        public static DateTime fromFileTimeUtc(this long fileTimeUtc)
+        {
+            return DateTime.FromFileTimeUtc(fileTimeUtc); 
+        }
+    }
+
     public static class Extra_ExtensionMethods_Collections
     {
         public static List<string>  toStringList(this List<Guid> guids)
@@ -20,6 +53,12 @@ namespace FluentSharp
             return list.contains(stringToNotFind).isFalse();
         }
 
+        public static List<T> reverse<T>(this List<T> list)
+        {
+            if (list.notNull())
+                list.Reverse();
+            return list;
+        }
     }
 
     public static class Extra_ExtensioMethods_Cookies

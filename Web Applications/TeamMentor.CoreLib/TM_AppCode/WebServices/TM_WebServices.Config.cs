@@ -15,14 +15,17 @@ namespace TeamMentor.CoreLib
         //Xml Database Specific
         [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_GetDatabasePath()		{	return tmXmlDatabase.Path_XmlDatabase;	}
         [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_GetLibraryPath()		{	return tmXmlDatabase.Path_XmlLibraries;	}		
+        [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_GetUserDataPath()		{	return tmXmlDatabase.UserData.Path_UserData;	}		
         [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_ReloadData()			{	
                                                                                                                     guiObjectsCacheOk = false; 
                                                                                                                     return  tmXmlDatabase.ReloadData(null); 
                                                                                                                 }
         [WebMethod(EnableSession = true)] [Admin]	            public bool XmlDatabase_ImportLibrary_fromZipFile(string pathToZipFile, string unzipPassword) { return TM_Xml_Database.Current.xmlDB_Libraries_ImportFromZip(pathToZipFile, unzipPassword); }                                                                                                                                     
         [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_SetLibraryPath(string libraryPath)	{	guiObjectsCacheOk = false; 
-                                                                                                                                    return  TM_Xml_Database.Current.ReloadData(libraryPath); 
+                                                                                                                                    return  tmXmlDatabase.ReloadData(libraryPath); 
                                                                                                                                 }
+        [WebMethod(EnableSession = true)] [Admin]	            public bool XmlDatabase_SetUserDataPath(string userDataPath)	{	return tmXmlDatabase.UserData.setUserDataPath(userDataPath); }
+
 
         [WebMethod(EnableSession = true)] public List<Guid>     XmlDatabase_GuidanceItems_SearchTitleAndHtml(List<Guid> guidanceItemsIds, string searchText)		{	 return  TM_Xml_Database.Current.guidanceItems_SearchTitleAndHtml(guidanceItemsIds,searchText); }																																		
         [WebMethod(EnableSession = true)] public string         XmlDatabase_GetGuidanceItemXml(Guid guidanceItemId)	    {	return  TM_Xml_Database.Current.xmlDB_guidanceItemXml(guidanceItemId); }        
@@ -34,9 +37,9 @@ namespace TeamMentor.CoreLib
         [WebMethod(EnableSession = true)] public bool           RBAC_HasRole(string role)					            {	return RBAC_CurrentPrincipal_Roles().contains(role); }
         [WebMethod(EnableSession = true)] public bool           RBAC_IsAdmin()											{	return RBAC_CurrentPrincipal_Roles().contains("Admin"); }        
 
-        [WebMethod(EnableSession = true)]		                public Guid		SSO_AuthenticateUser(string ssoToken)            {   return new SingleSignOn().authenticateUserBasedOn_SSOToken(ssoToken); }
-        [WebMethod(EnableSession = true)] [Admin]			    public string	SSO_GetSSOTokenForUser(string userName)          {   return new SingleSignOn().getSSOTokenForUser(userName); }
-        [WebMethod(EnableSession = true)] [Admin]			    public TM_User	SSO_GetUserFromSSOToken(string ssoToken)         {   return new SingleSignOn().getUserFromSSOToken(ssoToken).user(); }                
+//        [WebMethod(EnableSession = true)]		                public Guid		SSO_AuthenticateUser(string ssoToken)            {   return new SingleSignOn().authenticateUserBasedOn_SSOToken(ssoToken); }
+//        [WebMethod(EnableSession = true)] [Admin]			    public string	SSO_GetSSOTokenForUser(string userName)          {   return new SingleSignOn().getSSOTokenForUser(userName); }
+//        [WebMethod(EnableSession = true)] [Admin]			    public TM_User	SSO_GetUserFromSSOToken(string ssoToken)         {   return new SingleSignOn().getUserFromSSOToken(ssoToken).user(); }                
                                                                                                                 
         [WebMethod(EnableSession = true)] [Admin]		        public string		GitHub_Pull_Origin()	            {	return Git.syncWithGitHub_Pull_Origin();  }
         [WebMethod(EnableSession = true)] [Admin]		        public string		GitHub_Push_Origin()	            {	return Git.syncWithGitHub_Push_Origin();  }
@@ -86,11 +89,7 @@ namespace TeamMentor.CoreLib
                                                                                         FileUpload.UploadTokens.Add(uploadToken);
                                                                                         return uploadToken;
                                                                                     }
-        [WebMethod(EnableSession = true)] [Admin]	           public string		GetLogs()        
-                                                                                    {
-                                                                                        var logData = O2.Kernel.PublicDI.log.LogRedirectionTarget.prop("LogData").str() ;
-                                                                                        return logData;
-                                                                                    }        
+        [WebMethod(EnableSession = true)] [Admin]	           public string		GetLogs()        { return O2.Kernel.PublicDI.log.LogRedirectionTarget.prop("LogData").str() ; }        
 /*        [WebMethod(EnableSession = true)] [Admin]	           public List<KeyValue<Guid, string>>				Data_GuidanceItems_FileMappings()        
                                                                                     {
                                                                                         return TM_Xml_Database.Current.GuidanceItems_FileMappings.ConvertDictionary();

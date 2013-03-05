@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Microsoft.Security.Application;
 using O2.DotNetWrappers.ExtensionMethods;
@@ -6,7 +7,29 @@ using O2.FluentSharp;
 namespace TeamMentor.CoreLib
 {
     public static class TM_UserData_Ex_Users_Persistance
-    {	
+    {
+        public static bool setUserDataPath(this TM_UserData userData, string userDataPath)
+        {
+            if (userDataPath.dirExists().isFalse())
+            {
+                "[TM_UserData][setUserDataPath] provided userDataPath didn't exist: {0}".error("userDataPath");
+                return false;
+            }
+            try
+            {
+                userData.Path_UserData = userDataPath;
+                userData.ResetData();                
+                userData.loadTmUserData();
+                userData.SetUp();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                ex.log("[TM_UserData][setUserDataPath]");
+                return false;
+            }            
+        }
+
         public static TM_UserData   loadTmUserData   (this TM_UserData userData)
         {
             userData.TMUsers = new List<TMUser>();	        

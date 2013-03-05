@@ -18,6 +18,7 @@ namespace TeamMentor.CoreLib
                         if (tmUser.SecretData.SingleUseLoginToken == loginToken)
                         {
                             tmUser.SecretData.SingleUseLoginToken = Guid.Empty;
+                            tmUser.logUserActivity("SingleUseLoginToken used", loginToken.str());
                             return tmUser.login();
                         }
                     }
@@ -79,9 +80,10 @@ namespace TeamMentor.CoreLib
                         tmUser.logUserActivity("User Login", tmUser.UserName);
                         userData.ActiveSessions.add(sessionId, tmUser);
 
-                        SendEmails.SendEmailToTM("User Login: {0}".format(tmUser.UserName), tmUser.toXml());
+                        SendEmails.SendEmailAboutUserToTM("Loggged In", tmUser);
                         return sessionId;
                     }
+                    tmUser.logUserActivity("Login Fail (bad pwd)", tmUser.UserName);
                     tmUser.Stats.LoginFail++;
                 }
             }
@@ -113,7 +115,7 @@ namespace TeamMentor.CoreLib
                     tmUser.logUserActivity("User Logout", tmUser.UserName);                    
                     userData.ActiveSessions.Remove(sessionId);
 
-                    SendEmails.SendEmailToTM("User Logout: {0}".format(tmUser.UserName), tmUser.toXml());
+                    SendEmails.SendEmailAboutUserToTM("Logged Out", tmUser);
                     return true;
                 }
             }

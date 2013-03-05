@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Security;
+using System.Text;
 using System.Web;
 using FluentSharp;
 using O2.DotNetWrappers.ExtensionMethods;
@@ -43,7 +45,15 @@ namespace TeamMentor.CoreLib
 	        }
 	        
 	    }
+	    public string Admin_Logs()
+	    {
+            return TmWebServices.GetLogs();	        
+	    }
 
+	    public bool   SendEmail(EmailMessage_Post emailMessagePost)
+        {
+            return TmWebServices.SendEmail(emailMessagePost);            
+        }
 	    public Stream TBot_Show()
 	    {
 	        try
@@ -57,13 +67,11 @@ namespace TeamMentor.CoreLib
 	        }	       
             return null;
 	    }
-
 	    public Stream TBot_Run(string what)
 	    {
             this.response_ContentType_Html();
             return new TBot_Brain().Run(what);
 	    }
-
         public Stream TBot_List()
 	    {
             try

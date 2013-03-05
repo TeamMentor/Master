@@ -60,7 +60,7 @@ namespace TeamMentor.CoreLib
                 {
                     var tmUser = sessionID.session_TmUser();
                     if (tmUser.notNull())
-                        tmUser.CSRF_Token = sessionID.str().hash().str();	
+                        tmUser.SecretData.CSRF_Token = sessionID.str().hash().str();	
                     return tmUser;
                 }
                 catch

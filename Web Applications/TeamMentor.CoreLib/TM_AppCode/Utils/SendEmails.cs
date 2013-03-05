@@ -4,14 +4,14 @@ using System.Net.Mail;
 using System.Net.Mime;
 using O2.DotNetWrappers.DotNet;
 using O2.DotNetWrappers.ExtensionMethods;
-using O2.DotNetWrappers.Network;
 
 namespace TeamMentor.CoreLib
-{
+{    
     public class SendEmails
     {   
         public static List<EmailMessage> Sent_EmailMessages { get; set; }
-     
+        public static string             TM_Server_URL      { get; set; }
+
         public string From          { get; set; }
         public string Smtp_Server   { get; set; }
         public string Smtp_UserName { get; set; }
@@ -20,12 +20,24 @@ namespace TeamMentor.CoreLib
         static SendEmails()
         {
             Sent_EmailMessages = new List<EmailMessage>();
+            try
+            {
+                var request = HttpContextFactory.Request;
+                var scheme = request.IsSecureConnection ? "https" : "http";
+                TM_Server_URL = "{0}://{1}:{2}".format(scheme, 
+                                                       request.ServerVariables["Server_Name"],
+                                                       request.ServerVariables["Server_Port"]);
+            }
+            catch (Exception ex)
+            {
+                ex.log();
+            }
         }
 
 
         public SendEmails()
         {            
-            From = "TM_Security_Dude@securityinnovation.com";
+            From = "tm_alerts@securityinnovation.com";
             if (TM_Xml_Database.Current.notNull())
             { 
                 var secretData = TM_Xml_Database.Current.UserData.SecretData;
@@ -73,6 +85,11 @@ namespace TeamMentor.CoreLib
         }
         
         //Refactor into SMTP class
+        public bool send(EmailMessage_Post emailMessagePost)
+        {
+            var emailMessage = new EmailMessage(emailMessagePost);
+            return send(emailMessage);
+        }
         public bool send(EmailMessage emailMessage)
         {
             Sent_EmailMessages.Add(emailMessage);
@@ -80,8 +97,10 @@ namespace TeamMentor.CoreLib
             {
                 if (this.offlineMode())
                 {                    
+                    emailMessage.SentStatus = SentStatus.Offline;
                     return false;   
                 }
+                emailMessage.SentStatus = SentStatus.Sending;
                 "Sending email:\n  to: {0}\n  from: {0}\n  subject: {0} ".info(emailMessage.To, emailMessage.Subject, emailMessage.Message);
                 var mailMsg = new MailMessage();
 
@@ -106,16 +125,22 @@ namespace TeamMentor.CoreLib
                 var credentials = new System.Net.NetworkCredential(Smtp_UserName, Smtp_Password);
                 smtpClient.Credentials = credentials;
 
-                smtpClient.Send(mailMsg);                                
+                smtpClient.Send(mailMsg);
+                
+                emailMessage.SentStatus = SentStatus.Sent;
+                emailMessage.Sent_Date = DateTime.Now.ToFileTimeUtc();
                 return true;
             }
             catch (Exception ex)
             {
                 ex.log();
+                emailMessage.SentStatus = SentStatus.Error;
                 return false;
             }
         }
-        public static void SendEmailToTM(string subject, TMUser tmUser)
+
+        //sendEmail Helpers
+        public static void SendNewUserEmails(string subject, TMUser tmUser)
         {
             var tmMessage =
 @"New TeamMentor User Created:
@@ -143,15 +168,36 @@ namespace TeamMentor.CoreLib
                 var userMessage =
 @"Hi {0} {1} Welcome to TeamMentor.
 
-You can login with your {2} account at http://www.teammentor.net
+You can login with your {2} account at {3}
 
 TeamMentor Team.
-                ".format(tmUser.FirstName, tmUser.LastName, tmUser.UserName);
+                ".format(tmUser.FirstName, tmUser.LastName, tmUser.UserName, TM_Server_URL);
                 SendEmailToEmail(tmUser.EMail, "Welcome to TeamMentor", userMessage);
                 userMessage = "(sent to: {0})\n\n{1}".format(tmUser.EMail, userMessage);
                 SendEmailToTM("(user email) Welcome to TeamMentor", userMessage);
             }
 
+        }
+        
+        [Assert_Admin]
+        public static void SendEmailAboutUserToTM(string action, TMUser tmUser)
+        {
+            var subject = "User {0} {1}".format(tmUser.UserName, action);
+            var message =
+@"The user {0} has just {1}
+
+Stats:
+
+- last  login: {2}
+- login fails: {3}
+- login Oks  : {4}
+
+                ".format(tmUser.UserName, 
+                         action, 
+                         tmUser.Stats.LastLogin,
+                         tmUser.Stats.LoginFail,
+                         tmUser.Stats.LoginOk);
+            SendEmailToTM(subject, message);
         }
 
         [Assert_Admin]
@@ -162,10 +208,34 @@ TeamMentor Team.
 var userMessage =
 @"Hi {0} {1} A Login token was requested for your account.
 
-You can login with your {2} account using http://www.teammentor.net/rest/{2}/{3})
+You can login with your {2} account using {4}/rest/{2}/{3}
 
 TeamMentor Team.
-             ".format(tmUser.FirstName, tmUser.LastName, tmUser.UserName, tmUser.current_SingleUseLoginToken());
+             ".format(tmUser.FirstName, tmUser.LastName, tmUser.UserName, tmUser.current_SingleUseLoginToken(), TM_Server_URL);
+             SendEmailToEmail(tmUser.EMail, "TeamMentor Login Link", userMessage);
+             userMessage = "(sent to: {0})\n\n{1}".format(tmUser.EMail, userMessage);
+             SendEmailToTM("(user email) Welcome to TeamMentor", userMessage);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                ex.log();
+            }
+            return false;
+        }
+
+        [Assert_Admin]
+        public static bool SendPasswordReminderToUser(TMUser tmUser, Guid passwordResetToken)
+        {
+            try
+            {                 
+var userMessage =
+@"Hi {0} {1},  a password reminder was requested for your account.
+
+You can change your password of your {2} account using {4}/passwordReset/{2}/{3}
+
+TeamMentor Team.
+             ".format(tmUser.FirstName, tmUser.LastName, tmUser.UserName, passwordResetToken,TM_Server_URL);
              SendEmailToEmail(tmUser.EMail, "TeamMentor Login Link", userMessage);
              userMessage = "(sent to: {0})\n\n{1}".format(tmUser.EMail, userMessage);
              SendEmailToTM("(user email) Welcome to TeamMentor", userMessage);
@@ -178,6 +248,7 @@ TeamMentor Team.
             return false;
 
         }
+
         public static void SendEmailToTM(string subject, string message)
         {
             O2Thread.mtaThread(
@@ -206,6 +277,7 @@ TeamMentor Team.
                         }
                     });
         }
+        
     }
 
     public static class SendEmail_ExtensionMethods
@@ -215,7 +287,7 @@ TeamMentor Team.
             return sendEmails.Smtp_Server.notValid() ||
                    sendEmails.Smtp_UserName.notValid() ||
                    sendEmails.Smtp_Password.notValid() ||
-                   new Web().online().isFalse();  
+                   MiscUtils.online().isFalse();  
         }
     }
 }

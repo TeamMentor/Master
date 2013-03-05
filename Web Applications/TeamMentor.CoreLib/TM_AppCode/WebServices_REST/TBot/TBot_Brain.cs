@@ -60,30 +60,39 @@ namespace TeamMentor.CoreLib
             var message = "this is some message";
             return GetHtml(message);
         }
-        public Stream Run(string what)
-        {            
+
+        public string ExecuteRazorPage(string page)
+        {
             try
-            {                                                
-                if (AvailableScripts.hasKey(what))
+            {
+                if (AvailableScripts.hasKey(page))
                 {
-                    var csFile = AvailableScripts[what];
-                    
+                    var csFile = AvailableScripts[page];
+
                     var fileContents = csFile.fileContents();
                     var fileContentsHash = fileContents.hash();
-                    if (TemplateService.HasTemplate(csFile).isFalse() || ScriptContentHashes.contains(fileContentsHash).isFalse())
-                    {                        
+                    if (TemplateService.HasTemplate(csFile).isFalse() ||
+                        ScriptContentHashes.contains(fileContentsHash).isFalse())
+                    {
                         Razor.Compile(fileContents, csFile);
                         ScriptContentHashes.add(fileContentsHash);
                     }
-                    return GetHtml(Razor.Run(csFile, new TM_REST()).trim(), false);
+                    return Razor.Run(csFile, new TM_REST());
                 }
-                return GetHtml("Couldn't find requested actions");            
             }
             catch (Exception ex)
             {
-                return GetHtml("Opps: Something went wrong: {0}".format(ex.Message));
-            }     
-            
+                return "Opps: Something went wrong: {0}".format(ex.Message);
+            }
+            return null;
+        }
+
+        public Stream Run(string page)
+        {                        
+            var result = ExecuteRazorPage(page);
+            return result.valid() 
+                    ? GetHtml(result.trim(), false) 
+                    : GetHtml("Couldn't find requested actions");                            
         }
         public Stream List()
         {                        
@@ -94,10 +103,21 @@ namespace TeamMentor.CoreLib
             return GetHtml(filesHtml, false);            
         }
 
+
+        // static methods
+
+        public static string TBotScriptsFolder()
+        {
+            return HttpContextFactory.Server.MapPath(TBOT_SCRIPTS_FOLDER);
+        }
+
+        public static List<string> TBotScriptsFiles()
+        {
+            return TBotScriptsFolder().files(true, "*.cshtml");
+        }
         public static Dictionary<string, string> GetAvailableScripts()
         {
-            var files = HttpContextFactory.Server.MapPath(TBOT_SCRIPTS_FOLDER)
-                                          .files(true, "*.cshtml");
+            var files = TBotScriptsFiles();
             var mappings = new Dictionary<string, string>();
             foreach (var file in files)
                 mappings.add(file.fileName_WithoutExtension(), file);

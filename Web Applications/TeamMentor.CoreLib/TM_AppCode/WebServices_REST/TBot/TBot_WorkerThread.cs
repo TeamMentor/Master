@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TeamMentor.CoreLib
 {
-    public class TBot_WorkerThread
+    public class TBot_WorkerThread // to implement
     {
 
     }

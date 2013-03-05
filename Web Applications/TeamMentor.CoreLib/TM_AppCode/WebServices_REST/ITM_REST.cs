@@ -20,20 +20,20 @@ namespace TeamMentor.CoreLib
 		[OperationContract][WebGet(UriTemplate = "/article/html/{articleId}")]	string				Article_Html(string articleId);
 
 		//User Session
-		[OperationContract][WebGet	 (UriTemplate = "/sessionId"					     )]	string		SessionId();
-		[OperationContract][WebGet	 (UriTemplate = "/logout"						     )]	Guid		Logout();
-		[OperationContract][WebGet   (UriTemplate = "/login/{username}/{password}"	     )]	Guid		Login(string username, string password);        
-        [OperationContract][WebGet   (UriTemplate = "/passwordResetToken/{username}"	 )]	Guid		GetPasswordResetToken(string username);                                            
-        [OperationContract][WebGet   (UriTemplate = "/loginToken/{username}"	         )]	Guid		GetLoginToken(string username);                
-        [OperationContract][WebGet   (UriTemplate = "/loginToken/{username}/{loginToken}")]	Guid		Login_Using_LoginToken(string username, string loginToken);
-        [OperationContract][WebGet   (UriTemplate = "/sendLoginToken/{username}")]	        bool		SendLoginTokenForUser(string username);
-		[OperationContract][WebInvoke(UriTemplate = "/login/", Method = "POST",ResponseFormat = WebMessageFormat.Json)]	Guid		Login_using_Credentials(TM_Credentials credentials);
+		[OperationContract][WebGet	 (UriTemplate = "/sessionId"					        )]	string		SessionId               ();
+		[OperationContract][WebGet	 (UriTemplate = "/logout"						        )]	Guid		Logout                  ();
+		[OperationContract][WebGet   (UriTemplate = "/login/{username}/{password}"	        )]	Guid		Login                   (string username, string password);        
+        [OperationContract][WebGet   (UriTemplate = "/passwordResetToken/{username}/{email}")]	string		SetPasswordResetToken   (string username, string email);
+        [OperationContract][WebGet   (UriTemplate = "/loginToken/{username}"	            )]	Guid		GetLoginToken           (string username);                        
+        [OperationContract][WebGet   (UriTemplate = "/sendLoginToken/{username}"            )]	bool		SendLoginTokenForUser   (string username);
+		[OperationContract][WebInvoke(UriTemplate = "/login/", Method = "PUT"               )]	Guid		Login_using_Credentials (TM_Credentials credentials);
+        [OperationContract][WebInvoke(UriTemplate = "/sendEmail/", Method = "PUT"           )]	bool		SendEmail               (EmailMessage_Post emailMessagePost);        
 
         
         
         
         //Active Sessions
-//        [OperationContract][WebGet	 (UriTemplate = "/sessions/all"					)]	List<string>    ActiveSessions();
+//        [OperationContract][WebGet	 (UriTemplate = "/gzip/all"					)]	List<string>    ActiveSessions();
 //        [OperationContract][WebGet	 (UriTemplate = "/sessions/{sessionId}"		    )]	TMUser          ActiveSession(string sessionId);
  
 		//User and RBAC
@@ -49,7 +49,7 @@ namespace TeamMentor.CoreLib
 						
 		[OperationContract] [WebGet	  (UriTemplate = "/user/{nameOrId}"			)]					TM_User		user(string nameOrId);
 		//[OperationContract] [WebGet	  (UriTemplate = "/users/{usersIds}"	)]					List<TM_User>	users(string usersIds);
-		[OperationContract] [WebGet	  (UriTemplate = "/users"				)]						List<TM_User>	users();
+		[OperationContract] [WebGet	  (UriTemplate = "/users"				    )]						List<TM_User>	users();
 
 //these need CRSF protection
 //		[OperationContract] [WebInvoke(UriTemplate = "/user/update"			,	Method = "PUT", ResponseFormat = WebMessageFormat.Json)]	bool		user_Update(TM_User user);
@@ -60,8 +60,8 @@ namespace TeamMentor.CoreLib
 		//Admin
 		[OperationContract] [WebGet(UriTemplate = "/admin/reloadCache")]		string		Admin_ReloadCache();
         [OperationContract] [WebGet(UriTemplate = "/admin/restart")]		    string		Admin_Restart();
-
         [OperationContract] [WebGet(UriTemplate = "/admin/script/{name}")]	    string		Admin_InvokeScript(string name);
+        [OperationContract] [WebGet(UriTemplate = "/admin/logs")]		        string		Admin_Logs();
 		//Views 
 		//[OperationContract] [WebGet(UriTemplate = "/users/.html"			)]  Stream		users_html();
 
@@ -74,7 +74,8 @@ namespace TeamMentor.CoreLib
         [OperationContract] [WebGet(UriTemplate = "/tbot/run/{what}")]	    Stream		TBot_Run (string what);
         
         //html page redirects
-        [OperationContract][WebGet   (UriTemplate = "/redirect/passwordReset/{username}" )]	void		Redirect_ToPasswordReset(string username);                                    
-        [OperationContract][WebGet   (UriTemplate = "/redirect/login/{referer}" )]	        void		Redirect_Login(string referer);
+        [OperationContract][WebGet   (UriTemplate = "/redirect/afterLoginToken/{username}/{loginToken}" )]	void Redirect_After_Login_Using_Token  (string username, string loginToken);
+        [OperationContract][WebGet   (UriTemplate = "/redirect/passwordReset/{username}/{email}"        )]	void Redirect_ToPasswordReset(string username, string email);                                    
+        [OperationContract][WebGet   (UriTemplate = "/redirect/login/{referer}"                         )]	void Redirect_Login(string referer);
 	}	
 }

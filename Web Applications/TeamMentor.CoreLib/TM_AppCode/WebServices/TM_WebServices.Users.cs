@@ -9,14 +9,15 @@ namespace TeamMentor.CoreLib
     {
         [WebMethod(EnableSession = true)]											public bool PasswordReset(string userName, Guid token, string newPassword)	 {   return userData.passwordReset(userName, token, newPassword);	 }
 
-        [WebMethod(EnableSession = true)]											public int CreateUser(NewUser newUser)      				 {   return userData.createTmUser(newUser);	                        }
-        [WebMethod(EnableSession = true)]											public TM_User CreateUser_Random()      					 {   return userData.tmUser(userData.newUser()).user();	            }		
-        [WebMethod(EnableSession = true)]	[Admin]	                    			public Guid GetPasswordResetToken(string userName)           {   return userName.tmUser().current_PasswordResetToken();         }
-        [WebMethod(EnableSession = true)]	[Admin]	                    			public Guid GetLoginToken(string userName)        			 {   return userName.tmUser().current_SingleUseLoginToken();        }
-        [WebMethod(EnableSession = true)]	[Admin]	                    			public TM_User GetUser_byID(int userId)        				 {   return userData.tmUser(userId).user();                         }
-        [WebMethod(EnableSession = true)]	[Admin]	                    			public List<TM_User> GetUsers_byID(List<int> userIds)      	 {   return userIds.tmUsers().users();                              }
-        [WebMethod(EnableSession = true)]   [Admin]	                    			public TM_User GetUser_byName(string name)					 {   return userData.tmUser(name).user();                           }
-        [WebMethod(EnableSession = true)]	[Admin]	                    			public List<TM_User> GetUsers()        						 {   return userData.tmUsers().users();                             }  	
+        [WebMethod(EnableSession = true)]											public int CreateUser(NewUser newUser)      				        {   return userData.createTmUser(newUser);	                            }
+        [WebMethod(EnableSession = true)]											public TM_User CreateUser_Random()      					        {   return userData.tmUser(userData.newUser()).user();	                }
+        [WebMethod(EnableSession = true)]		                    			    public string SendPasswordReminder(string userName, string email)   {   userName.sendPasswordReminder(email); return "PasswordReminder sent"; }        
+        [WebMethod(EnableSession = true)]		                    			    public string SetPasswordResetToken(string userName, string email)  {   userName.current_PasswordResetToken(email, true); return "PasswordResetToken set"; }
+        [WebMethod(EnableSession = true)]	[Admin]	                    			public Guid GetLoginToken(string userName)        			        {   return userName.tmUser().current_SingleUseLoginToken(true);        }
+        [WebMethod(EnableSession = true)]	[Admin]	                    			public TM_User GetUser_byID(int userId)        				        {   return userData.tmUser(userId).user();                             }
+        [WebMethod(EnableSession = true)]	[Admin]	                    			public List<TM_User> GetUsers_byID(List<int> userIds)      	        {   return userIds.tmUsers().users();                                  }
+        [WebMethod(EnableSession = true)]   [Admin]	                    			public TM_User GetUser_byName(string name)					        {   return userData.tmUser(name).user();                               }
+        [WebMethod(EnableSession = true)]	[Admin]	                    			public List<TM_User> GetUsers()        						        {   return userData.tmUsers().users();                                 }  	
 
         [WebMethod(EnableSession = true)]	[Admin]	                    			public List<TM_User> CreateUsers(List<NewUser> newUsers)     {	return userData.createTmUsers(newUsers).tmUsers().users();      }        
         [WebMethod(EnableSession = true)]	[Admin]	                    			public List<TM_User> BatchUserCreation(string batchUserData) {	return userData.createTmUsers(batchUserData).tmUsers().users(); }        
@@ -32,7 +33,7 @@ namespace TeamMentor.CoreLib
         [WebMethod(EnableSession = true)]	[Admin]	                    			public string       GetUserGroupName(int userId)        			{	return userData.getUserGroupName (userId);             }  	
         [WebMethod(EnableSession = true)]	[Admin]	                    			public bool         SetUserGroupId  (int userId, int roleId)  		{	return userData.setUserGroupId   (userId, roleId);     }  	
         [WebMethod(EnableSession = true)]	[Admin]	                    			public List<string> GetUserRoles    (int userId)					{	return userData.getUserRoles     (userId);             }  	
-
+        [WebMethod(EnableSession = true)]	[Admin]	                                public bool         SendEmail(EmailMessage_Post emailMessagePost)   {   return new SendEmails().send     (emailMessagePost);   }
         [WebMethod(EnableSession = true)]	[Admin]	                    			public TM_User      SetUser_PostLoginView   (string userName, string postLoginView)	    {	return userName.tmUser().set_PostLoginView(postLoginView).user();        }
         [WebMethod(EnableSession = true)]	[Admin]	                    			public TM_User      SetUser_PostLoginScript (string userName, string postLoginScript)   {	return userName.tmUser().set_PostLoginScript(postLoginScript).user();    }
 

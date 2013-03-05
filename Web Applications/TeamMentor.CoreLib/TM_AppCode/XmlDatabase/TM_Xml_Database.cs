@@ -81,7 +81,7 @@ namespace TeamMentor.CoreLib
         {
             if (SkipServerOnlineCheck)
                 return;
-            ServerOnline = new O2.Kernel.CodeUtils.O2Kernel_Web().online();     // only check this once
+            ServerOnline = MiscUtils.online();              // only check this once
         }
         [Admin] public void             SetPathsAndloadData()
         {            

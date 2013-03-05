@@ -8,7 +8,9 @@ namespace TeamMentor.CoreLib
         //Login
         public string	SessionId()
         {			
-            return Session.SessionID;			
+            if (Session.notNull())
+                return Session.SessionID;
+            return "";
         }
         public Guid		Login(string username, string password)
         {
@@ -30,16 +32,11 @@ namespace TeamMentor.CoreLib
         {
             return TmWebServices.GetLoginToken(username);
         }
-        public Guid     GetPasswordResetToken(string username)
+        public string   SetPasswordResetToken(string username, string email)
         {
-            return TmWebServices.GetPasswordResetToken(username);
-        }       
-        public Guid     Login_Using_LoginToken(string username, string loginToken)
-        {
-            return TmWebServices.Login_Using_LoginToken(username, loginToken.guid());            
-        }
-
-        public bool SendLoginTokenForUser(string userName)
+            return TmWebServices.SetPasswordResetToken(username, email);
+        }               
+        public bool     SendLoginTokenForUser(string userName)
         {
             var tmUser = userName.tmUser();
             if(tmUser.notNull())
@@ -51,10 +48,18 @@ namespace TeamMentor.CoreLib
         {
             HttpContextFactory.Response.Redirect("/Login?LoginReferer={0}".format(referer));
         }
-        public void     Redirect_ToPasswordReset(string userName)
+        public void     Redirect_ToPasswordReset(string userName, string email)
         {
-            var redirectUrl = "/PasswordReset/{0}/{1}".format(userName.urlEncode(), GetPasswordResetToken(userName));
+            var redirectUrl = "/PasswordReset/{0}/{1}".format(userName.urlEncode(), SetPasswordResetToken(userName, email));
             HttpContextFactory.Response.Redirect(redirectUrl);
         }
+        public void     Redirect_After_Login_Using_Token(string username, string loginToken)
+        {
+            var sessionId = TmWebServices.Login_Using_LoginToken(username, loginToken.guid());
+            if (sessionId != Guid.Empty)
+                HttpContextFactory.Response.Redirect("/");
+            else            
+                HttpContextFactory.Response.Redirect("/error");            
+        }        
     }
 }

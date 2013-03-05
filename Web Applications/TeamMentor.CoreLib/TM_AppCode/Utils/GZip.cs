@@ -19,6 +19,8 @@ namespace TeamMentor.CoreLib
             //based on code from http://geekswithblogs.net/rashid/archive/2007/09/15/Compress-Asp.net-Ajax-Web-Service-Response---Save-Bandwidth.aspx
             if (TMConfig.Current.TMSetup.EnableGZipForWebServices.isFalse())
                 return;
+            if (request.Url.isNull() || request.Url.AbsolutePath.starts("/rest")) //disabled it for rest requests
+                return;
             try
             {
                 if (request.ContentType.lower().starts(new List<string> {"text/xml", "application/json"}))

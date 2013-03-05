@@ -30,9 +30,11 @@ namespace TeamMentor.CoreLib
                             .add("articleviewer", "/html_pages/GuidanceItemViewer/GuidanceItemViewer.html")
                             .add("articleeditor", "/html_pages/GuidanceItemEditor/GuidanceItemEditor.html")
                             .add("passwordreset", "/Html_Pages/Gui/Pages/passwordReset.html")
-                            .add("passwordforgot", "/Html_Pages/Gui/Pages/passwordForgot.html");
+                            .add("passwordforgot", "/Html_Pages/Gui/Pages/passwordForgot.html")
+                            .add("error", "/Html_Pages/Gui/Pages/errorPage.html");
+
             Response_Redirects.add("csharprepl", "/html_pages/ControlPanel/CSharp_REPL/Repl.html")
-                              .add("tbot","/rest/tbot/list");            
+                              .add("tbot","/rest/tbot/run/Commands");            
         }
         public bool transfer_Request(string action)
         {
@@ -244,8 +246,8 @@ namespace TeamMentor.CoreLib
                     case "library_download":
                     case "download_library":
                         return redirectTo_DownloadLibrary(data);
-                    case "sso":
-                        return handleAction_SSO();                                                            
+                    //case "sso":
+                    //    return handleAction_SSO();                                                            
                 }
                 
                 tmWebServices.tmAuthentication.mapUserRoles(false);			 // enable  CSRF protection
@@ -555,11 +557,11 @@ namespace TeamMentor.CoreLib
             return true;
 
         }
-        private bool handleAction_SSO()
+/*        private bool handleAction_SSO()
         {
             new SingleSignOn().authenticateUserBasedOn_SSOToken();
             return true;
-        }
+        }*/
         
         //utils
         public void endResponse()

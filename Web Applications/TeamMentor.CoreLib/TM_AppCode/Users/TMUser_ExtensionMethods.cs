@@ -50,18 +50,49 @@ namespace TeamMentor.CoreLib
             return passwordHash;
         }
 
-        public static Guid      current_SingleUseLoginToken(this TMUser tmUser)
+        public static Guid      current_SingleUseLoginToken(this TMUser tmUser, bool reset = false)
         {
-            if (tmUser.SecretData.SingleUseLoginToken == Guid.Empty)
+            if (reset || tmUser.SecretData.SingleUseLoginToken == Guid.Empty)
+            {
                 tmUser.SecretData.SingleUseLoginToken = Guid.NewGuid();
+                tmUser.saveTmUser();
+                tmUser.logUserActivity("SingleUseLoginToken Requested", "by asp.netSessionId: {0}".format(HttpContextFactory.Session.SessionID));
+            }
             return tmUser.SecretData.SingleUseLoginToken;
         }
 
-        public static Guid      current_PasswordResetToken(this TMUser tmUser)
+        public static bool sendPasswordReminder(this string userName, string email)
         {
-            if (tmUser.SecretData.PasswordResetToken == Guid.Empty)
-                tmUser.SecretData.PasswordResetToken = Guid.NewGuid();
-            return tmUser.SecretData.PasswordResetToken;
+            var resetToken = userName.current_PasswordResetToken(email);
+            if (resetToken != Guid.Empty)
+                return SendEmails.SendPasswordReminderToUser(userName.tmUser(), resetToken);
+            return false;
+        }
+
+        public static Guid current_PasswordResetToken(this TMUser tmUser)
+        {
+            return tmUser.UserName.current_PasswordResetToken(tmUser.EMail);
+        }
+
+        public static Guid      current_PasswordResetToken(this string userName, string email, bool reset = false)
+        {
+            var tmUser = userName.tmUser();
+            if (tmUser.notNull())
+            {
+                if (tmUser.EMail == email)
+                {
+                    if (reset || tmUser.SecretData.PasswordResetToken == Guid.Empty)
+                    {
+                        tmUser.SecretData.PasswordResetToken = Guid.NewGuid();
+                        tmUser.saveTmUser();                        
+                    }
+                    tmUser.logUserActivity("PasswordReset Requested","by asp.netSessionId: {0}".format(HttpContextFactory.Session.SessionID));
+                    return tmUser.SecretData.PasswordResetToken;                    
+                }
+                tmUser.logUserActivity("Error:PasswordResetToken","wrong email used, by asp.netSessionId: {0}".format(HttpContextFactory.Session.SessionID));                                    
+            }
+            "[current_PasswordResetToken] failed for values: username= {0}  , email= {1}".error(userName, email);
+            return Guid.Empty;
         }
 
     }	

@@ -15,10 +15,8 @@ namespace TeamMentor.CoreLib
         [XmlAttribute] public string	Title       { get; set; }
         [XmlAttribute] public string	Company     { get; set; }
         [XmlAttribute] public string	EMail       { get; set; }
-        [XmlAttribute] public int		GroupID     { get; set; }        
-        [XmlAttribute] public string	CSRF_Token  { get; set; }        
-
-        [XmlAttribute] public string    SSOKey               { get; set; }        
+        [XmlAttribute] public int		GroupID     { get; set; }                
+        
         [XmlAttribute] public string    PostLoginView        { get; set; }
         [XmlAttribute] public string    PostLoginScript      { get; set; }
         
@@ -30,7 +28,12 @@ namespace TeamMentor.CoreLib
         public TMUser()
         {
             ID = Guid.NewGuid();
-            SecretData      = new UserSecretData();
+            SecretData      = new UserSecretData
+                                    {
+                                        SingleUseLoginToken = Guid.NewGuid(),
+                                        PasswordResetToken  = Guid.NewGuid()
+                                    };
+
             UserActivities  = new List<UserActivity>();
             AccountStatus   = new UserAccountStatus
                                     {
@@ -50,7 +53,11 @@ namespace TeamMentor.CoreLib
         [XmlAttribute]	public string   PasswordHash		{ get; set; }
         [XmlAttribute]	public Guid     SingleUseLoginToken	{ get; set; }
         [XmlAttribute]	public Guid     PasswordResetToken	{ get; set; }
-        [XmlAttribute]	public string   DecryptionKey       { get; set; }        
+        [XmlAttribute]	public string   DecryptionKey       { get; set; }       
+        //[XmlAttribute]  public string   SSOKey              { get; set; }    
+
+        [XmlIgnore]
+        [XmlAttribute]  public string	CSRF_Token  { get; set; }        
     }
     public class UserAccountStatus
     {

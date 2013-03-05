@@ -85,7 +85,7 @@ namespace TeamMentor.CoreLib
             userData.TMUsers.Add(tmUser);            
         
             //save it
-            SendEmails.SendEmailToTM("New user created: {0}".format(tmUser.UserName), tmUser);
+            SendEmails.SendNewUserEmails("New user created: {0}".format(tmUser.UserName), tmUser);
             tmUser.saveTmUser();            
                     
             return userId;    		
@@ -207,6 +207,7 @@ namespace TeamMentor.CoreLib
                 tmUser.SecretData.PasswordHash       = tmUser.createPasswordHash(password);
                 tmUser.AccountStatus.PasswordExpired = false;
                 tmUser.saveTmUser();
+                tmUser.logUserActivity("Password Change", tmUser.UserName);
                 return true;
             }
             return false;    		

@@ -85,7 +85,7 @@
     <Compile Include="TM_AppCode\Users\TM_SecretData.cs" />
     <Compile Include="TM_AppCode\Utils\Crypto.cs" />
     <Compile Include="TM_AppCode\Schemas\Legacy\guidanceexplorer.cs" />
-    <Compile Include="TM_AppCode\Users\SingleSignOn.cs" />
+    <Content Include="TM_AppCode\Users\SingleSignOn.cs.txt" />
     <Compile Include="TM_AppCode\Authentication\TM_Authentication.cs" />
     <Compile Include="TM_AppCode\Authentication\UserRoleBaseSecurity.cs" />
     <Compile Include="TM_AppCode\Authentication\UserRoles.cs" />
@@ -112,6 +112,7 @@
     <Compile Include="TM_AppCode\Utils\GoogleAnalytics.cs" />
     <Compile Include="TM_AppCode\Utils\GZip.cs" />
     <Compile Include="TM_AppCode\Schemas\KeyValue.cs" />
+    <Compile Include="TM_AppCode\Utils\MiscUtils.cs" />
     <Compile Include="TM_AppCode\Utils\NGit.cs" />
     <Compile Include="TM_AppCode\Utils\PostSharp.cs" />
     <Compile Include="TM_AppCode\Utils\REPL.cs" />

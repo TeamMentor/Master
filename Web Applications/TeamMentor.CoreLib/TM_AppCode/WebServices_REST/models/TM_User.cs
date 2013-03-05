@@ -41,7 +41,7 @@ namespace TeamMentor.CoreLib
                     Title		= tmUser.Title,
                     UserId		= tmUser.UserID,
                     UserName	= tmUser.UserName,
-                    CSRF_Token  = tmUser.CSRF_Token
+                    CSRF_Token  = tmUser.SecretData.CSRF_Token
                 };
         }
         public static NewUser newUser(this TM_User user)
