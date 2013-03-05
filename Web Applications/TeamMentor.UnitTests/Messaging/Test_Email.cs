@@ -8,7 +8,7 @@ namespace TeamMentor.UnitTests.CoreLib
     [TestFixture]
     public class Test_Email : TM_XmlDatabase_InMemory
     {        
-        public string       to         = "TM_Security_Dude@securityinnovation.com";        
+        public string       to         = "tm_alerts@securityinnovation.com";        
         public string       subject    = "TM Email Test";
         public string       message    = "This is a test email from TeamMentor";
         public SendEmails   sendEmails;

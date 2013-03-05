@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security;
 using NUnit.Framework;
 using O2.DotNetWrappers.ExtensionMethods;
 using TeamMentor.CoreLib;
@@ -82,6 +83,6 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             checkPassword("!1234567!", "");                   // no salt
             checkPassword("","");                             // no password and no salt	        
         }
-
+         
     }
 }

@@ -1,0 +1,41 @@
+//var panel = "Util Razor Dev Gui v.1".o2Cache<Panel>(()=>"Util - Razor Dev Gui".popupWindow(1000,500));
+var topPanel = "Util - Razor Dev Gui".popupWindow(1200,500);
+//var topPanel = panel.add_Panel(true);
+//var razorPages = httpContext.Server.MapPath("/TBot/Admin");
+var razorPages = PublicDI.CurrentScript.parentFolder().pathCombine("../../TM_Website/TBot/Admin"); 
+
+//.files("*.cshtml",true);
+ 
+var codeViewer = topPanel.add_SourceCodeViewer(); 
+var directory  = topPanel.insert_Left(250).add_Directory(razorPages);
+var browser    = codeViewer.insert_Right().add_WebBrowser_with_NavigationBar();
+
+Action<string> openFileInBrowser = 
+	(file)=>{
+				var url = "http://localhost:3187/rest/tbot/run/{0}".format(file.fileName_WithoutExtension());
+				browser.open(url);
+		    };
+
+directory.afterFileSelect(
+	(file)=>{		
+				codeViewer.open(file).editor()
+						  .colorCodeForExtension(".aspx");
+				openFileInBrowser(file);
+			});
+Action loginAsAdmin  =
+	()=>{
+			var url = "http://localhost:3187/rest/login/admin/!!tmadmin";
+			browser.open(url);
+		};
+			
+Action saveAndRefresh = 
+	()=>{
+			codeViewer.editor().saveSourceCode();
+			openFileInBrowser(codeViewer.editor().sPathToFileLoaded);
+		};
+codeViewer.insert_Above_ToolStrip()
+		.add_Button("Save and refresh", saveAndRefresh).with_Icon_Save()
+		.add_Button("Login as Admin", "system_users".formImage(), loginAsAdmin);
+return razorPages;
+
+//O2Ref:System.Web.dll

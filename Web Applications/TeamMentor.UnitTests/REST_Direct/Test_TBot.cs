@@ -43,8 +43,10 @@ namespace TeamMentor.UnitTests.REST_Direct
         [Assert_Admin]
         public void EmailMessages()
         {
-            var html = TmRest.TBot_Run("emailMessages").cast<MemoryStream>().ascii();
+            var tbotBrain = new TBot_Brain();
+            var html = tbotBrain.ExecuteRazorPage("emailMessages");
             Assert.IsNotNull(html);
+            html.info();
             //"test webBrowser".popupWindow().add_WebBrowser().set_Html(html).waitForClose();
         }
     }

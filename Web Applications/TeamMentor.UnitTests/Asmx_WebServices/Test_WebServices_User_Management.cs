@@ -73,9 +73,7 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             Assert.AreEqual   (Guid.Empty,sessionId_OriginalPassword2 , "Login with original password after change");   
             Assert.IsNull     (currentUser_OriginalPassword2          , "Current User Not Set (original password after change)");
         }
-
-        [Test]
-        public void NewPasswordMustBeDifferentFromOlderPassword()
+        [Test] public void NewPasswordMustBeDifferentFromOlderPassword()
         {
             var newUser     = newTempUser();
             var userId      = tmWebServices.CreateUser(newUser);
@@ -86,7 +84,6 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             Assert.AreNotEqual(Guid.Empty,sessionId  , "Login with original password");   
             Assert.IsFalse    (changePasswordResult  , "Change password should be false if passwords are the same");
         }
-
         [Test] public void RequireOldPasswordBeforeChangingIntoNewOne()
         {
             var newUser     = newTempUser();
@@ -146,11 +143,11 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             var tmUser        = tmWebServices.CreateUser(newUser).tmUser();
 
             var token_BeforeSet    = tmUser.SecretData.PasswordResetToken;
-            var token_BeforeUse    = tmUser.current_PasswordResetToken();
-            var token              = tmUser.current_PasswordResetToken();
+            var token_BeforeUse    = tmUser.UserName.current_PasswordResetToken(tmUser.EMail);
+            var token              = tmUser.UserName.current_PasswordResetToken(tmUser.EMail);
             var result             = tmWebServices.PasswordReset(tmUser.UserName, token,newPassword);
             var token_AfterUse     = tmUser.SecretData.PasswordResetToken;
-            var token_NextRequest  = tmUser.current_PasswordResetToken();
+            var token_NextRequest  = tmUser.UserName.current_PasswordResetToken(tmUser.EMail);
             var sessionId_NewPwd   = tmWebServices.Login(tmUser.UserName, newPassword);
             var sessionId_OldPwd   = tmWebServices.Login(tmUser.UserName, oldPassword);            
 
