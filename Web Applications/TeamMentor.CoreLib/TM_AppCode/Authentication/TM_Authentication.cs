@@ -80,6 +80,7 @@ namespace TeamMentor.CoreLib
                 if (header_Csrf_Token == sessionID.str().hash().str())			// interrestingly session.hash().str() produces a different value
                     return true;
             }
+            "[TM_Authentication] check_CSRF_Token failed".error();
             return false;
             //throw new SecurityException("Invalid CSRF Token");			
         }
@@ -96,7 +97,7 @@ namespace TeamMentor.CoreLib
                     sessionID = new SingleSignOn().authenticateUserBasedOn_SSOToken();
                 }
                 else*/
-                    if (WindowsAuthentication.windowsAuthentication_Enabled)
+                if (WindowsAuthentication.windowsAuthentication_Enabled)
                 {                    
                     sessionID = new WindowsAuthentication().authenticateUserBaseOn_ActiveDirectory();
                 }            
@@ -110,6 +111,7 @@ namespace TeamMentor.CoreLib
                     userGroup = new UserRoleBaseSecurity().MapRolesBasedOnSessionGuid(sessionID);					
                 }                
             }
+            "[TM_Authentication] userGroup for sessionID: {0} : {1}".error(sessionID, userGroup);
             if (userGroup == UserGroup.None)
             {
                 if (TMConfig.Current.TMSecurity.Show_ContentToAnonymousUsers)
