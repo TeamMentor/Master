@@ -32,14 +32,14 @@ namespace TeamMentor.CoreLib
         [LogUrl("REST")]
         public TM_REST()
         {
-            ensureTMEndpointsBehavioursAreMapped();
+           // ensureTMEndpointsBehavioursAreMapped();
             Context       = HttpContextFactory.Current;
             Session       = HttpContextFactory.Session;									
             TmWebServices = new TM_WebServices(true);	//Disabling CSRF
             //UserGroup.Admin.setThreadPrincipalWithRoles();					
         }
 
-        public void ensureTMEndpointsBehavioursAreMapped()
+/*        public void ensureTMEndpointsBehavioursAreMapped()
         {
             if (serviceHostBase.isNull() || serviceHostBase.Description.isNull())
                 return;
@@ -56,7 +56,7 @@ namespace TeamMentor.CoreLib
                 tmWebHttpBehavior = new TMWebHttpBehavior();
                 endpoints[0].Behaviors.Add(tmWebHttpBehavior);            
             }
-        }
+        }*/
 
 
         public static void SetRouteTable()
@@ -78,10 +78,13 @@ namespace TeamMentor.CoreLib
             //behaviours = servicehostBase.Description.Behaviors;
             //behaviours.Add(new TMWebHttpBehavior());
 
-            var serviceDebugBehaviour = TM_REST.serviceHostBase.Description.Behaviors.Find<ServiceDebugBehavior>();
-            
+            var serviceDebugBehaviour = TM_REST.serviceHostBase.Description.Behaviors.Find<ServiceDebugBehavior>();            
             serviceDebugBehaviour.IncludeExceptionDetailInFaults = true;
 
+            var serviceAuthorization = TM_REST.serviceHostBase.Description.Behaviors.Find<ServiceAuthorizationBehavior>();
+            "[ServiceHostBase] before: serviceAuthorization.PrincipalPermissionMode: {0}".info(serviceAuthorization.PrincipalPermissionMode);
+            serviceAuthorization.PrincipalPermissionMode = PrincipalPermissionMode.UseAspNetRoles;
+            "[ServiceHostBase] after: serviceAuthorization.PrincipalPermissionMode: {0}".info(serviceAuthorization.PrincipalPermissionMode);
             return TM_REST.serviceHostBase;
 
             /*var tmWebServiceHost =  new TMWebServiceHost(serviceType, baseAddresses);
