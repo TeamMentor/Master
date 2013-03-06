@@ -84,11 +84,11 @@ namespace TeamMentor.CoreLib
             var sessionIdHash = sessionID.str().hash().str();
             if (header_Csrf_Token != null && header_Csrf_Token.valid())
             {
-                "[check_CSRF_Token] {0} == {1} : {2}".debug(header_Csrf_Token, sessionID.str().hash().str(), header_Csrf_Token == sessionID.str().hash().str());
+                //"[check_CSRF_Token] {0} == {1} : {2}".debug(header_Csrf_Token, sessionID.str().hash().str(), header_Csrf_Token == sessionID.str().hash().str());
                 if (header_Csrf_Token == sessionID.str().hash().str())			// interrestingly session.hash().str() produces a different value
                     return true;
             }
-            "[TM_Authentication] check_CSRF_Token failed, header_Csrf_Token: {0} sessionIDHash: {1}".error(header_Csrf_Token, sessionIdHash);
+            //"[TM_Authentication] check_CSRF_Token failed, header_Csrf_Token: {0} sessionIDHash: {1}".error(header_Csrf_Token, sessionIdHash);
             return false;
             //throw new SecurityException("Invalid CSRF Token");			
         }
@@ -112,18 +112,18 @@ namespace TeamMentor.CoreLib
             
             
             var userGroup = UserGroup.None;
-            "".line().info();
-            ">> SessionID: {0} ".info(sessionID);
-            ">> URL: {0}".info(HttpContextFactory.Request.Url);
+            //"".line().info();
+            //">> SessionID: {0} ".info(sessionID);
+            //">> URL: {0}".info(HttpContextFactory.Request.Url);
             if (sessionID != Guid.Empty)
             {                
                 if (check_CSRF_Token())		// only map the roles if the CSRF check passed
                 {
-                    "[TM_Authentication] check_CSRF_Token OK".debug();
+                    //"[TM_Authentication] check_CSRF_Token OK".debug();
                     userGroup = new UserRoleBaseSecurity().MapRolesBasedOnSessionGuid(sessionID);					
                 }                
             }
-            "[TM_Authentication][1] userGroup for sessionID: {0} : {1}".debug(sessionID, userGroup);
+            //"[TM_Authentication][1] userGroup for sessionID: {0} : {1}".debug(sessionID, userGroup);
             if (userGroup == UserGroup.None)
             {
                 if (TMConfig.Current.TMSecurity.Show_ContentToAnonymousUsers)
@@ -133,11 +133,11 @@ namespace TeamMentor.CoreLib
             }
             //"[TM_Authentication][2] userGroup for sessionID: {0} : {1}".debug(sessionID, userGroup);
             var userRoles = Thread.CurrentPrincipal.roles().toList().join(",");
-            "[TM_Authentication][2] Current Principal roles: {0}".debug(userRoles);
-            "[TM_Authentication][3] Thread id: {0}".error(Thread.CurrentThread.ManagedThreadId);
+            //"[TM_Authentication][2] Current Principal roles: {0}".debug(userRoles);
+            //"[TM_Authentication][3] Thread id: {0}".error(Thread.CurrentThread.ManagedThreadId);
             if (HttpContextFactory.Session.notNull())
             {
-                "[TM_Authentication][4] SessionId: {0}".info(HttpContextFactory.Session["sessionID"]);
+                //"[TM_Authentication][4] SessionId: {0}".info(HttpContextFactory.Session["sessionID"]);
                 HttpContextFactory.Session["principal"] = Thread.CurrentPrincipal;
             }
             return this;

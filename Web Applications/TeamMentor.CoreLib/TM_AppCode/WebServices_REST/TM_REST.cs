@@ -81,11 +81,11 @@ namespace TeamMentor.CoreLib
             var serviceDebugBehaviour = TM_REST.serviceHostBase.Description.Behaviors.Find<ServiceDebugBehavior>();            
             serviceDebugBehaviour.IncludeExceptionDetailInFaults = true;
 
-            var serviceAuthorization = TM_REST.serviceHostBase.Description.Behaviors.Find<ServiceAuthorizationBehavior>();
+            /*var serviceAuthorization = TM_REST.serviceHostBase.Description.Behaviors.Find<ServiceAuthorizationBehavior>();
             "[ServiceHostBase] before: serviceAuthorization.PrincipalPermissionMode: {0}".info(serviceAuthorization.PrincipalPermissionMode);
             serviceAuthorization.PrincipalPermissionMode = PrincipalPermissionMode.UseAspNetRoles;            
             "[ServiceHostBase] after: serviceAuthorization.PrincipalPermissionMode: {0}".info(serviceAuthorization.PrincipalPermissionMode);
-            return TM_REST.serviceHostBase;
+            return TM_REST.serviceHostBase;*/
 
             /*var tmWebServiceHost =  new TMWebServiceHost(serviceType, baseAddresses);
             //var endpoints = webServiceHost.Description.Endpoints;

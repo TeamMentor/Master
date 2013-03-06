@@ -102,13 +102,14 @@ namespace TeamMentor.CoreLib
             //"[About to demand Admin] for stackTrace:\n\n {0}".debug(new StackTrace().str());  // use for extra logging
             try
             {
-                "[AdminAttribute] Thread id: {0}".error(Thread.CurrentThread.ManagedThreadId);
+              //  "[AdminAttribute] Thread id: {0}".error(Thread.CurrentThread.ManagedThreadId);
                 var userRoles = Thread.CurrentPrincipal.roles().toList().join(",");
                 if (HttpContextFactory.Session.notNull())
                 {
-                    "[AdminAttribute] SessionId: {0}".info(HttpContextFactory.Session["sessionID"]);
-
+                    //"[AdminAttribute] SessionId: {0}".info(HttpContextFactory.Session["sessionID"]);
                     "[AdminAttribute][before] Thread.CurrentPrincipal: {0} ".error(Thread.CurrentPrincipal);
+                    "[AdminAttribute][About to demand Admin] for stackTrace:\n\n {0}".debug(new StackTrace().str());  // use for extra logging
+                    
                     if (userRoles.empty() && HttpContextFactory.Session["principal"] is IPrincipal)
                     {
                         "Setting Thread.CurrentPrincipal to session value".error();
@@ -117,10 +118,10 @@ namespace TeamMentor.CoreLib
                     }                    
                 }
                 
-                "[AdminAttribute] Current Principal roles: {0}".debug(userRoles);
-                "[AdminAttribute][About to demand Admin]".debug();
+                //"[AdminAttribute] Current Principal roles: {0}".debug(userRoles);
+                //"[AdminAttribute][About to demand Admin]".debug();
                 UserRole.Admin.demand();
-                "[AdminAttribute][About to demand Admin] OK".debug();
+                //"[AdminAttribute][About to demand Admin] OK".debug();
             }
             catch (Exception ex)
             {
