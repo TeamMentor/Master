@@ -113,7 +113,7 @@ namespace TeamMentor.CoreLib
                     if (userRoles.empty() && HttpContextFactory.Session["principal"] is IPrincipal)
                     {
                         var sessionPrincipal = HttpContextFactory.Session["principal"] as IPrincipal;
-                        "[AdminAttribute] changing thread principal from {0} to {1} (last from session variable)".info(Thread.CurrentPrincipal, sessionPrincipal);
+                        "[AdminAttribute] changing thread principal from {0} to {1} (last from session variable)".debug(Thread.CurrentPrincipal, sessionPrincipal);
                         Thread.CurrentPrincipal = sessionPrincipal;
                         //"Setting Thread.CurrentPrincipal to session value".error();
                         //Thread.CurrentPrincipal = (IPrincipal) HttpContextFactory.Session["principal"];
@@ -126,9 +126,9 @@ namespace TeamMentor.CoreLib
                 UserRole.Admin.demand();
                 //"[AdminAttribute][About to demand Admin] OK".debug();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                ex.log("[AdminAttribute]");
+                //ex.log("[AdminAttribute]");
                 //var userRoles = Thread.CurrentPrincipal.roles().toList().join(",");
                 //"[AdminAttribute] Current Principal roles: {0}".debug(userRoles);
                 

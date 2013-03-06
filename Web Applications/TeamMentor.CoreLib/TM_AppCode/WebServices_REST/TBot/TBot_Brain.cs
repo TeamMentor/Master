@@ -17,7 +17,8 @@ namespace TeamMentor.CoreLib
         public static ITemplateService          TemplateService { get; set; }
 
         public DateTime         StartTime       { get; set; }
-        
+        public ITM_REST         TmRest          { get; set; }
+
         static TBot_Brain()
         {
             try
@@ -34,8 +35,9 @@ namespace TeamMentor.CoreLib
         }
         
         [Admin]
-        public TBot_Brain()
+        public TBot_Brain(ITM_REST tmRest)
         {
+            TmRest = tmRest;
             StartTime = DateTime.Now;            
         }
 
@@ -77,7 +79,7 @@ namespace TeamMentor.CoreLib
                         Razor.Compile(fileContents, csFile);
                         ScriptContentHashes.add(fileContentsHash);
                     }
-                    return Razor.Run(csFile, new TM_REST());
+                    return Razor.Run(csFile, TmRest);
                 }
             }
             catch (Exception ex)

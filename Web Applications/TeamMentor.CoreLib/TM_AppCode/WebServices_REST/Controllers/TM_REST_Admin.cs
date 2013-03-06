@@ -64,7 +64,7 @@ namespace TeamMentor.CoreLib
 	        try
 	        {
                 this.response_ContentType_Html();
-	            return new TBot_Brain().RenderPage();
+	            return new TBot_Brain(this).RenderPage();
 	        }
 	        catch(SecurityException)
 	        {              
@@ -75,14 +75,14 @@ namespace TeamMentor.CoreLib
 	    public Stream TBot_Run(string what)
 	    {
             this.response_ContentType_Html();
-            return new TBot_Brain().Run(what);
+            return new TBot_Brain(this).Run(what);
 	    }
         public Stream TBot_List()
 	    {
             try
             {
                 this.response_ContentType_Html();
-                return new TBot_Brain().List();
+                return new TBot_Brain(this).List();
             }
 	        catch (SecurityException)
 	        {

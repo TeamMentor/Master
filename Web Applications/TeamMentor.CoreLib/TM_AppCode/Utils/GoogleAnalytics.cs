@@ -77,7 +77,11 @@ namespace TeamMentor.CoreLib
                 () =>
                     {
                         if (TM_Xml_Database.Current.ServerOnline)
-                            gaRequest.info().GET();
+                        {
+                            //gaRequest.info();   // to see the actual request
+                            "[Google Analytics] {0} -> {1}".info(title, page);
+                            gaRequest.GET();
+                        }
                     });
 			LogCount++;
 			return this;

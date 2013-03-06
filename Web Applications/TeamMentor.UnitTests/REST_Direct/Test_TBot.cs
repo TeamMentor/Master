@@ -48,7 +48,7 @@ namespace TeamMentor.UnitTests.REST_Direct
         [Assert_Admin]
         public void EmailMessages()
         {
-            var tbotBrain = new TBot_Brain();
+            var tbotBrain = new TBot_Brain(TmRest);
             var html = tbotBrain.ExecuteRazorPage("EmailMessages");
             Assert.IsNotNull(html);
             html.info();
