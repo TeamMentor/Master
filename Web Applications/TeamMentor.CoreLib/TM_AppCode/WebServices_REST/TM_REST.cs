@@ -39,6 +39,8 @@ namespace TeamMentor.CoreLib
 
         public void ensureTMEndpointsBehavioursAreMapped()
         {
+            if (serviceHostBase.isNull() || serviceHostBase.Description.isNull())
+                return;
             if (tmWebHttpBehavior.notNull())  // it is already set
                 return;
             var endpoints = serviceHostBase.Description.Endpoints;
