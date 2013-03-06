@@ -12,7 +12,9 @@ using O2.DotNetWrappers.ExtensionMethods;
 
 namespace TeamMentor.CoreLib  
 {
-    [ServiceBehavior				(InstanceContextMode = InstanceContextMode.PerCall			  ), 
+    [ServiceBehavior				(//InstanceContextMode = InstanceContextMode.PerCall	,
+                                     ConcurrencyMode = ConcurrencyMode.Single, 
+                                     InstanceContextMode = InstanceContextMode.PerCall		  ), 
      AspNetCompatibilityRequirements(RequirementsMode	 = AspNetCompatibilityRequirementsMode.Allowed)]
     public partial class TM_REST : ITM_REST
     {

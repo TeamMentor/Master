@@ -49,6 +49,11 @@ namespace TeamMentor.CoreLib
 	    {
             return TmWebServices.GetLogs();	        
 	    }
+        public string Admin_Logs_Reset()
+	    {
+            return TmWebServices.ResetLogs();	        
+	    }
+        
 
 	    public bool   SendEmail(EmailMessage_Post emailMessagePost)
         {

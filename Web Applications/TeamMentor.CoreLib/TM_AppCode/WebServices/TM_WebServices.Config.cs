@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Web.Services;
 using O2.DotNetWrappers.ExtensionMethods;
 
@@ -90,6 +91,7 @@ namespace TeamMentor.CoreLib
                                                                                         return uploadToken;
                                                                                     }
         [WebMethod(EnableSession = true)] [Admin]	           public string		GetLogs()        { return O2.Kernel.PublicDI.log.LogRedirectionTarget.prop("LogData").str() ; }        
+        [WebMethod(EnableSession = true)] [Admin]	           public string		ResetLogs()      { (O2.Kernel.PublicDI.log.LogRedirectionTarget.prop("LogData") as StringBuilder).Clear() ; return "done"; }                
 /*        [WebMethod(EnableSession = true)] [Admin]	           public List<KeyValue<Guid, string>>				Data_GuidanceItems_FileMappings()        
                                                                                     {
                                                                                         return TM_Xml_Database.Current.GuidanceItems_FileMappings.ConvertDictionary();
