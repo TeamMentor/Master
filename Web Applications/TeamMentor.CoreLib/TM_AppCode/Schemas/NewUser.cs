@@ -9,6 +9,8 @@ namespace TeamMentor.CoreLib
 		public string   lastname    { get; set; }
 		public string   title       { get; set; }
 		public string   company     { get; set; }
+        public string   country     { get; set; }
+        public string   state       { get; set; }
 		public string   note        { get; set; }
 		public int      groupId     { get; set; }
 	}

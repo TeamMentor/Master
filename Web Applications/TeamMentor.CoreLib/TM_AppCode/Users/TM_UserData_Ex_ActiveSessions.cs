@@ -73,7 +73,7 @@ namespace TeamMentor.CoreLib
             {
                 if (tmUser.notNull())
                 {
-                    if (sessionId != Guid.Empty)
+                    if (sessionId != Guid.Empty && tmUser.AccountStatus.PasswordExpired.isFalse() && tmUser.AccountStatus.UserEnabled.isTrue() )
                     {
                         tmUser.Stats.LastLogin = DateTime.Now;
                         tmUser.Stats.LoginOk++;

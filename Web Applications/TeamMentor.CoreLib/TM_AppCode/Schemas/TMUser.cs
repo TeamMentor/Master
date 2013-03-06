@@ -14,7 +14,9 @@ namespace TeamMentor.CoreLib
         [XmlAttribute] public string	LastName    { get; set; }
         [XmlAttribute] public string	Title       { get; set; }
         [XmlAttribute] public string	Company     { get; set; }
-        [XmlAttribute] public string	EMail       { get; set; }
+        [XmlAttribute] public string	EMail       { get; set; }        
+        [XmlAttribute] public string	Country     { get; set; }
+        [XmlAttribute] public string	State       { get; set; }
         [XmlAttribute] public int		GroupID     { get; set; }                
         
         [XmlAttribute] public string    PostLoginView        { get; set; }

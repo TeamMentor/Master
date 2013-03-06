@@ -53,10 +53,22 @@ function deleteUser(userId, callback)
     invokeWebService( url, params, callback, defaultErrorHandler);
 }
 
-function createUser(username , password,  email, firstname, lastname, note, callback)
+function createUser(username , password,  email, firstname, lastname, company, title, country, state, note, callback)
 {
     var url = TM.tmWebServices + 'CreateUser';
-    var params = "{ newUser: { 	username: '"+  username+ "', password: '"+  password + "',email:  '"+ email+ "', firstname:  '"+ firstname+ "',lastname:  '"+ lastname+ "',note: '"+  note+ "' } }";
+    //var params = "{ newUser: { 	username: '"+  username+ "', password: '"+  password + "',email:  '"+ email+ "', firstname:  '"+ firstname+ "',lastname:  '"+ lastname+ "',note: '"+  note+ "' } }";
+    var params =  JSON.stringify( { newUser: 
+                                        { 	username: username, 
+                                            password: password,
+                                            email:  email, 
+                                            firstname:  firstname,
+                                            lastname:  lastname,
+                                            company:  company,
+                                            title:  title,
+                                            country:  country,
+                                            state:  state,
+                                            note: note
+                                        } });
     invokeWebService( url, params, callback, defaultErrorHandler);	
 }
 

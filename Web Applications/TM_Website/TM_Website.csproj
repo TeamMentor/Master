@@ -654,7 +654,8 @@
     <Content Include="TBot\Views\GitDiff_UserData_File.cshtml" />
     <Content Include="TBot\Views\GitDiff_XmlDatabase_File.cshtml" />
     <Content Include="TBot\Views\GitDiff_XmlDatabase_Commit.cshtml" />
-    <Content Include="TBot\Users\Edit_User.cshtml" />
+    <Content Include="TBot\Views\Edit_User.cshtml" />
+    <Content Include="TBot\Users\Users_in_CSV.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="TBot\NGit\" />

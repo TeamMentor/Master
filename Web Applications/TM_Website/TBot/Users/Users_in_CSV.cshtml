@@ -1,0 +1,14 @@
+﻿
+@using TeamMentor.CoreLib
+@using FluentSharp
+
+@{
+    var tmRest = (TeamMentor.CoreLib.TM_REST) @Model;
+    var users  = tmRest.users();
+}
+<h4>TM users in CSV Format</h4>
+<pre>
+username, firstName, lastName, email, title, company, country, state
+@foreach (var user in users)
+{<text>@user.UserName ,@user.FirstName,@user.LastName,@user.Email,@user.Country,@user.Company,@user.State
+</text>}

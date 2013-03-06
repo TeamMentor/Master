@@ -60,9 +60,9 @@ namespace TeamMentor.CoreLib
         }        
         public static int           newUser                     (this TM_UserData userData, string  username, string password, int groupId)
         {
-            return userData.newUser(username, password, "","","","", "","",groupId);
+            return userData.newUser(username, password, "","","","", "","","","",groupId);
         }        
-        public static int           newUser                     (this TM_UserData userData, string  username, string password, string email, string firstname, string lastname, string note , string title, string company, int groupId)
+        public static int           newUser                     (this TM_UserData userData, string  username, string password, string email, string firstname, string lastname, string note , string title, string company, string country, string state, int groupId)
         {			
             var userId = Guid.NewGuid().hash();  //10000000.random();//10.randomNumbers().toInt();
             if (userId < 0)						// find a .net that does this (maybe called 'invert')
@@ -80,6 +80,8 @@ namespace TeamMentor.CoreLib
                 FirstName 	 = Encoder.XmlEncode(firstname),
                 LastName 	 = Encoder.XmlEncode(lastname),
                 Company 	 = Encoder.XmlEncode(company),
+                Country 	 = Encoder.XmlEncode(country),
+                State 	     = Encoder.XmlEncode(state),
                 GroupID 	 = groupId,
                 Title 		 = Encoder.XmlEncode(title), 										
                 EMail 		 = Encoder.XmlEncode(email) ?? "",                     
@@ -99,7 +101,7 @@ namespace TeamMentor.CoreLib
                 UserRole.ManageUsers.demand();			
             if (newUser.username.inValid() ||  newUser.username.tmUser().notNull())
                 return 0;
-            return userData.newUser(newUser.username, newUser.password, newUser.email, newUser.firstname, newUser.lastname, newUser.note, newUser.title, newUser.company, newUser.groupId);						
+            return userData.newUser(newUser.username, newUser.password, newUser.email, newUser.firstname, newUser.lastname, newUser.note, newUser.title, newUser.company, newUser.country, newUser.state,newUser.groupId);						
         }
         public static List<int>     createTmUsers               (this TM_UserData userData, string batchUserData) 
         {						
@@ -228,9 +230,9 @@ namespace TeamMentor.CoreLib
         {
             return userData.deleteTmUser(userId.tmUser());
         }        
-        [ManageUsers]   public static bool          updateTmUser        (this TM_UserData userData, int userId, string userName, string firstname, string lastname, string title, string company, string email, int groupId)
+        [ManageUsers]   public static bool          updateTmUser        (this TM_UserData userData, int userId, string userName, string firstname, string lastname, string title, string company, string email, string country, string state, bool passwordExpired,bool userEnabled, int groupId)
         {
-            return userData.tmUser(userId).updateTmUser(userName, firstname, lastname,  title, company, email, groupId);
+            return userData.tmUser(userId).updateTmUser(userName, firstname, lastname,  title, company, email,country, state, passwordExpired,userEnabled,groupId);
         }		                
         [ManageUsers]   public static List<string>  getUserRoles        (this TM_UserData userData, int userId)
         {

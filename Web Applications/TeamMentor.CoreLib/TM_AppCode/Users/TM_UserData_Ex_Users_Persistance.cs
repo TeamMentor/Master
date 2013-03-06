@@ -82,7 +82,7 @@ namespace TeamMentor.CoreLib
             }
             return false;
         }
-        public static bool          updateTmUser     (this TMUser tmUser, string userName, string firstname, string lastname, string title, string company, string email, int groupId)
+        public static bool          updateTmUser     (this TMUser tmUser, string userName, string firstname, string lastname, string title, string company, string email, string country, string state, bool passwordExpired, bool userEnabled, int groupId)
         {                         
             if (tmUser.isNull())
                 return false;
@@ -94,7 +94,11 @@ namespace TeamMentor.CoreLib
                 tmUser.LastName = Encoder.XmlEncode(lastname);
                 tmUser.Title = Encoder.XmlEncode(title);
                 tmUser.Company = Encoder.XmlEncode(company);
+                tmUser.Country = Encoder.XmlEncode(country);
+                tmUser.State = Encoder.XmlEncode(state);
                 tmUser.GroupID = groupId > -1 ? groupId : tmUser.GroupID;
+                tmUser.AccountStatus.PasswordExpired = passwordExpired;
+                tmUser.AccountStatus.UserEnabled = userEnabled;
                 tmUser.saveTmUser();
                 return true;
             }

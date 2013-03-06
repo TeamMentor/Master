@@ -177,12 +177,12 @@
     <Compile Include="TM_AppCode\WebServices_REST\TBot\TBot_WorkerThread.cs" />
     <Compile Include="TM_AppCode\WebServices_REST\TM_REST.cs" />
     <Compile Include="TM_AppCode\WebServices_REST\Controllers\TM_REST_Libraries.cs" />
-    <Compile Include="TM_AppCode\WebServices_REST\Models\TM_Credentials.cs" />
+    <Compile Include="TM_AppCode\Schemas\Models\TM_Credentials.cs" />
     <Compile Include="TM_AppCode\WebServices_REST\Controllers\TM_REST_Admin.cs" />
     <Compile Include="TM_AppCode\WebServices_REST\ITM_REST.cs" />
     <Compile Include="TM_AppCode\WebServices_REST\Tests_RnD\REST_Tests.cs" />
     <Compile Include="TM_AppCode\WebServices_REST\Controllers\TM_REST_Users.cs" />
-    <Compile Include="TM_AppCode\WebServices_REST\Models\TM_User.cs" />
+    <Compile Include="TM_AppCode\Schemas\Models\TM_User.cs" />
     <Compile Include="TM_AppCode\XmlDatabase\TM_Xml_Database.Virtual_Articles.cs" />
     <Compile Include="TM_AppCode\XmlDatabase\TM_Xml_Database.Library.Files.cs" />
     <Compile Include="TM_AppCode\XmlDatabase\TM_Xml_Database.cs" />

@@ -25,8 +25,8 @@ namespace TeamMentor.CoreLib
         [WebMethod(EnableSession = true)]	[Admin]	                    			public List<bool> DeleteUsers(List<int> userIds)        	 {	return userData.deleteTmUsers(userIds);                         }
         [WebMethod(EnableSession = true)]	[Admin]	                    			public bool UpdateUser(int userId, string userName, 
                                                                                                            string firstname, string lastname, 
-                                                                                                           string title, string company, 
-                                                                                                           string email, int groupId) 			 {	return userData.updateTmUser(userId, userName, firstname, lastname, title, company, email, groupId); }  			
+                                                                                                           string title, string company, string email, string country,string state, bool passwordExpired,
+                                                                                                           bool userEnabled, int groupId) 			    {	return userData.updateTmUser(userId, userName, firstname, lastname, title, company, email,country, state, passwordExpired, userEnabled,groupId); }  			
 
         [WebMethod(EnableSession = true)]	[Admin]	                    			public bool         SetUserPassword (int userId,  string password) 	{ 	return userData.setUserPassword  (userId, password);   }
         [WebMethod(EnableSession = true)]	[Admin]	                    			public int          GetUserGroupId  (int userId)        			{	return userData.getUserGroupId   (userId);             }  	
