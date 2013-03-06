@@ -92,7 +92,9 @@ namespace TeamMentor.CoreLib
 
     [Serializable]
     public sealed class AdminAttribute : OnMethodBoundaryAspect
-    {				
+    {
+        public static bool GlobalDisableFor_AdminAttribute { get; set; }
+
         public override void OnEntry(MethodExecutionArgs args)
         {
             "[About to demand Admin] for stackTrace:\n\n {0}".debug(new StackTrace().str());
@@ -104,8 +106,11 @@ namespace TeamMentor.CoreLib
             catch (Exception ex)
             {
                 ex.log("[AdminAttribute]");
-            }
-            UserRole.Admin.demand();
+                if (GlobalDisableFor_AdminAttribute)
+                    "[GlobalDisableFor_AdminAttribute] is set".error();
+                 else
+                    UserRole.Admin.demand();  // rigger the original exception
+            }            
             base.OnEntry(args);
         }
     }
