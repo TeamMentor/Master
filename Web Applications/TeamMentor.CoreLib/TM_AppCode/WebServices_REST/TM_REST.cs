@@ -83,7 +83,7 @@ namespace TeamMentor.CoreLib
 
             var serviceAuthorization = TM_REST.serviceHostBase.Description.Behaviors.Find<ServiceAuthorizationBehavior>();
             "[ServiceHostBase] before: serviceAuthorization.PrincipalPermissionMode: {0}".info(serviceAuthorization.PrincipalPermissionMode);
-            serviceAuthorization.PrincipalPermissionMode = PrincipalPermissionMode.UseAspNetRoles;
+            serviceAuthorization.PrincipalPermissionMode = PrincipalPermissionMode.UseAspNetRoles;            
             "[ServiceHostBase] after: serviceAuthorization.PrincipalPermissionMode: {0}".info(serviceAuthorization.PrincipalPermissionMode);
             return TM_REST.serviceHostBase;
 

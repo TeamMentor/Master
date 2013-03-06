@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Security.Principal;
 using System.Threading;
 using O2.DotNetWrappers.ExtensionMethods;
 using PostSharp.Aspects;
@@ -102,9 +103,20 @@ namespace TeamMentor.CoreLib
             try
             {
                 "[AdminAttribute] Thread id: {0}".error(Thread.CurrentThread.ManagedThreadId);
-                if (HttpContextFactory.Session.notNull())
-                    "[AdminAttribute] SessionId: {0}".info(HttpContextFactory.Session["sessionID"]);
                 var userRoles = Thread.CurrentPrincipal.roles().toList().join(",");
+                if (HttpContextFactory.Session.notNull())
+                {
+                    "[AdminAttribute] SessionId: {0}".info(HttpContextFactory.Session["sessionID"]);
+
+                    "[AdminAttribute][before] Thread.CurrentPrincipal: {0} ".error(Thread.CurrentPrincipal);
+                    if (userRoles.empty() && HttpContextFactory.Session["principal"] is IPrincipal)
+                    {
+                        "Setting Thread.CurrentPrincipal to session value".error();
+                        Thread.CurrentPrincipal = (IPrincipal) HttpContextFactory.Session["principal"];
+                       "[AdminAttribute][after] Thread.CurrentPrincipal: {0} ".error(Thread.CurrentPrincipal);
+                    }                    
+                }
+                
                 "[AdminAttribute] Current Principal roles: {0}".debug(userRoles);
                 "[AdminAttribute][About to demand Admin]".debug();
                 UserRole.Admin.demand();

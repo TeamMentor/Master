@@ -136,7 +136,10 @@ namespace TeamMentor.CoreLib
             "[TM_Authentication][2] Current Principal roles: {0}".debug(userRoles);
             "[TM_Authentication][3] Thread id: {0}".error(Thread.CurrentThread.ManagedThreadId);
             if (HttpContextFactory.Session.notNull())
+            {
                 "[TM_Authentication][4] SessionId: {0}".info(HttpContextFactory.Session["sessionID"]);
+                HttpContextFactory.Session["principal"] = Thread.CurrentPrincipal;
+            }
             return this;
         }
         public Guid                 logout()
