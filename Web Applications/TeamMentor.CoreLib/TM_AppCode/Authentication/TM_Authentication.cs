@@ -132,9 +132,11 @@ namespace TeamMentor.CoreLib
                     UserGroup.Anonymous.setThreadPrincipalWithRoles();
             }
             //"[TM_Authentication][2] userGroup for sessionID: {0} : {1}".debug(sessionID, userGroup);
-            "[TM_Authentication][2] Thread id: {0}".error(Thread.CurrentThread.ManagedThreadId);
+            var userRoles = Thread.CurrentPrincipal.roles().toList().join(",");
+            "[TM_Authentication][2] Current Principal roles: {0}".debug(userRoles);
+            "[TM_Authentication][3] Thread id: {0}".error(Thread.CurrentThread.ManagedThreadId);
             if (HttpContextFactory.Session.notNull())
-                "[TM_Authentication][3] SessionId: {0}".info(HttpContextFactory.Session["sessionID"]);
+                "[TM_Authentication][4] SessionId: {0}".info(HttpContextFactory.Session["sessionID"]);
             return this;
         }
         public Guid                 logout()
