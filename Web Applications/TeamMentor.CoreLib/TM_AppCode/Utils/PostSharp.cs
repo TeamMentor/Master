@@ -107,14 +107,17 @@ namespace TeamMentor.CoreLib
                 if (HttpContextFactory.Session.notNull())
                 {
                     //"[AdminAttribute] SessionId: {0}".info(HttpContextFactory.Session["sessionID"]);
-                    "[AdminAttribute][before] Thread.CurrentPrincipal: {0} ".error(Thread.CurrentPrincipal);
-                    "[AdminAttribute][About to demand Admin] for stackTrace:\n\n {0}".debug(new StackTrace().str());  // use for extra logging
+                    //"[AdminAttribute][before] Thread.CurrentPrincipal: {0} ".error(Thread.CurrentPrincipal);
+                    //"[AdminAttribute][About to demand Admin] for stackTrace:\n\n {0}".debug(new StackTrace().str());  // use for extra logging
                     
                     if (userRoles.empty() && HttpContextFactory.Session["principal"] is IPrincipal)
                     {
-                        "Setting Thread.CurrentPrincipal to session value".error();
-                        Thread.CurrentPrincipal = (IPrincipal) HttpContextFactory.Session["principal"];
-                       "[AdminAttribute][after] Thread.CurrentPrincipal: {0} ".error(Thread.CurrentPrincipal);
+                        var sessionPrincipal = HttpContextFactory.Session["principal"] as IPrincipal;
+                        "[AdminAttribute] changing thread principal from {0} to {1} (last from session variable)".info(Thread.CurrentPrincipal, sessionPrincipal);
+                        Thread.CurrentPrincipal = sessionPrincipal;
+                        //"Setting Thread.CurrentPrincipal to session value".error();
+                        //Thread.CurrentPrincipal = (IPrincipal) HttpContextFactory.Session["principal"];
+                        //"[AdminAttribute][after] Thread.CurrentPrincipal: {0} ".error(Thread.CurrentPrincipal);
                     }                    
                 }
                 
