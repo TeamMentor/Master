@@ -1,0 +1,106 @@
+﻿<script>
+    
+function TMUser($scope,$http)
+    {        
+        $scope.update = function(userData)
+            {                
+                $scope.result = " ... saving user";
+                $http.put('/rest/user',userData)
+                    .success(function(data)
+                        {
+                            $scope.result = (data) ? "(User details saved)" : "Error: Failed to Save user!";
+                        })
+
+            }
+
+        var userName = window.location.search.substring(1);
+        if (userName != "")
+        {
+                $scope.userName = userName;
+                $http.get('/rest/user/' + userName).success(function(data)
+                    {                        
+                        $scope.userData = data
+                    });        
+        }
+        else        
+            $scope.userName =  "No username provided";
+    }    
+</script>
+
+
+
+<h4>Editing user </h4>
+<div ng-controller="TMUser">	
+    
+    <form name="myForm" class="css-form" ng-submit="update(userData)">    
+        <ul>
+            <p>        
+                User ID: <b>{{userData.UserId}} </b>
+            </p>    
+            <div class="input-prepend">
+                <span class="add-on" style="width:100px;">UserName</span>
+                <input type="text" style="width:225px;" ng-model="userData.UserName" required/>
+            </div><br/>
+            <div class="input-prepend">
+                <span class="add-on" style="width:100px;">Email</span>
+                <input type="email" style="width:225px;" ng-model="userData.Email" required/>
+            </div><br/>        
+            <div class="input-prepend">
+                <span class="add-on" style="width:100px;">FirstName</span>
+                <input type="text" style="width:225px;" ng-model="userData.FirstName"/>
+            </div><br/>
+            <div class="input-prepend">
+                <span class="add-on" style="width:100px;">LastName</span>
+                <input type="text" style="width:225px;" ng-model="userData.LastName"/>
+            </div><br/>
+            <div class="input-prepend">
+                <span class="add-on" style="width:100px;">Title</span>
+                <input type="text" style="width:225px;" ng-model="userData.Title"/>
+            </div><br/>
+            <div class="input-prepend">
+                <span class="add-on" style="width:100px;">Job</span>
+                <input type="text" style="width:225px;" ng-model="userData.Job"/>
+            </div><br/>
+            <div class="input-prepend">
+                <span class="add-on" style="width:100px;">Country</span>
+                <input type="text" style="width:225px;" ng-model="userData.Country"/>
+            </div><br/>
+            <div class="input-prepend">
+                <span class="add-on" style="width:100px;">State</span>
+                <input type="text" style="width:225px;" ng-model="userData.State"/>
+            </div><br/>
+        
+            <!--
+                <label>UserName</label>     <input type="text" class= "input-xxlarge" ng-model="userData.UserName"/>
+                <label>Email</label>        <input type="text" class= "input-xxlarge" ng-model="userData.Email"/>       
+                <label>First Name</label>   <input type="text" class= "input-xxlarge" ng-model="userData.FirstName"/>
+                <label>Last Name</label>    <input type="text" class= "input-xxlarge" ng-model="userData.LastName"/>
+                <label>Company</label>      <input type="text" class= "input-xxlarge" ng-model="userData.Company"/>
+                <label>Title</label>        <input type="text" class= "input-xxlarge" ng-model="userData.Title"/>
+                <label>Job</label>          <input type="text" class= "input-xxlarge" ng-model="userData.Job"/>
+                <label>Country</label>      <input type="text" class= "input-xxlarge" ng-model="userData.Country"/>
+                <label>State</label>        <input type="text" class= "input-xxlarge" ng-model="userData.State"/>
+                -->
+            <br/>            
+            <button class="btn btn-primary">Save</button>  <small><a href="Current_Users">back to user's list</a> {{result}}</small>
+        </ul>    
+
+    </form>
+    
+    <small><a href="javascript:window.location = window.location">reload page</a></small>
+    <br/>
+        <br/>
+    <b>save result</b>        	
+    <pre></pre>	
+    <b>raw data</b>
+    <pre>{{userData}}</pre>
+        
+</div>
+
+<style type="text/css">
+  .css-form input.ng-invalid.ng-dirty {
+    background-color: #FA787E;
+  }
+
+ 
+    </style>

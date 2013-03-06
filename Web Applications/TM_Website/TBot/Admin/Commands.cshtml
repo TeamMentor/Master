@@ -24,7 +24,7 @@
             <td><b>@item.Key</b></td>        
             @foreach (var command in item.Value)
             {
-                <td><a href="/rest/tbot/run/@command">@command</a></td>
+                <td><a href="/rest/tbot/run/@command">@command.replace("_"," ")</a></td>
             }                               
         </tr>
         }

@@ -63,19 +63,27 @@ namespace TeamMentor.CoreLib
 	    {
 	        try
 	        {
-                this.response_ContentType_Html();
+	            this.response_ContentType_Html();
 	            return new TBot_Brain(this).RenderPage();
 	        }
-	        catch(SecurityException)
-	        {              
-	            Redirect_Login("/tbot");	            	            
-	        }	       
-            return null;
+	        catch (SecurityException)
+	        {
+	            Redirect_Login("/tbot");
+	        }	        
+	        return null;
 	    }
 	    public Stream TBot_Run(string what)
 	    {
-            this.response_ContentType_Html();
-            return new TBot_Brain(this).Run(what);
+            try
+	        {
+                this.response_ContentType_Html();
+                return new TBot_Brain(this).Run(what);
+            }
+	        catch (SecurityException)
+	        {
+	            Redirect_Login("/tbot");
+	        }	        
+	        return null;
 	    }
         public Stream TBot_List()
 	    {

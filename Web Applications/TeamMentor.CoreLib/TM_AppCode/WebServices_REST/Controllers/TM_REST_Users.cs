@@ -40,7 +40,12 @@ namespace TeamMentor.CoreLib
 		{
 			return TmWebServices.CreateUser(user.newUser());
 		}
-		public TM_User			user(string userNameOrId)
+	    public bool user_Save(TM_User user)
+	    {
+	        return TmWebServices.UpdateUser(user.UserId, user.UserName, user.FirstName, user.LastName, user.Title, user.Company, user.Email, -1);
+	    }
+
+	    public TM_User			user(string userNameOrId)
 		{
 		    var user = TmWebServices.GetUser_byID(userNameOrId.toInt());
 			if (user.notNull())

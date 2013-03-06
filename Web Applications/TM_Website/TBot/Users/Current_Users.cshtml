@@ -13,15 +13,21 @@
             <th>Name</th>            
             <th>User Id</th>
             <th>Created</th>            
-            <th>Email</th>            
+            <th>Email</th>   
+            <th>Actions</th>         
         </tr>   
         @foreach (var user in users)
         {
             <tr>
-                <td><a href="userData?userName=@user.UserName&max=50" userid="@user.UserId">@user.UserName</a></td>                
+                <td><a href="Edit_User?@user.UserName">@user.UserName</a></td>
                 <td> @user.UserId</td>
                 <td id="CreatedDate">@user.CreatedDate.fromFileTimeUtc()</td>
                 <td id="Actions">@user.Email</td>
+                <td>
+                    <a href="Edit_User?@user.UserName">edit user</a> | 
+                    <a href="UserData?userName=@user.UserName&max=50">view activity</a>
+                </td>
+
             </tr>
         }
     </table>

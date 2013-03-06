@@ -48,8 +48,9 @@ namespace TeamMentor.CoreLib
 		//Admin: User Management				
 						
 		[OperationContract] [WebGet	  (UriTemplate = "/user/{nameOrId}"			)]					TM_User		user(string nameOrId);
+        [OperationContract] [WebInvoke(UriTemplate = "/user", Method = "PUT"    )]		            bool		user_Save(TM_User user);
 		//[OperationContract] [WebGet	  (UriTemplate = "/users/{usersIds}"	)]					List<TM_User>	users(string usersIds);
-		[OperationContract] [WebGet	  (UriTemplate = "/users"				    )]						List<TM_User>	users();
+		[OperationContract] [WebGet	  (UriTemplate = "/users"				    )]					List<TM_User>	users();
 
 //these need CRSF protection
 //		[OperationContract] [WebInvoke(UriTemplate = "/user/update"			,	Method = "PUT", ResponseFormat = WebMessageFormat.Json)]	bool		user_Update(TM_User user);
