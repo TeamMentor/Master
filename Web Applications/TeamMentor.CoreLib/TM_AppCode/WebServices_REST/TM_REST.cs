@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.ServiceModel;
 using System.ServiceModel.Activation;
 using System.ServiceModel.Channels;
@@ -20,8 +21,8 @@ namespace TeamMentor.CoreLib
         public static TMWebServiceHostFactory webServiceHostFactory;
         public static ServiceRoute            serviceRoute;
         public static ServiceHostBase         serviceHostBase;
-
-
+        public static TMWebHttpBehavior       tmWebHttpBehavior;
+        public static WebHttpBehavior         originalWebHttpBehaviour;
         public HttpContextBase		Context			 { get; set; }	
         public HttpSessionStateBase Session			 { get; set; }	
         public TM_WebServices		TmWebServices	 { get; set; }	
@@ -29,13 +30,31 @@ namespace TeamMentor.CoreLib
         [LogUrl("REST")]
         public TM_REST()
         {
+            ensureTMEndpointsBehavioursAreMapped();
             Context       = HttpContextFactory.Current;
             Session       = HttpContextFactory.Session;									
             TmWebServices = new TM_WebServices(true);	//Disabling CSRF
             //UserGroup.Admin.setThreadPrincipalWithRoles();					
         }
 
-        
+        public void ensureTMEndpointsBehavioursAreMapped()
+        {
+            if (tmWebHttpBehavior.notNull())  // it is already set
+                return;
+            var endpoints = serviceHostBase.Description.Endpoints;
+            if (endpoints.Count > 0)
+            {
+                var behaviours = endpoints[0].Behaviors;
+
+                originalWebHttpBehaviour = behaviours.Find<WebHttpBehavior>();
+                //behaviours.Remove(originalWebHttpBehaviour);
+
+                tmWebHttpBehavior = new TMWebHttpBehavior();
+                endpoints[0].Behaviors.Add(tmWebHttpBehavior);            
+            }
+        }
+
+
         public static void SetRouteTable()
         {
             webServiceHostFactory = new TMWebServiceHostFactory();
@@ -75,7 +94,7 @@ namespace TeamMentor.CoreLib
         }
     }
 
-    /*public class TMWebServiceHost : WebServiceHost
+    public class TMWebServiceHost : WebServiceHost
     {
         public TMWebServiceHost(string serviceType, Uri[] baseAddresses) : base(serviceType,baseAddresses)
         {
@@ -109,6 +128,6 @@ namespace TeamMentor.CoreLib
             
         }
     }
-    */
+    
 }
     

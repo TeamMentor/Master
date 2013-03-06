@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using O2.DotNetWrappers.ExtensionMethods;
 using PostSharp.Aspects;
 
@@ -93,7 +94,17 @@ namespace TeamMentor.CoreLib
     public sealed class AdminAttribute : OnMethodBoundaryAspect
     {				
         public override void OnEntry(MethodExecutionArgs args)
-        {		    
+        {
+            "[About to demand Admin] for stackTrace:\n\n {0}".debug(new StackTrace().str());
+            try
+            {
+                UserRole.Admin.demand();
+                "[About to demand Admin] OK".debug();
+            }
+            catch (Exception ex)
+            {
+                ex.log("[AdminAttribute]");
+            }
             UserRole.Admin.demand();
             base.OnEntry(args);
         }

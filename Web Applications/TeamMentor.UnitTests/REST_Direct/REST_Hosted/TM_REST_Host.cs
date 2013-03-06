@@ -17,7 +17,7 @@ namespace TeamMentor.UnitTests.REST
 		{
 			Service_Protocol = "http";
 			Service_Port	 = 20000; 
-			Service_IP		 = "local";
+			Service_IP		 = "localhost";
 		}
 
 		public Uri BaseAddress
