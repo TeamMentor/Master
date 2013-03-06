@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading;
 using O2.DotNetWrappers.ExtensionMethods;
 using PostSharp.Aspects;
 
@@ -97,15 +98,21 @@ namespace TeamMentor.CoreLib
 
         public override void OnEntry(MethodExecutionArgs args)
         {
-            "[About to demand Admin] for stackTrace:\n\n {0}".debug(new StackTrace().str());
+            //"[About to demand Admin] for stackTrace:\n\n {0}".debug(new StackTrace().str());  // use for extra logging
             try
             {
+                var userRoles = Thread.CurrentPrincipal.roles().toList().join(",");
+                "[AdminAttribute] Current Principal roles: {0}".debug(userRoles);
+                "[AdminAttribute][About to demand Admin]".debug();
                 UserRole.Admin.demand();
-                "[About to demand Admin] OK".debug();
+                "[AdminAttribute][About to demand Admin] OK".debug();
             }
             catch (Exception ex)
             {
                 ex.log("[AdminAttribute]");
+                //var userRoles = Thread.CurrentPrincipal.roles().toList().join(",");
+                //"[AdminAttribute] Current Principal roles: {0}".debug(userRoles);
+                
                 if (GlobalDisableFor_AdminAttribute)
                     "[GlobalDisableFor_AdminAttribute] is set".error();
                  else

@@ -644,7 +644,7 @@
     <Content Include="TBot\Admin\ServerData\secretData.cshtml" />
     <Content Include="TBot\Admin\DebugInfo.cshtml" />
     <Content Include="TBot\Admin\Commands.cshtml" />
-    <None Include="TBot\Admin\Reset_Razor_Templates.cshtml" />
+    <Content Include="TBot\Admin\Reset_Razor_Templates.cshtml" />
     <Content Include="TBot\Admin\IISSessions.cshtml" />
     <Content Include="TBot\Views\userData.cshtml" />
     <Content Include="TBot\Admin\GitStatus.cshtml" />

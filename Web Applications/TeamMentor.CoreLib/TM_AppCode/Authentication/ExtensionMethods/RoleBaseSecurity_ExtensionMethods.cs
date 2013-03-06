@@ -37,7 +37,9 @@ namespace TeamMentor.CoreLib
 		
 		public static string[] roles(this IPrincipal principal)
 		{
-			return (string[])principal.field("m_roles");
+            if (principal.notNull())
+			    return (string[])principal.field("m_roles");
+            return new string[] {};
 		}
 		
     }
