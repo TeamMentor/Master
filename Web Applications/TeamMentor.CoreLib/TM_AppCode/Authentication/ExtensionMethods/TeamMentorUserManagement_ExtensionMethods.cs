@@ -104,7 +104,7 @@ namespace TeamMentor.CoreLib
         }
     }
 
-    public static class TeamMentorUserManagement_UserRole
+    public static class TeamMentorUserManagement_UserRole  
     {
         public static string[] toStringArray(this List<UserRole> userRoles)
         {

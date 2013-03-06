@@ -101,6 +101,9 @@ namespace TeamMentor.CoreLib
             //"[About to demand Admin] for stackTrace:\n\n {0}".debug(new StackTrace().str());  // use for extra logging
             try
             {
+                "[AdminAttribute] Thread id: {0}".error(Thread.CurrentThread.ManagedThreadId);
+                if (HttpContextFactory.Session.notNull())
+                    "[AdminAttribute] SessionId: {0}".info(HttpContextFactory.Session["sessionID"]);
                 var userRoles = Thread.CurrentPrincipal.roles().toList().join(",");
                 "[AdminAttribute] Current Principal roles: {0}".debug(userRoles);
                 "[AdminAttribute][About to demand Admin]".debug();
