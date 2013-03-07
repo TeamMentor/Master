@@ -11,8 +11,8 @@ namespace TeamMentor.CoreLib
 
         [WebMethod(EnableSession = true)]											public int CreateUser(NewUser newUser)      				        {   return userData.createTmUser(newUser);	                            }
         [WebMethod(EnableSession = true)]											public TM_User CreateUser_Random()      					        {   return userData.tmUser(userData.newUser()).user();	                }
-        [WebMethod(EnableSession = true)]		                    			    public string SendPasswordReminder(string userName, string email)   {   userName.sendPasswordReminder(email); return "PasswordReminder sent"; }        
-        [WebMethod(EnableSession = true)]		                    			    public string SetPasswordResetToken(string userName, string email)  {   userName.current_PasswordResetToken(email, true); return "PasswordResetToken set"; }
+        [WebMethod(EnableSession = true)]		                    			    public bool SendPasswordReminder(string email)                      {   email.sendPasswordReminder();   return true;                        }   // always return true
+        [WebMethod(EnableSession = true)]	[Admin]	                   			    public Guid NewPasswordResetToken(string email)                     {   return email.tmUser_FromEmail().current_PasswordResetToken(true);   }
         [WebMethod(EnableSession = true)]	[Admin]	                    			public Guid GetLoginToken(string userName)        			        {   return userName.tmUser().current_SingleUseLoginToken(true);        }
         [WebMethod(EnableSession = true)]	[Admin]	                    			public TM_User GetUser_byID(int userId)        				        {   return userData.tmUser(userId).user();                             }
         [WebMethod(EnableSession = true)]	[Admin]	                    			public List<TM_User> GetUsers_byID(List<int> userIds)      	        {   return userIds.tmUsers().users();                                  }

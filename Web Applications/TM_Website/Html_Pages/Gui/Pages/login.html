@@ -20,8 +20,8 @@
 		{									
 			if(loginId =='00000000-0000-0000-0000-000000000000')
 			{		
-				$("#loginFailed").fadeIn()
-				$("#loginSubmit").html('Login');
+				$("#loginFailed").fadeIn();
+				$("#loginButton").html('Login');
 			}
 			else
 			{	
@@ -33,14 +33,15 @@
 		}
 
 		var onSubmit = function()
-			{
-				$("#loginFailed").fadeOut()
-				$("#loginSubmit").html('Logging in');
+		    {
+		        $("#loginFailed").fadeOut();
+				$("#loginButton").html('Logging in');
 				var username = $("#username").attr('value');
 				var password = $("#password").attr('value');
 				//console.log("login in with: " + username + " : " + password);
 				TM.WebServices.WS_Users.login(username, password, loginResponse);				
-
+                $("#passwordForgotLink").relative().top(7)
+		                                .css("","");
 				return false; 
 			};
 
@@ -50,13 +51,14 @@
 				$("#loginFailed").hide()
 								 .absolute()
 								 .left(90)
-								 .top(67)
-				$("h1").css('background-image','/Images/HeaderImage.jpg')
-				$("#SI_Logo").width(250);			
-                $(".form").height(209)	
+								 .top(67);
+		        $("h1").css('background-image', '/Images/HeaderImage.jpg');
+				$("#SI_Logo").width(250);
+		        $(".form").height(209);
+		        $("#passwordForgotLink").relative().top(7);
 
 				//set the click event for the login button 
-				$("#loginSubmit").click(onSubmit);	
+				$("#loginButton").click(onSubmit);	
 
 			});
 	</script>
@@ -64,8 +66,7 @@
  
 <body> 
 
-<div id="login">
-	
+<div id="login">	
 	<div id="login_panel">		
 	<img src='/Images/HeaderImage.jpg' id='SI_Logo'/>	
 		<form class="form">					
@@ -84,7 +85,8 @@
 			</div> <!-- .login_fields -->
 			
 			<div class="login_actions">				
-				<button id="loginSubmit" class="btn primary" tabindex="3">Login</button>&nbsp;&nbsp;<a href="/passwordForgot">forgot password?</a>
+			    <button id="loginButton" class="btn primary" tabindex="3">Login</button>
+                &nbsp;&nbsp;<a href="/passwordForgot" id="passwordForgotLink" style="float:right">Forgot your password?</a>
 			</div>
 			
 		</form>

@@ -138,16 +138,16 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
         [Test] public void PasswordResetToken()
         {            
             var newUser       = newTempUser();
-            var newPassword     = "123SAFsi!";
-            var oldPassword     = newUser.password;
+            var newPassword   = "123SAFsi!";
+            var oldPassword   = newUser.password;
             var tmUser        = tmWebServices.CreateUser(newUser).tmUser();
 
             var token_BeforeSet    = tmUser.SecretData.PasswordResetToken;
-            var token_BeforeUse    = tmUser.UserName.current_PasswordResetToken(tmUser.EMail);
-            var token              = tmUser.UserName.current_PasswordResetToken(tmUser.EMail);
+            var token_BeforeUse    = tmUser.EMail.current_PasswordResetToken();
+            var token              = tmUser.EMail.current_PasswordResetToken();
             var result             = tmWebServices.PasswordReset(tmUser.UserName, token,newPassword);
             var token_AfterUse     = tmUser.SecretData.PasswordResetToken;
-            var token_NextRequest  = tmUser.UserName.current_PasswordResetToken(tmUser.EMail);
+            var token_NextRequest  = tmUser.EMail.current_PasswordResetToken();
             var sessionId_NewPwd   = tmWebServices.Login(tmUser.UserName, newPassword);
             var sessionId_OldPwd   = tmWebServices.Login(tmUser.UserName, oldPassword);            
 

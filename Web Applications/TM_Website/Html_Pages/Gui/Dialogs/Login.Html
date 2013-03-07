@@ -12,21 +12,7 @@
 			}
 			else
 			{
-				loginDialog.closeDialog();			
-
-/*				
-				//currentUser = $('#UsernameBox').attr('value');
-				$('#LoginMainContent').html('login ok');
-				$('#UsernameBox').remove();
-				$('#PasswordBox').remove();
-				//$('#PleaseWait').remove();
-				$('#LoginMainContent').remove();
-				loginDialog.remove();			
-				
-				//TM.Gui.TopRigthLinks.refresh();
-				
-				//TM.Gui.CurrentUser.loadUserData(TM.Gui.TopRigthLinks.refresh);  // need to do this here so that we also support the case when the user logs in via the control panel				
-*/				
+				loginDialog.closeDialog();					
 				TM.Debug.LastLoginResult = "Ok";				
 			}			
 			
@@ -34,11 +20,8 @@
 		
 		function loginUser()
 		{		
-			$('#errorMessageLogin').hide();
-			//alert('loginUser');
-			//$('#PleaseWait').css('display','');
-			$('#LoginMainContent').css('display','none');			
-			//"LoginDialog".$().dialog().parent().width(400).top(100).height(250);
+			$('#errorMessageLogin').hide();			
+			$('#LoginMainContent').css('display','none');						
 			var username = $('#UsernameBox').attr('value');
 			var password = $('#PasswordBox').attr('value');			
 			
@@ -46,10 +29,10 @@
 			TM.WebServices.WS_Users.login(username, password, loginResponse);			
 		}
 
-		function passwordForgot() 
+		/*function passwordForgot() 
 		{
 		    window.location = "/passwordForgot";
-		}
+		}*/
 
 		if (typeof(loginDialog) != "undefined")
 			loginDialog.remove();
@@ -64,7 +47,7 @@
 				var dialogOptions = { 	
 											title:'Login into TeamMentor'
 										,	modal: true		
-										,	buttons: { " Password forgot" : passwordForgot, " Login" : loginUser }
+										,	buttons: {  " Login" : loginUser } //" Password forgot" : passwordForgot,
 										,	width: '400px'
 										, 	open:  TM.Events.onLoginDialogOpen	
 										, 	close: function()
@@ -81,9 +64,17 @@
 					
 				$('#UsernameBox').keypress(function(e)  { if(e.which == 13) { loginUser(); } });
 				$('#PasswordBox').keypress(function(e)  { if(e.which == 13) { loginUser(); } });
-		    
-                loginDialog.parent().find("button").first().absolute().left(10)
-				
+
+		        //loginDialog.parent().find("button").first().absolute().left(10);
+		        var forgotPasswordLink = $("<a href='/passwordForgot' id='passwordForgotLink'>Forgot your password?</a>")
+                        .relative().top(13)
+		                .css("font-size","9pt");
+
+                loginDialog.parent().find("button").first().absolute().left(10)     //moving Login button to the left
+		                   .attr('id','loginButton')
+                           .parent().height(45)
+                           .append(forgotPasswordLink);
+
 			});
 	</script>
 	<div id="LoginDialog" class="_LoginArea">							

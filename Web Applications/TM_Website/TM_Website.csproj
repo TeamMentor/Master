@@ -638,7 +638,7 @@
     <Content Include="TBot\Users\Current_Users.cshtml" />
     <Content Include="TBot\Tests\version.cshtml" />
     <Content Include="TBot\Admin\ActiveSessions.cshtml" />
-    <Content Include="TBot\Messaging\View_EmailMessages_Sent.cshtml" />
+    <Content Include="TBot\Messaging\View_Emails_Sent.cshtml" />
     <Content Include="TBot\Admin\O2_Scripts.cshtml" />
     <Content Include="TBot\Admin\ServerData\tmConfig.cshtml" />
     <Content Include="TBot\Admin\ServerData\secretData.cshtml" />
@@ -646,16 +646,18 @@
     <Content Include="TBot\Admin\Commands.cshtml" />
     <Content Include="TBot\Admin\Reset_Razor_Templates.cshtml" />
     <Content Include="TBot\Admin\IISSessions.cshtml" />
-    <Content Include="TBot\Views\UserData.cshtml" />
+    <Content Include="TBot\Views\User_Activities.cshtml" />
     <Content Include="TBot\Admin\GitStatus.cshtml" />
     <Content Include="packages.config" />
-    <Content Include="TBot\Messaging\Send_EmailMessage.cshtml" />
+    <Content Include="TBot\Messaging\Send_Email.cshtml" />
     <Content Include="TBot\Views\GitDiff_UserData_Commit.cshtml" />
     <Content Include="TBot\Views\GitDiff_UserData_File.cshtml" />
     <Content Include="TBot\Views\GitDiff_XmlDatabase_File.cshtml" />
     <Content Include="TBot\Views\GitDiff_XmlDatabase_Commit.cshtml" />
-    <Content Include="TBot\Views\Edit_User.cshtml" />
+    <Content Include="TBot\Views\User_Edit.cshtml" />
     <Content Include="TBot\Users\Users_in_CSV.cshtml" />
+    <Content Include="TBot\Views\User_View.cshtml" />
+    <Content Include="TBot\Views\User_Raw.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="TBot\NGit\" />

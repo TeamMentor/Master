@@ -42,14 +42,22 @@ namespace TeamMentor.CoreLib
                     {
                         if (tmUser.account_Expired())
                         {
-                            tmUser.logUserActivity("Account Expired", tmUser.UserName);
+                            tmUser.logUserActivity("Account Expired", "Expiry date: {0}".format(tmUser.AccountStatus.ExpirationDate));
                             return Guid.Empty;
                         }
-
-                        var sessionId = (tmUser.SecretData.PasswordHash == tmUser.createPasswordHash(password))
-                                            ? Guid.NewGuid()
-                                            : Guid.Empty;
-                        return tmUser.login(sessionId);                        
+                        var pwdOk = tmUser.SecretData.PasswordHash == tmUser.createPasswordHash(password);
+                        if (pwdOk)
+                        {
+                            if(tmUser.account_Enabled())
+                                return tmUser.login(Guid.NewGuid());                    // call login with a new SessionID            
+                            
+                            tmUser.logUserActivity("Login Fail",  "pwd ok, but account disabled");
+                        }
+                        else
+                        {
+                        tmUser.logUserActivity("Login Fail", "bad pwd");
+                            tmUser.Stats.LoginFail++;    
+                        }
                     }
                 }
             }
@@ -71,10 +79,10 @@ namespace TeamMentor.CoreLib
         {
             try
             {
-                if (tmUser.notNull())
+                if (tmUser.notNull())           // there is a valid user
                 {
-                    if (sessionId != Guid.Empty && tmUser.AccountStatus.PasswordExpired.isFalse() && tmUser.AccountStatus.UserEnabled.isTrue() )
-                    {
+                    if (sessionId != Guid.Empty)
+                    {                        
                         tmUser.Stats.LastLogin = DateTime.Now;
                         tmUser.Stats.LoginOk++;
                         tmUser.logUserActivity("User Login", tmUser.UserName);
@@ -82,9 +90,7 @@ namespace TeamMentor.CoreLib
 
                         SendEmails.SendEmailAboutUserToTM("Loggged In", tmUser);
                         return sessionId;
-                    }
-                    tmUser.logUserActivity("Login Fail (bad pwd)", tmUser.UserName);
-                    tmUser.Stats.LoginFail++;
+                    }                    
                 }
             }
             catch (Exception ex)

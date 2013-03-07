@@ -66,12 +66,12 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             tmUser.logout();
             
             Assert.AreEqual    (2, stats.LoginOk);
-            Assert.AreEqual    (0, stats.LoginFail);
+            Assert.AreEqual    (0, stats.LoginFail, "Login fail should be 0");
 
             tmUser.login(Guid.Empty);
             
             Assert.AreEqual    (2, stats.LoginOk);
-            Assert.AreEqual    (1, stats.LoginFail);
+            Assert.AreEqual    (0, stats.LoginFail, "LoginFail should still be 0");
 
             //test as Admin      
             var adminName        = tmConfig.TMSecurity.Default_AdminUserName;
@@ -91,7 +91,29 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             userData.login(tmUser.UserName, "".add_RandomLetters(10));                                      // login using user and bad pwd
 
             Assert.AreEqual    (currentLoginOk  + 1, stats.LoginOk);
-            Assert.AreEqual    (currentLoginFail +1, stats.LoginFail , "[admin] stats.LoginFail should");
+            Assert.AreEqual    (currentLoginFail +1, stats.LoginFail , "[admin] stats.LoginFail should be higher");
+        }
+        [Test] public void UserAccount_Enabled_and_Disabled()
+        {            
+            var testUser  = "user".add_RandomLetters(10);                       
+            var testPwd   = "!!Pwd".add_RandomLetters(10);
+            var tmUser    = userData.newUser(testUser, testPwd).tmUser();                           //create test user     
+            var sessionId = userData.login(testUser, testPwd);
+
+            Assert.IsTrue     (tmUser.account_Enabled(), "New user account should be enabled");
+            Assert.AreNotEqual(Guid.Empty, sessionId   , "login should work");
+
+            tmUser.disable_Account();                                                               // disable account
+            sessionId = userData.login(testUser, testPwd);
+
+            Assert.IsFalse    (tmUser.account_Enabled(), "Account should be disabled now");
+            Assert.AreEqual   (Guid.Empty, sessionId   , "After disable, login should not work");
+
+            tmUser.enable_Account();                                                               // re-enable account
+            sessionId = userData.login(testUser, testPwd);
+
+            Assert.IsTrue     (tmUser.account_Enabled(), "Account should be enabled now");
+            Assert.AreNotEqual(Guid.Empty, sessionId   , "After enable, login should not work");
         }
         [Test] public void UserAccount_Expired()
         {

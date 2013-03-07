@@ -32,9 +32,9 @@ namespace TeamMentor.CoreLib
         {
             return TmWebServices.GetLoginToken(username);
         }
-        public string   SetPasswordResetToken(string username, string email)
+        public Guid   NewPasswordResetToken(string email)
         {
-            return TmWebServices.SetPasswordResetToken(username, email);
+            return TmWebServices.NewPasswordResetToken(email);
         }               
         public bool     SendLoginTokenForUser(string userName)
         {
@@ -48,11 +48,11 @@ namespace TeamMentor.CoreLib
         {
             HttpContextFactory.Response.Redirect("/Login?LoginReferer={0}".format(referer));
         }
-        public void     Redirect_ToPasswordReset(string userName, string email)
+        /*public void     Redirect_ToPasswordReset(string email)
         {
-            var redirectUrl = "/PasswordReset/{0}/{1}".format(userName.urlEncode(), SetPasswordResetToken(userName, email));
+            var redirectUrl = "/PasswordReset/{0}".format(SetPasswordResetToken(email));
             HttpContextFactory.Response.Redirect(redirectUrl);
-        }
+        }*/
         public void     Redirect_After_Login_Using_Token(string username, string loginToken)
         {
             var sessionId = TmWebServices.Login_Using_LoginToken(username, loginToken.guid());

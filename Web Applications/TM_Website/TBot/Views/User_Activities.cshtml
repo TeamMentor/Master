@@ -1,0 +1,64 @@
+﻿
+@using O2.DotNetWrappers.ExtensionMethods
+@using TeamMentor.CoreLib
+@using FluentSharp
+
+@{
+    var userData = TM_UserData.Current;
+    var userName   = System.Web.HttpContext.Current.Request["userName"];
+    var max   = System.Web.HttpContext.Current.Request["max"].toInt();
+    var tmUser = userData.tmUser(userName);
+
+    if (max == 0)
+    {
+        max = 50;
+    }
+    var index = tmUser.UserActivities.size();
+}
+
+
+@if (tmUser.notNull())
+{
+    
+    <a href="User_View?userName=@tmUser.UserName" class="btn btn-info" >View User</a>
+    <a href="User_Edit?@tmUser.UserName" class="btn btn-info" >Edit User</a>
+    <a href="User_Activities?userName={{userData.UserName}}" class="btn btn-info" disabled>View Activity/Logs</a>
+    <a href="User_Raw?userName=@tmUser.UserName">Raw/Xml Data</a>
+
+    <h5>User Activity (top @max of @tmUser.UserActivities.size())</h5>
+
+    <ul>
+        <table class="table table-striped table-condensed">
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Details</th>
+                <th>When</th>                        
+            </tr> 
+            @foreach (var userActivity in tmUser.UserActivities.OrderByDescending((activity)=> activity.When).take(max))
+            {
+                <tr>
+                    <td>@(index--)</td>
+                    <td>@userActivity.Name </td>
+                    <td>@userActivity.Detail </td>
+                    <td>@userActivity.When.fromFileTimeUtc() </td>
+                </tr>
+            }
+        </table>
+    </ul>    
+    @*
+
+    
+    <hr/>
+    <h5>Raw Data</h5>
+    <ul>
+        <pre>@tmUser.toXml();</pre>
+    </ul>*@
+}
+else
+{
+    <p>No user found</p>
+}
+
+<hr/>
+<a href="Current_Users">back to users list</a>

@@ -30,10 +30,14 @@ function TMUser($scope,$http)
     }    
 </script>
 
+<div ng-controller="TMUser">
+    	
+    <a href="User_View?userName={{userData.UserName}}" class="btn btn-info" >View User</a>
+    <a href="User_Edit?{{userData.UserName}}" class="btn btn-info" disabled>Edit User</a>
+    <a href="User_Activities?userName={{userData.UserName}}" class="btn btn-info" >View Activity/Logs</a>
+    <a href="User_Raw?userName={{userData.UserName}}">Raw/Xml Data</a>
 
-
-<h4>Editing user </h4>
-<div ng-controller="TMUser">	
+    <h4>Editing user </h4>
     
     <form name="myForm" class="css-form" ng-submit="update(userData)">    
         <ul>
@@ -75,9 +79,9 @@ function TMUser($scope,$http)
                 <input type="text" style="width:250px;" ng-model="userData.State"/>
             </div><br/>
             <!--<div class="input-prepend">
-                <span class="add-on" style="width:120px;">Account Expiration Date</span>
-                <input type="text" style="width:250px;" ng-model="userData.ExpirationDate"/>
-            </div><br/>-->
+                    <span class="add-on" style="width:120px;">Account Expiration Date</span>
+                    <input type="text" style="width:250px;" ng-model="userData.ExpirationDate"/>
+                </div><br/>-->
             <div class="input-prepend">
                 <span class="add-on" style="width:120px;">Account Expiration</span>
                 <input type="text" style="width:250px;" ng-model="userData.date"/> 
@@ -111,7 +115,7 @@ function TMUser($scope,$http)
     
     <small><a href="javascript:window.location = window.location">reload page</a></small>
     <br/>
-        <br/>
+    <br/>
     <b>save result</b>        	
     <pre></pre>	
     <b>raw data</b>
@@ -119,10 +123,14 @@ function TMUser($scope,$http)
         
 </div>
 
+
 <style type="text/css">
-  .css-form input.ng-invalid.ng-dirty {
+  .css-form input.ng-invalid.ng-dirty 
+  {
     background-color: #FA787E;
   }
 
- 
-    </style>
+</style>
+
+<hr/>
+<a href="Current_Users">back to users list</a>

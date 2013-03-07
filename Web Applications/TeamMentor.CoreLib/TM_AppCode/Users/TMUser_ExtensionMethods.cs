@@ -6,6 +6,29 @@ namespace TeamMentor.CoreLib
 {
     public static class TMUser_ExtensionMethods
     {
+        public static bool      account_Enabled(this TMUser tmUser)
+        {
+            return tmUser.notNull() && tmUser.AccountStatus.UserEnabled;
+        }
+
+        public static TMUser   disable_Account(this TMUser tmUser)
+        {
+            if (tmUser.notNull())
+            {
+                tmUser.AccountStatus.UserEnabled = false;                
+                tmUser.logUserActivity("Account was Disabled", "");
+            }
+            return tmUser;
+        }
+        public static TMUser   enable_Account(this TMUser tmUser)
+        {
+            if (tmUser.notNull())
+            {
+                tmUser.AccountStatus.UserEnabled = true;                
+                tmUser.logUserActivity("Account was Enabled", "");
+            }
+            return tmUser;
+        }
         public static bool      account_Expired    (this TMUser tmUser)
         {
             if (tmUser.isNull())
@@ -35,7 +58,8 @@ namespace TeamMentor.CoreLib
             if (tmUser.notNull())
             {
                 tmUser.AccountStatus.PasswordExpired = true;
-                10.sleep();
+                //10.sleep();
+                tmUser.logUserActivity("Account was Expired", "");
             }
             return tmUser;
         }
@@ -61,37 +85,39 @@ namespace TeamMentor.CoreLib
             return tmUser.SecretData.SingleUseLoginToken;
         }
 
-        public static bool sendPasswordReminder(this string userName, string email)
+        public static bool sendPasswordReminder(this string email)
         {
-            var resetToken = userName.current_PasswordResetToken(email);
+            var tmUser = email.tmUser_FromEmail();
+            if (tmUser.isNull())
+                return false;
+            var resetToken = email.current_PasswordResetToken();
             if (resetToken != Guid.Empty)
-                return SendEmails.SendPasswordReminderToUser(userName.tmUser(), resetToken);
+                return SendEmails.SendPasswordReminderToUser(tmUser, resetToken);
             return false;
         }
 
-        public static Guid current_PasswordResetToken(this TMUser tmUser)
+        public static Guid current_PasswordResetToken(this string email)
         {
-            return tmUser.UserName.current_PasswordResetToken(tmUser.EMail);
+            var tmUser = email.tmUser_FromEmail();
+            if (tmUser.notNull())
+                return tmUser.current_PasswordResetToken();
+            "[current_PasswordResetToken] failed for email= {0}".error(email);
+            return Guid.Empty;
         }
 
-        public static Guid      current_PasswordResetToken(this string userName, string email, bool reset = false)
+        public static Guid      current_PasswordResetToken(this TMUser tmUser, bool reset = false)
         {
-            var tmUser = userName.tmUser();
             if (tmUser.notNull())
             {
-                if (tmUser.EMail == email)
+                if (reset || tmUser.SecretData.PasswordResetToken == Guid.Empty)
                 {
-                    if (reset || tmUser.SecretData.PasswordResetToken == Guid.Empty)
-                    {
-                        tmUser.SecretData.PasswordResetToken = Guid.NewGuid();
-                        tmUser.saveTmUser();                        
-                    }
-                    tmUser.logUserActivity("PasswordReset Requested","by asp.netSessionId: {0}".format(HttpContextFactory.Session.SessionID));
-                    return tmUser.SecretData.PasswordResetToken;                    
+                    tmUser.SecretData.PasswordResetToken = Guid.NewGuid();
+                    tmUser.saveTmUser();                        
                 }
-                tmUser.logUserActivity("Error:PasswordResetToken","wrong email used, by asp.netSessionId: {0}".format(HttpContextFactory.Session.SessionID));                                    
-            }
-            "[current_PasswordResetToken] failed for values: username= {0}  , email= {1}".error(userName, email);
+                tmUser.logUserActivity("PasswordReset Requested","by asp.netSessionId: {0}".format(HttpContextFactory.Session.SessionID));
+                return tmUser.SecretData.PasswordResetToken;                                    
+                //tmUser.logUserActivity("Error:PasswordResetToken","wrong email used, by asp.netSessionId: {0}".format(HttpContextFactory.Session.SessionID));                                    
+            }            
             return Guid.Empty;
         }
 

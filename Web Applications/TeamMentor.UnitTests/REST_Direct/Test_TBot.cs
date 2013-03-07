@@ -49,7 +49,7 @@ namespace TeamMentor.UnitTests.REST_Direct
         public void EmailMessages()
         {
             var tbotBrain = new TBot_Brain(TmRest);
-            var html = tbotBrain.ExecuteRazorPage("EmailMessages");
+            var html = tbotBrain.ExecuteRazorPage("View_Emails_Sent");
             Assert.IsNotNull(html);
             html.info();
             //"test webBrowser".popupWindow().add_WebBrowser().set_Html(html).waitForClose();

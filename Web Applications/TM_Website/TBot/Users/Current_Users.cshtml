@@ -16,16 +16,16 @@
             <th>Email</th>   
             <th>Actions</th>         
         </tr>   
-        @foreach (var user in users)
+        @foreach (var user in users.OrderBy((user)=> user.UserName))
         {
             <tr>
-                <td><a href="Edit_User?@user.UserName">@user.UserName</a></td>
+                <td><a href="User_View?userName=@user.UserName">@user.UserName</a></td>
                 <td> @user.UserId</td>
                 <td id="CreatedDate">@user.CreatedDate.fromFileTimeUtc()</td>
                 <td id="Actions">@user.Email</td>
                 <td>
-                    <a href="Edit_User?@user.UserName">edit user</a> | 
-                    <a href="UserData?userName=@user.UserName&max=50">view activity</a>
+                    <a href="User_Edit?@user.UserName">edit user</a> | 
+                    <a href="User_Activities?userName=@user.UserName&max=50">view activity</a>
                 </td>
 
             </tr>

@@ -13,8 +13,9 @@ namespace TeamMentor.CoreLib
             var tmConfig = TMConfig.Current;
             lock (tmConfig)
             {                
-                var defaultAdminUser_Name = tmConfig.TMSecurity.Default_AdminUserName;
-                var defaultAdminUser_Pwd  = tmConfig.TMSecurity.Default_AdminPassword;                
+                var defaultAdminUser_Name  = tmConfig.TMSecurity.Default_AdminUserName;
+                var defaultAdminUser_Pwd   = tmConfig.TMSecurity.Default_AdminPassword;                
+                var defaultAdminUser_Email = tmConfig.TMSecurity.Default_AdminEmail;                
                 var adminUser            = userData.tmUser(defaultAdminUser_Name);
                 
                 if (adminUser.notNull())
@@ -28,7 +29,7 @@ namespace TeamMentor.CoreLib
                     return adminUser.UserID;
                 }				
 
-                var userId = userData.newUser(defaultAdminUser_Name, defaultAdminUser_Pwd, 1);                
+                var userId = userData.newUser(defaultAdminUser_Name, defaultAdminUser_Pwd,defaultAdminUser_Email,1);                
                 userId.tmUser().AccountStatus.ExpirationDate = default(DateTime);               // so that the admin user doesn't expire by default
                 return userId;
             }            
@@ -42,6 +43,10 @@ namespace TeamMentor.CoreLib
         {
             return TM_UserData.Current.tmUser(name);
         }                
+        public static TMUser        tmUser_FromEmail            (this string email)
+        {
+            return TM_UserData.Current.tmUser_FromEmail(email);    
+        }
         public static bool          deleteTmUser                (this TMUser tmUser)
         {
             return TM_UserData.Current.deleteTmUser(tmUser);
@@ -56,11 +61,15 @@ namespace TeamMentor.CoreLib
         }                
         public static int           newUser                     (this TM_UserData userData, string  username, string password)
         {
-            return userData.newUser(username,password, 0);
+            return userData.newUser(username,password, "",0);
         }        
-        public static int           newUser                     (this TM_UserData userData, string  username, string password, int groupId)
+        public static int           newUser                     (this TM_UserData userData, string  username, string password, string email)
         {
-            return userData.newUser(username, password, "","","","", "","","","",groupId);
+            return userData.newUser(username,password, email,0);
+        }        
+        public static int           newUser                     (this TM_UserData userData, string  username, string password, string email, int groupId)
+        {
+            return userData.newUser(username, password, email,"","","", "","","","",groupId);
         }        
         public static int           newUser                     (this TM_UserData userData, string  username, string password, string email, string firstname, string lastname, string note , string title, string company, string country, string state, int groupId)
         {			
@@ -191,12 +200,29 @@ namespace TeamMentor.CoreLib
         }                
         public static TMUser        tmUser              (this TM_UserData userData, string userName)
         {
+            userName = userName.urlDecode();
             return userData.TMUsers.Where((tmUser) => tmUser.UserName == userName).first() ;
         }
         public static TMUser        tmUser              (this TM_UserData userData, int userId)
         {
             return userData.TMUsers.Where((tmUser) => tmUser.UserID == userId).first() ;
         }        
+        public static TMUser        tmUser_FromEmail    (this TM_UserData userData, string eMail)
+        {
+            var tmUsers = userData.TMUsers.where((tmUser) => tmUser.EMail == eMail);
+            switch (tmUsers.size())
+            {
+                case 0:
+                    "Could not find TM User with email'{0}'".error(eMail);
+                    return null;
+                case 1:
+                    return tmUsers.first();
+                default:
+                    "There were multiple users resolved to the email '{0}', so returning null".error(eMail);
+                    return null;
+            }            
+        }
+        
         public static List<TMUser>  tmUsers             (this List<int> usersId)
         {
             return usersId.Select(userId => userId.tmUser()).toList();

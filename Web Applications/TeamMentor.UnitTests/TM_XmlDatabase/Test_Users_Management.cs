@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Security;
 using NUnit.Framework;
 using O2.DotNetWrappers.ExtensionMethods;
 using TeamMentor.CoreLib;
@@ -84,6 +83,37 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             checkPassword("!1234567!", "");                   // no salt
             checkPassword("","");                             // no password and no salt	        
         }
-         
+        [Test] public void ResolveUser_ByNameEmailAndId()
+        {
+            string userName     = "user_".add_RandomLetters(5);            
+            string password     = "pwd_".add_RandomLetters(5);         
+            string email        = "testUser@teammentor.net";
+            var newUserId       = userData.newUser(userName, password, email);
+            var tmUser_ById     = newUserId.tmUser();
+            var tmUser_ByName   = userName.tmUser();
+            var tmUser_ByEmail  = email.tmUser_FromEmail();
+
+            Assert.Greater  (newUserId, 0);
+            Assert.NotNull  (tmUser_ById        ,"tmUser_byId");
+            Assert.NotNull  (tmUser_ByName      ,"tmUser_byName");
+            Assert.NotNull  (tmUser_ByEmail     ,"tmUser_byEmail");
+            Assert.IsTrue   (tmUser_ById == tmUser_ByName &&  tmUser_ById ==tmUser_ByEmail);
+
+            //Creating another user with the same email
+            string userName2 = userName + "AA";            
+            var newUser2Id    = userData.newUser(userName2, password, email);
+            var tmUser2_ById     = newUser2Id.tmUser();
+            var tmUser2_ByName   = userName2.tmUser();
+            var tmUser2_ByEmail  = email.tmUser_FromEmail();
+
+            Assert.Greater  (newUser2Id, 0);
+            Assert.NotNull  (tmUser2_ById        ,"tmUser2_byId");
+            Assert.NotNull  (tmUser2_ByName      ,"tmUser2_byName");
+            Assert.IsNull   (tmUser2_ByEmail     ,"tmUser2_byEmail should not work for repeated emails");
+            Assert.IsTrue   (tmUser2_ById == tmUser2_ByName && tmUser2_ById != tmUser2_ByEmail);
+            Assert.IsTrue   (tmUser2_ById != tmUser_ByName  &&  tmUser2_ById != tmUser_ByEmail);
+        }
+
+
     }
 }

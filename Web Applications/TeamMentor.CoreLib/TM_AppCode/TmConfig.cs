@@ -34,6 +34,7 @@ namespace TeamMentor.CoreLib
             public bool 		Sanitize_HtmlContent         { get; set; }            
             public string 		Default_AdminUserName        { get; set; }
             public string 		Default_AdminPassword        { get; set; }	
+            public string 		Default_AdminEmail           { get; set; }	            
         }
 
         public class WindowsAuthentication_Config
@@ -144,7 +145,8 @@ namespace TeamMentor.CoreLib
                     EvalAccounts_Enabled         = true,
                     EvalAccounts_Days            = 15,
                     Default_AdminUserName        = "admin",
-                    Default_AdminPassword        = "!!tmadmin"
+                    Default_AdminPassword        = "!!tmadmin",
+                    Default_AdminEmail           = "tm_alerts@securityinnovation.com"
                 };
             
 
