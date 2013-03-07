@@ -88,7 +88,7 @@ namespace TeamMentor.CoreLib
                         tmUser.logUserActivity("User Login", tmUser.UserName);
                         userData.ActiveSessions.add(sessionId, tmUser);
 
-                        SendEmails.SendEmailAboutUserToTM("Loggged In", tmUser);
+                        SendEmails.SendEmailAboutUserToTM("Logged In", tmUser);
                         return sessionId;
                     }                    
                 }

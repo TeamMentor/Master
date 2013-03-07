@@ -37,16 +37,17 @@ namespace TeamMentor.CoreLib
                               .add("tbot","/rest/tbot/run/Commands");            
         }
         public bool transfer_Request(string action)
-        {
-            var handled = false;
+        {            
             action = action.lower();
             if (Server_Transfers.hasKey(action))
-            {
+            {                
+                context.Response.ContentType = "text/html";		
                 context.Server.Transfer(Server_Transfers[action]);
-                handled = true;
+                return true;                                        
             }
-            return handled; //end request
+            return false;  // request transfer NOT handled
         }
+
         public bool response_Redirect(string action)
         {
             var handled = false;
