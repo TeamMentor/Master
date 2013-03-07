@@ -69,7 +69,12 @@
                                                     this.topRightMenuDiv.$().add_Link(text).click(callback)
                                                     this.topRightMenuDiv.$().append("    ");
                                                 }		
-                                                
+            ,	add_TMDocsLink 			    : function()
+                                                {
+                                                    this.topRightMenuDiv.$().append("    ");
+                                                    this.topRightMenuDiv.$().add_Link("Docs", "https://docs.teammentor.net")
+                                                                            .attr('target','_blank');                                                     
+                                                }
             ,	add_SimpleLink 				: function(text, link)
                                                 {
                                                     this.topRightMenuDiv.$().add_Link(text, link);
@@ -115,18 +120,20 @@
                                                     this.topRightMenuDiv.$().append("<br/>" + TM.tmVersion);
                                                     
                                                     if(TM.Gui.CurrentUser.loggedIn())			
-                                                        this.topRightMenuDiv.$()
-                                                            //.append("<br/><br/>Logged in as:<b> {0} {1}  ({2}) </b>  ".format(userData.FirstName, userData.LastName, userData.UserName))
+                                                    {                                                                                                                    
+                                                        this.topRightMenuDiv.$()                                                            
                                                             .append("<br/><br/>Logged in as:<b> {0}  </b>  ".format(userData.UserName))
-                                                            .add_Link("About").click(this.aboutTeamMentor);
+                                                            .add_Link("About").click(this.aboutTeamMentor);                                                        
+                                                    }
                                                     else
-                                                    {
+                                                    {                                                                                                                    
                                                         this.topRightMenuDiv.$()
                                                             .append("<br/><br/>")
-                                                            .add_Link("About").click(this.aboutTeamMentor);
+                                                            .add_Link("About").click(this.aboutTeamMentor);                                                        
                                                     }
                                                     TM.HomePageLinks = "Loaded";				
-                                                    //setTimeout(function() { TM.Events.onHomePageLinksLoaded();} , 1);
+                                                    
+                                                    this.add_TMDocsLink();                                                    
                                                     TM.Events.onHomePageLinksLoaded();
                                                 }
             
@@ -147,7 +154,7 @@
                                                     this.topRightMenuDiv.$()
                                                             .absolute()
                                                             .top(5)
-                                                            .right(10).zIndex(10)
+                                                            .right(10).zIndex(10);
                                                 }			
         }
         
