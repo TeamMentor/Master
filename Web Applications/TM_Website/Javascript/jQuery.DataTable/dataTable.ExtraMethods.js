@@ -143,9 +143,15 @@ var getColumnFromArray = function(arrayData, columnIndex)
 	*/	
 	var editGuidanceItemInNewWindow = function(guidanceId)
 		{			
-			//var url = '/html_pages/GuidanceItemEditor/GuidanceItemEditor.html?#id:' + guidanceId;
-			var url = '/editor/' + guidanceId;
-			openUrl(url, "GuidanceItem Editor",850 , 600);
+	        
+            if (TM.Gui.CurrentUser.isEditor())
+			{				
+                window.open('/editor/' + guidanceId,'_blank');
+			}
+	        
+            /*var url = '/editor/' + guidanceId;			
+            openUrl(url, "GuidanceItem Editor",850 , 600);
+	        */
 			/*
 			poppedWindow = window.open('/html_pages/GuidanceItemEditor/GuidanceItemEditor.html?#id:' + guidanceId				
 										  ,'_blank'
@@ -323,7 +329,9 @@ var getColumnFromArray = function(arrayData, columnIndex)
 						};
 					}
 				});
-				  
+	        
+
+            // set table dblClick (to open the article in a new window
 			$("#guidanceItemsTable tbody").dblclick(function(event) 
 				{	
 					if (TM.Gui.disablePopups === true)
