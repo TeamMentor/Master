@@ -25,8 +25,12 @@
 			}
 			else
 			{	
-                if (document.referrer != "" && document.referrer != document.location)
+                if (document.referrer != "" &&                                      // it's valid
+                    document.referrer != document.location &&                       // not the current page
+                    document.referrer.split("/").indexOf("passwordReset") == -1)    // not back into the password Reset page
+                {
                     document.location = document.referrer;
+                }
                 else			
 				    document.location = "/Login_OK" + document.location.search;
 			}
