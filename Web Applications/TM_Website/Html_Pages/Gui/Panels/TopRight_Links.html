@@ -159,7 +159,8 @@
         }
         
     $(document).ready(function () 
-            {				
+            {	
+                TM.Events.onUserDataLoaded	.add(TM.Gui.CurrentUser.checkPasswordExpired);
                 TM.Events.onUserDataLoaded	.add(TM.Gui.TopRightLinks.showUserLinks);
                 TM.Events.onEditModeChange	.add(TM.Gui.TopRightLinks.showUserLinks);				
                 TM.Events.onUserChange		.add(TM.Gui.TopRightLinks.refresh);

@@ -11,7 +11,7 @@ TM.Gui.CurrentUser =
                                         TM.WebServices.WS_Users.currentUser(
                                             function(data) 
                                                 {			
-                                                    var that = TM.Gui.CurrentUser;													
+                                                    var that = TM.Gui.CurrentUser;
                                                     if (data == null)
                                                         that.userData = {};
                                                     else
@@ -42,14 +42,13 @@ TM.Gui.CurrentUser =
         ,   handleUserPostLoginData : function()
                                     {
                                         if (isDefined(TM.Gui.CurrentUser.userData))
-                                        {
-
+                                        {                                            
                                             var postLoginView = TM.Gui.CurrentUser.userData.PostLoginView;
 
                                             if (window.location.hash.length < 2 && typeof(postLoginView) == "string")
                                             {
                                                 window.location.hash = postLoginView;
-                                            }
+                                            }                                                                                                   
                                         }                    
                                     }						
         , 	checkUserLoop			: function()
@@ -69,9 +68,23 @@ TM.Gui.CurrentUser =
                                         that.userData  = {};
                                         that.userRoles = [];
                                         TM.WebServices.WS_Users.logout();	
-                                    }							
+                                    }
+        ,   checkPasswordExpired: function()
+                                    {
+                                        if (isDefined(TM.Gui.CurrentUser.userData))
+                                        {
+                                            if (TM.Gui.CurrentUser.userData.PasswordExpired)
+                                            {
+                                                TM.WebServices.WS_Users.getCurrentUserPasswordExpiryUrl(
+                                                    function(passwordExpiredUrl)
+                                                        {
+                                                            window.location = passwordExpiredUrl;
+                                                        });                                                  
+                                            }
+                                        }
+                                    }
         , 	start_checkUserLoop : function()		{	TM.Gui.CurrentUser.autoCheckUser = true; TM.Gui.CurrentUser.checkUserLoop(); }						
-        , 	stop_checkUserLoop : function()		{	TM.Gui.CurrentUser.autoCheckUser = false; }						
+        , 	stop_checkUserLoop  : function()		{	TM.Gui.CurrentUser.autoCheckUser = false; }						
         , 	get_UserRoles		: function() 		{ 	return TM.Gui.CurrentUser.userRoles;}
         , 	roles				: function() 		{ 	return TM.Gui.CurrentUser.userRoles;} 	
         , 	get_UserData		: function()		{	return TM.Gui.CurrentUser.userData; }

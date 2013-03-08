@@ -169,7 +169,8 @@ namespace TeamMentor.CoreLib
                     var newPasswordHash =  tmUser.createPasswordHash(newPassword);
                     if (newPasswordHash != tmUser.SecretData.PasswordHash)
                     {
-                        tmUser.SecretData.PasswordHash = tmUser.createPasswordHash(newPassword);
+                        tmUser.SecretData.PasswordHash       = tmUser.createPasswordHash(newPassword);
+                        tmUser.AccountStatus.PasswordExpired = false;
                         tmUser.saveTmUser();
                         tmUser.SecretData.PasswordResetToken = Guid.Empty;
                         return true;
@@ -200,7 +201,7 @@ namespace TeamMentor.CoreLib
         }                
         public static TMUser        tmUser              (this TM_UserData userData, string userName)
         {
-            userName = userName.urlDecode();
+            //userName = userName.urlDecode();
             return userData.TMUsers.Where((tmUser) => tmUser.UserName == userName).first() ;
         }
         public static TMUser        tmUser              (this TM_UserData userData, int userId)

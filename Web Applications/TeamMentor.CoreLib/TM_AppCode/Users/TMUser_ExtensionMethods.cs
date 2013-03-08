@@ -84,8 +84,7 @@ namespace TeamMentor.CoreLib
             }
             return tmUser.SecretData.SingleUseLoginToken;
         }
-
-        public static bool sendPasswordReminder(this string email)
+        public static bool      sendPasswordReminder(this string email)
         {
             var tmUser = email.tmUser_FromEmail();
             if (tmUser.isNull())
@@ -95,8 +94,7 @@ namespace TeamMentor.CoreLib
                 return SendEmails.SendPasswordReminderToUser(tmUser, resetToken);
             return false;
         }
-
-        public static Guid current_PasswordResetToken(this string email)
+        public static Guid      current_PasswordResetToken(this string email)
         {
             var tmUser = email.tmUser_FromEmail();
             if (tmUser.notNull())
@@ -104,7 +102,6 @@ namespace TeamMentor.CoreLib
             "[current_PasswordResetToken] failed for email= {0}".error(email);
             return Guid.Empty;
         }
-
         public static Guid      current_PasswordResetToken(this TMUser tmUser, bool reset = false)
         {
             if (tmUser.notNull())
@@ -120,6 +117,19 @@ namespace TeamMentor.CoreLib
             }            
             return Guid.Empty;
         }
-
+        public static string    passwordExpiredUrl(this TM_User user)
+        {
+            if (user.notNull())
+            {
+                var tmUser = user.UserName.tmUser();
+                if (tmUser.notNull())
+                    if (tmUser.password_Expired())
+                    {
+                        tmUser.logUserActivity("Password Expired", "Created password Reset Url for user");
+                        return "/passwordReset/{0}/{1}".format(user.UserName, tmUser.current_PasswordResetToken());
+                    }                                    
+            }
+            return "/error";
+        }
     }	
 }

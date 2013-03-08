@@ -50,22 +50,29 @@ namespace TeamMentor.CoreLib
         }
         public static  Tracking_Application saveLog(this Tracking_Application tracking)
         {
-            var logData = O2.Kernel.PublicDI.log.LogRedirectionTarget.prop("LogData").str() ;
-            if (logData.notNull())
+            try
             {
-                //tracking.Name        = DateTime.Now.str().safeFileName();
-                var logFile = tracking.LogFilePath;
-                //var logFile = tracking.Location.pathCombine("ApplicationLog.txt");
-                "Saving Application Tracking Log to: {0}".info(logFile);
+                var logData = O2.Kernel.PublicDI.log.LogRedirectionTarget.prop("LogData").str() ;
+                if (logData.notNull())
+                {
+                    //tracking.Name        = DateTime.Now.str().safeFileName();
+                    var logFile = tracking.LogFilePath;
+                    //var logFile = tracking.Location.pathCombine("ApplicationLog.txt");
+                    "Saving Application Tracking Log to: {0}".info(logFile);
 
-                var tmArticle = new TeamMentor_Article
-                    {
-                        Metadata = {Title = "Log Files"},
-                        Content = {Data = {Value = logData}}
-                    };
-                tmArticle.saveAs(logFile + ".xml");
+                    var tmArticle = new TeamMentor_Article
+                        {
+                            Metadata = {Title = "Log Files"},
+                            Content = {Data = {Value = logData}}
+                        };
+                    tmArticle.saveAs(logFile + ".xml");
 
-                logData.saveAs(logFile);
+                    logData.saveAs(logFile);
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.log("[Tracking_Application] in saveLog");
             }
             return tracking;
         }

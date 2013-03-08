@@ -31,32 +31,29 @@ namespace TeamMentor.CoreLib
                             .add("articleeditor", "/html_pages/GuidanceItemEditor/GuidanceItemEditor.html")
                             .add("passwordreset", "/Html_Pages/Gui/Pages/passwordReset.html")
                             .add("passwordforgot", "/Html_Pages/Gui/Pages/passwordForgot.html")
+                            .add("passwordexpired", "/Html_Pages/Gui/Pages/passwordReset.html")                            
                             .add("error", "/Html_Pages/Gui/Pages/errorPage.html");
 
             Response_Redirects.add("csharprepl", "/html_pages/ControlPanel/CSharp_REPL/Repl.html")
-                              .add("tbot","/rest/tbot/run/Commands");            
+                              .add("tbot","/rest/tbot/run/Commands")
+                              .add("asmx", "/aspx_pages/TM_WebServices.asmx")
+                              .add("wcf", "/rest/help");            
         }
-        public bool transfer_Request(string action)
+        public void transfer_Request(string action)
         {            
             action = action.lower();
             if (Server_Transfers.hasKey(action))
             {                
                 context.Response.ContentType = "text/html";		
-                context.Server.Transfer(Server_Transfers[action]);
-                return true;                                        
-            }
-            return false;  // request transfer NOT handled
+                context.Server.Transfer(Server_Transfers[action],true);   // will throw "Thread was being aborted exception                
+            }            
         }
 
-        public bool response_Redirect(string action)
-        {
-            var handled = false;
+        public void response_Redirect(string action)
+        {            
             if (Response_Redirects.hasKey(action))
-            {
                 context.Response.Redirect(Response_Redirects[action]);
-                handled = true;
-            }
-            return handled; //end request
+                
         }
 
         /*public bool transfer_TeamMentorGui()
@@ -127,8 +124,8 @@ namespace TeamMentor.CoreLib
             }
             catch (Exception ex)
             {
-                if (ex.Message != "Thread was being aborted.")
-                    ex.log("[in handleUrlRewrite]");
+                if (ex.Message != "Thread was being aborted.")                    
+                    ex.logWithStackTrace("[at handleUrlRewrite]");
             }
         }
         public void handleUrlRewrite(string path)
@@ -141,8 +138,10 @@ namespace TeamMentor.CoreLib
                 var action = splitedPath.shift();   // extract first element               
                 //var data = splitedPath.join("/");   // rejoin the rest
                 var data = String.Join(",", splitedPath.ToArray());
-                if (action.valid() && handleRequest(action, data))    //if we did process it , end the request here
-                    endResponse();                    
+                if (action.valid())
+                    handleRequest(action, data);
+                //if (action.valid() && handleRequest(action, data))    //if we did process it , end the request here
+                //    endResponse();                    
             }                        
         }
         public bool shouldSkipCurrentRequest()
@@ -178,20 +177,15 @@ namespace TeamMentor.CoreLib
                 tmWebServices = new TM_WebServices(true);       // enable webservices access (and security checks with CSRF disabled)
                 action = Encoder.HtmlEncode(action);
                 data = Encoder.HtmlEncode(data).replace("%20"," ");
+
                 if (action.isGuid() & data.inValid())                
                     return redirectTo_Article(action);
 
-                if (transfer_Request(action.lower()))
-                    return false;                       // end request
-                if (response_Redirect(action.lower()))
-                    return true;                        // end request
+                transfer_Request(action.lower());       // throw "Thread was being aborted." exception if worked
+                response_Redirect(action.lower());      // throw "Thread was being aborted." exception if worked
                 
                 switch (action.lower())
-                {
-                    //case "gui":
-                    //case "teammentor":
-                    //    return transfer_Request(action.lower());
-                        //return transfer_TeamMentorGui();
+                {                    
                     case "raw":                        
                         return handleAction_Raw(data);                                                      
                     case "html":
@@ -219,11 +213,7 @@ namespace TeamMentor.CoreLib
                     case "admin_extra":
                         return redirectTo_ControlPanel(true);
                     case "reload_config":
-                        return reload_Config();
-                    /*case "passwordreset":
-                        return transfer_PasswordReset();
-                    case "passwordforgot":
-                        return transfer_PasswordForgot();*/
+                        return reload_Config();                    
                     case "login":
                         return redirect_Login();
                     case "login_ok":
@@ -270,13 +260,9 @@ namespace TeamMentor.CoreLib
             catch (Exception ex)
             {
                 if (ex is SecurityException)
-                    return redirect_Login();
-              //      return redirectTo_Login();
-                if (ex.Message != "Thread was being aborted.")
-                {
-                    ex.log();
-                    //context.Response.Write("<h2>Error: {0} </h2>".format(ex.Message));
-                }
+                    return redirect_Login();              
+                if (ex.Message != "Thread was being aborted.")                
+                    ex.logWithStackTrace("at handleRequest");                                    
             }                                    
             return false;			
         }
@@ -566,11 +552,11 @@ namespace TeamMentor.CoreLib
         }*/
         
         //utils
-        public void endResponse()
+        /*public void endResponse()
         { 
             context.Response.Flush();
             context.Response.End();
-        }
+        }*/
         private bool reloadCache_and_RedirectToHomePage()
         {
             tmWebServices.XmlDatabase_ReloadData();
@@ -621,16 +607,22 @@ namespace TeamMentor.CoreLib
         }
         public bool handle_LoginOK()
         {
-            var loginReferer = context.Request.QueryString["LoginReferer"].replace("//","/");
-            var referTarget = (loginReferer.notNull() && loginReferer.StartsWith("/"))
-                                    ? loginReferer
-                                    : "/";
             // ensures we are redirecting into the current domain (and fixes unvalidated redirect vuln in pre 3.3)
-            var currentRequest = context.Request.Url;
-            if (currentRequest.notNull())
+            var currentRequestUrl = context.Request.Url;
+            if (currentRequestUrl.notNull())
             {
-                var sameDomainUrl = currentRequest.str().remove(currentRequest.PathAndQuery) + referTarget;
-                context.Response.Redirect(sameDomainUrl);
+                var loginReferer = context.Request.QueryString["LoginReferer"]   // get user provided redirect                                                      
+                                                  .replace("//","/");            // prevent urls that start with  //
+                if (loginReferer.htmlEncode() != loginReferer )                  // prevent html tags
+                    return false;
+                var referTarget = (loginReferer.notNull() && loginReferer.StartsWith("/"))
+                                    ? loginReferer                              
+                                    : "/";                                       // default to redirect to /
+                
+                // need to calculate urlWithoutPathAndQuery since the URL class doesn't provide this value
+                var urlWithoutPathAndQuery = currentRequestUrl.AbsoluteUri.remove(currentRequestUrl.PathAndQuery);                
+                var sameDomainUrl =  urlWithoutPathAndQuery.append(referTarget);  // create redirect URL
+                context.Response.Redirect(sameDomainUrl);                         // redirect
             }
             return true;
         }

@@ -26,8 +26,7 @@ namespace TeamMentor.UnitTests.CoreLib
             handleUrlRequest = new HandleUrlRequest();
         }
 
-        [Test]
-        public void TestMultipleActionInvokes()
+        [Test] public void TestMultipleActionInvokes()
         {
             
             // ReSharper disable InconsistentNaming 
@@ -44,9 +43,7 @@ namespace TeamMentor.UnitTests.CoreLib
 
             //handleUrlRequest.handleRequest("TeamMentor", "");            
         }
-
-        [Test]
-        public void TestRedirectToLoginPage()
+        [Test] public void TestRedirectToLoginPage()
         {
             handleUrlRequest.redirectTo_Login();
             var redirecting = context.Response.IsRequestBeingRedirected;
@@ -58,9 +55,7 @@ namespace TeamMentor.UnitTests.CoreLib
             Assert.IsFalse    (redirecting, "redirecting after Setup");
             Assert.AreNotEqual("/Login",context.Response.RedirectLocation,"Login redirect location, after Setup");                        
         }
-
-        [Test]
-        public void CheckRedirectionOnAdminFunction()
+        [Test] public void CheckRedirectionOnAdminFunction()
         {
             var targetUrl = "https://localhost/virtualarticles".uri();
             var expectedRedirect = "/Html_Pages/Gui/Pages/login.html?LoginReferer=/virtualarticles";
@@ -71,17 +66,14 @@ namespace TeamMentor.UnitTests.CoreLib
             Assert.IsTrue   (redirecting                                        , "redirecting after call to Admin method");
             Assert.AreEqual (expectedRedirect,context.Response.RedirectLocation ,"Login redirect location,  after call to Admin");
         }
-
-        [Test]
-        public void CheckServerTransferOnPasswordReset()
+        [Test] public void CheckServerTransferOnPasswordReset()
         {
             var resetToken = Guid.NewGuid().str();
             handleUrlRequest.handleRequest("passwordreset", resetToken);
             var expectedRedirect = "/Html_Pages/Gui/Pages/passwordReset.html";
             Assert.AreEqual (expectedRedirect,context.Response.RedirectLocation ,"Password redirect location");
         }
-        [Test]
-        public void Check_ServerTransfers()
+        [Test] public void Check_ServerTransfers()
         {
             var serverTransfers = HandleUrlRequest.Server_Transfers;
             
@@ -93,9 +85,7 @@ namespace TeamMentor.UnitTests.CoreLib
                 Assert.AreEqual(mapping.Value, context.Response.RedirectLocation);                
             }
         }
-
-        [Test]
-        public void Check_ResponseRedirects()
+        [Test] public void Check_ResponseRedirects()
         {
             var responseRedirects = HandleUrlRequest.Response_Redirects;            
             Assert.IsNotEmpty(responseRedirects);
@@ -107,6 +97,56 @@ namespace TeamMentor.UnitTests.CoreLib
                 "{0} -> {1} : {2}".info(mapping.Key, mapping.Value, context.Response.RedirectLocation);
                 Assert.IsTrue(context.Response.IsRequestBeingRedirected , "IsRequestBeingRedirected");                
                 Assert.AreEqual(mapping.Value, context.Response.RedirectLocation);                
+            }
+        }
+        [Test] public void Check_Redirect_Security_OkRedirects()
+        {            
+            var targetServer    = "http://x.y.z";            
+            var okRedirects = new Dictionary<string, string>()      
+                                         //   requestUrl                   expected redirect
+                                        .add("/test"                    ,"/test")
+                                        .add("/test/123"                ,"/test/123")
+                                        .add("/test?param=12"           ,"/test?param=12")
+                                        .add("//test"                   ,"/test")                                                                                
+                                        .add("/newline_\x0a_\n char0_\0","/newline_\n_\n char0_\0")
+                                        .add("/newline_".line()         ,"/newline_\r\n")
+                                        .add("aaa/bbb"                  ,"/")
+                                        .add("http://www.google.com"    ,"/")
+                                        .add("//www.google.com"         ,"/www.google.com");
+            
+            var request               = context.Request;
+            var response              = context.Response;
+            moqHttpContext.RequestUrl = targetServer.append("/some/path").uri();            
+            
+            foreach (var item in okRedirects)
+            {         
+                response.Redirect("");                                      // reset redirection                
+                Assert.IsFalse (response.IsRequestBeingRedirected);
+                request.QueryString["LoginReferer"] = item.Key;             // set redirection target
+                var result     = handleUrlRequest.handle_LoginOK();         // trigger redirect                
+                Assert.IsTrue  (result, "result for: " + item.Key);         // check result and redirect data
+                Assert.IsTrue  (response.IsRequestBeingRedirected);       
+                Assert.AreEqual(targetServer + item.Value,response.RedirectLocation, 
+                                "response.RedirectLocation for: {0}".format(item.Value));                                
+            }
+        }
+        [Test] public void Check_Redirect_Security_FailedRedirects()
+        {
+            var targetServer    = "http://x.y.z";            
+            var failedRedirects = new List<string>
+                                        {
+                                            "/test<h1>xss</h1>",                                            
+                                            "<",">", "&", "'", "\"" 
+                                        };
+                                                                                               
+            var request               = context.Request;
+            moqHttpContext.RequestUrl = targetServer.append("/some/path").uri();            
+                        
+            foreach (var item in failedRedirects)
+            {
+                request.QueryString["LoginReferer"] = item;                 // set redirection target
+                var result     = handleUrlRequest.handle_LoginOK();         // trigger redirect     
+                Assert.IsFalse  (result, "didn't fail for: " + item);       // check result and redirect data
             }
         }
     }

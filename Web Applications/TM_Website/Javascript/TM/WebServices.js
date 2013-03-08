@@ -254,6 +254,12 @@ TM.WebServices.WS_Users.passwordForgot = function(email, callback)
                 });		
     };
 
+TM.WebServices.WS_Users.getCurrentUserPasswordExpiryUrl = function(callback) 
+    {        
+        var params =  { } ;
+        TM.WebServices.Helper.invoke_TM_WebService('GetCurrentUserPasswordExpiryUrl', {}, callback);             
+    };
+
 TM.WebServices.WS_Users.currentUser = function(callback)
     {				
         TM.WebServices.Helper.invoke_TM_WebService('Current_User', {} , callback);		

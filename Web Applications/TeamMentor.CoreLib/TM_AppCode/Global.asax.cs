@@ -44,7 +44,20 @@ namespace TeamMentor.CoreLib
         
         protected void Application_BeginRequest			(object sender, EventArgs e)		
         {
-            TMEvents.OnApplication_BeginRequest.invoke();            
+            //TMEvents.OnApplication_BeginRequest.invoke();            
+            foreach (var action in TMEvents.OnApplication_BeginRequest)  // we need to do this loop manually due to the "Thread was being aborted" exception on request.redirects or server.transfers
+            {
+                try
+                {
+                    action.Invoke();
+                }
+                catch (Exception ex)
+                {
+                    if (ex.Message != "Thread was being aborted.") // as per the recommendation in http://support.microsoft.com/kb/312629
+                        ex.logWithStackTrace("[in Application_BeginRequest]");
+                }
+                
+            }
         }
 
         protected void Session_Start					(object sender, EventArgs e)        

@@ -161,6 +161,21 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             Assert.AreNotEqual(Guid.Empty, sessionId_NewPwd , "sessionId with new password");
             Assert.AreEqual   (Guid.Empty, sessionId_OldPwd , "sessionId with old password");
         }
+        [Test] public void PasswordExpiry()
+        {
+            var newUser       = newTempUser();
+            var newPassword   = "123SAFsi!";
+            var oldPassword   = newUser.password;
+            var tmUser        = tmWebServices.CreateUser(newUser).tmUser();
+
+            var sessionId   = tmWebServices.Login(newUser.username, newUser.password);
+            HttpContextFactory.Context     .addCookieFromResponseToRequest("Session");
+            var currentUser = tmWebServices.Current_User();
+
+            Assert.AreNotEqual(Guid.Empty, sessionId , "sessionId was empty");
+            Assert.NotNull    (currentUser           ,"current user was null");
+            //passwordExpiredUrl
+        }
         //Helper methods
         public NewUser newTempUser()
         {

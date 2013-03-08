@@ -16,7 +16,7 @@ namespace TeamMentor.CoreLib
             TMEvents.OnApplication_Start        .add(Application_Start);
             TMEvents.OnApplication_End          .add(Application_End);
             TMEvents.OnApplication_Error        .add(Application_Error);
-            TMEvents.OnApplication_BeginRequest.add(Application_BeginRequest);
+            TMEvents.OnApplication_BeginRequest .add(Application_BeginRequest);
         }
         public void Session_Start()
         {
@@ -52,8 +52,9 @@ namespace TeamMentor.CoreLib
                // HttpContextFactory.Response.Redirect("~/Error/Permission.aspx");
             }
                 
-            "LastError: {0}".error(lastError);
+            "[TM][Application_Error]: {0}".error(lastError);
             TrackingApplication.saveLog();
+            HttpContextFactory.Response.Redirect("/error");
         }           
         public void Application_BeginRequest()
         {

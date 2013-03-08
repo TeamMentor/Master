@@ -148,8 +148,13 @@ namespace TeamMentor.CoreLib
         {
             try
             {
-                if(sessionId.validSession())
-                    return TM_UserData.Current.ActiveSessions[sessionId];
+                if (sessionId.validSession())
+                {
+                    var tmUser = TM_UserData.Current.ActiveSessions[sessionId];
+                    if (tmUser.AccountStatus.UserEnabled)
+                        return tmUser;
+                    tmUser.logUserActivity("User Disabled", "Didn't provide session Id for logged in user");
+                }
             }
             catch (Exception ex)
             {
