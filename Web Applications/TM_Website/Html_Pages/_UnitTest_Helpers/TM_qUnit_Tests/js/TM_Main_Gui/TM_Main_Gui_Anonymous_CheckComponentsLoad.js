@@ -14,7 +14,7 @@ asyncTest("Check if main panels where loaded", function()
 		equals($(".LibraryTree"			).length, 1, "found library tree");
 		equals($("#pivotPanels"			).length, 1, "found pivot panels");
 		equals($("#guidanceItems"		).length, 1, "found guidance items");
-		equals($("#selectedGuidanceItem").length, 1, "found selected guidance item");
+		equals($("#selectedGuidanceItem").length, 1, "found selected Article");
 		start();
 	});	
 

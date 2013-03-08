@@ -172,7 +172,7 @@ namespace TeamMentor.CoreLib
 
         [EditArticles]  public static TM_Library new_TmLibrary(this TM_Xml_Database tmDatabase)
         {
-            return tmDatabase.new_TmLibrary("temp_lib_{0}".format(6.randomLetters()));
+            return tmDatabase.new_TmLibrary("Default_Library_{0}".format(6.randomNumbers()));
         }		
         [EditArticles]  public static TM_Library new_TmLibrary(this TM_Xml_Database tmDatabase, string libraryCaption )
         {

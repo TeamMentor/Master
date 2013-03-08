@@ -124,6 +124,7 @@ namespace TeamMentor.CoreLib
                 "[xmlDB_Save_GuidanceExplorer] saving GuidanceExplorer '{0}' to {1}'".debug(caption, libraryPath);			
                 if (libraryPath.notNull())
                 {
+                    libraryPath.parentFolder().createDir(); // ensure library folder exists
                     guidanceExplorer.Save(libraryPath);
                     if (reloadGuidanceItemsMappings)
                         tmDatabase.setGuidanceExplorerObjects();			
@@ -227,10 +228,10 @@ namespace TeamMentor.CoreLib
         {
             if (tmDatabase.UsingFileStorage)
             { 
-                var libraryPath = TM_Xml_Database.Current.Path_XmlLibraries.pathCombine("{0}\\{0}.xml".format(caption));			
+                var libraryPath = TM_Xml_Database.Current.Path_XmlLibraries.pathCombine("{0}.xml".format(caption));
                 if (libraryPath.fileExists())
                     return libraryPath;
-                libraryPath = TM_Xml_Database.Current.Path_XmlLibraries.pathCombine("{0}.xml".format(caption));
+                libraryPath = TM_Xml_Database.Current.Path_XmlLibraries.pathCombine("{0}\\{0}.xml".format(caption));                
                 //if (libraryPath.fileExists())
                 return libraryPath;
                 //"[xmlDB_LibraryPath] could not find library path for library called '{0}'".info(caption);

@@ -19,7 +19,7 @@ namespace urn.microsoft.guidanceexplorer
 
         public void Save(string xmlFile)
         {
-            xmlFile.save(xmlFile);
+            this.saveAs(xmlFile);
         }
     }
     public class Library

@@ -66,6 +66,10 @@ namespace TeamMentor.CoreLib
         {
             tmXmlDatabase.GuidanceExplorers_XmlFormat = tmXmlDatabase.Path_XmlLibraries.getGuidanceExplorerObjects();
             tmXmlDatabase.load_GuidanceItemsFromCache();
+
+            //ensure that there is at least one library 
+            if (tmXmlDatabase.tmLibraries().empty())                           
+                tmXmlDatabase.new_TmLibrary();
             return tmXmlDatabase;
         }
         public static TM_Xml_Database                    setGuidanceExplorerObjects     (this TM_Xml_Database tmDatabase)
@@ -162,6 +166,7 @@ namespace TeamMentor.CoreLib
 
             foreach(var xmlFile in guidanceExplorersXmlFiles)
                 guidanceExplorers.addGuidanceExplorerObject(xmlFile);
+                        
             return guidanceExplorers;			
         }		
         public static string                             getCacheLocation               (this TM_Xml_Database tmDatabase) //, TM_Library library)

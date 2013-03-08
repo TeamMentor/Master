@@ -25,9 +25,10 @@ TM.Gui.DataTable.showEditOptions = function()
         return TM.Gui.editMode && TM.Gui.CurrentUser.isEditor();
     }
 
-    TM.Gui.DataTable.reDraw = function () {
+TM.Gui.DataTable.reDraw = function () 
+    {
         if (isDefined(TM.Gui.DataTable.currentDataTable)) {
-            var dataTableYOffset = (TM.Gui.editMode === true) ? 85 : 60;
+            var dataTableYOffset = (TM.Gui.editMode === true) ? 85 : 70;
             $(".dataTables_scrollBody").height($("#gui_CenterCenter").height() - dataTableYOffset);
             TM.Gui.DataTable.currentDataTable.fnAdjustColumnSizing();
             TM.Gui.DataTable.currentDataTable.fnDraw();
@@ -107,7 +108,7 @@ TM.Gui.DataTable.createDataTableWithGuidanceItems = function (targetDiv, dataTab
 
         //newDataTable.aaSorting = [ [1,'asc'] ];	
         var tableOptions = TM.Gui.DataTable.tableOptions;
-        var dataTableYOffset = (TM.Gui.editMode === true) ? 85 : 60;
+        var dataTableYOffset = (TM.Gui.editMode === true) ? 85 : 70;
         tableOptions.sScrollY = $("#gui_CenterCenter").height() - dataTableYOffset;
         tableOptions.bPaginate = (dataTableData.aaData.length > tableOptions.maxBeforePaginate);
         tableOptions.aoColumns = dataTableData.aoColumns;
@@ -184,33 +185,40 @@ TM.Gui.DataTable.loadDataIntoDataTable_Step1 = function(dataTableData)
         }
         else
         {				
-            var loadItems = function(){								
-                                        if(TM.abortTableDataLoad)																				
-                                        {
-                                            _currentDataTable.fnClearTable(); 
-                                            _currentDataTable.fnAddData(["","Refreshing....","","","","",""]);                                             
-                                            return;										
-                                        }										
-                                         //$("#nowShowingLabel").html(
-                                         setTimeout(function() 
-                                                        {
-                                                            TM.Gui.DataTableViewer.set_Title("Loaded " + (totalItemstoLoad - itemsToAdd.length) + " out of " + totalItemstoLoad);
-                                                        }, 10);
-                                         var slice = itemsToAdd.splice(0,500)                                         
-                                         _currentDataTable.fnAddData(slice  );
+            var loadItems = function()  
+                {								
+                    if(TM.abortTableDataLoad)																				
+                    {
+                        _currentDataTable.fnClearTable(); 
+                        _currentDataTable.fnAddData(["","Refreshing....","","","","",""]);                                             
+                        return;										
+                    }										
+                    //$("#nowShowingLabel").html(
+                    setTimeout(function() 
+                                {
+                                    TM.Gui.DataTableViewer.set_Title("Loaded " + (totalItemstoLoad - itemsToAdd.length) + " out of " + totalItemstoLoad);
+                                }, 10);
+                    try
+                    {
+                         var slice = itemsToAdd.splice(0,500)                                         
+                            _currentDataTable.fnAddData(slice  );
                                          
-                                         if (itemsToAdd.length > 0)
-                                              setTimeout(loadItems, 25);
-                                         else
-                                         {
-                                             //$("#nowShowingLabel").html(
-                                             TM.Gui.DataTableViewer.set_Title("Showing " + totalItemstoLoad + " items");											 
+                            if (itemsToAdd.length > 0)
+                                setTimeout(loadItems, 25);
+                            else
+                            {
+                                //$("#nowShowingLabel").html(
+                                TM.Gui.DataTableViewer.set_Title("Showing " + totalItemstoLoad + " items");											 
                                              
-                                            dataTableLoadComplete();
-                                         }
-                                        };
+                                dataTableLoadComplete();
+                            }
+                    } catch(e)
+                    {
+                            console.log(e);
+                    } 
+                }                         
             loadItems();
-        }		
+        };		
         setTimeout(function() { TM.Gui.DataTable.loadDataIntoDataTable_Step3()}, 25 ) ;
     }
 
@@ -303,11 +311,14 @@ TM.Gui.DataTable.addDataTableButtons = function()
                                            
             //hide it for now since it is not implemented
             //if(typeof(TM.Gui.selectedNodeData.viewId) != "undefined" || typeof(TM.Gui.selectedNodeData.folderId) != "undefined" )	
-            if(TM.Gui.selectedNodeData.__type != "TeamMentor.CoreLib.Library_V3")	 
-                "button_DeleteGuidanceItemsFromLibrary".$().hide();
-            //if (typeof(TM.Gui.selectedNodeData) != "undefined")
-            if(TM.Gui.selectedNodeData.__type != "TeamMentor.CoreLib.View_V3")
-                    "button_RemoveGuidanceItemsFromView".$().hide();
+            if(TM.Gui.selectedNodeData !== undefined)
+            {
+                if(TM.Gui.selectedNodeData.__type != "TeamMentor.CoreLib.Library_V3")	 
+                    "button_DeleteGuidanceItemsFromLibrary".$().hide();
+                //if (typeof(TM.Gui.selectedNodeData) != "undefined")
+                if(TM.Gui.selectedNodeData.__type != "TeamMentor.CoreLib.View_V3")
+                        "button_RemoveGuidanceItemsFromView".$().hide();
+             }       
             "button".$().button(); 
             "button".$().css("font-size",'10px');
         
@@ -330,7 +341,7 @@ TM.Gui.DataTable.addDataTableButtons = function()
                                             "<span id=></span>"
             */
         }
-    }
+    };
 
 TM.Gui.DataTable.raiseEventForEmptyTable = function()
     {
