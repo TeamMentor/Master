@@ -12,7 +12,13 @@
             //$(function() { TM.Debug.FireBugLite.open() });
                         
             TM.Gui.GuidanceItemEditor_Page = "";
+
+            function openNotepadEditor()
+            {
+                window.location = "/notepad/" + loadedGuidanceItem.Metadata.Id;
+            }
             
+
             function showEditor_Elrte()
             {
                 TM.Gui.GuidanceItemEditor_Page = "/html_pages/GuidanceItemEditor/Elrte/GuidanceItemEditor_Elrte.html".add_TimeToUrl();
@@ -519,9 +525,10 @@
                 
                 $("button").button();
                 
-                $("#backToViewer").click(openGuidanceItemViewer);
-                
+                $("#backToViewer").click(openGuidanceItemViewer);                
                 $("#saveChanges").click(saveEditorCode);
+                $("#editSource").click(openNotepadEditor);
+                
                 //css changes
                 "ItemTitle".$().css('width', '100%');
                 $(".ui-autocomplete-input").width(140) ;
@@ -550,10 +557,11 @@
     <div id="ScriptLoader"> </div>
     <div id="guiWithPanels"></div>	
 
-    <div class="EditButtons">
-        <span id="backToViewer" class="IEButton">View Article</span>
-        <span id="saveChanges" class="IEButton">Save Changes</span>
-    </div>
+        <div class="EditButtons">
+            <span id="editSource" class="IEButton">Edit Source</span>
+            <span id="backToViewer" class="IEButton">View Article</span>
+            <span id="saveChanges" class="IEButton">Save Changes</span>
+        </div>
     <span id="linksToEditors"></span>
         <br/>	
         <!-- GuidanceItem properties-->
