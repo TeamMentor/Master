@@ -308,7 +308,7 @@ namespace TeamMentor.CoreLib
                 "[getXmlFilePathForGuidanceId] When creating a new GuidanceItem could not find library for libraryId: {0}".error(libraryId);
                 return null;
             }
-            var newGuidanceVirtualFolder = "{0}\\_GuidanceItems".format(tmLibrary.Caption);
+            var newGuidanceVirtualFolder = "{0}\\Articles".format(tmLibrary.Caption);
             // if not store it on a _GuidanceItems folder
             var xmlPath = TM_Xml_Database.Current.Path_XmlLibraries
                                          .pathCombine(newGuidanceVirtualFolder)
