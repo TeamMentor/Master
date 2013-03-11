@@ -1,17 +1,7 @@
-using System;
-using System.Xml;
-using System.Linq;
-using System.Collections.Generic;
-using System.Diagnostics;    
 using NUnit.Framework;  
-using O2.Kernel;   
-using O2.Kernel.ExtensionMethods; 
 using O2.DotNetWrappers.ExtensionMethods;
-using O2.XRules.Database.Utils;
-using O2.DotNetWrappers.DotNet;  
-//O2File:../../Test_TM_Config.cs
 
-namespace O2.SecurityInnovation.TeamMentor
+namespace TeamMentor.UnitTests.WebSite_Content
 {		  
 	[TestFixture]  
     public class Test_TM_WebServices_WebConfig
@@ -19,8 +9,18 @@ namespace O2.SecurityInnovation.TeamMentor
     	public string WebConfigFile { get; set; }
     	
     	public Test_TM_WebServices_WebConfig()    
-    	{    		    		    		
-    		WebConfigFile = Test_TM.tmWebSiteFolder.pathCombine("web.config");
+    	{    		
+            var assembly		 = this.type().Assembly;
+
+            var dllLocation		 = assembly.CodeBase.subString(8);
+            var webApplications  = dllLocation.parentFolder()
+                                              .pathCombine(@"\..\..\..");
+            var tmWebsite 		 = webApplications.pathCombine("TM_Website");
+            		
+    		WebConfigFile        = tmWebsite.pathCombine("web.config");
+
+            Assert.IsTrue(WebConfigFile.fileExists());
+
     	} 
     	    	
     	[Test]  
@@ -42,17 +42,6 @@ namespace O2.SecurityInnovation.TeamMentor
 			Assert.AreNotEqual(debugValue.lower() ,"true", "system.web / compilation / debug attribute value should not be true");		
 		}
 		
-/*		[Test]  
-    	public void system_web_compilation_customErrors_IS_NOT_Off()
-    	{   
-    		var customErrors = WebConfigFile.xRoot().element("system.web").element("customErrors");
-    		Assert.IsNotNull(customErrors, "customErrors element");
-    		var modeAttribute = customErrors.attribute("mode");
-    		Assert.IsNotNull(modeAttribute, "mode attribute");			
-			var value = modeAttribute.value();
-			Assert.AreNotEqual(value.lower() ,"off", "system.web / customErrors / mode value should not be Off");		
-		}					
-*/		
 		[Test]  
     	public void system_web_compilation_customErrors_IS_Off()
     	{   

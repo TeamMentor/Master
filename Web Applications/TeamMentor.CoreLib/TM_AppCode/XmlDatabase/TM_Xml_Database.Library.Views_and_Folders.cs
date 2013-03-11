@@ -474,7 +474,7 @@ namespace TeamMentor.CoreLib
     
     public static class TM_Xml_Database_ExtensionMethods_XmlDataSources_Views_and_Folders_Guid_Fixes
     {
-        public static TM_Xml_Database                               ensureFoldersAndViewsIdsAreUnique       (this TM_Xml_Database tmDatabase)
+        public static TM_Xml_Database                               ensureFoldersAndViewsIdsAreUnique       (this TM_Xml_Database tmDatabase, bool verbose = false)
         {
             var conflictsDetected = 0;
             "in ensureFoldersAndViewsIdsAreUnique".info();
@@ -484,9 +484,11 @@ namespace TeamMentor.CoreLib
                 if(mappedItems.contains(view.id))
                 {
                     conflictsDetected++;
-                    "[ensureFoldersAndViewsIdsAreUnique] there was repeated viewId for view {0}: {1}".error(view.caption, view.id);
+                    if (verbose)
+                        "[ensureFoldersAndViewsIdsAreUnique] there was repeated viewId for view {0}: {1}".error(view.caption, view.id);
                     view.id = Guid.NewGuid().str();
-                    "[ensureFoldersAndViewsIdsAreUnique] new Guid assigned to view {0}: {1}".debug(view.caption, view.id);					
+                    if (verbose)
+                        "[ensureFoldersAndViewsIdsAreUnique] new Guid assigned to view {0}: {1}".debug(view.caption, view.id);					
                 }					
                 mappedItems.Add(view.id);
             }
@@ -495,9 +497,11 @@ namespace TeamMentor.CoreLib
             {
                 if(mappedItems.contains(folder.folderId))
                 {
-                    "[ensureFoldersAndViewsIdsAreUnique] there was repeated folderId for folder {0}: {1}".error(folder.caption, folder.folderId);
+                    if (verbose)
+                        "[ensureFoldersAndViewsIdsAreUnique] there was repeated folderId for folder {0}: {1}".error(folder.caption, folder.folderId);
                     folder.folderId = Guid.NewGuid().str();
-                    "[ensureFoldersAndViewsIdsAreUnique] new Guid assigned to view {0}: {1}".debug(folder.caption, folder.folderId);
+                    if (verbose)
+                        "[ensureFoldersAndViewsIdsAreUnique] new Guid assigned to view {0}: {1}".debug(folder.caption, folder.folderId);
                     conflictsDetected++;
                 }					
                 mappedItems.Add(folder.folderId);
@@ -509,7 +513,7 @@ namespace TeamMentor.CoreLib
             }
             return tmDatabase;
         }		
-        public static TM_Xml_Database                               removeMissingGuidanceItemsIdsFromViews  (this TM_Xml_Database tmDatabase)
+        public static TM_Xml_Database                               removeMissingGuidanceItemsIdsFromViews  (this TM_Xml_Database tmDatabase, bool verbose = false)
         {				
             "in removeMissingGuidanceItemsIdsFromViews".info();
             var conflictsDetected = 0;
@@ -523,8 +527,8 @@ namespace TeamMentor.CoreLib
                         {
                             view.items.item.Remove(id);
                             conflictsDetected++;
-                            "[removeMissingGuidanceItemsIdsFromViews] in view {0}:{1}, there was a missing guid: {2}"
-                                    .error(view.caption, view.id, id);
+                            if (verbose)
+                                "[removeMissingGuidanceItemsIdsFromViews] in view {0}:{1}, there was a missing guid: {2}".error(view.caption, view.id, id);
                         }
                         //else
                             //"guid in View: {0}".info(id);					

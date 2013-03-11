@@ -179,11 +179,11 @@ namespace TeamMentor.CoreLib
             }
             return false;
         }
-        public static List<int>     userIds                     (this List<TMUser> tmUsers)
+        public static List<int>     userIds                     (this List<TM_User> tmUsers)
         {
             return (from tmUser in tmUsers
                     where tmUser.notNull()
-                    select tmUser.UserID).toList();
+                    select tmUser.UserId).toList();
         }                   
         public static string        getUserGroupName            (this TM_UserData userData, int userId)
         {

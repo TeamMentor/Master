@@ -5,18 +5,13 @@ using O2.DotNetWrappers.ExtensionMethods;
 using NUnit.Framework;
 using TeamMentor.CoreLib;
 
-
-//O2Ref:nunit.framework.dll     
- 
 namespace TeamMentor.UnitTests.Asmx_WebServices
 {		 
 	[TestFixture]
     public class Test_Libraries : TM_WebServices_InMemory
-    {
-	    
+    {	    
 	    public Guid OWASP_LIBRARY_GUID = "4738d445-bc9b-456c-8b35-a35057596c16".guid();
-    	     	
-     	
+
     	public Test_Libraries() 
     	{     		
     	    Install_LibraryFromZip_OWASP();

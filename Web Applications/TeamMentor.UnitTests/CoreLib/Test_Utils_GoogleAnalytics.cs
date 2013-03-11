@@ -38,7 +38,7 @@ namespace TeamMentor.UnitTests.CoreLib
 			googleAnalytics.LogEntry("Test_Utils_GoogleAnalytics", "LogTestEntry");			
 		}
 
-		[Test, Ignore("Not working")]
+		[Test]
 		public void LogTestEntry_ViaAttribue()
 		{			
 			new GA_PostSharp_Test().Test_LogTo_GoogleAnalytics();		    

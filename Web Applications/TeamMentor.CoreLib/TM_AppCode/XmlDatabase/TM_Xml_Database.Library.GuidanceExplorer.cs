@@ -57,8 +57,7 @@ namespace TeamMentor.CoreLib
             {
                 var caption = tmLibrary.Caption;
                 if (caption.isValidGuidanceExplorerName())
-                {
-                    //var backupFile = tmDatabase.xmlDB_Libraries_BackupLibrary(tmLibrary.Id);
+                {                    
                     "[xmlDB_DeleteGuidanceExplorer] deleting library with caption: {0}".info(caption);
                     var pathToLibrary = tmDatabase.xmlDB_LibraryPath(caption);								
                     
@@ -87,9 +86,7 @@ namespace TeamMentor.CoreLib
                         Files.deleteFolder(pathToGuidanceItemsFolder);					
                     
                     //finally reset these						
-                    tmDatabase.reloadGuidanceExplorerObjects(); //reset these
-                    
-                    //return backupFile;
+                    tmDatabase.reloadGuidanceExplorerObjects(); //reset these                                        
                 }
             }
             return null;
@@ -171,9 +168,14 @@ namespace TeamMentor.CoreLib
             }
             //"[xmlDB_RenameGuidanceExplorer]".info();
             if(guidanceExplorer.notNull())
-            {	
+            {
+                if (tmDatabase.UsingFileStorage.isFalse())
+                {
+                    guidanceExplorer.library.caption = newCaption;									// update in memory library name value
+                    return guidanceExplorer;
+                }
                 var existingCaption = guidanceExplorer.library.caption;
-                var existingLibraryPath = tmDatabase.xmlDB_LibraryPath(existingCaption); // TM_Xml_Database.Current.Path_XmlLibraries.pathCombine("{0}.xml".format(guidanceExplorer.library.caption));
+                var existingLibraryPath = tmDatabase.xmlDB_LibraryPath(existingCaption); // TM_Xml_Database.Current.Path_XmlLibraries.pathCombine("{0}.xml".format(guidanceExplorer.library.caption));                
                 if(existingLibraryPath.fileExists().isFalse())
                     "[xmlDB_RenameGuidanceExplorer] something is wrong since existingLibraryPath was not there: {0}".error(existingLibraryPath);
                 else

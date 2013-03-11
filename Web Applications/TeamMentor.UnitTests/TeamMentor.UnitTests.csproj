@@ -80,6 +80,7 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -130,15 +131,12 @@
     <Compile Include="Asmx_WebServices\Test_Libraries.cs">
       <SubType>Code</SubType>
     </Compile>
-    <None Include="_Old_Version_To_Implement\SecurityInnovation.TeamMentor.WebClient.JavascriptProxy.XmlDatabase.OnlineStorage.cs">
+    <Compile Include="Asmx_WebServices\Test_Views_Folders_Articles.cs">
       <SubType>Code</SubType>
-    </None>
-    <None Include="_Old_Version_To_Implement\SecurityInnovation.TeamMentor.WebClient.TM_WebServices.GuiHelpers.cs">
+    </Compile>
+    <Compile Include="WebSite_Content\Test_WebConfig.cs">
       <SubType>Code</SubType>
-    </None>
-    <None Include="_Old_Version_To_Implement\SecurityInnovation.TeamMentor.WebClient.TM_WebServices.WebConfig.cs">
-      <SubType>Code</SubType>
-    </None>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -151,8 +149,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="_Old_Version_To_Implement\SecurityInnovation.TeamMentor.WebClient.JavascriptProxy.XmlDatabase.Authentication.cs.txt" />
-    <None Include="_Old_Version_To_Implement\SecurityInnovation.TeamMentor.WebClient.JavascriptProxy.XmlDatabase.Temp_Libraries.cs.txt" />
+    <Compile Include="Asmx_WebServices\Test_Authentication.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

@@ -104,7 +104,7 @@ namespace TeamMentor.UnitTests.CoreLib
             "TMSecretData xml: \n {0}".info(tmSecretData.toXml());            
         }
 
-        [Test, Ignore]
+        [Test, Ignore("under dev")]
         public void CheckThatSecretDataScriptFileWasInvoked()
         {
             userData.ResetData();

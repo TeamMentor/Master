@@ -37,6 +37,10 @@ namespace TeamMentor.CoreLib
         [WebMethod(EnableSession = true)] public List<string>   RBAC_CurrentPrincipal_Roles()		                    {	return new UserRoleBaseSecurity().currentPrincipal_Roles().toList(); }
         [WebMethod(EnableSession = true)] public bool           RBAC_HasRole(string role)					            {	return RBAC_CurrentPrincipal_Roles().contains(role); }
         [WebMethod(EnableSession = true)] public bool           RBAC_IsAdmin()											{	return RBAC_CurrentPrincipal_Roles().contains("Admin"); }        
+        [WebMethod(EnableSession = true)] [Admin]	        public bool      RBAC_Demand_Admin()						{	return true; }        
+        [WebMethod(EnableSession = true)] [EditArticles]	public bool      RBAC_Demand_EditArticles()					{	return true; }
+        [WebMethod(EnableSession = true)] [ReadArticles]	public bool      RBAC_Demand_ReadArticles()					{	return true; }
+        [WebMethod(EnableSession = true)] [ManageUsers]	    public bool      RBAC_Demand_ManageUsers()					{	return true; }
 
 //        [WebMethod(EnableSession = true)]		                public Guid		SSO_AuthenticateUser(string ssoToken)            {   return new SingleSignOn().authenticateUserBasedOn_SSOToken(ssoToken); }
 //        [WebMethod(EnableSession = true)] [Admin]			    public string	SSO_GetSSOTokenForUser(string userName)          {   return new SingleSignOn().getSSOTokenForUser(userName); }
