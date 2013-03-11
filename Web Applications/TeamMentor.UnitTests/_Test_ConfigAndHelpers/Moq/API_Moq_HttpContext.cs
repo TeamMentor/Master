@@ -1,5 +1,6 @@
 // This file is part of the OWASP O2 Platform (http://www.owasp.org/index.php/OWASP_O2_Platform) and is released under the Apache 2.0 License (http://www.apache.org/licenses/LICENSE-2.0)
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Security.Principal;
 using System.Collections.Specialized;
@@ -15,17 +16,17 @@ namespace O2.FluentSharp
 {
     public class API_Moq_HttpContext 
     {        	
-        public Mock<HttpContextBase> MockContext { get; set; }
-        public Mock<HttpRequestBase> MockRequest { get; set; }
-        public Mock<HttpResponseBase> MockResponse { get; set; }
-        public Mock<HttpSessionStateBase> MockSession { get; set; }
-        public Mock<HttpServerUtilityBase> MockServer { get; set; }		
+        public Mock<HttpContextBase>        MockContext  { get; set; }
+        public Mock<HttpRequestBase>        MockRequest  { get; set; }
+        public Mock<HttpResponseBase>       MockResponse { get; set; }
+        public MockHttpSession              MockSession  { get; set; }
+        public Mock<HttpServerUtilityBase>  MockServer   { get; set; }		
         
         public HttpContextBase HttpContextBase  	{ get; set; }
         public HttpRequestBase HttpRequestBase  	{ get; set; }
         public HttpResponseBase HttpResponseBase  	{ get; set; }  
         
-        public String BaseDir						{ get;set; }
+        public String BaseDir						{ get; set; }
         public Uri    RequestUrl                    { get; set; }   
 
         public API_Moq_HttpContext() : this(null)
@@ -44,13 +45,13 @@ namespace O2.FluentSharp
             MockContext = new Mock<HttpContextBase>();
             MockRequest = new Mock<HttpRequestBase>();
             MockResponse = new Mock<HttpResponseBase>();
-            MockSession = new Mock<HttpSessionStateBase>();
+            MockSession = new MockHttpSession();
             MockServer = new Mock<HttpServerUtilityBase>();
             
     
             MockContext.Setup(ctx => ctx.Request).Returns(MockRequest.Object);
             MockContext.Setup(ctx => ctx.Response).Returns(MockResponse.Object);
-            MockContext.Setup(ctx => ctx.Session).Returns(MockSession.Object);
+            MockContext.Setup(ctx => ctx.Session).Returns(MockSession);
             MockContext.Setup(ctx => ctx.Server).Returns(MockServer.Object);
             
             
@@ -101,15 +102,32 @@ namespace O2.FluentSharp
             //Server
             MockServer.Setup(server => server.MapPath (It.IsAny<string>()))                 .Returns ((string path)                      =>  BaseDir.pathCombine(path));
             MockServer.Setup(server => server.Transfer(It.IsAny<string>()))                 .Callback((string target)                    =>  { redirectTarget = target; throw new Exception("Thread was being aborted.");}  );   // use the redirectTarget to hold this value
-            MockServer.Setup(server => server.Transfer(It.IsAny<string>(),It.IsAny<bool>())).Callback((string target, bool preserveForm) =>  { redirectTarget = target; throw new Exception("Thread was being aborted.");}  );   // use the redirectTarget to hold this value
-            //Session
-            MockSession.Setup   (session => session.SessionID       ).Returns("".add_RandomLetters(15)); 
+            MockServer.Setup(server => server.Transfer(It.IsAny<string>(),It.IsAny<bool>())).Callback((string target, bool preserveForm) =>  { redirectTarget = target; throw new Exception("Thread was being aborted.");}  );   // use the redirectTarget to hold this value            
             //var writer = new StringWriter();
             //context.Expect(ctx => ctx.Response.Output).Returns(writer);	     		     	
             return this;
         }
     }
-    
+    public class MockHttpSession : HttpSessionStateBase
+    {
+        Dictionary<string,object> sessionData = new Dictionary<string,object> ();
+        public override string SessionID
+        {
+            get { return "".add_RandomLetters(15); }
+        }
+        public override object this[string key]
+        {
+            get
+            {                
+                return (sessionData.hasKey(key)) ? sessionData[key] :  null;
+            }
+            set { sessionData[key] = value; }
+        }
+        public override int Count
+        {
+            get { return sessionData.Count; }
+        }
+    }
     public static class API_Moq_HttpContext_ExtensionMethods
     {
         public static HttpContextBase httpContext(this API_Moq_HttpContext moqHttpContext)

@@ -520,15 +520,19 @@ namespace TeamMentor.CoreLib
             {
                 context.Response.ContentType = "text/html";
                 var article = tmWebServices.GetGuidanceItemById(guid);
-                var htmlTemplateFile = (article.Content.DataType.lower() == "wikitext") 
-                                            ? @"\Html_Pages\Gui\Pages\article_wikiText.html" 
-                                            : @"\Html_Pages\Gui\Pages\article_Html.html";
-                var htmlTemplate = context.Server.MapPath(htmlTemplateFile).fileContents();
+                if (article.notNull())
+                { 
+                    var htmlTemplateFile = (article.Content.DataType.lower() == "wikitext") 
+                                                ? @"\Html_Pages\Gui\Pages\article_wikiText.html" 
+                                                : @"\Html_Pages\Gui\Pages\article_Html.html";
+                    var htmlTemplate = context.Server.MapPath(htmlTemplateFile).fileContents();
                     
-                var htmlContent = htmlTemplate.replace("#ARTICLE_TITLE", article.Metadata.Title)
-                                              .replace("#ARTICLE_HTML", article.Content.Data.Value);
-                context.Response.Write(htmlContent);      
-                endResponse(); 
+                    var htmlContent = htmlTemplate.replace("#ARTICLE_TITLE", article.Metadata.Title)
+                                                  .replace("#ARTICLE_HTML", article.Content.Data.Value);
+                    context.Response.Write(htmlContent);      
+                
+                    endResponse(); 
+                }
             }
             else
                 transfer_ArticleViewer();            

@@ -23,8 +23,8 @@ namespace TeamMentor.CoreLib
             get
             {                
                 // first check if there s a session variable already set                
-                if (HttpContextFactory.Session.notNull() && HttpContextFactory.Session["sessionID"].notNull())
-                    return (Guid)TmWebServices.Session["sessionID"];
+                if (HttpContextFactory.Session.notNull() && HttpContextFactory.Session["sessionID"].notNull() && HttpContextFactory.Session["sessionID"] is Guid)
+                    return (Guid)HttpContextFactory.Session["sessionID"];
 
                 // then check the cookie
                 var sessionCookie = HttpContextFactory.Request.Cookies["Session"];

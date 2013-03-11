@@ -89,8 +89,8 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Asmx_WebServices\Test_Article_Viewing_and_Editing_Pages.cs" />
     <Compile Include="CoreLib\Test_Crypto.cs" />
+    <Compile Include="CoreLib\Test_HandleRequest_LibraryData.cs" />
     <Compile Include="Messaging\Test_Email.cs" />
     <Compile Include="CoreLib\Test_HandleRequest.cs" />
     <Compile Include="CoreLib\Test_TM_SecretData.cs" />
