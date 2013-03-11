@@ -124,7 +124,7 @@ namespace TeamMentor.CoreLib
     
     public static class TM_Xml_Database_ExtensionMethods_XmlDataSources_GuidanceItems_Load
     {				
-        public static TM_Xml_Database           xmlDB_Load_GuidanceItems(this TM_Xml_Database tmDatabase)
+        public static TM_Xml_Database           xmlDB_Load_GuidanceItems_and_Create_CacheFile(this TM_Xml_Database tmDatabase)
         {
             if (tmDatabase.UsingFileStorage)
             { 
@@ -132,8 +132,8 @@ namespace TeamMentor.CoreLib
                 if (pathXmlLibraries.notNull() && pathXmlLibraries.notNull())
                     lock (pathXmlLibraries)
                     {
-                        if (tmDatabase.getCacheLocation().fileExists().isFalse())
-                        {
+                        //if (tmDatabase.getCacheLocation().fileExists().isFalse())
+                        //{
                             "[TM_Xml_Database] in xmlDB_Load_GuidanceItems, creating cache file".debug();
                             var o2Timer = new O2Timer("loaded GuidanceItems from disk").start();
                             //Load GuidanceItem from the disk				
@@ -148,11 +148,12 @@ namespace TeamMentor.CoreLib
 
                             //save it to the local cache file (reduces load time from 8s to 0.5s)
                             tmDatabase.save_GuidanceItemsToCache();
-                            o2Timer.stop();
+                            
 
                             tmDatabase.ensureFoldersAndViewsIdsAreUnique();
                             tmDatabase.removeMissingGuidanceItemsIdsFromViews();
-                        }
+                            o2Timer.stop();
+                        //}
                     }
             }
             return tmDatabase;

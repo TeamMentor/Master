@@ -27,8 +27,21 @@ namespace TeamMentor.CoreLib
         {
             if (tmDatabase.AutoGitCommit)
                 if (tmDatabase.NGit.status().valid())
-                    tmDatabase.NGit.add_and_Commit_using_Status();
+                    tmDatabase.gitCommit_SeparateThread();                            
             return tmDatabase;
+        }
+
+        public static TM_Xml_Database gitCommit_SeparateThread(this TM_Xml_Database tmDatabase)
+        {
+            O2Thread.mtaThread(
+                ()=>{                        
+                        lock (tmDatabase.NGit)
+                        {
+                            tmDatabase.NGit.add_and_Commit_using_Status();
+                        }
+                });
+            return tmDatabase;
+
         }
     }
 
@@ -183,9 +196,12 @@ namespace TeamMentor.CoreLib
         public static TM_Xml_Database                    load_GuidanceItemsFromCache     (this TM_Xml_Database tmDatabase)
         {
             //"Loading items from cache".info();            
-            var chacheFile = tmDatabase.getCacheLocation();			
+            var chacheFile = tmDatabase.getCacheLocation();
             if (chacheFile.fileExists().isFalse())
+            {
                 "[TM_Xml_Database] in loadGuidanceItemsFromCache, cached file not found: {0}".error(chacheFile);
+                tmDatabase.xmlDB_Load_GuidanceItems_and_Create_CacheFile();
+            }
             else
             {
                 var o2Timer = new O2Timer("loadGuidanceItemsFromCache").start();
@@ -198,7 +214,8 @@ namespace TeamMentor.CoreLib
                     o2Timer = new O2Timer("mapping to memory loadGuidanceItemsFromCache").start();
                     foreach (var loadedGuidanceItem in loadedGuidanceItems)
                         if (loadedGuidanceItem.notNull())
-                            TM_Xml_Database.Current.Cached_GuidanceItems.add(loadedGuidanceItem.Metadata.Id, loadedGuidanceItem);                    
+                            TM_Xml_Database.Current.Cached_GuidanceItems.add(loadedGuidanceItem.Metadata.Id,
+                                                                             loadedGuidanceItem);
                     o2Timer.stop();
                 }
             }
@@ -221,13 +238,7 @@ namespace TeamMentor.CoreLib
                 }
             }
             return tmDatabase;
-        }					
-        public static TM_Xml_Database                    clear_GuidanceItemsCache       (this TM_Xml_Database tmDatabase)
-        {
-            "[TM_Xml_Database] clear_GuidanceItemsCache".info();
-            TM_Xml_Database.Current.Cached_GuidanceItems.Clear();            
-            return tmDatabase;
-        }		
+        }					        	
         public static TM_Xml_Database                    queue_Save_GuidanceItemsCache  (this TM_Xml_Database tmDatabase)
         {
             if (tmDatabase.UsingFileStorage)
@@ -246,15 +257,25 @@ namespace TeamMentor.CoreLib
             }
             return tmDatabase;
         }       
+        public static TM_Xml_Database                    clear_GuidanceItemsCache       (this TM_Xml_Database tmDatabase)
+        {
+            "[TM_Xml_Database] clear_GuidanceItemsCache".info();
+            if (tmDatabase.UsingFileStorage)
+            {
+                var cacheFile = tmDatabase.getCacheLocation();
+                if (cacheFile.notNull() && cacheFile.fileExists())
+                {
+                    Files.deleteFile(cacheFile);
+                    "cache file deleted OK:{0}".info(cacheFile.fileExists().isFalse());
+                }
+            }
+            tmDatabase.Cached_GuidanceItems.Clear();
+            return tmDatabase;
+        }
         public static TM_Xml_Database                    reCreate_GuidanceItemsCache    (this TM_Xml_Database tmDatabase)
         {
-            "[TM_Xml_Database] reCreate_GuidanceItemsCache".info();
-            var cacheFile = tmDatabase.getCacheLocation();			
-            Files.deleteFile(cacheFile);
-            "cache file deleted:{0}".info(!cacheFile.fileExists());
-            tmDatabase.clear_GuidanceItemsCache(); 	
-            return tmDatabase.xmlDB_Load_GuidanceItems();
-            //return tmDatabase.load_GuidanceItemsCache();			
+            return tmDatabase.clear_GuidanceItemsCache()
+                             .xmlDB_Load_GuidanceItems_and_Create_CacheFile();            
         }		
         public static TeamMentor_Article                 update_Cache_GuidanceItems     (this TeamMentor_Article guidanceItem,  TM_Xml_Database tmDatabase)
         {

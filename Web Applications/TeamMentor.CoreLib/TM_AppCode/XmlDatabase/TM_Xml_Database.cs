@@ -9,33 +9,26 @@ namespace TeamMentor.CoreLib
 {	
     public partial class TM_Xml_Database 
     {		    
-        public static TM_Xml_Database   Current               { get; set; }
-        public static bool              SkipServerOnlineCheck { get; set;  }
+        public static TM_Xml_Database   Current               { get; set; }         
+        public static bool              SkipServerOnlineCheck { get; set; }        
 
-        //config
-        public bool			            UsingFileStorage	  { get; set; }   
-        public bool                     ServerOnline          { get; set; }
-        public bool                     AutoGitCommit         { get; set; }
-        
-        //users and tracking
-        public TM_UserData              UserData              { get; set; }                 
-
-        //Xml Library and Articles        
-        public API_NGit                 NGit                  { get; set; }
-        public Dictionary<Guid, guidanceExplorer>	    GuidanceExplorers_XmlFormat { get; set; }	
+        public bool			            UsingFileStorage	  { get; set; }         //config   
+        public bool                     ServerOnline          { get; set; }         
+        public bool                     AutoGitCommit         { get; set; }                
+        public TM_UserData              UserData              { get; set; }         //users and tracking             
+        public API_NGit                 NGit                  { get; set; }         // Git object
+        public string 	                Path_XmlDatabase      { get; set; }					
+        public string 	                Path_XmlLibraries 	  { get; set; }    
+         
+        public Dictionary<Guid, guidanceExplorer>	    GuidanceExplorers_XmlFormat { get; set; }	 //Xml Library and Articles   
         public Dictionary<Guid, string>				    GuidanceItems_FileMappings	{ get; set; }			
         public Dictionary<Guid, TeamMentor_Article>	    Cached_GuidanceItems		{ get; set; }
         public Dictionary<Guid, VirtualArticleAction>   VirtualArticles			    { get; set; }
                                                             
-        public string 	        Path_XmlDatabase 		{ get; set; }					
-        public string 	        Path_XmlLibraries 		{ get; set; }        
-/*        public List<TM_Library> Libraries  				{  get { 	return this.tmLibraries(); } }
-        public List<Folder_V3> 	Folders  				{  get { 	return this.tmFolders(); } } 		
-        public List<View_V3> 	Views  					{  get { 	return this.tmViews(); } } 
-        public List<TeamMentor_Article> GuidanceItems	{  get {	return this.tmGuidanceItems(); } }
-  */    
+        
+
         [Log("TM_Xml_Database Setup")]        
-        public TM_Xml_Database          () : this(false)          // defaults to creating a TM_Instance in memory    
+        public TM_Xml_Database          () : this(false)                    // defaults to creating a TM_Instance in memory    
         {
         }
         public TM_Xml_Database          (bool useFileStorage)
@@ -53,10 +46,6 @@ namespace TeamMentor.CoreLib
             GuidanceExplorers_XmlFormat = new Dictionary<Guid, guidanceExplorer>();
             UserData                    = new TM_UserData(UsingFileStorage);            
 
-            /*Libraries.Clear();
-            Folders.Clear();
-            Views.Clear();
-            GuidanceItems.Clear();*/
             return this;
         }
 
@@ -69,7 +58,7 @@ namespace TeamMentor.CoreLib
                 {
                     SetPathsAndloadData();                    
                     this.handleDefaultInstallActions();
-                    this.xmlDB_Load_GuidanceItems();
+                   // this.xmlDB_Load_GuidanceItems();
                     
                 }
                 UserData.SetUp();                
@@ -116,38 +105,22 @@ namespace TeamMentor.CoreLib
         [Admin] public string           ReloadData(string newLibraryPath)
         {	
             "In Reload data".info();
-            if (newLibraryPath.notNull())
+            this.clear_GuidanceItemsCache();                            // start by clearing the cache
+            if (newLibraryPath.notNull())                               // check if we are changing the library path
             {
                 var tmConfig = TMConfig.Current;
                 tmConfig.TMSetup.XmlLibrariesPath = newLibraryPath;
                 tmConfig.SaveTMConfig();			
             }
-            
-            /*GuidanceItems_FileMappings.Clear();
-            GuidanceExplorers_XmlFormat.Clear();								
-            Libraries.Clear();
-            Folders.Clear();
-            Views.Clear();
-            GuidanceItems.Clear();*/
-            
-            /*if(newLibraryPath.valid())
-                setLibraryPath_and_LoadDataIntoMemory(newLibraryPath);
-            else
-                TM_Xml_Database.Current.loadDataIntoMemory();			*/
+                                   
+            Setup();                                                    // trigger the set (which will load all data
 
-            Setup();
-
-            /*this.reCreate_GuidanceItemsCache();	
-            this.xmlDB_Load_GuidanceItems();
-            
-            this.createDefaultAdminUser();	// make sure this user exists		
-            */
-            return "In the library '{0}' there are {1} library(ies), {2} views and {3} GuidanceItems".
-                        //format(Current.Path_XmlLibraries.directoryName(), Libraries.size(), Views.size(), GuidanceItems.size());
-                        format(Current.Path_XmlLibraries.directoryName(), 
-                               this.tmLibraries().size(), 
-                               this.tmViews().size(),
-                               this.tmGuidanceItems().size());
+            var stats = "In the library '{0}' there are {1} library(ies), {2} views and {3} GuidanceItems"                        
+                            .format(Current.Path_XmlLibraries.directoryName(), 
+                                    this.tmLibraries().size(), 
+                                    this.tmViews().size(),
+                                    this.tmGuidanceItems().size());
+            return stats;                                               // return some stats
         }        
     }
 
