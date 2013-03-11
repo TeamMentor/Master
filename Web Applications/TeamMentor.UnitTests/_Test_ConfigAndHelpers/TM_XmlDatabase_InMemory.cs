@@ -1,5 +1,7 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using O2.DotNetWrappers.ExtensionMethods;
+using O2.DotNetWrappers.Network;
 using TeamMentor.CoreLib;
 
 namespace TeamMentor.UnitTests
@@ -18,18 +20,17 @@ namespace TeamMentor.UnitTests
         [Assert_Admin]
         public void SetupDatabase()
         {
-            //1.set_DEFAULT_PBKDF2_INTERACTIONS();                // improve performance of tests that created users
+            1.set_DEFAULT_PBKDF2_INTERACTIONS();                // improve performance of tests that create users
             tmXmlDatabase   = new TM_Xml_Database();
             userData        = tmXmlDatabase.UserData;
-            tmConfig        = TMConfig.Current = new TMConfig();
-            //new TM_TestLibrary().CreateTestDatabase(tmXmlDatabase);
+            tmConfig        = TMConfig.Current = new TMConfig();            
 
             //all these values should be null since we are running TM memory (default setting)
             Assert.IsNull(tmXmlDatabase.Path_XmlDatabase		    , "Path_XmlDatabase");
             Assert.IsNull(tmXmlDatabase.Path_XmlLibraries		    , "Path_XmlLibraries");
             Assert.IsEmpty(tmXmlDatabase.Cached_GuidanceItems	    , "Cached_GuidanceItems");
             Assert.IsEmpty(tmXmlDatabase.UserData.ActiveSessions    , "ActiveSessions");
-            Assert.AreEqual(tmXmlDatabase.UserData.TMUsers.size()   ,1 , "TMUsers");				// there should be admin
+            Assert.AreEqual(tmXmlDatabase.UserData.TMUsers.size()   ,1 , "TMUsers");	    // there should be admin
         }
 
         [TestFixtureSetUp]		
@@ -38,18 +39,39 @@ namespace TeamMentor.UnitTests
         }
 
 
+
         //Helpers                
+        public string DownloadLibraryIntoTempFolder(string libraryName, string downloadPath)
+        {
+            var tmpDownloadDir = System.IO.Path.GetTempPath().pathCombine("_TeamMentor_TempLibraries")
+                                                             .createDir();
+            Assert.IsTrue(tmpDownloadDir.dirExists(), "Could find tmpDownloadDir: {0}".format(tmpDownloadDir));
+            var downloadedFile = tmpDownloadDir.pathCombine(libraryName);
+            if (downloadedFile.fileExists())
+                return downloadedFile;            
+            new Web().downloadBinaryFile(downloadPath,downloadedFile);
+            Assert.IsTrue(downloadedFile.fileExists());
+            return downloadedFile;
+        }
+
         public void Install_LibraryFromZip_TopVulns()
         {
-            Install_LibraryFromZip("https://github.com/TeamMentor/Library_Top_Vulnerabilities/zipball/master", "Top Vulnerabilities");
+            var topVulnsZipFile = DownloadLibraryIntoTempFolder("Library_Top_Vulnerabilities.zip",
+                                                                "https://github.com/TeamMentor/Library_Top_Vulnerabilities/zipball/master");
+//            Install_LibraryFromZip("https://github.com/TeamMentor/Library_Top_Vulnerabilities/zipball/master", "Top Vulnerabilities");
+            Install_LibraryFromZip(topVulnsZipFile,"Top Vulnerabilities");
         }        
         public void Install_LibraryFromZip_OWASP()
         {
-            Install_LibraryFromZip("https://github.com/TeamMentor/OWASP_Library/zipball/master", "OWASP");
+            var owaspZipFile = DownloadLibraryIntoTempFolder("OWASP.zip",
+                                                             "https://github.com/TeamMentor/OWASP_Library/zipball/master");
+            Install_LibraryFromZip(owaspZipFile,"OWASP");
+            //Install_LibraryFromZip("https://github.com/TeamMentor/OWASP_Library/zipball/master", "OWASP");
         }
         [Assert_Admin]
         public void Install_LibraryFromZip(string pathToGitHubZipBall, string libraryName)
         {
+            tmXmlDatabase.UsingFileStorage = true;      // temp set this so that we can load the files and create the cache
             tmXmlDatabase.Path_XmlLibraries = "_TempXmlLibraries".tempDir(false);
 
             if (tmXmlDatabase.tmLibrary(libraryName).notNull())
@@ -60,7 +82,7 @@ namespace TeamMentor.UnitTests
             var tmLibraries_Before = tmXmlDatabase.tmLibraries();            
 
             var result = tmXmlDatabase.xmlDB_Libraries_ImportFromZip(pathToGitHubZipBall, "");
-            tmXmlDatabase.xmlDB_Load_GuidanceItems();  // extra step required to reload the guidance items
+            //tmXmlDatabase.xmlDB_Load_GuidanceItems();  // extra step required to reload the guidance items
             
             var tmLibraries_After = tmXmlDatabase.tmLibraries();
             var installedLibrary  = tmXmlDatabase.tmLibrary(libraryName);
@@ -70,6 +92,7 @@ namespace TeamMentor.UnitTests
             Assert.AreNotEqual(tmLibraries_After.size(), tmLibraries_Before.size(), "Libraries size should be different before and after");
             Assert.IsNotNull  (installedLibrary                                   , "Could not find installed library: {0}".format(libraryName));
             Assert.AreEqual   (installedLibrary.Caption, libraryName              , "After install library names didn't match");
+            tmXmlDatabase.UsingFileStorage = false;
         }
     }
 }

@@ -441,67 +441,7 @@ namespace TeamMentor.CoreLib
     //******************* Objects Conversion
     
     public static class TM_Xml_Database_ExtensionMethods_ObjectConversion
-    {
-        /*public static TM_GuidanceItem tmGuidanceItem(this guidanceItem _guidanceItem)
-        {
-            return new TM_GuidanceItem()
-                            {
-                                Id = _guidanceItem.id.guid(),
-                                Id_Original = _guidanceItem.id_original.notNull() 
-                                                    ? _guidanceItem.id_original.guid()
-                                                    : Guid.Empty, 
-                                Author = _guidanceItem.Author,
-                                Category = _guidanceItem.Category,
-                                Priority = _guidanceItem.Priority,
-                                RuleType = _guidanceItem.Rule_Type,
-                                Status = _guidanceItem.Status,
-                                Technology = _guidanceItem.Technology,
-                                Title = _guidanceItem.title,
-                                Topic = _guidanceItem.Topic
-                                //,							
-                                //LastUpdate = DateTime.Parse(_guidanceItem.Date)
-                            };			
-        }
-        
-        public static GuidanceItem_V3 tmGuidanceItemV3(this guidanceItem _guidanceItem) //, Guid guidanceId)
-        {
-            var phase = "";
-            var ruleType = "";
-
-            //happens on the cases from the original main SI Library (whose metadata is not correct)
-            if (_guidanceItem.Type1.notNull() && _guidanceItem.phase.isNull())
-            {
-                phase = _guidanceItem.Rule_Type;
-                ruleType = _guidanceItem.Type1;
-            }
-            else
-            {
-                phase = _guidanceItem.phase;
-                ruleType = _guidanceItem.Rule_Type;
-            }			
-                        
-            return new GuidanceItem_V3()
-                            {
-                                guidanceItemId 			= _guidanceItem.id.guid(), //guidanceId,
-                                guidanceItemId_Original = _guidanceItem.id_original.guid(),								
-                                title					= _guidanceItem.title ?? "",
-
-                                category 				= _guidanceItem.Category   ?? "",								
-                                phase					=  phase ?? "", // _guidanceItem.phase ?? "",
-                                rule_Type 				=  ruleType ?? "", //_guidanceItem.Rule_Type ?? _guidanceItem.Type1 ?? "" ,																
-                                technology 				= _guidanceItem.Technology ?? "",
-
-                                topic					= _guidanceItem.Topic ?? "",
-                                author 					= _guidanceItem.Author,
-                                status 					= _guidanceItem.Status,
-                                priority 				= _guidanceItem.Priority,								
-                                
-                //				lastUpdate 				= DateTime.Parse(_guidanceItem.Date),								
-                                htmlContent				= _guidanceItem.content.sanitizeHtmlContent(), 
-                                libraryId 				= _guidanceItem.libraryId.guid()
-                            };			
-        }
-        */
+    {        
         public static TM_GuidanceItem tmGuidanceItem(this GuidanceItem_V3 guidanceItemV3)
         {
             return new TM_GuidanceItem
@@ -519,31 +459,7 @@ namespace TeamMentor.CoreLib
                                 Topic = guidanceItemV3.topic,								
                     //			LastUpdate = guidanceItemV3.lastUpdate 
                             };			
-        }					
-        
-/*		public static TM_Folder tmFolder(this string folder, Guid libraryId)
-        {
-            return new TM_Folder()
-                        {
-                            Id = Guid.Empty,
-                            Name = folder,
-                            Caption = null,
-                            Library = libraryId
-                        };
-        }
-        
-        public static TM_Folder tmFolder(this urn.microsoft.guidanceexplorer.View view, Guid libraryId, string folder)
-        {
-            return new TM_Folder()
-                        {
-                            Id = view.id.guid(),
-                            Name = folder,
-                            Caption = view.caption,
-                            Library = libraryId
-                        };
-        }
-*/
-
+        }					     
         public static View_V3 tmView(this urn.microsoft.guidanceexplorer.View view, Guid libraryId, Guid folderId)
         {
             var tmView = new View_V3
@@ -559,8 +475,7 @@ namespace TeamMentor.CoreLib
                     foreach(var item in view.items.item)
                         tmView.guidanceItems.add(item.guid());
             return tmView;
-        }
-        
+        }      
         public static urn.microsoft.guidanceexplorer.View view(this View tmView)
         {
             return new urn.microsoft.guidanceexplorer.View
@@ -569,15 +484,8 @@ namespace TeamMentor.CoreLib
                             author = tmView.creator,
                             id = tmView.id,
                             creationDate = tmView.lastUpdate
-                        /*	
-                            //creatorCaption = view.author,							
-                            id= view.id,
-                            lastUpdate  = view.creationDate ?? new DateTime(),
-                            library = libraryId.str(),
-                            parentFolder = folder*/
                         };
-        }	
-        //View' to 'urn.microsoft.guidanceexplorer.View'	
+        }	        
         
         public static Library library(this TM_Library tmLibrary, TM_Xml_Database tmDatabase)
         {
@@ -590,22 +498,12 @@ namespace TeamMentor.CoreLib
                     //Views = tmDatabase.tmViews(tmLibrary).ToArray()
                 };
         }		
-    }
-    
-    public static class TM_Xml_Database_ExtensionMethods_ObjectConversion_MiscFilters
-    {
         public static TM_GuidanceItem tmGuidanceItem(this List<TM_GuidanceItem> tmGuidanceItems, Guid guidanceItemId)
         {
             return (from tmGuidanceItem in tmGuidanceItems
                     where tmGuidanceItem.Id == guidanceItemId
                     select tmGuidanceItem).first();
         }
-        
-        
-    }
-    
-    public static class TM_Xml_Database_ExtensionMethods_ObjectConversion_Lists
-    {
         public static List<TM_GuidanceItem> tmGuidanceItems(this List<GuidanceItem_V3> guidanceItemsV3)
         {
             return (from guidanceItemV3 in guidanceItemsV3
@@ -645,7 +543,7 @@ namespace TeamMentor.CoreLib
                         if (tmDatabase.xmlDB_Libraries_ImportFromZip(installUrl, ""))
                         {
                             "[handleDefaultInstallActions]  library {0} installed ok".info(defaultLibrary);
-                            tmDatabase.ReloadData();
+                            //tmDatabase.ReloadData();
                         }
                         else
                             "[handleDefaultInstallActions]  failed to install default library {0}".error(defaultLibrary);

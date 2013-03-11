@@ -79,6 +79,7 @@
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -87,6 +88,7 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Asmx_WebServices\Test_Article_Viewing_and_Editing_Pages.cs" />
     <Compile Include="CoreLib\Test_Crypto.cs" />
     <Compile Include="Messaging\Test_Email.cs" />
     <Compile Include="CoreLib\Test_HandleRequest.cs" />
@@ -125,9 +127,9 @@
     <Compile Include="WebSite_Content\Test_CheckJavascriptResources.cs" />
     <Compile Include="TM_XmlDatabase\Test_Users_Rbac.cs" />
     <Compile Include="CoreLib\Test_JavascriptCombiner.cs" />
-    <None Include="_Old_Version_To_Implement\SecurityInnovation.TeamMentor.WebClient.JavascriptProxy.XmlDatabase.Libraries.cs">
+    <Compile Include="Asmx_WebServices\Test_Libraries.cs">
       <SubType>Code</SubType>
-    </None>
+    </Compile>
     <None Include="_Old_Version_To_Implement\SecurityInnovation.TeamMentor.WebClient.JavascriptProxy.XmlDatabase.OnlineStorage.cs">
       <SubType>Code</SubType>
     </None>

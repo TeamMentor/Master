@@ -17,21 +17,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
 
             Install_LibraryFromZip_OWASP();            
         }
-
-        [SetUp]
-        public void Setup()
-        {      
-            //UserGroup.Admin.setThreadPrincipalWithRoles();          // impersonate an Admin  
-            //if (LibraryPath.dirExists().isFalse())
-            //    Assert.Ignore("Couldn't find library path, so skipping assemby load tests");                                    
-            //tmXmlDatabase.ResetDatabase();                          // reset Xml Database
-        }        
-        [TearDown]
-        public void TearDown()
-        {
-            //tmXmlDatabase.ResetDatabase();                         // reset Xml Database
-        }
-
+        
         [Test] public void GetGuidanceExplorerFilesInPath()
         {
             var xmlFiles = tmXmlDatabase.Path_XmlLibraries.getGuidanceExplorerFilesInPath();
@@ -54,7 +40,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         }
         [Test] public void LoadGuidanceExplorerFiles()
         {            
-            tmXmlDatabase.setGuidanceExplorerObjects();
+            //tmXmlDatabase.setGuidanceExplorerObjects();
             var xmlFiles    = tmXmlDatabase.Path_XmlLibraries.getGuidanceExplorerFilesInPath();
             var tmLibraries = tmXmlDatabase.tmLibraries();
             Assert.AreEqual(xmlFiles.size(), tmLibraries.size());
@@ -106,8 +92,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         public void Test_getGuidanceHtml()
         {
             //LoadGuidanceExplorerFiles();            
-            tmXmlDatabase.setGuidanceExplorerObjects();
-            tmXmlDatabase.xmlDB_Load_GuidanceItems();            
+            //tmXmlDatabase.reloadGuidanceExplorerObjects();                
 
             var guidanceItems = tmXmlDatabase.tmGuidanceItems();
             var firstGuidanceItem = guidanceItems.first();

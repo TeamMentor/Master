@@ -125,15 +125,10 @@
     <Compile Include="TM_AppCode\HttpHandlers\UrlRewrite\HandleUrlRequest.cs" />
     <Compile Include="TM_AppCode\HttpHandlers\UrlRewrite\UrlRewriter.ashx.cs" />
     <Compile Include="TM_AppCode\Schemas\GuidanceItem_V3.cs" />
-    <Content Include="TM_AppCode\WebServices\IJavascriptProxy.cs.txt" />
-    <None Include="TM_AppCode\_Old_Legacy\MoqObjects.cs.txt" />
     <Compile Include="TM_AppCode\Utils\SendEmails.cs" />
     <Compile Include="TM_AppCode\WebServices\TM_WebServices.Libraries.cs">
       <SubType>Component</SubType>
     </Compile>
-    <None Include="TM_AppCode\_Old_Legacy\LinqDB.cs.txt" />
-    <None Include="TM_AppCode\_Old_Legacy\OnlineStorage.cs.txt" />
-    <Content Include="TM_AppCode\_Old_Legacy\TeamMentorSecurity.cs.txt" />
     <Compile Include="TM_AppCode\Schemas\TM_Gui_Objects.cs" />
     <Compile Include="TM_AppCode\O2_Scripts_APIs\_Extra_Web_ExtensionMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -144,14 +139,6 @@
     <Compile Include="TM_AppCode\Schemas\TeamMentor_Article.cs" />
     <Compile Include="TM_AppCode\Schemas\TMUser.cs" />
     <Compile Include="TM_AppCode\TmConfig.cs" />
-    <Content Include="TM_AppCode\_Old_Legacy\TrackingDB\ActivityTracking.cs.txt" />
-    <None Include="TM_AppCode\_Old_Legacy\TrackingDB\PagesHistory.cs.txt">
-      <SubType>Code</SubType>
-    </None>
-    <None Include="TM_AppCode\_Old_Legacy\UnityInjection.cs.txt" />
-    <None Include="TM_AppCode\_Old_Legacy\TrackingDB\TM_WebServices.ActivityTracking.cs.txt">
-      <SubType>Component</SubType>
-    </None>
     <Compile Include="TM_AppCode\WebServices\TM_WebServices.asmx.cs">
       <SubType>Component</SubType>
     </Compile>

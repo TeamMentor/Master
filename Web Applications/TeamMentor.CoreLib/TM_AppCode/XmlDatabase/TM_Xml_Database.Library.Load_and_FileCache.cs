@@ -72,6 +72,12 @@ namespace TeamMentor.CoreLib
                 tmXmlDatabase.new_TmLibrary();
             return tmXmlDatabase;
         }
+        public static TM_Xml_Database                    reloadGuidanceExplorerObjects     (this TM_Xml_Database tmDatabase)
+        {
+            tmDatabase.setGuidanceExplorerObjects();
+            tmDatabase.reCreate_GuidanceItemsCache();                  
+            return tmDatabase;
+        }		
         public static TM_Xml_Database                    setGuidanceExplorerObjects     (this TM_Xml_Database tmDatabase)
         {			
             //"in setGuidanceExplorerObjects".info();
@@ -126,7 +132,7 @@ namespace TeamMentor.CoreLib
                         libraryGuid = Guid.NewGuid();
                         newGuidanceExplorer.library.name = libraryGuid.str();
                         "[addGuidanceExplorerObject]: new ID for library {0} is now {1}".error(newGuidanceExplorer.library.caption, libraryGuid);
-                        newGuidanceExplorer.xmlDB_Save_GuidanceExplorer(TM_Xml_Database.Current, false);
+                        newGuidanceExplorer.xmlDB_Save_GuidanceExplorer(TM_Xml_Database.Current);//, false);
                     }					
                     guidanceExplorers.Add(libraryGuid, newGuidanceExplorer);
 
@@ -203,13 +209,16 @@ namespace TeamMentor.CoreLib
             if (tmDatabase.UsingFileStorage)
             {
                 var cacheFile = tmDatabase.getCacheLocation();
-                var o2Timer = new O2Timer("saveGuidanceItemsToCache").start();
-                lock (TM_Xml_Database.Current.Cached_GuidanceItems)
+                if (cacheFile.notNull())
                 {
-                    TM_Xml_Database.Current.Cached_GuidanceItems.Values.toList().saveAs(cacheFile);
-                    tmDatabase.triggerGitCommit();
+                    var o2Timer = new O2Timer("saveGuidanceItemsToCache").start();
+                    lock (TM_Xml_Database.Current.Cached_GuidanceItems)
+                    {
+                        TM_Xml_Database.Current.Cached_GuidanceItems.Values.toList().saveAs(cacheFile);
+                        tmDatabase.triggerGitCommit();
+                    }
+                    o2Timer.stop();
                 }
-                o2Timer.stop();
             }
             return tmDatabase;
         }					
