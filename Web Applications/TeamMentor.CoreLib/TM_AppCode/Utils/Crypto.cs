@@ -26,7 +26,7 @@ namespace TeamMentor.CoreLib
     public static class PBKDF2_ExtensionMethods
     {
         public static int DEFAULT_PBKDF2_INTERACTIONS = 20000;
-        public static int DEFAULT_PBKDF2_BYTES = 64 ;
+        public static int DEFAULT_PBKDF2_BYTES = 64;
 
         public static string hash_PBKDF2(this string password, Guid salt)
         {
@@ -42,6 +42,12 @@ namespace TeamMentor.CoreLib
         {
             var bytes = PBKDF2.GetBytes(password.asciiBytes(), salt.asciiBytes(), iterations, howManyBytes);
             return bytes.base64Encode();
+        }
+
+        public static int set_DEFAULT_PBKDF2_INTERACTIONS(this int newValue)
+        {
+            "DEFAULT_PBKDF2_INTERACTIONS set to: {0}".debug(newValue);
+            return DEFAULT_PBKDF2_INTERACTIONS = newValue;
         }
     }
 

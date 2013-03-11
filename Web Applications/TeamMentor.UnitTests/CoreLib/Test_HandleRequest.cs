@@ -44,15 +44,14 @@ namespace TeamMentor.UnitTests.CoreLib
             //handleUrlRequest.handleRequest("TeamMentor", "");            
         }
         [Test] public void TestRedirectToLoginPage()
-        {
-            handleUrlRequest.redirectTo_Login();
-            var redirecting = context.Response.IsRequestBeingRedirected;
-            Assert.IsTrue   (redirecting, "redirecting");
-            Assert.AreEqual ("/Login",context.Response.RedirectLocation,"Login redirect location");
+        {            
+            handleUrlRequest.handleRequest("login","");            
+            Assert.IsTrue   (context.Response.IsRequestBeingRedirected, "redirecting");
+            Assert.AreEqual ("/Html_Pages/Gui/Pages/login.html",context.Response.RedirectLocation,"Login redirect location");
 
-            Setup();
-            redirecting       = context.Response.IsRequestBeingRedirected;
-            Assert.IsFalse    (redirecting, "redirecting after Setup");
+            Setup();        // run setup again and ensure that values have been reset
+            
+            Assert.IsFalse    (context.Response.IsRequestBeingRedirected, "redirecting after Setup");
             Assert.AreNotEqual("/Login",context.Response.RedirectLocation,"Login redirect location, after Setup");                        
         }
         [Test] public void CheckRedirectionOnAdminFunction()
@@ -91,7 +90,7 @@ namespace TeamMentor.UnitTests.CoreLib
             Assert.IsNotEmpty(responseRedirects);
             foreach (var mapping in responseRedirects)
             {
-                context.Response.Redirect("");
+                Assert.Throws<Exception>(()=> context.Response.Redirect(""));   // (Redirect throws exception after redirection is set)
                 Assert.IsFalse(context.Response.IsRequestBeingRedirected);                
                 handleUrlRequest.handleRequest(mapping.Key, "");
                 "{0} -> {1} : {2}".info(mapping.Key, mapping.Value, context.Response.RedirectLocation);
@@ -120,11 +119,10 @@ namespace TeamMentor.UnitTests.CoreLib
             
             foreach (var item in okRedirects)
             {         
-                response.Redirect("");                                      // reset redirection                
+                Assert.Throws<Exception>(()=> response.Redirect(""));               // reset redirection (Redirect throws exception after redirection is set)
                 Assert.IsFalse (response.IsRequestBeingRedirected);
-                request.QueryString["LoginReferer"] = item.Key;             // set redirection target
-                var result     = handleUrlRequest.handle_LoginOK();         // trigger redirect                
-                Assert.IsTrue  (result, "result for: " + item.Key);         // check result and redirect data
+                request.QueryString["LoginReferer"] = item.Key;                     // set redirection target
+                Assert.Throws<Exception>(()=>handleUrlRequest.handle_LoginOK());    // trigger redirect  (Redirect throws exception after redirection is set)                             
                 Assert.IsTrue  (response.IsRequestBeingRedirected);       
                 Assert.AreEqual(targetServer + item.Value,response.RedirectLocation, 
                                 "response.RedirectLocation for: {0}".format(item.Value));                                
@@ -140,13 +138,16 @@ namespace TeamMentor.UnitTests.CoreLib
                                         };
                                                                                                
             var request               = context.Request;
+            var response              = context.Response;
             moqHttpContext.RequestUrl = targetServer.append("/some/path").uri();            
-                        
+
+            Assert.IsFalse  (response.IsRequestBeingRedirected);  
+             
             foreach (var item in failedRedirects)
             {
-                request.QueryString["LoginReferer"] = item;                 // set redirection target
-                var result     = handleUrlRequest.handle_LoginOK();         // trigger redirect     
-                Assert.IsFalse  (result, "didn't fail for: " + item);       // check result and redirect data
+                request.QueryString["LoginReferer"] = item;                  // set redirection target
+                Assert.DoesNotThrow(()=>handleUrlRequest.handle_LoginOK(), "didn't fail for: " + item);  // trigger redirect     
+                Assert.IsFalse  (response.IsRequestBeingRedirected       , "redirected for: " + item);                       
             }
         }
     }

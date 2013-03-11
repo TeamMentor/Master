@@ -28,7 +28,7 @@ namespace TeamMentor.UnitTests.REST_Direct
             var response = HttpContextFactory.Response;
             Assert.IsFalse  (response.IsRequestBeingRedirected);
             Assert.AreEqual ("", response.RedirectLocation);            
-            TmRest.TBot_Show();
+            Assert.Throws<Exception>(()=>TmRest.TBot_Show());
             Assert.IsTrue   (response.IsRequestBeingRedirected);
             Assert.AreEqual ("/Login?LoginReferer=/tbot", response.RedirectLocation);            
         }

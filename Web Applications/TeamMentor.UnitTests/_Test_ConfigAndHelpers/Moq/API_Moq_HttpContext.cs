@@ -93,14 +93,15 @@ namespace O2.FluentSharp
             MockResponse.Setup   (response => response.OutputStream ).Returns(outputStream);
             MockResponse.Setup   (response => response.Write        (It.IsAny<string>())                    ).Callback((string code)              => outputStream.Write(code.asciiBytes(), 0, code.size()));
             MockResponse.Setup   (response => response.AddHeader    (It.IsAny<string>(), It.IsAny<string>())).Callback((string name,string value) => MockResponse.Object.Headers.Add(name,value));
-            MockResponse.Setup   (response => response.Redirect     (It.IsAny<string>())                    ).Callback((string target) =>{redirectTarget = target; });
+            MockResponse.Setup   (response => response.Redirect     (It.IsAny<string>())                    ).Callback((string target)            =>{ redirectTarget = target; throw new Exception("Thread was being aborted.");});            
             
             MockResponse.Setup   (response => response.IsRequestBeingRedirected ).Returns(() => redirectTarget.valid());
             MockResponse.Setup   (response => response.RedirectLocation         ).Returns(() => redirectTarget);
             
             //Server
-            MockServer.Setup(server => server.MapPath (It.IsAny<string>())).Returns ((string path)   =>  BaseDir.pathCombine(path));
-            MockServer.Setup(server => server.Transfer(It.IsAny<string>())).Callback((string target) =>  redirectTarget = target  );   // use the redirectTarget to hold this value
+            MockServer.Setup(server => server.MapPath (It.IsAny<string>()))                 .Returns ((string path)                      =>  BaseDir.pathCombine(path));
+            MockServer.Setup(server => server.Transfer(It.IsAny<string>()))                 .Callback((string target)                    =>  { redirectTarget = target; throw new Exception("Thread was being aborted.");}  );   // use the redirectTarget to hold this value
+            MockServer.Setup(server => server.Transfer(It.IsAny<string>(),It.IsAny<bool>())).Callback((string target, bool preserveForm) =>  { redirectTarget = target; throw new Exception("Thread was being aborted.");}  );   // use the redirectTarget to hold this value
             //Session
             MockSession.Setup   (session => session.SessionID       ).Returns("".add_RandomLetters(15)); 
             //var writer = new StringWriter();

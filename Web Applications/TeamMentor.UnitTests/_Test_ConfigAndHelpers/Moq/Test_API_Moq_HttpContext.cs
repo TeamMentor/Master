@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System;
+using System.Web;
 using NUnit.Framework;
 using O2.DotNetWrappers.ExtensionMethods;
 using O2.FluentSharp;
@@ -70,10 +71,10 @@ namespace TeamMentor.UnitTests
         [Test] public void Test_ServerTransfer()
         {
             var transferTarget = "/a/page.html";
-            Assert.AreEqual(string.Empty, context.Response.RedirectLocation, "before Transfer");
-            context.Server.Transfer(transferTarget);
-            Assert.IsNotNull(context.Response.RedirectLocation, "after Transfer");
-            Assert.AreEqual(transferTarget, context.Response.RedirectLocation);
+            Assert.AreEqual         (string.Empty, context.Response.RedirectLocation, "before Transfer");
+            Assert.Throws<Exception>(()=>context.Server.Transfer(transferTarget));                          //Server.Transfer throws exception after configuring the transfer
+            Assert.IsNotNull        (context.Response.RedirectLocation, "after Transfer");
+            Assert.AreEqual         (transferTarget, context.Response.RedirectLocation);
         }
     }
 }

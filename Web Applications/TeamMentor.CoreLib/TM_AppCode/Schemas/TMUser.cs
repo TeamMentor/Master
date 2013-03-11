@@ -57,9 +57,9 @@ namespace TeamMentor.CoreLib
         [XmlAttribute]	public Guid     PasswordResetToken	{ get; set; }
         [XmlAttribute]	public string   DecryptionKey       { get; set; }       
         //[XmlAttribute]  public string   SSOKey              { get; set; }    
-
-        [XmlIgnore]
+        
         [XmlAttribute]  public string	CSRF_Token  { get; set; }        
+        [XmlAttribute]  public string	SessionID  { get; set; } 
     }
     public class UserAccountStatus
     {

@@ -1,4 +1,5 @@
 using System;
+using System.Security;
 using System.Web;
 using XssEncoder = Microsoft.Security.Application.Encoder;
 using O2.DotNetWrappers.ExtensionMethods;
@@ -13,7 +14,7 @@ namespace TeamMentor.CoreLib
 			try
 			{
                 //Temporarily disable uploadToken request
-				/*var uploadTokenString = context.Request["uploadToken"];
+				var uploadTokenString = context.Request["uploadToken"];
 				if (uploadTokenString.isGuid().isFalse())
 				{
 					context.Response.Write("No Upload Token provided");
@@ -24,7 +25,7 @@ namespace TeamMentor.CoreLib
 				if (FileUpload.UploadTokens.contains(uploadToken).isFalse())
 					throw new SecurityException("Invalid Upload Token");
 				FileUpload.UploadTokens.remove(uploadToken);			
-                */
+                
 				var libraryName = context.Request["library"] ?? "";
 				var library = TM_Xml_Database.Current.tmLibrary(libraryName);
 				if (library.isNull())

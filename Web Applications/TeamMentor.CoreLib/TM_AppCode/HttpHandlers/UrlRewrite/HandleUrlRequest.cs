@@ -34,10 +34,15 @@ namespace TeamMentor.CoreLib
                             .add("passwordexpired", "/Html_Pages/Gui/Pages/passwordReset.html")                            
                             .add("error", "/Html_Pages/Gui/Pages/errorPage.html");
 
-            Response_Redirects.add("csharprepl", "/html_pages/ControlPanel/CSharp_REPL/Repl.html")
-                              .add("tbot","/rest/tbot/run/Commands")
-                              .add("asmx", "/aspx_pages/TM_WebServices.asmx")
-                              .add("wcf", "/rest/help");            
+            Response_Redirects.add("csharprepl" , "/html_pages/ControlPanel/CSharp_REPL/Repl.html")
+                              .add("tbot"       , "/rest/tbot/run/Commands")
+                              .add("asmx"       , "/aspx_pages/TM_WebServices.asmx")
+                              .add("wcf"        , "/rest/help")
+                              .add("home"       , "/")
+                              .add("debug"      , "/Aspx_Pages/Debug.aspx")
+                              .add("admin"      , "/html_pages/ControlPanel/controlpanel.html")
+                              .add("admin_extra", "/html_pages/ControlPanel/controlpanel.html?extra");
+                
         }
         public void transfer_Request(string action)
         {            
@@ -178,68 +183,85 @@ namespace TeamMentor.CoreLib
                 action = Encoder.HtmlEncode(action);
                 data = Encoder.HtmlEncode(data).replace("%20"," ");
 
-                if (action.isGuid() & data.inValid())                
-                    return redirectTo_Article(action);
-
+                if (action.isGuid() & data.inValid())
+                {
+                    redirectTo_Article(action);
+                    endResponse();
+                }
                 transfer_Request(action.lower());       // throw "Thread was being aborted." exception if worked
                 response_Redirect(action.lower());      // throw "Thread was being aborted." exception if worked
                 
+                //content viewer
                 switch (action.lower())
-                {                    
-                    case "raw":                        
-                        return handleAction_Raw(data);                                                      
+                {
+                    case "raw":
+                        handleAction_Raw(data);
+                        break;
                     case "html":
-                        return handleAction_Html(data);
+                        handleAction_Html(data);
+                        break;
                     case "content":
-                        return handleAction_Content(data);
+                        handleAction_Content(data);
+                        break;
                     case "xml":
-                        return handleAction_Xml(data);
+                        handleAction_Xml(data);
+                        break;
                     case "xsl":
-                        return handleAction_Xsl(data,"TeamMentor_Article.xslt");
+                        handleAction_Xsl(data, "TeamMentor_Article.xslt");
+                        break;
                     case "creole":
-                        return handleAction_Xsl(data,"JsCreole_Article.xslt");          
-                    case "notepad":
-                        return handleAction_Xsl(data, "Notepad_Edit.xslt");                        
-                    case "viewer":
-                    case "article":
-                        return handle_ArticleViewRequest(data);                                     
-                    case "edit":
-                    case "editor":
-                        return transfer_ArticleEditor(data);                    
-                    case "create":
-                        return handleAction_Create(data);    
-                    case "admin":
-                        return redirectTo_ControlPanel(false);
-                    case "admin_extra":
-                        return redirectTo_ControlPanel(true);
-                    case "reload_config":
-                        return reload_Config();                    
-                    case "login":
-                        return redirect_Login();
-                    case "login_ok":
-                        return handle_LoginOK();   
-                    case "logout":
-                        return redirectTo_Logout();
-                    case "wsdl":
-                        return redirectTo_Wsdl();
-                    case "reload":
-                        return reloadCache_and_RedirectToHomePage();
-                   case "home":
-                        return redirectTo_HomePage();
-                    //case "images":                        
+                        handleAction_Xsl(data, "JsCreole_Article.xslt");
+                        break;
+                    
                     case "image":
                         return handleAction_Image(data);
                     case "jsonp":
                         return handleAction_JsonP(data);
-                    case "debug":
-                        return redirectTo_DebugPage();
+                    case "viewer":
+                    case "article":
+                        handle_ArticleViewRequest(data);
+                        break;
+                    case "edit":
+                    case "editor":
+                        return transfer_ArticleEditor(data);
+                    case "notepad":
+                        handleAction_Xsl(data, "Notepad_Edit.xslt");
+                        break;
+                    case "create":
+                        handleAction_Create(data);
+                        break;
+                }
+                //user actions
+                switch (action.lower())
+                {
+                    case "login":
+                        redirect_Login();
+                        break;
+                    case "login_ok":
+                        handle_LoginOK();
+                        break;
+                    case "logout":
+                        redirectTo_Logout();
+                        break;
+                    
                     case "library":
-                        return redirectTo_SetLibrary(data);					
+                        return redirectTo_SetLibrary(data);
+                }
+                //admin actions
+                switch (action.lower())
+                {
+                    case "reload":
+                        reloadCache_and_RedirectToHomePage();
+                        break;                                       
+                    case "reload_config":
+                        reload_Config();                    
+                        break;
                     case "library_download":
                     case "download_library":
-                        return redirectTo_DownloadLibrary(data);
-                    //case "sso":
-                    //    return handleAction_SSO();                                                            
+                        redirectTo_DownloadLibrary(data);
+                        break;
+                        //case "sso":
+                        //    return handleAction_SSO();                                                            
                 }
                 
                 tmWebServices.tmAuthentication.mapUserRoles(false);			 // enable  CSRF protection
@@ -260,7 +282,7 @@ namespace TeamMentor.CoreLib
             catch (Exception ex)
             {
                 if (ex is SecurityException)
-                    return redirect_Login();              
+                    redirect_Login();              
                 if (ex.Message != "Thread was being aborted.")                
                     ex.logWithStackTrace("at handleRequest");                                    
             }                                    
@@ -268,10 +290,10 @@ namespace TeamMentor.CoreLib
         }
         
 
-        public bool reload_Config()
+        public void reload_Config()
         {
             TMConfig.loadConfig();
-            return redirectTo_HomePage();
+            response_Redirect("home");
         }
 
         //Virtual Articles
@@ -421,7 +443,7 @@ namespace TeamMentor.CoreLib
             return false;
         }
 
-        private bool handleAction_Xsl(string data, string xsltToUse)
+        private void handleAction_Xsl(string data, string xsltToUse)
         {
             //if (this.TmWebServices.tmAuthentication.sessionID. UserRole.ReadArticles
             var xstlFile = context.Server.MapPath("\\xslt\\" + xsltToUse);
@@ -447,28 +469,25 @@ namespace TeamMentor.CoreLib
 
                         context.Response.ContentType = "text/html";
                         context.Response.Write(stringWriter.str());
-                        return true;
-                    }
-                    return false;
+                        endResponse();                        
+                    }                    
                 }
-                return transfer_ArticleViewer();
-                    
-            }
-            return false;
+                else
+                    transfer_ArticleViewer();       
+            }            
         }
 
-        private bool handleAction_Create(string data)
+        private void handleAction_Create(string data)
         {
             var article = new TeamMentor_Article {Metadata = {Title = data.urlDecode()}};
             var xmlContent = article.serialize(false)
                                     .add_Xslt("Article_Edit.xslt"); 
             context.Response.ContentType = "application/xml";
             context.Response.Write(xmlContent);  
-            return true;
-        }
-        //data, );                    
+            endResponse();            
+        }        
 
-        private bool handleAction_Raw(string data)
+        private void handleAction_Raw(string data)
         {
             var guid = tmWebServices.getGuidForMapping(data);
             if (guid != Guid.Empty)
@@ -476,12 +495,12 @@ namespace TeamMentor.CoreLib
                 var xmlContent = tmWebServices.XmlDatabase_GetGuidanceItemXml(guid);
                 context.Response.ContentType = "application/xml";
                 context.Response.Write(xmlContent);
+                endResponse(); 
             }
             else
-                transfer_ArticleViewer();
-            return true;
+                transfer_ArticleViewer();            
         }
-        private bool handleAction_Xml(string data)
+        private void handleAction_Xml(string data)
         {
             var guid = tmWebServices.getGuidForMapping(data);
             if (guid != Guid.Empty)
@@ -489,12 +508,12 @@ namespace TeamMentor.CoreLib
                 var xmlContent = tmWebServices.GetGuidanceItemHtml(guid);
                 context.Response.ContentType = "application/xml";
                 context.Response.Write(xmlContent);
+                endResponse(); 
             }
             else
-               transfer_ArticleViewer();
-            return true;
+               transfer_ArticleViewer();            
         }
-        private bool handleAction_Html(string data)
+        private void handleAction_Html(string data)
         {
             var guid = tmWebServices.getGuidForMapping(data);
             if (guid != Guid.Empty)
@@ -508,13 +527,13 @@ namespace TeamMentor.CoreLib
                     
                 var htmlContent = htmlTemplate.replace("#ARTICLE_TITLE", article.Metadata.Title)
                                               .replace("#ARTICLE_HTML", article.Content.Data.Value);
-                context.Response.Write(htmlContent);                
+                context.Response.Write(htmlContent);      
+                endResponse(); 
             }
             else
-                transfer_ArticleViewer();
-            return true;
+                transfer_ArticleViewer();            
         }
-        private bool handle_ArticleViewRequest(string data)
+        public void handle_ArticleViewRequest(string data)
         {			
             if ( data.isGuid())
             {				
@@ -524,14 +543,13 @@ namespace TeamMentor.CoreLib
                     var redirectTarget = tmWebServices.VirtualArticle_Get_GuidRedirect(guid);
                     if (redirectTarget.valid())
                     {
-                        context.Response.Redirect(redirectTarget);
-                        return false;
+                        context.Response.Redirect(redirectTarget); // ends request                        
                     }
                 }
             }
-            return transfer_ArticleViewer();       
+            transfer_ArticleViewer();       
         }		
-        private bool handleAction_Content(string data)
+        private void handleAction_Content(string data)
         { 
             var guid = tmWebServices.getGuidForMapping(data);
             if (guid != Guid.Empty)
@@ -541,8 +559,7 @@ namespace TeamMentor.CoreLib
                 context.Response.Write(htmlContent);
             }
             else
-                transfer_ArticleViewer();
-            return true;
+                transfer_ArticleViewer();            
 
         }
 /*        private bool handleAction_SSO()
@@ -552,15 +569,15 @@ namespace TeamMentor.CoreLib
         }*/
         
         //utils
-        /*public void endResponse()
+        public void endResponse()
         { 
             context.Response.Flush();
             context.Response.End();
-        }*/
-        private bool reloadCache_and_RedirectToHomePage()
+        }
+        private void reloadCache_and_RedirectToHomePage()
         {
             tmWebServices.XmlDatabase_ReloadData();
-            return redirectTo_HomePage();
+            response_Redirect("home");
         }      
         public bool transfer_ArticleViewer()
         {
@@ -579,33 +596,23 @@ namespace TeamMentor.CoreLib
             //context.Server.Transfer("/html_pages/GuidanceItemEditor/GuidanceItemEditor.html");            
             return false;    
         }
-        /*public bool transfer_PasswordReset()
-        {                            
-            context.Server.Transfer("/Html_Pages/Gui/Pages/passwordReset.html");
-            return false;
-        }
-        public bool transfer_PasswordForgot()
-        {                            
-            context.Server.Transfer("/Html_Pages/Gui/Pages/passwordForgot.html");
-            return false;
-        } */       
-        public bool redirect_Login()
+     
+        public void redirect_Login()
         {
-            if (context.Request.Url == null)
-                return false;
-            var loginReferer = context.Request.QueryString["LoginReferer"];
-            var redirectTarget =  (loginReferer.notNull() && loginReferer.StartsWith("/"))
-                                        ? loginReferer
-                                        : context.Request.Url.AbsolutePath;
-            if (redirectTarget.lower() == "/login")
-                redirectTarget = "/";
-            context.Response.Redirect("/Html_Pages/Gui/Pages/login.html?LoginReferer=" + redirectTarget);
-            //context.Response.ContentType = "text/html";    
-            //context.Server.Transfer("/Html_Pages/Gui/Pages/login.html");
-            //context.Session["LoginReferer"] = context.Request.Url.AbsolutePath;
-            return true; 
+            var loginPage = "/Html_Pages/Gui/Pages/login.html";
+            if (context.Request.Url.notNull())
+            { 
+                var loginReferer = context.Request.QueryString["LoginReferer"];
+                var redirectTarget =  (loginReferer.notNull() && loginReferer.StartsWith("/"))
+                                            ? loginReferer
+                                            : context.Request.Url.AbsolutePath;
+                if (redirectTarget.lower() == "/login")
+                    redirectTarget = "/";
+                context.Response.Redirect("{0}?LoginReferer={1}".format(loginPage, redirectTarget));                
+            }
+            context.Response.Redirect(loginPage);
         }
-        public bool handle_LoginOK()
+        public void handle_LoginOK()
         {
             // ensures we are redirecting into the current domain (and fixes unvalidated redirect vuln in pre 3.3)
             var currentRequestUrl = context.Request.Url;
@@ -614,65 +621,36 @@ namespace TeamMentor.CoreLib
                 var loginReferer = context.Request.QueryString["LoginReferer"]   // get user provided redirect                                                      
                                                   .replace("//","/");            // prevent urls that start with  //
                 if (loginReferer.htmlEncode() != loginReferer )                  // prevent html tags
-                    return false;
+                    return;
                 var referTarget = (loginReferer.notNull() && loginReferer.StartsWith("/"))
-                                    ? loginReferer                              
+                                    ? loginReferer                               // only allow paths that start with /
                                     : "/";                                       // default to redirect to /
                 
                 // need to calculate urlWithoutPathAndQuery since the URL class doesn't provide this value
                 var urlWithoutPathAndQuery = currentRequestUrl.AbsoluteUri.remove(currentRequestUrl.PathAndQuery);                
                 var sameDomainUrl =  urlWithoutPathAndQuery.append(referTarget);  // create redirect URL
-                context.Response.Redirect(sameDomainUrl);                         // redirect
-            }
-            return true;
+                context.Response.Redirect(sameDomainUrl);                        
+                // Response.Redirect will throw an exception so the current request ends here                
+            }            
         }
-        public bool redirectTo_HomePage()
-        {	            
-            context.Response.Redirect("/");                        	
-            return false; 
-        }
-        public bool redirectTo_Login()
-        {	            
-            context.Response.Redirect("/Login");                        	
-            return false; 
-        }        
-        public bool redirectTo_Logout()
+   
+        public void redirectTo_Logout()
         {	
             tmWebServices.Logout();
-            context.Response.Redirect("/");                        	
-            return false; 
+            response_Redirect("home");                        	            
         }
-        public bool redirectTo_DownloadLibrary(string data)
+        public void redirectTo_DownloadLibrary(string data)
         {
             // UserGroup.Admin.setThreadPrincipalWithRoles();      // to test for this (for now allow normal users to download libraries)
-            // var currentUserRoles = TmWebServices.RBAC_CurrentPrincipal_Roles();
+            //var currentUserRoles = tmWebServices.RBAC_CurrentPrincipal_Roles();
 
-            //var uploadToken = new TM_WebServices().GetUploadToken();
-            var uploadToken = "";
-            context.Response.Redirect("/Aspx_Pages/Library_Download.ashx?library={0}&uploadToken={1}".format(data, uploadToken));
-            return false;
-        }
-        public bool redirectTo_Wsdl()
-        {
-            context.Response.Redirect("/Aspx_Pages/TM_WebServices.asmx");
-            return false;
-        }
-        public bool redirectTo_ControlPanel(bool includeExtraTag)
+            var uploadToken = new TM_WebServices().GetUploadToken();            
+            context.Response.Redirect("/Aspx_Pages/Library_Download.ashx?library={0}&uploadToken={1}".format(data, uploadToken));            
+        }                                 
+        public void redirectTo_Article(string article)
         {			
-            var adminUrl = "/html_pages/ControlPanel/controlpanel.html" + ((includeExtraTag) ? "?extra" : "");
-            context.Response.Redirect(adminUrl);
-            return false;    
-        }                       
-        public bool redirectTo_Article(string article)
-        {			
-            context.Response.Redirect("/article/{0}".format(article));
-            return false;    
-        }        
-        public bool redirectTo_DebugPage()
-        {			
-            context.Response.Redirect("/Aspx_Pages/Debug.aspx");
-            return false;    
-        }   
+            context.Response.Redirect("/article/{0}".format(article));                
+        }          
         public bool redirectTo_SetLibrary(string libraryIdOrName)
         {			
             context.Response.Redirect("/aspx_pages/SetLibrary.aspx?Library={0}".format(libraryIdOrName));

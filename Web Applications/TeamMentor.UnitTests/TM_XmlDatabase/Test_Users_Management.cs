@@ -63,6 +63,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         }
         [Test] public void PBKDF2_Default()
         {
+            20000.set_DEFAULT_PBKDF2_INTERACTIONS(); // restore this value since that is what we are testing
             Action<string,string> checkPassword = 
                 (password, salt) =>
                     {

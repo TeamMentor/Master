@@ -18,6 +18,7 @@ namespace TeamMentor.UnitTests
         [Assert_Admin]
         public void SetupDatabase()
         {
+            //1.set_DEFAULT_PBKDF2_INTERACTIONS();                // improve performance of tests that created users
             tmXmlDatabase   = new TM_Xml_Database();
             userData        = tmXmlDatabase.UserData;
             tmConfig        = TMConfig.Current = new TMConfig();
