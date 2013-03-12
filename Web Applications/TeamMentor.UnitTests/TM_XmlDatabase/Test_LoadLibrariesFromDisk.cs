@@ -8,10 +8,12 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
 {
     [TestFixture]
     public class Test_LoadLibrariesFromDisk  : TM_XmlDatabase_InMemory
-    {        
-                
+    {                        
         public Test_LoadLibrariesFromDisk()
-        {            
+        {
+            if (Tests_Config.offline)
+                Assert.Ignore("Ignoring Test because we are offline");   
+
            if(new O2.Kernel.CodeUtils.O2Kernel_Web().online().isFalse())
                 Assert.Ignore("Ignoring Test because we are offline");   
 

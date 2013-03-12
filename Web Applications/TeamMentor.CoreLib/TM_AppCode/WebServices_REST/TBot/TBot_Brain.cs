@@ -26,6 +26,9 @@ namespace TeamMentor.CoreLib
                 ScriptContentHashes = new List<int>();
                 TemplateService  = (ITemplateService) typeof (Razor).prop("TemplateService");
                 AvailableScripts = GetAvailableScripts();
+
+                new TM_REST().Admin_InvokeScript("load_NGit_Dlls");         // to solve prob with NGit dlls not being avaialble for compilation 
+
             }
             catch (Exception ex)
             {
@@ -38,7 +41,8 @@ namespace TeamMentor.CoreLib
         public TBot_Brain(ITM_REST tmRest)
         {
             TmRest = tmRest;
-            StartTime = DateTime.Now;            
+            StartTime = DateTime.Now;       
+            
         }
 
         public Stream GetHtml(string content)

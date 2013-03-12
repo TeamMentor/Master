@@ -9,9 +9,6 @@
 @using NGit.Diff
 @using NGit
 
-
-<h4>Git Diff (File)</h4>
-
 @{
 
     var userData = TM_UserData.Current;
@@ -69,10 +66,15 @@
     var log = nGit.Git.Log();
     log.AddPath(file);
     //var revCommit = log.Call().first();
-
+    var max = 10;
 }    
 
-@foreach (var revCommit in log.Call())
+
+<h4>Git Diff (File)</h4>
+
+Showing first @max entries<br/><br/>
+
+@foreach (var revCommit in log.Call().take(max))
 { 
     var when = revCommit.GetAuthorIdent().GetWhen();
     var message = revCommit.GetFullMessage();

@@ -8,6 +8,8 @@ namespace TeamMentor.UnitTests
     [SetUpFixture]
     public class Tests_Config
     {
+        public static bool offline = MiscUtils.online().isFalse();
+
         [SetUp]
         public void RunBeforeAllTests()
         {

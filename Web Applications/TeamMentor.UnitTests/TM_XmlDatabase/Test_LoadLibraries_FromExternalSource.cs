@@ -6,13 +6,16 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
 {
     [TestFixture]
     public class Test_LoadLibraries_FromExternalSource : TM_XmlDatabase_InMemory
-    {
+    {        
+        public Test_LoadLibraries_FromExternalSource()
+        {
+            if (Tests_Config.offline)
+                Assert.Ignore("Ignoring Test because we are offline");   
+        }
+
         [Test]
         public void DownloadAndInstallLibraryFromZip()
-        {
-            if(new O2.Kernel.CodeUtils.O2Kernel_Web().online().isFalse())
-                Assert.Ignore("Ignoring Test because we are offline");   
-
+        {            
             var tmLibraries_Before = tmXmlDatabase.tmLibraries();            
 
             Install_LibraryFromZip_TopVulns();

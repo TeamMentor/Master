@@ -61,7 +61,7 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             var changePasswordResult          = tmWebServices.SetCurrentUserPassword(originalPassword,newPassword);
             var sessionId_NewPassword         = tmWebServices.Login(newUser.username, newPassword);
             var currentUser_NewPassword       = tmWebServices.Current_User();
-            var sessionId_OriginalPassword2   = tmWebServices.Login(newUser.username, originalPassword);
+            var sessionId_OriginalPassword2   = tmWebServices.Login(newUser.username, originalPassword);            
             var currentUser_OriginalPassword2 = tmWebServices.Current_User();
 
             Assert.Greater    (userId, 0);

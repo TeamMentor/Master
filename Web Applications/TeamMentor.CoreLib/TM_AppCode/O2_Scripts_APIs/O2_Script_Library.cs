@@ -45,6 +45,16 @@ return ""done"";
 //O2Ref:FluentSharp.BCL.dll
 //O2Ref:FluentSharp.REPL.exe
 //O2Ref:O2_Platform_External_SharpDevelop.dll";
-        }                        
+        }
+        
+        public static string load_NGit_Dlls()
+        {
+            return @"var a = typeof(Sharpen.URLEncoder);
+var b = typeof(NGit.Repository);
+return a.notNull() && b.notNull();
+
+//O2Ref:NGit.dll
+//O2Ref:Sharpen.dll";
+        }
     }
 }

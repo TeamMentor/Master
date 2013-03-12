@@ -12,7 +12,7 @@ namespace TeamMentor.CoreLib
         public List<TMUser>	            TMUsers			    { get; set; }
         public TM_SecretData            SecretData          { get; set; }
         
-        public Dictionary<Guid, TMUser>	ActiveSessions	    { get; set; }
+        //public Dictionary<Guid, TMUser>	ActiveSessions	    { get; set; }
         public bool                     UsingFileStorage    { get; set; }
         public bool                     AutoGitCommit       { get; set; }
         public API_NGit                 NGit                { get; set; }
@@ -32,7 +32,7 @@ namespace TeamMentor.CoreLib
         public TM_UserData ResetData()
         {
             TMUsers             = new List<TMUser>();            
-            ActiveSessions      = new Dictionary<Guid, TMUser>();
+            //ActiveSessions      = new Dictionary<Guid, TMUser>();
             SecretData          = new TM_SecretData();
             AutoGitCommit       = TMConfig.Current.Git.AutoCommit_UserData;           
             return this;

@@ -91,7 +91,8 @@ namespace TeamMentor.CoreLib
                 "[TM_Xml_Database][setDataFromCurrentScript] TM_Xml_Database.Path_XmlDatabase: {0}" .debug(xmlDatabasePath);
                 "[TM_Xml_Database][setDataFromCurrentScript] TMConfig.Current.XmlLibrariesPath: {0}".debug(xmlLibraryPath);
                 "[TM_Xml_Database][setDataFromCurrentScript] TMConfig.Current.UserDataPath: {0}"    .debug(userDataPath);
-                TM_Xml_Database_Load_and_FileCache_Utils.populateGuidanceItemsFileMappings();	//only do this once
+                
+                //TM_Xml_Database_Load_and_FileCache_Utils.populateGuidanceItemsFileMappings();	//only do this once
             }
             catch(Exception ex)
             {

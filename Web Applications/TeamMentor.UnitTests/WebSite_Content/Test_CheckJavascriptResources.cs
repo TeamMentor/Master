@@ -10,7 +10,8 @@ namespace TeamMentor.UnitTests.WebSite_Content
         [SetUp]
         public void setup()
         {
-            //PublicDI.log.writeToDebug(true);						
+            if (Tests_Config.offline)
+                Assert.Ignore("Ignoring Test because we are offline");   
         }
 
         [Test]
@@ -33,18 +34,11 @@ namespace TeamMentor.UnitTests.WebSite_Content
 
             var tmVersion	  = gaFile.fileContents().fixCRLF();
 
-            //if(TM_Xml_Database.SkipServerOnlineCheck.isFalse()
-                if(new O2.Kernel.CodeUtils.O2Kernel_Web().online())
-            {
-                Assert.That(tmVersion.valid()	, "ga.js tmVersion not valid");
-                var googleVersion = "http://www.google-analytics.com/ga.js".GET().fixCRLF();
-                Assert.That(googleVersion.valid(), "ga.js googleVersion not valid");
-                Assert.AreEqual(tmVersion, googleVersion, "ga.js files didn't match");
-            }
-            else
-            {
-             Assert.Ignore("Ignoring Test because we are offline");   
-            }
-        }		
+            
+            Assert.That(tmVersion.valid()	, "ga.js tmVersion not valid");
+            var googleVersion = "http://www.google-analytics.com/ga.js".GET().fixCRLF();
+            Assert.That(googleVersion.valid(), "ga.js googleVersion not valid");
+            Assert.AreEqual(tmVersion, googleVersion, "ga.js files didn't match");            
+        }        
     }
 }

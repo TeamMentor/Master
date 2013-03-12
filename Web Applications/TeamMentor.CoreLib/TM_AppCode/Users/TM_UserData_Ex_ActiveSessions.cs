@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using O2.DotNetWrappers.ExtensionMethods;
 
 namespace TeamMentor.CoreLib
@@ -40,6 +41,7 @@ namespace TeamMentor.CoreLib
 
                     if (tmUser.notNull())
                     {
+                        tmUser.SecretData.SessionID = Guid.Empty;          // reset the user SessionID
                         if (tmUser.account_Expired())
                         {
                             tmUser.logUserActivity("Account Expired", "Expiry date: {0}".format(tmUser.AccountStatus.ExpirationDate));
@@ -55,8 +57,8 @@ namespace TeamMentor.CoreLib
                         }
                         else
                         {
-                        tmUser.logUserActivity("Login Fail", "bad pwd");
-                            tmUser.Stats.LoginFail++;    
+                            tmUser.Stats.LoginFail++;
+                            tmUser.logUserActivity("Login Fail", "bad pwd");                            
                         }
                     }
                 }
@@ -79,15 +81,14 @@ namespace TeamMentor.CoreLib
         {
             try
             {
-                if (tmUser.notNull())           // there is a valid user
+                if (tmUser.notNull())               // there is a valid user
                 {
-                    if (sessionId != Guid.Empty)
+                    if (sessionId != Guid.Empty)    // there was a valid session set
                     {                        
                         tmUser.Stats.LastLogin = DateTime.Now;
                         tmUser.Stats.LoginOk++;
-                        tmUser.logUserActivity("User Login", tmUser.UserName);
-                        userData.ActiveSessions.add(sessionId, tmUser);
-
+                        tmUser.SecretData.SessionID = sessionId;
+                        tmUser.logUserActivity("User Login", tmUser.UserName);          // will save the user                                              
                         SendEmails.SendEmailAboutUserToTM("Logged In", tmUser);
                         return sessionId;
                     }                    
@@ -118,9 +119,9 @@ namespace TeamMentor.CoreLib
             {
                 if (tmUser.notNull() && sessionId.validSession())
                 {
-                    tmUser.logUserActivity("User Logout", tmUser.UserName);                    
-                    userData.ActiveSessions.Remove(sessionId);
-
+                    tmUser.logUserActivity("User Logout", tmUser.UserName);
+                    tmUser.SecretData.SessionID = Guid.Empty;
+                    //userData.ActiveSessions.Remove(sessionId);
                     SendEmails.SendEmailAboutUserToTM("Logged Out", tmUser);
                     return true;
                 }
@@ -131,12 +132,21 @@ namespace TeamMentor.CoreLib
             }
             return false;
         }
-                     
+
+        public static List<Guid> validSessions(this TM_UserData userData)
+        {
+            return (from tmUser in userData.TMUsers
+                    where tmUser.SecretData.SessionID != Guid.Empty
+                    select tmUser.SecretData.SessionID).toList();
+        }
+
         public static bool              validSession         (this Guid sessionId)
         {
             try
             {
-                return TM_UserData.Current.ActiveSessions.hasKey(sessionId);
+                var validSessions = TM_UserData.Current.validSessions();
+                return validSessions.contains(sessionId);
+                //return TM_UserData.Current.ActiveSessions.hasKey(sessionId);
             }
             catch (Exception ex)
             {
@@ -148,12 +158,18 @@ namespace TeamMentor.CoreLib
         {
             try
             {
-                if (sessionId.validSession())
-                {
-                    var tmUser = TM_UserData.Current.ActiveSessions[sessionId];
-                    if (tmUser.AccountStatus.UserEnabled)
-                        return tmUser;
-                    tmUser.logUserActivity("User Disabled", "Didn't provide session Id for logged in user");
+                if (sessionId == Guid.Empty)
+                    return null;
+                var tmUsers = TM_UserData.Current.TMUsers;
+                var tmUserInSession = (from tmUser in tmUsers
+                                       where tmUser.SecretData.SessionID == sessionId
+                                       select tmUser).first();
+
+                if (tmUserInSession.notNull())
+                {                    
+                    if (tmUserInSession.AccountStatus.UserEnabled)
+                        return tmUserInSession;
+                    tmUserInSession.logUserActivity("User Disabled", "User had an active session, but his account is disabled");
                 }
             }
             catch (Exception ex)
@@ -201,9 +217,10 @@ namespace TeamMentor.CoreLib
         {
             try
             {
-                foreach(var item in TM_UserData.Current.ActiveSessions)
-                    if (item.Value == tmUser)
-                        return item.Key;                
+                return tmUser.SecretData.SessionID;
+                //foreach(var item in TM_UserData.Current.ActiveSessions)
+                //    if (item.Value == tmUser)
+                //        return item.Key;                
             }
             catch (Exception ex)
             {

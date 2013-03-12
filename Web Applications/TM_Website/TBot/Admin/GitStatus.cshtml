@@ -14,10 +14,10 @@
     var userDataLocation = userData.Path_UserData;
 //    var userGit = userDataLocation.git_Open();
     var userStatus  = userDataLocation.isGitRepository() ? userDataLocation.git_Open().status()  : "(folder is not a repository)";
-    var userRefLogs = userDataLocation.isGitRepository() ? userDataLocation.git_Open().refLogs().take(50).join("".line()) : "(folder is not a repository)";
+    //var userRefLogs = userDataLocation.isGitRepository() ? userDataLocation.git_Open().refLogs().take(50).join("".line()) : "(folder is not a repository)";
     var xmlLibraryLocation = TM_Xml_Database.Current.Path_XmlLibraries;
-   var libraryStatus = xmlLibraryLocation.isGitRepository() ? xmlLibraryLocation.git_Open().status() : "(folder is not a repository)";
-    
+    var libraryStatus = xmlLibraryLocation.isGitRepository() ? xmlLibraryLocation.git_Open().status() : "(folder is not a repository)";
+    var max = 5;
             
             
 }
@@ -30,7 +30,7 @@
     var nGit = userDataLocation.git_Open();
     var gitRepository = nGit.Repository;
 
-
+    
     Func<List<string>> getRepoFiles =
         () =>
             {
@@ -80,7 +80,7 @@
                 <th>Diff</th>
             </tr>   
         
-        @foreach (var xrefLog in nGit.reflogs_Raw().take(50))
+        @foreach (var xrefLog in nGit.reflogs_Raw().take(max))
         {            
             <tr>
                 <td>@xrefLog.GetNewId().Name</td>
@@ -113,7 +113,7 @@ Location: @xmlLibraryLocation  , is Git: @xmlLibraryLocation.isGitRepository()
                 <th>Diff</th>
             </tr>   
         
-        @foreach (var xrefLog in nGit.reflogs_Raw().take(50))
+        @foreach (var xrefLog in nGit.reflogs_Raw().take(max))
         {            
             <tr>
                 <td>@xrefLog.GetNewId().Name</td>

@@ -8,8 +8,9 @@ namespace TeamMentor.CoreLib
     [Serializable] 
     public class UserActivity
     {
-        [XmlAttribute] public string	Name		{ get; set; }
+        [XmlAttribute] public string	Action		{ get; set; }
         [XmlAttribute] public string	Detail		{ get; set; }
+        [XmlAttribute] public string	Who		    { get; set; }
         [XmlAttribute] public long      When		{ get; set; }        
     }
 
@@ -58,12 +59,18 @@ namespace TeamMentor.CoreLib
 
         }
 
-        public static UserActivity logUserActivity(this TMUser tmUser , string name, string detail)
+        public static UserActivity logUserActivity(this TMUser tmUser , string action, string detail)
         {
             var userActivites = UserActivities.Current;
             if (userActivites.notNull())
             {
-                var userActivity = new UserActivity {Name = name, Detail = detail, When = DateTime.Now.ToFileTimeUtc()};
+                var userActivity = new UserActivity
+                    {
+                        Action  = action, 
+                        Detail  = detail, 
+                        Who     = tmUser.notNull() ? tmUser.UserName :"[NoUser]",
+                        When    = DateTime.Now.ToFileTimeUtc()
+                    };
                 return userActivites.LogUserActivity(tmUser , userActivity);
             }
             return null;

@@ -82,6 +82,10 @@ namespace TeamMentor.CoreLib
                             "[GA] {0} -> {1}".info(title, page);
                             gaRequest.GET();
                         }
+                        else
+                        {
+                            "[Offline][No GA] {0} -> {1}".info(title, page);
+                        }
                     });
 			LogCount++;
 			return this;
@@ -118,8 +122,8 @@ namespace TeamMentor.CoreLib
 		{
 			if (userActivity.notNull())
 			{
-				var title = "[UserActivity]";
-				var page = "{0}: {1}".format(userActivity.Name, userActivity.Detail);
+				var title = "[UserActivity][{0}]".format(userActivity.Who);
+				var page = "{0}: {1}".format(userActivity.Action, userActivity.Detail);
 				title.ga_LogEntry(page);
 			}
 			return userActivity;

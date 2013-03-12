@@ -59,7 +59,7 @@ namespace TeamMentor.CoreLib
         //[XmlAttribute]  public string   SSOKey              { get; set; }    
         
         [XmlAttribute]  public string	CSRF_Token  { get; set; }        
-        [XmlAttribute]  public string	SessionID  { get; set; } 
+        [XmlAttribute]  public Guid	    SessionID  { get; set; } 
     }
     public class UserAccountStatus
     {

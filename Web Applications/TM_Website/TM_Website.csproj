@@ -658,6 +658,8 @@
     <Content Include="TBot\Users\Users_in_CSV.cshtml" />
     <Content Include="TBot\Views\User_View.cshtml" />
     <Content Include="TBot\Views\User_Raw.cshtml" />
+    <Content Include="TBot\Dev\exec_Razor.cshtml" />
+    <Content Include="TBot\LibraryData\Articles.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="TBot\NGit\" />

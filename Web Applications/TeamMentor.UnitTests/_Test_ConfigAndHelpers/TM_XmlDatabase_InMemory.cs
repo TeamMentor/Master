@@ -29,8 +29,8 @@ namespace TeamMentor.UnitTests
             Assert.IsNull(tmXmlDatabase.Path_XmlDatabase		    , "Path_XmlDatabase");
             Assert.IsNull(tmXmlDatabase.Path_XmlLibraries		    , "Path_XmlLibraries");
             Assert.IsEmpty(tmXmlDatabase.Cached_GuidanceItems	    , "Cached_GuidanceItems");
-            Assert.IsEmpty(tmXmlDatabase.UserData.ActiveSessions    , "ActiveSessions");
-            Assert.AreEqual(tmXmlDatabase.UserData.TMUsers.size()   ,1 , "TMUsers");	    // there should be admin
+            Assert.IsEmpty(tmXmlDatabase.UserData.validSessions()   , "ActiveSessions");
+            Assert.AreEqual(tmXmlDatabase.UserData.TMUsers.size(),1 , "TMUsers");	    // there should be admin
         }
 
         [TestFixtureSetUp]		

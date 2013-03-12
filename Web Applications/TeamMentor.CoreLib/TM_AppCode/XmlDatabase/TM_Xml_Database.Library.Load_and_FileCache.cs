@@ -45,7 +45,7 @@ namespace TeamMentor.CoreLib
         }
     }
 
-    // this is a (bit) time consumining (less 1s for 8000 files), so it should only be done once (this is another good cache target)
+/*    // this is a (bit) time consumining (less 1s for 8000 files), so it should only be done once (this is another good cache target)
     public static class TM_Xml_Database_Load_and_FileCache_Utils
     {		
         public static void populateGuidanceItemsFileMappings()
@@ -69,7 +69,7 @@ namespace TeamMentor.CoreLib
             o2Timer.stop();
             "There are {0} files mapped in GuidanceItems_FileMappings".info(TM_Xml_Database.Current.GuidanceItems_FileMappings.size());			
         }
-    }
+    }*/
 
     public static class TM_Xml_Database_ExtensionMethods_Load_and_FileCache
     {

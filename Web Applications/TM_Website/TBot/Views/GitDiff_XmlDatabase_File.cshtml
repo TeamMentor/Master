@@ -76,15 +76,15 @@
     var log = nGit.Git.Log();
     log.AddPath(file);
     //var revCommit = log.Call().first();
-
+    var max = 10;
 }    
 <br/>
 <p>
-    <b>Showing commits for File:</b> @file
+    <b>Showing first @max commits for File:</b> @file
 </p>
 <br/>
 
-@foreach (var revCommit in log.Call())
+@foreach (var revCommit in log.Call().take(max))
 { 
     var when = revCommit.GetAuthorIdent().GetWhen();
     var message = revCommit.GetFullMessage();

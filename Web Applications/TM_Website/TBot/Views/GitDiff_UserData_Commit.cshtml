@@ -43,6 +43,7 @@
     var repo = userDataLocation.git_Open().Repository;    
     var diffLines = getDiff(repo, fromId, toId).fixCRLF().lines();
     var diffLines_withData = diffLines.where((line) => line.starts("+") || line.starts("-"));
+    
 }
 
 <p>
