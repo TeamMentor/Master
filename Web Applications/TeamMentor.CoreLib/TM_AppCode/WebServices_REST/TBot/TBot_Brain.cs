@@ -26,9 +26,6 @@ namespace TeamMentor.CoreLib
                 ScriptContentHashes = new List<int>();
                 TemplateService  = (ITemplateService) typeof (Razor).prop("TemplateService");
                 AvailableScripts = GetAvailableScripts();
-
-                new TM_REST().Admin_InvokeScript("load_NGit_Dlls");         // to solve prob with NGit dlls not being avaialble for compilation 
-
             }
             catch (Exception ex)
             {
@@ -72,7 +69,7 @@ namespace TeamMentor.CoreLib
             try
             {
                 if (AvailableScripts.hasKey(page))
-                {
+                {                    
                     var csFile = AvailableScripts[page];
 
                     var fileContents = csFile.fileContents();
@@ -94,7 +91,7 @@ namespace TeamMentor.CoreLib
         }
 
         public Stream Run(string page)
-        {                        
+        {                                  
             var result = ExecuteRazorPage(page);
             return result.valid() 
                     ? GetHtml(result.trim(), false) 

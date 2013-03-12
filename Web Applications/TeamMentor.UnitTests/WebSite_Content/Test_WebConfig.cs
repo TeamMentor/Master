@@ -31,7 +31,7 @@ namespace TeamMentor.UnitTests.WebSite_Content
     		Assert.IsNotNull(xRoot, "xRoot of webConfigFile");
     	}    	
     	
-    	[Test]  
+    	[Test, Ignore("Disabled while in Dev")]  
     	public void system_web_compilation_debug_IS_NOT_TRUE()
     	{   
     		var compilation = WebConfigFile.xRoot().element("system.web").element("compilation");

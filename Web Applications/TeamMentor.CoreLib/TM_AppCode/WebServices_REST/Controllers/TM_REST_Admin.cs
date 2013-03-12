@@ -77,6 +77,8 @@ namespace TeamMentor.CoreLib
             try
 	        {
                 this.response_ContentType_Html();
+                if (what.contains("git"))
+                    Admin_InvokeScript("load_NGit_Dlls");         // to solve prob with NGit dlls not being avaialble for compilation )
                 return new TBot_Brain(this).Run(what);
             }
 	        catch (SecurityException)
