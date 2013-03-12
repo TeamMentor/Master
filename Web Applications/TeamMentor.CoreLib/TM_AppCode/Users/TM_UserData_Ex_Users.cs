@@ -105,12 +105,27 @@ namespace TeamMentor.CoreLib
             return userId;    		
         }				                
         public static int           createTmUser                (this TM_UserData userData, NewUser newUser)
-        {			
-            if (newUser.groupId !=0)		// if there is a groupId provided we must check if the user has the manageUsers Priviledge						
-                UserRole.ManageUsers.demand();			
-            if (newUser.username.inValid() ||  newUser.username.tmUser().notNull())
+        {
+            if (newUser.isNull())
                 return 0;
-            return userData.newUser(newUser.username, newUser.password, newUser.email, newUser.firstname, newUser.lastname, newUser.note, newUser.title, newUser.company, newUser.country, newUser.state,newUser.groupId);						
+            
+            // ensure the email is lowercase (will fail validation otherwise)
+            newUser.Email = newUser.Email.lower();              
+
+            //validate user against the DataContract specificed in the NewUser class
+            if (newUser.validation_Failed())        
+                return 0;
+
+            // if there is a groupId provided we must check if the user has the manageUsers Priviledge							
+            if (newUser.GroupId !=0)		        
+                UserRole.ManageUsers.demand();		
+
+            // Check if there is already a user with the provided username or email
+            if (newUser.Username.tmUser().notNull() || newUser.Email.tmUser_FromEmail().notNull())
+                return 0;  
+
+            // Create user             
+            return userData.newUser(newUser.Username, newUser.Password, newUser.Email, newUser.Firstname, newUser.Lastname, newUser.Note, newUser.Title, newUser.Company, newUser.Country, newUser.State,newUser.GroupId);						
         }
         public static List<int>     createTmUsers               (this TM_UserData userData, string batchUserData) 
         {						
@@ -121,12 +136,26 @@ namespace TeamMentor.CoreLib
                 //return _newUser;
                 var items = line.split(",");
                 
-                newUser.username = items.size()>0 ? items[0].trim() : "";	 
-                newUser.password = items.size()>1 ? items[1].trim() : "";	 
-                newUser.firstname = items.size()>2 ? items[2].trim() : "";	 
-                newUser.lastname = items.size()>3 ? items[3].trim() : "";	 
-                newUser.groupId = items.size()>4 ? items[4].trim().toInt() : 0;	 
-                newUsers.Add(newUser);
+                newUser.Username    = items.size()>0 ? items[0].trim() : "";	 
+                newUser.Password    = items.size()>1 ? items[1].trim() : "";	 
+                newUser.Firstname   = items.size()>2 ? items[2].trim() : "";	 
+                newUser.Lastname    = items.size()>3 ? items[3].trim() : "";	 
+                newUser.GroupId     = items.size()>4 ? items[4].trim().toInt() : 0;
+
+                //default values 
+                newUser.Company = "...";
+                newUser.Country = "...";
+                newUser.Email   = "{0}@randomm.xyz".format(10.randomLetters());
+                newUser.Note    = "(Batch user created)";
+                newUser.State   = "...";
+                newUser.Title   = "...";
+                if (newUser.validation_Failed())
+                {
+                    "[createTmUsers] failed validation for user data:{0}".error(newUser.toXml());
+                    newUsers.Add(null);
+                }
+                else
+                    newUsers.Add(newUser);
             } 
             return userData.createTmUsers(newUsers);
         }
@@ -214,7 +243,7 @@ namespace TeamMentor.CoreLib
             switch (tmUsers.size())
             {
                 case 0:
-                    "Could not find TM User with email'{0}'".error(eMail);
+                    //"Could not find TM User with email'{0}'".error(eMail);
                     return null;
                 case 1:
                     return tmUsers.first();

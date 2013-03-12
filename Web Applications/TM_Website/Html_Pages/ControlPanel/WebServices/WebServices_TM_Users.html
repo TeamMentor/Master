@@ -9,8 +9,8 @@
 							            { name: 'GetUser_byId'			 , url: TM.tmWebServices + 'GetUser_byID' 			, params: '{ userId:"1"}' }
 							        ,   { name: 'GetUser_byName'		 , url: TM.tmWebServices + 'GetUser_byName'			, params: '{ name:"admin"}' }
 							        ,   { name: 'GetUsers'				 , url: TM.tmWebServices + 'GetUsers'				, params: '{}' }
-							        ,   { name: 'CreateUser'			 , url: TM.tmWebServices + 'CreateUser'				, params: '{ newUser: { username:"a", password:"123",email:"c",firstname: "d", lastname:"e", note: "f" } }' }
-							        ,   { name: 'CreateUsers'			 , url: TM.tmWebServices + 'CreateUsers'		    , params: '{ newUsers: [  { username:"a2", password:"b",email:"c",firstname: "d", lastname:"e", note: "f" }  , { username:"a1", password:"b",email:"c",firstname: "d", lastname:"e", note: "f" } ]  }' }
+							        ,   { name: 'CreateUser'			 , url: TM.tmWebServices + 'CreateUser'				, params: '{ newUser: { Username:"a", Password:"123",Wmail:"c",Firstname: "d", Lastname:"e", Note: "f" } }' }
+							        ,   { name: 'CreateUsers'			 , url: TM.tmWebServices + 'CreateUsers'		    , params: '{ newUsers: [  { Username:"a2", Password:"b",Email:"c",Firstname: "d", Lastname:"e", Note: "f" }  , { Username:"a1", Password:"b",Email:"c",Firstname: "d", Lastname:"e", Note: "f" } ]  }' }
 							        ,   { name: 'BatchUserCreation'		 , url: TM.tmWebServices + 'BatchUserCreation'		, params: '{ batchUserData: "test_user_1 , pwd , test, user1 \\\\n test_user_2 , pwd , test, user2" }' }
 							        ,   { name: 'DeleteUser'			 , url: TM.tmWebServices + 'DeleteUser' 			, params: '{ userId:"12345"}' }
 							        ,   { name: 'DeleteUsers'			 , url: TM.tmWebServices + 'DeleteUsers'		    , params: '{ userIds: [ "2","3" ]  }' }

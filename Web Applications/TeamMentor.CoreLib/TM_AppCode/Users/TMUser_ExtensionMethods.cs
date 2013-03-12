@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using O2.DotNetWrappers.ExtensionMethods;
 
 
@@ -11,7 +13,7 @@ namespace TeamMentor.CoreLib
             return tmUser.notNull() && tmUser.AccountStatus.UserEnabled;
         }
 
-        public static TMUser   disable_Account(this TMUser tmUser)
+        public static TMUser    disable_Account(this TMUser tmUser)
         {
             if (tmUser.notNull())
             {
@@ -20,7 +22,7 @@ namespace TeamMentor.CoreLib
             }
             return tmUser;
         }
-        public static TMUser   enable_Account(this TMUser tmUser)
+        public static TMUser    enable_Account(this TMUser tmUser)
         {
             if (tmUser.notNull())
             {
@@ -131,5 +133,40 @@ namespace TeamMentor.CoreLib
             }
             return "/error";
         }
-    }	
+    }
+
+    public static class TM_User_ExtensionMethod_Validation
+    {
+        
+    }
+
+    public static class DataContracts_ExtensionMethods
+    {
+        public static List<ValidationResult>           validate             (this object objectTovalidate)
+        {
+            var results = new List<ValidationResult>();
+            if (objectTovalidate.notNull())
+            {
+                var context = new ValidationContext(objectTovalidate, null, null);
+                Validator.TryValidateObject(objectTovalidate, context, results, true);
+            }
+            return results;
+        }
+        public static bool                             validation_Ok        (this object objectTovalidate)
+        {
+            return objectTovalidate.validate().empty();
+        }
+        public static bool                             validation_Failed    (this object objectTovalidate)
+        {
+            return objectTovalidate.validate().notEmpty();
+        }
+        public static Dictionary<string, List<string>> indexed_By_MemberName(this List<ValidationResult> validationResults)
+        {
+            var mappedData = new Dictionary<string, List<string>>();
+            foreach(var validationResult in validationResults)
+                foreach (var memberName in validationResult.MemberNames)
+                    mappedData.add(memberName, validationResult.ErrorMessage);  
+            return mappedData;
+        }
+    }
 }

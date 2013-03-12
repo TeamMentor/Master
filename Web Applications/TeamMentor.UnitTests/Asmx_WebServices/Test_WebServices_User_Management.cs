@@ -27,41 +27,42 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             var userId      = tmWebServices.CreateUser(newUser);
             var tmUser      = userId.tmUser();
 
+            Assert.IsTrue   (newUser.validation_Ok(), "NewUser object failed validation");
             Assert.Greater  (userId, 0);
             Assert.NotNull  (tmUser);
             Assert.AreEqual (userId, tmUser.UserID);
 
-            var sessionId   = tmWebServices.Login(newUser.username, newUser.password);
+            var sessionId   = tmWebServices.Login(newUser.Username, newUser.Password);
             HttpContextFactory.Context     .addCookieFromResponseToRequest("Session");
             var currentUser = tmWebServices.Current_User();
             
             Assert.AreNotEqual(Guid.Empty,sessionId);                
             Assert.NotNull    (currentUser , "Current User Not Set");
-            Assert.AreEqual   (currentUser.Company      , newUser.company);
+            Assert.AreEqual   (currentUser.Company      , newUser.Company);
             Assert.AreEqual   (DateTime.FromFileTimeUtc(currentUser.CreatedDate).ToLongDateString()  ,
                                DateTime.Now                                     .ToLongDateString());
-            Assert.AreEqual   (currentUser.Email        , newUser.email);
-            Assert.AreEqual   (currentUser.FirstName    , newUser.firstname);
-            Assert.AreEqual   (currentUser.LastName     , newUser.lastname);
-            Assert.AreEqual   (currentUser.Title        , newUser.title);
+            Assert.AreEqual   (currentUser.Email        , newUser.Email);
+            Assert.AreEqual   (currentUser.FirstName    , newUser.Firstname);
+            Assert.AreEqual   (currentUser.LastName     , newUser.Lastname);
+            Assert.AreEqual   (currentUser.Title        , newUser.Title);
             Assert.AreEqual   (currentUser.UserId       , userId);
-            Assert.AreEqual   (currentUser.UserName     , newUser.username);            
+            Assert.AreEqual   (currentUser.UserName     , newUser.Username);            
         }
         [Test] public void ChangeCurrentUserPassword()        
         {                     
             var newUser     = newTempUser();
             var userId      = tmWebServices.CreateUser(newUser);
 
-            var originalPassword = newUser.password;
+            var originalPassword = newUser.Password;
             var newPassword      = "Abcmfl!@#";
             
-            var sessionId_OriginalPassword    = tmWebServices.Login(newUser.username, originalPassword);
+            var sessionId_OriginalPassword    = tmWebServices.Login(newUser.Username, originalPassword);
             HttpContextFactory.Context       .addCookieFromResponseToRequest("Session");
             var currentUser_OriginalPassword  = tmWebServices.Current_User();
             var changePasswordResult          = tmWebServices.SetCurrentUserPassword(originalPassword,newPassword);
-            var sessionId_NewPassword         = tmWebServices.Login(newUser.username, newPassword);
+            var sessionId_NewPassword         = tmWebServices.Login(newUser.Username, newPassword);
             var currentUser_NewPassword       = tmWebServices.Current_User();
-            var sessionId_OriginalPassword2   = tmWebServices.Login(newUser.username, originalPassword);            
+            var sessionId_OriginalPassword2   = tmWebServices.Login(newUser.Username, originalPassword);            
             var currentUser_OriginalPassword2 = tmWebServices.Current_User();
 
             Assert.Greater    (userId, 0);
@@ -77,8 +78,8 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
         {
             var newUser     = newTempUser();
             var userId      = tmWebServices.CreateUser(newUser);
-            var sessionId   = tmWebServices.Login(newUser.username, newUser.password );
-            var changePasswordResult  = tmWebServices.SetCurrentUserPassword(newUser.password , newUser.password );
+            var sessionId   = tmWebServices.Login(newUser.Username, newUser.Password );
+            var changePasswordResult  = tmWebServices.SetCurrentUserPassword(newUser.Password , newUser.Password );
 
             Assert.Greater    (userId, 0);     
             Assert.AreNotEqual(Guid.Empty,sessionId  , "Login with original password");   
@@ -89,10 +90,10 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             var newUser     = newTempUser();
             var userId      = tmWebServices.CreateUser(newUser);
 
-            var originalPassword = newUser.password;
+            var originalPassword = newUser.Password;
             var newPassword      = "Abcmfl!@#";
             
-            var sessionId_OriginalPassword           = tmWebServices.Login(newUser.username, originalPassword);
+            var sessionId_OriginalPassword           = tmWebServices.Login(newUser.Username, originalPassword);
             var changePasswordResult_NoOriginalPwd   = tmWebServices.SetCurrentUserPassword(newPassword     , newPassword);
             var changePasswordResult_WithOriginalPwd = tmWebServices.SetCurrentUserPassword(originalPassword, newPassword);
 
@@ -105,7 +106,7 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
         {
             var newUser     = newTempUser();
             var userId      = tmWebServices.CreateUser(newUser);
-            var sessionId   = tmWebServices.Login(newUser.username, newUser.password);
+            var sessionId   = tmWebServices.Login(newUser.Username, newUser.Password);
             HttpContextFactory.Context     .addCookieFromResponseToRequest("Session");
             var currentUser = tmWebServices.Current_User();
             
@@ -139,7 +140,7 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
         {            
             var newUser       = newTempUser();
             var newPassword   = "123SAFsi!";
-            var oldPassword   = newUser.password;
+            var oldPassword   = newUser.Password;
             var tmUser        = tmWebServices.CreateUser(newUser).tmUser();
 
             var token_BeforeSet    = tmUser.SecretData.PasswordResetToken;
@@ -161,14 +162,14 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             Assert.AreNotEqual(Guid.Empty, sessionId_NewPwd , "sessionId with new password");
             Assert.AreEqual   (Guid.Empty, sessionId_OldPwd , "sessionId with old password");
         }
-        [Test] public void PasswordExpiry()
+        [Test, Ignore("Not completed")] public void PasswordExpiry()
         {
             var newUser       = newTempUser();
             var newPassword   = "123SAFsi!";
-            var oldPassword   = newUser.password;
+            var oldPassword   = newUser.Password;
             var tmUser        = tmWebServices.CreateUser(newUser).tmUser();
 
-            var sessionId   = tmWebServices.Login(newUser.username, newUser.password);
+            var sessionId   = tmWebServices.Login(newUser.Username, newUser.Password);
             HttpContextFactory.Context     .addCookieFromResponseToRequest("Session");
             var currentUser = tmWebServices.Current_User();
 
@@ -183,13 +184,16 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             
             var newUser = new NewUser
                 {
-                    username    = 10.randomLetters(),
-                    password    = password1,
-                    company     = 10.randomLetters(),
-                    email       = 10.randomLetters(),
-                    firstname   = 10.randomLetters(),
-                    lastname    = 10.randomLetters(),
-                    title       = 10.randomLetters()
+                    Username    = 10.randomLetters(),
+                    Password    = password1,
+                    Company     = 10.randomLetters(),
+                    Email       = "{0}@{0}.{0}".format(3.randomLetters()),
+                    Firstname   = 10.randomLetters(),
+                    Lastname    = 10.randomLetters(),
+                    Note        = 10.randomLetters(),
+                    Title       = 10.randomLetters(),
+                    Country     = 10.randomLetters(),
+                    State       = 10.randomLetters()
                 };
             return newUser;            
         }

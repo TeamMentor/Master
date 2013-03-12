@@ -1,28 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Runtime.Serialization;
 using O2.DotNetWrappers.ExtensionMethods;
 
 namespace TeamMentor.CoreLib
 {
+    public class ValidationRegex
+    {        
+        public const string Email = @"^[\w-\.]{1,}\@([\w]{1,}\.){1,}[a-z]{2,4}$";
+    }
+
     [DataContract]
     public class TM_User
-    {
-        [DataMember]	public int		UserId		    { get; set; }
-        [DataMember]	public string	UserName	    { get; set; }
-        [DataMember]	public string	FirstName	    { get; set; }
-        [DataMember]	public string	LastName	    { get; set; }
-        [DataMember]	public string	Email		    { get; set; }
-        [DataMember]	public string	Company		    { get; set; }
-        [DataMember]	public string	Title		    { get; set; }
-        [DataMember]	public string	Country		    { get; set; }
-        [DataMember]	public string	State		    { get; set; }
-        [DataMember]	public Int64	CreatedDate	    { get; set; }
-        [DataMember]    public string   CSRF_Token      { get; set; }         
-        [DataMember]    public DateTime ExpirationDate  { get; set; } 
-        [DataMember]    public bool     PasswordExpired { get; set; } 
-        [DataMember]    public bool     UserEnabled     { get; set; } 
+    {   
+        [DataMember][Required][StringLength(30)]    public string	Company		    { get; set; }
+        [DataMember][Required][StringLength(30)]    public string	Country		    { get; set; }
+        [DataMember][Required][StringLength(30)]    public string	FirstName	    { get; set; }
+        [DataMember][Required][StringLength(30)]    public string	LastName	    { get; set; }
+        [DataMember][Required][StringLength(30)]    public string	State		    { get; set; }
+        [DataMember][Required][StringLength(30)]    public string	Title		    { get; set; }
+        [DataMember][Required]	                    public int		UserId		    { get; set; }
+        [DataMember][Required][StringLength(30)]    public string	UserName	    { get; set; }
+        
+        [DataMember][Required][StringLength(50)]  
+        [RegularExpression(ValidationRegex.Email)]	public string	Email		    { get; set; }
+        
+        [DataMember]                                public Int64	CreatedDate	    { get; set; }
+        [DataMember]                                public string   CSRF_Token      { get; set; }         
+        [DataMember]                                public DateTime ExpirationDate  { get; set; } 
+        [DataMember]                                public bool     PasswordExpired { get; set; } 
+        [DataMember]                                public bool     UserEnabled     { get; set; } 
     }
 
 
@@ -58,14 +67,14 @@ namespace TeamMentor.CoreLib
         {
             return new NewUser
                 {
-                    company = user.Company,                    
-                    email = user.Email,
-                    firstname = user.FirstName,
-                    lastname = user.LastName,
-                    title = user.Title,                    
-                    username = user.UserName,                    
-                    country = user.Country,
-                    state = user.State
+                    Company     = user.Company,                    
+                    Email       = user.Email,
+                    Firstname   = user.FirstName,
+                    Lastname    = user.LastName,
+                    Title       = user.Title,                    
+                    Username    = user.UserName,                    
+                    Country     = user.Country,
+                    State       = user.State
                 };
         }
     }

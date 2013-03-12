@@ -58,16 +58,16 @@ function createUser(username , password,  email, firstname, lastname, company, t
     var url = TM.tmWebServices + 'CreateUser';
     //var params = "{ newUser: { 	username: '"+  username+ "', password: '"+  password + "',email:  '"+ email+ "', firstname:  '"+ firstname+ "',lastname:  '"+ lastname+ "',note: '"+  note+ "' } }";
     var params =  JSON.stringify( { newUser: 
-                                        { 	username: username, 
-                                            password: password,
-                                            email:  email, 
-                                            firstname:  firstname,
-                                            lastname:  lastname,
-                                            company:  company,
-                                            title:  title,
-                                            country:  country,
-                                            state:  state,
-                                            note: note
+                                        { 	Username: username, 
+                                            Password: password,
+                                            Email:  email, 
+                                            Firstname:  firstname,
+                                            Lastname:  lastname,
+                                            Company:  company,
+                                            Title:  title,
+                                            Country:  country,
+                                            State:  state,
+                                            Note: note
                                         } });
     invokeWebService( url, params, callback, defaultErrorHandler);	
 }

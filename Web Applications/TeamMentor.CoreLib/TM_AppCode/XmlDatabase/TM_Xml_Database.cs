@@ -4,6 +4,7 @@ using O2.DotNetWrappers.DotNet;
 using O2.DotNetWrappers.ExtensionMethods;
 using O2.FluentSharp;
 using urn.microsoft.guidanceexplorer;
+using System.Threading;
 
 namespace TeamMentor.CoreLib
 {	
@@ -19,7 +20,8 @@ namespace TeamMentor.CoreLib
         public API_NGit                 NGit                  { get; set; }         // Git object
         public string 	                Path_XmlDatabase      { get; set; }					
         public string 	                Path_XmlLibraries 	  { get; set; }    
-         
+        public Thread                   SetupThread           { get; set; } 
+
         public Dictionary<Guid, guidanceExplorer>	    GuidanceExplorers_XmlFormat { get; set; }	 //Xml Library and Articles   
         public Dictionary<Guid, string>				    GuidanceItems_FileMappings	{ get; set; }			
         public Dictionary<Guid, TeamMentor_Article>	    Cached_GuidanceItems		{ get; set; }
@@ -37,6 +39,7 @@ namespace TeamMentor.CoreLib
             UsingFileStorage = useFileStorage;
             Current = this;
             Setup();
+            this.setupThread_WaitForComplete();
         }
 
         [Admin] public TM_Xml_Database ResetDatabase()
@@ -50,23 +53,30 @@ namespace TeamMentor.CoreLib
         }
 
         [Admin] public TM_Xml_Database  Setup()
-        {                       
-            try
-            {
-                ResetDatabase();
-                if (UsingFileStorage)
-                {
-                    SetPathsAndloadData();                    
-                    this.handleDefaultInstallActions();
-                   // this.xmlDB_Load_GuidanceItems();
-                    
-                }
-                UserData.SetUp();                
-            }
-            catch(Exception ex)
-            {
-                "[TM_Xml_Database] .ctor: {0} \n\n".error(ex.Message, ex.StackTrace);
-            }
+        {
+            SetupThread = O2Thread.mtaThread(
+                ()=>{
+                        lock (this)
+                        {
+                            try
+                            {
+
+                                ResetDatabase();
+                                if (UsingFileStorage)
+                                {
+                                    SetPathsAndloadData();
+                                    this.handleDefaultInstallActions();
+
+                                }
+                                UserData.SetUp();
+                            }
+                            catch (Exception ex)
+                            {
+                                "[TM_Xml_Database] Setup: {0} \n\n".error(ex.Message, ex.StackTrace);
+                            }
+                            SetupThread = null;
+                        }                        
+                });
             return this;
         } 
         [Admin] public void             CheckIfServerIsOnline()
@@ -115,6 +125,7 @@ namespace TeamMentor.CoreLib
             }
                                    
             Setup();                                                    // trigger the set (which will load all data
+            this.setupThread_WaitForComplete();
 
             var stats = "In the library '{0}' there are {1} library(ies), {2} views and {3} GuidanceItems"                        
                             .format(Current.Path_XmlLibraries.directoryName(), 
@@ -127,11 +138,22 @@ namespace TeamMentor.CoreLib
 
     public static class TM_Xml_Database_ExtensionMethods
     {
-        public static TM_UserData userData(this TM_Xml_Database tmDatabase)
+        public static TM_UserData     userData                   (this TM_Xml_Database tmDatabase)
         {
             return tmDatabase.notNull()
                        ? tmDatabase.UserData
                        : null;
         }
+        public static bool            setupThread_Active         (this TM_Xml_Database tmDatabase)
+        {
+            return tmDatabase.SetupThread.isNull();
+        }
+        public static TM_Xml_Database setupThread_WaitForComplete(this TM_Xml_Database tmDatabase)
+        {
+            if (tmDatabase.SetupThread.notNull())
+                tmDatabase.SetupThread.Join();
+            return tmDatabase;
+        }
+        
     }
 }

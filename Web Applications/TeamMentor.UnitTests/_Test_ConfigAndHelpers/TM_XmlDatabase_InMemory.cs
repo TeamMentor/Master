@@ -24,7 +24,6 @@ namespace TeamMentor.UnitTests
             tmXmlDatabase   = new TM_Xml_Database();
             userData        = tmXmlDatabase.UserData;
             tmConfig        = TMConfig.Current = new TMConfig();            
-
             //all these values should be null since we are running TM memory (default setting)
             Assert.IsNull(tmXmlDatabase.Path_XmlDatabase		    , "Path_XmlDatabase");
             Assert.IsNull(tmXmlDatabase.Path_XmlLibraries		    , "Path_XmlLibraries");

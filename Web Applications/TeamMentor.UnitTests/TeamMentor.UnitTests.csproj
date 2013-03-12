@@ -70,6 +70,7 @@
     </Reference>
     <Reference Include="Sharpen, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -91,6 +92,7 @@
   <ItemGroup>
     <Compile Include="CoreLib\Test_Crypto.cs" />
     <Compile Include="CoreLib\Test_HandleRequest_LibraryData.cs" />
+    <Compile Include="CoreLib\Test_Schemas.cs" />
     <Compile Include="Messaging\Test_Email.cs" />
     <Compile Include="CoreLib\Test_HandleRequest.cs" />
     <Compile Include="CoreLib\Test_TM_SecretData.cs" />
