@@ -24,3 +24,4 @@ Web Applications/TeamMentor.UnitTests/bin/
 
 Web Applications/TM_Website/bin/*.xml
 /Web Applications/TM_Website/App_Code/TM_Customization_Local.cs
+/Web Applications/TM_Website/gitUserData.config

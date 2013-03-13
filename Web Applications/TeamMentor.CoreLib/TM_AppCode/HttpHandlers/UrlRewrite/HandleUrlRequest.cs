@@ -256,6 +256,9 @@ namespace TeamMentor.CoreLib
                     case "reload_config":
                         reload_Config();                    
                         break;
+                    case "reload_userdata":
+                        reload_UserData();
+                        break;
                     case "library_download":
                     case "download_library":
                         redirectTo_DownloadLibrary(data);
@@ -295,6 +298,14 @@ namespace TeamMentor.CoreLib
             TMConfig.loadConfig();
             response_Redirect("home");
         }
+
+        public void reload_UserData()
+        {
+            TM_UserData.Current.ReloadData();
+            HttpContextFactory.Response.Write("Done");
+            endResponse();
+        }
+        
 
         //Virtual Articles
         public bool showVirtualArticles()

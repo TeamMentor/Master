@@ -1,4 +1,5 @@
-﻿@using TeamMentor.CoreLib;
+﻿@using System
+@using TeamMentor.CoreLib;
 @using O2.DotNetWrappers.ExtensionMethods;
 
 @{
@@ -25,7 +26,7 @@
             <th>path</th>         
         </tr>   
     @foreach(var article in articles)
-    {
+    {        
         <tr>
             <td>@(index++)</td>
             <td><pre>@article.Key</pre></td>
@@ -34,8 +35,16 @@
             <td>@article.Value.Metadata.Phase</td>
             <td>@article.Value.Metadata.Type</td>
             <td>@article.Value.Metadata.Category</td>
-            <td><pre>@articlePaths[article.Key].remove(libraryPath)</pre></td>
-        </tr>                
+            @if(articlePaths.hasKey(article.Key))
+            {
+                <td><pre>@articlePaths[article.Key].remove(libraryPath)</pre></td>
+            }
+            else
+            {
+                <td><p class="text-error">ERROR: Article File Mappping NOT FOUND</p></td>
+            }
+            </tr>                        
+  
     }
     </table>
 

@@ -19,7 +19,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
                                 {
                                     Path_UserData = "nonGitRepo".tempDir()
                                 };                                    
-            userData .SetUp(false); 
+            userData .SetUp(); 
             nGit     = userData.NGit;     
 
             Assert.AreEqual(1, nGit.commits().size() , "there should be one commit of the TMSecretData.config file");

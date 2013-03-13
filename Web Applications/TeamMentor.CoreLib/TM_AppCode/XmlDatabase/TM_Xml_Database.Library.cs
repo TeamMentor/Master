@@ -10,27 +10,7 @@ using O2.FluentSharp;
 namespace TeamMentor.CoreLib
 {	
     public partial class TM_Xml_Database 
-    {
-        public  bool setLibraryPath_and_LoadDataIntoMemory(string xmlDatabasePath, string libraryPath, string userDataPath)
-        {
-            var tmXmlDatabase = Current;
-            
-            if (libraryPath.dirExists().isFalse())						
-            {
-                libraryPath = xmlDatabasePath.pathCombine(libraryPath);
-                libraryPath.createDir();  // make sure it exists
-            }
-            if (userDataPath.dirExists().isFalse())						
-            {
-                userDataPath = xmlDatabasePath.pathCombine(userDataPath);
-                userDataPath.createDir();  // make sure it exists
-            }
-            tmXmlDatabase.Path_XmlDatabase          = xmlDatabasePath;
-            tmXmlDatabase.Path_XmlLibraries         = libraryPath;
-            tmXmlDatabase.UserData.Path_UserData    = userDataPath;
-
-            return loadDataIntoMemory();
-        }                        
+    {                       
         public  bool loadDataIntoMemory()
         {	
             var tmXmlDatabase = Current;
@@ -44,8 +24,7 @@ namespace TeamMentor.CoreLib
             tmXmlDatabase.loadLibraryDataFromDisk();
             tmXmlDatabase.UserData.loadTmUserData();
             return true;					
-        }
-
+        }        
         
 
         //move to  extension methods
@@ -393,7 +372,7 @@ namespace TeamMentor.CoreLib
         }        
         [ReadArticlesTitles] 	public static List<TeamMentor_Article>  tmGuidanceItems(this TM_Xml_Database tmDatabase, Guid libraryId)
         {			
-            return (from guidanceItem in TM_Xml_Database.Current.Cached_GuidanceItems.Values
+            return (from guidanceItem in TM_Xml_Database.Current.Cached_GuidanceItems.Values.toList()
                     where guidanceItem.Metadata.Library_Id == libraryId
                     select guidanceItem).toList();		
         }				        

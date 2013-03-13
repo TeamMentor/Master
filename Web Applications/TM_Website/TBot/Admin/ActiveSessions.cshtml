@@ -1,13 +1,15 @@
 ﻿
+@using TeamMentor.CoreLib
+
 @{
     var tmRest         = (TeamMentor.CoreLib.TM_REST) @Model;
-    var activeSessions = tmRest.TmWebServices.userData.ActiveSessions;    
+    var activeSessions = tmRest.TmWebServices.userData.validSessions();
 }
 Here are the current active TM sessions:
 <ul>
-    @foreach (var sessionId in activeSessions.Keys)
+    @foreach (var sessionId in activeSessions)
     {
-        var user = activeSessions[sessionId];
+        var user = sessionId.session_TmUser();
         @: <li>@user.UserName with @sessionId</li>
     }
 </ul>

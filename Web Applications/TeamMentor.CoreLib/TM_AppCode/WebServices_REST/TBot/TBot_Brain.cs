@@ -76,7 +76,7 @@ namespace TeamMentor.CoreLib
                     var fileContentsHash = fileContents.hash();
                     if (TemplateService.HasTemplate(csFile).isFalse() ||
                         ScriptContentHashes.contains(fileContentsHash).isFalse())
-                    {
+                        {
                         Razor.Compile(fileContents, csFile);
                         ScriptContentHashes.add(fileContentsHash);
                     }
@@ -113,7 +113,6 @@ namespace TeamMentor.CoreLib
         {
             return HttpContextFactory.Server.MapPath(TBOT_SCRIPTS_FOLDER);
         }
-
         public static List<string> TBotScriptsFiles()
         {
             return TBotScriptsFolder().files(true, "*.cshtml");
@@ -126,6 +125,14 @@ namespace TeamMentor.CoreLib
                 mappings.add(file.fileName_WithoutExtension(), file);
             return mappings;
             //return files.toDictionary((file) => file.fileName_WithoutExtension()); //this doesn't handle duplicate files names
+        }
+    }
+
+    public static class TBOT_ExtensionMethods
+    {
+        public static List<string> scriptsNames(this TBot_Brain tBot)
+        {
+            return TBot_Brain.AvailableScripts.Keys.toList();
         }
     }
 }

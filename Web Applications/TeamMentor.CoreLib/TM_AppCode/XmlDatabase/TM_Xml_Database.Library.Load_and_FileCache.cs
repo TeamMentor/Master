@@ -45,20 +45,21 @@ namespace TeamMentor.CoreLib
         }
     }
 
-/*    // this is a (bit) time consumining (less 1s for 8000 files), so it should only be done once (this is another good cache target)
+    // this is a (bit) time consumining (less 1s for 8000 files), so it should only be done once (this is another good cache target)
     public static class TM_Xml_Database_Load_and_FileCache_Utils
     {		
-        public static void populateGuidanceItemsFileMappings()
-        {			
+        public static void populateGuidanceItemsFileMappings(this TM_Xml_Database tmXmlDatabase)
+        {
+            tmXmlDatabase.GuidanceItems_FileMappings.Clear();
             var o2Timer = new O2Timer("populateGuidanceExplorersFileMappings").start();
-            foreach (var filePath in TM_Xml_Database.Current.Path_XmlLibraries.files(true, "*.xml"))
+            foreach (var filePath in tmXmlDatabase.Path_XmlLibraries.files(true, "*.xml"))
             {
                 var fileId = filePath.fileName().remove(".xml");
                 if (fileId.isGuid())
                 {
                     //"[populateGuidanceItemsFileMappings] loading GuidanceItem ID {0}".info(fileId);
                     var guid = fileId.guid();
-                    if (TM_Xml_Database.Current.GuidanceItems_FileMappings.hasKey(guid))
+                    if (tmXmlDatabase.GuidanceItems_FileMappings.hasKey(guid))
                     {
                         "[populateGuidanceItemsFileMappings] duplicate GuidanceItem ID found {0}".error(guid);
                     }
@@ -69,7 +70,7 @@ namespace TeamMentor.CoreLib
             o2Timer.stop();
             "There are {0} files mapped in GuidanceItems_FileMappings".info(TM_Xml_Database.Current.GuidanceItems_FileMappings.size());			
         }
-    }*/
+    }
 
     public static class TM_Xml_Database_ExtensionMethods_Load_and_FileCache
     {
@@ -218,6 +219,7 @@ namespace TeamMentor.CoreLib
                                                                              loadedGuidanceItem);
                     o2Timer.stop();
                 }
+                tmDatabase.populateGuidanceItemsFileMappings();
             }
             return tmDatabase;
         }		

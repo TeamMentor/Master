@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Security.Application;
+using O2.DotNetWrappers.DotNet;
 using O2.DotNetWrappers.ExtensionMethods;
 using O2.FluentSharp;
 
@@ -107,18 +108,69 @@ namespace TeamMentor.CoreLib
             return false;
         }
 
+        public static TM_UserData handleExternalGitPull      (this TM_UserData userData)
+        {
+            try
+            {
+                "[TM_UserData][handleExternalGitPull]".info();
+                //var gitLocationFile = HttpContextFactory.Server.MapPath("gitUserData.config");
+                var gitLocationFile = TMConfig.BaseFolder.pathCombine("gitUserData.config");
+                if (gitLocationFile.fileExists())
+                {
+                    var gitLocation = gitLocationFile.fileContents();
+                    if (userData.Path_UserData.isGitRepository())
+                    {                        
+                        "[TM_UserData][GitPull]".info();
+                        var nGit = userData.Path_UserData.git_Pull();
+                        O2Thread.mtaThread(
+                            ()=>{
+                                    "[TM_UserData][GitPush] Start".info();
+                                    nGit.push();
+                                    "[TM_UserData][GitPush] End".info();
+                                });
+
+
+                    }
+                    else
+                    {
+                        if (userData.Path_UserData.dirExists() && userData.Path_UserData.files().empty())
+                            userData.Path_UserData.delete_Folder();
+                        gitLocation.git_Clone(userData.Path_UserData);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.log("[handleExternalGitPull]");
+            }
+            return userData;
+        }
+
+        public static TM_UserData handleUserDataConfigActions(this TM_UserData userData)
+        {
+            var userConfigFile = userData.Path_UserData.pathCombine("TMConfig.config");
+            if (userConfigFile.fileExists())
+                TMConfig.Current = userConfigFile.load<TMConfig>();
+            return userData;
+        }
+
         public static TM_UserData   setupGitSupport  (this TM_UserData userData)
         {
             if (userData.UsingFileStorage && userData.AutoGitCommit && userData.Path_UserData.notNull())
             {
+                userData.handleExternalGitPull();
+                userData.handleUserDataConfigActions();
+                
                 if (userData.Path_UserData.isGitRepository())
                 {
                     //"[TM_UserData][setupGitSupport] open repository: {0}".info(userData.Path_UserData);
+                    "[TM_UserData][GitOpen]".info();
                     userData.NGit = userData.Path_UserData.git_Open();
                 }
                 else
                 {
                     //"[TM_UserData][setupGitSupport] initializing repository at: {0}".info(userData.Path_UserData);
+                    "[TM_UserData][GitInit]".info();
                     userData.NGit = userData.Path_UserData.git_Init();
                 }
             }

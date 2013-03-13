@@ -1,4 +1,5 @@
 ﻿
+@using System
 @using O2.DotNetWrappers.ExtensionMethods
 @using TeamMentor.CoreLib
 @using O2.FluentSharp
@@ -9,17 +10,34 @@
 @using NGit.Treewalk;
 @using NGit.Treewalk.Filter
 
+<h1> with ex handing</h1>
 @{
-    var userData = TM_UserData.Current;
-    var userDataLocation = userData.Path_UserData;
-//    var userGit = userDataLocation.git_Open();
-    var userStatus  = userDataLocation.isGitRepository() ? userDataLocation.git_Open().status()  : "(folder is not a repository)";
-    //var userRefLogs = userDataLocation.isGitRepository() ? userDataLocation.git_Open().refLogs().take(50).join("".line()) : "(folder is not a repository)";
-    var xmlLibraryLocation = TM_Xml_Database.Current.Path_XmlLibraries;
-    var libraryStatus = xmlLibraryLocation.isGitRepository() ? xmlLibraryLocation.git_Open().status() : "(folder is not a repository)";
-    var max = 5;
-            
-            
+    int max;
+    TM_UserData userData;
+    string userDataLocation;
+    string userStatus;
+    string xmlLibraryLocation;
+    string libraryStatus;
+    try
+    {
+        max = 5;
+        userData = TM_UserData.Current;
+        if (userData.isNull())
+        {
+            @:UserData object not available, stopping execution
+            return;
+        }
+        userDataLocation = userData.Path_UserData;
+        userStatus  = userDataLocation.isGitRepository() ? userDataLocation.git_Open().status()  : "(folder is not a repository)";        
+        xmlLibraryLocation = TM_Xml_Database.Current.Path_XmlLibraries;
+        libraryStatus = xmlLibraryLocation.isGitRepository() ? xmlLibraryLocation.git_Open().status() : "(folder is not a repository)";
+
+    }
+    catch (Exception ex)
+    {
+        @:<hr /><b>Exception:</b> @ex.Message <pre>@ex.StackTrace</pre>
+        return;
+    }                    
 }
 @if (userDataLocation.isGitRepository())
 {

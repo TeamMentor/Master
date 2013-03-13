@@ -9,6 +9,7 @@ namespace TeamMentor.CoreLib
     {
         public static TM_UserData       Current             { get; set; }
         public string 	                Path_UserData 	    { get; set; }	
+        public string 	                Git_UserData 	    { get; set; }
         public List<TMUser>	            TMUsers			    { get; set; }
         public TM_SecretData            SecretData          { get; set; }
         
@@ -40,10 +41,10 @@ namespace TeamMentor.CoreLib
 
         public TM_UserData SetUp()
         {
-            return SetUp(true);
+        /*    return SetUp(true);
         }
         public TM_UserData SetUp(bool createDefaultAdminUser)
-        {
+        {*/
             try
             {
                 this.setupGitSupport();
@@ -51,13 +52,20 @@ namespace TeamMentor.CoreLib
                 this.secretDataScript_Invoke();
             
             
-                if (createDefaultAdminUser)
-                    this.createDefaultAdminUser();  // make sure the admin user exists and is configured                            
+                //if (createDefaultAdminUser)
+                //   this.createDefaultAdminUser();  // make sure the admin user exists and is configured                            
             }
             catch (Exception ex)
             {
                 ex.log("[In TM_UserData SetUp]");
             }            
+            return this;
+        }
+
+        public TM_UserData ReloadData()
+        {
+            this.SetUp();
+            this.loadTmUserData();
             return this;
         }
     }

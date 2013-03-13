@@ -32,6 +32,7 @@ namespace TeamMentor.CoreLib
         [DataMember]                                public DateTime ExpirationDate  { get; set; } 
         [DataMember]                                public bool     PasswordExpired { get; set; } 
         [DataMember]                                public bool     UserEnabled     { get; set; } 
+        [DataMember]                                public int	    GroupID	        { get; set; }
     }
 
 
@@ -57,10 +58,12 @@ namespace TeamMentor.CoreLib
                     State		= tmUser.State,
                     UserId		= tmUser.UserID,
                     UserName	= tmUser.UserName,
+
                     CSRF_Token  = tmUser.SecretData.CSRF_Token,
                     ExpirationDate  = tmUser.AccountStatus.ExpirationDate,
                     PasswordExpired = tmUser.AccountStatus.PasswordExpired,
-                    UserEnabled     = tmUser.AccountStatus.UserEnabled
+                    UserEnabled     = tmUser.AccountStatus.UserEnabled,
+                    GroupID         = tmUser.GroupID
                 };
         }
         public static NewUser newUser(this TM_User user)
