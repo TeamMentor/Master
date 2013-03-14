@@ -49,6 +49,10 @@
 			"title".$().val(userData.Title);
 			"company".$().val(userData.Company);
 			"email".$().val(userData.Email);	
+	        "country".$().val(userData.Country);	
+	        "state".$().val(userData.State);	
+	        "passwordExpired".$().val(userData.PasswordExpired);	
+	        "userEnabled".$().val(userData.UserEnabled);	
 			"groupId".$().find('option').eq(userData.GroupID).attr('selected','selected')			
 		//	"groupId".$().val(userData.GroupID);
 			"newPassword".$().val('');
@@ -70,6 +74,10 @@
 					   "title".$().val(),
 					   "company".$().val(),
 					   "email".$().val(),
+			           "country".$().val(),
+			           "state".$().val(),
+			           "passwordExpired".$().val(),
+			           "userEnabled".$().val(),
 					   "groupId".$().val(),
 					   onSave);			
 		}
@@ -83,7 +91,12 @@
 				currentUserData.Title = "title".$().val();
 				currentUserData.Company = "company".$().val();
 				currentUserData.Email = "email".$().val();
+			    currentUserData.Country = "country".$().val();
+			    currentUserData.State = "state".$().val();
+			    currentUserData.PasswordExpired = "passwordExpired".$().val();
+			    currentUserData.UserEnabled = "userEnabled".$().val();
 				currentUserData.GroupID = "groupId".$().val();								
+			    
 				if (typeof(onSaveCallback) != "undefined")
 					onSaveCallback();
 				TM.ControlPanel.userEditModalWindow.close();
@@ -103,8 +116,12 @@
 			//addTextField(fieldsId, "Expiration Date", "expirationDate");
 			addTextField(fieldsId, "Title", "title");
 			addTextField(fieldsId, "Company", "company");
-			addTextField(fieldsId, "Email", "email");								
-			addGroupsSelect(fieldsId,"Group ID", "groupId")						
+	        addTextField(fieldsId, "Country", "country");
+	        addTextField(fieldsId, "State", "state");
+			addTextField(fieldsId, "Email", "email");
+	        addGroupsSelect(fieldsId, "Group ID", "groupId");	        
+	        addTextField(fieldsId, "PasswordExpired", "passwordExpired");
+	        addTextField(fieldsId, "UserEnabled", "userEnabled");	        
 			addPasswordField(fieldsId, "New Password", "newPassword");
 			addButton(fieldsId, "Save Changes","saveData");
 

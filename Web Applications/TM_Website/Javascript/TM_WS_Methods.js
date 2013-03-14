@@ -79,10 +79,25 @@ function batchUserCreation(batchUserData, callback)
     invokeWebService( url, params, callback, defaultErrorHandler);
 }
 
-function updateUser(userId, userName, firstname, lastname, title, company, email, groupId, callback)
+function updateUser(userId, userName, firstname, lastname, title, company, email, 
+                    country, state,  passwordExpired, userEnabled, groupId, callback)
 {
     var url = TM.tmWebServices + 'UpdateUser';
-    var params =  JSON.stringify( { userId : userId  ,userName: userName , firstname : firstname, lastname : lastname, title : title, company : company, email : email, groupId : groupId } );	
+    var params =  JSON.stringify(
+        {
+                 userId          : userId  ,
+                 userName        : userName , 
+                 firstname       : firstname, 
+                 lastname        : lastname, 
+                 title           : title, 
+                 company         : company, 
+                 email           : email, 
+                 country         : country, 
+                 state           : state,  
+                 passwordExpired : passwordExpired, 
+                 userEnabled     : userEnabled,
+                 groupId         : groupId
+        } );	
     //alert("updating user with: {0}".format(JSON.stringify(params)));
     invokeWebService( url, params, callback, defaultErrorHandler);
 }
