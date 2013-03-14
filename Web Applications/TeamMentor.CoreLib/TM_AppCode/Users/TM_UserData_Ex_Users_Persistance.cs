@@ -117,6 +117,13 @@ namespace TeamMentor.CoreLib
                 var gitLocationFile = TMConfig.BaseFolder.pathCombine("gitUserData.config");
                 if (gitLocationFile.fileExists())
                 {
+                    if (userData.Path_UserData.dirExists() && userData.Path_UserData.files().empty())                        
+                        userData.Path_UserData.delete_Folder();
+                    if (userData.Path_UserData.ends("_Git").isFalse())
+                    {
+                        userData.Path_UserData += "_Git";
+                        userData.Path_UserData.createDir();
+                    }
                     var gitLocation = gitLocationFile.fileContents();
                     if (userData.Path_UserData.isGitRepository())
                     {                        
@@ -132,9 +139,7 @@ namespace TeamMentor.CoreLib
 
                     }
                     else
-                    {
-                        if (userData.Path_UserData.dirExists() && userData.Path_UserData.files().empty())
-                            userData.Path_UserData.delete_Folder();
+                    {                        
                         gitLocation.git_Clone(userData.Path_UserData);
                     }
                 }
