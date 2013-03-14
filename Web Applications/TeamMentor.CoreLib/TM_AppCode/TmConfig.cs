@@ -166,7 +166,7 @@ namespace TeamMentor.CoreLib
                 };
             tmConfig.Git            = new TMConfig.Git_Config
                 {
-                    AutoCommit_LibraryData          = true,
+                    AutoCommit_LibraryData          = false,            // disabled by default
                     AutoCommit_UserData             = true
                 };
             
