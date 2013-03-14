@@ -660,6 +660,7 @@
     <Content Include="TBot\Views\User_Raw.cshtml" />
     <Content Include="TBot\Dev\exec_Razor.cshtml.txt" />
     <Content Include="TBot\LibraryData\Articles.cshtml" />
+    <Content Include="TBot\Dev\Edit Object.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="TBot\NGit\" />
