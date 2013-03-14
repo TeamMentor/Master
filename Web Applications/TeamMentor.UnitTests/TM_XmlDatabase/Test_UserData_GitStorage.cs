@@ -25,7 +25,9 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Assert.AreEqual(1, nGit.commits().size() , "there should be one commit of the TMSecretData.config file");
         }
 
-        [Test][Assert_Admin] public void CheckNonGitRepoDoesntCommit()
+        [Test][Assert_Admin]
+        [Ignore("Fix when Git support for libraries is fixed")]
+        public void CheckNonGitRepoDoesntCommit()
         {
             userData.Path_UserData = "nonGitRepo".tempDir();
             userData.AutoGitCommit = false;
