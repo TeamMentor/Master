@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using O2.DotNetWrappers.ExtensionMethods;
 using RazorEngine;
 using RazorEngine.Templating;
@@ -26,6 +28,11 @@ namespace TeamMentor.CoreLib
                 ScriptContentHashes = new List<int>();
                 TemplateService  = (ITemplateService) typeof (Razor).prop("TemplateService");
                 AvailableScripts = GetAvailableScripts();
+
+                //fix for missing "System.Windows.Forms" reference that sometimes appeared
+                var windowsForms = "System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089".assembly();
+                var assemblies =  (ConcurrentBag<Assembly>)TemplateService.field("_assemblies");
+                assemblies.Add(windowsForms);
             }
             catch (Exception ex)
             {
@@ -67,19 +74,18 @@ namespace TeamMentor.CoreLib
         public string ExecuteRazorPage(string page)
         {
             try
-            {
+            {                
                 if (AvailableScripts.hasKey(page))
                 {                    
                     var csFile = AvailableScripts[page];
 
                     var fileContents = csFile.fileContents();
                     var fileContentsHash = fileContents.hash();
-                    if (TemplateService.HasTemplate(csFile).isFalse() ||
-                        ScriptContentHashes.contains(fileContentsHash).isFalse())
+                    if (TemplateService.HasTemplate(csFile).isFalse() || ScriptContentHashes.contains(fileContentsHash).isFalse())
                         {
-                        Razor.Compile(fileContents, csFile);
-                        ScriptContentHashes.add(fileContentsHash);
-                    }
+                            Razor.Compile(fileContents, csFile);
+                            ScriptContentHashes.add(fileContentsHash);
+                        }
                     return Razor.Run(csFile, TmRest);
                 }
             }
