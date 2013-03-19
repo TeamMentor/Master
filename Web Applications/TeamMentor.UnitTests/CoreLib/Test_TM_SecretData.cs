@@ -50,7 +50,7 @@ namespace TeamMentor.UnitTests.CoreLib
             //"h2ScriptFile xml: \n {0}".info(h2ScriptFile);
         }
 
-        [Test]
+/*        [Test]
         public void UseSecretDataScriptFileToSetSmtpPassword()
         {            
             userData.Path_UserData  = "userData".tempDir();
@@ -103,7 +103,7 @@ namespace TeamMentor.UnitTests.CoreLib
 
             "TMSecretData xml: \n {0}".info(tmSecretData.toXml());            
         }
-
+*/
         [Test, Ignore("under dev")]
         public void CheckThatSecretDataScriptFileWasInvoked()
         {

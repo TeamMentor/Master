@@ -250,15 +250,15 @@ namespace TeamMentor.CoreLib
                 //admin actions
                 switch (action.lower())
                 {
-                    case "reload":
-                        reloadCache_and_RedirectToHomePage();
-                        break;                                       
-                    case "reload_config":
-                        reload_Config();                    
-                        break;
-                    case "reload_userdata":
-                        reload_UserData();
-                        break;
+//                    case "reload":
+//                        reloadCache_and_RedirectToHomePage();
+//                        break;                                       
+//                    case "reload_config":
+//                        reload_Config();                    
+//                        break;
+                    //case "reload_userdata":
+                    //    reload_UserData();
+                        //break;
                     case "library_download":
                     case "download_library":
                         redirectTo_DownloadLibrary(data);
@@ -293,18 +293,18 @@ namespace TeamMentor.CoreLib
         }
         
 
-        public void reload_Config()
+/*        public void reload_Config()
         {
             TMConfig.loadConfig();
             response_Redirect("home");
-        }
+        }*/
 
-        public void reload_UserData()
+/*        public void reload_UserData()
         {
             TM_UserData.Current.ReloadData();
             HttpContextFactory.Response.Write("Done");
             endResponse();
-        }
+        }*/
         
 
         //Virtual Articles
@@ -589,11 +589,11 @@ namespace TeamMentor.CoreLib
             context.Response.Flush();
             context.Response.End();
         }
-        private void reloadCache_and_RedirectToHomePage()
+/*        private void reloadCache_and_RedirectToHomePage()
         {
             tmWebServices.XmlDatabase_ReloadData();
             response_Redirect("home");
-        }      
+        }      */
         public bool transfer_ArticleViewer()
         {
             transfer_Request("articleViewer");

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using O2.DotNetWrappers.ExtensionMethods;
 using O2.FluentSharp;
 
@@ -8,7 +9,10 @@ namespace TeamMentor.CoreLib
     public class TM_UserData
     {
         public static TM_UserData       Current             { get; set; }
+        public static Thread            GitPushThread       { get; set; }
+
         public string 	                Path_UserData 	    { get; set; }	
+        public string 	                Path_UserData_Base 	{ get; set; }
         public string 	                Git_UserData 	    { get; set; }
         public List<TMUser>	            TMUsers			    { get; set; }
         public TM_SecretData            SecretData          { get; set; }
@@ -49,7 +53,8 @@ namespace TeamMentor.CoreLib
             {
                 this.setupGitSupport();
                 this.SecretData = this.secretData_Load();
-                this.secretDataScript_Invoke();
+                
+                //this.secretDataScript_Invoke();
             
             
                 //if (createDefaultAdminUser)
@@ -66,6 +71,7 @@ namespace TeamMentor.CoreLib
         {
             this.SetUp();
             this.loadTmUserData();
+            this.createDefaultAdminUser();  // make sure the admin user exists and is configured
             return this;
         }
     }

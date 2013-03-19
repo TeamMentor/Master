@@ -59,11 +59,21 @@ namespace TeamMentor.CoreLib
 		
 
 		//Admin
-		[OperationContract] [WebGet(UriTemplate = "/admin/reloadCache")]		string		Admin_ReloadCache();
-        [OperationContract] [WebGet(UriTemplate = "/admin/restart")]		    string		Admin_Restart();
-        [OperationContract] [WebGet(UriTemplate = "/admin/script/{name}")]	    string		Admin_InvokeScript(string name);
-        [OperationContract] [WebGet(UriTemplate = "/admin/logs")]		        string		Admin_Logs();
-        [OperationContract] [WebGet(UriTemplate = "/admin/logs/reset")]		    string		Admin_Logs_Reset();
+		[OperationContract] [WebGet(UriTemplate = "/admin/reloadCache")]		string		    Admin_ReloadCache();
+        [OperationContract] [WebGet(UriTemplate = "/admin/restart")]		    string		    Admin_Restart();
+        [OperationContract] [WebGet(UriTemplate = "/admin/script/{name}")]	    string		    Admin_InvokeScript(string name);
+        [OperationContract] [WebGet(UriTemplate = "/admin/logs")]		        string		    Admin_Logs();
+        [OperationContract] [WebGet(UriTemplate = "/admin/logs/reset")]		    string		    Admin_Logs_Reset();
+        [OperationContract] [WebGet(UriTemplate = "/admin/reload_UserData")]    bool		    Reload_UserData();        
+        [OperationContract] [WebGet(UriTemplate = "/admin/reload_TMConfig")]    bool		    Reload_TMConfig(); 
+        [OperationContract] [WebGet(UriTemplate = "/admin/reload_Cache")]       bool		    Reload_Cache(); 
+        
+        [OperationContract] [WebGet(UriTemplate = "/admin/secretData")]		    TM_SecretData	Get_TM_SecretData();
+        [OperationContract] [WebGet(UriTemplate = "/admin/gitUserData")]		string	        Get_GitUserConfig();
+
+        [OperationContract] [WebInvoke(UriTemplate = "/admin/secretData"    , Method = "PUT")] bool	Set_TM_SecretData(TM_SecretData tmSecretData);
+        [OperationContract] [WebInvoke(UriTemplate = "/admin/gitUserData" , Method = "PUT")] bool	Set_GitUserConfig(string gitUserConfig_Data);
+        
 		//Views 
 		//[OperationContract] [WebGet(UriTemplate = "/users/.html"			)]  Stream		users_html();
 

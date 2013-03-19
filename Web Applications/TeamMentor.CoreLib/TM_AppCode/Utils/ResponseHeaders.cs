@@ -1,10 +1,8 @@
 
 namespace TeamMentor.CoreLib
 {
-	public class ResponseHeaders
-	{
-
-		//RESPONSE
+	public class ResponseHeaders 
+	{		
 		public static void addDefaultResponseHeaders()
 		{
 			//add clickjacking protection			

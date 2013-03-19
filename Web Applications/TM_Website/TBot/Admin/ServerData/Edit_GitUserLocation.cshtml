@@ -1,0 +1,38 @@
+﻿
+<script>
+    //var TMUser =angular.module('TMUser',[]);
+
+    function EditObject($scope,$http)
+        {
+
+            $scope.saveObject = function()
+                {
+                    $scope.message  = "saving data";
+                    var value = angular.toJson( $scope.gitUserLocation);
+                    $http.put('/rest/admin/gitUserData',value).success(function(result)
+                    {
+                        $scope.message  = "data saved: " + result;
+                    });
+
+                }
+
+            $scope.message  = "loading data";
+            $http.get('/rest/admin/gitUserData').success(function(data)
+                {
+                    $scope.gitUserLocation = angular.fromJson(data);
+                    $scope.message  = "data loaded";
+                });
+        };   
+</script>
+
+
+<h4>Editing an Secret Data</h4>
+
+<br/>
+<div ng-controller="EditObject" ng-submit="update(userData)">
+
+    Git User Location:<br/> <input type ng-model="gitUserLocation"  class="input-xxlarge"/><br/>
+    <br/>
+    <button class="btn btn-primary" ng-click="saveObject()">Save</button>
+    <span>{{message}}</span>
+</div>

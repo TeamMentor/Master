@@ -61,7 +61,7 @@ namespace TeamMentor.CoreLib
             return new TM_SecretData();
         }
 
-        public static string secretDataScript_Invoke(this TM_UserData userData)
+        /*public static string secretDataScript_Invoke(this TM_UserData userData)
         {
             var scriptFile = userData.secretDataScript_FileLocation();
             if (scriptFile.fileExists())                
@@ -73,17 +73,19 @@ namespace TeamMentor.CoreLib
                     return assembly.firstMethod().invoke().str();
             }
             return null;            
-        }
+        }*/
 
 
         public static bool secretData_Save(this TM_UserData userData)
         {
+            var result = true;
             if (userData.UsingFileStorage)
             {
                 var secretDataFile = userData.secretData_FileLocation();
-                return userData.saveAs(secretDataFile);
+                result = userData.SecretData.saveAs(secretDataFile);
+                userData.triggerGitCommit();
             }
-            return true;
+            return result;
         }
     }
 }

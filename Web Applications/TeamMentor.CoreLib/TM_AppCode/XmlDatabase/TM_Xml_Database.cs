@@ -63,15 +63,16 @@ namespace TeamMentor.CoreLib
                                 ResetDatabase();
                                 if (UsingFileStorage)
                                 {
-                                    SetPaths();                                                                                                            
+                                    SetPaths_UserData();                                                                                                                                    
                                 }
                                 UserData.SetUp();
                                 if (UsingFileStorage)
-                                {
+                                {                       
+                                    SetPaths_XmlDatabase();            
                                     loadDataIntoMemory();
                                     this.handleDefaultInstallActions();                                    
                                 }
-                                UserData.createDefaultAdminUser();  // make sure the admin user exists and is configured                                                                
+                                UserData.createDefaultAdminUser();  // make sure the admin user exists and is configured
                             }
                             catch (Exception ex)
                             {
@@ -88,37 +89,56 @@ namespace TeamMentor.CoreLib
                 return;
             ServerOnline = MiscUtils.online();              // only check this once
         }
-        [Admin] public void             SetPaths()
-        {            
+        [Admin] public void             SetPaths_UserData()
+        {
             try
             {
-                var tmComfig            = TMConfig.Current;
-                var xmlDatabasePath     = tmComfig.xmlDatabasePath();
-                var libraryPath         = tmComfig.TMSetup.XmlLibrariesPath;
-                var userDataPath        = tmComfig.TMSetup.UserDataPath;
-                AutoGitCommit           = tmComfig.Git.AutoCommit_LibraryData;
+                var tmConfig = TMConfig.Current;
+                var userDataPath = tmConfig.TMSetup.UserDataPath;
+                var xmlDatabasePath = tmConfig.xmlDatabasePath();
+
+                "[TM_Xml_Database][setDataFromCurrentScript] TMConfig.Current.UserDataPath: {0}".debug(userDataPath);
+
+                if (userDataPath.dirExists().isFalse())
+                {
+                    userDataPath = xmlDatabasePath.pathCombine(userDataPath);
+                    userDataPath.createDir(); // make sure it exists
+                }
+                UserData.Path_UserData      = userDataPath;   
+                UserData.Path_UserData_Base = userDataPath;   // we need to keep an copy of this since the Path_UserData might change with git usage
+            }        
+            catch(Exception ex)
+            {
+                "[TM_Xml_Database][SetPaths_UserData] {0} \n\n {1}".error(ex.Message, ex.StackTrace);
+            }
+        }
+
+        [Admin] public void             SetPaths_XmlDatabase()
+        {
+            try
+            {
+                var tmConfig            = TMConfig.Current;
+                var xmlDatabasePath     = tmConfig.xmlDatabasePath();
+                var libraryPath         = tmConfig.TMSetup.XmlLibrariesPath;
+                
+                AutoGitCommit           = tmConfig.Git.AutoCommit_LibraryData;
                 
                 "[TM_Xml_Database][setDataFromCurrentScript] TM_Xml_Database.Path_XmlDatabase: {0}" .debug(xmlDatabasePath);
                 "[TM_Xml_Database][setDataFromCurrentScript] TMConfig.Current.XmlLibrariesPath: {0}".debug(libraryPath);
-                "[TM_Xml_Database][setDataFromCurrentScript] TMConfig.Current.UserDataPath: {0}"    .debug(userDataPath);
+                
                                             
                 if (libraryPath.dirExists().isFalse())						
                 {
                     libraryPath = xmlDatabasePath.pathCombine(libraryPath);
                     libraryPath.createDir();  // make sure it exists
                 }
-                if (userDataPath.dirExists().isFalse())						
-                {
-                    userDataPath = xmlDatabasePath.pathCombine(userDataPath);
-                    userDataPath.createDir();  // make sure it exists
-                }
-                Path_XmlDatabase          = xmlDatabasePath;
-                Path_XmlLibraries         = libraryPath;
-                UserData.Path_UserData    = userDataPath;                
+                
+                Path_XmlDatabase            = xmlDatabasePath;
+                Path_XmlLibraries           = libraryPath;                
             }
             catch(Exception ex)
             {
-                "[TM_Xml_Database] SetPathsAndloadData .ctor: {0} \n\n {1}".error(ex.Message, ex.StackTrace);
+                "[TM_Xml_Database][SetPaths_XmlDatabase]: {0} \n\n {1}".error(ex.Message, ex.StackTrace);
             }
         }        
         [Admin] public string           ReloadData()

@@ -28,32 +28,32 @@ namespace TeamMentor.CoreLib
         {
             return TmWebServices.Current_User().notNull();
         }
-        public Guid     GetLoginToken(string username)
+        public void     Redirect_Login(string referer)
+        {
+            HttpContextFactory.Response.Redirect("/Login?LoginReferer={0}".format(referer));
+        }
+        [Admin] public Guid     GetLoginToken(string username)
         {
             return TmWebServices.GetLoginToken(username);
         }
-        public Guid   NewPasswordResetToken(string email)
+        [Admin] public Guid     NewPasswordResetToken(string email)
         {
             return TmWebServices.NewPasswordResetToken(email);
         }               
-        public bool     SendLoginTokenForUser(string userName)
+        [Admin] public bool     SendLoginTokenForUser(string userName)
         {
             var tmUser = userName.tmUser();
             if(tmUser.notNull())
                 return SendEmails.SendLoginTokenToUser(tmUser);
             return true;
         }
-
-        public void     Redirect_Login(string referer)
-        {
-            HttpContextFactory.Response.Redirect("/Login?LoginReferer={0}".format(referer));
-        }
+        
         /*public void     Redirect_ToPasswordReset(string email)
         {
             var redirectUrl = "/PasswordReset/{0}".format(SetPasswordResetToken(email));
             HttpContextFactory.Response.Redirect(redirectUrl);
         }*/
-        public void     Redirect_After_Login_Using_Token(string username, string loginToken)
+        [Admin] public void     Redirect_After_Login_Using_Token(string username, string loginToken)
         {
             var sessionId = TmWebServices.Login_Using_LoginToken(username, loginToken.guid());
             if (sessionId != Guid.Empty)

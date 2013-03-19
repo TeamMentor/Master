@@ -637,17 +637,17 @@
     <None Include="Javascript\FireBug\skin\xp\roundCorner.svg" />
     <Content Include="TBot\Users\Current_Users.cshtml" />
     <Content Include="TBot\Tests\version.cshtml" />
-    <Content Include="TBot\Admin\ActiveSessions.cshtml" />
+    <Content Include="TBot\LiveData\ActiveSessions.cshtml" />
     <Content Include="TBot\Messaging\View_Emails_Sent.cshtml" />
     <Content Include="TBot\Admin\O2_Scripts.cshtml" />
     <Content Include="TBot\Admin\ServerData\tmConfig.cshtml" />
     <Content Include="TBot\Admin\ServerData\secretData.cshtml" />
-    <Content Include="TBot\Admin\DebugInfo.cshtml" />
-    <Content Include="TBot\Admin\Commands.cshtml" />
+    <Content Include="TBot\LiveData\DebugInfo.cshtml" />
+    <Content Include="TBot\Dev\Commands.cshtml" />
     <Content Include="TBot\Admin\Reset_Razor_Templates.cshtml" />
-    <Content Include="TBot\Admin\IISSessions.cshtml" />
+    <Content Include="TBot\LiveData\IISSessions.cshtml" />
     <Content Include="TBot\Views\User_Activities.cshtml" />
-    <Content Include="TBot\Admin\GitStatus.cshtml" />
+    <Content Include="TBot\NGit\GitStatus.cshtml" />
     <Content Include="packages.config" />
     <Content Include="TBot\Messaging\Send_Email.cshtml" />
     <Content Include="TBot\Views\GitDiff_UserData_Commit.cshtml" />
@@ -660,11 +660,10 @@
     <Content Include="TBot\Views\User_Raw.cshtml" />
     <Content Include="TBot\Dev\exec_Razor.cshtml.txt" />
     <Content Include="TBot\LibraryData\Articles.cshtml" />
-    <Content Include="TBot\Dev\Edit Object.cshtml" />
+    <Content Include="TBot\Admin\ServerData\Edit_SecretData.cshtml" />
+    <Content Include="TBot\Admin\Reload_Server_Objects.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="TBot\NGit\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\TeamMentor.CoreLib\TeamMentor.CoreLib.csproj">
       <Project>{87BACB04-640F-44ED-8F01-45224D52A883}</Project>

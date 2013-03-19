@@ -20,9 +20,18 @@ namespace TeamMentor.CoreLib
             public string 		UserDataPath 	            { get; set; }		                
             public string 		LibrariesUploadedFiles	    { get; set; }	                           
             public bool         EnableGZipForWebServices	{ get; set; }
-            public bool         Enable302Redirects			{ get; set; }			
-        }
+            public bool         Enable302Redirects			{ get; set; }
 
+            public TMSetup_Config()
+            {
+                TMLibraryDataVirtualPath    = "..\\..";
+                XmlLibrariesPath            = "TM_Libraries";
+                UserDataPath                = "User_Data";
+                LibrariesUploadedFiles      = "LibrariesUploadedFiles";
+                Enable302Redirects          = true;
+                EnableGZipForWebServices    = true;
+            }
+        }
         public class TMSecurity_Config
         {
             public bool 		Show_ContentToAnonymousUsers { get; set; }
@@ -34,7 +43,18 @@ namespace TeamMentor.CoreLib
             public bool 		Sanitize_HtmlContent         { get; set; }            
             public string 		Default_AdminUserName        { get; set; }
             public string 		Default_AdminPassword        { get; set; }	
-            public string 		Default_AdminEmail           { get; set; }	            
+            public string 		Default_AdminEmail           { get; set; }
+
+            public TMSecurity_Config()                                          //need to do this here so that they survive serialization
+            {
+                Show_ContentToAnonymousUsers = false;               
+                SSL_RedirectHttpToHttps      = true;
+                EvalAccounts_Enabled         = true;
+                EvalAccounts_Days            = 15;
+                Default_AdminUserName        = "admin";
+                Default_AdminPassword        = "!!tmadmin";
+                Default_AdminEmail           = "tm_alerts@securityinnovation.com";
+            }
         }
 
         public class WindowsAuthentication_Config
@@ -43,18 +63,39 @@ namespace TeamMentor.CoreLib
             public string	    ReaderGroup                 { get; set; }
             public string	    EditorGroup                 { get; set; }
             public string	    AdminGroup	                { get; set; }
+
+            public WindowsAuthentication_Config()
+            {
+                Enabled               = false;
+                ReaderGroup           = "TM_Reader";
+                EditorGroup           = "TM_Editor";
+                AdminGroup            = "TM_Admin";
+            }
         }        
 
         public class Git_Config
         {
             public bool         AutoCommit_UserData         { get; set; }
             public bool         AutoCommit_LibraryData      { get; set; }         // not implemented in 3.3
+
+            public Git_Config()
+            {
+                AutoCommit_LibraryData          = false;            // disabled by default
+                AutoCommit_UserData             = true;
+            }
         }
         public class OnInstallation_Config
         {
             public bool         ForceAdminPasswordReset			    { get; set; }
             public string       DefaultLibraryToInstall_Name		{ get; set; }
             public string       DefaultLibraryToInstall_Location	{ get; set; }
+
+            public OnInstallation_Config()
+            {
+                ForceAdminPasswordReset          = false;
+                DefaultLibraryToInstall_Name     = "";
+                DefaultLibraryToInstall_Location = "";
+            }
         }        
     }
     
@@ -113,8 +154,13 @@ namespace TeamMentor.CoreLib
 
         public TMConfig()
         {
-            this.setDefaultValues();
-        }				
+            //this.setDefaultValues();
+            TMSetup                 = new TMSetup_Config();
+            TMSecurity              = new TMSecurity_Config();
+            WindowsAuthentication   = new WindowsAuthentication_Config();
+            OnInstallation          = new OnInstallation_Config();
+            Git                     = new Git_Config();
+        }
                                                 
         public bool SaveTMConfig()
         {
@@ -126,7 +172,7 @@ namespace TeamMentor.CoreLib
 
     public static class TmConfig_ExtensionMethods
     {		
-        public static TMConfig  setDefaultValues    (this TMConfig tmConfig)
+    /*    public static TMConfig  setDefaultValues    (this TMConfig tmConfig)
         {
             tmConfig.TMSetup = new TMConfig.TMSetup_Config
                 {
@@ -171,7 +217,7 @@ namespace TeamMentor.CoreLib
                 };
             
             return tmConfig;	
-        }
+        }*/
         public static string    virtualPathMapping  (this TMConfig tmConfig)
         {
             if (tmConfig.TMSetup.TMLibraryDataVirtualPath.valid())
@@ -195,6 +241,23 @@ namespace TeamMentor.CoreLib
                 xmlDatabasePath = TMConfig.AppData_Folder; 
 
             return xmlDatabasePath;
+        }
+        public static string    getGitUserConfigFile(this TMConfig tmConfig)
+        {
+            return TMConfig.BaseFolder.pathCombine("gitUserData.config");
+        }
+        public static bool      setGitUserConfigFile(this TMConfig tmConfig, string gitUserConfig_Data)
+        {
+            try
+            {
+                gitUserConfig_Data.saveAs(tmConfig.getGitUserConfigFile());
+                return true;
+            }
+            catch (Exception ex)
+            {
+                ex.log("[setGitUserConfigFile]");
+                return false;
+            }            
         }
     }
     

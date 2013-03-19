@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Security;
-using System.Text;
 using System.Web;
 using FluentSharp;
 using O2.DotNetWrappers.ExtensionMethods;
@@ -54,7 +52,6 @@ namespace TeamMentor.CoreLib
             return TmWebServices.ResetLogs();	        
 	    }
         
-
 	    public bool   SendEmail(EmailMessage_Post emailMessagePost)
         {
             return TmWebServices.SendEmail(emailMessagePost);            
@@ -99,6 +96,51 @@ namespace TeamMentor.CoreLib
                 Redirect_Login("/tbot");           
 	        }
             return null;
+	    }
+
+        [Admin] public TM_SecretData Get_TM_SecretData()
+        {
+            return TM_UserData.Current.SecretData;
+        }
+	    [Admin] public bool Set_TM_SecretData(TM_SecretData tmSecretData)
+	    {
+	        try
+	        {
+	            TM_UserData.Current.SecretData = tmSecretData;
+	            TM_UserData.Current.secretData_Save();
+	            return true;
+	        }
+	        catch (Exception ex)
+	        {
+	            ex.log("[Set_TM_SecretData]");
+	            return false;
+	        }
+	    }
+	    [Admin] public bool Reload_UserData()
+	    {
+	        TM_UserData.Current.ReloadData();
+	        return true;
+	    }
+        [Admin] public bool Reload_TMConfig()
+	    {
+	        TMConfig.loadConfig();                                  // load default one
+            TM_UserData.Current.handleUserDataConfigActions();      // load (if available) from current UserData location
+	        return true;
+	    }
+        [Admin] public bool Reload_Cache()
+	    {
+	        TmWebServices.XmlDatabase_ReloadData();
+	        return true;
+	    }
+
+	    [Admin]public string Get_GitUserConfig()
+	    {
+	        return TMConfig.Current.getGitUserConfigFile().fileContents();
+	    }
+
+        [Admin]public bool Set_GitUserConfig(string gitUserConfig_Data)
+	    {            
+            return TMConfig.Current.setGitUserConfigFile(gitUserConfig_Data);   
 	    }
 
 	}

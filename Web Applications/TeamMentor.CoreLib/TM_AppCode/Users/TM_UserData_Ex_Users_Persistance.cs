@@ -8,7 +8,7 @@ using O2.FluentSharp;
 namespace TeamMentor.CoreLib
 {
     public static class TM_UserData_Ex_Users_Persistance
-    {
+    {        
         public static bool setUserDataPath(this TM_UserData userData, string userDataPath)
         {
             if (userDataPath.dirExists().isFalse())
@@ -19,9 +19,9 @@ namespace TeamMentor.CoreLib
             try
             {
                 userData.Path_UserData = userDataPath;
-                userData.ResetData();                
-                userData.loadTmUserData();
+                userData.ResetData();                                
                 userData.SetUp();
+                userData.loadTmUserData();
                 return true;
             }
             catch (Exception ex)
@@ -40,8 +40,9 @@ namespace TeamMentor.CoreLib
                     .error(userData.Path_UserData);
             }
             else
-            {	            
-                foreach (var file in userData.Path_UserData.files("*.userData.xml"))
+            {
+                var usersFolder = userData.getTmUsersFolder();
+                foreach (var file in usersFolder.files("*.userData.xml"))
                 {
                     var tmUser = file.load<TMUser>();
                     if (tmUser.notNull() && tmUser.UserID > 0)
@@ -49,11 +50,17 @@ namespace TeamMentor.CoreLib
                 }
             }
             return userData;
-        }                       
+        }        
+        public static string getTmUsersFolder(this TM_UserData userData)
+        {
+            return userData.Path_UserData.pathCombine("Users").createDir();
+        }
+
         public static string        getTmUserXmlFile (this TMUser tmUser)
         {
-            return TM_UserData.Current.Path_UserData.pathCombine("{0}.userData.xml".format(tmUser.ID));
+            return TM_UserData.Current.getTmUsersFolder().pathCombine("{0}.userData.xml".format(tmUser.ID));
         }
+
         public static TMUser        saveTmUser       (this TMUser tmUser)
         {
             if (TM_UserData.Current.UsingFileStorage)
@@ -111,36 +118,47 @@ namespace TeamMentor.CoreLib
         public static TM_UserData handleExternalGitPull      (this TM_UserData userData)
         {
             try
-            {
-                "[TM_UserData][handleExternalGitPull]".info();
+            {                
                 //var gitLocationFile = HttpContextFactory.Server.MapPath("gitUserData.config");
-                var gitLocationFile = TMConfig.BaseFolder.pathCombine("gitUserData.config");
+                var gitLocationFile = TMConfig.Current.getGitUserConfigFile();
                 if (gitLocationFile.fileExists())
                 {
-                    if (userData.Path_UserData.dirExists() && userData.Path_UserData.files().empty())                        
-                        userData.Path_UserData.delete_Folder();
-                    if (userData.Path_UserData.ends("_Git").isFalse())
-                    {
-                        userData.Path_UserData += "_Git";
-                        userData.Path_UserData.createDir();
-                    }
+                    "[TM_UserData][handleExternalGitPull] found gitConfigFile: {0}".info(gitLocationFile);
                     var gitLocation = gitLocationFile.fileContents();
+                    if (gitLocation.notValid())
+                        return userData;
+                    //if (userData.Path_UserData.dirExists() && userData.Path_UserData.files().empty())                        
+                    //    userData.Path_UserData.delete_Folder();
+
+                    //Adjust Path_UserData so that there is an unique folder per repo
+                    var extraFolderName = "_Git_";
+                    
+                        // extra mode to switch of multiple Git_Hosting in same server
+                    extraFolderName += gitLocation.replace("\\","/").split("/").last().remove(".git").safeFileName();
+
+                    userData.Path_UserData = userData.Path_UserData_Base + extraFolderName;
+                    //userData.Path_UserData.createDir();
+                    "[handleExternalGitPull] userData.Path_UserData set to: {0}".debug(userData.Path_UserData);
+                    
                     if (userData.Path_UserData.isGitRepository())
                     {                        
                         "[TM_UserData][GitPull]".info();
                         var nGit = userData.Path_UserData.git_Pull();
-                        O2Thread.mtaThread(
-                            ()=>{
-                                    "[TM_UserData][GitPush] Start".info();
-                                    nGit.push();
-                                    "[TM_UserData][GitPush] End".info();
-                                });
-
+                        TM_UserData.GitPushThread = O2Thread.mtaThread(()=>
+                                        {                                            
+                                            var start = DateTime.Now;
+                                            "[TM_UserData][GitPush] Start".info();
+                                            nGit.push();
+                                            "[TM_UserData][GitPush] in ".info(start.duration_to_Now());
+                                        });
 
                     }
                     else
-                    {                        
+                    {
+                        var start = DateTime.Now;
+                        "[TM_UserData][GitClone] Start".info();
                         gitLocation.git_Clone(userData.Path_UserData);
+                        "[TM_UserData][GitClone] in ".info(start.duration_to_Now());
                     }
                 }
             }
@@ -155,7 +173,13 @@ namespace TeamMentor.CoreLib
         {
             var userConfigFile = userData.Path_UserData.pathCombine("TMConfig.config");
             if (userConfigFile.fileExists())
-                TMConfig.Current = userConfigFile.load<TMConfig>();
+            {
+                var newConfig = userConfigFile.load<TMConfig>();
+                if (newConfig.isNull())
+                    "[handleUserDataConfigActions] failed to load config file from: {0}".error(userConfigFile);
+                else
+                    TMConfig.Current = newConfig;
+            }
             return userData;
         }
 
@@ -170,7 +194,7 @@ namespace TeamMentor.CoreLib
                 {
                     //"[TM_UserData][setupGitSupport] open repository: {0}".info(userData.Path_UserData);
                     "[TM_UserData][GitOpen]".info();
-                    userData.NGit = userData.Path_UserData.git_Open();
+                    userData.NGit = userData.Path_UserData.git_Open();                    
                 }
                 else
                 {
@@ -178,6 +202,7 @@ namespace TeamMentor.CoreLib
                     "[TM_UserData][GitInit]".info();
                     userData.NGit = userData.Path_UserData.git_Init();
                 }
+                userData.triggerGitCommit();        // in case there are any files that need to be commited                
             }
             return userData;
         }
@@ -188,9 +213,13 @@ namespace TeamMentor.CoreLib
         }
         public static TM_UserData   triggerGitCommit (this TM_UserData userData)
         {
-            if (userData.AutoGitCommit)
-                if(userData.NGit.status().valid())
+            if (userData.AutoGitCommit && userData.NGit.notNull())
+                if (userData.NGit.status().valid())
+                {
+                    var start = DateTime.Now;
                     userData.NGit.add_and_Commit_using_Status();
+                    "[TM_UserData][GitCommit] in ".info(start.duration_to_Now());
+                }
             return userData;
         }
     }
