@@ -6,7 +6,7 @@
 <%	
 	var tmWebServices = new TM_WebServices();	
 	tmWebServices.tmAuthentication.mapUserRoles(true);
-    UserGroup.Admin.setThreadPrincipalWithRoles();           // Assert admin privs - only use for special debugging/deployment issues
+    //UserGroup.Admin.setThreadPrincipalWithRoles();           // Assert admin privs - only use for special debugging/deployment issues
 	if (tmWebServices.RBAC_IsAdmin().isFalse())
 	{
 		Trace.IsEnabled = false;			//disable tracing or it will still show on the page

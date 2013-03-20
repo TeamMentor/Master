@@ -38,8 +38,8 @@ namespace TeamMentor.CoreLib
          
         protected void Application_Start				(object sender, EventArgs e)
         {
-            UserGroup.Admin.setThreadPrincipalWithRoles();           // Assert admin privs - only use for special debugging/deployment issues
-            AdminAttribute.GlobalDisableFor_AdminAttribute = true;   // Disable admin checks - only use for special debugging/deployment issues
+            //UserGroup.Admin.setThreadPrincipalWithRoles();           // Assert admin privs - only use for special debugging/deployment issues
+            //AdminAttribute.GlobalDisableFor_AdminAttribute = true;   // Disable admin checks - only use for special debugging/deployment issues
             TMEvents.OnApplication_Start.invoke();            
         }
         
