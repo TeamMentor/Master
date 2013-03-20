@@ -17,7 +17,7 @@
         }
         $scope.reload_TMConfig = function()
         {
-            $scope.message_userDataReload = "Reloading UserData";
+            $scope.message_tmConfigReload = "Reloading UserData";
             $http.get('/rest/admin/reload_TMConfig', $scope.objectToEdit).success(function(result)
             {
                 $scope.message_tmConfigReload = "Done: " + result;
@@ -25,7 +25,7 @@
         }
         $scope.reload_Cache = function()
         {
-            $scope.message_userDataReload = "Reloading UserData";
+            $scope.message_cacheReload = "Reloading UserData";
             $http.get('/rest/admin/reload_Cache', $scope.objectToEdit).success(function(result)
             {
                 $scope.message_cacheReload = "Done: " + result;

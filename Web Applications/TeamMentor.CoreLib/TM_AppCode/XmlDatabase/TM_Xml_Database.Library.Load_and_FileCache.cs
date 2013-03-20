@@ -16,32 +16,93 @@ namespace TeamMentor.CoreLib
         {            
             if (tmDatabase.AutoGitCommit)
             {
-                tmDatabase.NGit = tmDatabase.Path_XmlLibraries.isGitRepository() 
+                foreach (var library in tmDatabase.tmLibraries())
+                {
+                    var libraryPath = tmDatabase.xmlDB_LibraryPath(library.Caption).parentFolder();
+                    if (libraryPath.isGitRepository())
+                    {
+                        var nGit = libraryPath.git_Open();
+                        try
+                        {
+                            nGit.pull();
+                            nGit.push();
+                        }
+                        catch (Exception ex)
+                        {
+                            ex.log();
+                        }
+                        
+                        tmDatabase.NGits.Add(nGit);
+                    }
+                }
+                /*tmDatabase.NGit = tmDatabase.Path_XmlLibraries.isGitRepository() 
                                         ? tmDatabase.Path_XmlLibraries.git_Open() 
                                         : tmDatabase.Path_XmlLibraries.git_Init();
-                tmDatabase.triggerGitCommit();
+                tmDatabase.triggerGitCommit();*/
             }
             return tmDatabase;        
         }
         public static TM_Xml_Database   triggerGitCommit (this TM_Xml_Database tmDatabase)
         {
             if (tmDatabase.AutoGitCommit)
-                if (tmDatabase.NGit.status().valid())
-                    tmDatabase.gitCommit_SeparateThread();                            
+            {
+                foreach(var nGit in tmDatabase.NGits)
+                    if (nGit.status().valid())
+                        nGit.gitCommit_SeparateThread();
+            }
             return tmDatabase;
         }
 
-        public static TM_Xml_Database gitCommit_SeparateThread(this TM_Xml_Database tmDatabase)
+        public static API_NGit gitCommit_SeparateThread(this API_NGit nGit)
         {
             O2Thread.mtaThread(
                 ()=>{                        
-                        lock (tmDatabase.NGit)
+                        lock (nGit)
                         {
-                            tmDatabase.NGit.add_and_Commit_using_Status();
+                            nGit.add_and_Commit_using_Status();
+                            try
+                            {
+                                nGit.push();
+                            }
+                            catch (Exception ex)
+                            {
+                                ex.log();
+                            }
+                            
                         }
                 });
-            return tmDatabase;
+            return nGit;
+        }
 
+
+         public static TM_Xml_Database handle_UserData_GitLibraries(this TM_Xml_Database tmDatabase)
+        {
+            try
+            {
+                foreach (var gitLibrary in tmDatabase.UserData.SecretData.Libraries_Git_Repositories)
+                {
+                    if (gitLibrary.regEx("Lib_.*.git"))
+                    {
+                        var libraryName = gitLibrary.split("Lib_").last().remove(".git").replace("_" , " ");
+                        var targetFolder = tmDatabase.Path_XmlLibraries.pathCombine(libraryName);
+                        if (targetFolder.dirExists().isFalse())
+                        {
+                            gitLibrary.git_Clone(targetFolder);
+                        }
+                        else 
+                            "[handle_UserData_GitLibraries] skipping git clone since there was already a library called: {0}".info(libraryName);
+
+                    }
+                    else
+                        "[handle_UserData_GitLibraries] provided git library didn't fit expected format (it should be called Lib_{LibName}.git, and it was: {0}".error(gitLibrary);
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.log("handle_UserData_GitLibraries");
+                
+            }            
+            return tmDatabase;
         }
     }
 

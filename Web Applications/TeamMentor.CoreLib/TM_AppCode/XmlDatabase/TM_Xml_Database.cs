@@ -17,7 +17,7 @@ namespace TeamMentor.CoreLib
         public bool                     ServerOnline          { get; set; }         
         public bool                     AutoGitCommit         { get; set; }                
         public TM_UserData              UserData              { get; set; }         //users and tracking             
-        public API_NGit                 NGit                  { get; set; }         // Git object
+        public List<API_NGit>           NGits                 { get; set; }         // Git object, one per library that has git support
         public string 	                Path_XmlDatabase      { get; set; }					
         public string 	                Path_XmlLibraries 	  { get; set; }    
         public Thread                   SetupThread           { get; set; } 
@@ -44,6 +44,7 @@ namespace TeamMentor.CoreLib
 
         [Admin] public TM_Xml_Database ResetDatabase()
         {
+            NGits                       = new List<API_NGit>();
             Cached_GuidanceItems        = new Dictionary<Guid, TeamMentor_Article>();
             GuidanceItems_FileMappings  = new Dictionary<Guid, string>();
             GuidanceExplorers_XmlFormat = new Dictionary<Guid, guidanceExplorer>();
@@ -56,6 +57,8 @@ namespace TeamMentor.CoreLib
         {
             SetupThread = O2Thread.mtaThread(
                 ()=>{
+
+
                         lock (this)
                         {
                             try
@@ -69,8 +72,9 @@ namespace TeamMentor.CoreLib
                                 if (UsingFileStorage)
                                 {                       
                                     SetPaths_XmlDatabase();            
+                                    this.handle_UserData_GitLibraries();
                                     loadDataIntoMemory();
-                                    this.handleDefaultInstallActions();                                    
+                                    //this.handleDefaultInstallActions();                                    
                                 }
                                 UserData.createDefaultAdminUser();  // make sure the admin user exists and is configured
                             }

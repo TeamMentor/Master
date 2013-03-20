@@ -115,7 +115,7 @@ namespace TeamMentor.CoreLib
             return false;
         }
 
-        public static TM_UserData handleExternalGitPull      (this TM_UserData userData)
+        public static TM_UserData handle_External_GitPull      (this TM_UserData userData)
         {
             try
             {                
@@ -169,7 +169,7 @@ namespace TeamMentor.CoreLib
             return userData;
         }
 
-        public static TM_UserData handleUserDataConfigActions(this TM_UserData userData)
+        public static TM_UserData handle_UserData_ConfigActions(this TM_UserData userData)
         {
             var userConfigFile = userData.Path_UserData.pathCombine("TMConfig.config");
             if (userConfigFile.fileExists())
@@ -183,12 +183,14 @@ namespace TeamMentor.CoreLib
             return userData;
         }
 
+       
+
         public static TM_UserData   setupGitSupport  (this TM_UserData userData)
         {
             if (userData.UsingFileStorage && userData.AutoGitCommit && userData.Path_UserData.notNull())
             {
-                userData.handleExternalGitPull();
-                userData.handleUserDataConfigActions();
+                userData.handle_External_GitPull();
+                userData.handle_UserData_ConfigActions();                
                 
                 if (userData.Path_UserData.isGitRepository())
                 {

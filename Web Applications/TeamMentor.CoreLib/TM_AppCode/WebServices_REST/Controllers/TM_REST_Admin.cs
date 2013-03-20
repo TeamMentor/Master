@@ -124,13 +124,12 @@ namespace TeamMentor.CoreLib
         [Admin] public bool Reload_TMConfig()
 	    {
 	        TMConfig.loadConfig();                                  // load default one
-            TM_UserData.Current.handleUserDataConfigActions();      // load (if available) from current UserData location
+            TM_UserData.Current.handle_UserData_ConfigActions();    // load (if available) from current UserData location
 	        return true;
 	    }
-        [Admin] public bool Reload_Cache()
+        [Admin] public string Reload_Cache()
 	    {
-	        TmWebServices.XmlDatabase_ReloadData();
-	        return true;
+	        return TmWebServices.XmlDatabase_ReloadData();	        
 	    }
 
 	    [Admin]public string Get_GitUserConfig()

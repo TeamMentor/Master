@@ -19,9 +19,9 @@ namespace TeamMentor.CoreLib
             {
                 "[TM_Xml_Database] in loadDataIntoMemory, provided pathXmlDatabase didn't exist: {0}".error(tmXmlDatabase.Path_XmlDatabase);
                 return false;
-            }
-            tmXmlDatabase.setupGitSupport();
+            }            
             tmXmlDatabase.loadLibraryDataFromDisk();
+            tmXmlDatabase.setupGitSupport();
             tmXmlDatabase.UserData.loadTmUserData();
             return true;					
         }        
@@ -499,7 +499,7 @@ namespace TeamMentor.CoreLib
     }
     public static class TM_Xml_Database_ExtensionMethods_OnInstallationActions
     {
-        public static TM_Xml_Database handleDefaultInstallActions(this TM_Xml_Database tmDatabase)
+/*        public static TM_Xml_Database handleDefaultInstallActions(this TM_Xml_Database tmDatabase)
         {
             try
             {
@@ -534,6 +534,6 @@ namespace TeamMentor.CoreLib
                 ex.log("[in handleDefaultInstallActions]");
             }
             return tmDatabase;
-        }
+        }*/
     }	
 }
