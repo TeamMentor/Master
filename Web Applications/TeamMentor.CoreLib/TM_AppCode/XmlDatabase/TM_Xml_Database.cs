@@ -41,8 +41,15 @@ namespace TeamMentor.CoreLib
             {
                 O2Thread.mtaThread(CheckIfServerIsOnline);
                 UsingFileStorage = useFileStorage;
-            
-                RunningOnLocalHost = HttpContextFactory.Context.runningOnLocalHost();
+
+                try
+                {
+                    RunningOnLocalHost = HttpContextFactory.Context.runningOnLocalHost();
+                }
+                catch (Exception ex)
+                {
+                    ex.log("in settging RunningOnLocalHost");
+                }                
                 Setup();
             
                 this.setupThread_WaitForComplete();
