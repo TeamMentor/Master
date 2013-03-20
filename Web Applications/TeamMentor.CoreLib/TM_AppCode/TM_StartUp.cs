@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security;
 using System.Web;
 using O2.DotNetWrappers.ExtensionMethods;
 
@@ -6,8 +7,14 @@ namespace TeamMentor.CoreLib
 {
     public class TM_StartUp
     {
+        public static TM_StartUp        Current               { get; set; }
         public Tracking_Application     TrackingApplication   { get; set; }
         public TM_Xml_Database          TmXmlDatabase         { get; set; }
+
+        public TM_StartUp()
+        {
+            Current = this;
+        }
 
         public void SetupEvents()
         {
@@ -47,7 +54,7 @@ namespace TeamMentor.CoreLib
             {				
                 new HandleUrlRequest().routeRequestUrl_for404();
             }
-            if (lastError is System.Security.SecurityException)
+            if (lastError is SecurityException)
             {
                // HttpContextFactory.Response.Redirect("~/Error/Permission.aspx");
             }

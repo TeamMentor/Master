@@ -36,13 +36,23 @@ namespace TeamMentor.CoreLib
         }
         public TM_Xml_Database          (bool useFileStorage)
         {
-            O2Thread.mtaThread(CheckIfServerIsOnline);
-            UsingFileStorage = useFileStorage;
             Current = this;
-            RunningOnLocalHost = HttpContextFactory.Context.runningOnLocalHost();
-            Setup();
+            try
+            {
+                O2Thread.mtaThread(CheckIfServerIsOnline);
+                UsingFileStorage = useFileStorage;
             
-            this.setupThread_WaitForComplete();
+                RunningOnLocalHost = HttpContextFactory.Context.runningOnLocalHost();
+                Setup();
+            
+                this.setupThread_WaitForComplete();
+            }
+            catch (Exception ex)
+            {
+                ex.logWithStackTrace("[in TM_Xml_Database.ctor]");
+                TM_StartUp.Current.TrackingApplication.saveLog();
+            }
+            
         }
 
         [Admin] public TM_Xml_Database ResetDatabase()

@@ -6,14 +6,14 @@ using O2.DotNetWrappers.ExtensionMethods;
 namespace TeamMentor.CoreLib
 {
     public class TMEvents
-    {
+    {        
         public static List<Action> OnSession_Start			    { get; set; }
         public static List<Action> OnSession_End			    { get; set; }
         public static List<Action> OnApplication_Error			{ get; set; }
         public static List<Action> OnApplication_Start			{ get; set; }
         public static List<Action> OnApplication_End			{ get; set; }
         public static List<Action> OnApplication_BeginRequest	{ get; set; }
-        
+
         static TMEvents()
         {
             OnSession_Start			    = new List<Action>();

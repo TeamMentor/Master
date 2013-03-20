@@ -107,12 +107,12 @@ namespace TeamMentor.CoreLib
 
         public static List<TeamMentor_Article> xmlDB_GuidanceItems(this TM_Xml_Database tmDatabase)
         {
-            return TM_Xml_Database.Current.Cached_GuidanceItems.Values.toList();
+            return tmDatabase.Cached_GuidanceItems.Values.toList();
         }		
         
         public static List<TeamMentor_Article> xmlDB_GuidanceItems(this TM_Xml_Database tmDatabase, List<Guid> guidanceItemsIds)
         {
-            return (from guidanceItem in TM_Xml_Database.Current.Cached_GuidanceItems.Values
+            return (from guidanceItem in tmDatabase.Cached_GuidanceItems.Values
                     where guidanceItemsIds.contains(guidanceItem.Metadata.Id)
                     select guidanceItem).toList();
         }
