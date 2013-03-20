@@ -14,6 +14,7 @@ namespace TeamMentor.CoreLib
         public static bool              SkipServerOnlineCheck { get; set; }        
 
         public bool			            UsingFileStorage	  { get; set; }         //config   
+        public bool			            RunningOnLocalHost	  { get; set; }           
         public bool                     ServerOnline          { get; set; }         
         public bool                     AutoGitCommit         { get; set; }                
         public TM_UserData              UserData              { get; set; }         //users and tracking             
@@ -38,7 +39,9 @@ namespace TeamMentor.CoreLib
             O2Thread.mtaThread(CheckIfServerIsOnline);
             UsingFileStorage = useFileStorage;
             Current = this;
+            RunningOnLocalHost = HttpContextFactory.Context.runningOnLocalHost();
             Setup();
+            
             this.setupThread_WaitForComplete();
         }
 
@@ -48,8 +51,7 @@ namespace TeamMentor.CoreLib
             Cached_GuidanceItems        = new Dictionary<Guid, TeamMentor_Article>();
             GuidanceItems_FileMappings  = new Dictionary<Guid, string>();
             GuidanceExplorers_XmlFormat = new Dictionary<Guid, guidanceExplorer>();
-            UserData                    = new TM_UserData(UsingFileStorage);            
-
+            UserData                    = new TM_UserData(UsingFileStorage);                        
             return this;
         }
 

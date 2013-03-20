@@ -57,7 +57,7 @@ namespace TeamMentor.CoreLib
             HttpContextFactory.Response.Redirect("/error");
         }           
         public void Application_BeginRequest()
-        {
+        {            
             ResponseHeaders.addDefaultResponseHeaders();
             new HandleUrlRequest().routeRequestUrl();                                  
         }

@@ -86,6 +86,7 @@
     <Compile Include="TM_AppCode\Users\TmConfig_ExtensionMethods.cs" />
     <Compile Include="TM_AppCode\Schemas\TM_SecretData.cs" />
     <Compile Include="TM_AppCode\Users\TM_Secret_Data_ExtensionMethods.cs" />
+    <Compile Include="TM_AppCode\Users\TM_UserData_Ex_Git.cs" />
     <Compile Include="TM_AppCode\Utils\Crypto.cs" />
     <Compile Include="TM_AppCode\Schemas\Legacy\guidanceexplorer.cs" />
     <Content Include="TM_AppCode\Users\SingleSignOn.cs.txt" />

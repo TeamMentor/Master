@@ -20,7 +20,7 @@ namespace TeamMentor.CoreLib
                 "[TM_Xml_Database] in loadDataIntoMemory, provided pathXmlDatabase didn't exist: {0}".error(tmXmlDatabase.Path_XmlDatabase);
                 return false;
             }            
-            tmXmlDatabase.loadLibraryDataFromDisk();
+            tmXmlDatabase.loadLibraryDataFromDisk();            
             tmXmlDatabase.setupGitSupport();
             tmXmlDatabase.UserData.loadTmUserData();
             return true;					

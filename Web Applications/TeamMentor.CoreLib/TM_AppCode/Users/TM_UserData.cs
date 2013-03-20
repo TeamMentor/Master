@@ -19,6 +19,7 @@ namespace TeamMentor.CoreLib
         
         //public Dictionary<Guid, TMUser>	ActiveSessions	    { get; set; }
         public bool                     UsingFileStorage    { get; set; }
+        public bool			            RunningOnLocalHost	  { get; set; }         
         public bool                     AutoGitCommit       { get; set; }
         public API_NGit                 NGit                { get; set; }
         
@@ -30,6 +31,7 @@ namespace TeamMentor.CoreLib
         public TM_UserData(bool useFileStorage)
         {
             Current = this;
+            RunningOnLocalHost = HttpContextFactory.Context.runningOnLocalHost();
             UsingFileStorage = useFileStorage;
             ResetData();
         }

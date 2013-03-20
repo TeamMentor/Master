@@ -24,7 +24,7 @@ namespace TeamMentor.CoreLib
                         var nGit = libraryPath.git_Open();
                         try
                         {
-                            nGit.pull();
+                            nGit.pull();                            
                             nGit.push();
                         }
                         catch (Exception ex)
@@ -35,6 +35,7 @@ namespace TeamMentor.CoreLib
                         tmDatabase.NGits.Add(nGit);
                     }
                 }
+                tmDatabase.triggerGitCommit();
                 /*tmDatabase.NGit = tmDatabase.Path_XmlLibraries.isGitRepository() 
                                         ? tmDatabase.Path_XmlLibraries.git_Open() 
                                         : tmDatabase.Path_XmlLibraries.git_Init();
@@ -141,10 +142,10 @@ namespace TeamMentor.CoreLib
         {
             tmXmlDatabase.GuidanceExplorers_XmlFormat = tmXmlDatabase.Path_XmlLibraries.getGuidanceExplorerObjects();
             tmXmlDatabase.load_GuidanceItemsFromCache();
-
-            //ensure that there is at least one library 
-            if (tmXmlDatabase.tmLibraries().empty())                           
-                tmXmlDatabase.new_TmLibrary();
+            
+            //removed since this need to be handled on the GUI
+            /*if (tmXmlDatabase.tmLibraries().empty())     //ensure that there is at least one library                          
+                tmXmlDatabase.new_TmLibrary();*/
             return tmXmlDatabase;
         }
         public static TM_Xml_Database                    reloadGuidanceExplorerObjects     (this TM_Xml_Database tmDatabase)

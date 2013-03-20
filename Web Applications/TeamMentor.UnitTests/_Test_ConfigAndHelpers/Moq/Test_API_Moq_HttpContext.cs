@@ -22,13 +22,14 @@ namespace TeamMentor.UnitTests
 
         [Test] public void Test_HttpContext_CoreObjectsExist()
         {
-            Assert.IsNotNull(HttpContextFactory.Context					, "Context");
-            Assert.IsNotNull(HttpContextFactory.Context.Request			, "Request");
-            Assert.IsNotNull(HttpContextFactory.Context.Request.Headers , "Request.Headers");
-            Assert.IsNotNull(HttpContextFactory.Context.Response		, "Response");
-            Assert.IsNotNull(HttpContextFactory.Context.Response.Headers, "Response.Headers");
-            Assert.IsNotNull(HttpContextFactory.Context.Server			, "Server");
-            Assert.IsNotNull(HttpContextFactory.Context.Session			, "Session");
+            Assert.IsNotNull(HttpContextFactory.Context					     , "Context");
+            Assert.IsNotNull(HttpContextFactory.Context.Request			     , "Request");
+            Assert.IsNotNull(HttpContextFactory.Context.Request.Headers      , "Request.Headers");
+            Assert.IsNotNull(HttpContextFactory.Context.Response		     , "Response");
+            Assert.IsNotNull(HttpContextFactory.Context.Response.Headers     , "Response.Headers");
+            Assert.IsNotNull(HttpContextFactory.Context.Server		     	 , "Server");
+            Assert.IsNotNull(HttpContextFactory.Context.Session			     , "Session");
+            Assert.IsTrue   (HttpContextFactory.Context.runningOnLocalHost() , "runningOnLocalHost");
         }
         [Test] public void Test_Http_Headers()
         {
@@ -75,8 +76,7 @@ namespace TeamMentor.UnitTests
             Assert.IsNotNull        (context.Response.RedirectLocation, "after Transfer");
             Assert.AreEqual         (transferTarget, context.Response.RedirectLocation);
         }
-        [Test]
-        public void Test_Session()
+        [Test] public void Test_Session()
         {            
             var session       = context.Session;
             var sessionId     = session.SessionID;

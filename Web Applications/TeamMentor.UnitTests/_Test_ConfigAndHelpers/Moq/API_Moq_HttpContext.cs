@@ -36,6 +36,7 @@ namespace O2.FluentSharp
         public API_Moq_HttpContext(string baseDir)
         {
             BaseDir = baseDir;
+            RequestUrl = "http://localhost".uri();
             createBaseMocks();
             setupNormalRequestValues();
         }

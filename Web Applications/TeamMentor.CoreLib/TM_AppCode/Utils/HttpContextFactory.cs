@@ -29,7 +29,7 @@ namespace TeamMentor.CoreLib
 
     public static class HttpContextFactory_ExtensionMethods
     {
-        public static HttpContextBase addCookieFromResponseToRequest(this HttpContextBase httpContext, string cookieName)
+        public static HttpContextBase addCookieFromResponseToRequest(this HttpContextBase    httpContext, string cookieName)
         {
             if (httpContext.Response.hasCookie(cookieName))
             {
@@ -44,5 +44,14 @@ namespace TeamMentor.CoreLib
             }
             return httpContext;
         }
+
+        public static bool runningOnLocalHost(this HttpContextBase context)
+        {
+            if (context.notNull() && context.Request.notNull())
+                return context.Request.IsLocal;
+            return true;
+        }
+
+        
     }
 }
