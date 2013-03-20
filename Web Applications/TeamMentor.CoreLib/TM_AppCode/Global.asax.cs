@@ -38,8 +38,8 @@ namespace TeamMentor.CoreLib
          
         protected void Application_Start				(object sender, EventArgs e)
         {
-            TMEvents.OnApplication_Start.invoke();
-            
+            AdminAttribute.GlobalDisableFor_AdminAttribute = true;   // only use for special debugging/deployment issues
+            TMEvents.OnApplication_Start.invoke();            
         }
         
         protected void Application_BeginRequest			(object sender, EventArgs e)		
