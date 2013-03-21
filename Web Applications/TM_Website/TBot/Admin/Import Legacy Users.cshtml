@@ -7,7 +7,7 @@
     var userFolder = userData.getTmUsersFolder();
     var tmUsersXml = userFolder.pathCombine("..\\tmusers.xml");
     var importUsers = HttpContextFactory.Request.QueryString["ImportUsers"] == "yes";
-    var creationDate = DateTime.Parse("10/08/2012");
+    var creationDate = DateTime.Parse("01/11/2012");
     
     Func<TMUser, bool> userExists =
         (tmUser) =>
@@ -93,10 +93,10 @@
         foreach (var user in users)
         {
             var tmUser = getUserFromXElement(user);
-            if (tmUser.EMail.contains("securityinnovation.com").isFalse() && tmUser.UserName != "admin")
+            /*if (tmUser.EMail.contains("securityinnovation.com").isFalse() && tmUser.UserName != "admin") // use to only import/show SI users
             {
                 continue;
-            }
+            }*/
             var existInTM = userExists(tmUser);
             var exactMatch = isExactMatch(tmUser);
             var trClass = (existInTM) 
