@@ -26,28 +26,11 @@ namespace TeamMentor.UnitTests.CoreLib
             handleUrlRequest = new HandleUrlRequest();
         }
 
-        [Test] public void TestMultipleActionInvokes()
-        {
-            
-            // ReSharper disable InconsistentNaming 
-            var result_TeamMentor = handleUrlRequest.handleRequest("TeamMentor", "");
-            var result_Teaamentor = handleUrlRequest.handleRequest("Teammentor", "");            
-            var result_teammentor = handleUrlRequest.handleRequest("TeamMentor", "");
-            var result_AAABBBCCC  = handleUrlRequest.handleRequest("AAABBBCCC", "");
-            
-            Assert.IsFalse(result_TeamMentor, "result_TeamMentor");
-            Assert.IsFalse(result_Teaamentor, "result_Teaamentor");
-            Assert.IsFalse(result_teammentor, "result_teammentor");
-            Assert.IsFalse(result_AAABBBCCC , "result_AAABBBCCC");
-            // ReSharper restore InconsistentNaming
-
-            //handleUrlRequest.handleRequest("TeamMentor", "");            
-        }
         [Test] public void TestRedirectToLoginPage()
         {            
             handleUrlRequest.handleRequest("login","");            
             Assert.IsTrue   (context.Response.IsRequestBeingRedirected, "redirecting");
-            Assert.AreEqual ("/Html_Pages/Gui/Pages/login.html",context.Response.RedirectLocation,"Login redirect location");
+            Assert.AreEqual ("/Html_Pages/Gui/Pages/login.html?LoginReferer=/",context.Response.RedirectLocation,"Login redirect location");
 
             Setup();        // run setup again and ensure that values have been reset
             

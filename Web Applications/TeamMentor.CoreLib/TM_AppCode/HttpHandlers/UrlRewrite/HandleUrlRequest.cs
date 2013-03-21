@@ -175,7 +175,7 @@ namespace TeamMentor.CoreLib
         }
 
         //All mappings are here
-        public bool handleRequest(string action , string data)
+        public void handleRequest(string action , string data)
         {
             try
             {
@@ -214,16 +214,19 @@ namespace TeamMentor.CoreLib
                         break;
                     
                     case "image":
-                        return handleAction_Image(data);
+                        handleAction_Image(data);
+                        break;
                     case "jsonp":
-                        return handleAction_JsonP(data);
+                        handleAction_JsonP(data);
+                        break;
                     case "viewer":
                     case "article":
                         handle_ArticleViewRequest(data);
                         break;
                     case "edit":
                     case "editor":
-                        return transfer_ArticleEditor(data);
+                         transfer_ArticleEditor(data);
+                        break;
                     case "notepad":
                         handleAction_Xsl(data, "Notepad_Edit.xslt");
                         break;
@@ -245,7 +248,8 @@ namespace TeamMentor.CoreLib
                         break;
                     
                     case "library":
-                        return redirectTo_SetLibrary(data);
+                        redirectTo_SetLibrary(data);
+                        break;
                 }
                 //admin actions
                 switch (action.lower())
@@ -271,15 +275,17 @@ namespace TeamMentor.CoreLib
                 switch (action.lower())
                 {
                     case "external":
-                        return showVirtualArticleExternal(data);
+                        showVirtualArticleExternal(data);
+                        break;
                     case "virtualarticles":
-                        return showVirtualArticles();
+                        showVirtualArticles();
+                        break;
                     case "addvirtualarticle":
-                        return addVirtualArticleMapping(data);
+                        addVirtualArticleMapping(data);
+                        break;
                     case "removevirtualarticle":
-                        return removeVirtualArticleMapping(data);
-                    default:
-                        return false;  
+                        removeVirtualArticleMapping(data);
+                        break;                    
                 }
             }                
             catch (Exception ex)
@@ -288,8 +294,7 @@ namespace TeamMentor.CoreLib
                     redirect_Login();              
                 if (ex.Message != "Thread was being aborted.")                
                     ex.logWithStackTrace("at handleRequest");                                    
-            }                                    
-            return false;			
+            }                                                		
         }
         
 
@@ -308,15 +313,15 @@ namespace TeamMentor.CoreLib
         
 
         //Virtual Articles
-        public bool showVirtualArticles()
+        public void showVirtualArticles()
         {
             var virtualArticles = tmWebServices.VirtualArticle_GetCurrentMappings();
             var xmlContent = virtualArticles.serialize(false);
             context.Response.ContentType = "text/xml";
             context.Response.Write(xmlContent);
-            return true;
+            endResponse();
         }
-        public bool addVirtualArticleMapping(string data)
+        public void addVirtualArticleMapping(string data)
         {
             tmWebServices.VirtualArticle_GetCurrentMappings();  // will trigger an authorization check if needed
             try
@@ -340,7 +345,7 @@ namespace TeamMentor.CoreLib
                             {
                                 var virtualArticleAction = tmWebServices.VirtualArticle_Add_Mapping_VirtualId(guid1, guid2);
                                 outputVirtualArticleActionAsXml(virtualArticleAction);
-                                return true;
+                                endResponse(); 
                             }
                         }
                         else
@@ -362,7 +367,7 @@ namespace TeamMentor.CoreLib
                         {
                             var virtualArticleAction = tmWebServices.VirtualArticle_Add_Mapping_ExternalArticle(guid1, tmServer.str(), guid2);
                             outputVirtualArticleActionAsXml(virtualArticleAction);
-                            return true;
+                            endResponse();  
                         }
                     }
                     else								 // EXTERNAL SERVICE
@@ -371,30 +376,29 @@ namespace TeamMentor.CoreLib
                         var serviceData = mappings[2];
                         var virtualArticleAction = tmWebServices.VirtualArticle_Add_Mapping_ExternalService(guid1, service, serviceData);
                         outputVirtualArticleActionAsXml(virtualArticleAction);						
-                        return true;
+                        endResponse(); 
                     }					
                 }
             }
             catch (Exception ex)
             {
                 ex.log();
-            }			
-            return true;
+            }			            
         }
-        public bool removeVirtualArticleMapping(string data)
+        public void removeVirtualArticleMapping(string data)
         {
             if (data.isGuid())
             {
                 if (tmWebServices.VirtualArticle_Remove_Mapping(data.guid()))
                 {
                     context.Response.Write("Mapping removed");
-                    return true;
+                    endResponse(); 
                 }
             }
             context.Response.Write("Provided mapping data could not be parsed");
-            return true;
+            endResponse(); 
         }
-        public bool showVirtualArticleExternal(string data)
+        public void showVirtualArticleExternal(string data)
         {
             var mappings = data.split(",");
             {
@@ -414,13 +418,13 @@ namespace TeamMentor.CoreLib
                         var htmlContent = htmlTemplate.replace("#ARTICLE_TITLE", article.Metadata.Title)
                                                       .replace("#ARTICLE_HTML", article.Content.Data.Value);
                         context.Response.Write(htmlContent);           
-                    }					
+                    }
+                    endResponse();
                 }
-            }
-            return true;
+            }            
         }
         //handlers
-        private bool handleAction_JsonP(string data)
+        public void handleAction_JsonP(string data)
         {
             var guid = tmWebServices.getGuidForMapping(data);
             if (guid != Guid.Empty)
@@ -437,11 +441,10 @@ namespace TeamMentor.CoreLib
                 }
                 else
                     context.Response.Write(serializedData);
-                return true;
-            }
-            return false;
+                endResponse();
+            }            
         }
-        private bool handleAction_Image(string data)
+        public void handleAction_Image(string data)
         {            
             
             var imagePath = TM_Xml_Database.Current.Get_Path_To_File(data);            
@@ -449,12 +452,10 @@ namespace TeamMentor.CoreLib
             {
                 context.Response.ContentType = "image/{0}".format(data.extension().removeFirstChar());
                 context.Response.WriteFile(imagePath);
-                return true;
-            }            
-            return false;
+                endResponse();
+            }                        
         }
-
-        private void handleAction_Xsl(string data, string xsltToUse)
+        public void handleAction_Xsl(string data, string xsltToUse)
         {
             //if (this.TmWebServices.tmAuthentication.sessionID. UserRole.ReadArticles
             var xstlFile = context.Server.MapPath("\\xslt\\" + xsltToUse);
@@ -484,11 +485,10 @@ namespace TeamMentor.CoreLib
                     }                    
                 }
                 else
-                    transfer_ArticleViewer();       
+                    transfer_Request("articleViewer");              // will trigger exception
             }            
         }
-
-        private void handleAction_Create(string data)
+        public void handleAction_Create(string data)
         {
             var article = new TeamMentor_Article {Metadata = {Title = data.urlDecode()}};
             var xmlContent = article.serialize(false)
@@ -497,8 +497,7 @@ namespace TeamMentor.CoreLib
             context.Response.Write(xmlContent);  
             endResponse();            
         }        
-
-        private void handleAction_Raw(string data)
+        public void handleAction_Raw(string data)
         {
             var guid = tmWebServices.getGuidForMapping(data);
             if (guid != Guid.Empty)
@@ -509,9 +508,9 @@ namespace TeamMentor.CoreLib
                 endResponse(); 
             }
             else
-                transfer_ArticleViewer();            
+                transfer_Request("articleViewer");              // will trigger exception
         }
-        private void handleAction_Xml(string data)
+        public void handleAction_Xml(string data)
         {
             var guid = tmWebServices.getGuidForMapping(data);
             if (guid != Guid.Empty)
@@ -522,9 +521,9 @@ namespace TeamMentor.CoreLib
                 endResponse(); 
             }
             else
-               transfer_ArticleViewer();            
+               transfer_Request("articleViewer");              // will trigger exception            
         }
-        private void handleAction_Html(string data)
+        public void handleAction_Html(string data)
         {
             var guid = tmWebServices.getGuidForMapping(data);
             if (guid != Guid.Empty)
@@ -546,9 +545,9 @@ namespace TeamMentor.CoreLib
                 }
             }
             else
-                transfer_ArticleViewer();            
+                transfer_Request("articleViewer");              // will trigger exception     
         }
-        public void handle_ArticleViewRequest(string data)
+        public  void handle_ArticleViewRequest(string data)
         {			
             if ( data.isGuid())
             {				
@@ -562,7 +561,7 @@ namespace TeamMentor.CoreLib
                     }
                 }
             }
-            transfer_ArticleViewer();       
+            transfer_Request("articleViewer");              // will trigger exception    
         }		
         private void handleAction_Content(string data)
         { 
@@ -574,44 +573,28 @@ namespace TeamMentor.CoreLib
                 context.Response.Write(htmlContent);
             }
             else
-                transfer_ArticleViewer();            
+                transfer_Request("articleViewer");              // will trigger exception           
 
         }
-/*        private bool handleAction_SSO()
-        {
-            new SingleSignOn().authenticateUserBasedOn_SSOToken();
-            return true;
-        }*/
-        
+
         //utils
         public void endResponse()
         { 
             context.Response.Flush();
             context.Response.End();
-        }
-/*        private void reloadCache_and_RedirectToHomePage()
-        {
-            tmWebServices.XmlDatabase_ReloadData();
-            response_Redirect("home");
-        }      */
-        public bool transfer_ArticleViewer()
-        {
-            transfer_Request("articleViewer");
-            //context.Server.Transfer("/html_pages/GuidanceItemViewer/GuidanceItemViewer.html");						
-            return false;    
-        }          
-        public bool transfer_ArticleEditor(string data)
+        }           
+        public void transfer_ArticleEditor(string data)
         {         
             var guid = tmWebServices.getGuidForMapping(data);
             if (guid == Guid.Empty)
-                return transfer_ArticleViewer();
-
-            tmWebServices.XmlDatabase_GetGuidanceItemXml(guid); // will trigger an Security exception if the user if not authorized
-            transfer_Request("articleEditor");
-            //context.Server.Transfer("/html_pages/GuidanceItemEditor/GuidanceItemEditor.html");            
-            return false;    
-        }
-     
+                transfer_Request("articleViewer");              // will trigger exception
+            else
+            {
+                tmWebServices.XmlDatabase_GetGuidanceItemXml(guid); // will trigger an Security exception if the user if not authorized
+                transfer_Request("articleEditor");    
+            }            
+            //context.Server.Transfer("/html_pages/GuidanceItemEditor/GuidanceItemEditor.html");                        
+        }     
         public void redirect_Login()
         {
             var loginPage = "/Html_Pages/Gui/Pages/login.html";
@@ -666,10 +649,9 @@ namespace TeamMentor.CoreLib
         {			
             context.Response.Redirect("/article/{0}".format(article));                
         }          
-        public bool redirectTo_SetLibrary(string libraryIdOrName)
+        public void redirectTo_SetLibrary(string libraryIdOrName)
         {			
-            context.Response.Redirect("/aspx_pages/SetLibrary.aspx?Library={0}".format(libraryIdOrName));
-            return false;    
+            context.Response.Redirect("/aspx_pages/SetLibrary.aspx?Library={0}".format(libraryIdOrName));             
         }           
         
     }

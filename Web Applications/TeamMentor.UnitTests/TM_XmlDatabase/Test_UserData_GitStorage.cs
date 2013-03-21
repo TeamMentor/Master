@@ -6,7 +6,7 @@ using TeamMentor.CoreLib;
 
 namespace TeamMentor.UnitTests.TM_XmlDatabase
 {
-    [TestFixture]
+    [TestFixture][Ignore("Git User doesn't happen on LocalRequests")]
     public class Test_UserData_GitStorage
     {
         public TM_UserData  userData;

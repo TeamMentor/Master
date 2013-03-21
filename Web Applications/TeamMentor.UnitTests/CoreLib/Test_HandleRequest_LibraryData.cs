@@ -34,24 +34,20 @@ namespace TeamMentor.UnitTests.CoreLib
             handleUrlRequest = new HandleUrlRequest();
         }
 
-        [Test, Ignore("not working 100%")][Assert_Editor]
+        [Test][Assert_Editor]
         public void GetContentForRandomGuid()
         {
-            var guid = Guid.NewGuid();
-            var html    = handleUrlRequest.handleRequest("html"     , guid.str());
-            var raw     = handleUrlRequest.handleRequest("raw"      , guid.str());
+            var guid = Guid.NewGuid();            
+            Assert.Throws<Exception>(() => handleUrlRequest.handleRequest("content" , guid.str()), "content");            
+            Assert.Throws<Exception>(() => handleUrlRequest.handleRequest("raw"     , guid.str()), "raw");            
+            Assert.Throws<Exception>(() => handleUrlRequest.handleRequest("xml"     , guid.str()), "xml");
+            Assert.DoesNotThrow     (() => handleUrlRequest.handleRequest("html"    , guid.str()), "html");
+            Assert.DoesNotThrow     (() => handleUrlRequest.handleRequest("xsl"     , guid.str()), "xsl");
+            Assert.DoesNotThrow     (() => handleUrlRequest.handleRequest("jsonp"   , guid.str()), "jsonp");
+            Assert.Throws<Exception>(() => handleUrlRequest.handleRequest("article" , guid.str()), "article");
+
             
-            var xml     = handleUrlRequest.handleRequest("xml"     , guid.str());
-            var xsl     = handleUrlRequest.handleRequest("xsl"     , guid.str());
-            //var jsonp   = handleUrlRequest.handleRequest("jsonp"   , guid.str());
-
-            Assert.Throws<Exception>(() => handleUrlRequest.handleRequest("content", guid.str()));
-            Assert.Throws<Exception>(() => handleUrlRequest.handleRequest("jsonp", guid.str()));
-
-            Assert.AreEqual (false,html    , "html");
-            Assert.AreEqual (false,raw     , "raw");                      
-            Assert.AreEqual (false,xml     , "xml");         
-            Assert.AreEqual (false,xsl     , "xsl");         
+            
             //Assert.AreEqual (false,jsonp   , "jsonp");         
         }
     }

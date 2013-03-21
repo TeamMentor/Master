@@ -72,9 +72,7 @@ namespace TeamMentor.CoreLib
         public static TM_UserData   handle_External_GitPull      (this TM_UserData userData)
         {
             try
-            {
-                if (MiscUtils.online().isFalse())
-                    return userData;
+            {                
                 //var gitLocationFile = HttpContextFactory.Server.MapPath("gitUserData.config");
                 var gitLocationFile = TMConfig.Current.getGitUserConfigFile();
                 if (gitLocationFile.fileExists())
@@ -95,7 +93,10 @@ namespace TeamMentor.CoreLib
                     userData.Path_UserData = userData.Path_UserData_Base + extraFolderName;
                     //userData.Path_UserData.createDir();
                     "[handleExternalGitPull] userData.Path_UserData set to: {0}".debug(userData.Path_UserData);
-                    
+             
+                    if (MiscUtils.online().isFalse())
+                        return userData;
+
                     if (userData.Path_UserData.isGitRepository())
                     {                        
                         "[TM_UserData][GitPull]".info();
