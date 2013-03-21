@@ -237,13 +237,15 @@ TeamMentor Team.
 var userMessage =
 @"Hi {0} {1},  a password reminder was requested for your account.
 
-You can change your password of your {2} account using {4}/passwordReset/{2}/{3}
+You can change the password of your {2} account using {4}/passwordReset/{2}/{3}
 
-TeamMentor Team.
+If you didn't make this request, please let us know at support@teammentor.net.
              ".format(tmUser.FirstName, tmUser.LastName, tmUser.UserName, passwordResetToken,TM_Server_URL);
-             SendEmailToEmail(tmUser.EMail, "TeamMentor Login Link", userMessage);
-             userMessage = "(sent to: {0})\n\n{1}".format(tmUser.EMail, userMessage);
-             SendEmailToTM("(user email) Welcome to TeamMentor", userMessage);
+             
+                SendEmailToEmail(tmUser.EMail, "TeamMentor Password Reset", userMessage);
+             
+                userMessage = "(sent to: {0})\n\n{1}".format(tmUser.EMail, userMessage);
+                SendEmailToTM("(user email) Welcome to TeamMentor", userMessage);
                 return true;
             }
             catch (Exception ex)
