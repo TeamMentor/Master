@@ -1,0 +1,152 @@
+﻿
+@using System.Xml.Linq
+@using TeamMentor.CoreLib
+@using O2.DotNetWrappers.ExtensionMethods
+@{
+    var userData = TM_UserData.Current;
+    var userFolder = userData.getTmUsersFolder();
+    var tmUsersXml = userFolder.pathCombine("..\\tmusers.xml");
+    var importUsers = HttpContextFactory.Request.QueryString["ImportUsers"] == "yes";
+    var creationDate = DateTime.Parse("10/08/2012");
+    
+    Func<TMUser, bool> userExists =
+        (tmUser) =>
+            {
+                return tmUser.UserName.tmUser().notNull() ||
+                       tmUser.UserID.tmUser().notNull() ||
+                       (tmUser.EMail.valid() && tmUser.EMail.tmUser_FromEmail().notNull());
+            };
+            
+   Func<TMUser, bool> isExactMatch =
+        (tmUser) =>
+            {
+                return tmUser.UserName.tmUser().notNull() &&
+                       tmUser.UserID.tmUser().notNull() &&
+                       (tmUser.EMail.notValid() || tmUser.EMail.tmUser_FromEmail().notNull());
+            };         
+    Func<XElement, TMUser> getUserFromXElement =
+        (user) =>
+            {
+                var userID = user.element("{https://TeamMentor.securityinnovation.com:13415/}UserID").Value;
+                var userName = user.element("{https://TeamMentor.securityinnovation.com:13415/}UserName").Value;
+                var firstName = user.element("{https://TeamMentor.securityinnovation.com:13415/}FirstName").Value;
+                var lastName = user.element("{https://TeamMentor.securityinnovation.com:13415/}LastName").Value;
+                var title = user.element("{https://TeamMentor.securityinnovation.com:13415/}Title").Value;
+                var company = user.element("{https://TeamMentor.securityinnovation.com:13415/}Company").Value;
+                var eMail = user.element("{https://TeamMentor.securityinnovation.com:13415/}EMail").Value;
+                var groupID = user.element("{https://TeamMentor.securityinnovation.com:13415/}GroupID").Value;
+
+                var tmUser = new TMUser
+                    {
+                        UserID = userID.toInt(),
+                        UserName = userName,
+                        FirstName = firstName,
+                        LastName = lastName,
+                        Title = title,
+                        Company = company,
+                        EMail = eMail,
+                        GroupID = groupID.toInt()                        
+                    };
+                tmUser.Stats.CreationDate = creationDate;
+                return tmUser;
+            };
+            
+        
+}
+<h4>Importing Users From Previous TMUsers</h4>
+
+@if(tmUsersXml.fileExists())
+{
+    <span>
+        <b>Found tmusers.xml</b> at : @tmUsersXml
+       
+        <br/>
+        <br/>
+        <p>
+            <a class="btn btn-inverse" href="Import Legacy Users?ImportUsers=yes">Import Users</a>
+            
+            @if (importUsers)
+            {
+                <br /><br /><span>IMPORTING USERS.... using creationDate : @creationDate</span>
+            }
+        </p>
+        
+        <br/>
+    
+        <table class="table table-striped table-condensed">
+            <tr>
+                <th>Exists?</th>   
+                <th>Exact Match?</th>
+                <th>Imported?</th>   
+                <th>userID</th>            
+                <th>userName</th>
+                <th>firstName</th>            
+                <th>lastName</th>   
+                <th>title</th>
+                <th>company</th>
+                <th>eMail</th>
+                <th>groupID</th>                
+            </tr>   
+
+    @{
+        var users = tmUsersXml.xRoot().elements();//.take(100);
+        foreach (var user in users)
+        {
+            var tmUser = getUserFromXElement(user);
+            if (tmUser.EMail.contains("securityinnovation.com").isFalse() && tmUser.UserName != "admin")
+            {
+                continue;
+            }
+            var existInTM = userExists(tmUser);
+            var exactMatch = isExactMatch(tmUser);
+            var trClass = (existInTM) 
+                                ?  (exactMatch) 
+                                        ? "success" : "info"
+                                : "error";
+            
+            var imported = false;
+            if (existInTM.isFalse() && importUsers)
+            {
+                userData.TMUsers.add(tmUser);
+                tmUser.saveTmUser(); 
+                if (userExists(tmUser))
+                {
+                    imported = true;
+                    trClass = "info";  
+                }
+                else
+                {
+                    trClass = "error";  
+                }
+                                
+            }
+            <tr class="@trClass">
+                <td>@existInTM</td>
+                <td>@exactMatch</td>
+                <td>@imported</td>                
+                <td>@tmUser.UserID</td>            
+                <td>@tmUser.UserName</td>
+                <td>@tmUser.FirstName</td>            
+                <td>@tmUser.LastName</td>   
+                <td>@tmUser.Title</td>
+                <td>@tmUser.Company</td>
+                <td>@tmUser.EMail</td>
+                <td>@tmUser.GroupID</td>                
+            </tr>
+        }
+    }
+
+        </table>
+
+    </span>
+}
+else
+{
+    <span>
+    <hr/>
+
+    <b>Did not Found tmusers.xml</b> at location: @userFolder
+    </span>
+}
+
+

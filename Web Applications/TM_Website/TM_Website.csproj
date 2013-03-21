@@ -637,15 +637,15 @@
     <None Include="Javascript\FireBug\skin\xp\roundCorner.svg" />
     <Content Include="TBot\Users\Current_Users.cshtml" />
     <Content Include="TBot\Tests\version.cshtml" />
-    <Content Include="TBot\LiveData\ActiveSessions.cshtml" />
+    <Content Include="TBot\Admin\LiveData\ActiveSessions.cshtml" />
     <Content Include="TBot\Messaging\View_Emails_Sent.cshtml" />
     <Content Include="TBot\Tbot_Admin\O2_Scripts.cshtml" />
-    <Content Include="TBot\TM_Admin\ServerData\View_TMConfig.cshtml" />
-    <Content Include="TBot\TM_Admin\ServerData\View_SecretData.cshtml" />
-    <Content Include="TBot\LiveData\DebugInfo.cshtml" />
-    <Content Include="TBot\Dev\Commands.cshtml" />
+    <Content Include="TBot\Admin\Config\View_TMConfig.cshtml" />
+    <Content Include="TBot\Admin\Config\View_SecretData.cshtml" />
+    <Content Include="TBot\Admin\LiveData\DebugInfo.cshtml" />
+    <Content Include="TBot\Tests\Commands.cshtml" />
     <Content Include="TBot\Tbot_Admin\Reset_Razor_Templates.cshtml" />
-    <Content Include="TBot\LiveData\IISSessions.cshtml" />
+    <Content Include="TBot\Admin\LiveData\IISSessions.cshtml" />
     <Content Include="TBot\Views\User_Activities.cshtml" />
     <Content Include="TBot\NGit\GitStatus.cshtml" />
     <Content Include="packages.config" />
@@ -660,10 +660,11 @@
     <Content Include="TBot\Views\User_Raw.cshtml" />
     <Content Include="TBot\Dev\exec_Razor.cshtml.txt" />
     <Content Include="TBot\LibraryData\Articles.cshtml" />
-    <Content Include="TBot\TM_Admin\ServerData\Edit_SecretData.cshtml" />
-    <Content Include="TBot\TM_Admin\Reload_Server_Objects.cshtml" />
-    <Content Include="TBot\TM_Admin\ServerData\Edit_GitUserLocation.cshtml" />
+    <Content Include="TBot\Admin\Config\Edit_SecretData.cshtml" />
+    <Content Include="TBot\Admin\Reload_Server_Objects.cshtml" />
+    <Content Include="TBot\Admin\Config\Edit_GitUserLocation.cshtml" />
     <Content Include="TBot\LibraryData\Libraries_Xml.cshtml" />
+    <Content Include="TBot\Admin\Import Legacy Users.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

@@ -48,9 +48,9 @@ namespace TeamMentor.CoreLib
                     if (tmUser.notNull() && tmUser.UserID > 0)
                         userData.TMUsers.Add(tmUser);
                 }
-            }
+            }            
             return userData;
-        }        
+        }                
         public static string        getTmUsersFolder(this TM_UserData userData)
         {
             return userData.Path_UserData.pathCombine("Users").createDir();
