@@ -663,6 +663,7 @@
     <Content Include="TBot\Admin\ServerData\Edit_SecretData.cshtml" />
     <Content Include="TBot\Admin\Reload_Server_Objects.cshtml" />
     <Content Include="TBot\Admin\ServerData\Edit_GitUserLocation.cshtml" />
+    <Content Include="TBot\LibraryData\Libraries_Xml.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

@@ -331,6 +331,7 @@ namespace TeamMentor.CoreLib
                                                     context.Response.ContentType = "text/xml";
                                                     var xml = virtualArticleAction.serialize(false);
                                                     context.Response.Write(xml);
+                                                    endResponse();
                                                 };
                 var mappings = data.split(",");
                 if (mappings.size() == 2)				
@@ -344,8 +345,7 @@ namespace TeamMentor.CoreLib
                             if (guid2 != Guid.Empty)
                             {
                                 var virtualArticleAction = tmWebServices.VirtualArticle_Add_Mapping_VirtualId(guid1, guid2);
-                                outputVirtualArticleActionAsXml(virtualArticleAction);
-                                endResponse(); 
+                                outputVirtualArticleActionAsXml(virtualArticleAction);                                
                             }
                         }
                         else
@@ -366,8 +366,7 @@ namespace TeamMentor.CoreLib
                         if (guid1 != Guid.Empty && guid2 != Guid.Empty && tmServer.notNull())
                         {
                             var virtualArticleAction = tmWebServices.VirtualArticle_Add_Mapping_ExternalArticle(guid1, tmServer.str(), guid2);
-                            outputVirtualArticleActionAsXml(virtualArticleAction);
-                            endResponse();  
+                            outputVirtualArticleActionAsXml(virtualArticleAction);                            
                         }
                     }
                     else								 // EXTERNAL SERVICE
@@ -375,8 +374,7 @@ namespace TeamMentor.CoreLib
                         var service = mappings[1];
                         var serviceData = mappings[2];
                         var virtualArticleAction = tmWebServices.VirtualArticle_Add_Mapping_ExternalService(guid1, service, serviceData);
-                        outputVirtualArticleActionAsXml(virtualArticleAction);						
-                        endResponse(); 
+                        outputVirtualArticleActionAsXml(virtualArticleAction);						                        
                     }					
                 }
             }
@@ -571,6 +569,7 @@ namespace TeamMentor.CoreLib
                 context.Response.ContentType = "text/html";
                 var htmlContent = tmWebServices.GetGuidanceItemHtml(guid);
                 context.Response.Write(htmlContent);
+                endResponse();
             }
             else
                 transfer_Request("articleViewer");              // will trigger exception           
