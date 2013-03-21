@@ -37,7 +37,7 @@ namespace TeamMentor.CoreLib
         }
         public static TM_UserData   triggerGitCommit (this TM_UserData userData)
         {
-            if (userData.RunningOnLocalHost && TMConfig.Current.getGitUserConfigFile().valid()) //don't commit local changes in order to prevent git merge conflicts
+            if (MiscUtils.runningOnLocalHost() && TMConfig.Current.getGitUserConfigFile().valid()) //don't commit local changes in order to prevent git merge conflicts
             {
                 "[triggerGitCommit] skipping because it is a local request and getGitUserConfigFile is set".info();
                 return userData;
@@ -54,7 +54,7 @@ namespace TeamMentor.CoreLib
 
         public static TM_UserData   pushUserRepository(this TM_UserData userData, API_NGit nGit)
         {
-            if (userData.RunningOnLocalHost && TMConfig.Current.getGitUserConfigFile().valid())  //don't push local changes in order to prevent git merge conflicts            
+            if (MiscUtils.runningOnLocalHost() && TMConfig.Current.getGitUserConfigFile().valid())  //don't push local changes in order to prevent git merge conflicts            
             {
                 "[triggerGitCommit] skipping because it is a local request and getGitUserConfigFile is set".info();
                 return userData;

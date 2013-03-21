@@ -462,7 +462,7 @@ namespace TeamMentor.CoreLib
                             caption = tmView.caption,							
                             author = tmView.creator,
                             id = tmView.id,
-                            creationDate = tmView.lastUpdate
+                            creationDate = DateTime.Now
                         };
         }	        
         

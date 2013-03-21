@@ -69,12 +69,12 @@ namespace urn.microsoft.guidanceexplorer
         [XmlAttribute] public string           author              { get; set; }
         [XmlAttribute] public DateTime         creationDate        { get; set; }
         [XmlElement  ] public Items            items               { get; set; }        
-        [XmlElement  ] public Untyped          Untyped             { get; set; }
+        //[XmlElement  ] public Untyped          Untyped             { get; set; }
 
         public View()
         {
             items    = new Items();            
-            Untyped  = new Untyped();
+            //Untyped  = new Untyped();
         }
     }
     public class Items 

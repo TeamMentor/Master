@@ -13,8 +13,7 @@ namespace TeamMentor.CoreLib
         public static TM_Xml_Database   Current               { get; set; }         
         public static bool              SkipServerOnlineCheck { get; set; }        
 
-        public bool			            UsingFileStorage	  { get; set; }         //config   
-        public bool			            RunningOnLocalHost	  { get; set; }           
+        public bool			            UsingFileStorage	  { get; set; }         //config           
         public bool                     ServerOnline          { get; set; }         
         public bool                     AutoGitCommit         { get; set; }                
         public TM_UserData              UserData              { get; set; }         //users and tracking             
@@ -40,16 +39,7 @@ namespace TeamMentor.CoreLib
             try
             {
                 O2Thread.mtaThread(CheckIfServerIsOnline);
-                UsingFileStorage = useFileStorage;
-
-                try
-                {
-                    RunningOnLocalHost = HttpContextFactory.Context.runningOnLocalHost();
-                }
-                catch (Exception ex)
-                {
-                    ex.log("in settging RunningOnLocalHost");
-                }                
+                UsingFileStorage = useFileStorage;                
                 Setup();
             
                 this.setupThread_WaitForComplete();

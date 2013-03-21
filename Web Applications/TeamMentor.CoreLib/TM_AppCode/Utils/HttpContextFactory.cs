@@ -44,14 +44,6 @@ namespace TeamMentor.CoreLib
             }
             return httpContext;
         }
-
-        public static bool runningOnLocalHost(this HttpContextBase context)
-        {
-            if (context.notNull() && context.Request.notNull())
-                return context.Request.IsLocal;
-            return true;
-        }
-
-        
+                
     }
 }

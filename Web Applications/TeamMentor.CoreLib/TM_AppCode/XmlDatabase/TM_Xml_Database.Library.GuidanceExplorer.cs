@@ -124,7 +124,8 @@ namespace TeamMentor.CoreLib
                     libraryPath.parentFolder().createDir(); // ensure library folder exists
                     guidanceExplorer.Save(libraryPath);
                     //if (reloadGuidanceItemsMappings)
-                    //    tmDatabase.reloadGuidanceExplorerObjects();			
+                    //    tmDatabase.reloadGuidanceExplorerObjects();		
+                    tmDatabase.triggerGitCommit();
                     return guidanceExplorer;
                 }			
                 "[xmlDB_Save_GuidanceExplorer] could not find libraryPath for GuidanceExplorer: {0} - {1}".error(guidanceExplorer.library.caption, guidanceExplorer.library.name);

@@ -149,39 +149,35 @@ namespace TeamMentor.CoreLib
             return targetView;
             //existingView.creationDate = tmView.lastUpdate // should we also update this?			
         }						
-        [EditArticles] 	public static bool                                          xmlDB_RemoveViewFromFolder          (this TM_Xml_Database tmDatabase, Guid libraryId,  Guid viewId )
+        [EditArticles] 	public static bool                                          xmlDB_RemoveView                    (this TM_Xml_Database tmDatabase, Guid libraryId,  Guid viewId )
         {
-            return tmDatabase.xmlDB_RemoveViewFromFolder(tmDatabase.tmLibrary(libraryId), viewId);
+            return tmDatabase.xmlDB_RemoveView(tmDatabase.tmLibrary(libraryId), viewId);
         }		
-        [EditArticles] 	public static bool                                          xmlDB_RemoveViewFromFolder          (this TM_Xml_Database tmDatabase, TM_Library tmLibrary, Guid viewId )
+        [EditArticles] 	public static bool                                          xmlDB_RemoveView                    (this TM_Xml_Database tmDatabase, TM_Library tmLibrary, Guid viewId )
         {
             if (tmLibrary.isNull())
                 "in xmlDB_RemoveViewFromFolder provided tmLibrary was null".error();
             else
-            {			
+            {
                 var view = tmDatabase.xmlDB_View(viewId);
                 if (view.notNull())
                 {
-                    view.Untyped.Remove();
-                    tmLibrary.xmlDB_Save_GuidanceExplorer(tmDatabase);						
-                    return true;
-                }
-                /*var folder = tmLibrary.xmlDB_Folder(folderName, tmDatabase);
-                if (folder.isNull())
-                    "in xmlDB_RemoveViewFromFolder could not find folder '{0}' in library '{1}'".error(folderName, tmLibrary.Caption);
-                else
-                {
-                    var view = folder.xmlDB_View(viewId);
-                    if (view.isNull())
-                        "in xmlDB_RemoveViewFromFolder could not find view '{0}' in folder '{1}'".error(viewId, folderName);
+                    var guidanceExplorer = tmLibrary.guidanceExplorer(tmDatabase);
+                    if (guidanceExplorer.library.libraryStructure.view.contains(view))          // the view was in the library root
+                    {
+                        guidanceExplorer.library.libraryStructure.view.remove(view);
+                    }
                     else
                     {
-                        folder.view.Remove(view);
-                        "in xmlDB_RemoveViewFromFolder removed  view '{0}' from folder '{1}' in library '{2}'".info(view.caption, folderName, tmLibrary.Caption);
-                        tmLibrary.xmlDB_Save_GuidanceExplorer(tmDatabase);						
-                        return true;
-                    }
-                }*/
+                        foreach (var folder in tmDatabase.xmlDB_Folders_All(tmLibrary.Id))
+                        {
+                            if (folder.view.contains(view))
+                                folder.view.remove(view);
+                        }
+                    }                                                                        
+                    tmLibrary.xmlDB_Save_GuidanceExplorer(tmDatabase);						
+                    return true;
+                }              
             }
             return false;
         }		
@@ -198,8 +194,8 @@ namespace TeamMentor.CoreLib
                     var tmSourceLibrary = tmDatabase.tmLibrary(tmView.libraryId);
                     var tmTargetLibrary = tmDatabase.tmLibrary(targetLibraryId);
 
-//                    if (tmSourceLibrary.Id == tmTargetLibrary.Id)   // remove original view if on the same library
-                    viewToMove.Untyped.Remove();				// remove from current location
+                    tmDatabase.xmlDB_RemoveView(tmSourceLibrary, tmView.viewId);
+                    
                     tmSourceLibrary.xmlDB_Save_GuidanceExplorer(tmDatabase);
 
                     if(targetFolderId == Guid.Empty)                // add view to Library root

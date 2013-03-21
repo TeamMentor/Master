@@ -29,7 +29,7 @@ namespace TeamMentor.UnitTests
             Assert.IsNotNull(HttpContextFactory.Context.Response.Headers     , "Response.Headers");
             Assert.IsNotNull(HttpContextFactory.Context.Server		     	 , "Server");
             Assert.IsNotNull(HttpContextFactory.Context.Session			     , "Session");
-            Assert.IsTrue   (HttpContextFactory.Context.runningOnLocalHost() , "runningOnLocalHost");
+            Assert.IsTrue   (MiscUtils.runningOnLocalHost()                  , "runningOnLocalHost");
         }
         [Test] public void Test_Http_Headers()
         {
