@@ -7,7 +7,7 @@
     var userFolder = userData.getTmUsersFolder();
     var tmUsersXml = userFolder.pathCombine("..\\tmusers.xml");
     var importUsers = HttpContextFactory.Request.QueryString["ImportUsers"] == "yes";
-    var creationDate = DateTime.Parse("01/11/2012");
+    var creationDate = DateTime.Parse("01/11/2013");
     
     Func<TMUser, bool> userExists =
         (tmUser) =>
