@@ -109,7 +109,7 @@ namespace TeamMentor.CoreLib
                 "Sending email:\n  to: {0}\n  from: {0}\n  subject: {0} ".info(emailMessage.To, emailMessage.Subject, emailMessage.Message);
                 var mailMsg = new MailMessage();
 
-                emailMessage.Message += "Send by TeamMentor. ".format().lineBefore().lineBefore();
+                emailMessage.Message += "Send by TeamMentor. ".format().lineBefore().lineBefore().line().line();
                 // To
                 mailMsg.To.Add(new MailAddress(emailMessage.To));
                 // From
@@ -175,7 +175,6 @@ namespace TeamMentor.CoreLib
 
 You can login with your {2} account at {3}
 
-TeamMentor Team.
                 ".format(tmUser.FirstName, tmUser.LastName, tmUser.UserName, TM_Server_URL);
                 SendEmailToEmail(tmUser.EMail, "Welcome to TeamMentor", userMessage);
                 userMessage = "(sent to: {0})\n\n{1}".format(tmUser.EMail, userMessage);
@@ -213,13 +212,13 @@ Stats:
 var userMessage =
 @"Hi {0} {1} A Login token was requested for your account.
 
-You can login with your {2} account using {4}/rest/{2}/{3}
+You can login to your {2} account using {4}/rest/{2}/{3}
 
 TeamMentor Team.
              ".format(tmUser.FirstName, tmUser.LastName, tmUser.UserName, tmUser.current_SingleUseLoginToken(), TM_Server_URL);
              SendEmailToEmail(tmUser.EMail, "TeamMentor Login Link", userMessage);
              userMessage = "(sent to: {0})\n\n{1}".format(tmUser.EMail, userMessage);
-             SendEmailToTM("(user email) Welcome to TeamMentor", userMessage);
+             SendEmailToTM("(user email) TeamMentor Login Link", userMessage);
                 return true;
             }
             catch (Exception ex)
@@ -245,7 +244,7 @@ If you didn't make this request, please let us know at support@teammentor.net.
                 SendEmailToEmail(tmUser.EMail, "TeamMentor Password Reset", userMessage);
              
                 userMessage = "(sent to: {0})\n\n{1}".format(tmUser.EMail, userMessage);
-                SendEmailToTM("(user email) Welcome to TeamMentor", userMessage);
+                SendEmailToTM("(user email) TeamMentor Password Reset", userMessage);
                 return true;
             }
             catch (Exception ex)

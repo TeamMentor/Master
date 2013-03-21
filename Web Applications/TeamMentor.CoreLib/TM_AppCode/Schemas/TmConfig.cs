@@ -80,8 +80,8 @@ namespace TeamMentor.CoreLib
 
             public Git_Config()
             {
-                AutoCommit_LibraryData          = false;            // disabled by default
-                AutoCommit_UserData             = true;
+                AutoCommit_LibraryData          = true;            // will only work if the library is a git repository
+                AutoCommit_UserData             = true;            // should always trigger, since the UserData folder repo is created if not there before
             }
         }
         public class OnInstallation_Config
