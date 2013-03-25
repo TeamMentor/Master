@@ -2,12 +2,15 @@
 @using System.Xml.Linq
 @using TeamMentor.CoreLib
 @using O2.DotNetWrappers.ExtensionMethods
+@using O2.DotNetWrappers.DotNet
+
 @{
     var userData = TM_UserData.Current;
     var userFolder = userData.getTmUsersFolder();
     var tmUsersXml = userFolder.pathCombine("..\\tmusers.xml");
+    var tmPasswords = userFolder.pathCombine("..\\tmusers_passwords.xml");
     var importUsers = HttpContextFactory.Request.QueryString["ImportUsers"] == "yes";
-    var creationDate = DateTime.Parse("01/11/2013");
+    var creationDate = DateTime.Parse("03/21/2013");
     
     Func<TMUser, bool> userExists =
         (tmUser) =>
@@ -50,17 +53,23 @@
                 tmUser.Stats.CreationDate = creationDate;
                 return tmUser;
             };
-            
-        
+                   
 }
 <h4>Importing Users From Previous TMUsers</h4>
 
 @if(tmUsersXml.fileExists())
 {
+    var users = tmUsersXml.xRoot().elements();//.take(10);
+    var pwds = new Items();
     <span>
-        <b>Found tmusers.xml</b> at : @tmUsersXml
-       
-        <br/>
+        <b>Found tmusers.xml</b>  at : @tmUsersXml <br/> with @users.size() users <br/>
+        @if (tmPasswords.fileExists())
+        {
+            pwds = tmPasswords.load<Items>();
+            <span>
+                <b>Found tmusers_passwords.xml</b>  at :@tmPasswords <br/>with @pwds.size() passwords 
+            </span>
+        }
         <br/>
         <p>
             <a class="btn btn-inverse" href="Import Legacy Users?ImportUsers=yes">Import Users</a>
@@ -78,6 +87,7 @@
                 <th>Exists?</th>   
                 <th>Exact Match?</th>
                 <th>Imported?</th>   
+                <th>Password Set?</th> 
                 <th>userID</th>            
                 <th>userName</th>
                 <th>firstName</th>            
@@ -89,20 +99,24 @@
             </tr>   
 
     @{
-        var users = tmUsersXml.xRoot().elements();//.take(100);
         foreach (var user in users)
         {
             var tmUser = getUserFromXElement(user);
+            if (tmUser.UserName != "dinis")
+            {
+             //   continue;
+            }
+                
             /*if (tmUser.EMail.contains("securityinnovation.com").isFalse() && tmUser.UserName != "admin") // use to only import/show SI users
             {
                 continue;
-            }*/
+            }*/            
             var existInTM = userExists(tmUser);
             var exactMatch = isExactMatch(tmUser);
             var trClass = (existInTM) 
                                 ?  (exactMatch) 
-                                        ? "success" : "info"
-                                : "error";
+                                        ? "success" : "error"
+                                : "info";
             
             var imported = false;
             if (existInTM.isFalse() && importUsers)
@@ -112,18 +126,40 @@
                 if (userExists(tmUser))
                 {
                     imported = true;
-                    trClass = "info";  
+                    trClass = "warning";  
                 }
                 else
                 {
                     trClass = "error";  
-                }
-                                
+                }                                
+            }            
+            var passwordSet = false;
+            if (exactMatch)
+            {
+                tmUser = tmUser.UserName.tmUser();
             }
+            if (tmUser.SecretData.PasswordHash.valid())
+            {
+                passwordSet = true;
+            }
+            if (importUsers && passwordSet.isFalse())
+            {                
+                
+                var sha256Hash = pwds[tmUser.UserName];
+                if (sha256Hash.notNull())
+                {
+                    passwordSet = true;
+                    var passwordHash = sha256Hash.hash_PBKDF2(tmUser.ID);
+                    tmUser.SecretData.PasswordHash = passwordHash;
+                    tmUser.saveTmUser();
+                }
+            }
+                        
             <tr class="@trClass">
                 <td>@existInTM</td>
                 <td>@exactMatch</td>
-                <td>@imported</td>                
+                <td>@imported</td>  
+                <td>@passwordSet</td>    
                 <td>@tmUser.UserID</td>            
                 <td>@tmUser.UserName</td>
                 <td>@tmUser.FirstName</td>            
