@@ -28,7 +28,7 @@ namespace TeamMentor.CoreLib
 
 		static ScriptCombiner()
 		{
-			LastModified_HeaderDate = DateTime.Now;			//used to calculate if we will send a '304 Not Modified' to the user
+			LastModified_HeaderDate = DateTime.Now;			//used to calculate if we will send a '302 Not Modified' to the user
 		}
 		public ScriptCombiner()
 		{
@@ -42,7 +42,7 @@ namespace TeamMentor.CoreLib
 			var response = context.Response;		
 			response.Clear();
 
-			if (TMConfig.Current.TMSetup.Enable302Redirects && send304Redirect())
+			if (TMConfig.Current.TMSetup.Enable304Redirects && send304Redirect())
 			{
 				context.Response.StatusCode = 304;
 				context.Response.StatusDescription = "Not Modified";

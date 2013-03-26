@@ -20,7 +20,7 @@ namespace TeamMentor.CoreLib
             public string 		UserDataPath 	            { get; set; }		                
             public string 		LibrariesUploadedFiles	    { get; set; }	                           
             public bool         EnableGZipForWebServices	{ get; set; }
-            public bool         Enable302Redirects			{ get; set; }
+            public bool         Enable304Redirects			{ get; set; }
 
             public TMSetup_Config()
             {
@@ -28,7 +28,7 @@ namespace TeamMentor.CoreLib
                 XmlLibrariesPath            = "TM_Libraries";
                 UserDataPath                = "User_Data";
                 LibrariesUploadedFiles      = "LibrariesUploadedFiles";
-                Enable302Redirects          = true;
+                Enable304Redirects          = true;
                 EnableGZipForWebServices    = true;
             }
         }
