@@ -143,31 +143,40 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             var oldPassword   = newUser.Password;
             var tmUser        = tmWebServices.CreateUser(newUser).tmUser();
 
-            var token_BeforeSet    = tmUser.SecretData.PasswordResetToken;
-            var token_BeforeUse    = tmUser.EMail.current_PasswordResetToken();
-            var token              = tmUser.EMail.current_PasswordResetToken();
-            var result             = tmWebServices.PasswordReset(tmUser.UserName, token,newPassword);
-            var token_AfterUse     = tmUser.SecretData.PasswordResetToken;
-            var token_NextRequest  = tmUser.EMail.current_PasswordResetToken();
-            var sessionId_NewPwd   = tmWebServices.Login(tmUser.UserName, newPassword);
-            var sessionId_OldPwd   = tmWebServices.Login(tmUser.UserName, oldPassword);            
+            var hash_BeforeSet      = tmUser.SecretData.PasswordResetToken;            
+            var token1              = tmUser.passwordResetToken_getTokenAndSetHash();                        
+            var token2              = tmUser.passwordResetToken_getTokenAndSetHash();            
+            var hash_AfterSet       = tmUser.SecretData.PasswordResetToken;            
+            var hash_FromToken2     = tmUser.passwordResetToken_getHash(token2);
+            var result              = tmWebServices.PasswordReset(tmUser.UserName, token2,newPassword);
+            var hash_AfterUse       = tmUser.SecretData.PasswordResetToken;
+            var token3              = tmUser.passwordResetToken_getTokenAndSetHash();
+            var hash_AfterUseAndSet = tmUser.SecretData.PasswordResetToken;
+            var sessionId_NewPwd    = tmWebServices.Login(tmUser.UserName, newPassword);
+            var sessionId_OldPwd    = tmWebServices.Login(tmUser.UserName, oldPassword);            
 
-            Assert.AreNotEqual(Guid.Empty, token_BeforeSet  , "loginToken_BeforeSet");
-            Assert.AreNotEqual(Guid.Empty, token_BeforeUse  , "loginToken_BeforeUse");
-            Assert.AreEqual   (token, token_BeforeUse       , "loginToken_BeforeUse");
-            Assert.IsTrue     (result                       , "change password result");
-            Assert.AreEqual   (Guid.Empty, token_AfterUse   , "loginToken_AfterUse");
-            Assert.AreNotEqual(Guid.Empty, token_NextRequest, "loginToken_NextRequest is Empty");
-            Assert.AreNotEqual(token, token_NextRequest     , "loginToken_NextRequest should be new");
-            Assert.AreNotEqual(Guid.Empty, sessionId_NewPwd , "sessionId with new password");
-            Assert.AreEqual   (Guid.Empty, sessionId_OldPwd , "sessionId with old password");
+            Assert.IsNull       (hash_BeforeSet                 , "New users should have a empty PasswordResetToken");
+            Assert.IsNotNull    (hash_AfterSet                  , "PasswordResetToken should set (until it is used)");
+            Assert.AreNotEqual  (Guid.Empty, token1             , "First call to passwordResetToken_getTokenAndSetHash failed");
+            Assert.AreNotEqual  (Guid.Empty, token2             , "2nd call to passwordResetToken_getTokenAndSetHash failed");
+            Assert.AreNotEqual  (token1, token2                 , "token1 and token 2 should not be equal");
+            Assert.AreEqual     (hash_AfterSet,hash_FromToken2  , "PasswordResetToken and 'hash from Guid' didn't match");
+            Assert.IsTrue       (result                         , "PasswordReset with token 1 faled");
+            Assert.IsNull       (hash_AfterUse                  , "PasswordResetToken should be null after use");
+            Assert.IsNotNull    (hash_AfterUseAndSet            , "PasswordResetToken should be set (after reset for the 2nd time)");
+            Assert.AreNotEqual  (Guid.Empty, token3             , "token3 was not set");
+            Assert.AreNotEqual  (token2, token3                 , "token 2 and 3 should not be equal");
+            Assert.AreNotEqual  (Guid.Empty, sessionId_NewPwd   , "sessionId with new password");
+            Assert.AreEqual     (Guid.Empty, sessionId_OldPwd   , "sessionId with old password");
+           
         }
+
         [Test, Ignore("Not completed")] public void PasswordExpiry()
         {
             var newUser       = newTempUser();
-            var newPassword   = "123SAFsi!";
-            var oldPassword   = newUser.Password;
-            var tmUser        = tmWebServices.CreateUser(newUser).tmUser();
+        //    var newPassword   = "123SAFsi!";
+          //  var oldPassword   = newUser.Password;
+            //var tmUser        = tmWebServices.CreateUser(newUser).tmUser();
 
             var sessionId   = tmWebServices.Login(newUser.Username, newUser.Password);
             HttpContextFactory.Context     .addCookieFromResponseToRequest("Session");

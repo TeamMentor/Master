@@ -36,7 +36,7 @@ namespace TeamMentor.CoreLib
             if (tmUser.isNull())
                 return true;
             if (TMConfig.Current.TMSecurity.EvalAccounts_Enabled)
-            return tmUser.AccountStatus.ExpirationDate < DateTime.Now &&
+                return tmUser.AccountStatus.ExpirationDate < DateTime.Now &&
                     tmUser.AccountStatus.ExpirationDate != default(DateTime);
             return false;
         }
@@ -91,12 +91,13 @@ namespace TeamMentor.CoreLib
             var tmUser = email.tmUser_FromEmail();
             if (tmUser.isNull())
                 return false;
-            var resetToken = email.current_PasswordResetToken();
+            var resetToken = email.passwordResetToken_getHash();
             if (resetToken != Guid.Empty)
                 return SendEmails.SendPasswordReminderToUser(tmUser, resetToken);
             return false;
-        }
-        public static Guid      current_PasswordResetToken(this string email)
+        } 
+        
+        /*public static Guid      current_PasswordResetToken(this string email)
         {
             var tmUser = email.tmUser_FromEmail();
             if (tmUser.notNull())
@@ -108,15 +109,46 @@ namespace TeamMentor.CoreLib
         {
             if (tmUser.notNull())
             {
-                if (reset || tmUser.SecretData.PasswordResetToken == Guid.Empty)
+                if (reset || tmUser.SecretData.PasswordResetToken.isNull())
                 {
-                    tmUser.SecretData.PasswordResetToken = Guid.NewGuid();
-                    tmUser.saveTmUser();                        
+                    var passwordResetToken = tmUser.new_PasswordResetToken();                    
                 }
                 tmUser.logUserActivity("PasswordReset Requested","by asp.netSessionId: {0}".format(HttpContextFactory.Session.SessionID));
                 return tmUser.SecretData.PasswordResetToken;                                    
                 //tmUser.logUserActivity("Error:PasswordResetToken","wrong email used, by asp.netSessionId: {0}".format(HttpContextFactory.Session.SessionID));                                    
             }            
+            return Guid.Empty;
+        }*/
+        public static bool passwordResetToken_isValid(this TMUser tmUser, Guid resetToken)
+        {
+            if(tmUser.notNull())
+                if (tmUser.SecretData.PasswordResetToken == tmUser.passwordResetToken_getHash(resetToken))
+                    return true;
+            return false;
+        }
+        
+        public static string passwordResetToken_getHash(this TMUser tmUser, Guid resetToken)
+        {
+            if(tmUser.notNull())                
+                return tmUser.UserName.hash_PBKDF2(resetToken);
+            return null;
+        }
+        public static Guid passwordResetToken_getHash(this string email)
+        {
+            var tmUser = email.tmUser_FromEmail();
+            if (tmUser.notNull())
+                return tmUser.passwordResetToken_getTokenAndSetHash();
+            return Guid.NewGuid();
+        }
+        public static Guid passwordResetToken_getTokenAndSetHash(this TMUser tmUser)
+        {
+            if (tmUser.notNull())
+            {
+                var newToken = Guid.NewGuid();
+                tmUser.SecretData.PasswordResetToken = tmUser.passwordResetToken_getHash(newToken);
+                tmUser.saveTmUser();
+                return newToken;
+            }
             return Guid.Empty;
         }
         public static string    passwordExpiredUrl(this TM_User user)
@@ -128,7 +160,7 @@ namespace TeamMentor.CoreLib
                     if (tmUser.password_Expired())
                     {
                         tmUser.logUserActivity("Password Expired", "Created password Reset Url for user");
-                        return "/passwordReset/{0}/{1}".format(user.UserName, tmUser.current_PasswordResetToken());
+                        return "/passwordReset/{0}/{1}".format(user.UserName, tmUser.passwordResetToken_getTokenAndSetHash());
                     }                                    
             }
             return "/error";

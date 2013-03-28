@@ -33,7 +33,7 @@ namespace TeamMentor.CoreLib
             SecretData      = new UserSecretData
                                     {
                                         SingleUseLoginToken = Guid.NewGuid(),
-                                        PasswordResetToken  = Guid.NewGuid()
+                                        PasswordResetToken  = null                  // default to Null
                                     };
 
             UserActivities  = new List<UserActivity>();
@@ -54,7 +54,7 @@ namespace TeamMentor.CoreLib
     {
         [XmlAttribute]	public string   PasswordHash		{ get; set; }
         [XmlAttribute]	public Guid     SingleUseLoginToken	{ get; set; }
-        [XmlAttribute]	public Guid     PasswordResetToken	{ get; set; }
+        [XmlAttribute]	public String   PasswordResetToken	{ get; set; }
         [XmlAttribute]	public string   DecryptionKey       { get; set; }       
         //[XmlAttribute]  public string   SSOKey              { get; set; }    
         

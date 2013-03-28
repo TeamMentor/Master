@@ -69,7 +69,8 @@ namespace TeamMentor.CoreLib
         }                
         public static int           newUser                     (this TM_UserData userData, string  username, string password)
         {
-            return userData.newUser(username,password, "",0);
+            var randomEmail = "{0}@{1}.{2}".format(7.randomLetters(), 5.randomLetters(), 2.randomLetters()).lower();
+            return userData.newUser(username,password, randomEmail,0);
         }        
         public static int           newUser                     (this TM_UserData userData, string  username, string password, string email)
         {
@@ -77,7 +78,7 @@ namespace TeamMentor.CoreLib
         }        
         public static int           newUser                     (this TM_UserData userData, string  username, string password, string email, int groupId)
         {
-            return userData.newUser(username, password, email,"","","", "","","","",groupId);
+            return userData.newUser(username, password, email,"FName","LName","A Note", "El Title","The Company","The Country","The State",groupId);
         }        
         public static int           newUser                     (this TM_UserData userData, string  username, string password, string email, string firstname, string lastname, string note , string title, string company, string country, string state, int groupId)
         {			
@@ -199,20 +200,16 @@ namespace TeamMentor.CoreLib
         public static bool          passwordReset               (this TM_UserData userData, string userName, Guid token, string newPassword)
         {
             var tmUser = userName.tmUser();
-            if (tmUser.notNull())
+            if (tmUser.notNull() && token!= Guid.Empty)
             {
-                if (tmUser.SecretData.PasswordResetToken == token)
-                {                    
-                    var newPasswordHash =  tmUser.createPasswordHash(newPassword);
-                    if (newPasswordHash != tmUser.SecretData.PasswordHash)
-                    {
-                        tmUser.SecretData.PasswordHash       = tmUser.createPasswordHash(newPassword);
-                        tmUser.AccountStatus.PasswordExpired = false;
-                        tmUser.saveTmUser();
-                        tmUser.SecretData.PasswordResetToken = Guid.Empty;
-                        return true;
-                    }
-                }
+                if (tmUser.passwordResetToken_isValid(token))
+                {
+                    tmUser.SecretData.PasswordHash       = tmUser.createPasswordHash(newPassword);
+                    tmUser.AccountStatus.PasswordExpired = false;
+                    tmUser.SecretData.PasswordResetToken = null;
+                    tmUser.saveTmUser();                        
+                    return true;
+                }            
             }
             return false;
         }
@@ -247,6 +244,8 @@ namespace TeamMentor.CoreLib
         }        
         public static TMUser        tmUser_FromEmail    (this TM_UserData userData, string eMail)
         {
+            if (eMail.isNull())
+                return null;
             var tmUsers = userData.TMUsers.where((tmUser) => tmUser.EMail == eMail);
             switch (tmUsers.size())
             {
