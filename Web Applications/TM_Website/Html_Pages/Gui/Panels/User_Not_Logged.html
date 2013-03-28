@@ -44,7 +44,7 @@
             var country = jQuery('#ctl00_ContentPlaceHolder1_Country').attr('value');
             var state = jQuery('#ctl00_ContentPlaceHolder1_State').attr('value');
 
-            if (email == "") email = "tm_qa@si.com";
+            //if (email == "") email = "tm_qa@si.com";
             if (firstName == "") firstName = "first";
             if (lastName == "") lastName = "name";
             if (company == "") company = "SI";
@@ -67,13 +67,24 @@
         }
     
     var submitForm_Signup = function()
-        {
+        {            
             var username = jQuery('#ctl00_ContentPlaceHolder1_UsernameBox').attr('value');
             var password = jQuery('#ctl00_ContentPlaceHolder1_PasswordBox').attr('value');			
+            var email = jQuery('#ctl00_ContentPlaceHolder1_EmailBox').attr('value');			
             var passwordConfirm = jQuery('#ctl00_ContentPlaceHolder1_RepeatPasswordBox').attr('value');
-            if (TM.Gui.CurrentUser.checkPwdComplexity(password, passwordConfirm, "#signupErrorMessage"))
+
+            if (username === "")
+            {
+                $("#signupErrorMessage").text("Username field is required");
+            }
+            else if(email ==="")
+            {
+                $("#signupErrorMessage").text("Email field is required");
+            }    
+            else if (TM.Gui.CurrentUser.checkPwdComplexity(password, passwordConfirm, "#signupErrorMessage"))
+            {
                 return signupUser(username, password);
-            
+            }
             $("#signupErrorMessageRow").fadeIn();		
         };
     
@@ -150,7 +161,7 @@
                 </td>					
             </tr>										
             <tr>
-                <td class="SignUpCol1">E-Mail:</td>
+                <td class="SignUpCol1"><b>E-Mail:</b></td>
                 <td><input type="text" id="ctl00_ContentPlaceHolder1_EmailBox" class="otherTextBox" style="width:100%;" /></td>
             </tr>
             <tr>
