@@ -83,7 +83,14 @@ namespace TeamMentor.CoreLib
         {
             try
             {
-                gitUserConfig_Data.saveAs(tmConfig.getGitUserConfigFile());
+                var gitUserConfigFile = tmConfig.getGitUserConfigFile();
+                if (gitUserConfig_Data.notValid() && gitUserConfigFile.fileExists())
+                {
+                    "[setGitUserConfigFile] Deleting current gitUserconfigFile: {0}".info(gitUserConfigFile);
+                    gitUserConfigFile.file_Delete();
+                }
+                else
+                    gitUserConfig_Data.saveAs(gitUserConfigFile);
                 return true;
             }
             catch (Exception ex)

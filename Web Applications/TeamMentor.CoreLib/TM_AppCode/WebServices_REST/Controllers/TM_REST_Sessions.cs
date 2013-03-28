@@ -35,11 +35,7 @@ namespace TeamMentor.CoreLib
         [Admin] public Guid     GetLoginToken(string username)
         {
             return TmWebServices.GetLoginToken(username);
-        }
-        [Admin] public Guid     NewPasswordResetToken(string email)
-        {
-            return TmWebServices.NewPasswordResetToken(email);
-        }               
+        }        
         [Admin] public bool     SendLoginTokenForUser(string userName)
         {
             var tmUser = userName.tmUser();
@@ -61,5 +57,20 @@ namespace TeamMentor.CoreLib
             else            
                 HttpContextFactory.Response.Redirect("/error");            
         }        
+        [Admin] public void      Redirect_PasswordResetPage(string userId)
+        {
+            var tmUser = userId.toInt().tmUser();
+            if (tmUser.notNull())
+            {
+                var token = TmWebServices.NewPasswordResetToken(tmUser.EMail);
+                var url = "/passwordReset/{0}/{1}".format(tmUser.UserName, token);
+                HttpContextFactory.Response.Redirect(url);
+            }
+            else
+            {
+                "[Redirect_PasswordResetPage] could not find user with user ID: {0}".error(userId);
+                HttpContextFactory.Response.Redirect("/error");
+            }
+        }               
     }
 }

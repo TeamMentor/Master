@@ -18,8 +18,8 @@ namespace TeamMentor.CoreLib
         }      
         public TM_WebServices(bool disable_Csrf_Check)
         {
-			tmXmlDatabase = TM_Xml_Database.Current;			
-            userData      = tmXmlDatabase  .userData();            
+			tmXmlDatabase       = TM_Xml_Database.Current;			
+            userData            = tmXmlDatabase  .userData();            
             tmAuthentication	= new TM_Authentication(this).mapUserRoles(disable_Csrf_Check);
             GZip.setGZipCompression_forAjaxRequests();						
         }        
