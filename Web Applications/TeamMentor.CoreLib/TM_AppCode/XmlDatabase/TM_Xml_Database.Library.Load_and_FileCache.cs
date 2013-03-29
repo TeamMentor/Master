@@ -236,7 +236,7 @@ namespace TeamMentor.CoreLib
             //then try to find the guidanceItems xml file by looking for an xml file with the same name as the folder
             //this has to be done like this or the save and rename of libraries will not work.toList();
             guidanceExplorerXmlFiles.AddRange(pathXmlLibraries.folders()
-                                                              .Select(folder => "{0}\\{1}.xml".format(folder, folder.fileName()))
+                                                              .Select(folder => "{0}\\{1}.xml".format(folder, folder.fileName().replace("CPP", "C++")))
                                                               .Where(xmlFile => xmlFile.fileExists() && 
                                                                                 isGuidanceExplorerFile(xmlFile)));
             return guidanceExplorerXmlFiles;
