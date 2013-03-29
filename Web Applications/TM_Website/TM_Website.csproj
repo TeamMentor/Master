@@ -666,6 +666,7 @@
     <Content Include="TBot\LibraryData\Libraries_Xml.cshtml" />
     <Content Include="TBot\Admin\Import Legacy Users.cshtml" />
     <Content Include="TBot\Users\New Random User.cshtml" />
+    <Content Include="TBot\Admin\UserData FirstScript.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
