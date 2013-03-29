@@ -20,8 +20,7 @@ namespace TeamMentor.UnitTests
         [Assert_Admin]
         public void SetupDatabase()
         {            
-            1.set_DEFAULT_PBKDF2_INTERACTIONS();                    // improve performance of tests that create users
-            TMConfig.BaseFolder = "TM_BaseFolder".tempDir(false);   // Temp webroot folder (so that it is not pointing to the unit tests bin folder)
+            1.set_DEFAULT_PBKDF2_INTERACTIONS();                    // improve performance of tests that create users            
 
             tmXmlDatabase   = new TM_Xml_Database();
             userData        = tmXmlDatabase.UserData;
@@ -31,9 +30,7 @@ namespace TeamMentor.UnitTests
             Assert.IsNull(tmXmlDatabase.Path_XmlLibraries		    , "Path_XmlLibraries");         // null since we are running TM memory (default setting)
             Assert.IsEmpty(tmXmlDatabase.Cached_GuidanceItems	    , "Cached_GuidanceItems");
             Assert.IsEmpty(tmXmlDatabase.UserData.validSessions()   , "ActiveSessions");
-            Assert.AreEqual(tmXmlDatabase.UserData.TMUsers.size(),1 , "TMUsers");	                 // there should be admin
-            Assert.IsEmpty(TMConfig.BaseFolder.files()              , "TMConfig.BaseFolder.files");
-            Assert.IsEmpty(TMConfig.BaseFolder.folders()            , "TMConfig.BaseFolder.folders");
+            Assert.AreEqual(tmXmlDatabase.UserData.TMUsers.size(),1 , "TMUsers");	                 // there should be admin            
             
         }
 

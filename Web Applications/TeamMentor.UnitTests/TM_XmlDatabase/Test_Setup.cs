@@ -10,6 +10,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         [Test]
         public void Copy_FilesIntoWebRoot()
         {
+            TMConfig.BaseFolder = "TM_BaseFolder".tempDir(true);                                // Temp webroot folder
             userData.Path_UserData      = TMConfig.BaseFolder.pathCombine("..//UserData");       // set temp location
             userData.UsingFileStorage   = true;
 
@@ -40,8 +41,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             //check if copy went ok
             Assert.IsTrue(result, "copy_FilesIntoWebRoot result");
             Assert.IsTrue(fileToCopy_InSource.fileExists(), "fileToCopy_InSource didn't exist");
-            Assert.IsTrue(fileToCopy_InTarget.fileExists(), "fileToCopy_InTarget didn't exist");
-            
+            Assert.IsTrue(fileToCopy_InTarget.fileExists(), "fileToCopy_InTarget didn't exist");            
         }
     }
 }

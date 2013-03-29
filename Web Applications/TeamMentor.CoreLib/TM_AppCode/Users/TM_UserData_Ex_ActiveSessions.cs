@@ -7,7 +7,7 @@ namespace TeamMentor.CoreLib
 {
     public static class TM_UserData_Ex_ActiveSessions
     {   
-        public static Guid              login_Using_LoginToken (this TM_UserData userData, string username, Guid loginToken)
+        /*public static Guid              login_Using_LoginToken (this TM_UserData userData, string username, Guid loginToken)
         {
             try
             {
@@ -30,7 +30,7 @@ namespace TeamMentor.CoreLib
                 ex.log("[TM_Xml_Database] login_Using_LoginToken"); 
             }
             return Guid.Empty;    			
-        }
+        }*/
         public static Guid              login (this TM_UserData userData, string username, string password)
         {
             try

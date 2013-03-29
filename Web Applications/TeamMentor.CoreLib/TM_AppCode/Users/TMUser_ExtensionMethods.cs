@@ -76,7 +76,7 @@ namespace TeamMentor.CoreLib
             return passwordHash;
         }
 
-        public static Guid      current_SingleUseLoginToken(this TMUser tmUser, bool reset = false)
+        /*public static Guid      current_SingleUseLoginToken(this TMUser tmUser, bool reset = false)
         {
             if (reset || tmUser.SecretData.SingleUseLoginToken == Guid.Empty)
             {
@@ -85,7 +85,7 @@ namespace TeamMentor.CoreLib
                 tmUser.logUserActivity("SingleUseLoginToken Requested", "by asp.netSessionId: {0}".format(HttpContextFactory.Session.SessionID));
             }
             return tmUser.SecretData.SingleUseLoginToken;
-        }
+        }*/
         public static bool      sendPasswordReminder(this string email)
         {
             var tmUser = email.tmUser_FromEmail();
