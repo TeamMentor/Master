@@ -13,6 +13,8 @@ namespace TeamMentor.CoreLib
 
         public string 	                Path_UserData 	    { get; set; }	
         public string 	                Path_UserData_Base 	{ get; set; }
+        public string 	                Path_WebRootFiles   { get; set; }
+        public string                   FirstScriptToInvoke { get; set; }
         public string 	                Git_UserData 	    { get; set; }
         public List<TMUser>	            TMUsers			    { get; set; }
         public TM_SecretData            SecretData          { get; set; }
@@ -36,6 +38,8 @@ namespace TeamMentor.CoreLib
 
         public TM_UserData ResetData()
         {
+            FirstScriptToInvoke = "H2Scripts//FirstScriptToInvoke.h2";
+            Path_WebRootFiles   = "WebRoot_Files";
             TMUsers             = new List<TMUser>();            
             //ActiveSessions      = new Dictionary<Guid, TMUser>();
             SecretData          = new TM_SecretData();
@@ -52,7 +56,8 @@ namespace TeamMentor.CoreLib
             try
             {
                 this.setupGitSupport();
-                this.SecretData = this.secretData_Load();
+                this.firstScript_Invoke();                
+                SecretData = this.secretData_Load();
                 
                 //this.secretDataScript_Invoke();
             

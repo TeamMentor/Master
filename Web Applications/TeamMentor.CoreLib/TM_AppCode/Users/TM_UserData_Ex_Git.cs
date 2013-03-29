@@ -51,7 +51,6 @@ namespace TeamMentor.CoreLib
                 }
             return userData;
         }
-
         public static TM_UserData   pushUserRepository(this TM_UserData userData, API_NGit nGit)
         {
             if (MiscUtils.runningOnLocalHost() && TMConfig.Current.getGitUserConfigFile().valid())  //don't push local changes in order to prevent git merge conflicts            
@@ -68,7 +67,6 @@ namespace TeamMentor.CoreLib
                     });
             return userData;
         }
-
         public static TM_UserData   handle_External_GitPull      (this TM_UserData userData)
         {
             try

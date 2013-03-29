@@ -66,8 +66,6 @@ namespace TeamMentor.CoreLib
         {
             SetupThread = O2Thread.mtaThread(
                 ()=>{
-
-
                         lock (this)
                         {
                             try
@@ -78,6 +76,7 @@ namespace TeamMentor.CoreLib
                                     SetPaths_UserData();                                                                                                                                    
                                 }
                                 UserData.SetUp();
+                                this.copy_FilesIntoWebRoot();
                                 if (UsingFileStorage)
                                 {                       
                                     SetPaths_XmlDatabase();            

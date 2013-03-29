@@ -102,7 +102,7 @@ namespace TeamMentor.CoreLib
         {
             return TM_UserData.Current.SecretData;
         }
-	    [Admin] public bool Set_TM_SecretData(TM_SecretData tmSecretData)
+	    [Admin] public bool          Set_TM_SecretData(TM_SecretData tmSecretData)
 	    {
 	        try
 	        {
@@ -116,31 +116,37 @@ namespace TeamMentor.CoreLib
 	            return false;
 	        }
 	    }
-	    [Admin] public bool Reload_UserData()
+	    [Admin] public bool          Reload_UserData()
 	    {
 	        TM_UserData.Current.ReloadData();
 	        return true;
 	    }
-        [Admin] public bool Reload_TMConfig()
+        [Admin] public bool          Reload_TMConfig()
 	    {
 	        TMConfig.loadConfig();                                  // load default one
             TM_UserData.Current.handle_UserData_ConfigActions();    // load (if available) from current UserData location
 	        return true;
 	    }
-        [Admin] public string Reload_Cache()
+        [Admin] public string        Reload_Cache()
 	    {
 	        return TmWebServices.XmlDatabase_ReloadData();	        
 	    }
-
-	    [Admin]public string Get_GitUserConfig()
+	    [Admin] public string        Get_GitUserConfig()
 	    {
 	        return TMConfig.Current.getGitUserConfigFile().fileContents();
 	    }
-
-        [Admin]public bool Set_GitUserConfig(string gitUserConfig_Data)
+        [Admin] public bool          Set_GitUserConfig(string gitUserConfig_Data)
 	    {            
             return TMConfig.Current.setGitUserConfigFile(gitUserConfig_Data);   
 	    }
+        [Admin] public string        FirstScript_FileContents()
+        {
+            return TM_UserData.Current.firstScript_FileLocation().fileContents();
+        }
+        [Admin] public string        FirstScript_Invoke()
+        {
+            return TM_UserData.Current.firstScript_Invoke();
+        }
 
 	}
 

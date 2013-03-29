@@ -95,7 +95,7 @@
     <Compile Include="CoreLib\Test_Schemas.cs" />
     <Compile Include="Messaging\Test_Email.cs" />
     <Compile Include="CoreLib\Test_HandleRequest.cs" />
-    <Compile Include="CoreLib\Test_TM_SecretData.cs" />
+    <Compile Include="CoreLib\Test_TM_UserData.cs" />
     <Compile Include="CoreLib\Test_Tracking_Application.cs" />
     <Compile Include="Asmx_WebServices\Test_WebServices_Security.cs" />
     <Compile Include="REST_Direct\Test_TBot.cs" />
@@ -103,6 +103,7 @@
     <Compile Include="TM_XmlDatabase\Test_LoadLibraries_FromExternalSource.cs" />
     <Compile Include="TM_XmlDatabase\Test_NGit_Support.cs" />
     <Compile Include="TM_XmlDatabase\Test_TM_TestData.cs" />
+    <Compile Include="TM_XmlDatabase\Test_Setup.cs" />
     <Compile Include="TM_XmlDatabase\Test_UserData_GitStorage.cs" />
     <Compile Include="TM_XmlDatabase\Test_Users_Sessions.cs" />
     <Compile Include="TM_XmlDatabase\Test_Users_UserActivities.cs" />
