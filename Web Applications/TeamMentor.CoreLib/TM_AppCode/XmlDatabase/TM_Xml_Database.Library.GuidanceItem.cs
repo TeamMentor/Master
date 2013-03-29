@@ -140,7 +140,8 @@ namespace TeamMentor.CoreLib
                             foreach (var guidanceExplorer in tmDatabase.xmlDB_GuidanceExplorers())
                             {
                                 var libraryId = guidanceExplorer.library.name.guid();
-                                var pathToLibraryGuidanceItems = pathXmlLibraries.pathCombine(guidanceExplorer.library.caption);
+                                var pathToLibraryGuidanceItems = pathXmlLibraries.pathCombine(guidanceExplorer.library.caption)
+                                                                                 .replace("C++","CPP");
                                 "libraryId: {0} : {1}".info(libraryId, pathToLibraryGuidanceItems);
                                 var filesToLoad = pathToLibraryGuidanceItems.files(true, "*.xml");
                                 tmDatabase.xmlDB_Load_GuidanceItemsV3(libraryId, filesToLoad);
