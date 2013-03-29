@@ -204,7 +204,7 @@ Stats:
             SendEmailToTM(subject, message);
         }
 
-        [Assert_Admin]
+/*        [Assert_Admin]
         public static bool SendLoginTokenToUser(TMUser tmUser)
         {
             try
@@ -227,7 +227,7 @@ TeamMentor Team.
             }
             return false;
         }
-
+*/
         [Assert_Admin]
         public static bool SendPasswordReminderToUser(TMUser tmUser, Guid passwordResetToken)
         {

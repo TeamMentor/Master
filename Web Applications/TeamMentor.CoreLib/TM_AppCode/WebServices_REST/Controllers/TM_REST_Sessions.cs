@@ -32,7 +32,7 @@ namespace TeamMentor.CoreLib
         {
             HttpContextFactory.Response.Redirect("/Login?LoginReferer={0}".format(referer));
         }
-        [Admin] public Guid     GetLoginToken(string username)
+/*        [Admin] public Guid     GetLoginToken(string username)
         {
             return TmWebServices.GetLoginToken(username);
         }        
@@ -42,21 +42,21 @@ namespace TeamMentor.CoreLib
             if(tmUser.notNull())
                 return SendEmails.SendLoginTokenToUser(tmUser);
             return true;
-        }
+        }*/
         
         /*public void     Redirect_ToPasswordReset(string email)
         {
             var redirectUrl = "/PasswordReset/{0}".format(SetPasswordResetToken(email));
             HttpContextFactory.Response.Redirect(redirectUrl);
         }*/
-        [Admin] public void     Redirect_After_Login_Using_Token(string username, string loginToken)
+/*        [Admin] public void     Redirect_After_Login_Using_Token(string username, string loginToken)
         {
             var sessionId = TmWebServices.Login_Using_LoginToken(username, loginToken.guid());
             if (sessionId != Guid.Empty)
                 HttpContextFactory.Response.Redirect("/");
             else            
                 HttpContextFactory.Response.Redirect("/error");            
-        }        
+        }*/        
         [Admin] public void      Redirect_PasswordResetPage(string userId)
         {
             var tmUser = userId.toInt().tmUser();

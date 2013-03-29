@@ -598,7 +598,6 @@
     <Content Include="Xslt\TeamMentor_Article.xslt">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="_Customizations\TM_Custom_Settings.js" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Images\AllLibraries.png" />
