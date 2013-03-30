@@ -34,10 +34,10 @@
     {
         var trClass = (message.SentStatus == SentStatus.Offline ||  message.SentStatus == SentStatus.Error) ? "error" : "";
         <tr class="@trClass" >
-            <td> @(--index)</td>
-            <td> @message.Subject </td>
-            <td> @message.Created_Date.fromFileTimeUtc()</td>        
+            <td> @(--index)</td>            
+            <td> @message.Created_Date.fromFileTimeUtc()</td>                    
             <td> @message.To </td>                        
+            <td> @message.Subject </td>
             <td> @message.SentStatus </td>
             <td>
                 <pre style="height: 3pc; overflow-y: scroll;">@message.Message</pre>
