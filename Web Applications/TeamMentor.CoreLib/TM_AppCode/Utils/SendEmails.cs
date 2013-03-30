@@ -41,8 +41,8 @@ namespace TeamMentor.CoreLib
 
 
         public SendEmails()
-        {            
-            From = "tm_alerts@securityinnovation.com";
+        {
+            From = TMConfig.Current.TMSecurity.Default_AdminEmail;
             if (TM_Xml_Database.Current.notNull())
             { 
                 var secretData = TM_Xml_Database.Current.UserData.SecretData;
