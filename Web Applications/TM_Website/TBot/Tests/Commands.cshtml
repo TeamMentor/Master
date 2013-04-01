@@ -7,7 +7,10 @@
     var mappedScripts = new Dictionary<string, List<string>> ();    
     foreach (var script in scripts)
     {
-        mappedScripts.add(script.parentFolder().remove(baseFolder).removeFirstChar(), script.fileName_WithoutExtension());
+        var title = script.contains(baseFolder) 
+                        ? script.parentFolder().remove(baseFolder).removeFirstChar()
+                        : "_Misc";
+        mappedScripts.add(title, script.fileName_WithoutExtension());
     }
     mappedScripts.remove("Views");  // don't show the views
 }
