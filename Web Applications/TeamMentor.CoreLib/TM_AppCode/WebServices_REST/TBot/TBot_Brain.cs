@@ -121,14 +121,18 @@ namespace TeamMentor.CoreLib
         }
         public static List<string> TBotScriptsFiles()
         {
-            return TBotScriptsFolder().files(true, "*.cshtml");
+            var files = TBotScriptsFolder().files(true, "*.cshtml");
+            var userDataFolder = TM_UserData.Current.Path_UserData.pathCombine("TBot");
+            if (userDataFolder.dirExists())
+                files.add(userDataFolder.files(true, "*.cshtml"));
+            return files;
         }
         public static Dictionary<string, string> GetAvailableScripts()
         {
             var files = TBotScriptsFiles();
             var mappings = new Dictionary<string, string>();
             foreach (var file in files)
-                mappings.add(file.fileName_WithoutExtension(), file);
+                mappings.add(file.fileName_WithoutExtension(), file);            
             return mappings;
             //return files.toDictionary((file) => file.fileName_WithoutExtension()); //this doesn't handle duplicate files names
         }

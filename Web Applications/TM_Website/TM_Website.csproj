@@ -667,7 +667,9 @@
     <Content Include="TBot\Users\New Random User.cshtml" />
     <Content Include="TBot\Admin\UserData FirstScript.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="App_Code\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TeamMentor.CoreLib\TeamMentor.CoreLib.csproj">
       <Project>{87BACB04-640F-44ED-8F01-45224D52A883}</Project>
