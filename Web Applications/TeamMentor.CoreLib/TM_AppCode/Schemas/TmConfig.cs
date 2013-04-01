@@ -53,7 +53,7 @@ namespace TeamMentor.CoreLib
                 EvalAccounts_Days            = 15;
                 Default_AdminUserName        = "admin";
                 Default_AdminPassword        = "!!tmadmin";
-                Default_AdminEmail           = "tm_alerts@securityinnovation.com";
+                Default_AdminEmail           = "TM_alerts@securityinnovation.com";
             }
         }
 
