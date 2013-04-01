@@ -32,7 +32,7 @@ namespace TeamMentor.CoreLib
 		public			bool			Enabled				{ get; set; }
 		public			bool			LogWebServicesCalls { get; set; }
 
-		public			int				LogCount { get; set; }
+		public			int				LogCount            { get; set; }
 
 		static GoogleAnalytics()
 		{
