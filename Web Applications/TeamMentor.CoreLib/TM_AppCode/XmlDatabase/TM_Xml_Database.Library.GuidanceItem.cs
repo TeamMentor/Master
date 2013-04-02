@@ -137,12 +137,12 @@ namespace TeamMentor.CoreLib
                             "[TM_Xml_Database] in xmlDB_Load_GuidanceItems, creating cache file".debug();
                             var o2Timer = new O2Timer("loaded GuidanceItems from disk").start();
                             //Load GuidanceItem from the disk				
-                            foreach (var guidanceExplorer in tmDatabase.xmlDB_GuidanceExplorers())
+                            foreach (var item in tmDatabase.GuidanceExplorers_Paths)
                             {
-                                var libraryId = guidanceExplorer.library.name.guid();
-                                var pathToLibraryGuidanceItems = pathXmlLibraries.pathCombine(guidanceExplorer.library.caption)
-                                                                                 .replace("C++","CPP");
-                                "libraryId: {0} : {1}".info(libraryId, pathToLibraryGuidanceItems);
+                                var guidanceExplorer = item.Key;
+                                var pathToLibraryGuidanceItems = item.Value.parentFolder();
+                                var libraryId = guidanceExplorer.library.name.guid();                                
+                                "libraryId: {0} : {1}".info(libraryId, pathToLibraryGuidanceItems);                                
                                 var filesToLoad = pathToLibraryGuidanceItems.files(true, "*.xml");
                                 tmDatabase.xmlDB_Load_GuidanceItemsV3(libraryId, filesToLoad);
                             }

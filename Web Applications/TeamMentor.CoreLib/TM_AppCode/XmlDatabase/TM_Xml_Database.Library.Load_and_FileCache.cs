@@ -182,9 +182,9 @@ namespace TeamMentor.CoreLib
         public static Dictionary<Guid, guidanceExplorer> addGuidanceExplorerObject      (this Dictionary<Guid, guidanceExplorer> guidanceExplorers, string xmlFile)
         {
             var guidanceExplorer = xmlFile.getGuidanceExplorerObject();
-            return guidanceExplorers.addGuidanceExplorerObject(guidanceExplorer);			
+            return guidanceExplorers.addGuidanceExplorerObject(guidanceExplorer, xmlFile);			
         }		
-        public static Dictionary<Guid, guidanceExplorer> addGuidanceExplorerObject      (this Dictionary<Guid, guidanceExplorer> guidanceExplorers, guidanceExplorer newGuidanceExplorer)
+        public static Dictionary<Guid, guidanceExplorer> addGuidanceExplorerObject      (this Dictionary<Guid, guidanceExplorer> guidanceExplorers, guidanceExplorer newGuidanceExplorer, string xmlFile)
         {
             if (newGuidanceExplorer.notNull())
             {			
@@ -209,7 +209,8 @@ namespace TeamMentor.CoreLib
                         newGuidanceExplorer.library.name = libraryGuid.str();
                         "[addGuidanceExplorerObject]: new ID for library {0} is now {1}".error(newGuidanceExplorer.library.caption, libraryGuid);
                         newGuidanceExplorer.xmlDB_Save_GuidanceExplorer(TM_Xml_Database.Current);//, false);
-                    }					
+                    }
+                    TM_Xml_Database.Current.GuidanceExplorers_Paths.add(newGuidanceExplorer, xmlFile); // add this mapping so that we can find it base on name
                     guidanceExplorers.Add(libraryGuid, newGuidanceExplorer);
 
                 }
@@ -232,11 +233,9 @@ namespace TeamMentor.CoreLib
             //try first to load the library by finding it on the library root (original mode)
             var guidanceExplorerXmlFiles = pathXmlLibraries.files("*.xml")
                                                            .where(isGuidanceExplorerFile);
-            
-            //then try to find the guidanceItems xml file by looking for an xml file with the same name as the folder
-            //this has to be done like this or the save and rename of libraries will not work.toList();
+                        
             guidanceExplorerXmlFiles.AddRange(pathXmlLibraries.folders()
-                                                              .Select(folder => "{0}\\{1}.xml".format(folder, folder.fileName().replace("CPP", "C++")))
+                                                              .files("*.xml")                                                             
                                                               .Where(xmlFile => xmlFile.fileExists() && 
                                                                                 isGuidanceExplorerFile(xmlFile)));
             return guidanceExplorerXmlFiles;
@@ -246,9 +245,9 @@ namespace TeamMentor.CoreLib
             var guidanceExplorers           = new Dictionary<Guid,guidanceExplorer>();
             var guidanceExplorersXmlFiles   = pathXmlLibraries.getGuidanceExplorerFilesInPath();
 
-            foreach(var xmlFile in guidanceExplorersXmlFiles)
-                guidanceExplorers.addGuidanceExplorerObject(xmlFile);
-                        
+            foreach (var xmlFile in guidanceExplorersXmlFiles)            
+                guidanceExplorers.addGuidanceExplorerObject(xmlFile);            
+
             return guidanceExplorers;			
         }		
         public static string                             getCacheLocation               (this TM_Xml_Database tmDatabase) //, TM_Library library)
