@@ -23,6 +23,7 @@ namespace TeamMentor.CoreLib
         public Thread                   SetupThread           { get; set; } 
 
         public Dictionary<Guid, guidanceExplorer>	    GuidanceExplorers_XmlFormat { get; set; }	 //Xml Library and Articles   
+        public Dictionary<guidanceExplorer, string>	    GuidanceExplorers_Paths     { get; set; }	 
         public Dictionary<Guid, string>				    GuidanceItems_FileMappings	{ get; set; }			
         public Dictionary<Guid, TeamMentor_Article>	    Cached_GuidanceItems		{ get; set; }
         public Dictionary<Guid, VirtualArticleAction>   VirtualArticles			    { get; set; }
@@ -58,6 +59,7 @@ namespace TeamMentor.CoreLib
             Cached_GuidanceItems        = new Dictionary<Guid, TeamMentor_Article>();
             GuidanceItems_FileMappings  = new Dictionary<Guid, string>();
             GuidanceExplorers_XmlFormat = new Dictionary<Guid, guidanceExplorer>();
+            GuidanceExplorers_Paths     = new Dictionary<guidanceExplorer, string>();
             UserData                    = new TM_UserData(UsingFileStorage);                        
             return this;
         }

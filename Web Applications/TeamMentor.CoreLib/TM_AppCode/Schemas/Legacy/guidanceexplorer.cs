@@ -12,6 +12,11 @@ namespace urn.microsoft.guidanceexplorer
         [XmlAttribute] public string           name                { get; set; }
         [XmlElement]   public Library          library             { get; set; }
 
+        public guidanceExplorer()
+        {
+            library = new Library();
+        }
+
         public static guidanceExplorer Load(string xmlFile)
         {
             return xmlFile.load<guidanceExplorer>();            
