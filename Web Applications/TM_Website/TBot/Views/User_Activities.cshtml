@@ -34,6 +34,7 @@
                 <th>Name</th>
                 <th>Details</th>
                 <th>When</th>                        
+                <th>IPAdress</th>  
             </tr> 
             @foreach (var userActivity in tmUser.UserActivities.OrderByDescending((activity)=> activity.When).take(max))
             {
@@ -42,6 +43,7 @@
                     <td>@userActivity.Action </td>
                     <td>@userActivity.Detail </td>
                     <td>@userActivity.When.fromFileTimeUtc() </td>
+                    <td>@userActivity.IPAddress </td>
                 </tr>
             }
         </table>

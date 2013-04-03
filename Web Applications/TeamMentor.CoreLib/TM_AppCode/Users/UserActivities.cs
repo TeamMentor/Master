@@ -11,6 +11,7 @@ namespace TeamMentor.CoreLib
         [XmlAttribute] public string	Action		{ get; set; }
         [XmlAttribute] public string	Detail		{ get; set; }
         [XmlAttribute] public string	Who		    { get; set; }
+        [XmlAttribute] public string	IPAddress	{ get; set; }
         [XmlAttribute] public long      When		{ get; set; }        
     }
 
@@ -66,10 +67,11 @@ namespace TeamMentor.CoreLib
             {
                 var userActivity = new UserActivity
                     {
-                        Action  = action, 
-                        Detail  = detail, 
-                        Who     = tmUser.notNull() ? tmUser.UserName :"[NoUser]",
-                        When    = DateTime.Now.ToFileTimeUtc()
+                        Action    = action, 
+                        Detail    = detail, 
+                        Who       = tmUser.notNull() ? tmUser.UserName :"[NoUser]",
+                        When      = DateTime.Now.ToFileTimeUtc(),
+                        IPAddress = HttpContextFactory.Request.UserHostAddress
                     };
                 return userActivites.LogUserActivity(tmUser , userActivity);
             }
