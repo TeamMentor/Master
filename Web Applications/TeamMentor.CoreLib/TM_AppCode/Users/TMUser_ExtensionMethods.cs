@@ -35,10 +35,9 @@ namespace TeamMentor.CoreLib
         {
             if (tmUser.isNull())
                 return true;
-            if (TMConfig.Current.TMSecurity.EvalAccounts_Enabled)
-                return tmUser.AccountStatus.ExpirationDate < DateTime.Now &&
-                    tmUser.AccountStatus.ExpirationDate != default(DateTime);
-            return false;
+            if (tmUser.AccountStatus.ExpirationDate == default(DateTime))   // if this ExpirationDate is not set, the user account is NOT expired
+                return false;
+            return tmUser.AccountStatus.ExpirationDate < DateTime.Now;      // if it is set, check if value is bigger than now
         }
         public static bool      password_Expired   (this TMUser tmUser)
         {
@@ -48,11 +47,8 @@ namespace TeamMentor.CoreLib
         }
         public static TMUser    expire_Account     (this TMUser tmUser)
         {
-            if (tmUser.notNull())
-            {
-                tmUser.AccountStatus.ExpirationDate = DateTime.Now;
-                10.sleep();
-            }
+            if (tmUser.notNull())            
+                tmUser.AccountStatus.ExpirationDate = DateTime.Now.AddMilliseconds(-10); // 10 miliseconds so that the value is in the past                            
             return tmUser;
         }
         public static TMUser    expire_Password    (this TMUser tmUser)
