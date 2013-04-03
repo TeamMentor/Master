@@ -99,5 +99,13 @@ namespace TeamMentor.CoreLib
                 return false;
             }            
         }
+        public static DateTime  currentExpirationDate(this TMConfig tmConfig)
+        {
+            return (tmConfig.TMSecurity.EvalAccounts_Enabled)
+                       ? DateTime.Now.AddDays(tmConfig.TMSecurity.EvalAccounts_Days)
+                       : default(DateTime);
+        }
+
+        
     }
 }
