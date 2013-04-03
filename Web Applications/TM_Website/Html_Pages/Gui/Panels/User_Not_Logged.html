@@ -13,8 +13,6 @@
             {				
                 jQuery('#signupMessage').hide();
                 jQuery('#signupContent').show();
-                //jQuery('#signupMessage').html("<h2>Failed to create user, please try again</h2>").css('color','red');
-                //jQuery('#signupContent').show();				
                 jQuery('#signupErrorMessage').text("Failed to create user, please try again");
                 $("#signupErrorMessageRow").fadeIn();
             }
@@ -22,45 +20,31 @@
             {						
                 $("#notLoggedInMessage").hide();	
                 jQuery('#signupMessage').html("<h2>Account created successfully</h2>").css('color','black');
-                jQuery('#signupMessage').append("<br/>Please <a href='#' onclick='javascript:TM.Gui.Dialog.loginPage()'>Login</a> ");
-                
-                
-                //HubSpot is disabled
-                //$(".FormSubmitButton").click();
-                //$('#HubSpotResult').fadeIn().fadeOut(2000);
+                jQuery('#signupMessage').append("<br/>Please <a href='#' onclick='javascript:TM.Gui.Dialog.loginPage()'>Login</a> ");                          
             }
-        }
+        };
 
     var signupUser = function(username, password)
-        {			
-            //alert('submiting form');
+        {			            
             jQuery('#signupContent').hide();
             jQuery('#signupMessage').show();
             jQuery('#signupMessage').html('<br/><h2>Creating user</h2> Please wait...').css('color','black');
+            
             var email = jQuery('#ctl00_ContentPlaceHolder1_EmailBox').attr('value');
             var firstName = jQuery('#ctl00_ContentPlaceHolder1_FNameBox').attr('value');
-            var lastName = jQuery('#ctl00_ContentPlaceHolder1_LNameBox').attr('value');			
-            var company = jQuery('#ctl00_ContentPlaceHolder1_Company').attr('value');			
-            var title = jQuery('#ctl00_ContentPlaceHolder1_Title').attr('value');
-            var country = jQuery('#ctl00_ContentPlaceHolder1_Country').attr('value');
-            var state = jQuery('#ctl00_ContentPlaceHolder1_State').attr('value');
-
-            //if (email == "") email = "tm_qa@si.com";
-            if (firstName == "") firstName = "first";
-            if (lastName == "") lastName = "name";
-            if (company == "") company = "SI";
-            if (title == "") title = "developer";
-            if (country == "") country = "USA";
-            if (state == "") state = "MA";
-        
-            $("#HubSpotFormDiv").find("#LeadGen_ContactForm_46799_m0_FirstName").val(firstName);
-            $("#HubSpotFormDiv").find("#LeadGen_ContactForm_46799_m0_LastName").val(lastName);
-            $("#HubSpotFormDiv").find("#LeadGen_ContactForm_46799_m0_Email").val(email);
-            $("#HubSpotFormDiv").find("#LeadGen_ContactForm_46799_m0_Company").val(company);
-            $("#HubSpotFormDiv").find("#LeadGen_ContactForm_46799_m0_Title").val(title);
-            $("#HubSpotFormDiv").find("#LeadGen_ContactForm_46799_m0_Country").val(country);
-            $("#HubSpotFormDiv").find("#LeadGen_ContactForm_46799_m0_State__c").val(state);
+            var lastName  = jQuery('#ctl00_ContentPlaceHolder1_LNameBox').attr('value');			
+            var company   = jQuery('#ctl00_ContentPlaceHolder1_Company').attr('value');			
+            var title     = jQuery('#ctl00_ContentPlaceHolder1_Title').attr('value');
+            var country   = jQuery('#ctl00_ContentPlaceHolder1_Country').attr('value');
+            var state     = jQuery('#ctl00_ContentPlaceHolder1_State').attr('value');
             
+            if (firstName   == "")  firstName = "NA";
+            if (lastName    == "")  lastName = "NA";
+            if (company     == "")  company = "NA";
+            if (title       == "")  title = "NA";
+            if (country     == "")  country = "NA";
+            if (state       == "")  state = "NA";
+                   
             setTimeout(
                 function() {
                                 createUser(username, password, email, firstName, lastName,company, title, country, state, 'created from web', signupResult);
@@ -95,17 +79,7 @@
             
 
     $(function()
-        {						
-/*			signupDialog = "signUpDiv".$().dialog(
-                                        { 	
-                                            title:'Signup to TeamMentor' , 
-                                            modal: false  , 													
-                                            //buttons: { "create account" : loginUser},
-                                            width: '650px' ,
-                                            open:  TM.Events.onSignupDialogOpen ,	
-                                            close: TM.Events.onSignupDialogClose
-                                        });//parent().width(400).top(100).height(250);
-    */									
+        {														
                 
             $("#ctl00_ContentPlaceHolder1_SignUp").button();
             $(".SignUpCol1").css('font-size', '12px');
@@ -126,10 +100,7 @@
             {
                 $(".SignupTable").find("input").focus(function() { $("#guidanceItems").hide(); });  // to deal with DataTable bug
                 $(".SignupTable").find("input").focusout(function() { $("#guidanceItems").show(); });
-            }
-        
-            $("#HubSpotFormDiv").hide();
-            $("#HubSpotResult").hide();
+            }                    
     });
 
 </script>	
@@ -146,7 +117,7 @@
             </tr>	
             <tr>
                 <td class="SignUpCol1">
-                    <strong>Username</strong>
+                    <strong>Username:</strong>
                 </td>
                 <td>
                     <input type="text" id="ctl00_ContentPlaceHolder1_UsernameBox" class="otherTextBox" style="width:100%" />
@@ -196,74 +167,4 @@
         </table>
 
     </div>
-
-    
-
 </div>
-
-<!--
-<br/> 
-        <br/> 
-        <br/> 
-        <br/> 
-        <br/> 
-        <br/> 
-        <br/> -->
-<br/><br/>
-
-<div id="HubSpotFormDiv">
-    <hr/>
-    <h1>Hubspot form</h1>	
-
-    <form target="HubSpotResult" id="HubSpotForm" action="http://web.securityinnovation.com/Default.aspx?app=iframeform&hidemenu=true&ContactFormID=46799" method="post">
-        
-        
-        <input type="hidden" name="Lead_Src" id="LeadSrc" value="Team Mentor Eval" />
-    
-    
-        <script type='text/javascript' language='javascript'>/* <![CDATA[ */
-            HubSpotFormSpamCheck_LeadGen_ContactForm_46799_m0 = function() {
-                var key = document.getElementById('LeadGen_ContactForm_46799_m0spam_check_key').value;
-                var sig = '';
-                for (var x = 0; x< key.length; x++ ) {
-                    sig += key.charCodeAt(x)+13;
-                }
-                document.getElementById('LeadGen_ContactForm_46799_m0spam_check_sig').value = sig; 
-                /* Set the hidden field to contain the user token */
-                var results = document.cookie.match ( '(^|;) ?hubspotutk=([^;]*)(;|$)' );
-                if (results && results[2]) {
-                    document.getElementById('LeadGen_ContactForm_46799_m0submitter_user_token').value =  results[2];
-                } else if (window['hsut']) {
-                    document.getElementById('LeadGen_ContactForm_46799_m0submitter_user_token').value = window['hsut'];
-                }
-                return true;
-            };
-/*]]>*/</script>
-
-        
-        <input type='hidden' id='LeadGen_ContactForm_46799_m0submitter_user_token' name='LeadGen_ContactForm_46799_m0submitter_user_token'  value='' />
-        <input type='hidden' name='ContactFormId'  value='46799' />
-        <input type='hidden' id='LeadGen_ContactForm_46799_m0spam_check_key' name='LeadGen_ContactForm_46799_m0spam_check_key'  value='deskldikkprpqqefokhdidssqshemphhdrrlmliqprotwptrreugdudwowvt' />
-        <input type='hidden' id='LeadGen_ContactForm_46799_m0spam_check_sig' name='LeadGen_ContactForm_46799_m0spam_check_sig'  value='' /><div class='ContactFormItems FormClassID_46799'>
-        <table border="0" cellspacing="0" cellpadding="5">
-            <tr><td>First Name <span style='color: red'> *</span></td><td>	<input type="Text" name="LeadGen_ContactForm_46799_m0:FirstName" class="StandardI AutoFormInput LeadGen_ContactForm_46799_m0_AutoForm"		id="LeadGen_ContactForm_46799_m0_FirstName" value="" /><div class="fieldclear"></div></td></tr>
-            <tr><td>Last Name <span style='color: red'> *</span></td><td>	<input type="Text" name="LeadGen_ContactForm_46799_m0:LastName" class="StandardI AutoFormInput LeadGen_ContactForm_46799_m0_AutoForm"		id="LeadGen_ContactForm_46799_m0_LastName" value="" /><div class="fieldclear"></div></td></tr>
-            <tr><td>Email <span style='color: red'> *</span></td><td>		<input type="Text" name="LeadGen_ContactForm_46799_m0:Email" class="StandardI AutoFormInput LeadGen_ContactForm_46799_m0_AutoForm"			id="LeadGen_ContactForm_46799_m0_Email" value="" /><div class="fieldclear"></div></td></tr>
-            <tr><td>Company</td><td>										<input type="Text" name="LeadGen_ContactForm_46799_m0:Company" class="StandardI AutoFormInput LeadGen_ContactForm_46799_m0_AutoForm"		id="LeadGen_ContactForm_46799_m0_Company" value="" /><div class="fieldclear"></div></td></tr>
-            <tr><td>Title</td><td>											<input type="Text" name="LeadGen_ContactForm_46799_m0:Title" class="StandardI AutoFormInput LeadGen_ContactForm_46799_m0_AutoForm"			id="LeadGen_ContactForm_46799_m0_Title" value="" /><div class="fieldclear"></div></td></tr>
-            <tr><td>Country <span style='color: red'> *</span></td><td>		<input type="Text" name="LeadGen_ContactForm_46799_m0:Country"		class="StandardI AutoFormInput LeadGen_ContactForm_46799_m0_AutoForm"	id="LeadGen_ContactForm_46799_m0_Country" value="" /><div class="fieldclear"></div></td></tr>			
-            <tr><td>State</td><td>											<select  class='wide StandardI' name="LeadGen_ContactForm_46799_m0:State__c"																id="LeadGen_ContactForm_46799_m0_State__c"  > <option value="&lt;None&gt;"  ><None></option><option value="Other"  >Other</option><option value="AK"  >AK</option><option value="AL"  >AL</option><option value="AR"  >AR</option><option value="AZ"  >AZ</option><option value="CA"  >CA</option><option value="CO"  >CO</option><option value="CT"  >CT</option><option value="DC"  >DC</option><option value="DE"  >DE</option><option value="FL"  >FL</option><option value="GA"  >GA</option><option value="HI"  >HI</option><option value="IA"  >IA</option><option value="ID"  >ID</option><option value="IL"  >IL</option><option value="IN"  >IN</option><option value="KS"  >KS</option><option value="KY"  >KY</option><option value="LA"  >LA</option><option value="MA"  >MA</option><option value="MD"  >MD</option><option value="ME"  >ME</option><option value="MI"  >MI</option><option value="MN"  >MN</option><option value="MO"  >MO</option><option value="MS"  >MS</option><option value="MT"  >MT</option><option value="NC"  >NC</option><option value="ND"  >ND</option><option value="NE"  >NE</option><option value="NH"  >NH</option><option value="NJ"  >NJ</option><option value="NM"  >NM</option><option value="NV"  >NV</option><option value="NY"  >NY</option><option value="OH"  >OH</option><option value="OK"  >OK</option><option value="OR"  >OR</option><option value="PA"  >PA</option><option value="RI"  >RI</option><option value="SC"  >SC</option><option value="SD"  >SD</option><option value="TN"  >TN</option><option value="TX"  >TX</option><option value="UT"  >UT</option><option value="VA"  >VA</option><option value="VT"  >VT</option><option value="WA"  >WA</option><option value="WI"  >WI</option><option value="WV"  >WV</option><option value="WY"  >WY</option></select><div  class='fieldclear'></div>
-                                </td></tr>
-            <tr>
-                <td></td>
-                <td><input type="hidden" name="LeadGen_ContactForm_46799_m0:TM_Eval_Expiration__c" class="StandardI AutoFormInput LeadGen_ContactForm_46799_m0_AutoForm" id="LeadGen_ContactForm_46799_m0_TM_Eval_Expiration__c" value="Today&#x28;&#x29;&#x2b;14" /><div class="fieldclear"></div></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td><input type="hidden" name="LeadGen_ContactForm_46799_m0:LeadSource" value="TeamMentor Eval" /></td>
-            </tr>
-            <tr><td></td><td><input onclick='return HubSpotFormSpamCheck_LeadGen_ContactForm_46799_m0();' class='FormSubmitButton' type='submit' name='LeadGen_ContactForm_Submit_LeadGen_ContactForm_46799_m0' value="Submit"></td></tr>
-            </table></div>
-    </form>
-</div>
-<iframe id="HubSpotResult" width="100%" height="200"></iframe>
