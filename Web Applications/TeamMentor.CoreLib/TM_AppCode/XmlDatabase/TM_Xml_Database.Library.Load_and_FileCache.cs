@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using O2.DotNetWrappers.ExtensionMethods;
 using O2.DotNetWrappers.DotNet;
 using O2.DotNetWrappers.Windows;
@@ -220,24 +219,21 @@ namespace TeamMentor.CoreLib
                 }
             }
             return guidanceExplorers;
-        }		
-        public static List<string>                       getGuidanceExplorerFilesInPath (this string pathXmlLibraries)
+        }
+        public static bool                               isGuidanceExplorerFile(this string file)
         {
-            Func<string, bool> isGuidanceExplorerFile = 
-                (file)=>{
-                            var fileContents = file.fileContents().fixCRLF();
-                            var secondLine  = fileContents.lines().second();
-                            return secondLine.starts("<guidanceExplorer");
-                        };
-
-            //try first to load the library by finding it on the library root (original mode)
-            var guidanceExplorerXmlFiles = pathXmlLibraries.files("*.xml")
-                                                           .where(isGuidanceExplorerFile);
+            if (file.fileExists().isFalse())
+                return false;
+            var fileContents = file.fileContents().fixCRLF();
+            var secondLine = fileContents.lines().second();
+            return secondLine.starts("<guidanceExplorer");
+        }
+        public static List<string>                       getGuidanceExplorerFilesInPath (this string pathXmlLibraries)
+        {            
                         
-            guidanceExplorerXmlFiles.AddRange(pathXmlLibraries.folders()
-                                                              .files("*.xml")                                                             
-                                                              .Where(xmlFile => xmlFile.fileExists() && 
-                                                                                isGuidanceExplorerFile(xmlFile)));
+            var guidanceExplorerXmlFiles = pathXmlLibraries.folders()
+                                                           .files("*.xml")                                                             
+                                                           .where(isGuidanceExplorerFile);
             return guidanceExplorerXmlFiles;
         }
         public static Dictionary<Guid, guidanceExplorer> getGuidanceExplorerObjects     (this string pathXmlLibraries)
