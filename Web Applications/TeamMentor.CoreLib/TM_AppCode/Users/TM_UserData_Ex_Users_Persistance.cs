@@ -125,7 +125,10 @@ namespace TeamMentor.CoreLib
                 if (newConfig.isNull())
                     "[handleUserDataConfigActions] failed to load config file from: {0}".error(userConfigFile);
                 else
+                {
                     TMConfig.Current = newConfig;
+                    userData.AutoGitCommit = newConfig.Git.AutoCommit_UserData;     // in case this changed
+                }
             }
             return userData;
         }
