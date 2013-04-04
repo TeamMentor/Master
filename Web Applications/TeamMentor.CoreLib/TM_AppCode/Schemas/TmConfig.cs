@@ -76,12 +76,12 @@ namespace TeamMentor.CoreLib
         public class Git_Config
         {
             public bool         AutoCommit_UserData         { get; set; }
-            public bool         AutoCommit_LibraryData      { get; set; }         // not implemented in 3.3
+            public bool         AutoCommit_LibraryData      { get; set; }         
 
             public Git_Config()
             {
-                AutoCommit_LibraryData          = true;            // will only work if the library is a git repository
-                AutoCommit_UserData             = true;            // should always trigger, since the UserData folder repo is created if not there before
+                AutoCommit_LibraryData          = false;            // (disabled by default) will only work if the library is a git repository
+                AutoCommit_UserData             = false;            // (disabled by default)  should always trigger, since the UserData folder repo is created if not there before
             }
         }
         public class OnInstallation_Config
