@@ -254,7 +254,9 @@ namespace TeamMentor.CoreLib
                             
                             
                             return article;
-                        }					
+                        }
+                        else
+					        "[xmlDB_GuidanceItem] Failed to load article at path: {0} (see errors for reason)".error(fullPath);
                     }
                     else
                         "[xmlDB_GuidanceItem] could not find file: {0}".error(fullPath);

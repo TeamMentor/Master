@@ -9,24 +9,29 @@ namespace TeamMentor.CoreLib
     {
         public static TM_UserData   setupGitSupport  (this TM_UserData userData)
         {
-            if (userData.UsingFileStorage && userData.AutoGitCommit && userData.Path_UserData.notNull())
+            if (userData.UsingFileStorage && userData.Path_UserData.notNull())
             {
-                userData.handle_External_GitPull();
-                userData.handle_UserData_ConfigActions();                
+                userData.handle_UserData_ConfigActions(); 
+
+                if (userData.AutoGitCommit)
+                { 
+                    userData.handle_External_GitPull();
+                    userData.handle_UserData_ConfigActions();               // run this again in case it was changed from the git pull           
                 
-                if (userData.Path_UserData.isGitRepository())
-                {
-                    //"[TM_UserData][setupGitSupport] open repository: {0}".info(userData.Path_UserData);
-                    "[TM_UserData][GitOpen]".info();
-                    userData.NGit = userData.Path_UserData.git_Open();                    
-                }
-                else
-                {
-                    //"[TM_UserData][setupGitSupport] initializing repository at: {0}".info(userData.Path_UserData);
-                    "[TM_UserData][GitInit]".info();
-                    userData.NGit = userData.Path_UserData.git_Init();
-                }
-                userData.triggerGitCommit();        // in case there are any files that need to be commited                
+                    if (userData.Path_UserData.isGitRepository())
+                    {
+                        //"[TM_UserData][setupGitSupport] open repository: {0}".info(userData.Path_UserData);
+                        "[TM_UserData][GitOpen]".info();
+                        userData.NGit = userData.Path_UserData.git_Open();                    
+                    }
+                    else
+                    {
+                        //"[TM_UserData][setupGitSupport] initializing repository at: {0}".info(userData.Path_UserData);
+                        "[TM_UserData][GitInit]".info();
+                        userData.NGit = userData.Path_UserData.git_Init();
+                    }
+                    userData.triggerGitCommit();        // in case there are any files that need to be commited                
+                }                
             }
             return userData;
         }
