@@ -349,6 +349,9 @@ namespace TeamMentor.CoreLib
                     var fastZip = new ICSharpCode.SharpZipLib.Zip.FastZip {Password = unzipPassword ?? ""};
                     fastZip.ExtractZip(zipFileToImport, tempDir, "");
 
+                    Files.copyFolder(tempDir, currentLibraryPath, true, true,"");          // just copy all files into Library path
+                    result = true;
+                    /*
                     var gitZipFolderName = tempDir.folders().first().folderName();				// the first folder should be the one created by gitHub's zip
                     var xmlFile_Location1 = tempDir.pathCombine(gitZipFolderName + ".xml");
                     var xmlFile_Location2 = tempDir.pathCombine(gitZipFolderName).pathCombine(gitZipFolderName + ".xml");
@@ -385,7 +388,7 @@ namespace TeamMentor.CoreLib
                             tmDatabase.mapVirtualArticles();
                         }
                         result = true;
-                    }   
+                    } */
                 }
             }
             catch (Exception ex)

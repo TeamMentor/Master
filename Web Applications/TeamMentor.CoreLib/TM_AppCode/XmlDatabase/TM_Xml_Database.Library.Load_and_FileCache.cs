@@ -157,6 +157,7 @@ namespace TeamMentor.CoreLib
         {			
             //"in setGuidanceExplorerObjects".info();
             var pathXmlLibraries = TM_Xml_Database.Current.Path_XmlLibraries;
+            tmDatabase.GuidanceExplorers_Paths.Clear();
             TM_Xml_Database.Current.GuidanceExplorers_XmlFormat = pathXmlLibraries.getGuidanceExplorerObjects();				
             return tmDatabase;
         }		
