@@ -35,6 +35,7 @@ namespace TeamMentor.CoreLib
         New,
         Offline,
         Sending,
+        NoConfig,
         Error,
         Sent
     }

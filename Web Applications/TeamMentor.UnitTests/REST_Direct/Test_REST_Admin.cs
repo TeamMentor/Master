@@ -54,7 +54,7 @@ namespace TeamMentor.UnitTests.REST
             var emailsSent_After = sentMessages.size();
             var lastMessage      = sentMessages.last();
    
-            Assert.IsTrue     (new SendEmails().offlineMode());
+            Assert.IsTrue     (new SendEmails().serverNotConfigured());
             Assert.Greater    (emailsSent_Before   , 0);
             Assert.AreNotEqual(emailsSent_Before   , emailsSent_After);
             Assert.AreEqual   (lastMessage.To      , emailMessagePost.To);

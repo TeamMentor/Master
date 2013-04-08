@@ -15,13 +15,17 @@
 
 <h5>TM Config values</h5>        
     <ul>
-    <pre><strong>TM_Xml_Database.Current.Path_XmlDatabase:</strong> @TM_Xml_Database.Current.Path_XmlDatabase
-<strong>TM_Xml_Database.Current.Path_XmlLibraries:</strong> @TM_Xml_Database.Current.Path_XmlLibraries
-<strong>AppDomain.CurrentDomain.BaseDirectory:</strong> @AppDomain.CurrentDomain.BaseDirectory
-<strong>O2 Temp Dir:</strong> @PublicDI.config.O2TempDir<br /></pre>
+        <pre>
+<strong>TM_Xml_Database.Current.Path_XmlDatabase</strong>          : @TM_Xml_Database.Current.Path_XmlDatabase
+<strong>TM_Xml_Database.Current.Path_XmlLibraries</strong>         : @TM_Xml_Database.Current.Path_XmlLibraries
+<strong>TM_UserData.Current.Path_UserData</strong>                 : @TM_UserData.Current.Path_UserData
+<strong>TM_UserData.Current.Path_UserData_Base</strong>            : @TM_UserData.Current.Path_UserData_Base
+<strong>TM_UserData.Current.Git_UserData</strong>                  : @TM_UserData.Current.Git_UserData
+<strong>AppDomain.CurrentDomain.BaseDirectory</strong>             : @AppDomain.CurrentDomain.BaseDirectory
+<strong>O2 Temp Dir</strong>                                       : @PublicDI.config.O2TempDir<br /></pre>
     </ul>        
 <br/>
-
+ 
 <h5>Session Values</h2>        
     <ul>
         @foreach (string key in session.Keys)

@@ -648,7 +648,7 @@
     <Content Include="TBot\Views\User_Activities.cshtml" />
     <Content Include="TBot\NGit\GitStatus.cshtml" />
     <Content Include="packages.config" />
-    <Content Include="TBot\Messaging\Send_Email.cshtml" />
+    <Content Include="TBot\Messaging\Send_Test_Email.cshtml" />
     <Content Include="TBot\Views\GitDiff_UserData_Commit.cshtml" />
     <Content Include="TBot\Views\GitDiff_UserData_File.cshtml" />
     <Content Include="TBot\Views\GitDiff_XmlDatabase_File.cshtml" />
