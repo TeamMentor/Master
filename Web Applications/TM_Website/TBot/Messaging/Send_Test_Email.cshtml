@@ -1,4 +1,7 @@
-﻿<script>
+﻿
+@using TeamMentor.CoreLib
+
+<script>
     
     function Controller($scope, $timeout, $http) 
     {
@@ -7,7 +10,8 @@
         
         $scope.email = 
             { 
-                to	 	:  'dcruz@securityinnovation.com',
+                from    :  '@TMConfig.Current.TMSecurity.Default_AdminEmail',
+                to	 	:  '',
                 subject :  'Email from TM',
                 message :  'Hello there'
             }
@@ -29,23 +33,29 @@
     }
 
 </script>
-<h4>Send Email Message</h4>
+<h4>Send Test Email Message:</h4>
 
 <p>You can use this form to test TeamMentor's email sending capabilities</p>
 <br/>
 
-<div ng-controller="Controller">	
+<div ng-controller="Controller">	    
     <form name="myForm" class="css-form form-horizontal" ng-submit="update(email)">    		
+        <div class="control-group">
+            <label class="control-label">From: </label>
+            <div class="controls">
+                <input class= "input-xlarge" type="text" ng-model="email.from" disabled/>
+            </div>
+        </div>
         <div class="control-group">
             <label class="control-label">To: </label>
             <div class="controls">
-                <input class= "input-xxlarge" type="email"ng-model="email.to" required>
+                <input class= "input-xxlarge" type="email" ng-model="email.to" required/>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label">Subject: </label>
             <div class="controls">
-                <input class= "input-xxlarge"  type="text" ng-model="email.subject" required>          
+                <input class= "input-xxlarge"  type="text" ng-model="email.subject" required/>          
             </div>
         </div>
         <div class="control-group">

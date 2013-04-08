@@ -6,13 +6,13 @@
 @{
     var sendEmails = new SendEmails();
     var sentMessages = SendEmails.Sent_EmailMessages.reverse();
-    var offlineMode = sendEmails.offlineMode() ? "Yes, emails are NOT being sent" : "No, emails ARE being sent";    
+    var serverConfigured = sendEmails.serverNotConfigured() ? "No, emails are NOT being sent" : "Yes, emails ARE being sent";    
     var index = sentMessages.size();
 }
 
 <h4>Email Messages (current TM Process)</h4>
 <p>
-    <b>Is email system offline:</b> @offlineMode    <br/>
+    <b>Is email system configured:</b> @serverConfigured    <br/>
     <b># of messsages:</b> @sentMessages.size()     <br/>
     <b>TM_Server_URL</b>: @SendEmails.TM_Server_URL <br/>
 </p>

@@ -100,11 +100,13 @@ namespace TeamMentor.CoreLib
             Sent_EmailMessages.Add(emailMessage);
             try
             {
-                if (this.offlineMode())
+                if (this.serverNotConfigured())
                 {                    
-                    emailMessage.SentStatus = SentStatus.Offline;
+                    emailMessage.SentStatus = SentStatus.NoConfig;
                     return false;   
                 }
+                if (emailMessage.From.notValid())
+                    emailMessage.From = this.From;
                 emailMessage.SentStatus = SentStatus.Sending;
                 "Sending email:\n  to: {0}\n  from: {0}\n  subject: {0} ".info(emailMessage.To, emailMessage.Subject, emailMessage.Message);
                 var mailMsg = new MailMessage();
@@ -138,7 +140,7 @@ namespace TeamMentor.CoreLib
             }
             catch (Exception ex)
             {
-                ex.log();
+                ex.log("[Error sending email");
                 emailMessage.SentStatus = SentStatus.Error;
                 return false;
             }
@@ -288,12 +290,11 @@ If you didn't make this request, please let us know at support@teammentor.net.
 
     public static class SendEmail_ExtensionMethods
     {
-        public static bool offlineMode(this SendEmails sendEmails)
+        public static bool serverNotConfigured(this SendEmails sendEmails)
         {
             return sendEmails.Smtp_Server.notValid() ||
                    sendEmails.Smtp_UserName.notValid() ||
-                   sendEmails.Smtp_Password.notValid() ||
-                   MiscUtils.online().isFalse();  
+                   sendEmails.Smtp_Password.notValid();
         }
     }
 }
