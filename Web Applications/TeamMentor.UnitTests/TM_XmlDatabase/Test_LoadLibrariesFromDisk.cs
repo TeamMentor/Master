@@ -2,6 +2,7 @@
 using System.Linq;
 using NUnit.Framework;
 using O2.DotNetWrappers.ExtensionMethods;
+using O2.FluentSharp;
 using TeamMentor.CoreLib;
 
 namespace TeamMentor.UnitTests.TM_XmlDatabase
@@ -93,6 +94,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         [Test][Assert_Editor]
         public void Test_getGuidanceHtml()
         {
+            HttpContextFactory.Context = new API_Moq_HttpContext().httpContext();       // need for the logUserActivity method need to map the IP
             //LoadGuidanceExplorerFiles();            
             //tmXmlDatabase.reloadGuidanceExplorerObjects();                
 

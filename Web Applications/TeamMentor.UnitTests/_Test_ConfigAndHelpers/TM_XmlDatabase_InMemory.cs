@@ -57,17 +57,15 @@ namespace TeamMentor.UnitTests
 
         public void Install_LibraryFromZip_TopVulns()
         {
-            var topVulnsZipFile = DownloadLibraryIntoTempFolder("Library_Top_Vulnerabilities.zip",
-                                                                "https://github.com/TeamMentor/Library_Top_Vulnerabilities/zipball/master");
-//            Install_LibraryFromZip("https://github.com/TeamMentor/Library_Top_Vulnerabilities/zipball/master", "Top Vulnerabilities");
+            var topVulnsZipFile = DownloadLibraryIntoTempFolder("Lib_Top_Vulnerabilities.zip",
+                                                                "https://github.com/TMContent/Lib_Top_Vulnerabilities/archive/master.zip");
             Install_LibraryFromZip(topVulnsZipFile,"Top Vulnerabilities");
         }        
         public void Install_LibraryFromZip_OWASP()
         {
-            var owaspZipFile = DownloadLibraryIntoTempFolder("OWASP.zip",
-                                                             "https://github.com/TeamMentor/OWASP_Library/zipball/master");
-            Install_LibraryFromZip(owaspZipFile,"OWASP");
-            //Install_LibraryFromZip("https://github.com/TeamMentor/OWASP_Library/zipball/master", "OWASP");
+            var owaspZipFile = DownloadLibraryIntoTempFolder("Lib_OWASP.zip",
+                                                             "https://github.com/TMContent/Lib_OWASP/archive/master.zip");
+            Install_LibraryFromZip(owaspZipFile,"OWASP");            
         }
         [Assert_Admin]
         public void Install_LibraryFromZip(string pathToGitHubZipBall, string libraryName)
