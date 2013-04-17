@@ -1,13 +1,36 @@
 <!--Page: <b>Login Page </b>-->
     <script type="text/javascript">
-		function loginResponse(loginId)
-		{			
+		navigateToPurchaseOnClose = false;
+		
+		function CheckRedirectToPurchase() 
+		{
+			if (navigateToPurchaseOnClose) {
+				window.location.replace('https://www.securityinnovation.com/products/secure-development-knowledgebase/');
+				return false;
+			}
+		}
+
+		function loginResponse(loginId) {
+		    console.log(loginId);
 			//$('#PleaseWait').f('display','none');					
-			if(loginId =='00000000-0000-0000-0000-000000000000')
-			{
+			if (loginId == window.TM.Const.emptyGuid) {
 				$('#LoginMainContent').css('display','');			
 				$('#errorMessageLogin').html('Incorrect username or password')
-									   .fadeIn(1000); 
+					.fadeIn(1000); 
+				TM.Debug.LastLoginResult = "Failed";
+			}
+			else if (loginId == window.TM.Const.expiredLoginGuid) {
+				navigateToPurchaseOnClose = true;
+
+				$('#LoginMainContent').css('display', '');
+				$('#errorMessageLogin').html('Evaluation period has expired').fadeIn(1000);
+				$('#passwordForgotLink').css('display', 'none');
+			    $('#loginButton').text(' Buy TeamMentor ');
+				$('#loginButton').click(function () {
+					window.location.href = 'https://www.securityinnovation.com/products/secure-development-knowledgebase/';
+					return false;
+				});
+
 				TM.Debug.LastLoginResult = "Failed";
 			}
 			else
@@ -15,7 +38,6 @@
 				loginDialog.closeDialog();					
 				TM.Debug.LastLoginResult = "Ok";				
 			}			
-			
 		}
 		
 		function loginUser()
@@ -24,7 +46,6 @@
 			$('#LoginMainContent').css('display','none');						
 			var username = $('#UsernameBox').attr('value');
 			var password = $('#PasswordBox').attr('value');			
-			
 			
 			TM.WebServices.WS_Users.login(username, password, loginResponse);			
 		}
@@ -50,15 +71,16 @@
 										,	buttons: {  " Login" : loginUser } //" Password forgot" : passwordForgot,
 										,	width: '400px'
 										, 	open:  TM.Events.onLoginDialogOpen	
+										, 	beforeClose: function () 
+													{
+														CheckRedirectToPurchase();
+													}
 										, 	close: function()
 													{														
 														TM.Gui.CurrentUser.loadUserData();
 														TM.Events.onLoginDialogClose();
 													}
 									};				
-				
-
-				
 				
 				loginDialog = "LoginDialog".$().dialog(dialogOptions);											
 					
