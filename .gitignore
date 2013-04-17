@@ -11,8 +11,11 @@ webEditorSecretData.config
 *.user
 *.nupkg
 obj
-
+bin
 .idea
+
+#NCrunch
+.ncrunchsolution
 
 #Debug
 /Tools/_temp
