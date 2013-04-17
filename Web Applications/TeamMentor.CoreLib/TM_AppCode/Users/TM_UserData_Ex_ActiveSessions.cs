@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using O2.DotNetWrappers.ExtensionMethods;
 
 namespace TeamMentor.CoreLib
@@ -31,6 +33,11 @@ namespace TeamMentor.CoreLib
             }
             return Guid.Empty;    			
         }*/
+        public static Guid              expiredLogin() {
+            var hash = MD5.Create().ComputeHash(Encoding.Default.GetBytes("EXPIRED!"));
+            return new Guid(hash);
+        }
+
         public static Guid              login (this TM_UserData userData, string username, string password)
         {
             try
@@ -45,7 +52,7 @@ namespace TeamMentor.CoreLib
                         if (tmUser.account_Expired())
                         {
                             tmUser.logUserActivity("Account Expired", "Expiry date: {0}".format(tmUser.AccountStatus.ExpirationDate));
-                            return Guid.Empty;
+                            return TM_UserData_Ex_ActiveSessions.expiredLogin();
                         }
                         var pwdOk = tmUser.SecretData.PasswordHash == tmUser.createPasswordHash(password);
                         if (pwdOk)

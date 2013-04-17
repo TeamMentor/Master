@@ -1132,6 +1132,14 @@ h1.ItemTitle
 /*	width: 272px;*/
 }
 
+.buyTeamMentor 
+{
+    text-align: right;
+	padding-right: 10px;
+	padding-top: 10px;
+    display: none;    
+}
+
 .UpdatePasswordTextbox
 {
 	width: 200px;

@@ -15,51 +15,85 @@
 	<script src="/aspx_Pages/scriptCombiner.ashx?s=WebServices_JS" type="text/javascript"></script>
 
 	<script type="text/javascript">
-	
+		var navigateToPurchaseTeamMentor = false;
+		
 		function loginResponse(loginId)
-		{									
-			if(loginId =='00000000-0000-0000-0000-000000000000')
+		{
+			if (loginId == window.TM.Const.emptyGuid)
 			{		
 				$("#loginFailed").fadeIn();
 				$("#loginButton").html('Login');
 			}
+			else if (loginId == window.TM.Const.expiredLoginGuid) 
+			{
+				navigateToPurchaseTeamMentor = true;
+				
+				$("#evaluationExpired").fadeIn();
+				$('#passwordForgotLink').css('display', 'none');
+
+				$('#loginButton').text(' Buy TeamMentor ')
+							.css('position', 'relative')
+							.css('text-align', 'center');
+
+				$('#loginButton').click(function () {
+					window.location.href = 'https://www.securityinnovation.com/products/secure-development-knowledgebase/';
+					return false;
+				});
+			} 
 			else
 			{	
-                if (document.referrer != "" &&                                      // it's valid
-                    document.referrer != document.location &&                       // not the current page
-                    document.referrer.split("/").indexOf("passwordReset") == -1)    // not back into the password Reset page
-                {
-                    document.location = document.referrer;
-                }
-                else			
-				    document.location = "/Login_OK" + document.location.search;
+				if (document.referrer != "" && // it's valid
+					document.referrer != document.location && // not the current page
+					document.referrer.split("/").indexOf("passwordReset") == -1)    // not back into the password Reset page
+				{
+					document.location = document.referrer;
+				}
+				else 
+				{
+					document.location = "/Login_OK" + document.location.search;
+				}
 			}
 		}
 
 		var onSubmit = function()
-		    {
-		        $("#loginFailed").fadeOut();
-				$("#loginButton").html('Logging in');
+			{
+				$("#loginFailed").fadeOut();
+				$("#evaluationExpired").fadeOut();
+
+				if (navigateToPurchaseTeamMentor === false) 
+				{
+					$("#loginButton").html('Logging in');    
+				}
+				
 				var username = $("#username").attr('value');
 				var password = $("#password").attr('value');
 				//console.log("login in with: " + username + " : " + password);
 				TM.WebServices.WS_Users.login(username, password, loginResponse);				
-                $("#passwordForgotLink").relative().top(7)
-		                                .css("","");
+				$("#passwordForgotLink").relative().top(7)
+										.css("","");
 				return false; 
 			};
 
 		$(function()
 			{
 				//css fixes
+				$("#evaluationExpired").hide()
+								 .absolute()
+								 .left(90)
+								 .top(67);
+			
 				$("#loginFailed").hide()
 								 .absolute()
 								 .left(90)
 								 .top(67);
-		        $("h1").css('background-image', '/Images/HeaderImage.jpg');
+
+				$("h1").css('background-image', '/Images/HeaderImage.jpg');
+
 				$("#SI_Logo").width(250);
-		        $(".form").height(209);
-		        $("#passwordForgotLink").relative().top(7);
+
+				$(".form").height(209);
+			
+				$("#passwordForgotLink").relative().top(7);
 
 				//set the click event for the login button 
 				$("#loginButton").click(onSubmit);	
@@ -79,6 +113,7 @@
 					<label for="email">Username</label>					
 					<input type="text" name="username" value="" id="username" tabindex="1" placeholder="tmUser" />		
 					<div class="error" id="loginFailed"><span>Login Failed</span></div>
+					<div class="error" id="evaluationExpired"><span>Evaluation period has expired</span></div>
 				</div>
 				
 				
@@ -89,8 +124,8 @@
 			</div> <!-- .login_fields -->
 			
 			<div class="login_actions">				
-			    <button id="loginButton" class="btn primary" tabindex="3">Login</button>
-                &nbsp;&nbsp;<a href="/passwordForgot" id="passwordForgotLink" style="float:right">Forgot your password?</a>
+				<button id="loginButton" class="btn primary" tabindex="3">Login</button>
+				&nbsp;&nbsp;<a href="/passwordForgot" id="passwordForgotLink" style="float:right">Forgot your password?</a>
 			</div>
 			
 		</form>
