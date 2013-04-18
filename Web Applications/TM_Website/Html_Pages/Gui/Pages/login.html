@@ -42,22 +42,20 @@
 			} 
 			else
 			{	
-				if (document.referrer != "" && // it's valid
-					document.referrer != document.location && // not the current page
-					document.referrer.split("/").indexOf("passwordReset") == -1)    // not back into the password Reset page
-				{
-					document.location = document.referrer;
-				}
-				else 
-				{
-					document.location = "/Login_OK" + document.location.search;
-				}
+                if (document.referrer != "" &&                                      // it's valid
+                    document.referrer != document.location &&                       // not the current page
+                    document.referrer.split("/").indexOf("passwordReset") == -1)    // not back into the password Reset page
+                {
+                    document.location = document.referrer;
+                }
+                else			
+				    document.location = "/Login_OK" + document.location.search;
 			}
 		}
 
 		var onSubmit = function()
-			{
-				$("#loginFailed").fadeOut();
+		    {
+		        $("#loginFailed").fadeOut();
 				$("#evaluationExpired").fadeOut();
 
 				if (navigateToPurchaseTeamMentor === false) 
@@ -69,8 +67,8 @@
 				var password = $("#password").attr('value');
 				//console.log("login in with: " + username + " : " + password);
 				TM.WebServices.WS_Users.login(username, password, loginResponse);				
-				$("#passwordForgotLink").relative().top(7)
-										.css("","");
+                $("#passwordForgotLink").relative().top(7)
+		                                .css("","");
 				return false; 
 			};
 
@@ -88,12 +86,9 @@
 								 .top(67);
 
 				$("h1").css('background-image', '/Images/HeaderImage.jpg');
-
 				$("#SI_Logo").width(250);
-
-				$(".form").height(209);
-			
-				$("#passwordForgotLink").relative().top(7);
+		        $(".form").height(209);
+		        $("#passwordForgotLink").relative().top(7);
 
 				//set the click event for the login button 
 				$("#loginButton").click(onSubmit);	
@@ -124,8 +119,8 @@
 			</div> <!-- .login_fields -->
 			
 			<div class="login_actions">				
-				<button id="loginButton" class="btn primary" tabindex="3">Login</button>
-				&nbsp;&nbsp;<a href="/passwordForgot" id="passwordForgotLink" style="float:right">Forgot your password?</a>
+			    <button id="loginButton" class="btn primary" tabindex="3">Login</button>
+                &nbsp;&nbsp;<a href="/passwordForgot" id="passwordForgotLink" style="float:right">Forgot your password?</a>
 			</div>
 			
 		</form>

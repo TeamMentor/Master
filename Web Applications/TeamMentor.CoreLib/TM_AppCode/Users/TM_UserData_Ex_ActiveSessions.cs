@@ -33,12 +33,13 @@ namespace TeamMentor.CoreLib
             }
             return Guid.Empty;    			
         }*/
-        public static Guid              expiredLogin() {
+
+        public static Guid expiredLogin() {
             var hash = MD5.Create().ComputeHash(Encoding.Default.GetBytes("EXPIRED!"));
             return new Guid(hash);
         }
 
-        public static Guid              login (this TM_UserData userData, string username, string password)
+        public static Guid login(this TM_UserData userData, string username, string password)
         {
             try
             {                
