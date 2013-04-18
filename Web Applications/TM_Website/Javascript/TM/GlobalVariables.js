@@ -45,6 +45,7 @@ if (window.TM.Debug === undefined)
 //Global vars & Constants
 
 window.TM.Const.emptyGuid = "00000000-0000-0000-0000-000000000000";
+window.TM.Const.expiredLoginGuid = "b23ec02d-8d55-4095-e3b5-f5bb7b0cd2da";
 window.TM.Const.EmptyFunction = function() {};
 window.TM.WebServices.Data.lastDataTableData = { aoColumns : [] , aaData: [] };
 window.TM.WebServices.Data.filteredDataTable = { aoColumns : [] , aaData: [] };
