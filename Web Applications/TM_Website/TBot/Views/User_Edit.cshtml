@@ -5,9 +5,12 @@ function TMUser($scope,$http)
         $scope.update = function(userData)
             {                
                 $scope.result = " ... saving user";
+
+            userData.ExpirationDate = "\/Date(" + Date.parse(userData.date) + ")\/";
+            alert( 'd: ' + userData.ExpirationDate);
                 $http.put('/rest/user',userData)
                     .success(function(data)
-                        {                            
+                        {    
                             $scope.result = (data) ? "(User details saved)" : "Error: Failed to Save user!";
                         })
 
@@ -84,8 +87,8 @@ function TMUser($scope,$http)
                 </div><br/>-->
             <div class="input-prepend">
                 <span class="add-on" style="width:120px;">Account Expiration</span>
-                <input type="text" style="width:250px;" ng-model="userData.date"/> 
-            </div> (read only)<br/>
+                <input type="text" style="width:250px;" ng-model="userData.date" required/> 
+            </div><br/>
             
                 
             <label class="checkbox">
