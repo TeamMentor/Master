@@ -34,7 +34,7 @@
         <b>County:          </b> @tmUser.Country <br/>             
         <b>State:           </b> @tmUser.State <br/>             
         <b>GroupID:         </b> @tmUser.GroupID <br/>
-        <b>Account Expires: </b> @tmUser.AccountStatus.ExpirationDate <br/>            
+        <b>Account Expires: </b> @tmUser.AccountStatus.ExpirationDate.ToString("f") <br/>            
         <b>Account Enabled: </b> @tmUser.AccountStatus.UserEnabled <br/>            
         <b>PasswordExpired: </b> @tmUser.AccountStatus.PasswordExpired  <br/>                                    
     </ul>
