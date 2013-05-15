@@ -15,7 +15,7 @@ function TMUser($scope,$http)
                 var selectedDate = picker.data('datetimepicker').getLocalDate();
 
                 userData.ExpirationDate = "\/Date(" + Date.parse(selectedDate) + ")\/";
-            
+                
                 $http.put('/rest/user',userData)
                     .success(function(data)
                         {    
@@ -121,7 +121,7 @@ function TMUser($scope,$http)
                 <label>State</label>        <input type="text" class= "input-xxlarge" ng-model="userData.State"/>
                 -->
             <br/>            
-            <button class="btn btn-primary">Save</button>  <small><a href="Current_Users">back to user's list</a> {{result}}</small>
+            <button class="btn btn-primary">Save</button>  <small><a href="Current_Users">back to user's list</a></small><span class="result">{{result}}</span>
         </ul>    
 
     </form>
@@ -141,6 +141,12 @@ function TMUser($scope,$http)
   .css-form input.ng-invalid.ng-dirty 
   {
     background-color: #FA787E;
+  }
+
+  .result {
+      font-weight: bold;
+      color: #005580;
+      margin-left: 10px;
   }
 
 </style>
