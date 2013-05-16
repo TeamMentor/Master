@@ -24,7 +24,7 @@
                 <td>@(++count)</td>
                 <td><a href="User_View?userName=@user.UserName">@user.UserName</a></td>
                 <td> @user.UserId</td>
-                <td id="CreatedDate">@user.CreatedDate.fromFileTimeUtc()</td>
+                <td id="CreatedDate">@user.CreatedDate.fromFileTimeUtc().ToString("MMM/dd/yyyy")</td>
                 <td id="Actions">@user.Email</td>
                 <td>
                     <a href="User_Edit?@user.UserName">edit user</a> | 

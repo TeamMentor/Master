@@ -46,25 +46,38 @@ namespace TeamMentor.CoreLib
         {
             if (tmUser.isNull())
                 return null;
-            return new TM_User
-                {
-                    CreatedDate = tmUser.Stats.CreationDate.ToFileTimeUtc(),
-                    Company		= tmUser.Company,
-                    Email		= tmUser.EMail,
-                    FirstName	= tmUser.FirstName,
-                    LastName	= tmUser.LastName,                    
-                    Title		= tmUser.Title,
-                    Country		= tmUser.Country,
-                    State		= tmUser.State,
-                    UserId		= tmUser.UserID,
-                    UserName	= tmUser.UserName,
+            var user = new TM_User
+            {
+                
+                Company = tmUser.Company,
+                Email = tmUser.EMail,
+                FirstName = tmUser.FirstName,
+                LastName = tmUser.LastName,
+                Title = tmUser.Title,
+                Country = tmUser.Country,
+                State = tmUser.State,
+                UserId = tmUser.UserID,
+                UserName = tmUser.UserName,
+                CSRF_Token = tmUser.SecretData.CSRF_Token,                
+                UserEnabled = tmUser.AccountStatus.UserEnabled,
+                GroupID = tmUser.GroupID
+            };
+            try
+            {
+                
+                user.ExpirationDate     = tmUser.AccountStatus.ExpirationDate;
+                user.PasswordExpired    = tmUser.AccountStatus.PasswordExpired;
+                user.CreatedDate        = (tmUser.Stats.CreationDate) != default(DateTime)
+                                            ? tmUser.Stats.CreationDate.ToFileTimeUtc()
+                                            : 0;
+            }
+            catch (Exception ex)
+            {
+                ex.log();
+                "[TMUser] user(), failed to convert user {0} with id {1}".format(tmUser.UserName, tmUser.UserID);                
+            }
+            return user;
 
-                    CSRF_Token  = tmUser.SecretData.CSRF_Token,
-                    ExpirationDate  = tmUser.AccountStatus.ExpirationDate,
-                    PasswordExpired = tmUser.AccountStatus.PasswordExpired,
-                    UserEnabled     = tmUser.AccountStatus.UserEnabled,
-                    GroupID         = tmUser.GroupID
-                };
         }
         public static NewUser newUser(this TM_User user)
         {
@@ -78,7 +91,7 @@ namespace TeamMentor.CoreLib
                     Username    = user.UserName,                    
                     Country     = user.Country,
                     State       = user.State
-                };
+                };  
         }
     }
 }
