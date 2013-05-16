@@ -251,6 +251,7 @@
     <Content Include="Images\PivotHeader.jpg" />
     <Content Include="Images\RemoveAllButton.jpg" />
     <Content Include="Javascript\angularJS\1.0.5\angular.min.js" />
+    <Content Include="Javascript\bootstrap\2.2.2\bootstrap.min.js" />
     <Content Include="Javascript\bootstrap\2.3.1\css\bootstrap-responsive.css" />
     <Content Include="Javascript\bootstrap\2.3.1\css\bootstrap-responsive.min.css" />
     <Content Include="Javascript\bootstrap\2.3.1\css\bootstrap.css" />
@@ -262,6 +263,8 @@
     <Content Include="Javascript\bootstrap\bootstrap.v.1.2.0.css" />
     <Content Include="Javascript\bootstrap\bootstrap.min.css" />
     <Content Include="Javascript\bootstrap\bootstrap.min.js" />
+    <Content Include="Javascript\bootstrap\datetimepicker\bootstrap-datetimepicker.min.js" />
+    <Content Include="Javascript\bootstrap\datetimepicker\css\bootstrap-datetimepicker.min.css" />
     <Content Include="Javascript\bootstrap\glyphicons-halflings-white.png" />
     <Content Include="Javascript\bootstrap\glyphicons-halflings.png" />
     <Content Include="Javascript\gAnalytics\ga.js" />

@@ -1,16 +1,26 @@
-﻿<script>
+﻿<script src="/Javascript/jQuery/jquery-1.8.1.min.js" type="text/javascript"></script>  
+<script type="text/javascript" src="/Javascript/bootstrap/2.2.2/bootstrap.min.js"></script>
+<link   href="/Javascript/bootstrap/datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />        
+<script src="/Javascript/bootstrap/datetimepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script> 
+<script type="text/javascript">
     
 function TMUser($scope,$http)
     {        
         $scope.update = function(userData)
             {                
                 $scope.result = " ... saving user";
+            
+                var picker = $('#expirationDate').datetimepicker();
+
+                var selectedDate = picker.data('datetimepicker').getLocalDate();
+
+                userData.ExpirationDate = "\/Date(" + Date.parse(selectedDate) + ")\/";
+                
                 $http.put('/rest/user',userData)
                     .success(function(data)
-                        {                            
+                        {    
                             $scope.result = (data) ? "(User details saved)" : "Error: Failed to Save user!";
                         })
-
             }
 
         var userName = window.location.search.substring(1);
@@ -18,16 +28,20 @@ function TMUser($scope,$http)
         {
                 $scope.userName = userName;
                 $http.get('/rest/user/' + userName).success(function(data)
-                    {             
-                        //_data = data;                        
-                        $scope.userData = data
-                        var value = data.ExpirationDate;
-                        $scope.userData.date = new Date(parseInt(value.replace("/Date(", "").replace(")/",""), 10));
+                    {
+                        $scope.userData = data;
+
+                        var currentExpirationDate = new Date(parseInt($scope.userData.ExpirationDate.replace("/Date(", "").replace(")/",""), 10));
+
+                        var picker = $('#expirationDate').datetimepicker();
+
+                        picker.data('datetimepicker').setLocalDate(currentExpirationDate);
                     });        
         }
         else        
             $scope.userName =  "No username provided";
-    }    
+    }
+
 </script>
 
 <div ng-controller="TMUser">
@@ -78,17 +92,16 @@ function TMUser($scope,$http)
                 <span class="add-on" style="width:120px;">State</span>
                 <input type="text" style="width:250px;" ng-model="userData.State"/>
             </div><br/>
-            <!--<div class="input-prepend">
-                    <span class="add-on" style="width:120px;">Account Expiration Date</span>
-                    <input type="text" style="width:250px;" ng-model="userData.ExpirationDate"/>
-                </div><br/>-->
             <div class="input-prepend">
-                <span class="add-on" style="width:120px;">Account Expiration</span>
-                <input type="text" style="width:250px;" ng-model="userData.date"/> 
-            </div> (read only)<br/>
-            
-                
-            <label class="checkbox">
+                <span class="add-on" style="width: 120px;">Account Expiration</span>
+                <div id="expirationDate" class="input-append date">
+                    <input data-format="dd/MM/yyyy hh:mm:ss" readonly id="txtBxExpirationDate" type="text" style="width: 250px;" required />
+                    <span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+                    </span>
+                </div>
+            </div>
+            <br />
+              <label class="checkbox">
                 <input type="checkbox" ng-model="userData.PasswordExpired"> <b>Password Expired</b>
             </label>
             <label class="checkbox">
@@ -108,7 +121,7 @@ function TMUser($scope,$http)
                 <label>State</label>        <input type="text" class= "input-xxlarge" ng-model="userData.State"/>
                 -->
             <br/>            
-            <button class="btn btn-primary">Save</button>  <small><a href="Current_Users">back to user's list</a> {{result}}</small>
+            <button class="btn btn-primary">Save</button>  <small><a href="Current_Users">back to user's list</a></small><span class="result">{{result}}</span>
         </ul>    
 
     </form>
@@ -128,6 +141,12 @@ function TMUser($scope,$http)
   .css-form input.ng-invalid.ng-dirty 
   {
     background-color: #FA787E;
+  }
+
+  .result {
+      font-weight: bold;
+      color: #005580;
+      margin-left: 10px;
   }
 
 </style>
