@@ -33,8 +33,8 @@ namespace TeamMentor.CoreLib
 					context.Response.Write("Library not found");
 					return;
 				}
-				var pathToLibraryXmlFile = TM_Xml_Database.Current.xmlDB_LibraryPath(libraryName);
-				var pathToGuidanceItemsFolder = TM_Xml_Database.Current.xmlDB_LibraryPath_GuidanceItems(libraryName);
+                var pathToLibraryXmlFile = TM_Xml_Database.Current.xmlDB_Path_Library_XmlFile(library);
+                var pathToGuidanceItemsFolder = TM_Xml_Database.Current.xmlDB_Path_Library_RootFolder(library);
 				
 				var targetDir = libraryName.tempDir();
 				var folderToZip = targetDir.pathCombine(libraryName).createDir();

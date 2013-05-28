@@ -12,7 +12,7 @@ namespace TeamMentor.CoreLib
             var targetLibrary = tmDatabase.tmLibrary(libraryId);
             if (targetLibrary.notNull())
             {                                 
-                var targetFolder = tmDatabase.xmlDB_LibraryPath_GuidanceItems(targetLibrary.Caption)
+                var targetFolder = tmDatabase.xmlDB_Path_Library_RootFolder(targetLibrary)
                                             .pathCombine("_Images")
                                             .createDir();
                 var targetFile = targetFolder.pathCombine(filename.safeFileName());
@@ -68,12 +68,15 @@ namespace TeamMentor.CoreLib
 
         }
 
-
         public static string Get_Path_To_File(this TM_Xml_Database tmDatabase, string libraryName, string fileName)
-        { 
-            var filePath = tmDatabase.xmlDB_LibraryPath_GuidanceItems(libraryName).pathCombine("_Images").pathCombine(fileName);            
-            if (filePath.fileExists())
-                return filePath;
+        {
+            var library = tmDatabase.tmLibrary(libraryName);
+            if (library.notNull())
+            {
+                var filePath =tmDatabase.xmlDB_Path_Library_RootFolder(library).pathCombine("_Images").pathCombine(fileName);
+                if (filePath.fileExists())
+                    return filePath;
+            }
             return null;
         }
     }

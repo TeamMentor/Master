@@ -22,7 +22,7 @@ namespace urn.microsoft.guidanceexplorer
             return xmlFile.load<guidanceExplorer>();            
         }
 
-        public void Save(string xmlFile)
+        public void SaveLibraryTo(string xmlFile)
         {
             this.saveAs(xmlFile);
         }

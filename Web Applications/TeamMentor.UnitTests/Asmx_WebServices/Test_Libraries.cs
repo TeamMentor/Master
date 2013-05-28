@@ -144,9 +144,10 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             var newName 	                    = "_" + originalName + "_new";
 
             var newLibrary                       = tmWebServices.CreateLibrary(new Library { caption = originalName }); //Create Library
-            var guidanceItemsPath_NewName_Before = tmXmlDatabase.xmlDB_LibraryPath_GuidanceItems(newName);            
-            var libraryPath_OriginalName         = tmXmlDatabase.xmlDB_LibraryPath(originalName);            
-            var guidanceItemsPath_OriginalName   = tmXmlDatabase.xmlDB_LibraryPath_GuidanceItems(originalName);            
+            var tmLibrary                        = tmXmlDatabase.tmLibrary(newLibrary.libraryId);
+            //var guidanceItemsPath_NewName_Before = tmXmlDatabase.xmlDB_Path_Library_RootFolder(newName);            
+            var libraryPath_OriginalName         = tmXmlDatabase.xmlDB_Path_Library_XmlFile(tmLibrary);
+            var guidanceItemsPath_OriginalName   = tmXmlDatabase.xmlDB_Path_Library_RootFolder(tmLibrary);
             var testOwaspview                    = tmWebServices.GetViewById(testOwaspViewId);    	    
 
             
@@ -162,13 +163,13 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             
             //Rename Library
             var renameResult                    = tmWebServices.RenameLibrary(newLibrary.libraryId, newName);  
-            var libraryPath_NewName             = tmXmlDatabase.xmlDB_LibraryPath(newName);			 			
+            var libraryPath_NewName             = tmXmlDatabase.xmlDB_Path_Library_XmlFile(newLibrary.libraryId);			 			
             var guidanceItemsPath_NewNameOldDir = libraryPath_NewName.parentFolder().pathCombine(libraryPath_OriginalName.fileName());
-            var guidanceItemsPath_NewName       = tmXmlDatabase.xmlDB_LibraryPath_GuidanceItems(newName);            
+            var guidanceItemsPath_NewName       = tmXmlDatabase.xmlDB_Path_Library_RootFolder(tmLibrary);            
 
             Assert.IsTrue(renameResult, "renameResult");            
             Assert.IsTrue(libraryPath_OriginalName.fileExists()        , "libraryPath_originalName should exist after rename");
-            Assert.IsTrue(libraryPath_NewName	   .fileExists()        , "libraryPath_newName should still not exist after rename");
+            Assert.IsTrue(libraryPath_NewName	  .fileExists()        , "libraryPath_newName should still not exist after rename");
             Assert.IsTrue(guidanceItemsPath_NewNameOldDir.fileExists() , "old library file should still exists in renamed library");    	    
 
             var library_By_Id 				= tmWebServices.GetLibraryById(newLibrary.libraryId);    
@@ -206,18 +207,13 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
         [Assert_Editor] [Test] public void Create_Delete_Libraries_with_a_GuidanceItem()
         {
             tmXmlDatabase.UsingFileStorage = true;                                  // need this since we are checking the file paths
-            var originalName = "temp_lib_createLibraryWithGuidanceItemAndDelete";    
-
-            var libraryPath_OriginalName        = tmXmlDatabase.xmlDB_LibraryPath(originalName);    
-            var libraryPath_GuidanceItemsFolder = tmXmlDatabase.xmlDB_LibraryPath_GuidanceItems(originalName);
-
-            Assert.IsNull(libraryPath_OriginalName       , "libraryPath_OriginalName");
-            Assert.IsNull(libraryPath_GuidanceItemsFolder, "libraryPath_GuidanceItemsFolder");
+            var originalName = "temp_lib".add_RandomLetters(3);    
              
             //Create Library 
             var newLibrary                  = tmWebServices.CreateLibrary                  (new Library { caption = originalName });
-            libraryPath_OriginalName        = tmXmlDatabase.xmlDB_LibraryPath              (originalName);    
-            libraryPath_GuidanceItemsFolder = tmXmlDatabase.xmlDB_LibraryPath_GuidanceItems(originalName); 
+            var tmLibrary                   = tmXmlDatabase.tmLibrary(newLibrary.libraryId);
+            var libraryPath_OriginalName        = tmXmlDatabase.xmlDB_Path_Library_XmlFile              (tmLibrary);    
+            var libraryPath_GuidanceItemsFolder = tmXmlDatabase.xmlDB_Path_Library_RootFolder(tmLibrary); 
 
             Assert.IsNotNull(newLibrary                                  , "newLibrary");
             Assert.IsTrue   (libraryPath_OriginalName.fileExists() 		 , "libraryPath_originalName should exist after creation");

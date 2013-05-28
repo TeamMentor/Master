@@ -99,6 +99,7 @@
     <Compile Include="CoreLib\Test_Tracking_Application.cs" />
     <Compile Include="Asmx_WebServices\Test_WebServices_Security.cs" />
     <Compile Include="REST_Direct\Test_TBot.cs" />
+    <Compile Include="TM_XmlDatabase\Test_Library_SaveToDisk.cs" />
     <Compile Include="TM_XmlDatabase\Test_LoadLibrariesFromDisk.cs" />
     <Compile Include="TM_XmlDatabase\Test_LoadLibraries_FromExternalSource.cs" />
     <Compile Include="TM_XmlDatabase\Test_NGit_Support.cs" />

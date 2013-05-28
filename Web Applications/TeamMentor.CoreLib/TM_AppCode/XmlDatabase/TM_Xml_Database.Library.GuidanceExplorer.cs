@@ -50,97 +50,81 @@ namespace TeamMentor.CoreLib
             "[TM_Xml_Database][xmlDB_NewGuidanceExplorer] Created new Library with id {0} and caption {1}".info(libraryId, caption);
             return newGuidanceExplorer;
         }		
-        public static string                 xmlDB_DeleteGuidanceExplorer(this TM_Xml_Database tmDatabase, Guid libraryId)
+        public static bool                   xmlDB_DeleteGuidanceExplorer(this TM_Xml_Database tmDatabase, Guid libraryId)
         {
             var tmLibrary = tmDatabase.tmLibrary(libraryId);
-            if (tmLibrary.notNull())			
+            if (tmLibrary.isNull())
+                return false;
+            if (tmDatabase.UsingFileStorage)
             {
-                var caption = tmLibrary.Caption;
-                if (caption.isValidGuidanceExplorerName())
-                {                    
-                    "[xmlDB_DeleteGuidanceExplorer] deleting library with caption: {0}".info(caption);
-                    var pathToLibrary = tmDatabase.xmlDB_LibraryPath(caption);								
-                    
-                    var pathToGuidanceItemsFolder = tmDatabase.xmlDB_LibraryPath_GuidanceItems(caption);
-                                    
-                    if (pathToGuidanceItemsFolder.dirExists())
-                    {
-                        "[xmlDB_DeleteGuidanceExplorer] deleting library guidanceItems folder: {0}".debug(pathToGuidanceItemsFolder);
-                        if (Files.deleteFolder(pathToGuidanceItemsFolder,true).isFalse())
-                        {
-                            "[xmlDB_DeleteGuidanceExplorer] there was an error deleting the folder: {0}".error(pathToGuidanceItemsFolder);
-                            return null;
-                        }						
-                    }
-                    
-                    "[xmlDB_DeleteGuidanceExplorer] deleting library guidanceItems file: {0}".debug(pathToLibrary);
-                    Files.deleteFile(pathToLibrary);
-                    
-                    if(pathToLibrary.fileExists())
-                            "[xmlDB_DeleteGuidanceExplorer] there was problem deleting the file: {0}".error(pathToLibrary);				
-                    
-                    //check if there is a root directory with the caption name (happens when imported from ZIP
-                    pathToGuidanceItemsFolder = tmDatabase.xmlDB_LibraryPath_GuidanceItems(caption);
-                    
-                    if (pathToGuidanceItemsFolder.dirExists() && pathToGuidanceItemsFolder.files().size() ==0)
-                        Files.deleteFolder(pathToGuidanceItemsFolder);					
-                    
-                    //finally reset these						
-                    tmDatabase.reloadGuidanceExplorerObjects(); //reset these                                        
+                "[xmlDB_DeleteGuidanceExplorer] deleting library with caption: {0}".info(tmLibrary.Caption);
+                var pathToLibraryFolder = tmDatabase.xmlDB_Path_Library_RootFolder(tmLibrary);
+                    // this is also the Library Root
+                if (pathToLibraryFolder.notValid() || pathToLibraryFolder == tmDatabase.Path_XmlDatabase ||
+                    pathToLibraryFolder == tmDatabase.Path_XmlLibraries)
+                {
+                    "[xmlDB_DeleteGuidanceExplorer][Stopping delete] Something is wrong with the pathToLibrary to delete : {0}"
+                        .error(pathToLibraryFolder);
+                    return false;
                 }
+                if (pathToLibraryFolder.contains(tmDatabase.Path_XmlLibraries).isFalse())
+                {
+                    "[xmlDB_DeleteGuidanceExplorer][Stopping delete] the  pathToLibrary should contain tmDatabase.Path_XmlLibraries : {0}"
+                        .error(pathToLibraryFolder);
+                    return false;
+                }
+                // the checks above are important since the line below is a recursive folder delete (which can delete a LOT of content is pointed to the wrong folder)
+                if (Files.deleteFolder(pathToLibraryFolder, true).isFalse())
+                {
+                    "[xmlDB_DeleteGuidanceExplorer] there was an error deleting the folder: {0}".error(
+                        pathToLibraryFolder);
+                    return false;
+                }
+
+                "[xmlDB_DeleteGuidanceExplorer] Library folder deleted OK: {0}".info(pathToLibraryFolder);
+                tmDatabase.reloadGuidanceExplorerObjects(); //reset these
             }
-            return null;
+            else
+            {
+                TM_Xml_Database.Current.GuidanceExplorers_XmlFormat.remove(tmLibrary.Id);
+            }
+            
+            return true;    
         }
-        public static guidanceExplorer       xmlDB_Save_GuidanceExplorer(this TM_Library tmLibrary, TM_Xml_Database tmDatabase)
-        /*{
-            return tmLibrary.xmlDB_Save_GuidanceExplorer(tmDatabase, true);
-        }
-        public static guidanceExplorer       xmlDB_Save_GuidanceExplorer(this TM_Library tmLibrary, TM_Xml_Database tmDatabase,  bool reloadGuidanceItemsMappings)*/
+        public static bool       xmlDB_Save_GuidanceExplorer(this TM_Library tmLibrary, TM_Xml_Database tmDatabase)        
         {
             return tmDatabase.xmlDB_Save_GuidanceExplorer(tmLibrary.Id);//,  reloadGuidanceItemsMappings);			
         }
-        public static guidanceExplorer       xmlDB_Save_GuidanceExplorer(this TM_Xml_Database tmDatabase, Guid libraryId)
-        /*{
-            return tmDatabase.xmlDB_Save_GuidanceExplorer(libraryId, true);
-        }
-        public static guidanceExplorer       xmlDB_Save_GuidanceExplorer(this TM_Xml_Database tmDatabase, Guid libraryId,  bool reloadGuidanceItemsMappings)*/
+        public static bool       xmlDB_Save_GuidanceExplorer(this TM_Xml_Database tmDatabase, Guid libraryId)
         {
             var guidanceExplorer = tmDatabase.xmlDB_GuidanceExplorer(libraryId);
             return guidanceExplorer.xmlDB_Save_GuidanceExplorer(tmDatabase);//, reloadGuidanceItemsMappings);	
-        }		
-        /*public static guidanceExplorer       xmlDB_Save_GuidanceExplorer(this guidanceExplorer guidanceExplorer, TM_Xml_Database tmDatabase)		
-        {
-            return guidanceExplorer.xmlDB_Save_GuidanceExplorer(tmDatabase, true);
-        }*/
-        public static guidanceExplorer       xmlDB_Save_GuidanceExplorer(this guidanceExplorer guidanceExplorer, TM_Xml_Database tmDatabase)//, bool reloadGuidanceItemsMappings)
+        }		        
+        public static bool       xmlDB_Save_GuidanceExplorer(this guidanceExplorer guidanceExplorer, TM_Xml_Database tmDatabase)
         {
             if (tmDatabase.UsingFileStorage)
             {
+                var libraryName = guidanceExplorer.library.caption;
                 if (tmDatabase.GuidanceExplorers_Paths.hasKey(guidanceExplorer).isFalse())
-                {
-                    var libraryName = guidanceExplorer.library.caption;
+                {                    
                     var libraryFolder = tmDatabase.Path_XmlLibraries.pathCombine(libraryName).createDir();
                     var libraryXmlFile = libraryFolder.pathCombine("{0}.xml".format(libraryName));
                     tmDatabase.GuidanceExplorers_Paths.add(guidanceExplorer, libraryXmlFile);
                 }
                 
-                var libraryPath = tmDatabase.GuidanceExplorers_Paths[guidanceExplorer];
-                var caption = guidanceExplorer.library.caption;
-                "[xmlDB_Save_GuidanceExplorer] saving GuidanceExplorer '{0}' to {1}'".debug(caption, libraryPath);
+                var libraryPath = tmDatabase.GuidanceExplorers_Paths.value(guidanceExplorer);
                 if (libraryPath.notNull())
                 {
-                    libraryPath.parentFolder().createDir(); // ensure library folder exists
-                    guidanceExplorer.Save(libraryPath);
-                    //if (reloadGuidanceItemsMappings)
-                    //    tmDatabase.reloadGuidanceExplorerObjects();		
+                    "[xmlDB_Save_GuidanceExplorer] saving GuidanceExplorer '{0}' to {1}'".debug(libraryName, libraryPath);
+                    
+                    libraryPath.parentFolder().createDir();         // ensure library folder exists
+                    guidanceExplorer.SaveLibraryTo(libraryPath);
                     tmDatabase.triggerGitCommit();
-                    return guidanceExplorer;
                 }
-                
-                //"[xmlDB_Save_GuidanceExplorer] could not find libraryPath for GuidanceExplorer: {0} - {1}".error(guidanceExplorer.library.caption, guidanceExplorer.library.name);
+                else
+                    return false;                
             }
-            return null;
-            //TM_Xml_Database.Current.mapGuidanceItemsViews();			
+            return true;            
         }		
         public static TM_Xml_Database        xmlDB_Save_GuidanceExplorers(this TM_Xml_Database tmDatabase)
         {
@@ -148,18 +132,17 @@ namespace TeamMentor.CoreLib
                 guidanceExplorer.xmlDB_Save_GuidanceExplorer(tmDatabase);
             return tmDatabase;
         }		
-        public static guidanceExplorer       xmlDB_UpdateGuidanceExplorer(this TM_Xml_Database tmDatabase, Guid libraryId, string caption, bool deleteLibrary)
+        public static bool       xmlDB_UpdateGuidanceExplorer(this TM_Xml_Database tmDatabase, Guid libraryId, string caption, bool deleteLibrary)
         {
             //"[xmlDB_UpdateGuidanceExplorer]".info();
             if (TM_Xml_Database.Current.GuidanceExplorers_XmlFormat.hasKey(libraryId).isFalse())
             {
                 "[TM_Xml_Database] in xmlDB_UpdateGuidanceExplorer, could not find library to update with id: {0}".error(libraryId);
-                return null;
+                return false;
             }						
             if (deleteLibrary)
             {				
-                tmDatabase.xmlDB_DeleteGuidanceExplorer(libraryId);
-                return null;
+                return tmDatabase.xmlDB_DeleteGuidanceExplorer(libraryId);                
             }
                         
             var guidanceExplorerToUpdate = TM_Xml_Database.Current.GuidanceExplorers_XmlFormat[libraryId];
@@ -167,55 +150,38 @@ namespace TeamMentor.CoreLib
             // this is a rename 
             if (guidanceExplorerToUpdate.library.caption != caption)
                 return tmDatabase.xmlDB_RenameGuidanceExplorer(guidanceExplorerToUpdate, caption);
-            return guidanceExplorerToUpdate;			
+            return false;			
         }		
-        public static guidanceExplorer       xmlDB_RenameGuidanceExplorer(this TM_Xml_Database tmDatabase, guidanceExplorer guidanceExplorer, string newCaption)
+        public static bool       xmlDB_RenameGuidanceExplorer(this TM_Xml_Database tmDatabase, guidanceExplorer guidanceExplorer, string newCaption)
         {
             if (newCaption.isValidGuidanceExplorerName().isFalse())
             {
                 "[TM_Xml_Database][xmlDB_RenameGuidanceExplorer] provided caption didn't pass validation regex".error();
-                throw new Exception("Provided Library name didn't pass validation regex"); 				
+                //throw new Exception("Provided Library name didn't pass validation regex"); 				                
             }
-            //"[xmlDB_RenameGuidanceExplorer]".info();
-            if(guidanceExplorer.notNull())
-            {
-                if (tmDatabase.UsingFileStorage.isFalse())
-                {
-                    guidanceExplorer.library.caption = newCaption;									// update in memory library name value
-                    return guidanceExplorer;
-                }
-                var existingCaption = guidanceExplorer.library.caption;
-                var existingLibraryPath = tmDatabase.xmlDB_LibraryPath(existingCaption); // TM_Xml_Database.Current.Path_XmlLibraries.pathCombine("{0}.xml".format(guidanceExplorer.library.caption));                
-                if(existingLibraryPath.fileExists().isFalse())
-                    "[xmlDB_RenameGuidanceExplorer] something is wrong since existingLibraryPath was not there: {0}".error(existingLibraryPath);
-                else
-                {	
-                    var newLibraryPath = tmDatabase.xmlDB_LibraryPath(newCaption);
-                    if (newLibraryPath.fileExists())
-                        "[xmlDB_RenameGuidanceExplorer] there was already a library and/or file with that name, so stopping rename): {0}".error(newLibraryPath);
-                    else
-                    {
-                    
-                        var pathToGuidanceItems_Existing = tmDatabase.xmlDB_LibraryPath_GuidanceItems(existingCaption);
-                        //var pathToGuidanceItems_New = tmDatabase.xmlDB_LibraryPath_GuidanceItems(newCaption);
-                        if(pathToGuidanceItems_Existing.dirExists())	
-                        {
-                            //"xmlDB_RenameGuidanceExplorer {0}-> {1}".info(pathToGuidanceItems_Existing, pathToGuidanceItems_New);
-                            //Renaming workflow:
-                            //Files.deleteFile(existingLibraryPath);                                          // delete original xml library file                            
-                            //Files.renameFolder(pathToGuidanceItems_Existing,  pathToGuidanceItems_New);     // rename folders
-                            guidanceExplorer.library.caption = newCaption;									// update in memory library name value
+            else if(guidanceExplorer.notNull())
+            {                
+                guidanceExplorer.library.caption = newCaption;  // update in memory library name value
 
-                            guidanceExplorer.xmlDB_Save_GuidanceExplorer(tmDatabase);                       // save into new path
-                            //tmDatabase.updateGuidanceItems_FileMappings_withNewPath(pathToGuidanceItems_Existing,pathToGuidanceItems_New);  //update article's cache mappings
-                            return guidanceExplorer;
-                        }
-                        "[xmlDB_RenameGuidanceExplorer] could find dir with library to rename".error(
-                            pathToGuidanceItems_Existing);
-                    }                    
-                }
+                /*if (tmDatabase.UsingFileStorage)                // soft try to rename the library (disabled for now)
+                {
+                    try
+                    {
+                        var current_LibraryRootFolder = tmDatabase.xmlDB_Path_Library_RootFolder(guidanceExplorer);
+                        var new_LibraryRootFolder = tmDatabase.Path_XmlLibraries.pathCombine(newCaption);
+                        Files.renameFolder(current_LibraryRootFolder, new_LibraryRootFolder);
+                        if (new_LibraryRootFolder.dirExists())
+                            tmDatabase.GuidanceExplorers_Paths.add(guidanceExplorer, new_LibraryRootFolder);
+                    }
+                    catch (Exception ex)
+                    {
+                        ex.log("[xmlDB_RenameGuidanceExplorer] in trying to rename the library folder");                            
+                    }
+                    return guidanceExplorer.xmlDB_Save_GuidanceExplorer(tmDatabase);                // save it                
+                }*/
+                return true;                
             }
-            return null;			
+            return false;			
         }		
         public static TM_Xml_Database        updateGuidanceItems_FileMappings_withNewPath(this TM_Xml_Database tmDatabase, string oldPath, string newPath)
         {
@@ -227,37 +193,41 @@ namespace TeamMentor.CoreLib
             }
             return tmDatabase;
         }		
-        public static string                 xmlDB_LibraryPath(this TM_Xml_Database tmDatabase, string caption)
+        //public static string                 xmlDB_Path_Library_XmlFile(this TM_Xml_Database tmDatabase, string caption)
+        
+
+        public static string xmlDB_Path_Library_XmlFile(this TM_Xml_Database tmDatabase, TM_Library library)
+        {
+            return tmDatabase.xmlDB_Path_Library_XmlFile(library.Id);
+        }
+        public static string xmlDB_Path_Library_XmlFile(this TM_Xml_Database tmDatabase, Guid libraryId)
+        {
+            var guidanceExplorer = tmDatabase.xmlDB_GuidanceExplorer(libraryId);
+            return tmDatabase.xmlDB_Path_Library_XmlFile(guidanceExplorer);
+        }
+        public static string xmlDB_Path_Library_XmlFile(this TM_Xml_Database tmDatabase, guidanceExplorer guidanceExplorer)
         {
             if (tmDatabase.UsingFileStorage)
             {
-                var guidanceExplorer = tmDatabase.xmlDB_GuidanceExplorer(caption);
-                if (guidanceExplorer.notNull() && TM_Xml_Database.Current.GuidanceExplorers_Paths.hasKey(guidanceExplorer))
-                    return TM_Xml_Database.Current.GuidanceExplorers_Paths[guidanceExplorer];
-                //return TM_Xml_Database.Current.Path_XmlLibraries.pathCombine("{0}\\{0}.xml".format(caption));
-                //Removing Legacy suport for library folders in the root of the Xml Libraries folder
-                //var libraryPath = TM_Xml_Database.Current.Path_XmlLibraries.pathCombine("{0}.xml".format(caption)); // legacy support for Xml Files on Root of Library
-                //if (libraryPath.fileExists())
-                //    return libraryPath;
-                //Librarypath = TM_Xml_Database.Current.Path_XmlLibraries.pathCombine("{0}\\{0}.xml".format(caption));                
-                //if (libraryPath.fileExists())
-                //return libraryPath;
-                //"[xmlDB_LibraryPath] could not find library path for library called '{0}'".info(caption);
+                return tmDatabase.GuidanceExplorers_Paths.value(guidanceExplorer);
+                /*if (guidanceExplorer.notNull())
+                    if (tmDatabase.GuidanceExplorers_Paths.hasKey(guidanceExplorer))
+                        return tmDatabase.GuidanceExplorers_Paths[guidanceExplorer];*/
             }
             return null;
-        }				
-        public static string                 xmlDB_LibraryPath_GuidanceItems(this TM_Xml_Database tmDatabase, string caption)
+        }
+
+        public static string xmlDB_Path_Library_RootFolder(this TM_Xml_Database tmDatabase, TM_Library tmLibrary)
         {
-            var libraryPath = tmDatabase.xmlDB_LibraryPath(caption);
+            var guidanceExplorer = tmLibrary.guidanceExplorer(tmDatabase);
+            return tmDatabase.xmlDB_Path_Library_RootFolder(guidanceExplorer);
+        }
+        public static string xmlDB_Path_Library_RootFolder(this TM_Xml_Database tmDatabase, guidanceExplorer guidanceExplorer)
+        {
+            var libraryPath = tmDatabase.xmlDB_Path_Library_XmlFile(guidanceExplorer);
             if (libraryPath.notNull())
             {
                 return libraryPath.directoryName(); // from 3.3 the library path is the parent folder of the Library's Xml file
-
-                /*var parentFolder = libraryPath.parentFolder();							//check if the xml file is in a folder with the same name as the library name
-                if (parentFolder.folderName() == caption)			
-                    return parentFolder;
-                return libraryPath.directoryName().pathCombine("{0}".format(caption));  // if it is not , return the parent folder
-                 * */
             }
             return null;
         }						

@@ -24,18 +24,20 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             Assert.That(createdLibrary.notNull(), "could not fetch new Library with Id: {0}".format(newLibrary.id));    	
             createdLibrary.caption += "_toDelete";    		  
             tmWebServices.UpdateLibrary(createdLibrary);    		    		    		
-            var updatedLibrary = tmWebServices.GetLibraryById(createdLibrary.id.remove("library:").guid());
+            var updatedLibrary = tmWebServices.GetLibraryById(createdLibrary.id.guid());
              
-            Assert.That(updatedLibrary.id == createdLibrary.id, "in updated, id didn't match created library");
-            Assert.That(updatedLibrary.caption == createdLibrary.caption, "in updated, caption didn't match");
-            Assert.That(updatedLibrary.delete == createdLibrary.delete, "in updated, delete didn't match");
-            Assert.That(updatedLibrary.id.contains(newLibrary.id), "in updated, id didn't match new library object");
-            Assert.That(updatedLibrary.caption != newLibrary.caption, "in updated, caption should be different that newLibrary");
+            Assert.That(updatedLibrary.id       == createdLibrary.id        , "in updated, id didn't match created library");
+            Assert.That(updatedLibrary.caption  == createdLibrary.caption   , "in updated, caption didn't match");
+            Assert.That(updatedLibrary.delete   == createdLibrary.delete    , "in updated, delete didn't match");
+            Assert.That(updatedLibrary.caption  != newLibrary.caption       , "in updated, caption should be different that newLibrary");
+            Assert.That(updatedLibrary.id.contains(newLibrary.id)           , "in updated, id didn't match new library object");
+            
             
             updatedLibrary.delete = true;    		     		
-            tmWebServices.UpdateLibrary(updatedLibrary);    		    		    		
-            var deletedLibrary = tmWebServices.GetLibraryById(updatedLibrary.id.remove("library:").guid());
-            Assert.IsNull(deletedLibrary, "deletedLibrary");    		    		
+            var deleteResult = tmWebServices.UpdateLibrary(updatedLibrary);    		    		    		
+            var deletedLibrary = tmWebServices.GetLibraryById(updatedLibrary.id.guid());
+            Assert.IsTrue(deleteResult  , "deleteResult was not true");
+            Assert.IsNull(deletedLibrary, "deletedLibrary should not be there (GetLibraryById returned it)");    		    		
         }    	    	    	    	           
         [Test] [Assert_Editor] public void CreateView_and_DeleteLibrary()
         {    
