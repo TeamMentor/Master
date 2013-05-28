@@ -444,23 +444,36 @@ namespace TeamMentor.CoreLib
                 if (folderId == Guid.Empty)
                     return false;
                 
-                var folder = tmDatabase.xmlDB_Folder(libraryId, folderId);
-                if (folder.isNull())
+                var folderToDelete = tmDatabase.xmlDB_Folder(libraryId, folderId);
+                if (folderToDelete.isNull())
                     return false;
-                //"found folder".info();	
-                //var libraryStructure = TM_Xml_Database.GuidanceExplorers_XmlFormat[libraryId].library.libraryStructure;
-                //libraryStructure.folder.Remove(folder); 
-                folder.Untyped.Remove();
-                
-                tmDatabase.xmlDB_Save_GuidanceExplorer(libraryId); 
-                return true;
+
+                var guidanceExplorer = tmDatabase.xmlDB_GuidanceExplorer(libraryId);                
+
+                //see if the folder is on the library root
+                if (guidanceExplorer.library.libraryStructure.folder.contains(folderToDelete))
+                {
+                    guidanceExplorer.library.libraryStructure.folder.remove(folderToDelete);
+                    tmDatabase.xmlDB_Save_GuidanceExplorer(libraryId);
+                    return true;
+                }
+                // see if the folder to delete is a subfolder
+                foreach (var folder in tmDatabase.xmlDB_Folders_All(libraryId))
+                {
+                    if (folder.folder1.contains(folderToDelete))
+                    {
+                        folder.folder1.remove(folderToDelete);
+                        tmDatabase.xmlDB_Save_GuidanceExplorer(libraryId);
+                        return true;
+                    }
+                }
+                "[xmlDB_Delete_Folder] could not find folder to delete: {0} {1}".error(libraryId, folderId);
             }
             catch(Exception ex)
             {
-                ex.log("in xmlDB_Delete_Folder");
-                return false;
+                ex.log("in xmlDB_Delete_Folder");                
             }
-            
+            return false;
         }		
         /*public static urn.microsoft.guidanceexplorer.View xmlDB_RemoveView(urn.microsoft.guidanceexplorer.Folder , View tmView, TM_Xml_Database tmDatabase)
         {

@@ -57,14 +57,12 @@ namespace urn.microsoft.guidanceexplorer
         [XmlAttribute] public string           folderId            { get; set; }
         [XmlAttribute] public string           caption             { get; set; }
         [XmlElement  ] public List<View>       view                { get; set; }         
-        [XmlElement  ] public List<Folder>     folder1             { get; set; }
-        [XmlElement  ] public Untyped          Untyped             { get; set; }
+        [XmlElement  ] public List<Folder>     folder1             { get; set; }        
 
         public Folder()
         {
             view     = new List<View>();
-            folder1  = new List<Folder>();
-            Untyped  = new Untyped();
+            folder1  = new List<Folder>();            
         }
     }
     public class View
@@ -73,13 +71,11 @@ namespace urn.microsoft.guidanceexplorer
         [XmlAttribute] public string           caption             { get; set; }
         [XmlAttribute] public string           author              { get; set; }
         [XmlAttribute] public DateTime         creationDate        { get; set; }
-        [XmlElement  ] public Items            items               { get; set; }        
-        //[XmlElement  ] public Untyped          Untyped             { get; set; }
+        [XmlElement  ] public Items            items               { get; set; }                
 
         public View()
         {
-            items    = new Items();            
-            //Untyped  = new Untyped();
+            items    = new Items();                        
         }
     }
     public class Items 
@@ -89,14 +85,6 @@ namespace urn.microsoft.guidanceexplorer
         public Items()
         {
             item = new List<string>();
-        }
-    }
-
-    public class Untyped
-    {
-        public void Remove()
-        {
-            throw new Exception("Library method not implemented");
         }
     }
 }
