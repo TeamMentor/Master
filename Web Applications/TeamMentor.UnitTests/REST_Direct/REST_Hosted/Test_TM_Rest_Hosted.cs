@@ -8,7 +8,10 @@ namespace TeamMentor.UnitTests.REST
 
 {	    
     [TestFixture]
-    //[Ignore]                // can't run these on TeamCity due to security protection for binding WCF address into Port
+    [Ignore]                // can't run these on TeamCity due to security protection for binding WCF address into Port
+                            // need to find a better solution or a way to automate the setup
+                            // references:http://blogs.msdn.com/b/paulwh/archive/2007/05/04/addressaccessdeniedexception-http-could-not-register-url-http-8080.aspx
+                            //            http://stackoverflow.com/questions/885744/wcf-servicehost-access-rights
     public class Test_TM_Rest_Hosted : TM_Rest_Hosted
     {
         [SetUp] public static void Initialize()

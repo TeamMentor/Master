@@ -17,7 +17,7 @@ namespace TeamMentor.CoreLib
             {
                 foreach (var library in tmDatabase.tmLibraries())
                 {
-                    var libraryPath = tmDatabase.xmlDB_LibraryPath(library.Caption).parentFolder();
+                    var libraryPath = tmDatabase.xmlDB_Path_Library_XmlFile(library).parentFolder();
                     if (libraryPath.isGitRepository())
                     {
                         var nGit = libraryPath.git_Open();
@@ -377,15 +377,7 @@ namespace TeamMentor.CoreLib
                 //"in getXmlFilePathForGuidanceId, found id in current mappings: {0}".info( guidanceItemId);
                 return TM_Xml_Database.Current.GuidanceItems_FileMappings[guidanceItemId];
             }
-            //then update the GuidanceItems_FileMappings dictionary
-
-            //tmDatabase.populateGuidanceItemsFileMappings();
-
-            if (TM_Xml_Database.Current.GuidanceItems_FileMappings.hasKey(guidanceItemId))
-            {
-                "[getXmlFilePathForGuidanceId] found id after reindex: {0}".info( guidanceItemId);
-                return TM_Xml_Database.Current.GuidanceItems_FileMappings[guidanceItemId];
-            }
+            //then update the GuidanceItems_FileMappings dictionary            
             
             if (libraryId == Guid.Empty)
             {
@@ -398,13 +390,12 @@ namespace TeamMentor.CoreLib
                 "[getXmlFilePathForGuidanceId] When creating a new GuidanceItem could not find library for libraryId: {0}".error(libraryId);
                 return null;
             }
-            var newGuidanceVirtualFolder = "{0}\\Articles".format(tmLibrary.Caption);
-            // if not store it on a _GuidanceItems folder
-            var xmlPath = TM_Xml_Database.Current.Path_XmlLibraries
-                                         .pathCombine(newGuidanceVirtualFolder)
-                                         .createDir()
+            var libraryPath = tmDatabase.xmlDB_Path_Library_RootFolder(tmLibrary);
+            var newArticleFolder = libraryPath.pathCombine(TMConsts.DEFAULT_ARTICLE_FOLDER_NAME);
+            var xmlPath = newArticleFolder.createDir()                                         
                                          .pathCombine("{0}.xml".format(guidanceItemId));
-            "in getXmlFilePathForGuidanceId, no previous mapping found so guidanceitem to :{0}".info(xmlPath);
+
+            "in getXmlFilePathForGuidanceId, no previous mapping found so adding new GuidanceItems_FileMappings for :{0}".info(xmlPath);
 
             TM_Xml_Database.Current.GuidanceItems_FileMappings.add(guidanceItemId, xmlPath); //add it to the file_mappings dictionary so that we know it for next time
             return xmlPath;

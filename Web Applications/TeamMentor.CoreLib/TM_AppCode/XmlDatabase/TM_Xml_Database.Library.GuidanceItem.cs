@@ -321,8 +321,9 @@ namespace TeamMentor.CoreLib
                             Data = {Value = htmlContent}
                         }
                 };
-            article.xmlDB_Save_Article(libraryId, tmDatabase);
-            return article;
+            if (article.xmlDB_Save_Article(libraryId, tmDatabase))
+                return article;
+            return null;
         }
         [EditArticles]  public static Guid xmlDB_Create_Article(this TM_Xml_Database tmDatabase, TeamMentor_Article article)
         {             
@@ -361,10 +362,13 @@ namespace TeamMentor.CoreLib
             
             if(tmDatabase.UsingFileStorage)                                             // save to disk
             {
-                var guidanceXmlPath = tmDatabase.getXmlFilePathForGuidanceId(article.Metadata.Id, libraryId);           
-                "Saving GuidanceItem {0} to {1}".info(article.Metadata.Id, guidanceXmlPath);				
-                article.saveAs(guidanceXmlPath);               
-                return guidanceXmlPath.fileExists();			
+                var guidanceXmlPath = tmDatabase.getXmlFilePathForGuidanceId(article.Metadata.Id, libraryId);
+                if (guidanceXmlPath.valid())
+                {
+                    "Saving GuidanceItem {0} to {1}".info(article.Metadata.Id, guidanceXmlPath);
+                    article.saveAs(guidanceXmlPath);
+                    return guidanceXmlPath.fileExists();
+                }
             }
             return true;
         }        
