@@ -67,6 +67,7 @@
 				updateUserPassword(editUserId, "userName".$().val(), newPassword, 
 									function (data) { if (data.d ==false) {alert('Failed to update user password')}} ); 
 			}
+	        var expirationDate = new Date(parseInt(currentUserData.ExpirationDate.replace("/Date(", "").replace(")/",""), 10));
 			updateUser(editUserId, 
 					   "userName".$().val(),
 					   "firstName".$().val(),
@@ -76,6 +77,7 @@
 					   "email".$().val(),
 			           "country".$().val(),
 			           "state".$().val(),
+			            expirationDate,
 			           "passwordExpired".$().val(),
 			           "userEnabled".$().val(),
 					   "groupId".$().val(),

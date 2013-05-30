@@ -80,7 +80,7 @@ function batchUserCreation(batchUserData, callback)
 }
 
 function updateUser(userId, userName, firstname, lastname, title, company, email, 
-                    country, state,  passwordExpired, userEnabled, groupId, callback)
+                    country, state, accountExpiration,  passwordExpired, userEnabled, groupId, callback)
 {
     var url = TM.tmWebServices + 'UpdateUser';
     var params =  JSON.stringify(
@@ -94,6 +94,7 @@ function updateUser(userId, userName, firstname, lastname, title, company, email
                  email           : email, 
                  country         : country, 
                  state           : state,  
+                 accountExpiration  : accountExpiration,
                  passwordExpired : passwordExpired, 
                  userEnabled     : userEnabled,
                  groupId         : groupId
