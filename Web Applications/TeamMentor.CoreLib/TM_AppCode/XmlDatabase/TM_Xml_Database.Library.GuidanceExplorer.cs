@@ -91,27 +91,15 @@ namespace TeamMentor.CoreLib
             }
             return null;
         }
-        public static guidanceExplorer       xmlDB_Save_GuidanceExplorer(this TM_Library tmLibrary, TM_Xml_Database tmDatabase)
-        /*{
-            return tmLibrary.xmlDB_Save_GuidanceExplorer(tmDatabase, true);
-        }
-        public static guidanceExplorer       xmlDB_Save_GuidanceExplorer(this TM_Library tmLibrary, TM_Xml_Database tmDatabase,  bool reloadGuidanceItemsMappings)*/
+        public static guidanceExplorer       xmlDB_Save_GuidanceExplorer(this TM_Library tmLibrary, TM_Xml_Database tmDatabase)        
         {
-            return tmDatabase.xmlDB_Save_GuidanceExplorer(tmLibrary.Id);//,  reloadGuidanceItemsMappings);			
+            return tmDatabase.xmlDB_Save_GuidanceExplorer(tmLibrary.Id);
         }
-        public static guidanceExplorer       xmlDB_Save_GuidanceExplorer(this TM_Xml_Database tmDatabase, Guid libraryId)
-        /*{
-            return tmDatabase.xmlDB_Save_GuidanceExplorer(libraryId, true);
-        }
-        public static guidanceExplorer       xmlDB_Save_GuidanceExplorer(this TM_Xml_Database tmDatabase, Guid libraryId,  bool reloadGuidanceItemsMappings)*/
+        public static guidanceExplorer       xmlDB_Save_GuidanceExplorer(this TM_Xml_Database tmDatabase, Guid libraryId)        
         {
             var guidanceExplorer = tmDatabase.xmlDB_GuidanceExplorer(libraryId);
-            return guidanceExplorer.xmlDB_Save_GuidanceExplorer(tmDatabase);//, reloadGuidanceItemsMappings);	
-        }		
-        /*public static guidanceExplorer       xmlDB_Save_GuidanceExplorer(this guidanceExplorer guidanceExplorer, TM_Xml_Database tmDatabase)		
-        {
-            return guidanceExplorer.xmlDB_Save_GuidanceExplorer(tmDatabase, true);
-        }*/
+            return guidanceExplorer.xmlDB_Save_GuidanceExplorer(tmDatabase);
+        }		        
         public static guidanceExplorer       xmlDB_Save_GuidanceExplorer(this guidanceExplorer guidanceExplorer, TM_Xml_Database tmDatabase)//, bool reloadGuidanceItemsMappings)
         {
             if (tmDatabase.UsingFileStorage)
@@ -402,6 +390,6 @@ namespace TeamMentor.CoreLib
 
             return result;
         }				
-    }
+    }    
 }
 

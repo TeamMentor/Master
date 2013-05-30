@@ -95,7 +95,7 @@ namespace TeamMentor.CoreLib
     public static class TM_Xml_Database_ExtensionMethods_TM_Library
     {
         //[ReadArticles] 
-        public static List<TM_Library> tmLibraries(this TM_Xml_Database tmDatabase)
+        public static List<TM_Library>  tmLibraries(this TM_Xml_Database tmDatabase)
         {
             var libraries = new List<TM_Library>();
             try
@@ -113,7 +113,7 @@ namespace TeamMentor.CoreLib
             }
             return libraries;
         }		
-        public static TM_Library tmLibrary(this TM_Xml_Database tmDatabase, string caption)
+        public static TM_Library        tmLibrary(this TM_Xml_Database tmDatabase, string caption)
         {
             if (caption.isGuid())   // if the value provided is a guid, then 
                 return tmDatabase.tmLibrary(caption.guid());
@@ -125,7 +125,7 @@ namespace TeamMentor.CoreLib
             //	"[TM_Xml_Database] couldn't find library with caption: {0}".error(caption);
             return tmLibrary;
         }		
-        public static TM_Library tmLibrary(this TM_Xml_Database tmDatabase, Guid libraryId)
+        public static TM_Library        tmLibrary(this TM_Xml_Database tmDatabase, Guid libraryId)
         {
             var tmLibrary = (from library in tmDatabase.tmLibraries()
                              where library.Id == libraryId
@@ -134,26 +134,26 @@ namespace TeamMentor.CoreLib
             //	"[TM_Xml_Database] couldn't find library with id: {0}".error(libraryId);
             return tmLibrary;		
         }		
-        public static List<Guid> ids(this List<TM_Library> libraries)
+        public static List<Guid>        ids(this List<TM_Library> libraries)
         {
             return (from library in libraries
                     select library.Id).toList();
         }		
-        public static List<string> names(this List<TM_Library> libraries)
+        public static List<string>      names(this List<TM_Library> libraries)
         {
             return libraries.captions();
         }
-        public static List<string> captions(this List<TM_Library> libraries)
+        public static List<string>      captions(this List<TM_Library> libraries)
         {
             return (from library in libraries
                     select library.Caption).toList();
         }	
 
-        [EditArticles]  public static TM_Library new_TmLibrary(this TM_Xml_Database tmDatabase)
+        [EditArticles]  public static TM_Library        new_TmLibrary   (this TM_Xml_Database tmDatabase)
         {
             return tmDatabase.new_TmLibrary("Default_Library_{0}".format(6.randomNumbers()));
         }		
-        [EditArticles]  public static TM_Library new_TmLibrary(this TM_Xml_Database tmDatabase, string libraryCaption )
+        [EditArticles]  public static TM_Library        new_TmLibrary   (this TM_Xml_Database tmDatabase, string libraryCaption )
         {
             var existingLibrary = tmDatabase.tmLibrary(libraryCaption);
             if (existingLibrary.notNull())
@@ -164,6 +164,11 @@ namespace TeamMentor.CoreLib
             tmDatabase.xmlDB_NewGuidanceExplorer(Guid.NewGuid(), libraryCaption);
             return tmDatabase.tmLibrary(libraryCaption);
         }		
+        [EditArticles]  public static TM_Xml_Database   delete_Library  (this TM_Xml_Database tmDatabase, TM_Library library)
+        {
+            tmDatabase.xmlDB_DeleteGuidanceExplorer(library.Id);
+            return tmDatabase;
+        }
     }
     
     //******************* Folder_V3 (was TMFolder)

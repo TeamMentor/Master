@@ -203,7 +203,7 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             Assert.IsFalse(libraryPath_OriginalName.fileExists(),     "libraryPath_originalName should not exist at the end");            
             Assert.AreEqual(testOwaspview2.guidanceItems.size() , 21, "There should still be 21 views in the test OWASP A2 view");
         }
-        [Assert_Editor] [Test] public void Create_Delete_Libraries_with_a_GuidanceItem()
+        [Test] [Assert_Editor] public void Create_Delete_Libraries_with_a_GuidanceItem()
         {
             tmXmlDatabase.UsingFileStorage = true;                                  // need this since we are checking the file paths
             var originalName = "temp_lib_createLibraryWithGuidanceItemAndDelete";    
