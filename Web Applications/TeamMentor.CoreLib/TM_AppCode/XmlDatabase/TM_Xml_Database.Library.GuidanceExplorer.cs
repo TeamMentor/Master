@@ -163,6 +163,9 @@ namespace TeamMentor.CoreLib
             {                
                 guidanceExplorer.library.caption = newCaption;  // update in memory library name value
 
+                return guidanceExplorer.xmlDB_Save_GuidanceExplorer(tmDatabase);                // save it 
+               
+
                 /*if (tmDatabase.UsingFileStorage)                // soft try to rename the library (disabled for now)
                 {
                     try
@@ -177,9 +180,8 @@ namespace TeamMentor.CoreLib
                     {
                         ex.log("[xmlDB_RenameGuidanceExplorer] in trying to rename the library folder");                            
                     }
-                    return guidanceExplorer.xmlDB_Save_GuidanceExplorer(tmDatabase);                // save it                
-                }*/
-                return true;                
+                    
+                }*/                       
             }
             return false;			
         }		
