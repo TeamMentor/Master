@@ -37,7 +37,7 @@ namespace TeamMentor.CoreLib
                                         //SingleUseLoginToken = Guid.NewGuid(),
                                         PasswordResetToken  = null                  // default to Null
                                     };
-
+            Sessions        = new List<UserSession>();
             UserActivities  = new List<UserActivity>();
             AccountStatus   = new UserAccountStatus
                                     {
@@ -48,7 +48,7 @@ namespace TeamMentor.CoreLib
             Stats           = new UserStats
                                     {
                                         CreationDate = DateTime.Now                                       
-                                    };
+                                    };            
         }
     }
 

@@ -98,13 +98,18 @@ namespace TeamMentor.CoreLib
         }
         public static bool              logout(this TMUser tmUser)
         {
+            var sessionIDs = tmUser.session_sessionIds();
+            if (sessionIDs.empty())
+                return false;            
             var allOk = true;
-            foreach (var sessionId in tmUser.session_sessionIds())
+            foreach (var sessionId in sessionIDs)
             {
                 var result = tmUser.logout(sessionId);
                 allOk = allOk && result;
             }
             return allOk;
+            // this could probably be done better with a List<bool> used to capture the results
+            // the return value would come from an ExtMet allTrue(this List<bool> ...)
         }
         public static bool              logout(this Guid sessionId)                                        
         {
@@ -137,27 +142,25 @@ namespace TeamMentor.CoreLib
         }
 
         public static UserSession       add_NewSession(this TMUser tmUser)
-        {            
-            try
-            {
-                var ipAddress = HttpContextFactory.Request.UserHostAddress; // todo:change to available method in 3.4
-                var userSession = new UserSession
-                    {
-                        SessionID    = Guid.NewGuid(),
-                        IpAddress    = ipAddress,
-                        CreationDate = DateTime.Now
-                    };
-                tmUser.Sessions.add(userSession);
-                return userSession;
-            }
-            catch (Exception ex)
-            {
-                ex.log("[TM_User][add_SessionID]");
-            }
-            return null;
-        }
+        {
 
-        public static bool remove_Session(this TMUser tmUser, Guid sessionID)
+            var ipAddress = HttpContextFactory.Context.ipAddress();            
+            var userSession = new UserSession
+            {
+                SessionID = Guid.NewGuid(),
+                IpAddress = ipAddress,
+                CreationDate = DateTime.Now
+            };
+            tmUser.Sessions.add(userSession);
+            return userSession;            
+        }
+        public static bool              remove_Session(this TMUser tmUser, UserSession userSession)
+        {
+            if (userSession.isNull())
+                return false;
+            return tmUser.remove_Session(userSession.SessionID);
+        }
+        public static bool              remove_Session(this TMUser tmUser, Guid sessionID)
         {
             if (tmUser.isNull())
                 return false;
@@ -166,6 +169,7 @@ namespace TeamMentor.CoreLib
             {
                 var sessionToRemove = currentSessions[sessionID];
                 tmUser.Sessions.Remove(sessionToRemove);
+                return true;
             }
             "[remove_Session] was not able to find session object {0} for user {1}".error(sessionID, tmUser.UserName);
             return false;
@@ -182,6 +186,17 @@ namespace TeamMentor.CoreLib
                     from session in tmUser.Sessions
                     where session.SessionID != Guid.Empty
                     select session.SessionID).toList();
+        }
+
+        public static TM_UserData resetAllSessions(this TM_UserData userData)
+        {
+            var sessionIDs = userData.validSessions();
+            foreach (var sessionID in sessionIDs)
+            {
+                var tmUser = sessionID.session_TmUser();                
+                tmUser.remove_Session(sessionID);                
+            }
+            return userData;
         }
 
         public static bool              validSession         (this Guid sessionId)
