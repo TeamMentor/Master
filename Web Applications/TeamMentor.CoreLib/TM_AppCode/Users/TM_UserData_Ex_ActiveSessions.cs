@@ -41,7 +41,7 @@ namespace TeamMentor.CoreLib
 
                     if (tmUser.notNull())
                     {
-                        tmUser.SecretData.SessionID = Guid.Empty;          // reset the user SessionID
+                       // tmUser.SecretData.SessionID = Guid.Empty;          // reset the user SessionID
                         if (tmUser.account_Expired())
                         {
                             tmUser.logUserActivity("Account Expired", "Expiry date: {0}".format(tmUser.AccountStatus.ExpirationDate));
@@ -51,7 +51,7 @@ namespace TeamMentor.CoreLib
                         if (pwdOk)
                         {
                             if(tmUser.account_Enabled())
-                                return tmUser.login(Guid.NewGuid());                    // call login with a new SessionID            
+                                return tmUser.login();                    // call login with a new SessionID            
                             
                             tmUser.logUserActivity("Login Fail",  "pwd ok, but account disabled");
                         }
@@ -70,28 +70,24 @@ namespace TeamMentor.CoreLib
             return Guid.Empty;    			
         }
         public static Guid              login (this TMUser tmUser)                                         
-        {
-            return tmUser.login(Guid.NewGuid());
-        }        
-        public static Guid              login (this TMUser tmUser, Guid sessionId)                         
-        {
-            return TM_UserData.Current.login(tmUser, sessionId);
+        {         
+            return TM_UserData.Current.login(tmUser);
         }
-        public static Guid              login (this TM_UserData userData,TMUser tmUser, Guid sessionId)    
+        public static Guid              login (this TM_UserData userData,TMUser tmUser)    
         {
             try
             {
-                if (tmUser.notNull())               // there is a valid user
+                if (tmUser.notNull())                                                   // there is a valid user
                 {
-                    if (sessionId != Guid.Empty)    // there was a valid session set
-                    {                        
-                        tmUser.Stats.LastLogin = DateTime.Now;
-                        tmUser.Stats.LoginOk++;
-                        tmUser.SecretData.SessionID = sessionId;
+                    tmUser.Stats.LastLogin = DateTime.Now;
+                    tmUser.Stats.LoginOk++;
+                    var userSession = tmUser.add_NewSession();                          // create new session
+                    if (userSession.notNull())
+                    {
                         tmUser.logUserActivity("User Login", tmUser.UserName);          // will save the user                                              
-                        SendEmails.SendEmailAboutUserToTM("Logged In", tmUser);
-                        return sessionId;
-                    }                    
+                        //SendEmails.SendEmailAboutUserToTM("Logged In", tmUser);
+                        return userSession.SessionID;
+                    }                
                 }
             }
             catch (Exception ex)
@@ -102,7 +98,13 @@ namespace TeamMentor.CoreLib
         }
         public static bool              logout(this TMUser tmUser)
         {
-            return tmUser.logout(tmUser.session_sessionId());
+            var allOk = true;
+            foreach (var sessionId in tmUser.session_sessionIds())
+            {
+                var result = tmUser.logout(sessionId);
+                allOk = allOk && result;
+            }
+            return allOk;
         }
         public static bool              logout(this Guid sessionId)                                        
         {
@@ -120,9 +122,10 @@ namespace TeamMentor.CoreLib
                 if (tmUser.notNull() && sessionId.validSession())
                 {
                     tmUser.logUserActivity("User Logout", tmUser.UserName);
-                    tmUser.SecretData.SessionID = Guid.Empty;
+                    tmUser.remove_Session(sessionId);
+                    //tmUser.SecretData.SessionID = Guid.Empty;
                     //userData.ActiveSessions.Remove(sessionId);
-                    SendEmails.SendEmailAboutUserToTM("Logged Out", tmUser);
+                    //SendEmails.SendEmailAboutUserToTM("Logged Out", tmUser);
                     return true;
                 }
             }
@@ -133,11 +136,52 @@ namespace TeamMentor.CoreLib
             return false;
         }
 
-        public static List<Guid> validSessions(this TM_UserData userData)
+        public static UserSession       add_NewSession(this TMUser tmUser)
+        {            
+            try
+            {
+                var ipAddress = HttpContextFactory.Request.UserHostAddress; // todo:change to available method in 3.4
+                var userSession = new UserSession
+                    {
+                        SessionID    = Guid.NewGuid(),
+                        IpAddress    = ipAddress,
+                        CreationDate = DateTime.Now
+                    };
+                tmUser.Sessions.add(userSession);
+                return userSession;
+            }
+            catch (Exception ex)
+            {
+                ex.log("[TM_User][add_SessionID]");
+            }
+            return null;
+        }
+
+        public static bool remove_Session(this TMUser tmUser, Guid sessionID)
+        {
+            if (tmUser.isNull())
+                return false;
+            var currentSessions = tmUser.currentSessions();
+            if (currentSessions.hasKey(sessionID))
+            {
+                var sessionToRemove = currentSessions[sessionID];
+                tmUser.Sessions.Remove(sessionToRemove);
+            }
+            "[remove_Session] was not able to find session object {0} for user {1}".error(sessionID, tmUser.UserName);
+            return false;
+        }
+
+        public static Dictionary<Guid, UserSession> currentSessions(this TMUser tmUser)
+        {
+            return tmUser.Sessions.ToDictionary(session => session.SessionID);
+        }
+
+        public static List<Guid>        validSessions(this TM_UserData userData)
         {
             return (from tmUser in userData.TMUsers
-                    where tmUser.SecretData.SessionID != Guid.Empty
-                    select tmUser.SecretData.SessionID).toList();
+                    from session in tmUser.Sessions
+                    where session.SessionID != Guid.Empty
+                    select session.SessionID).toList();
         }
 
         public static bool              validSession         (this Guid sessionId)
@@ -162,7 +206,8 @@ namespace TeamMentor.CoreLib
                     return null;
                 var tmUsers = TM_UserData.Current.TMUsers;
                 var tmUserInSession = (from tmUser in tmUsers
-                                       where tmUser.SecretData.SessionID == sessionId
+                                       from session in tmUser.Sessions
+                                       where session.SessionID == sessionId
                                        select tmUser).first();
 
                 if (tmUserInSession.notNull())
@@ -213,20 +258,18 @@ namespace TeamMentor.CoreLib
         {
             return UserGroup.Admin == sessionId.session_UserGroup();
         }  
-        public static Guid              session_sessionId    (this TMUser tmUser)
+        public static List<Guid>              session_sessionIds    (this TMUser tmUser)
         {
             try
             {
-                return tmUser.SecretData.SessionID;
-                //foreach(var item in TM_UserData.Current.ActiveSessions)
-                //    if (item.Value == tmUser)
-                //        return item.Key;                
+                return (from session in tmUser.Sessions
+                        select session.SessionID).toList();                
             }
             catch (Exception ex)
             {
                 ex.log();                
             }
-            return Guid.Empty;
+            return new List<Guid>();
         }        
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Xml.Serialization;
 
 namespace TeamMentor.CoreLib
@@ -19,10 +20,11 @@ namespace TeamMentor.CoreLib
         [XmlAttribute] public string	State       { get; set; }
         [XmlAttribute] public int		GroupID     { get; set; }                
         
-        [XmlAttribute] public string    PostLoginView        { get; set; }
-        [XmlAttribute] public string    PostLoginScript      { get; set; }
+        [XmlAttribute] public string    PostLoginView               { get; set; }
+        [XmlAttribute] public string    PostLoginScript             { get; set; }
         
-        [XmlElement]   public UserSecretData        SecretData	{ get; set; }
+        [XmlElement]   public UserSecretData        SecretData	    { get; set; }
+        [XmlElement]   public List<UserSession>     Sessions        { get; set; }
         [XmlElement]   public UserAccountStatus     AccountStatus	{ get; set; }
         [XmlElement]   public UserStats             Stats	        { get; set; }
         [XmlElement]   public List<UserActivity>    UserActivities  { get; set; }
@@ -52,14 +54,17 @@ namespace TeamMentor.CoreLib
 
     public class UserSecretData
     {
-        [XmlAttribute]	public string   PasswordHash		{ get; set; }
-        //[XmlAttribute]	public Guid     SingleUseLoginToken	{ get; set; }
+        [XmlAttribute]	public string   PasswordHash		{ get; set; }        
         [XmlAttribute]	public String   PasswordResetToken	{ get; set; }
-        [XmlAttribute]	public string   DecryptionKey       { get; set; }       
-        //[XmlAttribute]  public string   SSOKey              { get; set; }    
-        
-        [XmlAttribute]  public string	CSRF_Token  { get; set; }        
-        [XmlAttribute]  public Guid	    SessionID  { get; set; } 
+        [XmlAttribute]	public string   DecryptionKey       { get; set; }                       
+        [XmlAttribute]  public string	CSRF_Token          { get; set; }        
+        //[XmlAttribute]  public Guid	    SessionID           { get; set; } 
+    }
+    public class UserSession
+    {
+        [XmlAttribute]	public Guid      SessionID		    { get; set; }
+        [XmlAttribute]	public DateTime  CreationDate		{ get; set; }
+        [XmlAttribute]	public string    IpAddress		    { get; set; }
     }
     public class UserAccountStatus
     {

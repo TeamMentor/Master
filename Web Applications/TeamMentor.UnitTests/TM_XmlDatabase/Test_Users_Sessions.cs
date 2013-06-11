@@ -68,7 +68,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Assert.AreEqual    (2, stats.LoginOk);
             Assert.AreEqual    (0, stats.LoginFail, "Login fail should be 0");
 
-            tmUser.login(Guid.Empty);
+            tmUser.login();
             
             Assert.AreEqual    (2, stats.LoginOk);
             Assert.AreEqual    (0, stats.LoginFail, "LoginFail should still be 0");
