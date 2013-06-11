@@ -78,26 +78,33 @@ namespace TeamMentor.CoreLib
         }
         public void routeRequestUrl()
         {
-            if (redirectedToSLL().isFalse())
+            if (redirectedToSSL().isFalse())
                 handleUrlRewrite(context.Request.Url);
         }
-        public bool redirectedToSLL()
-        {			            
-            if (TMConfig.Current.TMSecurity.SSL_RedirectHttpToHttps && 
-                context.Request.IsLocal.isFalse() && 
-                context.Request.IsSecureConnection.isFalse())
-            {
-                if (request.Url != null)
+        public bool redirectedToSSL()
+        {
+            try
+            {            
+                if (TMConfig.Current.TMSecurity.SSL_RedirectHttpToHttps && 
+                    context.Request.IsLocal.isFalse() && 
+                    context.Request.IsSecureConnection.isFalse())
                 {
-                    if (sslPageIsAvailable())           // addresses issue that happened when an SSL redirection was set for a server without SSL configured
+                    if (request.Url != null)
                     {
-                        var redirectUrl = request.Url.ToString().Replace("http://", "https://");
-                        "Redirecting current request to https: {0}".info(context.Request.Url);
-                        context.Response.Redirect(redirectUrl);
-                        return true;
+                        if (sslPageIsAvailable())           // addresses issue that happened when an SSL redirection was set for a server without SSL configured
+                        {
+                            var redirectUrl = request.Url.ToString().Replace("http://", "https://");
+                            "Redirecting current request to https: {0}".info(context.Request.Url);
+                            context.Response.Redirect(redirectUrl);
+                            return true;
+                        }
+                        "[redirectedToSLL] redirection failed because https server was not found!".error();
                     }
-                    "[redirectedToSLL] redirection failed because https server was not found!".error();
                 }
+            }
+            catch (Exception ex)
+            {
+                ex.log("[in redirectedToSLL]");
             }
             return false;
         }
@@ -108,8 +115,13 @@ namespace TeamMentor.CoreLib
             {
                 var currentServer = request.Url.str().remove(request.Url.PathAndQuery)
                                                      .Replace("http://", "https://");
-                var response = currentServer.GET();
-                return response.valid();
+                if (currentServer.contains("https://"))
+                {
+                    var response = currentServer.GET();
+                    return response.valid();
+                }
+                
+                "[sslPageIsAvailable] no https:// on '{0}' original request is '{1}".info(currentServer,request.Url.str());                
             }
             return false;
         }

@@ -62,18 +62,25 @@ namespace TeamMentor.CoreLib
 
         public static UserActivity logUserActivity(this TMUser tmUser , string action, string detail)
         {
-            var userActivites = UserActivities.Current;
-            if (userActivites.notNull())
+            try
+            {            
+                var userActivites = UserActivities.Current;
+                if (userActivites.notNull())
+                {
+                    var userActivity = new UserActivity
+                        {
+                            Action    = action, 
+                            Detail    = detail, 
+                            Who       = tmUser.notNull() ? tmUser.UserName :"[NoUser]",
+                            When      = DateTime.Now.ToFileTimeUtc(),
+                            IPAddress = HttpContextFactory.Context.ipAddress()
+                        };
+                    return userActivites.LogUserActivity(tmUser , userActivity);
+                }
+            }
+            catch (Exception ex)
             {
-                var userActivity = new UserActivity
-                    {
-                        Action    = action, 
-                        Detail    = detail, 
-                        Who       = tmUser.notNull() ? tmUser.UserName :"[NoUser]",
-                        When      = DateTime.Now.ToFileTimeUtc(),
-                        IPAddress = HttpContextFactory.Request.UserHostAddress
-                    };
-                return userActivites.LogUserActivity(tmUser , userActivity);
+                ex.log("[logUserActivity]");
             }
             return null;
         }

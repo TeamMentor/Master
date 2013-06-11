@@ -37,8 +37,10 @@ namespace TeamMentor.CoreLib
                         return adminUser.UserID;
                 }				
                 "[createDefaultAdminUser] admin user didn't exist (creating it)".debug();
-                var userId = userData.newUser(defaultAdminUser_Name, defaultAdminUser_Pwd,defaultAdminUser_Email,1);                
-                userId.tmUser().AccountStatus.ExpirationDate = default(DateTime);               // so that the admin user doesn't expire by default
+                var userId = userData.newUser(defaultAdminUser_Name, defaultAdminUser_Pwd,defaultAdminUser_Email,1);
+                adminUser = userId.tmUser();
+                adminUser.AccountStatus.ExpirationDate = DateTime.Now.AddYears(10);        // default to setting the expiry value to 10 years in the future
+                adminUser.saveTmUser();
                 return userId;
             }            
         }        

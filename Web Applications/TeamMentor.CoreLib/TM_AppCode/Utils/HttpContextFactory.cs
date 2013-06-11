@@ -1,3 +1,4 @@
+using System;
 using System.Web;
 using FluentSharp;
 using O2.DotNetWrappers.ExtensionMethods;
@@ -44,6 +45,18 @@ namespace TeamMentor.CoreLib
             }
             return httpContext;
         }
-                
+
+        public static string ipAddress(this HttpContextBase httpContext)
+        {            
+            try
+            {
+                return HttpContextFactory.Request.UserHostAddress ?? ""; // todo:change to available method in 3.4                
+            }
+            catch (Exception ex)
+            {
+                ex.log("[HttpContextBase][ipAddress]");
+                return "";
+            }            
+        }
     }
 }
