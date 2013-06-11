@@ -16,7 +16,7 @@ namespace TeamMentor.UnitTests.REST
 
 		[Test]
 		public void Test_DefaultSettings()
-		{
+		{            
 			var tmConfig = TMConfig.Current;
 			Assert.IsFalse(tmConfig.TMSecurity.Show_ContentToAnonymousUsers, "ShowContentToAnonymousUsers");
 			Assert.IsFalse(tmConfig.WindowsAuthentication.Enabled          , "tmConfig.WindowsAuthentication.Enabled");

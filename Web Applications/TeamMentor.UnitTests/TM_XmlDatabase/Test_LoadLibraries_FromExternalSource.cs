@@ -13,7 +13,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
                 Assert.Ignore("Ignoring Test because we are offline");   
         }
 
-        [Test]
+        [Test][Ignore("SEE Fix added in 3.4")]
         public void DownloadAndInstallLibraryFromZip()
         {            
             var tmLibraries_Before = tmXmlDatabase.tmLibraries();            

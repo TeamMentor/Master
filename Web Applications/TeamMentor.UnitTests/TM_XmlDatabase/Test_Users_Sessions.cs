@@ -5,7 +5,7 @@ using TeamMentor.CoreLib;
 
 namespace TeamMentor.UnitTests.TM_XmlDatabase
 {
-    [TestFixture][Assert_Admin]
+    [TestFixture]
     public class Test_Users_Sessions : TM_XmlDatabase_InMemory
     {
         [Test] public void TMUserLoginAndLogout()
@@ -14,7 +14,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             var tmUser                   = userId.tmUser();            
             var sessionId                = tmUser.login();
             var validSessionAfterLogin   = sessionId.validSession();
-            var logoutResult             = tmUser.logout();
+            var logoutResult             = tmUser.logout(sessionId);
             var validSessionAfterLogout  = sessionId.validSession();
             var logoutResult2            = tmUser.logout();
             var validSessionAfterLogout2 = sessionId.validSession();
@@ -41,6 +41,159 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Assert.IsTrue      (validSessionAfterLogin);
             Assert.IsFalse     (validSessionAfterLogout);
         }
+
+        [Test]
+        public void UserSession_Object()
+        { 
+            userData.resetAllSessions();
+            //test empty UserSession Object
+            var userSession0 = new UserSession();
+            Assert.AreEqual(userSession0.SessionID, Guid.Empty);
+            Assert.AreEqual(userSession0.CreationDate, default(DateTime));
+            Assert.IsNull  (userSession0.IpAddress);
+
+            // temp user object
+            var tmUser = new TMUser();
+
+            //test expected values for 1st session
+            var userSession1 = tmUser.add_NewSession();            
+
+            Assert.IsNotNull(userSession1, "New UserSession was null");
+            Assert.AreNotEqual(userSession1.SessionID, Guid.Empty);
+            Assert.AreNotEqual(userSession1.CreationDate, default(DateTime));
+            Assert.IsNotNull  (userSession1.IpAddress);
+            Assert.AreEqual   (tmUser.Sessions.size(), 1, "There should only be one sessions here");
+            Assert.AreEqual   (tmUser.Sessions.first(), userSession1);
+
+            //test expected values for 2nd session
+            var userSession2 = tmUser.add_NewSession();
+
+            Assert.IsNotNull  (userSession2, "New UserSession was null");
+            Assert.AreNotEqual(userSession2.SessionID, Guid.Empty);
+            Assert.AreNotEqual(userSession2.CreationDate, default(DateTime));
+            Assert.IsNotNull  (userSession2.IpAddress);
+            Assert.AreEqual   (tmUser.Sessions.size(), 2, "There should only be two sessions here");
+            Assert.AreEqual   (tmUser.Sessions.second(), userSession2);
+            Assert.AreNotEqual(userSession1, userSession2);
+            
+            Assert.AreEqual   (userData.validSessions().size(),0); // there should be no sessions here in global sessions handler since the user was created manually
+        }
+
+        [Test] public void ResetSessions()
+        {
+            userData.resetAllSessions();
+            Assert.AreEqual(userData.validSessions().size(), 0);
+
+            var tmUser        = userData.newUser().tmUser();                        
+            
+            tmUser.add_NewSession();
+
+            Assert.AreEqual(userData.validSessions().size(), 1);
+
+            tmUser.Sessions.Add(new UserSession());                 // this should not add a new session 
+            Assert.AreEqual(userData.validSessions().size(), 1);
+
+            userData.resetAllSessions();
+            Assert.AreEqual(userData.validSessions().size(), 0);
+            
+            //Remove session using userSession
+            var userSession1 = tmUser.add_NewSession();
+            Assert.AreEqual(userData.validSessions().size(), 1);
+            Assert.IsTrue(tmUser.remove_Session(userSession1));
+
+            //Remove session using SessionID
+            var userSession2 = tmUser.add_NewSession();
+            Assert.AreEqual(userData.validSessions().size(), 1);
+            Assert.IsTrue(tmUser.remove_Session(userSession2.SessionID));
+
+            //Test remove_Session with null values
+            Assert.IsFalse(tmUser.remove_Session(null as UserSession));
+            Assert.IsFalse(tmUser.remove_Session(Guid.Empty));
+            tmUser = null;
+            Assert.IsFalse(tmUser.remove_Session(Guid.Empty));
+        }
+
+        [Test] public void MultipleLoginSessions_Two_Users()
+        {
+            userData.resetAllSessions();
+            //Testing two separate users
+            var tmUser1 = userData.newUser().tmUser();
+            var tmUser2 = userData.newUser().tmUser();
+
+            var sessionId1 = tmUser1.login();           // log both in
+            var sessionId2 = tmUser2.login();
+
+            Assert.AreNotEqual(sessionId1, Guid.Empty);
+            Assert.AreNotEqual(sessionId2, Guid.Empty);
+
+            var validSessions = userData.validSessions();
+            Assert.IsTrue(validSessions.contains(sessionId1));
+            Assert.IsTrue(validSessions.contains(sessionId2));
+            Assert.IsTrue(sessionId1.validSession());
+            Assert.IsTrue(sessionId2.validSession());
+
+            tmUser1.logout();                           // logout first
+            validSessions = userData.validSessions();
+
+            Assert.IsFalse(validSessions.contains(sessionId1));
+            Assert.IsTrue (validSessions.contains(sessionId2));
+            Assert.IsFalse(sessionId1.validSession());
+            Assert.IsTrue (sessionId2.validSession());
+
+            tmUser2.logout();                           // logout 2nd
+            validSessions = userData.validSessions();
+
+            Assert.IsFalse(validSessions.contains(sessionId1));
+            Assert.IsFalse(validSessions.contains(sessionId2));
+            Assert.IsFalse(sessionId1.validSession());
+            Assert.IsFalse(sessionId2.validSession());
+
+            Assert.IsEmpty(userData.validSessions());
+        }
+
+        [Test] public void MultipleLoginSessions_One_User()
+        {            
+            var tmUser = userData.newUser().tmUser();            
+
+            var sessionId1 = tmUser.login();           // log same user with two sessions
+            var sessionId2 = tmUser.login();
+
+            Assert.AreNotEqual(sessionId1, Guid.Empty);
+            Assert.AreNotEqual(sessionId2, Guid.Empty);
+
+            Assert.IsTrue(sessionId1.validSession());
+            Assert.IsTrue(sessionId2.validSession());
+
+            tmUser.logout();                            // this should logout the user on both sessions
+
+            Assert.IsFalse(sessionId1.validSession());
+            Assert.IsFalse(sessionId2.validSession());
+
+            var sessionId3 = tmUser.login();           // log same user again with three sessions
+            var sessionId4 = tmUser.login();
+            var sessionId5 = tmUser.login();
+
+            Assert.IsTrue(sessionId3.validSession());
+            Assert.IsTrue(sessionId4.validSession());
+            Assert.IsTrue(sessionId5.validSession());
+            
+            tmUser.logout(sessionId3);                 // logout 1st
+            Assert.IsFalse(sessionId3.validSession());
+            Assert.IsTrue (sessionId4.validSession());
+            Assert.IsTrue (sessionId5.validSession());
+
+            tmUser.logout(sessionId4);                  // logout 2nd
+            Assert.IsFalse(sessionId3.validSession());
+            Assert.IsFalse(sessionId4.validSession());
+            Assert.IsTrue(sessionId5.validSession());
+
+            tmUser.logout(sessionId5);                  // logout 2nd
+            Assert.IsFalse(sessionId3.validSession());
+            Assert.IsFalse(sessionId4.validSession());
+            Assert.IsFalse(sessionId5.validSession());
+
+        }
+
         [Test] public void UserStats()
         {
             //test as User
@@ -70,7 +223,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
 
             tmUser.login();
             
-            Assert.AreEqual    (2, stats.LoginOk);
+            Assert.AreEqual    (3, stats.LoginOk);
             Assert.AreEqual    (0, stats.LoginFail, "LoginFail should still be 0");
 
             //test as Admin      
@@ -141,8 +294,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Assert.AreEqual(expirationDate, calculatedExpirationDate, "expirationDate != calculatedExpirationDate");
         }
 
-        [Test]
-        public void UserAccount_EvalAccounts_Behaviour()
+        [Test] public void UserAccount_EvalAccounts_Behaviour()
         {
             tmConfig.TMSecurity.EvalAccounts_Enabled  = true;
             var tmUser1                               = userData.newUser().tmUser();

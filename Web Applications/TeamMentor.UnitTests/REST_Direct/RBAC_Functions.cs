@@ -26,7 +26,7 @@ namespace TeamMentor.UnitTests.REST
 
         [Test]	
         public void Test_GetUsers()
-        {
+        {            
             var users = TmRest.users();
             Assert.IsNotNull(users, "users object was null");
             Assert.IsTrue(users.size() > 0 , "users object was empty");
