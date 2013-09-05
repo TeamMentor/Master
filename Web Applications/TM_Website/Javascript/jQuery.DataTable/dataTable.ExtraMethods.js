@@ -232,8 +232,8 @@ var getColumnFromArray = function(arrayData, columnIndex)
                             
                         }
                         
-                        if (selectedGuidanceIds.length > 0)	
-                            "guidanceTableEditorHelperText".$().html('Drag {0} to drop into a view'
+                        if (selectedGuidanceIds.length > 0)
+                            "guidanceTableEditorHelperText".$().html('<br/><b>Drag {0} to drop into a view</b>'
                                                                         .format(selectedGuidanceIds.length == 1 ? "item"
                                                                                                                :  selectedGuidanceIds.length + " items" ));
                     });
@@ -275,8 +275,8 @@ var getColumnFromArray = function(arrayData, columnIndex)
                                         $(this.nTr).removeClass('row_selected');
                             });
                             
-                        if (selectedGuidanceIds.length > 0)	
-                            "guidanceTableEditorHelperText".$().html('Drag {0} to drop into a view'
+                        if (selectedGuidanceIds.length > 0)
+                            "guidanceTableEditorHelperText".$().html('<br/><b>Drag {0} to drop into a view</b>'
                                                                         .format(selectedGuidanceIds.length == 1 ? "selected item"
                                                                                                                :  selectedGuidanceIds.length + " items" ));																			
                         else
