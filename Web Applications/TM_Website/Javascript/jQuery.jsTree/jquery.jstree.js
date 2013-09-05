@@ -1800,7 +1800,7 @@
 					d = $("<li />");
 					if(js.attr) { d.attr(js.attr); }
 					if(js.metadata) { d.data(js.metadata); }
-					if(js.state) { d.addClass("jstree-" + js.state); }
+					if(js.state) { d.addClass("jstree-last jstree-leaf"); }
 					if(!$.isArray(js.data)) { tmp = js.data; js.data = []; js.data.push(tmp); }
 					$.each(js.data, function (i, m) {
 						tmp = $("<a />");
