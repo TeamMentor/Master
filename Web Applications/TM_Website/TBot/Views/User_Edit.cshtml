@@ -40,6 +40,10 @@ function TMUser($scope,$http)
         }
         else        
             $scope.userName =  "No username provided";
+		
+		$('#expirationDate').datetimepicker({
+		  pickTime:false
+		});
     }
 
 </script>
