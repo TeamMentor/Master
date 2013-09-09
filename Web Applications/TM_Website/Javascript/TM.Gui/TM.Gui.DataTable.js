@@ -301,7 +301,7 @@ TM.Gui.DataTable.addDataTableButtons = function()
                                             TM.Gui.Dialog.alertUser("There was an error performing this action")
                                     });	
                         };
-                    var description = "{0} guidanceItems".format(selectedGuidanceIds.length);
+                    var description = "{0} {1}?".format(selectedGuidanceIds.length, selectedGuidanceIds.length>1 ? "articles" :"article");
                     TM.Gui.Dialog.deleteConfirmation(description,deleteGuidanceItems);
                 });
             
