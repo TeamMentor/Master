@@ -157,7 +157,6 @@
     <Content Include="Html_Pages\ControlPanel\WebServices\Invoke_Javascript.html" />
     <Content Include="Html_Pages\ControlPanel\WebServices\Invoke_WebServices.html" />
     <Content Include="Html_Pages\ControlPanel\WebServices\jsTree_Test.html.txt" />
-    <Content Include="Html_Pages\ControlPanel\WebServices\TM_WebServices.html" />
     <Content Include="Html_Pages\ControlPanel\WebServices\View_Current_Activity.html" />
     <Content Include="Html_Pages\ControlPanel\WebServices\WebServices_TM_ActivityTracking.html" />
     <Content Include="Html_Pages\ControlPanel\WebServices\WebServices_TM_Config.html" />
@@ -544,7 +543,6 @@
     <Content Include="Javascript\jsTrace\jscalltracer.js" />
     <Content Include="Javascript\jsTrace\trace-src.js" />
     <Content Include="Javascript\jsTrace\trace.html" />
-    <Content Include="Javascript\TM.ControlPanel\TM.ControlPanel.WebServices.js" />
     <Content Include="Javascript\jTemplates\LinksMenu.html" />
     <Content Include="Javascript\qunit\qunit-git.css" />
     <Content Include="Javascript\qunit\qunit-git.js" />

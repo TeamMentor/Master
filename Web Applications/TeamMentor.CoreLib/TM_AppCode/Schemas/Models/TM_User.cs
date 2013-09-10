@@ -15,13 +15,13 @@ namespace TeamMentor.CoreLib
     [DataContract]
     public class TM_User
     {   
-        [DataMember][Required][StringLength(30)]    public string	Company		    { get; set; }
-        [DataMember][Required][StringLength(30)]    public string	Country		    { get; set; }
-        [DataMember][Required][StringLength(30)]    public string	FirstName	    { get; set; }
-        [DataMember][Required][StringLength(30)]    public string	LastName	    { get; set; }
-        [DataMember][Required][StringLength(30)]    public string	State		    { get; set; }
-        [DataMember][Required][StringLength(30)]    public string	Title		    { get; set; }
-        [DataMember][Required]	                    public int		UserId		    { get; set; }
+        [DataMember][StringLength(30)]              public string	Company		    { get; set; }
+        [DataMember][StringLength(30)]              public string	Country		    { get; set; }
+        [DataMember][StringLength(30)]              public string	FirstName	    { get; set; }
+        [DataMember][StringLength(30)]              public string	LastName	    { get; set; }
+        [DataMember][StringLength(30)]              public string	State		    { get; set; }
+        [DataMember][StringLength(30)]              public string	Title		    { get; set; }
+        [DataMember][Required]	                    public int	UserId		    { get; set; }
         [DataMember][Required][StringLength(30)]    public string	UserName	    { get; set; }
         
         [DataMember][Required][StringLength(50)]  
