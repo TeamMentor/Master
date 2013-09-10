@@ -301,11 +301,12 @@ TM.Gui.DataTable.addDataTableButtons = function()
                                             TM.Gui.Dialog.alertUser("There was an error performing this action")
                                     });	
                         };
+                   
                     if (selectedGuidanceIds.length > 0){
                         var description = "{0} {1}?".format(selectedGuidanceIds.length, selectedGuidanceIds.length>1 ? "articles" :"article");
                         TM.Gui.Dialog.deleteConfirmation(description,deleteGuidanceItems);
                     }
-                });
+                             });
             
             "guidanceTableEditorHelperText".$().css('font-size','10pt')
                                                .relative()
