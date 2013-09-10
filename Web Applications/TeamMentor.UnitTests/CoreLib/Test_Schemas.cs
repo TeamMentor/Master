@@ -12,7 +12,8 @@ namespace TeamMentor.UnitTests.CoreLib
         public void Validation_TM_User()
         {            
             var tmUser            = new TM_User();                        
-            var requiredValues    = "Company,Country,FirstName,LastName,State,Title,UserName,Email".split(",");
+            //var requiredValues    = "Company,Country,FirstName,LastName,State,Title,UserName,Email".split(",");
+            var requiredValues    = "UserName,Email".split(",");
             var validationResults = tmUser.validate();
             var resultsMapped     = validationResults.indexed_By_MemberName();
             var validationok      = tmUser.validation_Ok();
