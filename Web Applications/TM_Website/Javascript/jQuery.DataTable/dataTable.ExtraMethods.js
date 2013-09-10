@@ -206,10 +206,10 @@ var getColumnFromArray = function(arrayData, columnIndex)
                     {
                         lastIdAdded = "";
                         var inputElement = $(event.target.parentNode).find("input");										
-                        if (event.target.nodeName != "INPUT")
+                        if (event.target.nodeName == "INPUT")
                         {
                             //console.log(selectedGuidanceIds);
-                            if (typeof(inputElement.attr("checked")) == "undefined")				
+                            if (typeof(inputElement.attr("checked")) != "undefined")				
                             {								
                                 inputElement.attr("checked", 'yes');						
                                 $(event.target.parentNode).addClass('row_selected');												
@@ -218,7 +218,10 @@ var getColumnFromArray = function(arrayData, columnIndex)
                                 lastIdAdded = selectedGuidanceId;
                             }	
                             else
+							{
                                 lastIdAdded ="";
+								return;
+							}
                                 $(oTable.fnSettings().aoData).each(function ()
                                 {
                                     var rowDataId = oTable.fnGetData(this.nTr)[6];
