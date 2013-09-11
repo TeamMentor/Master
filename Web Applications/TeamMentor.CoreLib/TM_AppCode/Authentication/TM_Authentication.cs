@@ -49,7 +49,10 @@ namespace TeamMentor.CoreLib
                 HttpContextFactory.Request .set_Cookie("Session", value.str()).httpOnly();   
              
                 if (value == Guid.Empty)
-                    previousSessionId.logout();				
+                {
+                    UserGroup.Anonymous.setThreadPrincipalWithRoles();          // ensure that from now on the current user as no more privileges
+                    previousSessionId.logout();				                    // and that the previous sessionIS is logged out
+                }		
                 else    
                     new UserRoleBaseSecurity().MapRolesBasedOnSessionGuid(value);
             }
