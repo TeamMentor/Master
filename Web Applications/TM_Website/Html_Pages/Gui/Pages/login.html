@@ -39,18 +39,26 @@
 		var onSubmit = function()
 		    {
 		        $("#loginFailed").fadeOut();
-				$("#loginButton").html('Logging in');
 				var username = $("#username").attr('value');
 				var password = $("#password").attr('value');
-				//console.log("login in with: " + username + " : " + password);
-				TM.WebServices.WS_Users.login(username, password, loginResponse);				
-                $("#passwordForgotLink").relative().top(7)
-		                                .css("","");
-				return false; 
+				if(username != "" && password != "")
+				{
+				   $("#loginButton").html('Logging in');
+				   //console.log("login in with: " + username + " : " + password);
+				   TM.WebServices.WS_Users.login(username, password, loginResponse);				
+                   $("#passwordForgotLink").relative().top(7)
+		                                   .css("","");
+				    return false; 
+				} else 
+				{
+				  $("#loginFailed").fadeIn();
+				  return false;
+				}
 			};
 
 		$(function()
 			{
+			    $("#username").focus();
 				//css fixes
 				$("#loginFailed").hide()
 								 .absolute()
