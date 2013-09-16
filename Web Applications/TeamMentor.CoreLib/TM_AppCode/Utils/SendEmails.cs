@@ -97,6 +97,7 @@ namespace TeamMentor.CoreLib
         }
         public bool send(EmailMessage emailMessage)
         {
+            emailMessage.Message += TMConsts.EMAIL_DEFAULT_FOOTER;
             Sent_EmailMessages.Add(emailMessage);
             try
             {
@@ -110,8 +111,6 @@ namespace TeamMentor.CoreLib
                 emailMessage.SentStatus = SentStatus.Sending;
                 "Sending email:\n  to: {0}\n  from: {0}\n  subject: {0} ".info(emailMessage.To, emailMessage.Subject, emailMessage.Message);
                 var mailMsg = new MailMessage();
-
-                emailMessage.Message += "Send by TeamMentor. ".format().lineBefore().lineBefore().line().line();
                 // To
                 mailMsg.To.Add(new MailAddress(emailMessage.To));
                 // From
@@ -171,14 +170,9 @@ namespace TeamMentor.CoreLib
             SendEmailToTM(subject, tmMessage);
             if (tmUser.EMail.valid())
             {
-
-                var userMessage =
-@"Hi {0} {1} Welcome to TeamMentor.
-
-You can login with your {2} account at {3}
-
-                ".format(tmUser.FirstName, tmUser.LastName, tmUser.UserName, TM_Server_URL);
-                SendEmailToEmail(tmUser.EMail, "Welcome to TeamMentor", userMessage);
+                var subj = TMConsts.EMAIL_SUBJECT_NEW_USER_WELCOME;
+                var userMessage = TMConsts.EMAIL_BODY_NEW_USER_WELCOME.format(TM_Server_URL, tmUser.UserName);
+                SendEmailToEmail(tmUser.EMail, subj, userMessage);
                 userMessage = "(sent to: {0})\n\n{1}".format(tmUser.EMail, userMessage);
                 SendEmailToTM("(user email) Welcome to TeamMentor", userMessage);
             }
