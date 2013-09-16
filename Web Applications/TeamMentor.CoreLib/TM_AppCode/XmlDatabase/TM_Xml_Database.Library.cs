@@ -354,7 +354,8 @@ namespace TeamMentor.CoreLib
     public static class TM_Xml_Database_ExtensionMethods_TM_GuidanceItems
     {	
         //needs the ReadArticlesTitles privildge because of the GetGuiObjects method
-        [ReadArticlesTitles] public static TeamMentor_Article           tmGuidanceItem (this TM_Xml_Database tmDatabase, Guid id)
+        //[ReadArticlesTitles]  // this was allowing anonynimous viewing of TM articles
+        [ReadArticles]          public static TeamMentor_Article        tmGuidanceItem (this TM_Xml_Database tmDatabase, Guid id)
         {
             if (TM_Xml_Database.Current.Cached_GuidanceItems.hasKey(id))
             {
@@ -367,7 +368,7 @@ namespace TeamMentor.CoreLib
 
             return null;
         }        
-        [ReadArticlesTitles] public static List<TeamMentor_Article>     tmGuidanceItems(this TM_Xml_Database tmDatabase)
+        [ReadArticlesTitles]    public static List<TeamMentor_Article>  tmGuidanceItems(this TM_Xml_Database tmDatabase)
         {			
             return tmDatabase.xmlDB_GuidanceItems();						
         }                
