@@ -303,7 +303,7 @@ TM.Gui.DataTable.addDataTableButtons = function()
                         };
                    
                     if (selectedGuidanceIds.length > 0){
-                        var description = "{0} {1}?".format(selectedGuidanceIds.length, selectedGuidanceIds.length>1 ? "articles" :"article");
+                        var description = "{0} {1}?".format(selectedGuidanceIds.length, selectedGuidanceIds.length>1 ? "guidance items" :"guidance item");
                         TM.Gui.Dialog.deleteConfirmation(description,deleteGuidanceItems);
                     }
                              });
