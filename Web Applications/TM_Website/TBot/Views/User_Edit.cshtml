@@ -5,7 +5,8 @@
 <script type="text/javascript">
     
 function TMUser($scope,$http)
-    {        
+    {   
+        $("#txtEmail").focus();	
         $scope.update = function(userData)
             {                
                 $scope.result = " ... saving user";
@@ -65,11 +66,11 @@ function TMUser($scope,$http)
 
             <div class="input-prepend">
                 <span class="add-on" style="width:120px;">UserName</span>
-                <input type="text" style="width:250px;" ng-model="userData.UserName" required/>
+                <input type="text" style="width:250px;" ng-model="userData.UserName" required ng-disabled="true"/>
             </div><br/>
             <div class="input-prepend">
                 <span class="add-on" style="width:120px;">Email</span>
-                <input type="email" style="width:250px;" ng-model="userData.Email" required/>
+                <input id ="txtEmail" type="email" style="width:250px;" ng-model="userData.Email" required/>
             </div><br/>        
             <div class="input-prepend">
                 <span class="add-on" style="width:120px;">FirstName</span>
