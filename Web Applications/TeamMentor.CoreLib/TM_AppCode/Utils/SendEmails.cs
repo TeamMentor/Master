@@ -124,7 +124,7 @@ namespace TeamMentor.CoreLib
                 }
                 else
                 {
-                    mailMsg.Body = emailMessage.Message;
+                    mailMsg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(emailMessage.Message, null, MediaTypeNames.Text.Plain));
                 }
                 // Init SmtpClient and send
                 var smtpClient = new SmtpClient(Smtp_Server, 587);
