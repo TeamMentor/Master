@@ -70,8 +70,11 @@ function TMUser($scope,$http)
             </div><br/>
             <div class="input-prepend">
                 <span class="add-on" style="width:120px;">Email</span>
-                <input id ="txtEmail" type="email" style="width:250px;" ng-model="userData.Email" required/>
-            </div><br/>        
+                <input type="email" id="txtEmail" name="txtEmail" style="width:250px;" ng-model="userData.Email" required/>
+            </div>
+			    <span style="color:red;font-weight:bold" ng-show="myForm.txtEmail.$error.required">This field is required!</span>
+                <span style="color:red;font-weight:bold" ng-show="myForm.txtEmail.$error.email">Email is invalid!</span>
+			<br/>        
             <div class="input-prepend">
                 <span class="add-on" style="width:120px;">FirstName</span>
                 <input type="text" style="width:250px;" ng-model="userData.FirstName"/>
@@ -126,7 +129,7 @@ function TMUser($scope,$http)
                 <label>State</label>        <input type="text" class= "input-xxlarge" ng-model="userData.State"/>
                 -->
             <br/>            
-            <button class="btn btn-primary">Save</button>  <small><a href="Current_Users">back to user's list</a></small><span class="result">{{result}}</span>
+            <button class="btn btn-primary" ng-disabled="myForm.$invalid" >Save</button>  <small><a href="Current_Users">back to user's list</a></small><span class="result">{{result}}</span>
         </ul>    
 
     </form>
