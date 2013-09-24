@@ -1,6 +1,6 @@
 //TM Settings
-window.TM.tmVersion            = "TM 3.4 - RC 2";
-window.TM.ArticleTitle         = "TeamMentor 3.3";
+window.TM.tmVersion            = "TM 3.4 - RC 3";
+window.TM.ArticleTitle         = "TeamMentor 3.4";
 
 window.TM.tmWebServices        = '/Aspx_Pages/TM_WebServices.asmx/';
 window.TM.NotAuthorizedPage    = '/Html_Pages/Gui/Panels/AD_Non_Authorized_User.html';
