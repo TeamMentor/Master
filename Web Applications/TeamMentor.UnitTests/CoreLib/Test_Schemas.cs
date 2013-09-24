@@ -108,8 +108,8 @@ namespace TeamMentor.UnitTests.CoreLib
                 };
             var shouldPassValidation = new []
                 {
-                    "aaaa@email.com","dcruz@securityinnovation.com", "dinis.cruz@owasp.org"
-                };
+                    "aaaa@email.com","dcruz@securityinnovation.com", "dinis.cruz@owasp.org", "dinis-cruz@owasp.org", "dinis-cruz@securityinnovation-europe.com", "dinis+cruz@owasp.org"
+                }; 
 
             Func<string,bool> validEmail = 
                 (email)=>{
