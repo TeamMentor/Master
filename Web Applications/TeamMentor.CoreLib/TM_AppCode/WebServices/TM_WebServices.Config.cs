@@ -67,8 +67,12 @@ namespace TeamMentor.CoreLib
         [WebMethod(EnableSession = true)] [Admin]	            public TMConfig		TMConfigFile()
                                                                                     {	
                                                                                         return TMConfig.Current;  
-                                                                                    }																					
-        
+                                                                                    }																					        
+        [WebMethod(EnableSession = true)] [Admin]	            public bool		    SetTMConfigFile(TMConfig tmConfig)
+                                                                                    {
+                                                                                        TMConfig.Current = tmConfig;
+                                                                                        return TMConfig.Current.SaveTMConfig();
+                                                                                    }
         [WebMethod(EnableSession = true)] [Admin]	            public string		Get_Libraries_Zip_Folder()
                                                                                     {
                                                                                         var librariesZipsFolder = TMConfig.Current.TMSetup.LibrariesUploadedFiles;

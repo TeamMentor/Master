@@ -84,14 +84,14 @@
                                                     if (wikiTextDiv.length ===1)              
                                                       {
                                                             var wikiText = wikiTextDiv.html();
-                                                            wikiText = wikiText.replace(/&lt;/, "<")
-                                                                               .replace(/&gt;/, ">")
-                                                                               .replace(/&amp;/, "&");  // deal with double encoding WikiText issue
+                                                            wikiText = wikiText.replace(/&lt;/g, "<")
+                                                                               .replace(/&gt;/g, ">")
+                                                                               .replace(/&amp;/g, "&");  // deal with double encoding WikiText issue
                                                             var targetDiv = document.createElement('div');        
                                                             new creole().parse(targetDiv,wikiText )   
                                                             var html = targetDiv.innerHTML ;
               
-                                                        wikiTextDiv.html(html);      
+                                                            wikiTextDiv.html(html);      
                                                      }
                                                 }
             ,	addLink_OpenGIInNewWindow	: function()
