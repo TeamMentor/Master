@@ -17,7 +17,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             tmDatabase = new TM_Xml_Database(true);          // with the useFileStorage set to true
         }
 
-        [Test]
+        [Test][Ignore("False positive on TeamCity (since in there TM is running under the App_Data folder)")]
         public void TestUseOfTempFolders()
         {
             var databaseFolder      = tmDatabase.Path_XmlDatabase;
