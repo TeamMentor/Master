@@ -1,5 +1,5 @@
 //TM Settings
-window.TM.tmVersion            = "TM 3.4 - RC 4";
+window.TM.tmVersion            = "TM 3.4";
 window.TM.ArticleTitle         = "TeamMentor 3.4";
 
 window.TM.tmWebServices        = '/Aspx_Pages/TM_WebServices.asmx/';
