@@ -5,7 +5,7 @@ The TeamMentor 3.4 release includes new and updated content and a number of user
 
 APPLICATION CHANGES
 
-The TM3.2 release includes the following bug fixes.
+The TeamMentor 3.4 release includes the following bug fixes.
 + Tbot edit user allows saving of the user with badly formatted email (https://github.com/TeamMentor/Master/issues/592)
 + There is no option to edit TMconfig in Tbot the 3.4 RC1 version (https://github.com/TeamMentor/Master/issues/591)
 + New user email validation doesn't allow emails with a - (dash) (https://github.com/TeamMentor/Master/issues/579)
@@ -35,7 +35,7 @@ The TM3.2 release includes the following bug fixes.
 
 CONTENT CHANGES
 
-The TM3.4 release includes the following content changes:
+The TeamMentor 3.4 release includes the following content changes:
 + New SCALA library - an exclusive SCALA secure application development library. There are very few resources focused on SCALA security at the moment, so this is one of the first.
 + New HTML5 Library - a new library that describes important aspects of writing secure HTML5 applications. Both server-side and client-side issues are considered and guidance is provided on how to prevent or fix them.
 + New Vulnerability Library - a new library used to interface with vulnerability scanners. The Vulnerability library is a set of pages that describe most common vulnerabilities and leads to guidance on how to prevent or fix these vulnerabilities.
