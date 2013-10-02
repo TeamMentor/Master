@@ -48,7 +48,7 @@ TM.Gui.DataTableViewer.setDragAndDropOptions = function()
                  //zIndex: 1500
                 // addClasses: false
                 //opacity: 0.35
-            });
+            }).css("cursor", "pointer"); ;
 
         guidanceItemsTable.find("input").draggable(
             { 
@@ -65,7 +65,7 @@ TM.Gui.DataTableViewer.setDragAndDropOptions = function()
                  //zIndex: 1500
                 // addClasses: false
                 //opacity: 0.35
-            });	
+            }).css("cursor", "pointer"); ;	
 
         //for library Tree when dragging views
         libraryTree.find("a").each(function()

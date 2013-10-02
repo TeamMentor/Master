@@ -45,6 +45,9 @@
                                                             $(".ItemContent pre").addClass("prettyprint") ; 
                                                             prettyPrint();  
                                                             $("#copyrightNotice").show();
+							                                $('#selectedGuidanceItem').find('ul').css({ "margin-left": "2px", "margin-top": "10px", "margin-bottom": "10px" });
+				                                            $('#selectedGuidanceItem').find('ol').css({ "margin-left": "2px", "margin-top": "10px", "margin-bottom": "10px" });
+							                                $('#selectedGuidanceItemBorder').css({ "padding": "3px" });
                                                         });														
                                                     }
                                                     else
@@ -81,14 +84,14 @@
                                                     if (wikiTextDiv.length ===1)              
                                                       {
                                                             var wikiText = wikiTextDiv.html();
-                                                            wikiText = wikiText.replace(/&lt;/, "<")
-                                                                               .replace(/&gt;/, ">")
-                                                                               .replace(/&amp;/, "&");  // deal with double encoding WikiText issue
+                                                            wikiText = wikiText.replace(/&lt;/g, "<")
+                                                                               .replace(/&gt;/g, ">")
+                                                                               .replace(/&amp;/g, "&");  // deal with double encoding WikiText issue
                                                             var targetDiv = document.createElement('div');        
                                                             new creole().parse(targetDiv,wikiText )   
                                                             var html = targetDiv.innerHTML ;
               
-                                                        wikiTextDiv.html(html);      
+                                                            wikiTextDiv.html(html);      
                                                      }
                                                 }
             ,	addLink_OpenGIInNewWindow	: function()

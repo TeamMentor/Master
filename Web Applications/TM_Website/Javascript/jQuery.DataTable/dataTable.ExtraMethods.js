@@ -206,10 +206,10 @@ var getColumnFromArray = function(arrayData, columnIndex)
                     {
                         lastIdAdded = "";
                         var inputElement = $(event.target.parentNode).find("input");										
-                        if (event.target.nodeName != "INPUT")
+                        if (event.target.nodeName == "INPUT")
                         {
                             //console.log(selectedGuidanceIds);
-                            if (typeof(inputElement.attr("checked")) == "undefined")				
+                            if (typeof(inputElement.attr("checked")) != "undefined")				
                             {								
                                 inputElement.attr("checked", 'yes');						
                                 $(event.target.parentNode).addClass('row_selected');												
@@ -218,7 +218,10 @@ var getColumnFromArray = function(arrayData, columnIndex)
                                 lastIdAdded = selectedGuidanceId;
                             }	
                             else
+							{
                                 lastIdAdded ="";
+								return;
+							}
                                 $(oTable.fnSettings().aoData).each(function ()
                                 {
                                     var rowDataId = oTable.fnGetData(this.nTr)[6];
@@ -232,8 +235,8 @@ var getColumnFromArray = function(arrayData, columnIndex)
                             
                         }
                         
-                        if (selectedGuidanceIds.length > 0)	
-                            "guidanceTableEditorHelperText".$().html('Drag {0} to drop into a view'
+                        if (selectedGuidanceIds.length > 0)
+                            "guidanceTableEditorHelperText".$().html('<br/><b>Drag {0} to drop into a view</b>'
                                                                         .format(selectedGuidanceIds.length == 1 ? "item"
                                                                                                                :  selectedGuidanceIds.length + " items" ));
                     });
@@ -275,8 +278,8 @@ var getColumnFromArray = function(arrayData, columnIndex)
                                         $(this.nTr).removeClass('row_selected');
                             });
                             
-                        if (selectedGuidanceIds.length > 0)	
-                            "guidanceTableEditorHelperText".$().html('Drag {0} to drop into a view'
+                        if (selectedGuidanceIds.length > 0)
+                            "guidanceTableEditorHelperText".$().html('<br/><b>Drag {0} to drop into a view</b>'
                                                                         .format(selectedGuidanceIds.length == 1 ? "selected item"
                                                                                                                :  selectedGuidanceIds.length + " items" ));																			
                         else

@@ -1,4 +1,5 @@
 using System;
+using System.Security;
 using System.Xml;
 using System.Linq;
 using System.Collections.Generic;
@@ -178,6 +179,30 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
                           select folder.views;
             Assert.Greater(folders.size(),0 , "no folders");
             Assert.Greater(views.size()  ,0 , "no views");            
+        }
+        [Test] public void GetGuidanceItemById()
+        {  
+            var sessionID = userData.newUser().tmUser()             // create a temp user
+                                 .make_Editor()                     // make it an editor
+                                 .login();                          // log it in
+
+            tmWebServices.tmAuthentication.sessionID = sessionID;   // set the current session to the logged in used 
+            var currentUser = tmWebServices.Current_User();         // check that the current user is correctly set
+            Assert.IsNotNull(currentUser , "there should be a user object here");
+            
+            
+            var libraryId = createTempLibrary();    		    	 	                    // create a temp library
+            var tempGuidanceItemId = createTempGuidanceItem(libraryId);                     // create temp article
+            
+            var guidanceItem = tmWebServices.GetGuidanceItemById(tempGuidanceItemId);
+            Assert.That(guidanceItem.Content.Data.Value.valid()	, "content wasn't valid");  // check that the article had data
+            
+            tmWebServices.Logout();                                                         // log out current user
+
+            currentUser = tmWebServices.Current_User();                                                      // which should result in a null current user
+            Assert.IsNull(currentUser , "there shouldn't be a user object here");
+
+            Assert.Throws<SecurityException>(()=> tmWebServices.GetGuidanceItemById(tempGuidanceItemId));  // this should thrown an security exception            
         }
 
         //***********        
