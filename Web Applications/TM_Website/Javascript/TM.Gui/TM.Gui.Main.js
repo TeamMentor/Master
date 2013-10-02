@@ -20,7 +20,7 @@ TM.Gui.Main.homePage = function(targetDiv)
 TM.Gui.Main.showLoadingImageOnAjaxStartAndStop = 	function()	
     {
         var loadingImg = $("<img>").attr("src", '/Javascript/jQuery.jsTree/themes/default/throbber.gif')
-                                   .zIndex(40).absolute().right(10).top(40)
+                                   .zIndex(40).absolute().right(20).top(130)
                                    .hide();
         loadingImg.appendTo("body")
                   .ajaxStart(function() { loadingImg.show()})

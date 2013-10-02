@@ -35,7 +35,12 @@
                 
             ,	aboutTeamMentor				: function()
                                                 {
-                                                    openUrl("/html_pages/Gui/Panels/About_TeamMentor.html".add_TimeToUrl(), "About TeamMentor", 750,510)
+                                                    var userAgent = navigator.appName.toLowerCase();
+                                                    var browserIsIE = (userAgent === "microsoft internet explorer");
+                                                    // window height is different for IE
+                                                    var height = browserIsIE ? 541 : 519;
+                                                    var width = 750;
+                                                    openUrl("/html_pages/Gui/Panels/About_TeamMentor.html".add_TimeToUrl(), "About TeamMentor", width,height);
                                                 }
             ,	loginPage					: function ()
                                                 { 		

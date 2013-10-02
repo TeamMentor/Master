@@ -41,9 +41,9 @@ namespace TeamMentor.UnitTests.CoreLib
             Assert.Throws<Exception>(() => handleUrlRequest.handleRequest("content" , guid.str()), "content");            
             Assert.Throws<Exception>(() => handleUrlRequest.handleRequest("raw"     , guid.str()), "raw");            
             Assert.Throws<Exception>(() => handleUrlRequest.handleRequest("xml"     , guid.str()), "xml");
-            Assert.DoesNotThrow     (() => handleUrlRequest.handleRequest("html"    , guid.str()), "html");
+            Assert.Throws<Exception>(() => handleUrlRequest.handleRequest("html"    , guid.str()), "html");
             Assert.DoesNotThrow     (() => handleUrlRequest.handleRequest("xsl"     , guid.str()), "xsl");
-            Assert.DoesNotThrow     (() => handleUrlRequest.handleRequest("jsonp"   , guid.str()), "jsonp");
+            Assert.Throws<Exception>(() => handleUrlRequest.handleRequest("jsonp"   , guid.str()), "jsonp");
             Assert.Throws<Exception>(() => handleUrlRequest.handleRequest("article" , guid.str()), "article");
 
             

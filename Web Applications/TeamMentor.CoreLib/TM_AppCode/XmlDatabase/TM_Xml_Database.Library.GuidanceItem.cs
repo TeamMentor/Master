@@ -502,7 +502,7 @@ namespace TeamMentor.CoreLib
                 return tmDatabase.getVirtualGuid_if_MappingExists(mapping.guid());
             }
 
-            mapping = mapping.urlDecode().replaceAllWith(" ", new [] {"_", "+"})
+            mapping = mapping.urlDecode().replaceAllWith(" ", new [] {"+"})
                              .htmlEncode();
             var directMapping = tmDatabase.xmlBD_resolveDirectMapping(mapping);
             if (directMapping != Guid.Empty)

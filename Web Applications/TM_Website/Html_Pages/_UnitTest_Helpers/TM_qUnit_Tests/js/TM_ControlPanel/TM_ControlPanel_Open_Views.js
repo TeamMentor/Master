@@ -62,12 +62,7 @@ asyncTest("Create Multiple Users", function()
 	});		
 
  
-	
-asyncTest("WebServices", function() 	
-	{	
-		 TM.ControlPanel.open_WebServices();
-		 TM.Events.onControlPanelViewLoaded.add_InvokeOnce(start);
-	});		
+		
 	
 asyncTest("AdminTasks", function() 	
 	{	
