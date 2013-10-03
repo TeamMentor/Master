@@ -161,6 +161,29 @@ namespace TeamMentor.CoreLib
             }
             return "/error";
         }
+
+        public static TMUser    set_UserGroup       (this TMUser tmUser, UserGroup userGroup)
+        {
+            if (tmUser.notNull())
+                tmUser.GroupID = (int)userGroup;
+            return tmUser;
+        }
+        public static TMUser    make_Admin          (this TMUser tmUser)
+        {
+            return tmUser.set_UserGroup(UserGroup.Admin);            
+        }
+        public static TMUser    make_Editor          (this TMUser tmUser)
+        {
+            return tmUser.set_UserGroup(UserGroup.Editor);            
+        }        
+        public static TMUser    make_Reader          (this TMUser tmUser)
+        {
+            return tmUser.set_UserGroup(UserGroup.Reader);            
+        }
+        public static TMUser    make_Anonymous          (this TMUser tmUser)
+        {
+            return tmUser.set_UserGroup(UserGroup.Anonymous);            
+        }
     }
 
     public static class TM_User_ExtensionMethod_Validation

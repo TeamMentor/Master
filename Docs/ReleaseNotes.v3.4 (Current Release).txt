@@ -1,0 +1,64 @@
+TEAMMENTOR 3.4 RELEASE NOTES
+
+The TeamMentor 3.4 release includes new and updated content and a number of user experience and back-end bug fixes. Content libraries covering HTML5 and Scala security have been added and multiple fixes have been made to content. New "Vulnerability" had been introduced to facilitate integration with vulnerability scanners, such as Checkmarx, Fortify and others.  
+
+
+APPLICATION CHANGES
+
+The TeamMentor 3.4 release includes the following bug fixes.
++ Tbot edit user allows saving of the user with badly formatted email (https://github.com/TeamMentor/Master/issues/592)
++ There is no option to edit TMconfig in Tbot the 3.4 RC1 version (https://github.com/TeamMentor/Master/issues/591)
++ New user email validation doesn't allow emails with a - (dash) (https://github.com/TeamMentor/Master/issues/579)
++ Tbot should not force to fill out user fields that are not required to be entered on login form (https://github.com/TeamMentor/Master/issues/565)
++ Login page focus should be on the username field (https://github.com/TeamMentor/Master/issues/551)
++ Write better 'Welcome to TeamMentor' email message (https://github.com/TeamMentor/Master/issues/534)
++ User-Hostile message when navigating away from services (https://github.com/TeamMentor/Master/issues/527)
++ In tbot, when setting user expiration the date picker has this little watch icon which allows to set the time, it should be removed (https://github.com/TeamMentor/Master/issues/517)
++ Cannot link by title when title contains underscores (https://github.com/TeamMentor/Master/issues/504)
++ Email confirmation is bad (https://github.com/TeamMentor/Master/issues/486)
++ Change Password:SetCurrentUserPassword WebMethod should not be invoked if the user hasn't provided current password (https://github.com/TeamMentor/Master/issues/475)
++ HTTP POST Login should not be performed if the user hasn't provided credentials (https://github.com/TeamMentor/Master/issues/474)
++ Evaluate if email messages sent is correct when no First Name neither Last Name is provided (https://github.com/TeamMentor/Master/issues/466)
++ Fix error message in the Tbot import script (https://github.com/TeamMentor/Master/issues/462)
++ Article deletion confirmation dialog should be displayed only if you have selected more than one article (https://github.com/TeamMentor/Master/issues/461)
++ Remove raw JSON view of user data in update user page (https://github.com/TeamMentor/Master/issues/460)
++ Move throbber to location used on some TM Client sites (https://github.com/TeamMentor/Master/issues/459)
++ Formatting: Missing question mark on guidance Item deletion modal form (https://github.com/TeamMentor/Master/issues/458)
++ Articles with a number of indents look bad in preview (https://github.com/TeamMentor/Master/issues/455)
++ Control Panel: "useroles" in Create Users (update: add CVS to TBOT) (https://github.com/TeamMentor/Master/issues/407)
++ Password Changed Successfully Dialog should not be clickable (https://github.com/TeamMentor/Master/issues/384)
++ Web Services Page Should Be Organized Better (update: remove feature) (https://github.com/TeamMentor/Master/issues/285)
++ Empty folder has a triangle, implying it can be expanded. (https://github.com/TeamMentor/Master/issues/142)
++ Item drag help text wraps when using standard panel configuration (https://github.com/TeamMentor/Master/issues/51)
++ Right-column article-display on home page of sme.teammentor.net - formatting not working (https://github.com/TeamMentor/Master/issues/600)
+
+
+CONTENT CHANGES
+
+The TeamMentor 3.4 release includes the following content changes:
++ New SCALA library - an exclusive SCALA secure application development library. There are very few resources focused on SCALA security at the moment, so this is one of the first.
++ New HTML5 Library - a new library that describes important aspects of writing secure HTML5 applications. Both server-side and client-side issues are considered and guidance is provided on how to prevent or fix them.
++ New Vulnerability Library - a new library used to interface with vulnerability scanners. The Vulnerability library is a set of pages that describe most common vulnerabilities and leads to guidance on how to prevent or fix these vulnerabilities.
++ Multiple content fixes - most importantly, the recommended way to store passwords is to use iterative hashing now and the content has been updated to reflect this in ASP.NET 4.0, Java, PHP and C++ libraries. Multiple minor fixes have been made, such as removing outdated links from the ASP.NET 4.0 library.
+
+
+REQUIREMENTS
+
++ Windows
++ .NET Framework 4.0
+
+
+DEFAULT ACCOUNTS
+
+Username: admin
+Password: !!tmadmin
+
+
+LOCAL WEBSITE
+
+To run TeamMentor locally run "start TeamMentor.bat" which will start a local WebServer (Cassini) on a high port: http://127.0.0.1:12120
+
+
+SUPPORT INFORMATION
+
++ For more information about TeamMentor, please see "TeamMentor Documentation" at http://docs.teammentor.net/

@@ -23,10 +23,14 @@
 			$('#errorMessageLogin').hide();			
 			$('#LoginMainContent').css('display','none');						
 			var username = $('#UsernameBox').attr('value');
-			var password = $('#PasswordBox').attr('value');			
-			
-			
-			TM.WebServices.WS_Users.login(username, password, loginResponse);			
+			var password = $('#PasswordBox').attr('value');
+
+			if (username.length > 0 && password.length>0)
+			    TM.WebServices.WS_Users.login(username, password, loginResponse);
+			else {
+			    $('#errorMessageLogin').html('Incorrect username or password')
+									   .fadeIn(1000);
+			}
 		}
 
 		/*function passwordForgot() 
