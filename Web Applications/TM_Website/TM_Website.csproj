@@ -53,9 +53,6 @@
     <SkipPostSharp>True</SkipPostSharp>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="RazorEngine, Version=3.2.0.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
-      <HintPath>..\packages\RazorEngine.3.2.0\lib\net40\RazorEngine.dll</HintPath>
-    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Web.Abstractions">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -66,7 +63,7 @@
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
-      <HintPath>..\packages\Microsoft.AspNet.Razor.2.0.20715.0\lib\net40\System.Web.Razor.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.2.0.30506.0\lib\net40\System.Web.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Windows.Forms" />
@@ -648,7 +645,6 @@
     <Content Include="TBot\Admin\LiveData\IISSessions.cshtml" />
     <Content Include="TBot\Views\User_Activities.cshtml" />
     <Content Include="TBot\NGit\GitStatus.cshtml" />
-    <Content Include="packages.config" />
     <Content Include="TBot\Messaging\Send_Test_Email.cshtml" />
     <Content Include="TBot\Views\GitDiff_UserData_Commit.cshtml" />
     <Content Include="TBot\Views\GitDiff_UserData_File.cshtml" />
