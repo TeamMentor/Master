@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using O2.DotNetWrappers.ExtensionMethods;
-using O2.FluentSharp;
+using FluentSharp.CoreLib;
+using FluentSharp.Git.APIs;
 
 namespace TeamMentor.CoreLib
 {

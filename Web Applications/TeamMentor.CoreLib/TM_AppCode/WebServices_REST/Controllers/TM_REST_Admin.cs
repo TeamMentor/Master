@@ -3,7 +3,7 @@ using System.IO;
 using System.Security;
 using System.Web;
 using FluentSharp;
-using O2.DotNetWrappers.ExtensionMethods;
+using FluentSharp.CoreLib;
 
 namespace TeamMentor.CoreLib
 {	

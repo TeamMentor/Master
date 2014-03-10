@@ -1,10 +1,10 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using O2.DotNetWrappers.ExtensionMethods;
-using O2.DotNetWrappers.Windows;
-using O2.DotNetWrappers.Network;
+using FluentSharp.CoreLib;
+using FluentSharp.CoreLib.API;
 using urn.microsoft.guidanceexplorer;
+using Items = urn.microsoft.guidanceexplorer.Items;
 
 namespace TeamMentor.CoreLib
 {

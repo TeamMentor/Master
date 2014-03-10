@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using O2.DotNetWrappers.ExtensionMethods;
+using FluentSharp.BCL;
+using FluentSharp.CoreLib;
 using RazorEngine;
 using RazorEngine.Templating;
 

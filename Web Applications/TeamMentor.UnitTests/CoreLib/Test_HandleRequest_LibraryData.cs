@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web;
+using FluentSharp.CoreLib;
 using NUnit.Framework;
-using O2.DotNetWrappers.ExtensionMethods;
 using O2.FluentSharp;
 using TeamMentor.CoreLib;
 
@@ -29,7 +29,8 @@ namespace TeamMentor.UnitTests.CoreLib
         public void Setup()
         {
             moqHttpContext   = new API_Moq_HttpContext();
-            context          = HttpContextFactory.Context = moqHttpContext.httpContext();		//clean http request for each test            
+            context          = HttpContextFactory.Context = moqHttpContext.httpContext();		//clean http request for each test                       
+            Assert.NotNull(context.Session);
             context.Session["SessionID"] = userSessionId;
             handleUrlRequest = new HandleUrlRequest();
         }

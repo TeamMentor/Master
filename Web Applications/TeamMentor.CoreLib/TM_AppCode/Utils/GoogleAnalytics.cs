@@ -1,6 +1,6 @@
 ﻿using System;
-using O2.DotNetWrappers.DotNet;
-using O2.DotNetWrappers.ExtensionMethods;
+using FluentSharp.CoreLib;
+using FluentSharp.CoreLib.API;
 using PostSharp.Aspects;
 
 namespace TeamMentor.CoreLib

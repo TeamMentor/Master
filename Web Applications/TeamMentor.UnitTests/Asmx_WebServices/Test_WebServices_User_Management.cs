@@ -1,6 +1,6 @@
 ﻿using System;
+using FluentSharp.CoreLib;
 using NUnit.Framework;
-using O2.DotNetWrappers.ExtensionMethods;
 using TeamMentor.CoreLib;
 
 namespace TeamMentor.UnitTests.Asmx_WebServices

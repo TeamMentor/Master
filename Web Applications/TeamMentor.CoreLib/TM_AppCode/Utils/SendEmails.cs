@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Net.Mail;
 using System.Net.Mime;
-using O2.DotNetWrappers.DotNet;
-using O2.DotNetWrappers.ExtensionMethods;
+using FluentSharp.CoreLib;
+using FluentSharp.CoreLib.API;
 
 namespace TeamMentor.CoreLib
 {    

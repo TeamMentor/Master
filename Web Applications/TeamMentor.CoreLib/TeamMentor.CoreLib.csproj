@@ -57,9 +57,17 @@
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
+    <Reference Include="NGit, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\TeamMentor.UnitTests\NGit_Dlls\NGit.dll</HintPath>
+    </Reference>
     <Reference Include="PostSharp, Version=3.2.9.0, Culture=neutral, PublicKeyToken=b13fd38b8f9c99d7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\PostSharp.3.2.9-alpha\lib\net20\PostSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="RazorEngine, Version=3.3.0.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\RazorEngine.3.3.0\lib\net40\RazorEngine.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -122,7 +130,6 @@
     <Compile Include="TM_AppCode\Utils\GZip.cs" />
     <Compile Include="TM_AppCode\Schemas\KeyValue.cs" />
     <Compile Include="TM_AppCode\Utils\MiscUtils.cs" />
-    <Compile Include="TM_AppCode\Utils\NGit.cs" />
     <Compile Include="TM_AppCode\Utils\PostSharp.cs" />
     <Compile Include="TM_AppCode\Utils\REPL.cs" />
     <Compile Include="TM_AppCode\Utils\ResponseHeaders.cs" />

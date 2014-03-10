@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
+using FluentSharp.CoreLib;
 using Microsoft.Security.Application;
-using O2.DotNetWrappers.DotNet;
-using O2.DotNetWrappers.ExtensionMethods;
-using O2.FluentSharp;
 
 namespace TeamMentor.CoreLib
 {

@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Security.Principal;
 using System.Threading;
-using O2.DotNetWrappers.ExtensionMethods;
+using FluentSharp.CoreLib;
 using PostSharp.Aspects;
 
 namespace TeamMentor.CoreLib

@@ -1,5 +1,5 @@
 using System;
-using O2.DotNetWrappers.ExtensionMethods;
+using FluentSharp.CoreLib;
 
 namespace TeamMentor.CoreLib
 {
@@ -35,15 +35,15 @@ namespace TeamMentor.CoreLib
         {			
             guidanceItemId 			= guidanceItem.id.guid();
             guidanceItemId_Original	= guidanceItem.id_original.guid();
-            libraryId 		= guidanceItem.library.guid();
-            guidanceType 	= guidanceItem.guidanceType.guid();
-            creatorId 		= guidanceItem.creator.guid();
-            creatorCaption 	= guidanceItem.creatorCaption;
-            title			= guidanceItem.title;
-            images			= guidanceItem.images;
-//			lastUpdate 		= guidanceItem.lastUpdate;
-            delete 			= guidanceItem.delete;
-            htmlContent		= guidanceItem.content.sanitizeHtmlContent();
+            libraryId 		        = guidanceItem.library.guid();
+            guidanceType 	        = guidanceItem.guidanceType.guid();
+            creatorId 		        = guidanceItem.creator.guid();
+            creatorCaption 	        = guidanceItem.creatorCaption;
+            title			        = guidanceItem.title;
+            images			        = guidanceItem.images;
+//			lastUpdate 		        = guidanceItem.lastUpdate;
+            delete 			        = guidanceItem.delete;
+            htmlContent		        = guidanceItem.content.sanitizeHtmlContent();
             
             //use reflection to set these values
             foreach(var attribute in guidanceItem.AnyAttr)			

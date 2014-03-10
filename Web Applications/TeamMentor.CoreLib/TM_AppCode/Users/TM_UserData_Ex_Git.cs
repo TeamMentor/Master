@@ -1,7 +1,8 @@
 using System;
-using O2.DotNetWrappers.DotNet;
-using O2.DotNetWrappers.ExtensionMethods;
-using O2.FluentSharp;
+using FluentSharp.CoreLib;
+using FluentSharp.CoreLib.API;
+using FluentSharp.Git;
+using FluentSharp.Git.APIs;
 
 namespace TeamMentor.CoreLib
 {
@@ -52,7 +53,7 @@ namespace TeamMentor.CoreLib
                 {
                     var start = DateTime.Now;
                     userData.NGit.add_and_Commit_using_Status();
-                    "[TM_UserData][GitCommit] in ".info(start.duration_to_Now());
+                    "[TM_UserData][GitCommit] in ".info(start.duration_To_Now());
                 }
             return userData;
         }
@@ -68,7 +69,7 @@ namespace TeamMentor.CoreLib
                         var start = DateTime.Now;
                         "[TM_UserData][GitPush] Start".info();
                         nGit.push();
-                        "[TM_UserData][GitPush] in ".info(start.duration_to_Now());
+                        "[TM_UserData][GitPush] in ".info(start.duration_To_Now());
                     });
             return userData;
         }
@@ -103,8 +104,9 @@ namespace TeamMentor.CoreLib
                     if (userData.Path_UserData.isGitRepository())
                     {                        
                         "[TM_UserData][GitPull]".info();
-                        var nGit = userData.Path_UserData.git_Pull();
-                        userData.pushUserRepository(nGit);
+                        var result = userData.Path_UserData.git_Pull();
+                        if(result)
+                            userData.pushUserRepository(userData.Path_UserData.git_Open());
 
                     }
                     else
@@ -112,7 +114,7 @@ namespace TeamMentor.CoreLib
                         var start = DateTime.Now;
                         "[TM_UserData][GitClone] Start".info();
                         gitLocation.git_Clone(userData.Path_UserData);
-                        "[TM_UserData][GitClone] in ".info(start.duration_to_Now());
+                        "[TM_UserData][GitClone] in ".info(start.duration_To_Now());
                     }
                 }
             }

@@ -1,6 +1,5 @@
-﻿using NUnit.Framework;
-using O2.DotNetWrappers.ExtensionMethods;
-using O2.DotNetWrappers.Network;
+﻿using FluentSharp.CoreLib;
+using NUnit.Framework;
 using TeamMentor.CoreLib;
 
 namespace TeamMentor.UnitTests.CoreLib
@@ -16,7 +15,7 @@ namespace TeamMentor.UnitTests.CoreLib
         [SetUp]
         public void SetUp()
         {
-            var secretData = tmXmlDatabase.UserData.SecretData;
+            //var secretData = tmXmlDatabase.UserData.SecretData;
             sendEmails = new SendEmails();
             Assert.IsNotNull(sendEmails);
             Assert.IsNull(sendEmails.Smtp_Password , "In UnitTests SendEmails SMTP password should not be set");
@@ -72,11 +71,11 @@ namespace TeamMentor.UnitTests.CoreLib
         [Test]
         public void MessageBody_Is_Correct()
         {
-            const string serverURL = @"https://www.teammentor.net";
+            const string serverUrl = @"https://www.teammentor.net";
             const string username = "tmadmin";
-            var tmMessage = TMConsts.EMAIL_BODY_NEW_USER_WELCOME.format(serverURL, username);
+            var tmMessage = TMConsts.EMAIL_BODY_NEW_USER_WELCOME.format(serverUrl, username);
             var expectedMessage =
-                "Hello,\r\n\r\nIt's a pleasure to confirm that a new TeamMentor account has been created for you and that you'll now be able to access\r\nthe entire set of guidance available in the TM repository.\r\n\r\nTo access the service:\r\n\r\n- Go to {0} and login at the top right-hand corner of the page.\r\n- Use your username : {1}.\r\n\r\nThanks,\r\n\r\n".format(serverURL,username);
+                "Hello,\r\n\r\nIt's a pleasure to confirm that a new TeamMentor account has been created for you and that you'll now be able to access\r\nthe entire set of guidance available in the TM repository.\r\n\r\nTo access the service:\r\n\r\n- Go to {0} and login at the top right-hand corner of the page.\r\n- Use your username : {1}.\r\n\r\nThanks,\r\n\r\n".format(serverUrl,username);
             Assert.IsTrue(tmMessage == expectedMessage);
         }
 

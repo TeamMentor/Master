@@ -1,9 +1,7 @@
-﻿using NGit;
-using NGit.Api;
-using NGit.Treewalk;
+﻿using FluentSharp.CoreLib;
+using FluentSharp.Git;
+using FluentSharp.Git.APIs;
 using NUnit.Framework;
-using O2.DotNetWrappers.ExtensionMethods;
-using O2.FluentSharp;
 
 namespace TeamMentor.UnitTests.TM_XmlDatabase
 {
@@ -41,13 +39,13 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Assert.IsNull(NGitApi.head());
 
             //Adding a file (using method 1)
-            NGitApi.create_File("testFile.txt", "some Text");
+            NGitApi.file_Create("testFile.txt", "some Text");
             NGitApi.add_and_Commit_using_Status();
             var head1 = NGitApi.head();
             Assert.IsNotNull(head1);
                         
             //Adding another file (using method 2)
-            NGitApi.create_File("testFile2.txt", "some Text");
+            NGitApi.file_Create("testFile2.txt", "some Text");
             NGitApi.add("testFile2.txt");
             NGitApi.commit("Adding Another file");
             

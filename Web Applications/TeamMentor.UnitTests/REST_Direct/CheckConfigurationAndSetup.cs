@@ -1,7 +1,5 @@
-﻿using NUnit.Framework;
-using O2.DotNetWrappers.ExtensionMethods;
-using O2.FluentSharp;
-using TeamMentor.CoreLib;
+﻿using FluentSharp.CoreLib;
+using NUnit.Framework;
 
 namespace TeamMentor.UnitTests.REST
 {

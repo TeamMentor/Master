@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web;
-using O2.DotNetWrappers.ExtensionMethods;
+using FluentSharp.CoreLib;
 
 
 namespace FluentSharp
@@ -11,7 +11,7 @@ namespace FluentSharp
 
     public static class Extra_ExtensionMethods_Web
     {
-        public static WebHeaderCollection HEAD_Headers(this Uri uri)
+       /* public static WebHeaderCollection HEAD_Headers(this Uri uri)
         {
             var request = (HttpWebRequest) WebRequest.Create(uri);
             request.Timeout = 1000;
@@ -29,29 +29,29 @@ namespace FluentSharp
         public static bool HEAD(this Uri uri)
         {
             return uri.HEAD_Headers().notNull();
-        }
+        }*/
     }
 
     public static class Extra_ExtensionMethods_DateTime
     {
-        public static DateTime fromFileTimeUtc(this long fileTimeUtc)
+        /*public static DateTime fromFileTimeUtc(this long fileTimeUtc)
         {
             return DateTime.FromFileTimeUtc(fileTimeUtc); 
-        }
+        }*/
     }
 
     public static class Extra_ExtensionMethods_Collections
     {
-        public static List<string>  toStringList(this List<Guid> guids)
+        /*public static List<string>  toStringList(this List<Guid> guids)
         {
             return (from guid in guids
                     select guid.str()).toList();
-        }
+        }*/
 
-        public static bool notContains(this List<string> list, string stringToNotFind)
+       /* public static bool notContains(this List<string> list, string stringToNotFind)
         {
             return list.contains(stringToNotFind).isFalse();
-        }
+        }*/
 
         public static List<T> reverse<T>(this List<T> list)
         {

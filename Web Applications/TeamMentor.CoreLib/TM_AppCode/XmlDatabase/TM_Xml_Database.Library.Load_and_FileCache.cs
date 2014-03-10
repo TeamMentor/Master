@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using O2.DotNetWrappers.ExtensionMethods;
-using O2.DotNetWrappers.DotNet;
-using O2.DotNetWrappers.Windows;
-using O2.FluentSharp;
+using FluentSharp.CoreLib;
+using FluentSharp.CoreLib.API;
+using FluentSharp.Git;
+using FluentSharp.Git.APIs;
 using urn.microsoft.guidanceexplorer;
 using System.Threading;
 
@@ -58,7 +58,7 @@ namespace TeamMentor.CoreLib
             O2Thread.mtaThread(
                 ()=>{                        
                         lock (nGit)
-                        {
+                        {                            
                             nGit.add_and_Commit_using_Status();
                             try
                             {
@@ -225,7 +225,7 @@ namespace TeamMentor.CoreLib
         {
             if (file.fileExists().isFalse())
                 return false;
-            var fileContents = file.fileContents().fixCRLF();
+            var fileContents = file.fileContents().fix_CRLF();
             var secondLine = fileContents.lines().second();
             return secondLine.starts("<guidanceExplorer");
         }

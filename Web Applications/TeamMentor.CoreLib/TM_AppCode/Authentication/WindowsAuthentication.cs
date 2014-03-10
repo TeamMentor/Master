@@ -1,6 +1,6 @@
 using System;
 using System.Security.Principal;
-using O2.DotNetWrappers.ExtensionMethods;
+using FluentSharp.CoreLib;
 
 //O2File:../XmlDatabase/TM_Xml_Database.Users.cs
 

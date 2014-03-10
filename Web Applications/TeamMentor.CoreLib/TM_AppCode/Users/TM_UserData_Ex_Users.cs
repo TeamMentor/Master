@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using FluentSharp.CoreLib;
 using Microsoft.Security.Application;
-using O2.DotNetWrappers.ExtensionMethods;
 
 namespace TeamMentor.CoreLib
 {
@@ -141,7 +141,7 @@ namespace TeamMentor.CoreLib
         public static List<int>     createTmUsers               (this TM_UserData userData, string batchUserData) 
         {						
             var newUsers = new List<NewUser>();
-            foreach(var line in batchUserData.fixCRLF().split_onLines())
+            foreach(var line in batchUserData.fix_CRLF().split_onLines())
             {
                 var newUser = new NewUser();
                 //return _newUser;

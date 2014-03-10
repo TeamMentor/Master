@@ -3,8 +3,8 @@ using System.Web;
 using System.IO;
 using System.Security;
 using System.Collections.Generic;
+using FluentSharp.CoreLib;
 using XssEncoder = Microsoft.Security.Application.Encoder;
-using O2.DotNetWrappers.ExtensionMethods;
 
 namespace TeamMentor.CoreLib
 {

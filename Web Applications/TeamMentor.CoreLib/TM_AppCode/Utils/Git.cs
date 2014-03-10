@@ -1,6 +1,6 @@
 using System;
-using O2.DotNetWrappers.ExtensionMethods;
-using O2.DotNetWrappers.Windows;
+using FluentSharp.CoreLib;
+using FluentSharp.CoreLib.API;
 
 namespace TeamMentor.CoreLib
 {
@@ -43,7 +43,7 @@ namespace TeamMentor.CoreLib
 			// go up to the main git folder
 
 			var cmdOutput = Processes.startAsCmdExe(gitExe, gitCommand, gitLocalProjectFolder)
-			                         .fixCRLF()
+			                         .fix_CRLF()
 			                         .replace("\t", "    ");
 			return cmdOutput;
 		}

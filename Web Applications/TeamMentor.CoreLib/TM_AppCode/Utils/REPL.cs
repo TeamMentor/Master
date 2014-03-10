@@ -1,8 +1,8 @@
 using System;
 using System.Threading;
 using System.Web.Script.Serialization;
-using O2.DotNetWrappers.DotNet;
-using O2.DotNetWrappers.ExtensionMethods;
+using FluentSharp.CoreLib;
+using FluentSharp.CoreLib.API;
 
 namespace TeamMentor.CoreLib
 {
@@ -19,7 +19,7 @@ namespace TeamMentor.CoreLib
 			var compileError = "";
 			Action<string> onCompileOk = (msg) => { };
 			Action<string> onCompileFail = (msg) => { compileError = msg; };
-			var result = snippet.fixCRLF().compileAndExecuteCodeSnippet(onCompileOk, onCompileFail);
+			var result = snippet.fix_CRLF().compileAndExecuteCodeSnippet(onCompileOk, onCompileFail);
 			if (compileError.valid())
 				executionResult = compileError;
 			else
