@@ -65,8 +65,8 @@
     <Reference Include="O2_Platform_External_SharpDevelop, Version=5.1.1.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
       <HintPath>..\packages\O2.Platform.External.SharpDevelop.5.0.75\lib\net35\O2_Platform_External_SharpDevelop.dll</HintPath>
     </Reference>
-    <Reference Include="PostSharp, Version=2.1.0.0, Culture=neutral, PublicKeyToken=b13fd38b8f9c99d7, processorArchitecture=MSIL">
-      <HintPath>..\packages\PostSharp.2.1.7.28\lib\net20\PostSharp.dll</HintPath>
+    <Reference Include="PostSharp">
+      <HintPath>..\packages\PostSharp.3.0.40\lib\net20\PostSharp.dll</HintPath>
     </Reference>
     <Reference Include="Sharpen, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="System" />
@@ -165,7 +165,7 @@
     <Content Include="NGit_Dlls\Sharpen.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\PostSharp.2.1.7.28\tools\PostSharp.targets" Condition="Exists('..\packages\PostSharp.2.1.7.28\tools\PostSharp.targets')" />
+  <Import Project="..\packages\PostSharp.3.0.40\tools\PostSharp.targets" Condition="Exists('..\packages\PostSharp.3.0.40\tools\PostSharp.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
