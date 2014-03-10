@@ -62,7 +62,47 @@ namespace TeamMentor.CoreLib
 		}
         [Admin] public string CreateCSVUsers(string payload)
         {
-            payload = payload;
+            var users = payload.split("\n");
+            var xmlDatabase = TM_Xml_Database.Current;
+            var userData = xmlDatabase.UserData;
+
+            foreach (var user in users)
+            {
+                var rawData = user.split(",");
+                var userName = rawData[0] ?? "";
+                var password = rawData[1] ?? "";
+                var email = rawData[2] ?? "";
+                var firstName = rawData[3] ?? "";
+                var lastName = rawData[4] ?? "";
+                var company = rawData[5] ?? "";
+                var title = rawData[6] ?? "";
+                var country = rawData[7] ?? "";
+                var state = rawData[8] ?? "";
+                var expiryDate = rawData[9] ?? "";
+                var role = rawData[10] ?? "";
+                var passwordExpire = rawData[11] ?? "";
+                var userEnabled = rawData[12] ?? "";
+                var userId = userData.newUser(userName, password);
+                DateTime outputDate;
+                DateTime.TryParse(expiryDate, out outputDate);
+                if (userId > 0)
+                {
+                    var doesPwdExpire = passwordExpire.trim().ToLower() == "y";
+                    var enabled = userEnabled.trim().ToLower() == "y";
+                    userData.updateTmUser(userId, userName, firstName, lastName, title, company, email, country,
+                                          state, outputDate, doesPwdExpire,
+                                          enabled, int.Parse(role));
+                }
+                else
+                {
+                    throw new Exception(String.Format("Failed to create user {0}", userName));
+                }
+            }
+            return "Success";
+        }
+        [Admin]
+        public string VerifyUserData(string payload)
+        {
             var users = payload.split("\n");
             var xmlDatabase = TM_Xml_Database.Current;
             var userData = xmlDatabase.UserData;
@@ -70,7 +110,7 @@ namespace TeamMentor.CoreLib
             foreach (var user in users)
             {
                 var rawData = user.split(",");
-                if (rawData.count()< 13)
+                if (rawData.count() < 13)
                 {
                     errorMessage = string.Format("There is a missing field for user {0}", rawData[0] ?? "");
                     break;
@@ -88,8 +128,8 @@ namespace TeamMentor.CoreLib
                 var role = rawData[10] ?? "";
                 var passwordExpire = rawData[11] ?? "";
                 var userEnabled = rawData[12] ?? "";
-                var tmUser = new NewUser {Username = userName,Password = password,Company = company,Country =country,Email = email,Firstname = firstName,Lastname = lastName,GroupId = int.Parse(role),Note = "CSV user creation",State = state, Title = title};
-                
+                var tmUser = new NewUser { Username = userName, Password = password, Company = company, Country = country, Email = email, Firstname = firstName, Lastname = lastName, GroupId = int.Parse(role), Note = "CSV user creation", State = state, Title = title };
+
                 //Check wether or not the user does exist.
                 if (userName.tmUser().notNull())
                 {
@@ -115,7 +155,7 @@ namespace TeamMentor.CoreLib
                 System.DateTime outputDate;
                 if (!System.DateTime.TryParse(expiryDate, out outputDate))
                 {
-                    errorMessage = string.Format("Please enter a valid Expiration date for user {0}. Format must be {1}.", userName,"yy/mm/dd");
+                    errorMessage = string.Format("Please enter a valid Expiration date for user {0}. Format must be {1}.", userName, "yy/mm/dd");
                     break;
                 }
                 if (outputDate <= System.DateTime.Now)
@@ -124,7 +164,7 @@ namespace TeamMentor.CoreLib
                     break;
                 }
                 bool passwordExpireout;
-                if (passwordExpire.trim().ToLower()!= "y" && passwordExpire.trim().ToLower()!="n")
+                if (passwordExpire.trim().ToLower() != "y" && passwordExpire.trim().ToLower() != "n")
                 {
                     errorMessage = string.Format("Please verify data for user {0}, Password expire value must be Y (for yes) or N (for No)", userName);
                     break;
@@ -144,46 +184,10 @@ namespace TeamMentor.CoreLib
                     break;
                 }
             }
-            if (string.IsNullOrEmpty(errorMessage))
-            {
-                foreach (var user in users)
-                {
-                    var rawData = user.split(",");
-                    var userName = rawData[0] ?? "";
-                    var password = rawData[1] ?? "";
-                    var email = rawData[2] ?? "";
-                    var firstName = rawData[3] ?? "";
-                    var lastName = rawData[4] ?? "";
-                    var company = rawData[5] ?? "";
-                    var title = rawData[6] ?? "";
-                    var country = rawData[7] ?? "";
-                    var state = rawData[8] ?? "";
-                    var expiryDate = rawData[9] ?? "";
-                    var role = rawData[10] ?? "";
-                    var passwordExpire = rawData[11] ?? "";
-                    var userEnabled = rawData[12] ?? "";
-                    var userId = userData.newUser(userName, password);
-                    DateTime outputDate;
-                    DateTime.TryParse(expiryDate, out outputDate);
-                    if (userId > 0)
-                    {
-                        var doesPwdExpire = passwordExpire.trim().ToLower() == "y";
-                        var enabled = userEnabled.trim().ToLower() == "y";
-                        userData.updateTmUser(userId, userName, firstName, lastName, title, company, email, country,
-                                              state,outputDate, doesPwdExpire,
-                                             enabled, int.Parse(role));
-                    }
-                    else
-                    {
-                        throw new Exception(String.Format("Failed to create user {0}", userName));
-                    }
-                }
-                errorMessage = "success";
-            }
-            return errorMessage;
+            return(String.IsNullOrEmpty(errorMessage) ? "Success" : errorMessage);
         }
 
-        [Admin] public bool				DeleteUser(string userId)
+	    [Admin] public bool				DeleteUser(string userId)
 		{
 			return TmWebServices.DeleteUser(userId.toInt());
 		}		
