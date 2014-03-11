@@ -1,0 +1,61 @@
+@using System.Xml.Linq
+@using TeamMentor.CoreLib
+@using O2.DotNetWrappers.ExtensionMethods
+@using O2.DotNetWrappers.DotNet
+
+<script src="/Javascript/jQuery/jquery-1.8.1.min.js" type="text/javascript"></script>  
+<script type="text/javascript" src="/Javascript/bootstrap/2.2.2/bootstrap.min.js"></script>
+<link   href="/Javascript/bootstrap/datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />        
+<script src="/Javascript/bootstrap/datetimepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script> 
+<script language="javascript">
+    $(document).ready(function () {
+        $('#userName').focus();
+		$('#userName').keyup(function () {
+	    $('#txtSSOToken').val('');
+	});
+    });
+	
+</script>
+@{
+    var userName        = System.Web.HttpContext.Current.Request["userName"];
+    var ssoToken        = string.Empty;
+    string ssoKey       = string.Empty;
+	var errorMessage    = string.Empty;
+    
+    if (userName.notNull())
+    {
+         var userData = TM_UserData.Current;
+         ssoKey = userData.SecretData.Rijndael_Key;
+		 if (ssoKey.isNull())
+        {
+		   errorMessage="SSO Key not found.Please verify secret data.";
+           return;
+        }
+         ssoToken = (userName + ssoKey).md5Hash();
+    }
+}
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+   <head></head>
+    <body>
+        <h4>Generating a new SSO Token</h4>
+        <br/>
+        <form name="myForm" class="css-form" method="GET" action="SSO_Token">    
+        <ul>
+            <div class="input-prepend">
+                <span class="add-on" style="width:120px;" m>UserName</span>
+                <input type="text" style="width:250px;" required ng-disabled="false" name="userName" id="userName" value="@userName"/>
+            </div><br/>
+            <div class="input-prepend">
+                <span class="add-on" style="width:120px;">SSO Token</span>
+                <input type="text" style="width:255px;" id="txtSSOToken" readonly="readonly" value="@ssoToken"/>
+            </div><br/>
+            
+            <br />
+              
+            <input type="submit" class="btn btn-primary" ng-disabled="myForm.$invalid" value="Generate SSO Token" />
+        </ul>    
+    </form>
+    <h2>@errorMessage</h2>  
+    </body>
+</html>
