@@ -9,8 +9,7 @@ namespace TeamMentor.UnitTests
 
         public TM_WebServices_InMemory()
         {
-            HttpContextFactory.Context = new API_Moq_HttpContext().httpContext();
-            //tmXmlDatabase    = new TM_Xml_Database();	             
+            HttpContextFactory.Context = new API_Moq_HttpContext().httpContext();            
             tmWebServices = new TM_WebServices();
         }
     }

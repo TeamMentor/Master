@@ -8,6 +8,16 @@ namespace TeamMentor.UnitTests.CoreLib
     public class Test_TM_UserData : TM_XmlDatabase_InMemory
     {
         [Test]
+        public void TM_UserData_Ctor()
+        {
+            Assert.IsFalse(userData.UsingFileStorage);
+            userData = new TM_UserData(true);
+            Assert.IsTrue (userData.UsingFileStorage);
+            userData = new TM_UserData();
+            Assert.IsFalse(userData.UsingFileStorage);
+        }
+
+        [Test]
         public void SecretDataDefault()
         {
             userData.ResetData();

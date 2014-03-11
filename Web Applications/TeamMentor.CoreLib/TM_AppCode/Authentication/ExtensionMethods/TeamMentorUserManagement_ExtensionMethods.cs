@@ -5,50 +5,7 @@ using System.Security.Permissions;
 using FluentSharp.CoreLib;
 
 namespace TeamMentor.CoreLib
-{
-    public static class TeamMentorUserManagement_GUID
-    {
-        //Note: need to find a way to reuse database connections (the current model of creation a connection per request doesn't make a lot of sense        
-		/*        public static string userName(this Guid sessionID)
-				{
-					"resolving username for sessionID: {0}".info(sessionID);
-		//            if (sessionID != null && sessionID != Guid.Empty)            
-		//                return ObjectFactory.AuthenticationManagement().LookupUsernameFromSessionID(sessionID);
-					return null;
-				}
-
-				public static TMUser tmUser(this Guid sessionID)
-				{ 
-					var userName = sessionID.userName();
-		//            if (userName != null)
-		//                return ObjectFactory.AuthenticationManagement().GetUserFromUsername(userName);
-					return null;
-				}
-
-		public static int groupID(this Guid sessionID)
-        { 
-            var tmUser = sessionID.tmUser();
-            if (tmUser != null)
-                return tmUser.GroupID;
-            return -1;            
-        }
-
-		public static UserGroup userGroup(this Guid sessionID)
-        {
-            return (UserGroup)sessionID.groupID();              
-        }
-
-		public static List<UserRole> userRoles(this Guid sessionID)
-        {
-            return UserRolesMappings.Mappings[sessionID.userGroup()];
-        }
-
-		public static bool isAdmin(this Guid sessionID)
-        {
-            return UserGroup.Admin == sessionID.userGroup();
-        }*/
-	}
-
+{    
     public static class TeamMentorUserManagement_TMUser
     {
         public static UserGroup userGroup(this TMUser tmUser)
@@ -66,36 +23,6 @@ namespace TeamMentor.CoreLib
 		}		
     }
 
-  /*  public static class TeamMentorUserManagement_AuthenticationManagement
-    {
-        public static List<TMUser> users(this AuthenticationManagement authenticationManagement)
-        {
-            return authenticationManagement.GetAllUsers();
-        }
-        
-        public static List<TMUser> users(this AuthenticationManagement authenticationManagement, UserType userType)            
-        {
-            return (from user in authenticationManagement.users()
-                    where user.userType() == userType
-                    select user).ToList();
-        }
-
-        public static List<TMUser> admins(this AuthenticationManagement authenticationManagement)
-        {
-            return authenticationManagement.users(UserType.Admin);
-        }
-
-        public static List<TMUser> readers(this AuthenticationManagement authenticationManagement)
-        {
-            return authenticationManagement.users(UserType.Reader);
-        }
-
-        public static List<TMUser> editors(this AuthenticationManagement authenticationManagement)
-        {
-            return authenticationManagement.users(UserType.Editor);
-        }
-    }
- */ 
     public static class TeamMentorUserManagement_UserGroup
     {
         public static List<UserRole> userRoles(this UserGroup userGroup)

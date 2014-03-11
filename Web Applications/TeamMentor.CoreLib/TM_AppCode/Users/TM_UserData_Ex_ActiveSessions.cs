@@ -188,7 +188,7 @@ namespace TeamMentor.CoreLib
                     select session.SessionID).toList();
         }
 
-        public static TM_UserData resetAllSessions(this TM_UserData userData)
+        public static TM_UserData       resetAllSessions(this TM_UserData userData)
         {
             var sessionIDs = userData.validSessions();
             foreach (var sessionID in sessionIDs)
@@ -273,7 +273,7 @@ namespace TeamMentor.CoreLib
         {
             return UserGroup.Admin == sessionId.session_UserGroup();
         }  
-        public static List<Guid>              session_sessionIds    (this TMUser tmUser)
+        public static List<Guid>        session_sessionIds   (this TMUser tmUser)
         {
             try
             {
@@ -286,5 +286,11 @@ namespace TeamMentor.CoreLib
             }
             return new List<Guid>();
         }        
+
+        public static string            csrfToken            (this Guid guid)
+        {
+            return guid.str().hash().str();	  	// interrestingly guid.hash().str() produces a different value
+        }
+            
     }
 }

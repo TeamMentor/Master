@@ -15,7 +15,10 @@ namespace TeamMentor.UnitTests.CoreLib
         [SetUp]
         public void SetUp()
         {
-            //var secretData = tmXmlDatabase.UserData.SecretData;
+            SendEmails.Disable_EmailEngine = false;
+            SendEmails.Send_Emails_As_Sync = true;
+
+            
             sendEmails = new SendEmails();
             Assert.IsNotNull(sendEmails);
             Assert.IsNull(sendEmails.Smtp_Password , "In UnitTests SendEmails SMTP password should not be set");
@@ -26,7 +29,8 @@ namespace TeamMentor.UnitTests.CoreLib
         public void Check_TM_Server_URL()
         {
             var tmServerUrl = SendEmails.TM_Server_URL;
-            Assert.IsNull(tmServerUrl);     //shouldn't be set unless the HttpContext exists
+            Assert.IsNotNull(tmServerUrl);
+            Assert.AreEqual (tmServerUrl,"http://localhost");
         }
 
         [Test]
@@ -51,16 +55,15 @@ namespace TeamMentor.UnitTests.CoreLib
         {
             var emailTo   = "qa@teammentor.net";
             var userName  = "username".add_RandomLetters(5);
-            var tmUser = new TMUser();
-            //adding valid Email
-            tmUser.EMail = emailTo;
-            //adding valid username
-            tmUser.UserName = userName;
+            var password = "!{0}1234".format(5.randomLetters());
+            var tmUser =  userData.newUser(userName, password, emailTo).tmUser(); //new TMUser();
+            
+            Assert.AreEqual(tmUser.UserName, userName);
+            Assert.AreEqual(tmUser.EMail   , emailTo);            
      
             //adding valid serverUrl (email should be sent now)
-            SendEmails.TM_Server_URL = "http://localhost:88/";
-            var lastMessageSent1 = SendEmails.Sent_EmailMessages.second();
-            
+            //SendEmails.TM_Server_URL = "http://localhost:88/";
+            var lastMessageSent1 = SendEmails.Sent_EmailMessages.last();            
             
             Assert.IsTrue (lastMessageSent1.Message.contains("Sent by TeamMentor."));
             Assert.IsTrue(lastMessageSent1.Message.contains("It's a pleasure to confirm that a new TeamMentor"));

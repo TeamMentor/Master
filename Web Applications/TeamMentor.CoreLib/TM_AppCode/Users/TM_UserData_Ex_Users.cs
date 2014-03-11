@@ -61,6 +61,14 @@ namespace TeamMentor.CoreLib
         {
             return TM_UserData.Current.deleteTmUser(tmUser);
         }
+        public static int           createUser                  (this string userName)
+        {
+            return userName.newUser();
+        }
+        public static int           newUser                     (this string userName)
+        {
+            return TM_UserData.Current.newUser(userName);
+        }
         public static int           newUser                     (this TM_UserData userData)
         {
             return userData.newUser("test_user_{0}".format(5.randomLetters()));
@@ -80,13 +88,12 @@ namespace TeamMentor.CoreLib
         }        
         public static int           newUser                     (this TM_UserData userData, string  username, string password, string email, int groupId)
         {
-            return userData.newUser(username, password, email,"FName","LName","A Note", "El Title","The Company","The Country","The State",groupId);
+            return userData.newUser(username, password, email,"...","...","...", "...","...","...","...",groupId);
         }        
         public static int           newUser                     (this TM_UserData userData, string  username, string password, string email, string firstname, string lastname, string note , string title, string company, string country, string state, int groupId)
         {			
-            var userId = Guid.NewGuid().hash();  //10000000.random();//10.randomNumbers().toInt();
-            if (userId < 0)						// find a .net that does this (maybe called 'invert')
-                userId = -userId;
+            var userId = Math.Abs(Guid.NewGuid().hash()); 
+            
             "Creating new user: {0} with id {1}".debug(username, userId);
             
             if (groupId <1)						//set default user type						
@@ -236,8 +243,7 @@ namespace TeamMentor.CoreLib
             return -1;
         }                
         public static TMUser        tmUser              (this TM_UserData userData, string userName)
-        {
-            //userName = userName.urlDecode();
+        {            
             return userData.TMUsers.Where((tmUser) => tmUser.UserName == userName).first() ;
         }
         public static TMUser        tmUser              (this TM_UserData userData, int userId)

@@ -20,6 +20,7 @@ namespace TeamMentor.UnitTests
         public void SetupDatabase()
         {            
             1.set_DEFAULT_PBKDF2_INTERACTIONS();                    // improve performance of tests that create users            
+            SendEmails.Disable_EmailEngine = true;                  // Disable Email engine by default
 
             tmXmlDatabase   = new TM_Xml_Database();
             userData        = tmXmlDatabase.UserData;

@@ -6,7 +6,7 @@ using System.Web;
 using FluentSharp.CoreLib;
 
 
-namespace FluentSharp
+namespace FluentSharp.CoreLib
 {
 
     public static class Extra_ExtensionMethods_Web
@@ -83,13 +83,7 @@ namespace FluentSharp
                    response.Cookies.notNull() &&
                    response.Cookies[cookieName].notNull();
         }
-
-        public static bool hasCookie(this HttpRequestBase response, string cookieName)
-        {
-            return response.notNull() &&
-                   response.Cookies.notNull() &&
-                   response.Cookies[cookieName].notNull();
-        }
+        
 
         public static string cookie(this HttpResponseBase response, string cookieName)
         {
@@ -114,6 +108,28 @@ namespace FluentSharp
             return httpCookie;
         }
 
+        
+
+        public static HttpCookie httpOnly(this HttpCookie httpCookie)
+        {
+            return httpCookie.httpOnly(true);
+        }
+
+        public static HttpCookie httpOnly(this HttpCookie httpCookie, bool value)
+        {
+            if (httpCookie.notNull())
+                httpCookie.HttpOnly = value;
+            return httpCookie;
+        }
+        
+        //httpRequestBase
+
+        public static bool hasCookie(this HttpRequestBase response, string cookieName)
+        {
+            return response.notNull() &&
+                   response.Cookies.notNull() &&
+                   response.Cookies[cookieName].notNull();
+        }
         public static HttpCookie set_Cookie(this HttpRequestBase request, string name, string value)
         {
             if (request.isNull())
@@ -129,18 +145,24 @@ namespace FluentSharp
                 request.Cookies.Add(httpCookie);
             return httpCookie;
         }
-
-        public static HttpCookie httpOnly(this HttpCookie httpCookie)
+        public static string cookie(this HttpRequestBase request, string cookieName)
         {
-            return httpCookie.httpOnly(true);
+            if (request.hasCookie(cookieName))
+                return request.Cookies[cookieName].value();
+            return null;                       
+        }
+        public static bool hasHeader(this HttpRequestBase response, string headerName)
+        {
+            return response.notNull() &&
+                   response.Headers.notNull() &&
+                   response.Headers[headerName].notNull();
         }
 
-        public static HttpCookie httpOnly(this HttpCookie httpCookie, bool value)
+        public static string header(this HttpRequestBase request, string headerName)
         {
-            if (httpCookie.notNull())
-                httpCookie.HttpOnly = value;
-            return httpCookie;
-        }
-        
+            if (request.hasHeader(headerName))
+                return request.Headers[headerName];
+            return null;                       
+        }        
     }
 }

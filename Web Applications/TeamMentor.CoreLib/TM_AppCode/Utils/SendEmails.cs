@@ -9,34 +9,20 @@ namespace TeamMentor.CoreLib
 {    
     public class SendEmails
     {   
-        public static List<EmailMessage> Sent_EmailMessages { get; set; }
-        public static string             TM_Server_URL      { get; set; }
+        public static List<EmailMessage> Sent_EmailMessages  { get; set; }
+        public static string             TM_Server_URL       { get; set; }
+        public static bool               Disable_EmailEngine { get; set; }
+        public static bool               Send_Emails_As_Sync { get; set; }
 
-        public string From          { get; set; }
-        public string Smtp_Server   { get; set; }
-        public string Smtp_UserName { get; set; }
-        public string Smtp_Password { get; set; }
+        public        string             From                { get; set; }
+        public        string             Smtp_Server         { get; set; }
+        public        string             Smtp_UserName       { get; set; }
+        public        string             Smtp_Password       { get; set; }
 
         static SendEmails()
         {
             Sent_EmailMessages = new List<EmailMessage>();
-            try
-            {
-                if (HttpContextFactory.Context.isNull())
-                    return;
-                var request = HttpContextFactory.Request;
-                var scheme = request.IsSecureConnection ? "https" : "http";
-                var serverName = request.ServerVariables["Server_Name"];
-                var serverPort = request.ServerVariables["Server_Port"];
-                if (serverName.notNull() && serverPort.notNull())
-                    TM_Server_URL = "{0}://{1}:{2}".format(scheme, serverName, serverPort);
-                else
-                    TM_Server_URL = "{0}://localhost".format(scheme);
-            }
-            catch (Exception ex)
-            {
-                ex.log("[SendEmails] static ctor");
-            }
+            mapTMServerUrl();           
         }
 
 
@@ -54,6 +40,28 @@ namespace TeamMentor.CoreLib
                 }
             }
         }
+        public static void mapTMServerUrl()
+        {
+            try
+            {
+                if (HttpContextFactory.Context.isNotNull())
+                {
+                    var request = HttpContextFactory.Request;
+                    var scheme = request.IsSecureConnection ? "https" : "http";
+                    var serverName = request.ServerVariables["Server_Name"];
+                    var serverPort = request.ServerVariables["Server_Port"];
+                    if (serverName.notNull() && serverPort.notNull())
+                        TM_Server_URL = "{0}://{1}:{2}".format(scheme, serverName, serverPort);
+                    return;
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.log("[SendEmails] mapTMServerUrl ctor");
+            }                
+            TM_Server_URL = "http://localhost";
+        }
+
         public SendEmails(string smtpServer, string smtpUserName, string smtpPassword ) : this()
         {
             Smtp_Server     = smtpServer;
@@ -148,6 +156,8 @@ namespace TeamMentor.CoreLib
         //sendEmail Helpers
         public static void SendNewUserEmails(string subject, TMUser tmUser)
         {
+            if (Disable_EmailEngine)
+                return;
             var tmMessage =
 @"New TeamMentor User Created:
 
@@ -253,7 +263,9 @@ If you didn't make this request, please let us know at support@teammentor.net.
 
         public static void SendEmailToTM(string subject, string message)
         {
-            O2Thread.mtaThread(
+            if (Disable_EmailEngine)
+                return;
+            var thread = O2Thread.mtaThread(
                 ()=>{
                         try
                         {
@@ -264,10 +276,14 @@ If you didn't make this request, please let us know at support@teammentor.net.
                             ex.log("in SendEmailToTM");
                         }
                     });
+           if(Send_Emails_As_Sync)
+               thread.Join();
         }
         public static void SendEmailToEmail(string to, string subject, string message)
         {
-            O2Thread.mtaThread(
+            if (Disable_EmailEngine)
+                return;
+            var thread = O2Thread.mtaThread(
                 ()=>{
                         try
                         {
@@ -278,6 +294,8 @@ If you didn't make this request, please let us know at support@teammentor.net.
                             ex.log("in SendEmailToTM");
                         }
                     });
+            if(Send_Emails_As_Sync)
+               thread.Join();
         }
         
     }

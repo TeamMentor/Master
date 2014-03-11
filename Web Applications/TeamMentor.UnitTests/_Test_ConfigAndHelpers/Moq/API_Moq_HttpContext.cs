@@ -68,8 +68,15 @@ namespace O2.FluentSharp
         public API_Moq_HttpContext setupNormalRequestValues()		
         {							        
             var genericIdentity = new GenericIdentity("genericIdentity");
-            var genericPrincipal = new GenericPrincipal(genericIdentity, new string[] {});
-            MockContext.Setup(context => context.User).Returns(genericPrincipal);	     	
+            IPrincipal genericPrincipal = new GenericPrincipal(genericIdentity, new string[] {});
+            MockContext.Setup(context => context.User).Returns(()=>
+                    {
+                        return genericPrincipal;
+                    });	     	            
+            MockContext.SetupSet(context => context.User).Callback((IPrincipal principal)=>
+                    {
+                        genericPrincipal = principal;
+                    });
             MockContext.Setup(context => context.Cache).Returns(HttpRuntime.Cache);            
             
             //Request
