@@ -15,6 +15,7 @@ namespace TeamMentor.CoreLib
         public class TMSetup_Config
         {
             public bool			UseAppDataFolder			{ get; set; }
+            public bool			OnlyLoadUserData			{ get; set; }
             public string       TMLibraryDataVirtualPath    { get; set; }
             public string 		XmlLibrariesPath 	        { get; set; }
             public string 		UserDataPath 	            { get; set; }		                

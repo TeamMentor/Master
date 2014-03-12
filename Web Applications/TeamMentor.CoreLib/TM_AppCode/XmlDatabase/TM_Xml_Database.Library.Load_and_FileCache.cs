@@ -142,9 +142,6 @@ namespace TeamMentor.CoreLib
             tmXmlDatabase.GuidanceExplorers_XmlFormat = tmXmlDatabase.Path_XmlLibraries.getGuidanceExplorerObjects();
             tmXmlDatabase.load_GuidanceItemsFromCache();
             
-            //removed since this need to be handled on the GUI
-            /*if (tmXmlDatabase.tmLibraries().empty())     //ensure that there is at least one library                          
-                tmXmlDatabase.new_TmLibrary();*/
             return tmXmlDatabase;
         }
         public static TM_Xml_Database                    reloadGuidanceExplorerObjects     (this TM_Xml_Database tmDatabase)

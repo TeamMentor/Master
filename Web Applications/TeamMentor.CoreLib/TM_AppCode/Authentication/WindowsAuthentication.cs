@@ -13,7 +13,7 @@ namespace TeamMentor.CoreLib
 		public static string editorGroup = "";
 		public static string adminGroup  = "";
 		
-        public WindowsIdentity CurrentWindowsIdentity { get; set; }				
+        public WindowsIdentity CurrentWindowsIdentity { get; set; }     				
 
 		public WindowsAuthentication()
 		{

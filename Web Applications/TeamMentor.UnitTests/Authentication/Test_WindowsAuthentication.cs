@@ -15,15 +15,15 @@ namespace TeamMentor.UnitTests.Authentication
     {        
         public WindowsAuthentication windowsAuthentication;
         public TM_UserData           userData;
-
-        public Test_WindowsAuthentication()
+       
+        [SetUp]
+        public void setup()
         {
             WindowsAuthentication.windowsAuthentication_Enabled = false;
             WindowsAuthentication.readerGroup                   = null;
             windowsAuthentication = new WindowsAuthentication();            
             userData              = new TM_UserData();
         }
-
         [Test]
         public void WindowsAuthentication_Static_Ctor()             // and loadConfiguration
         {            
