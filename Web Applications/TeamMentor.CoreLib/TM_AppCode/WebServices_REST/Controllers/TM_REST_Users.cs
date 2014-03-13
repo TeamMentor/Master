@@ -94,14 +94,12 @@ namespace TeamMentor.CoreLib
                                           enabled, int.Parse(role));
                 }
                 else
-                {
                     throw new Exception(String.Format("Failed to create user {0}", userName));
-                }
             }
             return "Success";
         }
-        [Admin]
-        public string VerifyUserData(string payload)
+
+        [Admin]public string VerifyUserData(string payload)
         {
             var users = payload.split("\n");
             var xmlDatabase = TM_Xml_Database.Current;
@@ -152,25 +150,23 @@ namespace TeamMentor.CoreLib
                     errorMessage = string.Format("FirstName and LastName are required fields for user {0}", userName);
                     break;
                 }
-                System.DateTime outputDate;
-                if (!System.DateTime.TryParse(expiryDate, out outputDate))
+                DateTime outputDate;
+                if (!DateTime.TryParse(expiryDate, out outputDate))
                 {
                     errorMessage = string.Format("Please enter a valid Expiration date for user {0}. Format must be {1}.", userName, "yy/mm/dd");
                     break;
                 }
-                if (outputDate <= System.DateTime.Now)
+                if (outputDate <= DateTime.Now)
                 {
                     errorMessage = string.Format("Expiry date cannot be prior  or equal than today. User {0}", userName);
                     break;
                 }
-                bool passwordExpireout;
                 if (passwordExpire.trim().ToLower() != "y" && passwordExpire.trim().ToLower() != "n")
                 {
                     errorMessage = string.Format("Please verify data for user {0}, Password expire value must be Y (for yes) or N (for No)", userName);
                     break;
                 }
 
-                bool userEnabledFlag;
                 if (userEnabled.trim().ToLower() != "y" && userEnabled.trim().ToLower() != "n")
                 {
                     errorMessage = string.Format("Please verify data for user {0}, User Enabled value must be Y (for yes) or N (for No)", userName);

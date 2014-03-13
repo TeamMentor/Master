@@ -15,61 +15,56 @@
     }
 </style>
 <script type="text/javascript">
-
+     //AngularJS controller.
     function UsersCtrl($scope, $http) 
-    {    //Default text
+    {   
+     //Default text
         var testUsers = "user_1_reader,Secure1Pwd!!,Email,FirstName,LastName,Company,JobTitle,Country,State,ExpirationDate,2,N,Y \n" +
             "user_2_editor, Secure1Pwd!!,Email,FirstName,LastName,Company,JobTitle,Country,State,ExpirationDate,3,N,Y";
         
         $scope.usersToCreate = testUsers;
         $scope.data = $scope.usersToCreate.split("\n");
 
-        $scope.CreateUsers = function () 
-        {
+        $scope.CreateUsers = function ()
+		{
             var serviceUrl = "/rest/users/create";
-           
+
             $http.post(serviceUrl, JSON.stringify({ 'payload': $scope.usersToCreate })).
-                success(function (data) 
-                {
+                success(function(data) 
+				{
                     var msg = JSON.parse(JSON.stringify(data));
-                    if (msg.CreateCSVUsersResult.toString().trim().toLowerCase() == "success") 
+                    if (msg.CreateCSVUsersResult.toString().trim().toLowerCase() == "success")
                     {
                         $("#messages").removeClass();
                         $("#messages").addClass("alert alert-success");
-                        $("#messages").html("<b> Users created succesfully </b>");
+                        $("#messages").html("<b> Users created succesfully.</b>");
                         $("#messages").fadeIn('fast');
-                        setTimeout(function ()
+                        //Closing dialog after 3 seconds.
+                        setTimeout(function () 
                         {
                             $("#dialog").dialog('close');
-                        }, 4000);
-                    } else 
+                        }, 3000);
+                    } 
+                    else
                     {
                         $("#messages").html("<b> " + msg.CreateCSVUsersResult + " </b>");
                         $("#messages").addClass("alert-danger");
                         $("#messages").removeClass("alert-success");
                         $("#messages").fadeIn('slow');
                     }
-                }).
-                error(function (result)
-                {
-                    var msg = JSON.parse(JSON.stringify(result));
-                    $("#messages").html("<b> " + msg.CreateCSVUsersResult + " </b>");
-                    $("#messages").addClass("alert-danger");
-                    $("#messages").removeClass("alert-success");
-                    $("#messages").fadeIn('slow');
-            });
+                });
         };
         $scope.OpenModal = function ()
         {
             $("#messages").html("");
             $("#messages").fadeOut("fast");
-            
+
             $scope.data = $scope.usersToCreate.split("\n");
             $("#dialog").dialog("open");
             var serviceUrl = "/rest/users/verify";
             $http.post(serviceUrl, JSON.stringify({ 'payload': $scope.usersToCreate })).
-                success(function (data) 
-                {
+                success(function(data)
+				{
                     var msg = JSON.parse(JSON.stringify(data));
                     if (msg.VerifyUserDataResult.toString().trim().toLowerCase() == "success")
                     {
@@ -82,14 +77,6 @@
                         $("#messages").removeClass("alert-success");
                         $("#messages").fadeIn('slow');
                     }
-                }).
-                error(function (result)
-                {
-                    var msg = JSON.parse(JSON.stringify(result));
-                    $("#messages").html("<b> " + msg.CreateCSVUsersResult + " </b>");
-                    $("#messages").addClass("alert-danger");
-                    $("#messages").removeClass("alert-success");
-                    $("#messages").fadeIn('slow');
                 });
         };
         $scope.CloseModal = function () 
@@ -97,19 +84,19 @@
             $("#dialog").dialog("close");
         };
     }
-    $(document).ready(function () {
+
+    $(document).ready(function ()
+    {
+        //Initializes dialog
         $("#dialog").dialog(
         {
-            resizable: false,
-            height: 'auto',
-            width: '1200px',
-            autoOpen: false,
-            modal: true,
-            bgiframe: true,
+            resizable: false,height: 'auto',width: '1200px',
+            autoOpen: false, modal: true,
             title: 'Create users'
         });
         $('.alert-danger').hide();
-        $('textarea').focus(function () {
+        $('textarea').focus(function () 
+        {
             $('.alert-danger').hide();
         });
         $('#createusers').prop('disabled', true);
@@ -120,7 +107,7 @@
             <br/>
             CSV Syntax: <p>{Username},{Password}, {Email},{First Name},{Last Name}, {Company},{JobTitle},{Country},{State},{ExpirationDate},{User Role: 1=admin, 2=reader, 3=editor},{PasswordExpired(Y/N)},{UserEnabled(Y/N)}</p>
             <br/>
-            <textarea ng-model="usersToCreate" style="width: 1100px; padding: 2px; height: 450px;"></textarea><br>
+            <textarea ng-model="usersToCreate" style="width: 1100px; padding: 2px; height: 440px;"></textarea><br>
             <input type="submit" id="btnCreateUsers" class="btn btn-primary" ng-disabled="myForm.$invalid" value="Preview" ng-click="OpenModal()" />
         </div>
         <div  id="dialog">
@@ -165,7 +152,7 @@
                     </tr>
                 </tbody>
             </table>
-            <div class="alert-danger alert" ng-model="messageDiv" id="messages">AAdads</div>
+            <div class="alert-danger alert" ng-model="messageDiv" id="messages"></div>
              <div id="groupButtons" align="right">
                 <input type="button" class="btn-primary" id="createusers" value="Create users" ng-click="CreateUsers()"/>
                  <input type="button" class="btn-primary" value="Cancel" ng-click="CloseModal()"/>
