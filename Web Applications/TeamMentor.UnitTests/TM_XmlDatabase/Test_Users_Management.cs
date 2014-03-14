@@ -115,6 +115,27 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Assert.IsTrue   (tmUser2_ById != tmUser_ByName  &&  tmUser2_ById != tmUser_ByEmail);
         }
 
+        [Test]
+        public void getUserGroupName()
+        {
+            var tmUser = "a user".createUser();
+            Assert.AreEqual(userData.getUserGroupName(tmUser.UserID), "Reader");
+            Assert.AreEqual(userData.getUserGroupId  (tmUser.UserID),  (int)UserGroup.Reader);
+            tmUser.set_UserGroup(UserGroup.Editor);
+            Assert.AreEqual(userData.getUserGroupName(tmUser.UserID), "Editor");
+            Assert.AreEqual(userData.getUserGroupId  (tmUser.UserID),  (int)UserGroup.Editor);
+            
 
+            Assert.AreEqual(userData.getUserGroupName(10000.randomNumber()), null);
+            Assert.AreEqual(userData.getUserGroupId  (10000.randomNumber()), -1);
+        }
+
+        [Test]
+        public void tmUser_FromEmail()
+        {
+            var tmUser = "a user".createUser();
+            Assert.AreEqual(userData.tmUser_FromEmail(tmUser.EMail), tmUser);
+            Assert.AreEqual(userData.tmUser_FromEmail(null)        , null);
+        }
     }
 }

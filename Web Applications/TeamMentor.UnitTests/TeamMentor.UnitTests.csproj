@@ -116,12 +116,15 @@
     <Compile Include="TM_XmlDatabase\Test_TM_TestData.cs" />
     <Compile Include="TM_XmlDatabase\Test_Setup.cs" />
     <Compile Include="TM_XmlDatabase\Test_UserData_GitStorage.cs" />
+    <Compile Include="TM_XmlDatabase\Test_Users_Creation.cs" />
     <Compile Include="TM_XmlDatabase\Test_Users_Sessions.cs" />
     <Compile Include="TM_XmlDatabase\Test_Users_UserActivities.cs" />
     <Compile Include="CoreLib\Test_Utils_GoogleAnalytics.cs" />
     <Compile Include="_Temp\FluentSharp_ExtensionMethods_To_add.cs" />
     <Compile Include="_Temp\NGitAPI_ExtraExensionMethods.cs" />
     <Compile Include="_Test_ConfigAndHelpers\Tests_Config.cs" />
+    <Compile Include="_Test_ConfigAndHelpers\TM_Config_InMemory.cs" />
+    <Compile Include="_Test_ConfigAndHelpers\TM_UserData_InMemory.cs" />
     <Compile Include="_Test_ConfigAndHelpers\TM_WebServices_InMemory.cs" />
     <Compile Include="_Test_ConfigAndHelpers\TM_XmlDatabase_InMemory.cs" />
     <Compile Include="_Test_ConfigAndHelpers\Moq\Test_API_Moq_HttpContext.cs" />
