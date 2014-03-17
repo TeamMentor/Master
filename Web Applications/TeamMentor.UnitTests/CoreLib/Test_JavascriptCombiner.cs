@@ -1,4 +1,5 @@
-using System.Web; 
+using System.Web;
+using FluentSharp.CoreLib.API;
 using NUnit.Framework; 
 using FluentSharp.CoreLib;
 using O2.FluentSharp;
@@ -19,9 +20,12 @@ namespace TeamMentor.UnitTests.CoreLib
  		public string EMPTY_RESPONSE = "//nothing to do";
  		public string DONT_MINIFY	 = "&dontMinify=true";	    	    
      	
-    	public Test_JavascriptCombiner() 
+        [SetUp]
+    	public void setup() 
     	{     		    		    	 	    	    
-    		BaseDir = "javascriptCombiner".tempDir(false);
+    		BaseDir = "javascriptCombiner".tempDir(false).createDir();
+            Assert.IsTrue (BaseDir.dirExists());
+
 			httpContextApi 	= new API_Moq_HttpContext(BaseDir);   
 			
 			context 	= httpContextApi.httpContext();
@@ -30,7 +34,13 @@ namespace TeamMentor.UnitTests.CoreLib
 			
 			HttpContextFactory.Context = context;						
     	}     	
-    	
+    	[TearDown]
+    	public void tearDown() 
+    	{
+            Assert.IsTrue (BaseDir.dirExists());
+            Files.deleteFolder(BaseDir,true);
+            Assert.IsFalse(BaseDir.dirExists());
+        }
 
 		[Test]
 		public void serverCode_test_MockingEnvironemnt()

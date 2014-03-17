@@ -10,8 +10,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
     public class Test_Users_Creation : TM_UserData_InMemory
     {                
 
-        [Test]        
-        public void createDefaultAdminUser()
+        [Test] public void createDefaultAdminUser() 
         {
             UserRole.ManageUsers.setPrivilege();        
             var adminName  = tmConfig.TMSecurity.Default_AdminUserName;
@@ -52,9 +51,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Assert.IsTrue (tmUser.isAdmin());
             Assert.IsFalse(tmUser.isEditor());
         }
-
-        [Test]
-        public void createUser()
+        [Test] public void createUser()             
         {
             UserRole.ManageUsers.setPrivilege();       // needed for userData.users()   
             var newUserName = 10.randomLetters();
@@ -65,9 +62,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Assert.NotNull (tmUser);
             Assert.Contains(tmUser, userData.users());
         }
-
-        [Test]
-        public void createTmUser()
+        [Test] public void createTmUser()           
         {           
             UserGroup.Anonymous.setPrivileges(); 
             var newUser = new NewUser()
@@ -120,9 +115,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             newUser.Username = null;            
             Assert.AreEqual   (0, newUser.create());            
         }
-
-        [Test]
-        public void setUserPassword()
+        [Test] public void setUserPassword()        
         {
             var tmUser   = "tempUser".createUser();
             var password1 = 10.randomLetters();
@@ -164,6 +157,46 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Assert.AreNotEqual(Guid.Empty,userData.login(tmUser.UserName, password4));
 
         }
+        [Test] public void updateTmUser()           
+        {       
+            UserRole.ManageUsers.setPrivilege();       // needed for userData.users()   
+            var tmUser      = "el User".createUser();
+            var userName    = tmUser.UserName;        // userName cannot be changed
+            var firstname   = 10.randomLetters();
+            var lastname    = 10.randomLetters(); 
+            var title       = 10.randomLetters(); 
+            var company     = 10.randomLetters(); 
+            var email       = 10.randomLetters(); 
+            var country     = 10.randomLetters(); 
+            var state       = 10.randomLetters(); 
+            var accountExpiration = tmUser.AccountStatus.ExpirationDate.AddSeconds(10); 
+            var passwordExpired   = tmUser.AccountStatus.PasswordExpired.not();
+            var userEnabled       = tmUser.AccountStatus.UserEnabled.not();
+            var groupId           = 4.random(); 
+            
+            var result1 = userData.updateTmUser(tmUser.UserID, userName, firstname, lastname,  title, company, email,country, state, accountExpiration, passwordExpired,userEnabled,groupId);
+            var result2 = userData.updateTmUser(tmUser.UserID, userName, firstname, lastname,  title, company, email,country, state, accountExpiration, passwordExpired,userEnabled,groupId);
+            var result3 = userData.updateTmUser(tmUser.UserID, "new value", firstname, lastname,  title, company, email,country, state, accountExpiration, passwordExpired,userEnabled,groupId);
+
+            Assert.IsTrue  (result1, "First update should work");
+            Assert.IsTrue  (result2, "Second update (with same data) should work");
+            Assert.IsFalse (result3, "Third update (with changed username) should fail");
+
+            Assert.AreEqual(tmUser.UserName  , userName);
+            Assert.AreEqual(tmUser.FirstName , firstname);
+            Assert.AreEqual(tmUser.LastName  , lastname);
+            Assert.AreEqual(tmUser.Title     , title);
+            Assert.AreEqual(tmUser.Company   , company);
+            Assert.AreEqual(tmUser.EMail     , email);
+            Assert.AreEqual(tmUser.Country   , country);
+            Assert.AreEqual(tmUser.State     , state);
+            Assert.AreEqual(tmUser.GroupID   , groupId);
+            Assert.AreEqual(tmUser.AccountStatus.ExpirationDate  , accountExpiration);
+            Assert.AreEqual(tmUser.AccountStatus.PasswordExpired , passwordExpired);
+            Assert.AreEqual(tmUser.AccountStatus.UserEnabled     , userEnabled);
+            
+        }
+
         [Test (Description ="Checks that only UserRole.ManageUsers is able to invoke the userData.users() method")]
         public void CheckUserListPermissions()
         {           

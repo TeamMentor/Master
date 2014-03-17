@@ -200,6 +200,8 @@ namespace TeamMentor.CoreLib
 
         public static string xmlDB_Path_Library_XmlFile(this TM_Xml_Database tmDatabase, TM_Library library)
         {
+            if (library.isNull())
+                return null;
             return tmDatabase.xmlDB_Path_Library_XmlFile(library.Id);
         }
         public static string xmlDB_Path_Library_XmlFile(this TM_Xml_Database tmDatabase, Guid libraryId)
@@ -307,8 +309,7 @@ namespace TeamMentor.CoreLib
                 if (zipFileToImport.isUri())
                 {
                     "[xmlDB_Libraries_ImportFromZip] provided value was an URL so, downloading it: {0}".info(zipFileToImport);
-                    zipFileToImport = new Web().downloadBinaryFile(zipFileToImport);
-                    //zipFileToImport =  zipFileToImport.uri().download(); 		
+                    zipFileToImport = new Web().downloadBinaryFile(zipFileToImport);                    	
                 }
                 "[xmlDB_Libraries_ImportFromZip] importing library from: {0}".info(zipFileToImport);
                 if (zipFileToImport.fileExists().isFalse())
@@ -322,45 +323,9 @@ namespace TeamMentor.CoreLib
                     fastZip.ExtractZip(zipFileToImport, tempDir, "");
 
                     Files.copyFolder(tempDir, currentLibraryPath, true, true,"");          // just copy all files into Library path
+                    Files.deleteFolder(tempDir,true);                                      // delete tmp folder created
                     result = true;
-                    /*
-                    var gitZipFolderName = tempDir.folders().first().folderName();				// the first folder should be the one created by gitHub's zip
-                    var xmlFile_Location1 = tempDir.pathCombine(gitZipFolderName + ".xml");
-                    var xmlFile_Location2 = tempDir.pathCombine(gitZipFolderName).pathCombine(gitZipFolderName + ".xml");
-                    if (xmlFile_Location1.fileExists() || xmlFile_Location2.fileExists())
-                        // if these exists here, just copy the unziped files directly
-                    {
-                        Files.copyFolder(tempDir, currentLibraryPath, true, true, ".git");
-                        if (xmlFile_Location1.fileExists())
-                            Files.copy(xmlFile_Location1, currentLibraryPath.pathCombine(gitZipFolderName));
-                        result = true;
-                    }
-                    else
-                    {
-                        //if (zipFileToImport.extension() == ".master")					
-                        var gitZipDir = tempDir.pathCombine(gitZipFolderName);
-                        foreach (var libraryFolder in gitZipDir.folders())
-                        {
-                            var libraryName = libraryFolder.folderName();
-                            var targetFolder = currentLibraryPath.pathCombine(libraryName);
-
-                            //default behaviour is to override the existing libraries
-                            Files.copyFolder(libraryFolder, currentLibraryPath);
-
-                            //handle the case where the xml file is located outside the library folder
-                            var libraryXmlFile = gitZipDir.pathCombine("{0}.xml".format(libraryName));
-                            if (libraryXmlFile.fileExists())
-                                Files.copy(libraryXmlFile, targetFolder);
-                                    // put it in the Library folder which is where it really should be															
-                        }
-                        var virtualMappings = gitZipDir.pathCombine("Virtual_Articles.xml");
-                        if (virtualMappings.fileExists())
-                        {
-                            Files.copy(virtualMappings, currentLibraryPath); // copy virtual mappings if it exists
-                            tmDatabase.mapVirtualArticles();
-                        }
-                        result = true;
-                    } */
+                    
                 }
             }
             catch (Exception ex)
@@ -369,8 +334,7 @@ namespace TeamMentor.CoreLib
             }
 
             if (result)
-                tmDatabase.reloadGuidanceExplorerObjects();
-                //tmDatabase.loadLibraryDataFromDisk();                
+                tmDatabase.reloadGuidanceExplorerObjects();                
 
             return result;
         }				

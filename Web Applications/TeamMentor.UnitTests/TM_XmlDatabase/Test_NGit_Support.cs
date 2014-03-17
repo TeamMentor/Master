@@ -1,4 +1,5 @@
 ﻿using FluentSharp.CoreLib;
+using FluentSharp.CoreLib.API;
 using FluentSharp.Git;
 using FluentSharp.Git.APIs;
 using NUnit.Framework;
@@ -25,7 +26,8 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             initCommand.SetDirectory(testRepo2);            
             initCommand.Call();
             "IsGitrepo: {0}".info(testRepo2.isGitRepository());
-            Assert.IsTrue(testRepo2.isGitRepository() , "Should not be a repo");
+            Assert.IsTrue(testRepo2.isGitRepository() , "Should be a repo");
+            deleteRepo(testRepo2);
         }
         [Test] public void CreateLocalTestRepo()
         {
@@ -51,9 +53,21 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             
             //making sure the head has changed
             var head2 = NGitApi.head();
-            Assert.AreNotEqual(head1,head2);            
+            Assert.AreNotEqual(head1,head2);        
+            deleteRepo(tempRepo);
         }
 
+        //helper method
+
+        public void deleteRepo(string targetRepo)
+        {
+            var files = targetRepo.files(true);
+            files.files_Attribute_ReadOnly_Remove(); // need to do this or the repo cannot be deleted            
+            Assert.IsTrue (targetRepo.isGitRepository() , "Should be a repo");
+            Assert.IsTrue (targetRepo.dirExists());
+            Assert.IsTrue (Files.deleteFolder(targetRepo,true));            
+            Assert.IsFalse(targetRepo.dirExists());
+        }
         /*
         [Test]
         public void CommitDiffs()

@@ -48,7 +48,8 @@ namespace TeamMentor.CoreLib
             catch (Exception ex)
             {
                 ex.logWithStackTrace("[in TM_Xml_Database.ctor]");
-                TM_StartUp.Current.TrackingApplication.saveLog();
+                if (TM_StartUp.Current.notNull())                       //will happen when TM_Xml_Database ctor is called by an user with no admin privs
+                    TM_StartUp.Current.TrackingApplication.saveLog();
             }
             
         }
