@@ -681,6 +681,7 @@
     <Content Include="packages.config" />
     <Content Include="TBot\Users\User_Stats\Users_Accounts_Expiration.cshtml" />
     <Content Include="TBot\Users\User_Stats\Users_Mapped_by_Email.cshtml" />
+    <Content Include="TBot\Admin\SSO_Token.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />

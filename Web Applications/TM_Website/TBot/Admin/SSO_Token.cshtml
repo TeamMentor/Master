@@ -33,7 +33,7 @@
            return;
         }
         ssoToken = (userName + ssoKey).md5Hash();
-        ssoUrl = "/Aspx_Pages.aspx?userName={0}&requestToken={1}".format(userData, ssoToken);
+        ssoUrl = "/Aspx_Pages/SSO.aspx?userName={0}&requestToken={1}".format(userName, ssoToken);
     }
 }
 <!DOCTYPE html>
@@ -46,15 +46,15 @@
         <ul>
             <div class="input-prepend">
                 <span class="add-on" style="width:120px;" m>UserName</span>
-                <input type="text" style="width:250px;" required ng-disabled="false" name="userName" id="userName" value="@userName"/>
+                <input type="text" style="width:150px;" required ng-disabled="false" name="userName" id="userName" value="@userName"/>
             </div><br/>
             <div class="input-prepend">
                 <span class="add-on" style="width:120px;">SSO Token</span>
-                <input type="text" style="width:255px;" id="txtSSOToken" readonly="readonly" value="@ssoToken"/>
+                <input type="text" style="width:355px;" id="txtSSOToken" readonly="readonly" value="@ssoToken"/>
             </div><br/>
             <div class="input-prepend">
                 <span class="add-on" style="width:120px;">SSO Token</span>
-                <a href='@ssoUrl'>SSO Url</a>..
+                 <input type="text" style="width:750px;" value="@ssoUrl"/>                
             </div>
             
             <br />

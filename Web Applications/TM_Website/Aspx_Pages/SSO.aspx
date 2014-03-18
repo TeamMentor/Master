@@ -1,5 +1,6 @@
 ﻿<%@ Page Language="C#"%>
-<%@ Import Namespace ="O2.DotNetWrappers.ExtensionMethods" %>
+<%@ Import Namespace ="FluentSharp.CoreLib" %>
+<%@ Import Namespace ="FluentSharp.WinForms" %>
 <%@ Import Namespace="TeamMentor.CoreLib" %>
 <link href="../Javascript/bootstrap/bootstrap.v.1.2.0.css" rel="stylesheet" type="text/css" />
 
@@ -13,7 +14,7 @@
     
     var userName        = request["userName"].urlEncode();
     var requestToken    = request["requestToken"].urlEncode();
-    
+    var format          = request["format"].urlEncode();
     //Safe check for the username
     if (userName.isNull())
     {
@@ -44,6 +45,14 @@
             }
             var loginGuid = tmUser.login();             // login user in TM   
             authentication.sessionID = loginGuid;       // triggers the update of user's cookies
+            if(format == "img")
+            {
+                Response.Clear();  
+                string content = @"R0lGODlhAQABAPcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAP8ALAAAAAABAAEAAAgEAP8FBAA7";  
+                Response.ContentType = "image/gif";  
+                Response.BinaryWrite(System.Convert.FromBase64String(content));  
+                Response.End();
+            }
             response.Redirect("/teammentor");           // redirects user to /teammentor
         }
         else
