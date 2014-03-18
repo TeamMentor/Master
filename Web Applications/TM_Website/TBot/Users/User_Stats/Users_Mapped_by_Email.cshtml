@@ -1,7 +1,8 @@
 @using System
+@using System.Collections.Generic
+@using System.Linq
 @using TeamMentor.CoreLib
-@using FluentSharp
-@using O2.DotNetWrappers.ExtensionMethods;
+@using FluentSharp.CoreLib
 
 @{
     var userData = TM_Xml_Database.Current.UserData;
@@ -28,7 +29,7 @@
 }
 
 
-<h4>Users mapped by Email</h2>
+<h4>Users mapped by Email</h4>
 
 <pre>
 TBot Analysis of the current @tmUsers.Count users, indexed by the user email
@@ -85,8 +86,3 @@ Created on @DateTime.Now
 </table>    
 }
 
-
-
-
-
-<h4>Disabled Users</h3>

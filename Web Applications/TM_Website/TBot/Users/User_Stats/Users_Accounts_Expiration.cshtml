@@ -1,7 +1,8 @@
 @using System
+@using System.Collections.Generic
+@using System.Linq
 @using TeamMentor.CoreLib
-@using FluentSharp
-@using O2.DotNetWrappers.ExtensionMethods;
+@using FluentSharp.CoreLib
 
 @{
     var userData = TM_Xml_Database.Current.UserData;
@@ -27,7 +28,7 @@
 }
 
 
-<h4>Acounts Expiration</h2>
+<h4>Acounts Expiration</h4>
 
 <pre>
 TBot Analysis of current Expired accounts
@@ -47,7 +48,7 @@ Created on @DateTime.Now
 </ul>
 @foreach (var item in usersToShow)
 { 
-    var title = item.Key;
+    //var title = item.Key;
     var users = item.Value;
     
     var count = 0;           
@@ -89,4 +90,4 @@ Created on @DateTime.Now
 
 
 
-<h4>Disabled Users</h3>
+<!--<h4>Disabled Users</h4>-->
