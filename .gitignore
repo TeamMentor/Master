@@ -1,3 +1,6 @@
+#Dev specific
+bin
+
 #TM specific
 /Library_Data/XmlDatabase
 /Web Applications/TestResults

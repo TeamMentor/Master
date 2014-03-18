@@ -61,7 +61,8 @@ namespace TeamMentor.CoreLib
                 
             "[TM][Application_Error]: {0}".error(lastError);
             TrackingApplication.saveLog();
-            HttpContextFactory.Response.Redirect("/error");
+            //disabling error redirection while in dev
+         //   HttpContextFactory.Response.Redirect("/error");
         }           
         public void Application_BeginRequest()
         {            

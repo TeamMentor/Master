@@ -269,6 +269,10 @@
     <Content Include="Javascript\bootstrap\2.3.1\img\glyphicons-halflings.png" />
     <Content Include="Javascript\bootstrap\2.3.1\js\bootstrap.js" />
     <Content Include="Javascript\bootstrap\2.3.1\js\bootstrap.min.js" />
+    <Content Include="Javascript\bootstrap\3.1.1\css\bootstrap-theme.min.css" />
+    <Content Include="Javascript\bootstrap\3.1.1\css\bootstrap.min.css" />
+    <Content Include="Javascript\bootstrap\3.1.1\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Javascript\bootstrap\3.1.1\js\bootstrap.min.js" />
     <Content Include="Javascript\bootstrap\bootstrap.v.1.2.0.css" />
     <Content Include="Javascript\bootstrap\bootstrap.min.css" />
     <Content Include="Javascript\bootstrap\bootstrap.min.js" />
@@ -593,6 +597,7 @@
     <Content Include="Javascript\_mappings\HomePage_JS.txt" />
     <Content Include="Javascript\_mappings\HomePage_JS_TM.txt" />
     <Content Include="O2_Kernel\CodeUtils\O2ConfigLoader.cs.txt" />
+    <Content Include="TBot\_TBotMain.html" />
     <Content Include="TBot\Tests\hello.cshtml" />
     <Content Include="TBot\Tests\theTime.cshtml" />
     <Content Include="TBot\TBotMain.html" />
@@ -645,6 +650,11 @@
     <Content Include="Aspx_Pages\Library_Download.ashx" />
     <None Include="Html_Pages\ControlPanel\WebEditor\codeMirror\baboon_vector.svg" />
     <Content Include="Html_Pages\ControlPanel\WebEditor\WebEditorService.ashx" />
+    <None Include="Javascript\bootstrap\3.1.1\css\bootstrap-theme.css.map" />
+    <None Include="Javascript\bootstrap\3.1.1\css\bootstrap.css.map" />
+    <None Include="Javascript\bootstrap\3.1.1\fonts\glyphicons-halflings-regular.eot" />
+    <None Include="Javascript\bootstrap\3.1.1\fonts\glyphicons-halflings-regular.ttf" />
+    <None Include="Javascript\bootstrap\3.1.1\fonts\glyphicons-halflings-regular.woff" />
     <None Include="Javascript\FireBug\skin\xp\roundCorner.svg" />
     <Content Include="TBot\Users\Current_Users.cshtml" />
     <Content Include="TBot\Tests\version.cshtml" />
