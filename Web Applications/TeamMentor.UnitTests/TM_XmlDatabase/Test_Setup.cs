@@ -51,9 +51,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
 
             Assert.IsTrue     (userData.Path_UserData.dirExists());
             Assert.IsTrue     (Files.deleteFolder(userData.Path_UserData,true));
-            Assert.IsFalse    (userData.Path_UserData.dirExists());
-            userData.Path_UserData.parentFolder().startProcess();
-            
+            Assert.IsFalse    (userData.Path_UserData.dirExists());                        
         }
     }
 }
