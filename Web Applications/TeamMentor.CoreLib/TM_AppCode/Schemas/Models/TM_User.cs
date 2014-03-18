@@ -9,7 +9,7 @@ namespace TeamMentor.CoreLib
 {
     public class ValidationRegex
     {        
-        public const string Email = @"^[\w-+\.]{1,}\@([\w-]{1,}\.){1,}[a-z]{2,4}$";
+        public const string Email = @"^[\w-+\.]{1,}\@([\w-]{1,}\.){1,}[a-zA-Z]{2,4}$";
     }
 
     [DataContract]
@@ -21,7 +21,7 @@ namespace TeamMentor.CoreLib
         [DataMember][StringLength(30)]              public string	LastName	    { get; set; }
         [DataMember][StringLength(30)]              public string	State		    { get; set; }
         [DataMember][StringLength(30)]              public string	Title		    { get; set; }
-        [DataMember][Required]	                    public int	UserId		    { get; set; }
+        [DataMember][Required]	                    public int	    UserId		    { get; set; }
         [DataMember][Required][StringLength(30)]    public string	UserName	    { get; set; }
         
         [DataMember][Required][StringLength(50)]  

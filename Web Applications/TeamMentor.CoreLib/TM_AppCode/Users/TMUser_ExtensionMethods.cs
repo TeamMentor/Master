@@ -180,10 +180,28 @@ namespace TeamMentor.CoreLib
         {
             return tmUser.set_UserGroup(UserGroup.Reader);            
         }
-        public static TMUser    make_Anonymous          (this TMUser tmUser)
+        public static TMUser    make_Anonymous       (this TMUser tmUser)
         {
             return tmUser.set_UserGroup(UserGroup.Anonymous);            
         }
+
+        public static bool      isAdmin              (this TMUser tmUser)        
+        {
+            return tmUser.GroupID == (int)UserGroup.Admin;
+        }
+        public static bool      isEditor             (this TMUser tmUser)        
+        {
+            return tmUser.GroupID == (int)UserGroup.Editor;
+        }
+        public static bool      isReader             (this TMUser tmUser)        
+        {
+            return tmUser.GroupID == (int)UserGroup.Reader;
+        }
+        public static bool      isAnonymous          (this TMUser tmUser)        
+        {
+            return tmUser.GroupID == (int)UserGroup.Anonymous;
+        }
+        
     }
 
     public static class TM_User_ExtensionMethod_Validation

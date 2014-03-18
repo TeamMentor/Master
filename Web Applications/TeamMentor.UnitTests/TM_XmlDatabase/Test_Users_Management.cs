@@ -58,7 +58,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
                 Assert.NotNull  (passwordHash);
                 Assert.AreEqual (64, passwordHash.base64Decode_AsByteArray().size());
                 Assert.Less     (timeSpan.Seconds,2);                 // slowest calculation should be faster than 2 seconds
-                Assert.Greater  (timeSpan.TotalMilliseconds, i * 40); // slowest calculation should be slower than i* 15 (40, 80,120,160,200) milliseconds
+                Assert.Greater  (timeSpan.TotalMilliseconds, i * 30); // slowest calculation should be slower than i* 30 (30, 60, 90, 120,150) milliseconds
             }
         }
         [Test] public void PBKDF2_Default()
@@ -115,6 +115,27 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Assert.IsTrue   (tmUser2_ById != tmUser_ByName  &&  tmUser2_ById != tmUser_ByEmail);
         }
 
+        [Test]
+        public void getUserGroupName()
+        {
+            var tmUser = "a user".createUser();
+            Assert.AreEqual(userData.getUserGroupName(tmUser.UserID), "Reader");
+            Assert.AreEqual(userData.getUserGroupId  (tmUser.UserID),  (int)UserGroup.Reader);
+            tmUser.set_UserGroup(UserGroup.Editor);
+            Assert.AreEqual(userData.getUserGroupName(tmUser.UserID), "Editor");
+            Assert.AreEqual(userData.getUserGroupId  (tmUser.UserID),  (int)UserGroup.Editor);
+            
 
+            Assert.AreEqual(userData.getUserGroupName(10000.randomNumber()), null);
+            Assert.AreEqual(userData.getUserGroupId  (10000.randomNumber()), -1);
+        }
+
+        [Test]
+        public void tmUser_FromEmail()
+        {
+            var tmUser = "a user".createUser();
+            Assert.AreEqual(userData.tmUser_FromEmail(tmUser.EMail), tmUser);
+            Assert.AreEqual(userData.tmUser_FromEmail(null)        , null);
+        }
     }
 }

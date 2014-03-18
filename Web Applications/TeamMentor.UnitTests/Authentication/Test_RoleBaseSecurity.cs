@@ -21,15 +21,14 @@ namespace TeamMentor.UnitTests.Authentication
             HttpContextFactory.Context = new API_Moq_HttpContext().httpContext();
             httpContext                = HttpContextFactory.Context;                    // also ensure that HttpContextFactory.Context is being correctly set
         }
-        [Test]
-        public void getCurrentUserRoles()
+        
+        [Test] public void getCurrentUserRoles()
         {
             var currentRoles = httpContext.getCurrentUserRoles();
             Assert.NotNull(currentRoles);
             Assert.AreEqual(emptyList, currentRoles);
         }
-        [Test]
-        public void setCurrentUserRoles()
+        [Test] public void setCurrentUserRoles()
         {
             var currentUser = httpContext.User;
             Assert.AreEqual("genericIdentity", currentUser.Identity.Name);
@@ -47,17 +46,13 @@ namespace TeamMentor.UnitTests.Authentication
             foreach(UserGroup userGroup in Enum.GetValues(typeof(UserGroup)))
                 assignToGroup(userGroup);
         }
-
-        [Test]
-        public void getThreadPrincipalWithRoles()
+        [Test] public void getThreadPrincipalWithRoles()
         {
             var currentRoles = httpContext.getThreadPrincipalWithRoles();
             Assert.NotNull(currentRoles);
             Assert.AreEqual(emptyList, currentRoles);
         }
-
-        [Test]
-        public void setThreadPrincipalWithRoles()
+        [Test] public void setThreadPrincipalWithRoles()
         {            
             
             Action<UserGroup> assignToGroup = 
@@ -68,6 +63,21 @@ namespace TeamMentor.UnitTests.Authentication
                             };
             foreach(UserGroup userGroup in Enum.GetValues(typeof(UserGroup)))
                 assignToGroup(userGroup);
+        }        
+
+        [Test] public void setPrivilege()
+        {            
+            Assert.AreEqual(emptyList, httpContext.getThreadPrincipalWithRoles());
+            Action<UserRole> checkMapping = 
+                (userRole)=>
+                    {
+                        userRole.setPrivilege();
+                        Assert.AreEqual(new [] {userRole.str()}, httpContext.getThreadPrincipalWithRoles());
+                    };
+            
+            foreach(UserRole userRole in Enum.GetValues(typeof(UserRole)))
+                checkMapping(userRole);            
         }
+        
     }
 }

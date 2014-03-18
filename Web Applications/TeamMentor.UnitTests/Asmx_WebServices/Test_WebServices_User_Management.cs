@@ -154,6 +154,8 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             var hash_AfterUseAndSet = tmUser.SecretData.PasswordResetToken;
             var sessionId_NewPwd    = tmWebServices.Login(tmUser.UserName, newPassword);
             var sessionId_OldPwd    = tmWebServices.Login(tmUser.UserName, oldPassword);            
+            var result_EmptyToken   = tmWebServices.PasswordReset(tmUser.UserName, Guid.Empty ,newPassword);
+            var result_BadToken     = tmWebServices.PasswordReset(tmUser.UserName, Guid.NewGuid() ,newPassword);
 
             Assert.IsNull       (hash_BeforeSet                 , "New users should have a empty PasswordResetToken");
             Assert.IsNotNull    (hash_AfterSet                  , "PasswordResetToken should set (until it is used)");
@@ -167,8 +169,10 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             Assert.AreNotEqual  (Guid.Empty, token3             , "token3 was not set");
             Assert.AreNotEqual  (token2, token3                 , "token 2 and 3 should not be equal");
             Assert.AreNotEqual  (Guid.Empty, sessionId_NewPwd   , "sessionId with new password");
-            Assert.AreEqual     (Guid.Empty, sessionId_OldPwd   , "sessionId with old password");
-           
+            Assert.AreEqual     (Guid.Empty, sessionId_OldPwd   , "sessionId with old password");                       
+            Assert.IsFalse      (result_EmptyToken);
+            Assert.IsFalse      (result_BadToken);
+            
         }
 
         [Test, Ignore("Not completed")] public void PasswordExpiry()

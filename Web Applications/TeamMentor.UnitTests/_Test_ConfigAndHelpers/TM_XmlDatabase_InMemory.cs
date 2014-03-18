@@ -5,11 +5,9 @@ using TeamMentor.CoreLib;
 
 namespace TeamMentor.UnitTests
 {    
-    public class TM_XmlDatabase_InMemory
+    public class TM_XmlDatabase_InMemory : TM_UserData_InMemory
     {
-        public TM_Xml_Database  tmXmlDatabase;
-        public TM_UserData      userData;
-        public TMConfig         tmConfig;
+        public TM_Xml_Database  tmXmlDatabase;                
         
         public TM_XmlDatabase_InMemory()
         {
@@ -18,14 +16,11 @@ namespace TeamMentor.UnitTests
 
         [Assert_Admin]
         public void SetupDatabase()
-        {            
-            1.set_DEFAULT_PBKDF2_INTERACTIONS();                    // improve performance of tests that create users            
-            SendEmails.Disable_EmailEngine = true;                  // Disable Email engine by default
+        {                        
 
             tmXmlDatabase   = new TM_Xml_Database();
-            userData        = tmXmlDatabase.UserData;
-            tmConfig        = TMConfig.Current = new TMConfig();            
-                        
+            userData        = tmXmlDatabase.UserData;      
+
             Assert.IsNull(tmXmlDatabase.Path_XmlDatabase		    , "Path_XmlDatabase");          // null since we are running TM memory (default setting)
             Assert.IsNull(tmXmlDatabase.Path_XmlLibraries		    , "Path_XmlLibraries");         // null since we are running TM memory (default setting)
             Assert.IsEmpty(tmXmlDatabase.Cached_GuidanceItems	    , "Cached_GuidanceItems");

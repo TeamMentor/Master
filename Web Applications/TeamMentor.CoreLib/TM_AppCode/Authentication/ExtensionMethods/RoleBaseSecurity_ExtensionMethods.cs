@@ -23,6 +23,15 @@ namespace TeamMentor.CoreLib
             return newPrincipal;			
         }				
 		
+        public static IPrincipal setPrivilege(this UserRole userRole)
+        {
+            return userRole.setThreadPrincipalWithRoles();
+        }
+		public static IPrincipal setThreadPrincipalWithRoles(this UserRole userRole)
+		{
+            var userRoles = new [] { userRole.str() };
+			return  userRoles.setThreadPrincipalWithRoles();
+		}
         public static IPrincipal setPrivileges(this UserGroup userGroup)
         {
             return userGroup.setThreadPrincipalWithRoles();
