@@ -13,7 +13,7 @@ namespace TeamMentor.UnitTests.CoreLib
         {            
             var tmUser            = new TM_User();                        
             //var requiredValues    = "Company,Country,FirstName,LastName,State,Title,UserName,Email".split(",");
-            var requiredValues    = "UserName,Email".split(",");
+             var requiredValues    = "Password,Username,Email".split(",");
             var validationResults = tmUser.validate();
             var resultsMapped     = validationResults.indexed_By_MemberName();
             var validationok      = tmUser.validation_Ok();
@@ -147,7 +147,7 @@ namespace TeamMentor.UnitTests.CoreLib
                 var seconds = (DateTime.Now - dateStart).TotalSeconds;
                 Assert.Less(seconds,maxSeconds, "A email with size {0} took more {1} sec to calculate (max is {2})".format(i, seconds, maxSeconds));
                 Assert.IsTrue(resultsMapped["Email"].first().contains("The field Email must match the regular expression"));
-                "for {0} size, it took {2}".info(i, validationResults.size(), dateStart.duration_to_Now());
+                "for {0} size, it took {2}".info(i, validationResults.size(), dateStart.duration_To_Now());
             }
         }
          */

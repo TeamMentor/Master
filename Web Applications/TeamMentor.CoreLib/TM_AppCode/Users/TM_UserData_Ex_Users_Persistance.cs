@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
-using FluentSharp.CoreLib;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.Security.Application;
+using FluentSharp.CoreLib;
 
 namespace TeamMentor.CoreLib
 {
@@ -88,36 +89,40 @@ namespace TeamMentor.CoreLib
             }
             return false;
         }
-        public static bool          updateTmUser     (this TMUser tmUser, string userName, string firstname, string lastname, string title, string company, string email, string country, string state, DateTime accountExpiration, bool passwordExpired, bool userEnabled, int groupId)
-        {                         
-            if (tmUser.isNull())
+        public static bool          updateTmUser     (this TMUser tmUser, TM_User userViewModel)
+        {
+            if (tmUser.isNull() || userViewModel.validation_Failed())
                 return false;
-            if (tmUser.UserName == userName)
+            
+            if (tmUser.UserName == userViewModel.UserName)
             {
-                tmUser.EMail = Encoder.XmlEncode(email);
-                tmUser.UserName = Encoder.XmlEncode(userName);
-                tmUser.FirstName = Encoder.XmlEncode(firstname);
-                tmUser.LastName = Encoder.XmlEncode(lastname);
-                tmUser.Title = Encoder.XmlEncode(title);
-                tmUser.Company = Encoder.XmlEncode(company);
-                tmUser.Country = Encoder.XmlEncode(country);
-                tmUser.State = Encoder.XmlEncode(state);
-                tmUser.GroupID = groupId > -1 ? groupId : tmUser.GroupID;
-                tmUser.AccountStatus.ExpirationDate = accountExpiration;
-                tmUser.AccountStatus.PasswordExpired = passwordExpired;
-                tmUser.AccountStatus.UserEnabled = userEnabled;
+                tmUser.EMail = Encoder.XmlEncode(userViewModel.Email);
+                tmUser.UserName = Encoder.XmlEncode(userViewModel.UserName);
+                tmUser.FirstName = Encoder.XmlEncode(userViewModel.FirstName);
+                tmUser.LastName = Encoder.XmlEncode(userViewModel.LastName);
+                tmUser.Title = Encoder.XmlEncode(userViewModel.Title);
+                tmUser.Company = Encoder.XmlEncode(userViewModel.Company);
+                tmUser.Country = Encoder.XmlEncode(userViewModel.Country);
+                tmUser.State = Encoder.XmlEncode(userViewModel.State);
+                tmUser.GroupID = userViewModel.GroupID > -1 ? userViewModel.GroupID : tmUser.GroupID;
+                tmUser.AccountStatus.ExpirationDate = userViewModel.ExpirationDate;
+                tmUser.AccountStatus.PasswordExpired = userViewModel.PasswordExpired;
+                tmUser.AccountStatus.UserEnabled = userViewModel.UserEnabled;
+
                 tmUser.saveTmUser();
+
                 return true;
             }
             
-            "[updateTmUser] provided username didn't match provided tmUser".error();
+            "[updateTmUser] provided username didn't match provided tmUser or validation failed".error();
             return false;
         }
-        
 
-        public static TM_UserData   handle_UserData_ConfigActions(this TM_UserData userData)
-        {
-            var userConfigFile = userData.Path_UserData.pathCombine("TMConfig.config");
+
+        public static TM_UserData load_TMConfigFile(this TM_UserData userData)
+        {            
+            TMConfig.Location = userData.Path_UserData.pathCombine(TMConsts.TM_CONFIG_FILENAME);
+            var userConfigFile = TMConfig.Location; 
             if (userConfigFile.fileExists())
             {
                 var newConfig = userConfigFile.load<TMConfig>();
@@ -125,12 +130,12 @@ namespace TeamMentor.CoreLib
                     "[handleUserDataConfigActions] failed to load config file from: {0}".error(userConfigFile);
                 else
                 {
-                    TMConfig.Current = newConfig;
-                    userData.AutoGitCommit = newConfig.Git.AutoCommit_UserData;     // in case this changed
+                    TMConfig.Current = newConfig;                    
+                    return userData;
                 }
             }
+            TMConfig.Current.SaveTMConfig(); // if the TMConfig.config doesn't exist or failed to load, save it with the current TMConfig.Current
             return userData;
         }
-
     }
 }

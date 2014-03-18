@@ -115,7 +115,8 @@ namespace TeamMentor.CoreLib
             userData.TMUsers.Add(tmUser);            
         
             //save it
-            SendEmails.SendNewUserEmails("New user created: {0}".format(tmUser.UserName), tmUser);
+            //SendEmails.SendNewUserEmails("New user created: {0}".format(tmUser.UserName), tmUser);
+            tmUser.email_NewUser_Welcome();
             tmUser.saveTmUser();            
                     
             return userId;    		
@@ -308,9 +309,9 @@ namespace TeamMentor.CoreLib
         {
             return userData.deleteTmUser(userId.tmUser());
         }        
-        [ManageUsers]   public static bool          updateTmUser        (this TM_UserData userData, int userId, string userName, string firstname, string lastname, string title, string company, string email, string country, string state, DateTime accountExpiration, bool passwordExpired, bool userEnabled, int groupId)
-        {
-            return userData.tmUser(userId).updateTmUser(userName, firstname, lastname,  title, company, email,country, state, accountExpiration, passwordExpired,userEnabled,groupId);
+        [ManageUsers] public static bool updateTmUser(this TM_UserData userData, TM_User tmUserViewModel)
+        {        
+            return userData.tmUser(tmUserViewModel.UserId).updateTmUser(tmUserViewModel);
         }	
 	    [ManageUsers]  public static List<TMUser>   users               (this TM_UserData userData)
 	    {            

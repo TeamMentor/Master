@@ -46,24 +46,7 @@ namespace TeamMentor.CoreLib
 //        [WebMethod(EnableSession = true)]		                public Guid		SSO_AuthenticateUser(string ssoToken)            {   return new SingleSignOn().authenticateUserBasedOn_SSOToken(ssoToken); }
 //        [WebMethod(EnableSession = true)] [Admin]			    public string	SSO_GetSSOTokenForUser(string userName)          {   return new SingleSignOn().getSSOTokenForUser(userName); }
 //        [WebMethod(EnableSession = true)] [Admin]			    public TM_User	SSO_GetUserFromSSOToken(string ssoToken)         {   return new SingleSignOn().getUserFromSSOToken(ssoToken).user(); }                
-                                                                                                                
-        [WebMethod(EnableSession = true)] [Admin]		        public string		GitHub_Pull_Origin()	            {	return Git.syncWithGitHub_Pull_Origin();  }
-        [WebMethod(EnableSession = true)] [Admin]		        public string		GitHub_Push_Origin()	            {	return Git.syncWithGitHub_Push_Origin();  }
-        [WebMethod(EnableSession = true)] [Admin]	            public string		GitHub_Push_Commit()	            {	return Git.syncWithGitHub_Commit();  }
-        [WebMethod(EnableSession = true)] [Admin]	            public string		Git_Execute(string gitCommand)		{	return Git.executeGitCommand(gitCommand);  }
-        
-        [WebMethod(EnableSession = true)] [Admin]	            public string		CreateWebEditorSecret()	
-                                                                                                    {
-                                                                                                        var webEditorSecretDataFile = AppDomain.CurrentDomain.BaseDirectory.pathCombine("webEditorSecretData.config");
-                                                                                                        Guid.NewGuid().str().serialize(webEditorSecretDataFile);
-                                                                                                        return webEditorSecretDataFile.load<string>();
-                                                                                                        //this (below) doesn't work because the webeditor is an *.ashx and doesn't have access to the HttpContext Session object
-                                                                                                        /*var session = HttpContextFactory.Current.Session;
-                                                                                                        if (session["webEditorSecretData"].isNull())
-                                                                                                            session["webEditorSecretData"] = Guid.NewGuid().str();
-                                                                                                        return (string)session["webEditorSecretData"];
-                                                                                                        */
-                                                                                                    }						
+                                                                                                                        						
         [WebMethod(EnableSession = true)] [Admin]	            public string		TMConfigFileLocation()			{	return TMConfig.Location;  }		
         [WebMethod(EnableSession = true)] [Admin]	            public TMConfig		TMConfigFile()
                                                                                     {	
@@ -74,6 +57,17 @@ namespace TeamMentor.CoreLib
                                                                                         TMConfig.Current = tmConfig;
                                                                                         return TMConfig.Current.SaveTMConfig();
                                                                                     }
+        [WebMethod(EnableSession = true)] [Admin]	            public string		TMServerFileLocation()			{	return tmXmlDatabase.get_Path_TMServer_Config();  }		
+        [WebMethod(EnableSession = true)] [Admin]	            public TMServer		TMServerFile()
+                                                                                    {	
+                                                                                        return tmXmlDatabase.TM_Server_Config;  
+                                                                                    }
+        [WebMethod(EnableSession = true)] [Admin]	            public bool		    SetTMServerFile(TMServer tmServer)
+                                                                                    {
+                                                                                         tmXmlDatabase.TM_Server_Config = tmServer;
+                                                                                         return tmXmlDatabase.save_TMServer_Config();                                                                                        
+                                                                                    }
+
         [WebMethod(EnableSession = true)] [Admin]	            public string		Get_Libraries_Zip_Folder()
                                                                                     {
                                                                                         var librariesZipsFolder = TMConfig.Current.TMSetup.LibrariesUploadedFiles;
@@ -140,11 +134,11 @@ namespace TeamMentor.CoreLib
                                                                                     {
                                                                                         return TM_Xml_Database.Current.remove_Mapping_VirtualId(id);																						
                                                                                     }
-        [WebMethod(EnableSession = true)] [ReadArticles]        public string					VirtualArticle_Get_GuidRedirect(Guid id)
+        [WebMethod(EnableSession = true)] [ReadArticles]        public string					    VirtualArticle_Get_GuidRedirect(Guid id)
                                                                                     {
                                                                                         return TM_Xml_Database.Current.get_GuidRedirect(id);																						
                                                                                     }				
-        [WebMethod(EnableSession = true)] [ReadArticles]                        public TeamMentor_Article		VirtualArticle_CreateArticle_from_ExternalServiceData(string service, string serviceData)
+        [WebMethod(EnableSession = true)] [ReadArticles]        public TeamMentor_Article		    VirtualArticle_CreateArticle_from_ExternalServiceData(string service, string serviceData)
                                                                                     {
                                                                                         return service.createArticle_from_ExternalServiceData(serviceData);																						
                                                                                     }

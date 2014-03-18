@@ -93,11 +93,13 @@
     <Compile Include="TM_AppCode\Authentication\ExtensionMethods\RoleBaseSecurity_ExtensionMethods.cs" />
     <Compile Include="TM_AppCode\Authentication\ExtensionMethods\TeamMentorUserManagement_ExtensionMethods.cs" />
     <Compile Include="TM_AppCode\O2_Scripts_APIs\O2_Utils.cs" />
+    <Compile Include="TM_AppCode\Schemas\TmConfig_ExtMet.cs" />
+    <Compile Include="TM_AppCode\Schemas\TMServer.cs" />
+    <Compile Include="TM_AppCode\Schemas\TMServer_ExtMet.cs" />
     <Compile Include="TM_AppCode\Tracking\API_Firebase.cs" />
     <Compile Include="TM_AppCode\Tracking\Logger_Firebase.cs" />
     <Compile Include="TM_AppCode\Tracking\Logger_LogItem.cs" />
     <Compile Include="TM_AppCode\Tracking\Requests_Firebase.cs" />
-    <Compile Include="TM_AppCode\Users\TmConfig_ExtensionMethods.cs" />
     <Compile Include="TM_AppCode\Schemas\TM_SecretData.cs" />
     <Compile Include="TM_AppCode\Users\TM_Secret_Data_ExtensionMethods.cs" />
     <Compile Include="TM_AppCode\Users\TM_UserData_Ex.cs" />
@@ -129,7 +131,6 @@
     <Compile Include="TM_AppCode\Users\TM_UserData_Ex_Users_Persistance.cs" />
     <Compile Include="TM_AppCode\Users\UserActivities.cs" />
     <Compile Include="TM_AppCode\Schemas\EmailMessage.cs" />
-    <Compile Include="TM_AppCode\Utils\Git.cs" />
     <Compile Include="TM_AppCode\Utils\GoogleAnalytics.cs" />
     <Compile Include="TM_AppCode\Utils\GZip.cs" />
     <Compile Include="TM_AppCode\Schemas\KeyValue.cs" />

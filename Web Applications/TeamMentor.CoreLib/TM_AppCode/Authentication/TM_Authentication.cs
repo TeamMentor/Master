@@ -59,10 +59,9 @@ namespace TeamMentor.CoreLib
         {
             get
             {
-
                 var tmUser = sessionID.session_TmUser();
                 if (tmUser.notNull())
-                        tmUser.SecretData.CSRF_Token = sessionID.csrfToken();	
+                    tmUser.SecretData.CSRF_Token = sessionID.csrfToken();	
                 return tmUser;
             }
         }
@@ -90,6 +89,7 @@ namespace TeamMentor.CoreLib
         }
         public TM_Authentication    mapUserRoles(bool disable_Csrf_Check)
         {
+            setGitUser();            
             Disable_Csrf_Check = disable_Csrf_Check;            
             if (sessionID == Guid.Empty || sessionID.validSession() == false)
                 /*if (SingleSignOn.singleSignOn_Enabled)
@@ -125,6 +125,12 @@ namespace TeamMentor.CoreLib
                 HttpContextFactory.Session["principal"] = Thread.CurrentPrincipal;
             }
             return this;
+        }
+        public void                 setGitUser()
+        {
+            if(currentUser.notNull())
+             TM_UserData.Current.NGit_Author_Name  = currentUser.UserName;
+             TM_UserData.Current.NGit_Author_Email =  currentUser.EMail;
         }
         public Guid                 logout()
         {

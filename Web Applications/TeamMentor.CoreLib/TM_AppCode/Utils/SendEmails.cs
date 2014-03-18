@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Mail;
 using System.Net.Mime;
+using System.Threading;
 using FluentSharp.CoreLib;
 using FluentSharp.CoreLib.API;
 
@@ -22,7 +23,7 @@ namespace TeamMentor.CoreLib
         static SendEmails()
         {
             Sent_EmailMessages = new List<EmailMessage>();
-            mapTMServerUrl();           
+            TM_Server_URL      = HttpContextFactory.Context.serverUrl();     
         }
 
 
@@ -39,29 +40,7 @@ namespace TeamMentor.CoreLib
                     Smtp_Password = secretData.SMTP_Password;
                 }
             }
-        }
-        public static void mapTMServerUrl()
-        {
-            try
-            {
-                if (HttpContextFactory.Context.isNotNull())
-                {
-                    var request = HttpContextFactory.Request;
-                    var scheme = request.IsSecureConnection ? "https" : "http";
-                    var serverName = request.ServerVariables["Server_Name"];
-                    var serverPort = request.ServerVariables["Server_Port"];
-                    if (serverName.notNull() && serverPort.notNull())
-                        TM_Server_URL = "{0}://{1}:{2}".format(scheme, serverName, serverPort);
-                    return;
-                }
-            }
-            catch (Exception ex)
-            {
-                ex.log("[SendEmails] mapTMServerUrl ctor");
-            }                
-            TM_Server_URL = "http://localhost";
-        }
-
+        }      
         public SendEmails(string smtpServer, string smtpUserName, string smtpPassword ) : this()
         {
             Smtp_Server     = smtpServer;
@@ -118,7 +97,7 @@ namespace TeamMentor.CoreLib
                     emailMessage.From = this.From;
                 emailMessage.SentStatus = SentStatus.Sending;
                 "Sending email:\n  to: {0}\n  from: {0}\n  subject: {0} ".info(emailMessage.To, emailMessage.Subject, emailMessage.Message);
-                var mailMsg = new MailMessage();
+                var mailMsg = new MailMessage();                
                 // To
                 mailMsg.To.Add(new MailAddress(emailMessage.To));
                 // From
@@ -188,69 +167,24 @@ namespace TeamMentor.CoreLib
             }
 
         }
-        
-        [Assert_Admin]
-        public static void SendEmailAboutUserToTM(string action, TMUser tmUser)
-        {
-            var subject = "User {0} {1}".format(tmUser.UserName, action);
-            var message =
-@"The user {0} has just {1}
 
-Stats:
-
-- last  login: {2}
-- login fails: {3}
-- login Oks  : {4}
-
-                ".format(tmUser.UserName, 
-                         action, 
-                         tmUser.Stats.LastLogin,
-                         tmUser.Stats.LoginFail,
-                         tmUser.Stats.LoginOk);
-            SendEmailToTM(subject, message);
-        }
-
-/*        [Assert_Admin]
-        public static bool SendLoginTokenToUser(TMUser tmUser)
-        {
-            try
-            {                 
-var userMessage =
-@"Hi {0} {1} A Login token was requested for your account.
-
-You can login to your {2} account using {4}/rest/{2}/{3}
-
-TeamMentor Team.
-             ".format(tmUser.FirstName, tmUser.LastName, tmUser.UserName, tmUser.current_SingleUseLoginToken(), TM_Server_URL);
-             SendEmailToEmail(tmUser.EMail, "TeamMentor Login Link", userMessage);
-             userMessage = "(sent to: {0})\n\n{1}".format(tmUser.EMail, userMessage);
-             SendEmailToTM("(user email) TeamMentor Login Link", userMessage);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                ex.log();
-            }
-            return false;
-        }
-*/
         [Assert_Admin]
         public static bool SendPasswordReminderToUser(TMUser tmUser, Guid passwordResetToken)
         {
             try
             {                 
 var userMessage =
-@"Hi {0} {1},  a password reminder was requested for your account.
+@"Hi {0}, a password reminder was requested for your account.
 
-You can change the password of your {2} account using {4}/passwordReset/{2}/{3}
+You can change the password of your {1} account using {3}/passwordReset/{1}/{2}
 
 If you didn't make this request, please let us know at support@teammentor.net.
-             ".format(tmUser.FirstName, tmUser.LastName, tmUser.UserName, passwordResetToken,TM_Server_URL);
+             ".format(tmUser.fullName(), tmUser.UserName, passwordResetToken,TM_Server_URL);
              
                 SendEmailToEmail(tmUser.EMail, "TeamMentor Password Reset", userMessage);
              
-                userMessage = "(sent to: {0})\n\n{1}".format(tmUser.EMail, userMessage);
-                SendEmailToTM("(user email) TeamMentor Password Reset", userMessage);
+                //userMessage = "(sent to: {0})\n\n{1}".format(tmUser.EMail, userMessage);
+                //SendEmailToTM("(user email) TeamMentor Password Reset", userMessage);
                 return true;
             }
             catch (Exception ex)
@@ -261,10 +195,10 @@ If you didn't make this request, please let us know at support@teammentor.net.
 
         }
 
-        public static void SendEmailToTM(string subject, string message)
+        public static Thread SendEmailToTM(string subject, string message)
         {
             if (Disable_EmailEngine)
-                return;
+                return null;
             var thread = O2Thread.mtaThread(
                 ()=>{
                         try
@@ -278,11 +212,12 @@ If you didn't make this request, please let us know at support@teammentor.net.
                     });
            if(Send_Emails_As_Sync)
                thread.Join();
+            return thread;
         }
-        public static void SendEmailToEmail(string to, string subject, string message)
+        public static Thread SendEmailToEmail(string to, string subject, string message)
         {
             if (Disable_EmailEngine)
-                return;
+                return null;
             var thread = O2Thread.mtaThread(
                 ()=>{
                         try
@@ -296,12 +231,34 @@ If you didn't make this request, please let us know at support@teammentor.net.
                     });
             if(Send_Emails_As_Sync)
                thread.Join();
+            return thread;
         }
         
     }
 
     public static class SendEmail_ExtensionMethods
     {
+        public static Thread email_NewUser_Welcome(this TMUser tmUser)
+        {
+            var email = tmUser.EMail;
+            var userName = tmUser.UserName;
+            var serverUrl = SendEmails.TM_Server_URL;
+            if (email.notValid())
+                "[SendNewUserEmails] can't sent email because email value is not set".error();
+            else if (userName.notValid())
+                "[SendNewUserEmails] can't sent email because userName value is not set".error();
+            else if (serverUrl.notValid())
+                "[SendNewUserEmails] can't sent email because server Url value is not set".error();
+            else
+            {
+                var subject = TMConsts.EMAIL_SUBJECT_NEW_USER_WELCOME;
+                var fullName = tmUser.fullName();
+                var userMessage = TMConsts.EMAIL_BODY_NEW_USER_WELCOME.format(fullName, tmUser.UserName, serverUrl);
+                return SendEmails.SendEmailToEmail(email, subject, userMessage);
+            }
+            return null;
+        }
+
         public static bool serverNotConfigured(this SendEmails sendEmails)
         {
             return sendEmails.Smtp_Server.notValid() ||

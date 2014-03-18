@@ -49,13 +49,19 @@ namespace TeamMentor.UnitTests
             Assert.IsTrue(downloadedFile.fileExists());
             return downloadedFile;
         }
-
-        public void Install_LibraryFromZip_TopVulns()
+             
+         /*public void Install_LibraryFromZip_TopVulns()  // not public anymore
         {
             var topVulnsZipFile = DownloadLibraryIntoTempFolder("Lib_Top_Vulnerabilities.zip",
                                                                 "https://github.com/TMContent/Lib_Top_Vulnerabilities/archive/master.zip");
             Install_LibraryFromZip(topVulnsZipFile,"Top Vulnerabilities");
-        }        
+        } */       
+        public void Install_LibraryFromZip_Docs() 
+        {
+            var topVulnsZipFile = DownloadLibraryIntoTempFolder("Lib_Docs.zip",
+                                                                "https://github.com/TMContent/Lib_Docs/archive/master.zip");
+            Install_LibraryFromZip(topVulnsZipFile,"TM Documentation");
+        }
         public void Install_LibraryFromZip_OWASP()
         {
             var owaspZipFile = DownloadLibraryIntoTempFolder("Lib_OWASP.zip",

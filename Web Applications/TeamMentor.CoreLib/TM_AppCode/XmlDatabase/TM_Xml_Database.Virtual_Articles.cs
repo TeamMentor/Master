@@ -233,10 +233,15 @@ namespace TeamMentor.CoreLib
 				}
 
 			}	
-			return null;
+			var virtualArticles_Config = tmXmlDatabase.tmConfig().VirtualArticles;
+		    if (virtualArticles_Config.AutoRedirectIfGuidNotFound)
+		    {
+		        var redirect = virtualArticles_Config.AutoRedirectTarget.pathCombine(id.str());
+		        "[AutoRedirectIfGuidNotFound is set] set redirection to {0}".info(redirect);
+		        return redirect;
+		    }
+		    return null;
 		}
-
-
 	}
 
 }

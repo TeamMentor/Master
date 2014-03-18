@@ -122,23 +122,22 @@ namespace TeamMentor.CoreLib
             return true;
         }
         [Admin] public bool          Reload_TMConfig()
-        {
-            TMConfig.loadConfig();                                  // load default one
-            TM_UserData.Current.handle_UserData_ConfigActions();    // load (if available) from current UserData location
+        {            
+            TMConfig.Current.reloadConfig();                    // load default one
             return true;
         }
         [Admin] public string        Reload_Cache()
         {
             return TmWebServices.XmlDatabase_ReloadData();	        
         }
-        [Admin] public string        Get_GitUserConfig()
-        {
-            return TMConfig.Current.getGitUserConfigFile().fileContents();
+        /*[Admin] public string        Get_GitUserConfig()
+        {            
+            return TM_Xml_Database.Current.getGitUserConfigFile().fileContents();
         }
         [Admin] public bool          Set_GitUserConfig(string gitUserConfig_Data)
         {            
-            return TMConfig.Current.setGitUserConfigFile(gitUserConfig_Data);   
-        }
+            return  TM_Xml_Database.Current.setGitUserConfigFile(gitUserConfig_Data);               
+        }*/
         [Admin] public string        FirstScript_FileContents()
         {
             return TM_UserData.Current.firstScript_FileLocation().fileContents();

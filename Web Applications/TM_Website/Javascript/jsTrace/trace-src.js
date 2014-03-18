@@ -138,7 +138,7 @@ function buildTracerDiv(){
 					   	border:1px #666666 solid;\n\
 						border-bottom:1px #c9c9c9 solid;\n\
 						border-right:1px #c9c9c9 solid;\n\
-						width:275px;\n\
+						width:580px;\n\
 						z-index:1000000;\n\
 						height:228px;\n\
 						padding:4px;\n\
@@ -200,7 +200,7 @@ function buildTracerDiv(){
 				   }\n\
 				   .trcConcole{\n\
 						height:130px;\n\
-						width:282px;\n\
+						width:580px;\n\
 						background:#CCCCCC;\n\
 						overflow:auto;\n\
 						border:1px #999999 solid;\n\
@@ -241,9 +241,9 @@ function buildTracerDiv(){
 				<div align="center" id="traceShadow" class="traceFrame trcShadow"></div>\n\
 				<div id="tracerTrag" align="left" class="tracerDrag" ondblclick="void(0);" onmouseover="javascript:over1_t=true;" onmouseout="javascript:over1_t=false;">\n\
 					<div id="trcdrag_err" class="trcErrorNot" style="left:143px;">Error!</div>\n\
-					<input style="color:#FF0000;top:1px; left:270px; width:25px;" class="trcBut" type="button" value="X" onmousedown="closeTracer()">\n\
-					<input  style="top:1px; left:243px; width:25px;" class="trcBut" type="button" onmousedown="tracerCollapse()" value="__">\n\
-					<input style="color:#009900; top:1px; left:216px; width:25px;" class="trcBut" type="button" onmousedown="tracerInfo()" value="?">\n\
+					<input style="color:#FF0000;top:1px; left:570px; width:25px;" class="trcBut" type="button" value="X" onmousedown="closeTracer()">\n\
+					<input  style="top:1px; left:543px; width:25px;" class="trcBut" type="button" onmousedown="tracerCollapse()" value="__">\n\
+					<input style="color:#009900; top:1px; left:516px; width:25px;" class="trcBut" type="button" onmousedown="tracerInfo()" value="?">\n\
 					 = Trace Output =\n\
 				</div>\n\
 				<div class="tracerTags" id="traceAllTag" style="background:#00CCFF;left:4px;width:55px;" onclick="tracerFlip(2)">All</div>\n\
@@ -720,8 +720,8 @@ function tracerWatch()
 		var id = "$trc('"+$trc('trcwatch').value.replace(/,/g,"','")+"')";
 			
 		var ids = eval(id);
-		
-		if(ids.length > 0 || ids != ""){
+
+		if (ids != null && (ids.length > 0 || ids != "")) {
 			if(!traceRun){
 				$trc('traceStat').innerHTML = "Watching";
 				$trc('trcwatch').disabled = true;

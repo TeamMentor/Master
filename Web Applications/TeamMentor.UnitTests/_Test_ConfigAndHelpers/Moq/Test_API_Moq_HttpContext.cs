@@ -104,10 +104,29 @@ namespace TeamMentor.UnitTests
 
             Assert.IsInstanceOf<Guid>   (realValue1, "realValue1 should be a GUID");
             Assert.IsInstanceOf<string> (realValue2, "realValue2 should be a string");
-
-
-
-
         }
+        [Test]
+        public void serverUrl()
+        {
+            var request = context.Request;
+
+            Action<string, string, string> checkResult =
+                (server, port, expectedValue) =>
+                    {
+                        request.ServerVariables["Server_Name"] = server;
+                        request.ServerVariables["Server_Port"] = port;
+                        var serverUrl = context.serverUrl();
+                        Assert.AreEqual(expectedValue, serverUrl);
+                    };
+
+            checkResult(null        , null , ""                  ); // no values
+            checkResult("localhost" , null , ""                   ); // just server name
+            checkResult(null        , "80" , ""                   ); // just server port
+            checkResult("localhost" , "80" , "http://localhost"   ); 
+            checkResult("localhost" , "443", "https://localhost"  ); 
+            checkResult("localhost" , "88" , "http://localhost:88"); 
+            checkResult("1.2.3.4"   , "80" , "http://1.2.3.4"     ); 
+            checkResult("1.2.3.4"   , "443", "https://1.2.3.4"    ); 
+        }        
     }
 }

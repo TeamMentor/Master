@@ -4,6 +4,10 @@ namespace TeamMentor.CoreLib
 {
     public static class TM_UserData_Ex
     {
+        public static TMConfig tmConfig(this TM_UserData userData)
+        {
+            return TMConfig.Current;
+        }
         public static string webRootFiles(this TM_UserData userData)
         {
             if (userData.notNull() && 

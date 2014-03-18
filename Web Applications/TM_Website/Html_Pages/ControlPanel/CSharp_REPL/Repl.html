@@ -81,16 +81,21 @@
       <div class="editorArea">
 
 		<div class="alert-message info">
-          <p><span class="logo"><string>Web C# REPL</string></span> is a simple wrapper on O2 Platform's FluentSharp.CoreLib API</p>
-		  <p>Note that all your script executions are logged (see link on top) so don't put any sensitive data here :)</p>
+          <p><span class="logo"><string>Web C# REPL</string></span> is a simple wrapper on O2 Platform's FluentSharp.CoreLib API</p>		  
         </div>
 
-		<textarea id="code" cols="120" rows="50">return TM_Xml_Database.Current.Path_XmlDatabase;
+          <textarea id="code" cols="120" rows="50">return TM_Xml_Database.Current.Path_XmlDatabase;
+
 //using TeamMentor.CoreLib;
-//O2Ref:TeamMentor.CoreLib.dll</textarea>
+//using FluentSharp.CoreLib;
+//using FluentSharp.WinForms;
+//O2Ref:TeamMentor.CoreLib.dll
+//O2Ref:FluentSharp.CoreLib.dll
+//O2Ref:FluentSharp.WinForms.dll
+</textarea>
 		
         <div class="buttons">			
-			<button data-action="lint" class="btn danger" id="execute">Execute</button>
+			<button data-action="lint" class="btn" id="execute">Execute</button>
         </div>
 
 		<br />
@@ -117,8 +122,9 @@
 
 		var Editor = CodeMirror.fromTextArea(document.getElementById("code"), 
 						{
-							lineNumbers: true,
+							lineNumbers  : true,
 							matchBrackets: true,
+							resize       : true,    
 							mode: "text/x-csharp"
 						});
 

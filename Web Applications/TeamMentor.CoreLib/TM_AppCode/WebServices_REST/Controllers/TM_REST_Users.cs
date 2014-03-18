@@ -36,11 +36,10 @@ namespace TeamMentor.CoreLib
 		{
 			return TmWebServices.CreateUser(user.newUser());
 		}
-	    [Admin] public bool user_Save(TM_User user)
+	    [Admin] public bool             user_Save(TM_User user)
 	    {
-	        return TmWebServices.UpdateUser(user.UserId, user.UserName, user.FirstName, 
-                                            user.LastName, user.Title, user.Company, user.Email,
-                                            user.Country, user.State, user.ExpirationDate, user.PasswordExpired, user.UserEnabled, -1);
+            user.GroupID = -1;
+	        return TmWebServices.UpdateUser(user);
 	    }
 	    [Admin] public TM_User			user(string userNameOrId)
 		{
@@ -64,8 +63,8 @@ namespace TeamMentor.CoreLib
 		}		
         [Admin] public bool             user_Update(TM_User user)
 		{
-			var groupId = -1; //not implemented for now
-			return TmWebServices.UpdateUser(user.UserId, user.UserName, user.FirstName, user.LastName, user.Title, user.Company,user.Email, user.Country , user.State, user.ExpirationDate, user.PasswordExpired, user.UserEnabled ,groupId);
+			user.GroupID = -1;
+            return TmWebServices.UpdateUser(user);
 		}
 	}
 }

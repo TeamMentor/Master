@@ -7,7 +7,7 @@ namespace TeamMentor.UnitTests
 {
     public static class NGitAPI_Extra_ExensionMethods
     {
-        public static List<string> refLogs(this API_NGit nGit)
+        /*public static List<string> refLogs(this API_NGit nGit)
         {
             return nGit.refLogs(100);
         }
@@ -17,6 +17,6 @@ namespace TeamMentor.UnitTests
             return nGit.refLogs_Raw()
                        .take(maxCount)
                        .select(refLog => refLog.str()).toList();
-        }   
+        }   */
     }
 }

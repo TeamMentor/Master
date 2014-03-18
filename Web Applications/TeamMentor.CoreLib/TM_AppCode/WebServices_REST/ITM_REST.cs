@@ -68,13 +68,13 @@ namespace TeamMentor.CoreLib
         [OperationContract] [WebGet(UriTemplate = "/admin/reload_Cache")]       string		    Reload_Cache(); 
         
         [OperationContract] [WebGet(UriTemplate = "/admin/secretData")]		    TM_SecretData	Get_TM_SecretData();
-        [OperationContract] [WebGet(UriTemplate = "/admin/gitUserData")]		string	        Get_GitUserConfig();
+//        [OperationContract] [WebGet(UriTemplate = "/admin/gitUserData")]		string	        Get_GitUserConfig();
 
         [OperationContract] [WebGet(UriTemplate = "/admin/firstScript")]		string	        FirstScript_FileContents();
         [OperationContract] [WebGet(UriTemplate = "/admin/firstScript/invoke")] string	        FirstScript_Invoke();
 
         [OperationContract] [WebInvoke(UriTemplate = "/admin/secretData"  , Method = "PUT")] bool	Set_TM_SecretData(TM_SecretData tmSecretData);
-        [OperationContract] [WebInvoke(UriTemplate = "/admin/gitUserData" , Method = "PUT")] bool	Set_GitUserConfig(string gitUserConfig_Data);
+//        [OperationContract] [WebInvoke(UriTemplate = "/admin/gitUserData" , Method = "PUT")] bool	Set_GitUserConfig(string gitUserConfig_Data);
         
 		//Views 
 		//[OperationContract] [WebGet(UriTemplate = "/users/.html"			)]  Stream		users_html();

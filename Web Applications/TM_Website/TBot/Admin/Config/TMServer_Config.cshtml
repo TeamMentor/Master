@@ -1,5 +1,4 @@
-﻿
-<script>
+﻿<script>
     //var TMUser =angular.module('TMUser',[]);
 
     function EditObject($scope, $http) {
@@ -8,6 +7,13 @@
             $http.post(asmxService + method, parameters)
                 .success(function (data) {
                     onSuccess(data.d);
+                })
+                .error(function (data, status, headers, config) {
+                    _data = data;
+                    _status = status;
+                    _headers = headers;
+                    _config = config;
+                    alert(data.Message);
                 });
         };
         var setCSRFToken_And_TriggerDataLoad = function () {
@@ -19,13 +25,13 @@
                 });
         };
         var loadTMConfigData = function () {
-            invokeService('TMConfigFileLocation',
+            invokeService('TMServerFileLocation',
                 {},
                 function (data) {
                     $scope.TMConfigPath = data;
                 });
 
-            invokeService('TMConfigFile',
+            invokeService('TMServerFile',
                 {},
                 function (data) {
                     $scope.objectToEdit = angular.toJson(data, true);
@@ -37,7 +43,7 @@
         $scope.saveObject = function () {
             $scope.message = "saving data";
 
-            invokeService('SetTMConfigFile', { tmConfig: angular.fromJson($scope.objectToEdit) },
+            invokeService('SetTMServerFile', { tmServer: angular.fromJson($scope.objectToEdit) },
                 function (result) {
                     $scope.message = "data saved: " + result;
                     loadTMConfigData();
@@ -46,29 +52,11 @@
         };
 
         setCSRFToken_And_TriggerDataLoad();
-        /*$scope.saveObject = function()
-        {
-        $scope.message  = "saving data";
-        _newData = angular.fromJson($scope.objectToEdit);
-        $http.put('/rest/admin/secretData', $scope.objectToEdit).success(function(result)
-        {
-        $scope.message  = "data saved: " + result;
-        });
-
-        }
-
-        $scope.message  = "loading data";
-        $http.get('/rest/admin/secretData').success(function(data)
-        {
-        $scope.objectToEdit = angular.toJson(data,true);
-        $scope.message  = "data loaded";
-        });*/
-
     };   
 </script>
 
 
-<h4>Editing TMConfig.Config file (and preview)</h4>
+<h4>Editing TMServer.Config file (and preview)</h4>
 
 <br/>
 <br/>

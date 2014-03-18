@@ -9,6 +9,9 @@ namespace TeamMentor.CoreLib
 		public static string XML_DATABASE_VIRTUAL_PATH_LEGACY = "Library_Data\\XmlDatabase"; // for legacy support (pre 3.3)
         public static string EMAIL_SUBJECT_NEW_USER_WELCOME = "Welcome to TeamMentor";
 		// ReSharper restore InconsistentNaming
+        public static string TM_SERVER_FILENAME               = "TMServer.config";
+        public static string TM_CONFIG_FILENAME               = "TMConfig.config";
+        public static string DEFAULT_ERROR_PAGE_REDIRECT      = "/error";        
         public static string EMAIL_BODY_NEW_USER_WELCOME =
 @"Hello,
 
@@ -28,5 +31,5 @@ Thanks,
 Sent by TeamMentor. 
 
 ";	
-}
+    }
 }

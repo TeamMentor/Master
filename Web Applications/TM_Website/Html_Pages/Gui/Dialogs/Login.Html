@@ -69,6 +69,8 @@
 				$('#UsernameBox').keypress(function(e)  { if(e.which == 13) { loginUser(); } });
 				$('#PasswordBox').keypress(function(e)  { if(e.which == 13) { loginUser(); } });
 
+				$('#UsernameBox').focus();
+		        
 		        //loginDialog.parent().find("button").first().absolute().left(10);
 		        var forgotPasswordLink = $("<a href='/passwordForgot' id='passwordForgotLink'>Forgot your password?</a>")
                         .relative().top(13)

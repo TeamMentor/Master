@@ -16,24 +16,16 @@ namespace TeamMentor.UnitTests.WebSite_Content
 
         [Test]
         public void Check_GoogleAnalitics()
-        {			
-            var assembly		 = this.type().Assembly;
-
-            var dllLocation		 = assembly.CodeBase.subString(8);
-            var webApplications  = dllLocation.parentFolder()
-                                              .pathCombine(@"\..\..\..");
-            var tmWebsite 		 = webApplications.pathCombine("TM_Website");
+        {
+            var tmWebsite = this.WebSite_Root_OnDisk();
             var gAnalyticsFolder = tmWebsite.pathCombine(@"Javascript\gAnalytics");
             var gaFile 			 = gAnalyticsFolder.pathCombine("ga.js");
-            
-            Assert.That(dllLocation		.fileExists(), "dllLocation file");
-            Assert.That(webApplications .dirExists() , "webApplications dir");
+                        
             Assert.That(tmWebsite		.dirExists() , "tmWebsite dir");
             Assert.That(gAnalyticsFolder.dirExists() , "gAnalyticsFolder dir");
             Assert.That(gaFile			.fileExists(), "gaFile file");
 
             var tmVersion	  = gaFile.fileContents().fix_CRLF();
-
             
             Assert.That(tmVersion.valid()	, "ga.js tmVersion not valid");
             var googleVersion = "http://www.google-analytics.com/ga.js".GET().fix_CRLF();

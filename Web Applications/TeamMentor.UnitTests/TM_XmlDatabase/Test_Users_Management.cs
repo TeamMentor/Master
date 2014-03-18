@@ -114,7 +114,35 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Assert.IsTrue   (tmUser2_ById == tmUser2_ByName && tmUser2_ById != tmUser2_ByEmail);
             Assert.IsTrue   (tmUser2_ById != tmUser_ByName  &&  tmUser2_ById != tmUser_ByEmail);
         }
+        [Test] public void User_ExtMet_FullName()
+        {
+             var firstName           = "firstName".add_RandomLetters(5);
+             var lastName            = "lastName".add_RandomLetters(5);
+             var tmUser_NoValues     = new TMUser();
+             var tmUser_JustFirst    = new TMUser() {FirstName = firstName};
+             var tmUser_JustLast     = new TMUser() {LastName  = lastName};
+             var tmUser_Both         = new TMUser() {FirstName = firstName, LastName  = lastName};
 
+             //Check that values are correctly set
+             Assert.IsTrue(tmUser_NoValues.notNull()  && tmUser_NoValues.FirstName.empty()   && tmUser_NoValues.LastName.empty(), "tmUser_NoValues setup");
+             Assert.IsTrue(tmUser_JustFirst.notNull() && tmUser_JustFirst.FirstName.valid()  && tmUser_JustFirst.LastName.empty(), "tmUser_JustFirst setup");
+             Assert.IsTrue(tmUser_JustLast.notNull()  && tmUser_JustLast.FirstName.empty()   && tmUser_JustLast.LastName.valid(), "tmUser_JustLast setup");
+             Assert.IsTrue(tmUser_Both.notNull()      && tmUser_Both.FirstName.valid()       && tmUser_Both.LastName.valid(), "tmUser_Both setup");
+             
+             //Check that userName extension method is working ok
+             var fullName_NoValues   = tmUser_NoValues.fullName();
+             var fullName_JustFirst  = tmUser_JustFirst.fullName();
+             var fullName_JustLast   = tmUser_JustLast.fullName();
+             var fullName_Both       = tmUser_Both.fullName();
+
+             Assert.AreEqual(fullName_NoValues , "");
+             Assert.AreEqual(fullName_JustFirst, firstName);
+             Assert.AreEqual(fullName_JustLast , "");
+             Assert.AreEqual(fullName_Both     , "{0} {1}".format(firstName, lastName));
+
+             //last check
+             Assert.AreEqual("John Smith", new TMUser() { FirstName = "John", LastName = "Smith" }.fullName());
+         }
         [Test]
         public void getUserGroupName()
         {

@@ -1,5 +1,4 @@
 ﻿
-@using System
 @using FluentSharp.CoreLib
 @using FluentSharp.Git
 @using TeamMentor.CoreLib
@@ -10,13 +9,10 @@
 @using NGit.Diff
 @using NGit
 
-
-<h4>Git Diff - Xml Database (File)</h4>
-
 @{
 
-    var tmDatabase = TM_Xml_Database.Current;
-    var xmlLibrariesLocation = tmDatabase.Path_XmlLibraries;
+    var userData = TM_UserData.Current;
+    var userDataLocation = userData.Path_UserData;
 
 
     var file = System.Web.HttpContext.Current.Request["file"];
@@ -26,13 +22,6 @@
         return; // end request
     }
 
-    if (file.isGuid())
-    {            
-        file = tmDatabase.xmlDB_guidanceItemPath(file.guid())
-                         .remove(xmlLibrariesLocation)
-                         .removeFirstChar()
-                         .replace("\\", "/");
-    }
 
     Func<Repository, string, string, string, string> getDiff =
         (gitRepo, path, fromCommitId, toCommitId) =>
@@ -70,7 +59,7 @@
         
         
        
-    var nGit = xmlLibrariesLocation.git_Open();
+    var nGit = userDataLocation.git_Open();
     var repo = nGit.Repository;
 
 
@@ -79,11 +68,11 @@
     //var revCommit = log.Call().first();
     var max = 10;
 }    
-<br/>
-<p>
-    <b>Showing first @max commits for File:</b> @file
-</p>
-<br/>
+
+
+<h4>Git Diff (File)</h4>
+
+Showing first @max entries<br/><br/>
 
 @foreach (var revCommit in log.Call().take(max))
 { 
@@ -105,14 +94,14 @@
     }   
     var diffLines = rawDiff.fix_CRLF().lines();    
     
-    var diffLines_WithData = diffLines.where((line) => line.starts("+") && !line.starts("++")|| line.starts("-") && !line.starts("--"));
+    var diffLines_withData = diffLines.where((line) => line.starts("+") && !line.starts("++")|| line.starts("-") && !line.starts("--"));
 
 
-    <b>@when:</b> <small><small>@message.subString(0,500)</small></small>
+    <b>@when:</b> <small><small>@message</small></small>
     <p>
       <ul>
         <small>
-            @foreach (var line in diffLines_WithData)
+            @foreach (var line in diffLines_withData)
             {        
                 var color = "black";
                 if (line.starts("+") )

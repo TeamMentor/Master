@@ -14,15 +14,15 @@ namespace TeamMentor.CoreLib
         public string 	                Path_UserData 	    { get; set; }	
         public string 	                Path_UserData_Base 	{ get; set; }
         public string 	                Path_WebRootFiles   { get; set; }
-        public string                   FirstScriptToInvoke { get; set; }
-        public string 	                Git_UserData 	    { get; set; }
+        public string                   FirstScriptToInvoke { get; set; }        
         public List<TMUser>	            TMUsers			    { get; set; }
         public TM_SecretData            SecretData          { get; set; }
         
         //public Dictionary<Guid, TMUser>	ActiveSessions	    { get; set; }
-        public bool                     UsingFileStorage    { get; set; }        
-        public bool                     AutoGitCommit       { get; set; }
+        public bool                     UsingFileStorage    { get; set; }                
         public API_NGit                 NGit                { get; set; }
+        public string                   NGit_Author_Name    { get; set; } 
+        public string                   NGit_Author_Email   { get; set; }
         
         
         public TM_UserData() : this (false)
@@ -38,20 +38,20 @@ namespace TeamMentor.CoreLib
 
         public TM_UserData ResetData()
         {
+            NGit_Author_Name    = "tm-bot";
+            NGit_Author_Email   = "tm-bot@teammentor.net";
             FirstScriptToInvoke = "H2Scripts//FirstScriptToInvoke.h2";
             Path_WebRootFiles   = "WebRoot_Files";
-            TMUsers             = new List<TMUser>();            
-            //ActiveSessions      = new Dictionary<Guid, TMUser>();
-            SecretData          = new TM_SecretData();
-            AutoGitCommit       = TMConfig.Current.Git.AutoCommit_UserData;           
+            TMUsers             = new List<TMUser>();                        
+            SecretData          = new TM_SecretData();            
             return this;
         }
 
         public TM_UserData SetUp()
         {
             try
-            {
-                this.setupGitSupport();
+            {                
+                this.setupGitSupportAndLoadTMConfigFile();
                 this.firstScript_Invoke();                
                 SecretData = this.secretData_Load();
             }

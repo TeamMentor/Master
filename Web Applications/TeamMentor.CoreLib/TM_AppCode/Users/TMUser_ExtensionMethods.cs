@@ -161,7 +161,29 @@ namespace TeamMentor.CoreLib
             }
             return "/error";
         }
-
+        public static string    userHostAddress     (this TMUser tmUser)
+        {
+            try
+            {
+                return HttpContextFactory.Request.UserHostAddress;
+            }
+            catch (Exception ex)
+            {
+                ex.log("in userHostAddress");
+                return "0.0.0.0";
+            }
+        }
+        public static string    fullName            (this TMUser tmUser)
+        {
+            if (tmUser.notNull())
+                if (tmUser.FirstName.valid())
+                {
+                    if (tmUser.LastName.valid())
+                        return "{0} {1}".format(tmUser.FirstName, tmUser.LastName);
+                    return tmUser.FirstName;
+                }
+            return "";
+        } 
         public static TMUser    set_UserGroup       (this TMUser tmUser, UserGroup userGroup)
         {
             if (tmUser.notNull())

@@ -122,10 +122,13 @@ namespace TeamMentor.CoreLib
         }
         public static List<string> TBotScriptsFiles()
         {
-            var files = TBotScriptsFolder().files(true, "*.cshtml");
-            var userDataFolder = TM_UserData.Current.Path_UserData.pathCombine("TBot");
-            if (userDataFolder.dirExists())
-                files.add(userDataFolder.files(true, "*.cshtml"));
+            var files = TBotScriptsFolder().files(true, "*.cshtml");            
+            if (TM_UserData.Current.notNull())
+            {
+                var userDataFolder = TM_UserData.Current.Path_UserData.pathCombine("TBot");
+                if (userDataFolder.dirExists())
+                    files.add(userDataFolder.files(true, "*.cshtml"));
+            }
             return files;
         }
         public static Dictionary<string, string> GetAvailableScripts()

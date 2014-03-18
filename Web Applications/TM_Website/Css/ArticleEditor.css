@@ -20,6 +20,7 @@ body {
 	font-weight: bold;
 	text-decoration: none;
 	background-color: white;
+	cursor: pointer;
 }
 .IEButton:active {
 	text-decoration: none;

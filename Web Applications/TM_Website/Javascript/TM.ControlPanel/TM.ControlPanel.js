@@ -24,8 +24,7 @@ TM.ControlPanel =
                 
         
 
-        ,	open_QUnitTests		: function(targetDiv)		{	TM.ControlPanel.open_Page(targetDiv, "TeamMentor_QUnitTests.html"		);	}
-        ,	open_GitHubSync		: function(targetDiv)		{	TM.ControlPanel.open_Page(targetDiv, "GitHub_Sync.html"					);	}
+        ,	open_QUnitTests		: function(targetDiv)		{	TM.ControlPanel.open_Page(targetDiv, "TeamMentor_QUnitTests.html"		);	}        
         ,	open_InstallLibrary	: function(targetDiv)		{	TM.ControlPanel.open_Page(targetDiv, "Install_Libraries.html"			);	}
         //,	open_InstallLibrary	: function(targetDiv)		{	TM.ControlPanel.open_Page(targetDiv, "File_Upload.html"				);	}
         

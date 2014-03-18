@@ -173,10 +173,12 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             var passwordExpired   = tmUser.AccountStatus.PasswordExpired.not();
             var userEnabled       = tmUser.AccountStatus.UserEnabled.not();
             var groupId           = 4.random(); 
-            
-            var result1 = userData.updateTmUser(tmUser.UserID, userName, firstname, lastname,  title, company, email,country, state, accountExpiration, passwordExpired,userEnabled,groupId);
+            var result1 = userData.updateTmUser(tmUser.user());
+            var result2 = userData.updateTmUser(tmUser.user());
+            var result3 = userData.updateTmUser(tmUser.user());
+            /*var result1 = userData.updateTmUser(tmUser.UserID, userName, firstname, lastname,  title, company, email,country, state, accountExpiration, passwordExpired,userEnabled,groupId);
             var result2 = userData.updateTmUser(tmUser.UserID, userName, firstname, lastname,  title, company, email,country, state, accountExpiration, passwordExpired,userEnabled,groupId);
-            var result3 = userData.updateTmUser(tmUser.UserID, "new value", firstname, lastname,  title, company, email,country, state, accountExpiration, passwordExpired,userEnabled,groupId);
+            var result3 = userData.updateTmUser(tmUser.UserID, "new value", firstname, lastname,  title, company, email,country, state, accountExpiration, passwordExpired,userEnabled,groupId);*/
 
             Assert.IsTrue  (result1, "First update should work");
             Assert.IsTrue  (result2, "Second update (with same data) should work");

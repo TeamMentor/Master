@@ -74,6 +74,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             //var guidanceExplorers = TM_Xml_Database.loadGuidanceExplorerObjects();    		
             var libraryId = tmXmlDatabase.GuidanceExplorers_XmlFormat.Keys.first();
             Assert.AreNotEqual(Guid.Empty, libraryId, "Library id was empty");
+            //libraryId = "4738d445-bc9b-456c-8b35-a35057596c16".guid();          // set it to the OWASP library since that has a folder
             var guidanceExplorerFolders = tmXmlDatabase.GuidanceExplorers_XmlFormat[libraryId].library.libraryStructure.folder;    		
             Assert.That(guidanceExplorerFolders.size() > 0,"guidanceExplorerFolders was empty");
             

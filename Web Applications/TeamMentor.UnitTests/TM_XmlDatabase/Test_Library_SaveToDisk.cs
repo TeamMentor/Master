@@ -15,19 +15,19 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         [SetUp][Assert_Admin]
         public void Setup()
         {
-            TMConfig.BaseFolder = "temp_BaseFolder".tempDir();  // set temp folder for UnitTests
+            TMConfig.WebRoot = "temp_BaseFolder".tempDir();  // set temp folder for UnitTests
             tmDatabase = new TM_Xml_Database(true);          // with the useFileStorage set to true                        
         }
 
         [TearDown]
         public void TearDown()
         {
-            Assert.IsTrue     (TMConfig.BaseFolder.dirExists());   
-            Files.deleteFolder(TMConfig.BaseFolder, true);
-            Assert.IsFalse    (TMConfig.BaseFolder.dirExists());              
+            Assert.IsTrue     (TMConfig.WebRoot.dirExists());   
+            Files.deleteFolder(TMConfig.WebRoot, true);
+            Assert.IsFalse    (TMConfig.WebRoot.dirExists());              
         }
 
-        [Test]//[Ignore("False positive on TeamCity (since in there TM is running under the App_Data folder)")]
+        [Test]//[Ignore("This fails in TeamCity, since the Temp folder is inside the Websites AppData folder")]
         public void TestUseOfTempFolders()
         {
             var databaseFolder      = tmDatabase.Path_XmlDatabase;

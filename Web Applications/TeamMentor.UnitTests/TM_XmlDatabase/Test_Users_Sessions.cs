@@ -193,59 +193,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Assert.IsFalse(sessionId5.validSession());
 
         }
-
-        [Test] public void UserStats()
-        {
-            //test as User
-            var tmUser = userData.newUser().tmUser();
-            var stats  = tmUser.Stats;
-
-            Assert.AreEqual    (default(DateTime), stats.LastLogin);
-            Assert.AreEqual    (0, stats.LoginOk);
-            Assert.AreEqual    (0, stats.LoginFail);
-
-            tmUser.login();    //login once
-
-            Assert.AreNotEqual (default(DateTime), stats.LastLogin);
-            Assert.AreEqual    (1, stats.LoginOk , "[user] stats.LoginOk should be 1");
-            Assert.AreEqual    (0, stats.LoginFail);
-
-            tmUser.login();    // login again
-
-            Assert.AreNotEqual (default(DateTime), stats.LastLogin);
-            Assert.AreEqual    (2, stats.LoginOk , "[user] stats.LoginOk should be 2");
-            Assert.AreEqual    (0, stats.LoginFail);
-
-            tmUser.logout();
-            
-            Assert.AreEqual    (2, stats.LoginOk);
-            Assert.AreEqual    (0, stats.LoginFail, "Login fail should be 0");
-
-            tmUser.login();
-            
-            Assert.AreEqual    (3, stats.LoginOk);
-            Assert.AreEqual    (0, stats.LoginFail, "LoginFail should still be 0");
-
-            //test as Admin      
-            var adminName        = tmConfig.TMSecurity.Default_AdminUserName;
-            var adminPwd         = tmConfig.TMSecurity.Default_AdminPassword;
-            var sessionId        =  userData.login(adminName, adminPwd);  // login using user and good pwd
-            tmUser               = sessionId.session_TmUser();
-            stats                = tmUser.Stats;
-            var currentLoginOk   = stats.LoginOk;
-            var currentLoginFail = stats.LoginFail;
-            sessionId            =  userData.login(adminName, adminPwd);      // login again using user and good pwd
-
-            Assert.AreNotEqual (Guid.Empty, sessionId, "failed to login as default admin user");
-            Assert.AreNotEqual (default(DateTime), stats.LastLogin);
-            Assert.AreEqual    (currentLoginOk+1, stats.LoginOk   , "[admin] stats.LoginOk ");
-            Assert.AreEqual    (currentLoginFail, stats.LoginFail);
-
-            userData.login(tmUser.UserName, "".add_RandomLetters(10));                                      // login using user and bad pwd
-
-            Assert.AreEqual    (currentLoginOk  + 1, stats.LoginOk);
-            Assert.AreEqual    (currentLoginFail +1, stats.LoginFail , "[admin] stats.LoginFail should be higher");
-        }
+    
         [Test] public void UserAccount_Enabled_and_Disabled()
         {            
             var testUser  = "user".add_RandomLetters(10);                       

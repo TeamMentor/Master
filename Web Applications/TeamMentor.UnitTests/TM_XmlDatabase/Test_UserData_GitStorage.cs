@@ -1,20 +1,20 @@
 ﻿using System;
-using FluentSharp.CoreLib;
 using FluentSharp.Git;
 using FluentSharp.Git.APIs;
 using NUnit.Framework;
+using FluentSharp.CoreLib;
 using TeamMentor.CoreLib;
 
 namespace TeamMentor.UnitTests.TM_XmlDatabase
 {
-    [TestFixture][Ignore("Git User doesn't happen on LocalRequests")]
+    [TestFixture]//[Ignore("Git User doesn't happen on LocalRequests")]
     public class Test_UserData_GitStorage
     {
         public TM_UserData  userData;
         public API_NGit     nGit;
         [SetUp]
         public void setUp()
-        {
+        {            
             //create temp repo with no Admin user
             userData = new TM_UserData(true)
                                 {
@@ -23,15 +23,16 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             userData .SetUp(); 
             nGit     = userData.NGit;     
 
-            Assert.AreEqual(1, nGit.commits().size() , "there should be one commit of the TMSecretData.config file");
+            Assert.AreEqual(2, nGit.commits().size() , "there should be two commits here");
         }
 
         [Test][Assert_Admin]
-        [Ignore("Fix when Git support for libraries is fixed")]
+        //[Ignore("Fix when Git support for libraries is fixed")]
         public void CheckNonGitRepoDoesntCommit()
         {
-            userData.Path_UserData = "nonGitRepo".tempDir();
-            userData.AutoGitCommit = false;
+            TMConfig.Current.Git.UserData_Git_Enabled = false;
+
+            userData.Path_UserData = "nonGitRepo".tempDir();            
 
             Assert.IsTrue   (userData.UsingFileStorage);
             Assert.IsTrue   (userData.Path_UserData.dirExists());            
@@ -43,13 +44,20 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             var users = userData.tmUsers();
             Assert.IsNotEmpty(users, "There should be at least one user (the admin)");
             Assert.IsNotEmpty(userData.Path_UserData.files());                        
-            Assert.AreEqual  (3,userData.Path_UserData.files().size());
-            Assert.IsFalse   (userData.Path_UserData.isGitRepository());            
+            Assert.AreEqual  (3,userData.Path_UserData.files(true).size());
+            Assert.IsFalse   (userData.Path_UserData.isGitRepository());
+            
+            TMConfig.Current.Git.UserData_Git_Enabled = true;
         }
-        [Test][Ignore("Rewrite to take into account new Git Storage")]
+/*
+        [Test]
+        //[Ignore("Rewrite to take into account new Git Storage")]
+        //todo: fix compilation error
+
         [Assert_Admin] public void ManualyGitCommitNewUsers()
         {
-            userData.AutoGitCommit = false;
+            TMConfig.Current.Git.UserData_Git_Enabled = false;
+
             var head1              = nGit.head();
 
             Assert.IsNotNull(nGit);
@@ -58,22 +66,24 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             
             var tmUser      = userData.newUser().tmUser();            
             var userXmlFile = tmUser.getTmUserXmlFile().fileName();
-            var untracked   = nGit.status_Raw().untracked();            
+            var untracked   = nGit.status_Untracked();            
             
             Assert.AreEqual (1,untracked.size());
-            Assert.AreEqual (userXmlFile, untracked.first());
+            Assert.AreEqual (userXmlFile, untracked.first().fileName());
 
             nGit.add_and_Commit_using_Status();            
-            untracked         = nGit.status_Raw().untracked();
+            untracked         = nGit.status_Untracked();
             var head2         = nGit.head();
             Assert.AreEqual   (0,untracked.size());
             Assert.IsFalse    (nGit.head().isNull());
             Assert.AreNotEqual(head1, head2);
             "Head is now: {0}".info(nGit.head());
-        }
+
+            TMConfig.Current.Git.UserData_Git_Enabled = true;
+        }*/
         [Test][Assert_Admin] public void CheckGitRepoDoesCommits_OnNewUser()
         {                        
-            Assert.IsTrue       (userData.AutoGitCommit);
+            Assert.IsTrue       (userData.tmConfig().Git.UserData_Git_Enabled);
             
             userData            .newUser();            // adding a user
             Assert.IsNotNull    (nGit.head());
@@ -89,7 +99,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         }
         [Test][Assert_Admin] public void CheckGitRepoDoesCommits_OnUserSave()
         {
-            Assert.IsTrue       (userData.AutoGitCommit);
+            Assert.IsTrue       (userData.tmConfig().Git.UserData_Git_Enabled);
              
             var tmUser          = userData.newUser().tmUser();
             var headBeforeSave  = nGit.head();
@@ -110,8 +120,8 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
 
             nGit.refLogs().toString().info();
 
-            Assert.AreEqual(2, commitsAfterNewUser    , "There should be 2 commits after user create");
-            Assert.AreEqual(3, commitsAfterDeleteUser , "There should be 3 commits after user delete");
+            Assert.AreEqual(3, commitsAfterNewUser    , "There should be 3 commits after user create");
+            Assert.AreEqual(4, commitsAfterDeleteUser , "There should be 3 commits after user delete");
             
             Assert.IsEmpty(nGit.status());
             
@@ -119,7 +129,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         [Test][Assert_Admin] public void CheckActivitiesLogging()
         {
             var tmUser = userData.newUser().tmUser();            
-            Assert.AreEqual(2, nGit.commits().size());
+            Assert.AreEqual(3, nGit.commits().size());
             var sessionId = tmUser.login();
             Assert.AreNotEqual(Guid.Empty, sessionId);
         }

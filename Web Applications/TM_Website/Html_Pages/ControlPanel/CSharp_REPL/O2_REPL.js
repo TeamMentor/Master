@@ -31,7 +31,7 @@ O2Platform.JS.invokeWebService = function(method, params, handleData, handleErro
                                 if(typeof(msg.d) == "undefined")
                                     handleError("No data received from call to: " + url);
                                 else
-                                    handleData(msg.d)			
+                                    handleData(msg.d);		
                             }
                     ,	failure: function (msg) 
                             {						
@@ -42,13 +42,13 @@ O2Platform.JS.invokeWebService = function(method, params, handleData, handleErro
                                 handleError(msg);					
                             }
                 });
-    }
+    };
 
 O2Platform.JS.executeCSharpCode = function(code, handleData, handleError)
     {
         var params = { snippet : code };
         O2Platform.JS.invokeWebService("REPL_ExecuteSnippet",JSON.stringify(params), handleData,handleError)
-    }
+    };
 
 
 O2Platform.JS.GetTeamMentorCRSF = function (callback)
@@ -56,8 +56,7 @@ O2Platform.JS.GetTeamMentorCRSF = function (callback)
         var onUserData = function(user)
             {
                 if (user ===null)
-                {
-                    //alert("Could not get current user, you will need to login as admin first");
+                {                    
                     document.location = "/login";
                 }
                 else

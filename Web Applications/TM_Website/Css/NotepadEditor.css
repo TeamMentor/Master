@@ -73,15 +73,15 @@ h2
     padding-left: 10px;
     padding-right: 10px;
     padding-top: 4px;
-    width: 100px;
+    width: 120px;    
     color: black;
-    border: 2px solid black;
+    border: 2px solid black;    
     border-radius: 4px;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     font-family: Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif;
     font-weight: normal;
-    margin: 0px 0px 0px 8px;
+    margin: 8px 8px 8px 8px;
 }
 
 .NEContent {

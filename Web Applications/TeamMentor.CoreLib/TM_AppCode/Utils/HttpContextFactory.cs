@@ -46,7 +46,34 @@ namespace TeamMentor.CoreLib
             }
             return httpContext;
         }
-
+        public static string serverUrl(this HttpContextBase context)
+        {
+            try
+            {
+                if (context.notNull())
+                {                    
+                    var request = context.Request;                                        
+                    var serverName = request.ServerVariables["Server_Name"];
+                    var serverPort = request.ServerVariables["Server_Port"];
+                    if (serverName.valid() && serverPort.valid())
+                    {
+                        if (serverPort == "80")
+                            return "http://{0}".format(serverName);
+                        if (serverPort == "443")
+                            return "https://{0}".format(serverName);
+                        
+                        var scheme = request.IsSecureConnection ? "https" : "http";
+                        return "{0}://{1}:{2}".format(scheme, serverName, serverPort);
+                    }
+                    //return "{0}://localhost".format(scheme);
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.log("[HttpContextBase] serverUrl");
+            }
+            return "";
+        }
         public static string ipAddress(this HttpContextBase httpContext)
         {            
             try

@@ -12,8 +12,10 @@ namespace TeamMentor.CoreLib
     public static class TM_Xml_Database_Git
     {
         public static TM_Xml_Database setupGitSupport(this TM_Xml_Database tmDatabase)
-        {            
-            if (tmDatabase.AutoGitCommit)
+        {
+            var gitConfig = tmDatabase.tmConfig().Git;
+
+            if (gitConfig.LibraryData_Git_Enabled)
             {
                 foreach (var library in tmDatabase.tmLibraries())
                 {
@@ -23,8 +25,8 @@ namespace TeamMentor.CoreLib
                         var nGit = libraryPath.git_Open();
                         try
                         {
-                            nGit.pull();                            
-                            nGit.push();
+                            nGit.git_Pull_Library();
+                            nGit.git_Push_Library();
                         }
                         catch (Exception ex)
                         {
@@ -34,17 +36,13 @@ namespace TeamMentor.CoreLib
                         tmDatabase.NGits.Add(nGit);
                     }
                 }
-                tmDatabase.triggerGitCommit();
-                /*tmDatabase.NGit = tmDatabase.Path_XmlLibraries.isGitRepository() 
-                                        ? tmDatabase.Path_XmlLibraries.git_Open() 
-                                        : tmDatabase.Path_XmlLibraries.git_Init();
-                tmDatabase.triggerGitCommit();*/
+                tmDatabase.triggerGitCommit();                
             }
             return tmDatabase;        
         }
         public static TM_Xml_Database   triggerGitCommit (this TM_Xml_Database tmDatabase)
         {
-            if (tmDatabase.AutoGitCommit)
+            if (tmDatabase.tmConfig().Git.LibraryData_Git_Enabled)
             {
                 foreach(var nGit in tmDatabase.NGits)
                     if (nGit.status().valid())
@@ -53,22 +51,43 @@ namespace TeamMentor.CoreLib
             return tmDatabase;
         }
 
+        public static API_NGit git_Push_Library(this API_NGit nGit)
+        {
+            if (TMConfig.Current.Git.LibraryData_Auto_Push)
+                try
+                {
+                    nGit.push();
+                }
+                catch (Exception ex)
+                {
+                    ex.log("git_Push_Library");
+                }
+            return nGit;
+        }
+
+        public static API_NGit git_Pull_Library(this API_NGit nGit)
+        {
+            if (TMConfig.Current.Git.LibraryData_Auto_Pull)
+                try
+                {
+                    nGit.pull();
+                }
+                catch (Exception ex)
+                {
+                    ex.log("git_Pull_Library");
+                }
+            return nGit;
+        }
+
         public static API_NGit gitCommit_SeparateThread(this API_NGit nGit)
         {
             O2Thread.mtaThread(
                 ()=>{                        
                         lock (nGit)
-                        {                            
+                        {
+                            nGit.setDefaultAuthor();
                             nGit.add_and_Commit_using_Status();
-                            try
-                            {
-                                nGit.push();
-                            }
-                            catch (Exception ex)
-                            {
-                                ex.log();
-                            }
-                            
+                            nGit.git_Push_Library();
                         }
                 });
             return nGit;
@@ -107,7 +126,7 @@ namespace TeamMentor.CoreLib
     }
 
     // this is a (bit) time consumining (less 1s for 8000 files), so it should only be done once (this is another good cache target)
-    public static class TM_Xml_Database_Load_and_FileCache_Utils
+    public static class TM_Xml_Database_Load_And_FileCache_Utils
     {		
         public static void populateGuidanceItemsFileMappings(this TM_Xml_Database tmXmlDatabase)
         {
@@ -133,7 +152,7 @@ namespace TeamMentor.CoreLib
         }
     }
 
-    public static class TM_Xml_Database_ExtensionMethods_Load_and_FileCache
+    public static class TM_Xml_Database_ExtensionMethods_Load_And_FileCache
     {
         public static Thread thread_Save_GuidanceItemsCache;
 
@@ -142,6 +161,9 @@ namespace TeamMentor.CoreLib
             tmXmlDatabase.GuidanceExplorers_XmlFormat = tmXmlDatabase.Path_XmlLibraries.getGuidanceExplorerObjects();
             tmXmlDatabase.load_GuidanceItemsFromCache();
             
+            //removed since this need to be handled on the GUI
+            /*if (tmXmlDatabase.tmLibraries().empty())     //ensure that there is at least one library                          
+                tmXmlDatabase.new_TmLibrary();*/
             return tmXmlDatabase;
         }
         public static TM_Xml_Database                    reloadGuidanceExplorerObjects     (this TM_Xml_Database tmDatabase)

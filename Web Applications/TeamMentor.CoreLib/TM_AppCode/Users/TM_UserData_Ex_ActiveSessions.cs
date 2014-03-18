@@ -56,8 +56,7 @@ namespace TeamMentor.CoreLib
                             tmUser.logUserActivity("Login Fail",  "pwd ok, but account disabled");
                         }
                         else
-                        {
-                            tmUser.Stats.LoginFail++;
+                        {                            
                             tmUser.logUserActivity("Login Fail", "bad pwd");                            
                         }
                     }
@@ -79,8 +78,6 @@ namespace TeamMentor.CoreLib
             {
                 if (tmUser.notNull())                                                   // there is a valid user
                 {
-                    tmUser.Stats.LastLogin = DateTime.Now;
-                    tmUser.Stats.LoginOk++;
                     var userSession = tmUser.add_NewSession();                          // create new session
                     if (userSession.notNull())
                     {

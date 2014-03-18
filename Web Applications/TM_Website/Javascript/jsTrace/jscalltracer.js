@@ -99,8 +99,8 @@ var JSCT =
         case 'object':			
 			//console.log("in object:" + name);
             for( var key in obj ) 
-			{	
-				if (typeof( obj[key] ) != 'function' && obj[key].trace != true)
+			{			    
+			    if (obj[key] === null || typeof (obj[key]) != 'function' && obj[key].trace != true)
 				{
 					//console.error("Skyping:" + key);
 				}
