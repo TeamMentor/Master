@@ -1,7 +1,7 @@
 @using System.Xml.Linq
+@using FluentSharp.CoreLib
 @using TeamMentor.CoreLib
-@using O2.DotNetWrappers.ExtensionMethods
-@using O2.DotNetWrappers.DotNet
+
 
 <script src="/Javascript/jQuery/jquery-1.8.1.min.js" type="text/javascript"></script>  
 <script type="text/javascript" src="/Javascript/bootstrap/2.2.2/bootstrap.min.js"></script>
@@ -21,6 +21,7 @@
     var ssoToken        = string.Empty;
     string ssoKey       = string.Empty;
 	var errorMessage    = string.Empty;
+    var ssoUrl          = string.Empty;
     
     if (userName.notNull())
     {
@@ -31,7 +32,8 @@
 		   errorMessage="SSO Key not found.Please verify secret data.";
            return;
         }
-         ssoToken = (userName + ssoKey).md5Hash();
+        ssoToken = (userName + ssoKey).md5Hash();
+        ssoUrl = "/Aspx_Pages.aspx?userName={0}&requestToken={1}".format(userData, ssoToken);
     }
 }
 <!DOCTYPE html>
@@ -50,6 +52,10 @@
                 <span class="add-on" style="width:120px;">SSO Token</span>
                 <input type="text" style="width:255px;" id="txtSSOToken" readonly="readonly" value="@ssoToken"/>
             </div><br/>
+            <div class="input-prepend">
+                <span class="add-on" style="width:120px;">SSO Token</span>
+                <a href='@ssoUrl'>SSO Url</a>..
+            </div>
             
             <br />
               
