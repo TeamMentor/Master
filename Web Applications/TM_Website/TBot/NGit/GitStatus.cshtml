@@ -1,14 +1,12 @@
 ﻿
 @using System
-@using O2.DotNetWrappers.ExtensionMethods
+@using System.Collections.Generic
+@using FluentSharp.CoreLib
+@using FluentSharp.Git
 @using TeamMentor.CoreLib
-@using O2.FluentSharp
-@using Sharpen
 @using NGit
-@using NGit.Diff
 @using NGit.Revwalk
 @using NGit.Treewalk;
-@using NGit.Treewalk.Filter
 
 @{
     int max;
@@ -45,7 +43,7 @@
 
 @{
     var nGit = userDataLocation.git_Open();
-    var gitRepository = nGit.Repository;
+    //var gitRepository = nGit.Repository;
 
     
     Func<List<string>> getRepoFiles =
@@ -97,7 +95,7 @@
                 <th>Diff</th>
             </tr>   
         
-        @foreach (var xrefLog in nGit.reflogs_Raw().take(max))
+        @foreach (var xrefLog in nGit.refLogs_Raw().take(max))
         {            
             <tr>
                 <td>@xrefLog.GetNewId().Name</td>
@@ -119,7 +117,7 @@ Location: @xmlLibraryLocation  , is Git: @xmlLibraryLocation.isGitRepository()
     Repo Status:<pre>@libraryStatus.trim()</pre>
 
     
-      <b>Commits:</b><br/>
+     <b>Commits:</b><br/>
     <ul>
         
         <table class="table table-striped table-condensed">
@@ -130,7 +128,7 @@ Location: @xmlLibraryLocation  , is Git: @xmlLibraryLocation.isGitRepository()
                 <th>Diff</th>
             </tr>   
         
-        @foreach (var xrefLog in nGit.reflogs_Raw().take(max))
+        @foreach (var xrefLog in nGit.refLogs_Raw().take(max))
         {            
             <tr>
                 <td>@xrefLog.GetNewId().Name</td>
@@ -140,7 +138,7 @@ Location: @xmlLibraryLocation  , is Git: @xmlLibraryLocation.isGitRepository()
             </tr>
          }                
         </table>    
+    </ul>
+
 </ul>
-
-
 

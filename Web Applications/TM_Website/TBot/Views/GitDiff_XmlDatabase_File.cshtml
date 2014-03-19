@@ -1,7 +1,8 @@
 ﻿
-@using O2.DotNetWrappers.ExtensionMethods
+@using System
+@using FluentSharp.CoreLib
+@using FluentSharp.Git
 @using TeamMentor.CoreLib
-@using O2.FluentSharp
 @using Sharpen
 @using NGit.Treewalk.Filter
 @using NGit.Treewalk
@@ -63,7 +64,7 @@
                 var revWalk = new RevWalk(gitRepo);
                 var canonicalTreeParser = new CanonicalTreeParser(null, revWalk.GetObjectReader(), commit.Tree);
                 diffFormater.Format(new EmptyTreeIterator(), canonicalTreeParser);
-                return outputStream.str().fixCRLF();                
+                return outputStream.str().fix_CRLF();                
             };
         
         
@@ -102,16 +103,16 @@
         rawDiff = getDiff(repo, file, fromId, toId);
 
     }   
-    var diffLines = rawDiff.fixCRLF().lines();    
+    var diffLines = rawDiff.fix_CRLF().lines();    
     
-    var diffLines_withData = diffLines.where((line) => line.starts("+") && !line.starts("++")|| line.starts("-") && !line.starts("--"));
+    var diffLines_WithData = diffLines.where((line) => line.starts("+") && !line.starts("++")|| line.starts("-") && !line.starts("--"));
 
 
     <b>@when:</b> <small><small>@message.subString(0,500)</small></small>
     <p>
       <ul>
         <small>
-            @foreach (var line in diffLines_withData)
+            @foreach (var line in diffLines_WithData)
             {        
                 var color = "black";
                 if (line.starts("+") )

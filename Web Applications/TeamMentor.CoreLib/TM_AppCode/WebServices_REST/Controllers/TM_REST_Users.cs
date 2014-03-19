@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using O2.DotNetWrappers.ExtensionMethods;
+using FluentSharp.CoreLib;
 
 namespace TeamMentor.CoreLib
 {

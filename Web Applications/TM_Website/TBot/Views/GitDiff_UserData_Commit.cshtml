@@ -1,7 +1,7 @@
-﻿
-@using O2.DotNetWrappers.ExtensionMethods
+﻿@using System
+@using FluentSharp.CoreLib
+@using FluentSharp.Git
 @using TeamMentor.CoreLib
-@using O2.FluentSharp
 @using Sharpen
 @using NGit.Diff
 @using NGit
@@ -41,14 +41,14 @@
             };
                                 
     var repo = userDataLocation.git_Open().Repository;    
-    var diffLines = getDiff(repo, fromId, toId).fixCRLF().lines();
-    var diffLines_withData = diffLines.where((line) => line.starts("+") || line.starts("-"));
+    var diffLines = getDiff(repo, fromId, toId).fix_CRLF().lines();
+    var diffLines_WithData = diffLines.where((line) => line.starts("+") || line.starts("-"));
     
 }
 
 <p>
     <small>
-        @foreach (var line in diffLines_withData)
+        @foreach (var line in diffLines_WithData)
         {        
             var color = "black";
             if (line.starts("+"))

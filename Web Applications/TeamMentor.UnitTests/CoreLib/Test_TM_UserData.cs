@@ -1,5 +1,6 @@
-﻿using NUnit.Framework;
-using O2.DotNetWrappers.ExtensionMethods;
+﻿using FluentSharp.CoreLib.API;
+using NUnit.Framework;
+using FluentSharp.CoreLib;
 using TeamMentor.CoreLib;
 
 namespace TeamMentor.UnitTests.CoreLib
@@ -7,6 +8,16 @@ namespace TeamMentor.UnitTests.CoreLib
     [TestFixture]
     public class Test_TM_UserData : TM_XmlDatabase_InMemory
     {
+        [Test]
+        public void TM_UserData_Ctor()
+        {
+            Assert.IsFalse(userData.UsingFileStorage);
+            userData = new TM_UserData(true);
+            Assert.IsTrue (userData.UsingFileStorage);
+            userData = new TM_UserData();
+            Assert.IsFalse(userData.UsingFileStorage);
+        }
+
         [Test]
         public void SecretDataDefault()
         {
@@ -49,20 +60,12 @@ namespace TeamMentor.UnitTests.CoreLib
             Assert.AreEqual (result_DirectInvoke, 42);    
             Assert.AreEqual (result_TmInvoke    , "42");
             Assert.IsTrue   (fileDeleted);
+
+            //Remove temp UserData folder
+            Assert.IsTrue   (userData.Path_UserData.dirExists());
+            Assert.IsTrue   (Files.deleteFolder(userData.Path_UserData,true));
+            Assert.IsFalse  (userData.Path_UserData.dirExists());
         }
 
-        //helper methods
-/*        public string testSecretDataScript()
-        {
- 	        return @"
-var userData                = TM_UserData.Current;
-var tmSecretData            = userData.SecretData;
-tmSecretData.SMTP_UserName  = ""A name"";
-tmSecretData.SMTP_Password  = ""A pwd"";
-return ""done"";
-
-//using TeamMentor.CoreLib;
-//O2Ref:TeamMentor.CoreLib.dll";
-        }*/
     }
 }

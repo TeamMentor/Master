@@ -1,6 +1,6 @@
 ﻿using System;
 using NUnit.Framework;
-using O2.DotNetWrappers.ExtensionMethods;
+using FluentSharp.CoreLib;
 using TeamMentor.CoreLib;
 
 namespace TeamMentor.UnitTests.CoreLib
@@ -104,11 +104,12 @@ namespace TeamMentor.UnitTests.CoreLib
             var shouldFailValidation = new []
                 {
                     "aaa", "bbb", "aa.bb", "aa.bb", "a@b","a@.b.c",
-                    "a;aaa@email.com","aaa@em;ail.com", "aaa@email.c;om"
+                    "a;aaa@email.com","aaa@em;ail.com", "aaa@email.c;om","a@..com", "a@bbb..com", "a@.aa.com", "a@..aa.com"
                 };
             var shouldPassValidation = new []
                 {
-                    "aaaa@email.com","dcruz@securityinnovation.com", "dinis.cruz@owasp.org", "dinis-cruz@owasp.org", "dinis-cruz@securityinnovation-europe.com", "dinis+cruz@owasp.org"
+                    "aaaa@email.com","dcruz@securityinnovation.com", "dinis.cruz@owasp.org", "dinis-cruz@owasp.org", "dinis-cruz@securityinnovation-europe.com", "dinis+cruz@owasp.org",
+                    "a@bbb.ccc.ddd" ,"a..a@bb.com", "a..@bb.com"
                 }; 
 
             Func<string,bool> validEmail = 

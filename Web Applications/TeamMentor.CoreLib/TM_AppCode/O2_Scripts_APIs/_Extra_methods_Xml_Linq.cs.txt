@@ -7,7 +7,7 @@ using System.Xml.Serialization;
 using System.Collections;
 using System.Collections.Generic;
 using O2.Kernel;
-using O2.DotNetWrappers.ExtensionMethods;
+using FluentSharp.CoreLib;
 using System.Xml.Linq;
 using System.IO;
  

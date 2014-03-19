@@ -1,5 +1,6 @@
-﻿using NUnit.Framework;
-using O2.DotNetWrappers.ExtensionMethods;
+﻿using FluentSharp.CoreLib.API;
+using NUnit.Framework;
+using FluentSharp.CoreLib;
 using TeamMentor.CoreLib;
 
 namespace TeamMentor.UnitTests.TM_XmlDatabase
@@ -42,6 +43,15 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Assert.IsTrue(result, "copy_FilesIntoWebRoot result");
             Assert.IsTrue(fileToCopy_InSource.fileExists(), "fileToCopy_InSource didn't exist");
             Assert.IsTrue(fileToCopy_InTarget.fileExists(), "fileToCopy_InTarget didn't exist");            
+
+            //delete temp folders
+            Assert.IsTrue     (TMConfig.BaseFolder.dirExists());
+            Assert.IsTrue     (Files.deleteFolder(TMConfig.BaseFolder,true));
+            Assert.IsFalse    (TMConfig.BaseFolder.dirExists());
+
+            Assert.IsTrue     (userData.Path_UserData.dirExists());
+            Assert.IsTrue     (Files.deleteFolder(userData.Path_UserData,true));
+            Assert.IsFalse    (userData.Path_UserData.dirExists());                        
         }
     }
 }

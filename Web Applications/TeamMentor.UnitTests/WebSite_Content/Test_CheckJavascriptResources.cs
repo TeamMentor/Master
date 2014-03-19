@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using O2.DotNetWrappers.ExtensionMethods;
+using FluentSharp.CoreLib;
 using TeamMentor.CoreLib;
 
 namespace TeamMentor.UnitTests.WebSite_Content
@@ -32,11 +32,11 @@ namespace TeamMentor.UnitTests.WebSite_Content
             Assert.That(gAnalyticsFolder.dirExists() , "gAnalyticsFolder dir");
             Assert.That(gaFile			.fileExists(), "gaFile file");
 
-            var tmVersion	  = gaFile.fileContents().fixCRLF();
+            var tmVersion	  = gaFile.fileContents().fix_CRLF();
 
             
             Assert.That(tmVersion.valid()	, "ga.js tmVersion not valid");
-            var googleVersion = "http://www.google-analytics.com/ga.js".GET().fixCRLF();
+            var googleVersion = "http://www.google-analytics.com/ga.js".GET().fix_CRLF();
             Assert.That(googleVersion.valid(), "ga.js googleVersion not valid");
             Assert.AreEqual(tmVersion, googleVersion, "ga.js files didn't match");            
         }        

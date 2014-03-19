@@ -1,7 +1,8 @@
-﻿using NUnit.Framework;
-using O2.Kernel;
-using O2.DotNetWrappers.ExtensionMethods;
+﻿using FluentSharp.CoreLib;
+using FluentSharp.CoreLib.API;
+using NUnit.Framework;
 using TeamMentor.CoreLib;
+using MiscUtils = TeamMentor.CoreLib.MiscUtils;
 
 namespace TeamMentor.UnitTests
 {

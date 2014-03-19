@@ -1,7 +1,7 @@
 using System;
 using System.Web;
 using FluentSharp;
-using O2.DotNetWrappers.ExtensionMethods;
+using FluentSharp.CoreLib;
 
 namespace TeamMentor.CoreLib
 {
@@ -20,16 +20,17 @@ namespace TeamMentor.CoreLib
                 return new HttpContextWrapper(HttpContext.Current);     // return current asp.net Context			    
             }
         }
-        public static HttpContextBase       Context     { 	get { return Current;           } set { _context = value; }	}
-        public static HttpRequestBase       Request		{	get { return Current.Request;   } }
-        public static HttpResponseBase      Response	{	get { return Current.Response;  } }
-        public static HttpServerUtilityBase Server      {	get { return Current.Server;    } }
-        public static HttpSessionStateBase  Session		{   get { return Current.Session;   } }
+        public static HttpContextBase       Context     { 	get { return Current;          } set { _context = value;  }	}
+        public static HttpRequestBase       Request		{	get { return Current.notNull() ? Current.Request : null;  } }
+        public static HttpResponseBase      Response	{	get { return Current.notNull() ? Current.Response: null;  } }
+        public static HttpServerUtilityBase Server      {	get { return Current.notNull() ? Current.Server  : null;  } }
+        public static HttpSessionStateBase  Session		{   get { return Current.notNull() ? Current.Session : null;  } }
     }
 
 
     public static class HttpContextFactory_ExtensionMethods
     {
+        
         public static HttpContextBase addCookieFromResponseToRequest(this HttpContextBase    httpContext, string cookieName)
         {
             if (httpContext.Response.hasCookie(cookieName))

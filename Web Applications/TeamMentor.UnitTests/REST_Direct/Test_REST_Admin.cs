@@ -1,8 +1,7 @@
 ﻿using FluentSharp;
+using FluentSharp.CoreLib.API;
 using NUnit.Framework;
-using O2.DotNetWrappers.DotNet;
-using O2.DotNetWrappers.ExtensionMethods;
-using O2.Kernel;
+using FluentSharp.CoreLib;
 using TeamMentor.CoreLib;
 
 namespace TeamMentor.UnitTests.REST
@@ -12,6 +11,7 @@ namespace TeamMentor.UnitTests.REST
     {
         public Test_REST_Admin()
         {
+            SendEmails.Disable_EmailEngine = false;
             UserGroup.Admin.setThreadPrincipalWithRoles();
         }
 
@@ -50,14 +50,14 @@ namespace TeamMentor.UnitTests.REST
                                             Message = message
                                         };
             TmRest.SendEmail(emailMessagePost);
-
+            
             var sentMessages      = SendEmails.Sent_EmailMessages;
             var emailsSent_After = sentMessages.size();
             var lastMessage      = sentMessages.last();
    
             Assert.IsTrue     (new SendEmails().serverNotConfigured());
-            Assert.Greater    (emailsSent_Before   , 0);
-            Assert.AreNotEqual(emailsSent_Before   , emailsSent_After);
+                        
+            Assert.AreEqual   (emailsSent_Before +1, emailsSent_After);
             Assert.AreEqual   (lastMessage.To      , emailMessagePost.To);
             Assert.AreEqual   (lastMessage.Subject , emailMessagePost.Subject);
             Assert.AreEqual   (lastMessage.Message , emailMessagePost.Message + extraText );

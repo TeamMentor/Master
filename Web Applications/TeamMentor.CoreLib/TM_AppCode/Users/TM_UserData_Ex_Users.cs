@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using FluentSharp.CoreLib;
 using Microsoft.Security.Application;
-using O2.DotNetWrappers.ExtensionMethods;
 
 namespace TeamMentor.CoreLib
 {
@@ -23,8 +23,7 @@ namespace TeamMentor.CoreLib
                     if (adminUser.SecretData.PasswordHash.notValid() || tmConfig.OnInstallation.ForceAdminPasswordReset)
                     {
                         "[createDefaultAdminUser] reseting password since passwordHash was not valid and ForceAdminPasswordReset was set".error();
-                        adminUser.SecretData.PasswordHash = adminUser.createPasswordHash(defaultAdminUser_Pwd);                        
-                        //adminUser.AccountStatus.ExpirationDate = default(DateTime);    
+                        adminUser.SecretData.PasswordHash = adminUser.createPasswordHash(defaultAdminUser_Pwd);                                                
                         adminUser.saveTmUser();
                     }
                     if (adminUser.GroupID != (int) UserGroup.Admin)
@@ -32,9 +31,8 @@ namespace TeamMentor.CoreLib
                         "[createDefaultAdminUser] admin user was not admin (changed to admin)".error();
                         adminUser.GroupID = (int) UserGroup.Admin;
                         adminUser.saveTmUser();
-                    }
-                    if (adminUser.notNull())
-                        return adminUser.UserID;
+                    }                    
+                    return adminUser.UserID;
                 }				
                 "[createDefaultAdminUser] admin user didn't exist (creating it)".debug();
                 var userId = userData.newUser(defaultAdminUser_Name, defaultAdminUser_Pwd,defaultAdminUser_Email,1);
@@ -61,6 +59,14 @@ namespace TeamMentor.CoreLib
         {
             return TM_UserData.Current.deleteTmUser(tmUser);
         }
+        public static TMUser        createUser                  (this string userName)
+        {
+            return userName.newUser().tmUser();
+        }
+        public static int           newUser                     (this string userName)
+        {
+            return TM_UserData.Current.newUser(userName);
+        }
         public static int           newUser                     (this TM_UserData userData)
         {
             return userData.newUser("test_user_{0}".format(5.randomLetters()));
@@ -80,13 +86,12 @@ namespace TeamMentor.CoreLib
         }        
         public static int           newUser                     (this TM_UserData userData, string  username, string password, string email, int groupId)
         {
-            return userData.newUser(username, password, email,"FName","LName","A Note", "El Title","The Company","The Country","The State",groupId);
+            return userData.newUser(username, password, email,"...","...","...", "...","...","...","...",groupId);
         }        
         public static int           newUser                     (this TM_UserData userData, string  username, string password, string email, string firstname, string lastname, string note , string title, string company, string country, string state, int groupId)
         {			
-            var userId = Guid.NewGuid().hash();  //10000000.random();//10.randomNumbers().toInt();
-            if (userId < 0)						// find a .net that does this (maybe called 'invert')
-                userId = -userId;
+            var userId = Math.Abs(Guid.NewGuid().hash()); 
+            
             "Creating new user: {0} with id {1}".debug(username, userId);
             
             if (groupId <1)						//set default user type						
@@ -114,7 +119,11 @@ namespace TeamMentor.CoreLib
             tmUser.saveTmUser();            
                     
             return userId;    		
-        }				                
+        }			
+	    public static int           create                      (this NewUser newUser)
+	    {
+	        return TM_UserData.Current.createTmUser(newUser);
+	    }
         public static int           createTmUser                (this TM_UserData userData, NewUser newUser)
         {
             if (newUser.isNull())
@@ -141,7 +150,7 @@ namespace TeamMentor.CoreLib
         public static List<int>     createTmUsers               (this TM_UserData userData, string batchUserData) 
         {						
             var newUsers = new List<NewUser>();
-            foreach(var line in batchUserData.fixCRLF().split_onLines())
+            foreach(var line in batchUserData.fix_CRLF().split_onLines())
             {
                 var newUser = new NewUser();
                 //return _newUser;
@@ -170,7 +179,7 @@ namespace TeamMentor.CoreLib
             } 
             return userData.createTmUsers(newUsers);
         }
-        
+
         public static bool          setUserPassword             (this TM_UserData userData, int userId, string password)
         {
             return userData.tmUser(userId)
@@ -181,19 +190,35 @@ namespace TeamMentor.CoreLib
             return userData.tmUser(username)
                            .setPassword(password);
         }
+
+        public static bool          setPassword                 (this TMUser tmUser, string password)
+        {		                      
+              return setPasswordHash(tmUser, tmUser.createPasswordHash(password));         
+        }
+
+        public static bool          setPasswordHash             (this TMUser tmUser, string passwordHash)
+        {
+            if (tmUser.notNull() && passwordHash.valid())
+            { 
+                tmUser.SecretData.PasswordHash       = passwordHash;
+                tmUser.AccountStatus.PasswordExpired = false;
+                tmUser.saveTmUser();
+                tmUser.logUserActivity("Password Change", tmUser.UserName);
+                return true;
+            }
+            return false;    		
+        }
         public static bool          setCurrentUserPassword      (this TM_UserData userData, TM_Authentication tmAuthentication, string currentPassword, string newPassword)
         {
             var tmUser = tmAuthentication.currentUser;
             if (tmUser.notNull())
             {
-                if (tmUser.SecretData.PasswordHash == tmUser.createPasswordHash(currentPassword))
+                if (tmUser.SecretData.PasswordHash == tmUser.createPasswordHash(currentPassword)) // check if current password matches provided value
                 {
                     var newPasswordHash =  tmUser.createPasswordHash(newPassword);
-                    if (newPasswordHash != tmUser.SecretData.PasswordHash)
+                    if (newPasswordHash != tmUser.SecretData.PasswordHash)                        // check that password are not repeated
                     {
-                        tmUser.SecretData.PasswordHash = tmUser.createPasswordHash(newPassword);
-                        tmUser.saveTmUser();
-                        return true;
+                        return tmUser.setPasswordHash(newPasswordHash);
                     }
                 }
             }
@@ -234,10 +259,10 @@ namespace TeamMentor.CoreLib
             if (tmUser.notNull())
                 return tmUser.GroupID;
             return -1;
-        }                
+        }
+
         public static TMUser        tmUser              (this TM_UserData userData, string userName)
-        {
-            //userName = userName.urlDecode();
+        {            
             return userData.TMUsers.Where((tmUser) => tmUser.UserName == userName).first() ;
         }
         public static TMUser        tmUser              (this TM_UserData userData, int userId)
@@ -269,19 +294,7 @@ namespace TeamMentor.CoreLib
         public static List<TMUser>  tmUsers             (this TM_UserData userData)
         {
             return TM_UserData.Current.TMUsers.toList();
-        }                
-        public static bool          setPassword         (this TMUser tmUser, string password)
-        {		            
-            if (tmUser.notNull())
-            {                
-                tmUser.SecretData.PasswordHash       = tmUser.createPasswordHash(password);
-                tmUser.AccountStatus.PasswordExpired = false;
-                tmUser.saveTmUser();
-                tmUser.logUserActivity("Password Change", tmUser.UserName);
-                return true;
-            }
-            return false;    		
-        }                
+        }                                        
 
         [ManageUsers]   public static List<int>     createTmUsers       (this TM_UserData userData, List<NewUser> newUsers)
         {
@@ -298,7 +311,11 @@ namespace TeamMentor.CoreLib
         [ManageUsers]   public static bool          updateTmUser        (this TM_UserData userData, int userId, string userName, string firstname, string lastname, string title, string company, string email, string country, string state, DateTime accountExpiration, bool passwordExpired, bool userEnabled, int groupId)
         {
             return userData.tmUser(userId).updateTmUser(userName, firstname, lastname,  title, company, email,country, state, accountExpiration, passwordExpired,userEnabled,groupId);
-        }		                
+        }	
+	    [ManageUsers]  public static List<TMUser>   users               (this TM_UserData userData)
+	    {            
+	        return userData.tmUsers();            
+	    }              
         [ManageUsers]   public static List<string>  getUserRoles        (this TM_UserData userData, int userId)
         {
             var tmUser = userData.tmUser(userId);

@@ -1,14 +1,14 @@
 ﻿
+@using System
+@using System.Collections.Generic
+@using FluentSharp.CoreLib
+@using FluentSharp.CoreLib.API
 @using TeamMentor.CoreLib
-@using O2.DotNetWrappers.ExtensionMethods
-@using O2.Kernel
-@using System.Web.Razor.Text
-@using FluentSharp
 
 @{
-    var tmRest    = (TeamMentor.CoreLib.TM_REST) @Model;
+    var tmRest    = (TM_REST) @Model;
     var session   = HttpContextFactory.Session;
-    var log_Lines = tmRest.Admin_Logs().trim().fixCRLF().lines().removeEmpty().reverse(); 
+    var log_Lines = tmRest.Admin_Logs().trim().fix_CRLF().lines().removeEmpty().reverse(); 
 }
 
 <h4>Debug Info</h4>
@@ -26,7 +26,7 @@
     </ul>        
 <br/>
  
-<h5>Session Values</h2>        
+<h5>Session Values</h5>        
     <ul>
         @foreach (string key in session.Keys)
         {

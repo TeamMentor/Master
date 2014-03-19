@@ -1,5 +1,6 @@
 ﻿using System;
-using O2.DotNetWrappers.ExtensionMethods;
+using FluentSharp.CoreLib;
+using FluentSharp.CoreLib.API;
 
 namespace TeamMentor.CoreLib
 {
@@ -47,12 +48,12 @@ namespace TeamMentor.CoreLib
                 ex.log("[Tracking_Application.stop]");
             }
             return tracking;
-        }
+        }        
         public static  Tracking_Application saveLog(this Tracking_Application tracking)
         {
             try
             {
-                var logData = O2.Kernel.PublicDI.log.LogRedirectionTarget.prop("LogData").str() ;
+                var logData = PublicDI.log.LogRedirectionTarget.prop("LogData").str() ;
                 if (logData.notNull())
                 {
                     //tracking.Name        = DateTime.Now.str().safeFileName();

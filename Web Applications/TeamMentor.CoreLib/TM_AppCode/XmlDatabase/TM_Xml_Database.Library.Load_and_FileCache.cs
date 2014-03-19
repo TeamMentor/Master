@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using O2.DotNetWrappers.ExtensionMethods;
-using O2.DotNetWrappers.DotNet;
-using O2.DotNetWrappers.Windows;
-using O2.FluentSharp;
+using FluentSharp.CoreLib;
+using FluentSharp.CoreLib.API;
+using FluentSharp.Git;
+using FluentSharp.Git.APIs;
 using urn.microsoft.guidanceexplorer;
 using System.Threading;
 
@@ -58,7 +58,7 @@ namespace TeamMentor.CoreLib
             O2Thread.mtaThread(
                 ()=>{                        
                         lock (nGit)
-                        {
+                        {                            
                             nGit.add_and_Commit_using_Status();
                             try
                             {
@@ -142,9 +142,6 @@ namespace TeamMentor.CoreLib
             tmXmlDatabase.GuidanceExplorers_XmlFormat = tmXmlDatabase.Path_XmlLibraries.getGuidanceExplorerObjects();
             tmXmlDatabase.load_GuidanceItemsFromCache();
             
-            //removed since this need to be handled on the GUI
-            /*if (tmXmlDatabase.tmLibraries().empty())     //ensure that there is at least one library                          
-                tmXmlDatabase.new_TmLibrary();*/
             return tmXmlDatabase;
         }
         public static TM_Xml_Database                    reloadGuidanceExplorerObjects     (this TM_Xml_Database tmDatabase)
@@ -225,7 +222,7 @@ namespace TeamMentor.CoreLib
         {
             if (file.fileExists().isFalse())
                 return false;
-            var fileContents = file.fileContents().fixCRLF();
+            var fileContents = file.fileContents().fix_CRLF();
             var secondLine = fileContents.lines().second();
             return secondLine.starts("<guidanceExplorer");
         }

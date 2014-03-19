@@ -8,7 +8,6 @@ using System.ServiceModel.Dispatcher;
 using System.ServiceModel.Web;
 using System.Web;
 using System.Web.Routing;
-using O2.DotNetWrappers.ExtensionMethods;
 
 namespace TeamMentor.CoreLib  
 {
@@ -31,40 +30,19 @@ namespace TeamMentor.CoreLib
 
         [LogUrl("REST")]
         public TM_REST()
-        {
-           // ensureTMEndpointsBehavioursAreMapped();
+        {           
             Context       = HttpContextFactory.Current;
             Session       = HttpContextFactory.Session;									
-            TmWebServices = new TM_WebServices(true);	//Disabling CSRF
-            //UserGroup.Admin.setThreadPrincipalWithRoles();					
+            TmWebServices = new TM_WebServices(true);	//Disabling CSRF            
         }
 
-/*        public void ensureTMEndpointsBehavioursAreMapped()
-        {
-            if (serviceHostBase.isNull() || serviceHostBase.Description.isNull())
-                return;
-            if (tmWebHttpBehavior.notNull())  // it is already set
-                return;
-            var endpoints = serviceHostBase.Description.Endpoints;
-            if (endpoints.Count > 0)
-            {
-                var behaviours = endpoints[0].Behaviors;
-
-                originalWebHttpBehaviour = behaviours.Find<WebHttpBehavior>();
-                //behaviours.Remove(originalWebHttpBehaviour);
-
-                tmWebHttpBehavior = new TMWebHttpBehavior();
-                endpoints[0].Behaviors.Add(tmWebHttpBehavior);            
-            }
-        }*/
 
 
         public static void SetRouteTable()
         {
             webServiceHostFactory = new TMWebServiceHostFactory();
             serviceRoute = new ServiceRoute(urlPath, webServiceHostFactory, typeof (TM_REST));            
-            RouteTable.Routes.Add(serviceRoute);                        
-            //RouteTable.Routes.Add(new ServiceRoute(urlPath_Tests, new WebServiceHostFactory(), typeof(REST_Tests)));						
+            RouteTable.Routes.Add(serviceRoute);                                    
         }                        
     }
 
@@ -75,23 +53,10 @@ namespace TeamMentor.CoreLib
         {
             
             TM_REST.serviceHostBase = base.CreateServiceHost(serviceType, baseAddresses);
-            //behaviours = servicehostBase.Description.Behaviors;
-            //behaviours.Add(new TMWebHttpBehavior());
 
             var serviceDebugBehaviour = TM_REST.serviceHostBase.Description.Behaviors.Find<ServiceDebugBehavior>();            
             serviceDebugBehaviour.IncludeExceptionDetailInFaults = true;
-
-            /*var serviceAuthorization = TM_REST.serviceHostBase.Description.Behaviors.Find<ServiceAuthorizationBehavior>();
-            "[ServiceHostBase] before: serviceAuthorization.PrincipalPermissionMode: {0}".info(serviceAuthorization.PrincipalPermissionMode);
-            serviceAuthorization.PrincipalPermissionMode = PrincipalPermissionMode.UseAspNetRoles;            
-            "[ServiceHostBase] after: serviceAuthorization.PrincipalPermissionMode: {0}".info(serviceAuthorization.PrincipalPermissionMode);*/
             return TM_REST.serviceHostBase;
-
-            /*var tmWebServiceHost =  new TMWebServiceHost(serviceType, baseAddresses);
-            //var endpoints = webServiceHost.Description.Endpoints;
-            //var serviceEndpoint = new ServiceEndpoint();
-            //endpoints.first().Behaviors.Add(new TMWebHttpBehavior());
-            return tmWebServiceHost;    */
         }
 
         protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)

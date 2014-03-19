@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using O2.DotNetWrappers.ExtensionMethods;
+using FluentSharp.CoreLib;
 using NUnit.Framework;
 using TeamMentor.CoreLib;
 
@@ -140,10 +140,15 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
         {
             tmXmlDatabase.UsingFileStorage      = true;                                  // need this since we are checking the file paths
             //tmConfig.Git.AutoCommit_LibraryData = false;
-            
+                        
             var testOwaspViewId                 = "fc1c5b9c-becb-44a2-9812-40090d9bd135".guid();
             var originalName                    = "createAndDelete";  
             var newName 	                    = "_" + originalName + "_new";
+            
+            Assert.IsNull   (tmXmlDatabase.Path_XmlDatabase, null);
+            Assert.IsNotNull(tmXmlDatabase.Path_XmlLibraries, null);
+            Assert.IsTrue   (tmXmlDatabase.Path_XmlLibraries.dirExists());
+            Assert.IsNull   (tmXmlDatabase.tmLibrary(originalName), "Library {0} should not exist".format(originalName));
 
             var newLibrary                       = tmWebServices.CreateLibrary(new Library { caption = originalName }); //Create Library
             var tmLibrary                        = tmXmlDatabase.tmLibrary(newLibrary.libraryId);

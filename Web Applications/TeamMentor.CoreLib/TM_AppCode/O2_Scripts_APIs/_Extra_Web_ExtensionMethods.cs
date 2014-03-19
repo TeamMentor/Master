@@ -2,63 +2,63 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Web;
-using O2.DotNetWrappers.ExtensionMethods;
+using FluentSharp.CoreLib;
 
 
-namespace FluentSharp
+namespace FluentSharp.CoreLib
 {
-
-    public static class Extra_ExtensionMethods_Web
+    public static class Extra_ExtensionMethods_StringBuilder
     {
-        public static WebHeaderCollection HEAD_Headers(this Uri uri)
+        public static StringBuilder appendLine(this StringBuilder stringBuilder, string line)
         {
-            var request = (HttpWebRequest) WebRequest.Create(uri);
-            request.Timeout = 1000;
-            request.AllowAutoRedirect = false;            
-            request.Method = "HEAD";
-            try
-            {
-                return request.GetResponse().Headers;                                
-            }
-            catch (WebException)
-            {                
-                return null;
-            }
+            if (stringBuilder.notNull() && line.notNull())
+                stringBuilder.AppendLine(line);
+            return stringBuilder;
         }
-        public static bool HEAD(this Uri uri)
+        public static StringBuilder appendLines(this StringBuilder stringBuilder, params string[] lines)
         {
-            return uri.HEAD_Headers().notNull();
+            if (stringBuilder.notNull() && lines.notNull())
+                foreach(var line in lines)
+                    stringBuilder.appendLine(line);
+            return stringBuilder;
         }
     }
 
     public static class Extra_ExtensionMethods_DateTime
     {
-        public static DateTime fromFileTimeUtc(this long fileTimeUtc)
+        public static string  jsDate(this DateTime date)
         {
-            return DateTime.FromFileTimeUtc(fileTimeUtc); 
+            return date.toJsDate();
+        }
+        public static string  toJsDate(this DateTime date)
+    	{
+            if (date == default(DateTime))
+                return String.Empty;
+		    var dateTime_1970       = new DateTime(1970, 1, 1);
+    		var dateTime_Universal  = date.ToUniversalTime();
+    		var timeSpan            = new TimeSpan(dateTime_Universal.Ticks - dateTime_1970.Ticks);
+    		return timeSpan.TotalMilliseconds.ToString("#");
+    	}
+        public static DateTime fromJsDate(this string date_Milliseconds_After_1970)
+        {
+            if (date_Milliseconds_After_1970.valid() && date_Milliseconds_After_1970.isDouble())
+            {
+                var dateTime = new DateTime(1970, 1, 1);
+                return dateTime.AddMilliseconds(date_Milliseconds_After_1970.toDouble());                
+            }
+            return default(DateTime);
         }
     }
-
-    public static class Extra_ExtensionMethods_Collections
+    public static class Extra_ExtensionMethods_Double
     {
-        public static List<string>  toStringList(this List<Guid> guids)
+        public static bool isDouble(this string value)
         {
-            return (from guid in guids
-                    select guid.str()).toList();
+            double dummyDouble;
+            return Double.TryParse(value, out dummyDouble);
         }
-
-        public static bool notContains(this List<string> list, string stringToNotFind)
-        {
-            return list.contains(stringToNotFind).isFalse();
-        }
-
-        public static List<T> reverse<T>(this List<T> list)
-        {
-            if (list.notNull())
-                list.Reverse();
-            return list;
-        }
+    
     }
 
     public static class Extra_ExtensioMethods_Cookies
@@ -83,13 +83,7 @@ namespace FluentSharp
                    response.Cookies.notNull() &&
                    response.Cookies[cookieName].notNull();
         }
-
-        public static bool hasCookie(this HttpRequestBase response, string cookieName)
-        {
-            return response.notNull() &&
-                   response.Cookies.notNull() &&
-                   response.Cookies[cookieName].notNull();
-        }
+        
 
         public static string cookie(this HttpResponseBase response, string cookieName)
         {
@@ -114,6 +108,28 @@ namespace FluentSharp
             return httpCookie;
         }
 
+        
+
+        public static HttpCookie httpOnly(this HttpCookie httpCookie)
+        {
+            return httpCookie.httpOnly(true);
+        }
+
+        public static HttpCookie httpOnly(this HttpCookie httpCookie, bool value)
+        {
+            if (httpCookie.notNull())
+                httpCookie.HttpOnly = value;
+            return httpCookie;
+        }
+        
+        //httpRequestBase
+
+        public static bool hasCookie(this HttpRequestBase response, string cookieName)
+        {
+            return response.notNull() &&
+                   response.Cookies.notNull() &&
+                   response.Cookies[cookieName].notNull();
+        }
         public static HttpCookie set_Cookie(this HttpRequestBase request, string name, string value)
         {
             if (request.isNull())
@@ -129,18 +145,24 @@ namespace FluentSharp
                 request.Cookies.Add(httpCookie);
             return httpCookie;
         }
-
-        public static HttpCookie httpOnly(this HttpCookie httpCookie)
+        public static string cookie(this HttpRequestBase request, string cookieName)
         {
-            return httpCookie.httpOnly(true);
+            if (request.hasCookie(cookieName))
+                return request.Cookies[cookieName].value();
+            return null;                       
+        }
+        public static bool hasHeader(this HttpRequestBase response, string headerName)
+        {
+            return response.notNull() &&
+                   response.Headers.notNull() &&
+                   response.Headers[headerName].notNull();
         }
 
-        public static HttpCookie httpOnly(this HttpCookie httpCookie, bool value)
+        public static string header(this HttpRequestBase request, string headerName)
         {
-            if (httpCookie.notNull())
-                httpCookie.HttpOnly = value;
-            return httpCookie;
-        }
-        
+            if (request.hasHeader(headerName))
+                return request.Headers[headerName];
+            return null;                       
+        }        
     }
 }

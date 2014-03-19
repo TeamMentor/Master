@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Linq;
+using FluentSharp.CoreLib;
+using FluentSharp.CoreLib.API;
 using NUnit.Framework;
-using O2.DotNetWrappers.ExtensionMethods;
 using O2.FluentSharp;
 using TeamMentor.CoreLib;
 
@@ -15,7 +16,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             if (Tests_Config.offline)
                 Assert.Ignore("Ignoring Test because we are offline");   
 
-           if(new O2.Kernel.CodeUtils.O2Kernel_Web().online().isFalse())
+           if(new O2Kernel_Web().online().isFalse())
                 Assert.Ignore("Ignoring Test because we are offline");   
 
             Install_LibraryFromZip_OWASP();            
@@ -27,7 +28,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Assert.IsNotEmpty(xmlFiles);
             foreach (var xmlFile in xmlFiles)
             {
-                var fileContents = xmlFile.fileContents().fixCRLF();
+                var fileContents = xmlFile.fileContents().fix_CRLF();
                 var secondLine  = fileContents.lines().second();
                 Assert.That(secondLine.starts("<guidanceExplorer"));                                                            
             }

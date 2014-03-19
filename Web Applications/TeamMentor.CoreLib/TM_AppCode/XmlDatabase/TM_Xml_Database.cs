@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using O2.DotNetWrappers.DotNet;
-using O2.DotNetWrappers.ExtensionMethods;
-using O2.FluentSharp;
+using FluentSharp.CoreLib;
+using FluentSharp.CoreLib.API;
+using FluentSharp.Git.APIs;
 using urn.microsoft.guidanceexplorer;
 using System.Threading;
 
@@ -13,7 +13,7 @@ namespace TeamMentor.CoreLib
         public static TM_Xml_Database   Current               { get; set; }         
         public static bool              SkipServerOnlineCheck { get; set; }        
 
-        public bool			            UsingFileStorage	  { get; set; }         //config           
+        public bool			            UsingFileStorage	  { get; set; }         //config                   
         public bool                     ServerOnline          { get; set; }         
         public bool                     AutoGitCommit         { get; set; }                
         public TM_UserData              UserData              { get; set; }         //users and tracking             
@@ -48,7 +48,8 @@ namespace TeamMentor.CoreLib
             catch (Exception ex)
             {
                 ex.logWithStackTrace("[in TM_Xml_Database.ctor]");
-                TM_StartUp.Current.TrackingApplication.saveLog();
+                if (TM_StartUp.Current.notNull())                       //will happen when TM_Xml_Database ctor is called by an user with no admin privs
+                    TM_StartUp.Current.TrackingApplication.saveLog();
             }
             
         }
@@ -69,34 +70,43 @@ namespace TeamMentor.CoreLib
             SetupThread = O2Thread.mtaThread(
                 ()=>{
                         lock (this)
-                        {
-                            try
-                            {
-                                ResetDatabase();
-                                if (UsingFileStorage)
-                                {
-                                    SetPaths_UserData();                                                                                                                                    
-                                }
-                                UserData.SetUp();
-                                this.copy_FilesIntoWebRoot();
-                                if (UsingFileStorage)
-                                {                       
-                                    SetPaths_XmlDatabase();            
-                                    this.handle_UserData_GitLibraries();
-                                    loadDataIntoMemory();
-                                    //this.handleDefaultInstallActions();                                    
-                                }
-                                UserData.createDefaultAdminUser();  // make sure the admin user exists and is configured
-                            }
-                            catch (Exception ex)
-                            {
-                                "[TM_Xml_Database] Setup: {0} \n\n".error(ex.Message, ex.StackTrace);
-                            }
+                        {    
+                            Setup_Thread();                            
                             SetupThread = null;
                         }                        
                 });
             return this;
-        } 
+        }
+        public void Setup_Thread()
+        {
+           ResetDatabase();
+           try
+            {
+                if (UsingFileStorage)
+                {
+                    SetPaths_UserData();                                                                                                                                    
+                }
+                if (TMConfig.Current.TMSetup.OnlyLoadUserData)
+                {
+                    "[TM_Xml_Database] TMConfig.Current.TMSetup.OnlyLoadUserData was set".info();
+                    UserData.loadTmUserData();
+                    return;
+                }
+                UserData.SetUp();
+                this.copy_FilesIntoWebRoot();
+                if (UsingFileStorage)
+                {                       
+                    SetPaths_XmlDatabase();            
+                    this.handle_UserData_GitLibraries();
+                    loadDataIntoMemory();                                                       
+                }
+                UserData.createDefaultAdminUser();  // make sure the admin user exists and is configured
+            }
+            catch (Exception ex)
+            {
+                "[TM_Xml_Database] Setup: {0} \n\n".error(ex.Message, ex.StackTrace);
+            } 
+        }
         [Admin] public void             CheckIfServerIsOnline()
         {
             if (SkipServerOnlineCheck)
@@ -119,7 +129,7 @@ namespace TeamMentor.CoreLib
                     userDataPath.createDir(); // make sure it exists
                 }
                 UserData.Path_UserData      = userDataPath;   
-                UserData.Path_UserData_Base = userDataPath;   // we need to keep an copy of this since the Path_UserData might change with git usage
+                UserData.Path_UserData_Base = userDataPath;   // we need to keep an copy of this since the Path_UserData might change with git usage                
             }        
             catch(Exception ex)
             {

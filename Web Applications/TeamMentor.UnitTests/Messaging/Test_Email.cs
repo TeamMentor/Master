@@ -1,6 +1,5 @@
-﻿using NUnit.Framework;
-using O2.DotNetWrappers.ExtensionMethods;
-using O2.DotNetWrappers.Network;
+﻿using FluentSharp.CoreLib;
+using NUnit.Framework;
 using TeamMentor.CoreLib;
 
 namespace TeamMentor.UnitTests.CoreLib
@@ -16,7 +15,10 @@ namespace TeamMentor.UnitTests.CoreLib
         [SetUp]
         public void SetUp()
         {
-            var secretData = tmXmlDatabase.UserData.SecretData;
+            SendEmails.Disable_EmailEngine = false;
+            SendEmails.Send_Emails_As_Sync = true;
+
+            
             sendEmails = new SendEmails();
             Assert.IsNotNull(sendEmails);
             Assert.IsNull(sendEmails.Smtp_Password , "In UnitTests SendEmails SMTP password should not be set");
@@ -27,7 +29,8 @@ namespace TeamMentor.UnitTests.CoreLib
         public void Check_TM_Server_URL()
         {
             var tmServerUrl = SendEmails.TM_Server_URL;
-            Assert.IsNull(tmServerUrl);     //shouldn't be set unless the HttpContext exists
+            Assert.IsNotNull(tmServerUrl);
+            Assert.AreEqual (tmServerUrl,"http://localhost");
         }
 
         [Test]
@@ -52,16 +55,15 @@ namespace TeamMentor.UnitTests.CoreLib
         {
             var emailTo   = "qa@teammentor.net";
             var userName  = "username".add_RandomLetters(5);
-            var tmUser = new TMUser();
-            //adding valid Email
-            tmUser.EMail = emailTo;
-            //adding valid username
-            tmUser.UserName = userName;
+            var password = "!{0}1234".format(5.randomLetters());
+            var tmUser =  userData.newUser(userName, password, emailTo).tmUser(); //new TMUser();
+            
+            Assert.AreEqual(tmUser.UserName, userName);
+            Assert.AreEqual(tmUser.EMail   , emailTo);            
      
             //adding valid serverUrl (email should be sent now)
-            SendEmails.TM_Server_URL = "http://localhost:88/";
-            var lastMessageSent1 = SendEmails.Sent_EmailMessages.second();
-            
+            //SendEmails.TM_Server_URL = "http://localhost:88/";
+            var lastMessageSent1 = SendEmails.Sent_EmailMessages.last();            
             
             Assert.IsTrue (lastMessageSent1.Message.contains("Sent by TeamMentor."));
             Assert.IsTrue(lastMessageSent1.Message.contains("It's a pleasure to confirm that a new TeamMentor"));
@@ -72,11 +74,11 @@ namespace TeamMentor.UnitTests.CoreLib
         [Test]
         public void MessageBody_Is_Correct()
         {
-            const string serverURL = @"https://www.teammentor.net";
+            const string serverUrl = @"https://www.teammentor.net";
             const string username = "tmadmin";
-            var tmMessage = TMConsts.EMAIL_BODY_NEW_USER_WELCOME.format(serverURL, username);
+            var tmMessage = TMConsts.EMAIL_BODY_NEW_USER_WELCOME.format(serverUrl, username);
             var expectedMessage =
-                "Hello,\r\n\r\nIt's a pleasure to confirm that a new TeamMentor account has been created for you and that you'll now be able to access\r\nthe entire set of guidance available in the TM repository.\r\n\r\nTo access the service:\r\n\r\n- Go to {0} and login at the top right-hand corner of the page.\r\n- Use your username : {1}.\r\n\r\nThanks,\r\n\r\n".format(serverURL,username);
+                "Hello,\r\n\r\nIt's a pleasure to confirm that a new TeamMentor account has been created for you and that you'll now be able to access\r\nthe entire set of guidance available in the TM repository.\r\n\r\nTo access the service:\r\n\r\n- Go to {0} and login at the top right-hand corner of the page.\r\n- Use your username : {1}.\r\n\r\nThanks,\r\n\r\n".format(serverUrl,username);
             Assert.IsTrue(tmMessage == expectedMessage);
         }
 

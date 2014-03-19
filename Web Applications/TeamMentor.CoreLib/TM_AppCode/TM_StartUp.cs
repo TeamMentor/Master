@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security;
 using System.Web;
-using O2.DotNetWrappers.ExtensionMethods;
+using FluentSharp.CoreLib;
 
 namespace TeamMentor.CoreLib
 {
@@ -37,7 +37,7 @@ namespace TeamMentor.CoreLib
         public void Application_Start()
         {
             //O2_Utils.showLogViewer_if_LocalHost();                
-                          
+            Logger_Firebase.createAndHook();
             TmXmlDatabase           = new  TM_Xml_Database(true);                                   // Create FileSystem Based database            
             TrackingApplication     = new Tracking_Application(TmXmlDatabase.Path_XmlDatabase);    // Enabled Application Tracking
             TM_REST.SetRouteTable();	// Set REST routes            
@@ -65,6 +65,7 @@ namespace TeamMentor.CoreLib
         }           
         public void Application_BeginRequest()
         {            
+            Requests_Firebase.Current.logRequest();
             ResponseHeaders.addDefaultResponseHeaders();
             new HandleUrlRequest().routeRequestUrl();                                  
         }

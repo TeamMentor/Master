@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using O2.DotNetWrappers.ExtensionMethods;
-using O2.FluentSharp;
+using FluentSharp.CoreLib;
+using FluentSharp.Git.APIs;
 
 namespace TeamMentor.CoreLib
 {
@@ -49,21 +49,11 @@ namespace TeamMentor.CoreLib
 
         public TM_UserData SetUp()
         {
-        /*    return SetUp(true);
-        }
-        public TM_UserData SetUp(bool createDefaultAdminUser)
-        {*/
             try
             {
                 this.setupGitSupport();
                 this.firstScript_Invoke();                
                 SecretData = this.secretData_Load();
-                
-                //this.secretDataScript_Invoke();
-            
-            
-                //if (createDefaultAdminUser)
-                //   this.createDefaultAdminUser();  // make sure the admin user exists and is configured                            
             }
             catch (Exception ex)
             {
