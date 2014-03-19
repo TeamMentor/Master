@@ -65,7 +65,7 @@ namespace TeamMentor.CoreLib
             var users = payload.split("\n");
             var xmlDatabase = TM_Xml_Database.Current;
             var userData = xmlDatabase.UserData;
-
+          
             foreach (var user in users)
             {
                 var rawData = user.split(",");
