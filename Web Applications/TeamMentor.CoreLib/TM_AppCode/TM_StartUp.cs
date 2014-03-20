@@ -8,12 +8,14 @@ namespace TeamMentor.CoreLib
     public class TM_StartUp
     {
         public static TM_StartUp        Current               { get; set; }
+        public static TM_Engine         TMEngine              { get; set; }
         public Tracking_Application     TrackingApplication   { get; set; }
         public TM_Xml_Database          TmXmlDatabase         { get; set; }
 
         public TM_StartUp()
         {
-            Current = this;
+            Current  = this;
+            TMEngine = new TM_Engine();
         }
 
         public void SetupEvents()
@@ -65,10 +67,12 @@ namespace TeamMentor.CoreLib
          //   HttpContextFactory.Response.Redirect("/error");
         }           
         public void Application_BeginRequest()
-        {            
-            Requests_Firebase.Current.logRequest();
-            ResponseHeaders.addDefaultResponseHeaders();
-            new HandleUrlRequest().routeRequestUrl();                                  
+        {
+            TMEngine.performHealthCheck()
+                    .logRequest()
+                    .handleRequest();
+            
+            
         }
     }
 }
