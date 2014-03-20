@@ -11,7 +11,7 @@ webEditorSecretData.config
 *.user
 *.nupkg
 obj
-bin
+
 .idea
 
 #Debug
@@ -26,8 +26,7 @@ Web Applications/TM_Website/bin/*.xml
 /Web Applications/TM_Website/App_Code/TM_Customization_Local.cs
 /Web Applications/TM_Website/gitUserData.config
 /Web Applications/TM_Website/_Customizations
-/Web Applications/TM_Website/bin
+
 *.ncrunchsolution
 *.ncrunchproject
 *.cache
-
