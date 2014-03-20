@@ -1,0 +1,93 @@
+﻿@using System.Collections.Generic
+@using FluentSharp.CoreLib
+@using TeamMentor.CoreLib
+
+@{
+    var baseFolder = TBot_Brain.TBotScriptsFolder();
+    var scripts = TBot_Brain.TBotScriptsFiles();
+    var mappedScripts = new Dictionary<string, List<string>> ();    
+    foreach (var script in scripts)
+    {
+        var title = script.contains(baseFolder) 
+                        ? script.parentFolder().remove(baseFolder).removeFirstChar().replace("\\","-")
+                        : "_Misc";
+        mappedScripts.add(title, script.fileName_WithoutExtension());
+    }
+    mappedScripts.remove("Views");  // don't show the views
+}
+<!-- Begin Body -->
+<div class="container">
+	<div class="row">
+  		<div class="col-md-3" id="leftCol">              	     
+		      <ul class="list-unstyled">
+		          @foreach (var item in mappedScripts)
+                  {
+                    <li class="nav-header">
+                        <a href="#" data-toggle="collapse" data-target="#@item.Key">
+                            <h5>@item.Key<i class="glyphicon glyphicon-chevron-right small"></i></h5>
+                        </a>
+                        <ul class="list-unstyled collapse" id="@item.Key">
+                             @foreach (var command in item.Value)
+                            {
+                                <li class="active"> 
+                                    <a href="/rest/tbot/run/@command">                                        
+                                        @command.replace("_"," ")
+                                </a></li>
+                            }   
+                        </ul>
+                    </li>
+                }                 
+		      </ul>
+           
+
+      		</div>  
+      		<div class="col-md-9">
+              	<h2 id="sec0">Welcome to TBot</h2>
+                This is the main control panel for TeamMentor, where you will be able to manage the current instance.
+              	
+            
+           <!--
+              	<h2 id="sec1">Real Time View</h2>
+              	<p>
+                    Here is what is currently happening on this server
+              	</p>
+              	<div class="row">
+                  <div class="col-md-6">
+                    <div class="panel panel-default">
+                      <div class="panel-heading"><h3>Requests.</h3></div>
+                      <div class="panel-body">.. latest 15x requests view goes here...
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="panel panel-default">
+                      <div class="panel-heading"><h3>Debug logs</h3></div>
+                      <div class="panel-body">.. latest 15x debug messages goes here...
+                      </div>
+                    </div>
+                  </div>  
+              	</div>
+              
+              	-->
+              	
+      		</div> 
+  	</div>
+</div>
+
+@*
+<table class="table"> 
+    @foreach (var item in mappedScripts)
+    {
+        <tr>
+            <td><b>@item.Key</b></td>        
+            @foreach (var command in item.Value)
+            {
+                <td><a href="/rest/tbot/run/@command">@command.replace("_"," ")</a></td>
+            }                               
+        </tr>
+        }
+</table>
+*@
+
+
+
