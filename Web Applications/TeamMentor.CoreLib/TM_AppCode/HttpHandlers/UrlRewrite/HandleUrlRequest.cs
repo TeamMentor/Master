@@ -36,7 +36,7 @@ namespace TeamMentor.CoreLib
                             .add("error", "/Html_Pages/Gui/Pages/errorPage.html");
 
             Response_Redirects.add("csharprepl" , "/html_pages/ControlPanel/CSharp_REPL/Repl.html")
-                             // .add("tbot"       , "/rest/tbot/run/Commands")
+                              .add("tbot"       , "/rest/tbot/run/Commands")
                               .add("asmx"       , "/aspx_pages/TM_WebServices.asmx")
                               .add("wcf"        , "/rest/help")
                               .add("home"       , "/")

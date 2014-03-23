@@ -21,13 +21,13 @@ namespace TeamMentor.CoreLib
 
         static SendEmails()
         {
-            Sent_EmailMessages = new List<EmailMessage>();
-            mapTMServerUrl();           
+            Sent_EmailMessages = new List<EmailMessage>();                     
         }
 
 
         public SendEmails()
         {
+            mapTMServerUrl();  
             From = TMConfig.Current.TMSecurity.Default_AdminEmail;
             if (TM_Xml_Database.Current.notNull())
             { 

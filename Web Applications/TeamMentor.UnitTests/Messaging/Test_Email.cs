@@ -29,7 +29,7 @@ namespace TeamMentor.UnitTests.CoreLib
         public void Check_TM_Server_URL()
         {
             var tmServerUrl = SendEmails.TM_Server_URL;
-            Assert.IsNotNull(tmServerUrl);
+            //Assert.IsNotNull(tmServerUrl);
             Assert.AreEqual (tmServerUrl,"http://localhost");
         }
 

@@ -65,22 +65,22 @@
     <form name="myForm" class="form-horizontal" role="form" ng-submit="update(userData)">      <!-- change this form to be a directive-->        
 
         <div class="form-group">
-            <label class="col-sm-1 control-label">User ID</label>
-            <div class="col-sm-2">
+            <label class="col-sm-2 control-label">User ID</label>
+            <div class="col-sm-4">
                 <p class="form-control-static">{{userData.UserId}}</p>
             </div>
         </div>
        
         <div class="form-group">
-            <label  class="col-sm-1 control-label">UserName</label>
-            <div class="col-sm-3">
+            <label  class="col-sm-2 control-label">UserName</label>
+            <div class="col-sm-4">
                 <input class="form-control" type="text" ng-model="userData.UserName" required ng-disabled="true"/>
             </div>
         </div>
 
         <div class="form-group">
-            <label  class="col-sm-1 control-label">Email</label>
-            <div class="col-sm-3">
+            <label  class="col-sm-2 control-label">Email</label>
+            <div class="col-sm-4">
                 <input class="form-control" type="email" id="txtEmail" name="txtEmail" ng-model="userData.Email" required/>
                 <span style="color:red;font-weight:bold" ng-show="myForm.txtEmail.$error.required">This field is required!</span>
                 <span style="color:red;font-weight:bold" ng-show="myForm.txtEmail.$error.email">Email is invalid!</span>
@@ -88,48 +88,48 @@
         </div>
         
         <div class="form-group">
-            <label class="col-sm-1 control-label">FirstName</label>
-            <div class="col-sm-3">
+            <label class="col-sm-2 control-label">FirstName</label>
+            <div class="col-sm-4">
                 <input class="form-control"      ng-model="userData.FirstName"/>
             </div>
         </div>
 
         <div class="form-group">
-            <label class="col-sm-1 control-label">LastName</label>
-            <div class="col-sm-3">
+            <label class="col-sm-2 control-label">LastName</label>
+            <div class="col-sm-4">
                 <input class="form-control" ng-model="userData.LastName"/>
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-1 control-label">Company</label>
-            <div class="col-sm-3">
+            <label class="col-sm-2 control-label">Company</label>
+            <div class="col-sm-4">
                 <input class="form-control" ng-model="userData.Company"/>
             </div>
         </div>
 
         <div class="form-group">
-            <label class="col-sm-1 control-label">Job/Title</label>
-            <div class="col-sm-3">
+            <label class="col-sm-2 control-label">Job/Title</label>
+            <div class="col-sm-4">
                 <input class="form-control" ng-model="userData.Title"/>
             </div>
         </div>
 
         <div class="form-group">
-            <label class="col-sm-1 control-label">Country</label>
-            <div class="col-sm-3">
+            <label class="col-sm-2 control-label">Country</label>
+            <div class="col-sm-4">
                 <input class="form-control" ng-model="userData.Country"/>
             </div>
         </div>
             
         <div class="form-group">
-            <label class="col-sm-1 control-label">State</label>
-            <div class="col-sm-3">
+            <label class="col-sm-2 control-label">State</label>
+            <div class="col-sm-4">
                 <input class="form-control" ng-model="userData.State"/>
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-1 control-label">Expires at:</label>
-            <div class="col-sm-3">
+            <label class="col-sm-2 control-label">Expires at:</label>
+            <div class="col-sm-4">
                 <div class='input-group date' id='expirationDate' data-date-format='MMM/DD/YYYY'>
                     <input type='text' class="form-control" readonly/>
                     <span class="input-group-addon">
@@ -140,7 +140,7 @@
         </div>       
         
         <div class="form-group">
-            <div class="col-sm-offset-1 col-sm-3">
+            <div class="col-sm-offset-2 col-sm-4">
                 <div class="checkbox">
                     <label>
                         <input type="checkbox" ng-model="userData.PasswordExpired"/> Password Expired
@@ -150,7 +150,7 @@
         </div>
 
         <div class="form-group">
-            <div class="col-sm-offset-1 col-sm-3">
+            <div class="col-sm-offset-2 col-sm-4">
                 <div class="checkbox">
                     <label>
                         <input type="checkbox" ng-model="userData.UserEnabled"/> User Enabled
@@ -160,7 +160,7 @@
         </div>
         
         <div class="form-group">
-            <div class="col-sm-offset-1 col-sm-3">
+            <div class="col-sm-offset-2 col-sm-4">
                 <div class="checkbox">                    
                         <button class="btn btn-primary" ng-disabled="myForm.$invalid" >
                             Save

@@ -33,3 +33,5 @@ Web Applications/TM_Website/bin/*.xml
 *.ncrunchsolution
 *.ncrunchproject
 *.cache
+
+/Web Applications/_NCrunch_TM_Website/StoredText

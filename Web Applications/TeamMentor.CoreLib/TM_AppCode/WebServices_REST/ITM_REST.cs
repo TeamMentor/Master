@@ -83,9 +83,11 @@ namespace TeamMentor.CoreLib
 		//[OperationContract] [WebGet(UriTemplate = "/users/activites"		)]  Stream		users_Activities();
 
         //TBot
-        [OperationContract] [WebGet(UriTemplate = "/tbot"	        )]      Stream		TBot_Show();
-        [OperationContract] [WebGet(UriTemplate = "/tbot/list"      )]	    Stream		TBot_List();
-        [OperationContract] [WebGet(UriTemplate = "/tbot/run/{what}")]	    Stream		TBot_Run (string what);
+        
+        [OperationContract] [WebGet(UriTemplate = "/tbot/list"         )]	Stream		TBot_List  ();
+        [OperationContract] [WebGet(UriTemplate = "/tbot/run/{what}"   )]	Stream		TBot_Run   (string what);
+        [OperationContract] [WebGet(UriTemplate = "/tbot/render/{what}")]	Stream		TBot_Render(string what);
+        [OperationContract] [WebGet(UriTemplate = "/tbot/json/{what}"  )]	Stream		TBot_Json  (string what);
         
         //html page redirects
 //        [OperationContract][WebGet   (UriTemplate = "/redirect/afterLoginToken/{username}/{loginToken}" )]	void Redirect_After_Login_Using_Token(string username, string loginToken);
