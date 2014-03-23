@@ -607,6 +607,15 @@
     <Content Include="TBot\Tests\hello.cshtml" />
     <Content Include="TBot\Tests\theTime.cshtml" />
     <Content Include="TBot\TBotMain.html" />
+    <Content Include="TBot_v2\app.js" />
+    <Content Include="TBot_v2\lib\bootstrap\css\bootstrap-theme.min.css" />
+    <Content Include="TBot_v2\lib\bootstrap\css\bootstrap.min.css" />
+    <Content Include="TBot_v2\lib\bootstrap\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="TBot_v2\lib\bootstrap\js\bootstrap.min.js" />
+    <Content Include="TBot_v2\lib\angular\angular.js" />
+    <Content Include="TBot_v2\lib\angular\angular.min.js" />
+    <Content Include="TBot_v2\default.htm" />
+    <Content Include="TBot_v2\users.htm" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -699,9 +708,17 @@
     <Content Include="TBot\Users\User_Stats\Users_Mapped_by_Email.cshtml" />
     <Content Include="TBot\Admin\SSO_Token.cshtml" />
     <Content Include="TBot\Users\SSO_Token.cshtml" />
+    <Content Include="TBot\Views\admin\Commands.cshtml" />
+    <Content Include="TBot\Views\json\json_Stats.cshtml" />
+    <None Include="TBot_v2\lib\bootstrap\css\bootstrap-theme.css.map" />
+    <None Include="TBot_v2\lib\bootstrap\css\bootstrap.css.map" />
+    <None Include="TBot_v2\lib\bootstrap\fonts\glyphicons-halflings-regular.eot" />
+    <None Include="TBot_v2\lib\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
+    <None Include="TBot_v2\lib\bootstrap\fonts\glyphicons-halflings-regular.woff" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />
+    <Folder Include="TBot_v2\css\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TeamMentor.CoreLib\TeamMentor.CoreLib.csproj">
