@@ -25,6 +25,7 @@ namespace TeamMentor.CoreLib
         
         [XmlElement]   public UserSecretData        SecretData	    { get; set; }
         [XmlElement]   public List<UserSession>     Sessions        { get; set; }
+        [XmlElement]   public List<AuthToken>       AuthTokens      { get; set; }
         [XmlElement]   public UserAccountStatus     AccountStatus	{ get; set; }
         [XmlElement]   public UserStats             Stats	        { get; set; }
         [XmlElement]   public List<UserActivity>    UserActivities  { get; set; }
@@ -37,6 +38,7 @@ namespace TeamMentor.CoreLib
                                         PasswordResetToken  = null                  // default to Null
                                     };
             Sessions        = new List<UserSession>();
+            AuthTokens      = new List<AuthToken>();
             UserActivities  = new List<UserActivity>();
             AccountStatus   = new UserAccountStatus
                                     {
@@ -54,15 +56,21 @@ namespace TeamMentor.CoreLib
     public class UserSecretData
     {
         [XmlAttribute]	public string   PasswordHash		{ get; set; }        
-        [XmlAttribute]	public String   PasswordResetToken	{ get; set; }
+        [XmlAttribute]	public string   PasswordResetToken	{ get; set; }
         [XmlAttribute]	public string   DecryptionKey       { get; set; }                       
         [XmlAttribute]  public string	CSRF_Token          { get; set; }        
     }
     public class UserSession
     {
-        [XmlAttribute]	public Guid      SessionID		    { get; set; }
-        [XmlAttribute]	public DateTime  CreationDate		{ get; set; }
-        [XmlAttribute]	public string    IpAddress		    { get; set; }
+        [XmlAttribute]	public Guid     SessionID		    { get; set; }
+        [XmlAttribute]	public DateTime CreationDate		{ get; set; }
+        [XmlAttribute]	public string   IpAddress		    { get; set; }
+        [XmlAttribute]	public string   LoginMethod		    { get; set; }
+    }
+    public class AuthToken
+    {
+        [XmlAttribute]	public Guid      Token		        { get; set; }
+        [XmlAttribute]	public DateTime  CreationDate		{ get; set; }        
     }
     public class UserAccountStatus
     {

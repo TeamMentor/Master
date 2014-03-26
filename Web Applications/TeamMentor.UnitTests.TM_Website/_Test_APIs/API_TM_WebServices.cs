@@ -1,0 +1,1123 @@
+// This file is part of the OWASP O2 Platform (http://www.owasp.org/index.php/OWASP_O2_Platform) and is released under the Apache 2.0 License (http://www.apache.org/licenses/LICENSE-2.0)
+using System;
+using System.Linq;
+using System.Xml.Serialization;
+using System.Collections.Generic;
+using FluentSharp.CoreLib;
+using FluentSharp.CoreLib.API;
+using FluentSharp.REPL;
+using FluentSharp.REPL.Controls;
+using FluentSharp.WinForms;
+using FluentSharp.WinForms.Controls;
+using TeamMentor.UnitTests.TM_Website.WebServices;
+
+
+namespace TeamMentor.UnitTests.TM_Website
+{
+    public class API_TM_WebServices 
+    {    
+    	public Uri 				WebSite_Url 	{ get; set; }    	
+    	public string 			WebSite_Path 	{ get; set; }   
+    	public Guid				SessionId		{ get; set; }
+    	public bool 			StopRequests	{ get; set; }
+    	public bool 			LogRequests		{ get; set; }
+    	public TM_GUI_Objects	Raw_GuiObjects  { get; set; }
+    	public List<Library_V3>	Raw_Libraries   { get; set; }
+    	
+    	public List<Library_WS> Libraries		{ get; set; }
+    	
+    	
+    	public TM_WebServices_Configured 	webServices;
+    	
+    	public static string 	DEFAULT_TM_SITE	 = "http://localhost.:3187";    	
+    	    	
+    	public API_TM_WebServices() : this(DEFAULT_TM_SITE)
+    	{
+    	}
+    	
+    	public API_TM_WebServices(string ip, int port) : this ("http://{0}:{1}".format(ip,port))
+    	{    		
+    	}
+    	
+    	public API_TM_WebServices(string websiteUrl)
+    	{    	
+    		this.Libraries = new List<Library_WS>();
+    		this.set_TM_Server(websiteUrl);
+    	}		
+    	
+/*    	Action setAdminPriviledges = 
+	()=>{
+			"setAdminPriviledges".info();
+			UserGroup.Admin.setThreadPrincipalWithRoles();				
+		};		*/				
+    }
+    
+    public class Base_Structure
+    {
+    	public string 						Name	 { get; set; }
+		public Guid 						Id		 { get; set; }
+		
+		public override string ToString()
+		{
+			return this.Name;
+		}
+    }
+    
+    public class Library_WS : Base_Structure
+	{
+		public API_TM_WebServices 	tmWebServices  ;
+		public List<View_WS>	    Views	 { get; set; }
+		public List<Folder_WS>		Folders	 { get; set; }
+		public List<Article_WS>		Articles_Not_In_Views { get; set; }
+		
+		public Library_WS(API_TM_WebServices _tmWebServices , string name, Guid id)
+		{
+			this.tmWebServices 	= _tmWebServices;
+			this.Name 	 		= name;
+			this.Id				= id;
+			this.Views   		= new List<View_WS>();
+			this.Folders 		= new List<Folder_WS>();
+			Articles_Not_In_Views = new List<Article_WS>();
+		}
+	}
+	
+	public class Folder_WS : Base_Structure
+	{
+		public Library_WS 			Library	 { get; set; }		
+		public List<View_WS>		Views	 { get; set; }
+				
+		public Folder_WS()
+		{
+			this.Views = new List<View_WS>();
+		}
+		
+		public Folder_WS(Library_WS library, string name, Guid id) : this()
+		{	
+			this.Library = library;
+			this.Name = name;
+			this.Id = id;
+		}
+		
+	}
+	
+	public class View_WS : Base_Structure
+	{	
+		public Library_WS		Library	 { get; set; }	
+		public Folder_WS		Folder	 { get; set; }				
+		public List<Article_WS> Articles { get; set; }
+		
+		public View_WS()
+		{
+			Articles = new List<Article_WS>();
+		}
+		
+		public View_WS(string name, Guid id) : this()
+		{				
+			this.Name = name;
+			this.Id = id;
+		}
+	}
+	
+	public class Article_WS : Base_Structure
+	{			
+		[XmlIgnore] 	public Library_WS		Library	    { get; set; }		
+		[XmlIgnore] 	public View_WS			View	    { get; set; }		
+		
+		[XmlAttribute] 	public string 			Title	    { get; set; }
+		[XmlAttribute]	public string 			Technology  { get; set; }
+		[XmlAttribute]	public string 			Phase 	    { get; set; }		
+		[XmlAttribute]	public string 			Type 	    { get; set; }		
+		[XmlAttribute]	public string 			Category    { get; set; }				
+		
+		//[XmlAttribute]	public string 			ContentType { get; set; }				
+		[XmlElement]	public string 			Content     { get; set; }
+		
+		public Article_WS()
+		{
+		}
+		
+		public Article_WS(Guid id, string  title, string technology, string  phase, string  type, string  category)  
+		{						
+			this.Id			= id;
+			this.Title 		= title;
+			this.Technology = technology;
+			this.Phase 		= phase;
+			this.Type 		= type;			
+			this.Category 	= category;
+		
+		}
+		
+		public override string ToString()
+		{
+			return this.Title;
+		}
+	}    
+    
+    //************** EXTENSION METHODS
+    
+    
+    public static class API_TeamMentor_WebServices_ExtensionMethods_Libraries
+    {
+    	public static API_TM_WebServices connectToServer(this string serverUrl, bool login, string username, string password)
+    	{
+			var teamMentor = new API_TM_WebServices(serverUrl);
+			if (login)
+			{
+				teamMentor.login(username, password);
+				if (teamMentor.loggedIn()) 
+					"[API_TM_WebServices] Connected and logged in OK to to TM server".info();
+				else
+					"[API_TM_WebServices] Failed to connect or login to server".error();
+			}
+			return teamMentor;
+		 }
+
+    	public static API_TM_WebServices set_TM_Server(this API_TM_WebServices tmWebServices, string websiteUrl)
+    	{
+            tmWebServices.WebSite_Url = websiteUrl.uri();
+            //Reflection_ExtensionMethods_Properties.prop(tmWebServices, "WebSite_Url", websiteUrl.uri());
+    		tmWebServices.webServices  	 = new TM_WebServices_Configured(tmWebServices.WebSite_Url);
+    		return tmWebServices;
+    	}
+    	
+    	public static API_TM_WebServices load_LibraryData(this API_TM_WebServices tmWebServices)
+    	{
+    		"***** Loading Library Data for server: {0}".info(tmWebServices.WebSite_Url);    		    		
+    		var timer = new O2Timer("WebServices GuiObjects: ").start();
+			tmWebServices.Raw_GuiObjects = tmWebServices.webServices.GetGUIObjects();
+			tmWebServices.Raw_Libraries = tmWebServices.webServices.GetFolderStructure_Libraries().toList();
+			timer.Description += " with {1} libraries,  {1} Articles with {2} unique strings".format(
+									tmWebServices.Raw_Libraries.size(),
+									tmWebServices.Raw_GuiObjects.GuidanceItemsMappings.size() , 
+									tmWebServices.Raw_GuiObjects.UniqueStrings.size());			
+			timer.stop();
+			return tmWebServices.load_LibraryData(tmWebServices.Raw_GuiObjects ,tmWebServices.Raw_Libraries);
+		}
+		
+		public static API_TM_WebServices load_LibraryData(this API_TM_WebServices tmWebServices, TM_GUI_Objects guiObjects, List<Library_V3> libraries)
+		{			
+				
+			var articleMappings = (from mapping in guiObjects.GuidanceItemsMappings
+								   let items 		= mapping.split(",")
+								   let _guid 		= guiObjects.UniqueStrings[items[0].toInt()].guid()
+								   let _title 		= guiObjects.UniqueStrings[items[2].toInt()]
+								   let _technology 	= guiObjects.UniqueStrings[items[3].toInt()] 					   
+								   let _phase 		= guiObjects.UniqueStrings[items[4].toInt()]
+								   let _type 		= guiObjects.UniqueStrings[items[5].toInt()]
+								   let _category 	= guiObjects.UniqueStrings[items[6].toInt()]
+								   select new {  guid = _guid, title = _title, technology = _technology, 
+								   			  	 type = _type, phase = _phase, category = _category } ) .toList()
+								   .ToDictionary((item)=>item.guid, (item)=>item);
+								   
+			Func<Guid, Article_WS> getArticleWS = 
+				(guid)=>{
+							if (articleMappings.hasKey(guid))
+							{
+								var articleMapping = articleMappings[guid];			
+								var article_WS = new Article_WS(guid,
+																articleMapping.title.htmlDecode(),
+																articleMapping.technology.htmlDecode(),
+																articleMapping.phase.htmlDecode(), 
+																articleMapping.type.htmlDecode(), 
+																articleMapping.category.htmlDecode());
+								return 	article_WS;	
+							}
+							"[API_TM_WebServices] in getArticleWS, there was no article with GUID: {0}".error(guid);
+							return null;
+						 };
+			"Gui Objects Mappings Done: {0}".info(articleMappings.size());			
+			tmWebServices.Libraries.clear();
+			try
+			{
+				foreach(var library in libraries)
+				{
+					"Mapping Library: {0}".debug(library.name);
+					var libraryWS = new Library_WS(tmWebServices, library.name, library.libraryId);
+					//add articles in views
+					foreach(var articleId in library.guidanceItems) 
+					{ 
+						var article_WS = getArticleWS(articleId);
+						if (article_WS.notNull())
+						{
+							article_WS.Library	= libraryWS;
+							libraryWS.Articles_Not_In_Views.Add(article_WS);
+						}
+					}
+					//add folders in library
+					foreach(var subFolder in library.subFolders)
+					{
+						var folderWS = new Folder_WS(libraryWS, subFolder.name, subFolder.folderId);
+						libraryWS.Folders.Add(folderWS);
+						//add views in folders	
+						foreach(var view in subFolder.views)
+						{
+							var viewWS = new View_WS(view.caption, view.viewId);
+							viewWS.Library = folderWS.Library;
+							viewWS.Folder = folderWS;
+							folderWS.Views.Add(viewWS);
+							foreach(var articleId in view.guidanceItems) 
+							{ 
+								var article_WS = getArticleWS(articleId);
+								if (article_WS.notNull())
+								{
+									article_WS.Library	= viewWS.Library;
+									article_WS.View 	= viewWS;
+									viewWS.Articles.Add(article_WS);
+								}
+							}
+						}
+					}
+					//add views in library
+					foreach(var view in library.views)
+					{
+						var viewWS = new View_WS(view.caption, view.viewId);
+						viewWS.Library = libraryWS;
+						viewWS.Library = libraryWS;
+						libraryWS.Views.Add(viewWS);
+						foreach(var articleId in view.guidanceItems) 
+						{ 
+							var article_WS = getArticleWS(articleId);
+							if (article_WS.notNull())
+							{
+								article_WS.Library	= viewWS.Library;
+								article_WS.View 	= viewWS;
+								viewWS.Articles.Add(article_WS);
+							}
+						}
+					}
+					tmWebServices.Libraries.Add(libraryWS);
+				}
+				"Mapping Libraries Done".info();			
+			}
+			catch(Exception ex)
+			{
+				ex.logWithStackTrace("[API_TM_WebServices] in load_LibraryData");
+			}
+			return tmWebServices;
+    	}    	    	    	
+    }
+    
+        
+    public static class API_TeamMentor_WebServices_ExtensionMethods
+    {   
+    	public static List<Library_WS> libraries(this API_TM_WebServices tmWebServices)
+    	{
+    		return tmWebServices.Libraries;
+    	}
+    	
+    	public static Library_WS library(this API_TM_WebServices tmWebServices , string libraryName)
+    	{    		
+    		//var ws_library = tmWebServices.webServices.GetLibraryByName(libraryName);
+    		var libraryWs = (from library in tmWebServices.Libraries
+    						  where library.Name == libraryName
+    						  select library).first();
+    		if (libraryWs.notNull())				
+    			return libraryWs;
+    		
+			"[TeamMentor] add Library: {0}".info(libraryName);
+			tmWebServices.webServices.CreateLibrary(new Library { caption = libraryName } );
+			var ws_library = tmWebServices.webServices.GetLibraryByName(libraryName);    		
+    		return new Library_WS(tmWebServices,ws_library.caption, ws_library.id.guid());
+    	}
+    	
+    	public static Library library(this API_TM_WebServices tmWebServices , Guid libraryId)
+    	{
+    		return tmWebServices.webServices.GetLibraryById(libraryId);
+    	}    	    	
+    }
+            
+    public static class API_TeamMentor_WebServices_ExtensionMethods_Folders
+    {
+    	public static List<Folder_WS> folders(this Library_WS library)
+    	{
+    		return library.Folders;
+//    		return library.tmWebServices.webServices.GetFolders(library.Id).toList()
+//    										        .folders(library);
+    	} 
+    	
+/*    	public static List<Folder_WS> folders(this List<Folder_V3> foldersV3 , Library_WS library)
+    	{
+    		return (from folderV3 in foldersV3
+    				select folderV3.folder(library) ).toList();
+    	}
+    	
+    	public static Folder_WS folder(this Folder_V3 folderV3 , Library_WS library)
+    	{
+    		var folder = new Folder_WS()
+		    					{
+		    						Library = library,
+		    						Name 	= folderV3.name,
+		    						Id 		= folderV3.folderId
+		    					};
+			foreach(var view in folderV3.views)
+				folder.Views.Add(library.tmWebServices.webServices.GetViewById(view.viewId.str())
+																  .view(library, folder));
+			return folder;
+    	}*/    	
+    	
+    	public static Folder_WS folder(this Library_WS library, string name)
+    	{    		
+    		var folder = (from   _folder in library.folders()
+    					  where  _folder.Name == name
+    					  select _folder).toList().first();
+			if (folder.notNull())
+				return folder;
+			
+			return library.add_Folder(name);
+    	}
+    	
+    }    
+    
+    public static class API_TeamMentor_WebServices_ExtensionMethods_Views
+    {    	
+    	public static List<View_WS> views(this Library_WS library)
+    	{
+    		return library.Views;
+//			return library.tmWebServices.webServices.GetViewsInLibraryRoot(library.Id.str()).toList()
+//    										        .views(library); 	    	
+    	}    	
+    
+    	public static List<View_WS> views(this Folder_WS folder)
+    	{
+    		return folder.Views;
+    	}
+    
+    	public static View_WS view(this Library_WS library, string name)
+    	{    		
+    		var view = (from   _view in library.views()
+    					where  _view.Name == name
+    					select _view).toList().first();
+    		if (view.notNull())    		
+    			return view;
+    		return library.add_View(name);
+    	}
+    	
+    	public static View_WS view(this Folder_WS folder, string name)
+    	{    		
+    		var view = (from   _view in folder.views()
+    					where  _view.Name == name
+    					select _view).toList().first();
+    		if (view.notNull())    		
+    			return view;
+    		return folder.add_View(name);
+    	}
+    	
+    	//convert View_V3 -> View_WS	
+    	
+    	public static View_WS view(this View_V3 viewV3, Library_WS library, Folder_WS folder)
+    	{
+    		var view = new View_WS()
+    						{
+    							Name 	= viewV3.caption,
+    							Id   	= viewV3.viewId,    							
+    							Folder  = folder,
+    							Library = library    							
+    						};
+			foreach(var guid in viewV3.guidanceItems)		
+				view.Articles.Add(guid.article(library, view));
+			return view;
+    	}
+    	
+    	public static List<View_WS> views(this List<View_V3> viewsV3, Library_WS library, Folder_WS folder = null)
+    	{
+    		return (from viewV3 in viewsV3
+    			    select viewV3.view(library,folder)).toList();
+    	}
+    }  
+    
+    public static class API_TeamMentor_WebServices_ExtensionMethods_Articles
+    {   
+    	public static List<Article_WS> distinct_byID(this List<Article_WS> articles)
+    	{
+    		return articles.GroupBy((article)=> article.Id)
+	          			   .Select((g)=>g.First()).toList();
+    	}
+    	
+    	public static Article_WS article(this API_TM_WebServices tmWebServices, Guid id)
+    	{
+    		return (from library  in tmWebServices.libraries()
+				    from article  in library.articles()
+				    where article.Id == id
+				    select article).first();				   				   
+    	}
+    	
+    	public static List<Article_WS> articles(this API_TM_WebServices tmWebServices)
+    	{
+    		return (from library  in tmWebServices.libraries()
+				    from article  in library.articles()
+				    select article).toList()
+				   				   .distinct_byID();  
+    	}
+    	
+    	public static Dictionary<Guid,Article_WS> articles_IndexedBy_Id(this API_TM_WebServices tmWebServices)
+    	{
+    		return tmWebServices.articles().ToDictionary<Article_WS,Guid>((article)=> article.Id);
+    	}
+    	
+    	public static List<Article_WS> articles(this Library_WS library)
+    	{	
+    		try
+    		{
+	    		var articlesInFolders = (from folder in library.Folders
+					    				 from article in folder.articles()
+					    				 select article).toList();
+				var articlesInViews = (from view in library.Views
+					    				 from article in view.articles()
+					    				 select article).toList();			
+				var onlyOnRoot = library.Articles_Not_In_Views;	    				 
+				var allArticles = new List<Article_WS>();		    				 
+				allArticles.add(articlesInFolders)
+						   .add(articlesInViews)
+	    				   .add(onlyOnRoot);
+	    		allArticles = allArticles.distinct_byID();	   
+	/*			@"Library articles:    				   
+					in folders: {0}
+					in views: {1}
+					only on root: {2}
+					total: {3}".debug(articlesInFolders.size(), articlesInViews.size(), onlyOnRoot.size(), allArticles.size());*/
+	    		return allArticles;
+	    	}
+	    	catch(Exception ex)
+	    	{
+	    		ex.log("in Library_WS.articles, for library: {0}".format(library.Name));
+	    		return new List<Article_WS>();
+	    	}
+    	}
+    	
+    	public static List<Article_WS> articles(this View_WS view)
+    	{
+    		return view.Articles ?? new List<Article_WS>();
+    	}
+    	
+    	public static List<Article_WS> articles(this Folder_WS folder)
+    	{	
+    		var allArticles = (from view in folder.Views
+    						   from article in view.Articles
+    						   select article).toList()
+    						   				  .distinct_byID();    		
+    		return allArticles;
+    	}
+    	    	    	
+    	public static Article_WS article(this View_WS view, string name)
+    	{
+    		try
+    		{
+    			var article = ( from   _article in view.articles()
+    							where  _article.Name == name
+    							select _article).toList().first();
+    			if (article.notNull())    		
+    				return article;
+    			return view.add_Article(name, "");
+    		}
+    		catch(Exception ex)
+    		{
+    			"[Article_WS] {0}".error(ex.Message);
+    			return null;
+    		}
+    	}
+    	    	    	
+    	public static Article_WS article(this Guid guid, Library_WS library)
+    	{
+    		return guid.article(library, null);
+    	}
+    	
+    	public static Article_WS article(this Guid guid, Library_WS library, View_WS view)
+    	{    		    		
+    		if (library.tmWebServices.StopRequests)
+    			return null;
+    			
+//    		if (library.tmWebServices.LogRequests)
+    			"fetching article with guid: {0}".info(guid);
+    		var teamMentor_Article = library.tmWebServices.webServices.GetGuidanceItemById(guid);    		
+    		return teamMentor_Article.article(view);
+    	}
+    	
+    	public static Article_WS article(this TeamMentor_Article teamMentor_Article, View_WS view)
+    	{    		
+			if (teamMentor_Article.isNull())
+				return null;
+    		var article = new Article_WS()
+	    						{
+	    							Name 		= teamMentor_Article.Metadata.Title,
+	    							Title 		= teamMentor_Article.Metadata.Title,
+	    							Id   		= teamMentor_Article.Metadata.Id,	    								    							
+	    							View  		= view,
+	    								    							
+	    							Type 	    = teamMentor_Article.Metadata.Type,
+	    							Phase 	    = teamMentor_Article.Metadata.Phase,
+	    							Category    = teamMentor_Article.Metadata.Category,
+	    							Technology  = teamMentor_Article.Metadata.Technology,
+	    							
+	    							//ContentType = teamMentor_Article.Content.DataType,
+	    							Content     = teamMentor_Article.Content.Data.Value
+	    							
+	    						};
+			return article;
+    	}    	
+    	
+    	/*public static GuidanceItem_V3 guidanceItemV3(this Article_WS article)
+    	{    		
+    		
+    		var guidanceItemV3 = new GuidanceItem_V3()
+		    						{
+		    							title = article.Title,
+		    							guidanceItemId = article.Id,		    							
+		    									    							
+		    							rule_Type 	= article.Type,
+		    							phase 		= article.Phase,
+		    							category 	= article.Category,
+		    							technology 	= article.Technology,
+		    							
+		    							htmlContent 	= article.Content		    							
+		    						}; 
+			return guidanceItemV3;
+    	}*/
+    	
+    	public static List<Guid> ids(this List<Article_WS> articles)
+    	{
+    		return articles.Select((article)=>article.Id).toList();
+    	}
+    	
+    	public static string content(this Article_WS article)
+    	{    		
+    		try
+    		{    			
+    			if (article.Content.notValid())
+    			{
+	    			if(article.Library.tmWebServices.StopRequests)
+	    			{
+	    				"StopRequests is set, so skipping fetching content for article: {0}".error(article.Title);
+	    				return article.Content;
+	    			}
+    				"Fetching content for article: {0}".info(article.Title);
+    				article.Content = article.Library.tmWebServices.webServices.GetGuidanceItemHtml(article.Id).removeWikiTextTags();    		
+    			}
+    		}
+    		catch(Exception ex)
+    		{
+    			"[Article_WS] get content: {0}".error(ex.Message);
+    		}
+    		return article.Content;
+    	}
+    	
+    	public static List<string> refreshContents(this List<Article_WS> articles)
+		{
+    	    if (articles.notNull() && articles.size() > 0)
+    	    {	
+	    		try
+	    		{    	
+	    			var o2Timer = new O2Timer("Fetched content for {0} articles: {0}".format(articles.size())).start();
+	    			"Fetching content for {0} articles: {0}".info(articles.size());
+		    		var ids = articles.ids();
+		    		var library = articles.first().Library;
+	    			var articlesHtml = library.tmWebServices.webServices.GetGuidanceItemsHtml(ids.ToArray());	    			
+	    			if (articlesHtml.size() != articles.size())
+	    				"[Article_WS] in refreshContents, articesHtml.size() != article.size()".error();
+	    			else
+	    				for(int i=0 ; i < articlesHtml.size() ; i++)
+	    					articles[i].Content = articlesHtml[i].removeWikiTextTags();
+	    				
+	    			o2Timer.stop();
+	    		}
+	    		catch(Exception ex)
+	    		{
+	    			ex.log("[Article_WS] in refreshContents for multiple articles");
+	    		}
+	    	}
+    		return new List<string>();
+    	}
+    	
+    	public static Article_WS content(this Article_WS article, string newContent)
+    	{
+    		article.Content = newContent;
+    		return article.save();
+    		//var guidanceItemV3 = article.guidanceItemV3();
+    	//	article.Library.tmWebServices.webServices.UpdateGuidanceItem(guidanceItemV3);
+    		//return article;
+    	}
+    	
+    	public static Article_WS save(this Article_WS article)
+    	{
+    		article.content();  //ensure the content is loaded for this article
+    		//"save Article_WS".info();
+    		var teamMentor_Article =  article.Library.tmWebServices.webServices.GetGuidanceItemById(article.Id); 
+    		
+    		teamMentor_Article.Metadata.Title 			= article.Title;
+			teamMentor_Article.Metadata.Id				= article.Id;
+		    									    							
+			teamMentor_Article.Metadata.Type 			= article.Type;
+			teamMentor_Article.Metadata.Phase 			= article.Phase;
+			teamMentor_Article.Metadata.Category 		= article.Category;
+			teamMentor_Article.Metadata.Technology 		= article.Technology;
+		    							
+			teamMentor_Article.Content.Data.Value 		= article.Content;
+			
+			article.Library.tmWebServices.webServices.UpdateGuidanceItem(teamMentor_Article);
+    		return article;
+    	}
+    	
+    	public static string removeWikiTextTags(this string wikiText)
+    	{
+    		if (wikiText.starts("<div id ='tm_datatype_wikitext'>"))
+    		{    			
+    			wikiText = wikiText.subString("<div id ='tm_datatype_wikitext'>".size());
+    			if (wikiText.ends("</div>"))
+    				wikiText = wikiText.subString(0,wikiText.size() - 6);
+    		}
+    		return wikiText;	
+    	}
+    	
+    }
+    
+    public static class API_TeamMentor_WebServices_ExtensionMethods_Edit_Data
+    {
+    
+    	//Add
+    	
+    	public static Folder_WS add_Folder(this Library_WS library, string name)    
+    	{
+    		return library.add_Folder(null, name);
+    	}
+    	
+    	public static Folder_WS add_Folder(this Library_WS library, Folder_WS parentFolder, string name)    
+    	{
+    		
+    		"[TeamMentor] add Folder: {0}".info(name);
+    		var parentId = (parentFolder.notNull()) 
+    							? parentFolder.Id
+    							: Guid.Empty;    		
+    		var newFolder = library.tmWebServices.webServices.CreateFolder(library.Id, parentId, name);    		
+    		return new Folder_WS(library, newFolder.name, newFolder.folderId);
+    		//return newFolder.folder(library);
+    	}
+    		
+    	public static View_WS add_View(this Library_WS library, string name)  
+    	{     		
+    		return library.add_View(null, name);	
+    	}
+    	
+    	public static View_WS add_View(this Folder_WS folder, string name)  
+    	{    		
+    		return folder.Library.add_View(folder,name);
+    	}
+    	
+    	public static View_WS add_View(this Library_WS library, Folder_WS folder, string name) 
+    	{
+    		"[TeamMentor] add View: {0}".info(name);
+    		var folderId = (folder.notNull()) 
+    							? folder.Id
+    							: Guid.Empty;   
+		    	var view = new View();
+				view.library = library.Id.str();
+				view.caption = name;
+				view.id = Guid.Empty.str();
+			var newView = library.tmWebServices.webServices.CreateView(folderId,view);
+			return newView.view(library, folder);
+		}
+			
+		public static Article_WS add_Article(this View_WS view, string title, string content)
+		{
+			return view.add_Article(title, content, "","","","");			
+		}
+		
+		public static Article_WS add_Article(this View_WS view, string title, string content, string technology, string phase, string type, string category) 
+		{
+			var article = view.Library.add_Article(title, content, technology, phase, type, category);	
+			if (article.notNull())
+			{
+				view.Library.tmWebServices.webServices.AddGuidanceItemsToView(view.Id, new Guid[] { article.Id });
+				article.View = view;
+			}
+			else
+				"[TeamMentor] in add_Article to view, created article was null".error();
+			return article;
+		}
+		
+		public static Library_WS add_Article(this Library_WS library, Article_WS article)
+		{
+			library.Id.add_Article(article);
+			return library;
+		}
+		public static View_WS add_Article(this View_WS view, Article_WS article)
+		{
+			var libraryId = view.Library.Id;
+			if (libraryId.add_Article(article).notNull())
+			{
+				view.Library.tmWebServices.webServices.AddGuidanceItemsToView(view.Id, new Guid[] { article.Id });
+				view.Articles.add(article);				
+			}
+			return view;
+		}
+		
+		public static Article_WS add_Article(this Guid libraryId, Article_WS article)
+    	{
+    		"adding Article_WS: {0}".info(article.Title);							
+			
+			var guidanceItem 			= new GuidanceItem_V3();
+			guidanceItem.guidanceItemId = article.Id;
+			guidanceItem.title 			= article.Title;
+			guidanceItem.htmlContent 	= ""; //don't set the content here since it is losing the HTMLM formating
+			guidanceItem.technology 	= article.Technology;
+			guidanceItem.phase 			= article.Phase;
+			guidanceItem.rule_Type 		= article.Type;
+			guidanceItem.category	 	= article.Category;
+			
+			guidanceItem.libraryId		= libraryId;		
+
+			var articleGuid = article.Library.tmWebServices.webServices.CreateGuidanceItem(guidanceItem);			
+			if (articleGuid == Guid.Empty)
+			{
+				"[add_Article] failed to add article".error();
+				return null;
+			}
+			if (article.Id != Guid.Empty && articleGuid != article.Id)
+			{
+				"[add_Article] returned GUI didn't match provided GUI {0} != {1}".error(articleGuid, article.Id);
+				return null;
+			}
+			article.Id = articleGuid;			
+			if (article.Library.tmWebServices.webServices.SetArticleHtml(articleGuid,article.Content).isFalse())
+			{
+				"[add_Article] failed to set the Article HTML {0} : {1}".error(articleGuid, article.Content);
+				return null;;
+			}			
+			//"article added ok: {0} : {1}".debug(articleGuid, article.Id);
+    		return article;
+    	}
+		
+		public static Article_WS add_Article(this Library_WS library, string title, string content, string technology, string phase, string type, string category) 
+		{
+		
+			if (library.isNull())
+			{
+				"[TeamMentor] in add_Article, provided library value was null".error();
+				return null;
+			}
+			var newArticle = new Article_WS() 	{
+													Id 			= Guid.Empty,
+													Title 		= title,
+													Content 	= content,
+													Technology	= technology,
+													Phase		= phase,
+													Type 		= type, 
+													Category	= category,
+													Library 	= library
+											  	};
+			return library.Id.add_Article(newArticle);
+							
+			/*
+			"[TeamMentor] add Article: {0}".info(title);
+			var guidanceItem			= new GuidanceItem_V3();
+			guidanceItem.guidanceItemId = Guid.Empty;
+			guidanceItem.title 			= title;
+			guidanceItem.htmlContent 	= content;
+			guidanceItem.technology 	= technology;
+			guidanceItem.phase 			= phase;
+			guidanceItem.rule_Type 		= type;
+			guidanceItem.category 		= category;
+			
+			guidanceItem.libraryId = library.Id;
+
+			var guid = library.tmWebServices.webServices.CreateGuidanceItem(guidanceItem);
+			
+			return guid.article(library);*/
+		}
+		
+		//Delete
+		
+		public static API_TM_WebServices delete(this Library_WS library)
+		{
+			"[TeamMentor] delete Library: {0}".info(library.Name);
+			var tmWebServices = library.tmWebServices;
+			if (tmWebServices.webServices.DeleteLibrary(library.Id).isFalse())
+				"[TeamMentor] library failed to delete: {0} - {1}".error(library.Name, library.Id);
+			return tmWebServices;
+		}
+		
+		public static Library_WS delete(this Folder_WS folder)
+		{
+			"[TeamMentor] delete Folder: {0}".info(folder.Name);
+			folder.Library.tmWebServices
+						  .webServices.DeleteFolder(folder.Library.Id, folder.Id);
+			return folder.Library;
+		}
+		
+		public static Library_WS delete(this View_WS view)
+		{
+			"[TeamMentor] delete View: {0}".info(view.Name);
+			var tmWebServices = view.Library.tmWebServices;
+			tmWebServices.webServices.RemoveViewFromFolder(view.Library.Id, view.Id);		
+			return view.Library;
+		}
+		
+		
+		//Rename
+		
+		public static API_TM_WebServices rename(this Library_WS library, string newName)
+		{
+			"[TeamMentor] rename Library: {0} to {1}".info(library.Name, newName);
+			if (library.tmWebServices.webServices.RenameLibrary(library.Id, newName).isFalse())
+				"[TeamMentor] faile to rename library: {0} to {1}".error(library.Name, newName);
+			return library.tmWebServices;
+		}
+		
+		public static Library_WS rename(this Folder_WS folder, string newName)
+		{
+			"[TeamMentor] rename Folder: {0}".info(folder.Name,  newName);
+			if (folder.Library.tmWebServices
+						  	  .webServices.RenameFolder(folder.Library.Id, folder.Id, newName))
+				"[TeamMentor] failed to rename folder: {0} to {1}".error(folder.Name, newName);
+			return folder.Library;
+		}
+		
+		public static Library_WS rename(this View_WS view_WS,string newName)
+		{
+			"[TeamMentor] rename View: {0}".info(view_WS.Name,  newName);
+			var tmWebServices = view_WS.Library.tmWebServices;
+			var viewV3 = tmWebServices.webServices.GetViewById(view_WS.Id);
+			var view = new View(){
+									id = view_WS.Id.str(),
+									caption = newName,									
+									library = view_WS.Library.Id.str()
+								 };												
+			tmWebServices.webServices.UpdateView(view);
+			return view_WS.Library;
+		}
+    }
+    
+    	
+    
+    public static class API_TeamMentor_WebServices_ExtensionMethods_Users
+    {
+        public static TM_User current_User(this API_TM_WebServices tmWebServices)
+        {
+            return tmWebServices.webServices.Current_User();
+        }
+        public static Guid current_SessionId(this API_TM_WebServices tmWebServices)
+        {
+            return tmWebServices.webServices.Current_SessionID();
+        }
+        public static bool logout(this API_TM_WebServices tmWebServices)
+        {
+            return tmWebServices.webServices.Logout() == Guid.Empty;
+        }
+        public static bool login_As_Admin(this API_TM_WebServices tmWebServices)
+        {
+            return tmWebServices.login(Tests_Consts.DEFAULT_ADMIN_USERNAME, Tests_Consts.DEFAULT_ADMIN_PASSWORD);
+        }
+    	public static bool login(this API_TM_WebServices tmWebServices, string username, string password)
+    	{
+    		try
+    		{
+	    		"[TeamMentor] login as: {0}".info(username);
+	    		tmWebServices.SessionId = tmWebServices.webServices.Login(username, password);
+	    		"[TeamMentor] SessionId is now: {0}".info(tmWebServices.SessionId);
+	    		tmWebServices.webServices.CurrentUser = tmWebServices.webServices.Current_User();    		
+	    		return tmWebServices.loggedIn();
+	    	}
+	    	catch(Exception ex)
+	    	{
+	    		ex.log();
+	    	}
+	    	return false;
+    	}
+    	
+    	public static bool loggedIn(this API_TM_WebServices tmWebServices)
+    	{
+    		return tmWebServices.SessionId != Guid.Empty;
+    	}
+    	
+    	public static List<TM_User> users(this API_TM_WebServices tmWebServices)
+    	{
+    		return tmWebServices.webServices.GetUsers().toList();
+    	}
+    	
+        public static TM_User user(this API_TM_WebServices tmWebServices, int userId)
+    	{
+    		return tmWebServices.webServices.GetUser_byID(userId);
+    	}
+    	public static TM_User user(this API_TM_WebServices tmWebServices, string userName)
+    	{
+    		return tmWebServices.webServices.GetUser_byName(userName);
+    	}    	
+    	
+        public static int add_User(this API_TM_WebServices tmWebServices)
+        {
+            return tmWebServices.add_User(10.randomLetters(), "!!123".add_RandomLetters(10));
+        }
+    	public static int add_User(this API_TM_WebServices tmWebServices, string username, 	string password)
+    	{
+            var newUser = new NewUser
+    		    {
+    		        Username = username, 
+                    Password = password, 
+                    Email    = "{0}@{1}.com".format(10.randomLetters(), 10.randomLetters()),
+                    Firstname = "..",
+                    Lastname = "..",
+                    Title    = "..", 
+                    Company  = "..",
+                    Country  = "..",
+                    State    = "..", 
+                    Note     = ".."
+    		    };
+            
+    		return tmWebServices.add_User(newUser); 
+    	}
+    	
+    	public static int add_User(this API_TM_WebServices tmWebServices, NewUser newUser)
+		{
+            var userValidationErrors = tmWebServices.webServices.CreateUser_Validate(newUser);
+            if (userValidationErrors.notEmpty())
+            {
+                "[add_User] There where validations: {0}".error(userValidationErrors.asString());
+                return -1;
+            }
+    	    var userId =  tmWebServices.webServices.CreateUser(newUser);
+
+            return userId;
+		}
+		public static bool delete_User(this API_TM_WebServices tmWebServices, string userName)
+		{
+			var tmUser = tmWebServices.user(userName);
+			if(tmUser.notNull())
+				return tmWebServices.webServices.DeleteUser(tmUser.UserId);
+			return false;
+		}
+		public static bool delete_User(this API_TM_WebServices tmWebServices, int userId)
+		{
+			return tmWebServices.webServices.DeleteUser(userId);
+		}
+    
+        public static Guid create_AuthToken(this API_TM_WebServices tmWebServices, int userId)
+        {
+            var authToken = tmWebServices.webServices.CreateUser_AuthToken(userId);
+            "[create_AuthToken] got token {0} for userId {1}".info(authToken, userId);
+            return authToken;
+        }
+    }
+    
+    public static class API_TeamMentor_WebServices_ExtensionMethods_Upload_Files
+    {    
+    	public static string uploadFile(this API_TM_WebServices tmWebServices, string pathToFile)
+    	{
+    		if(pathToFile.fileExists().isFalse())
+    			pathToFile = pathToFile.local();
+    		if(pathToFile.fileExists())
+    			return tmWebServices.uploadFile(pathToFile.fileName(), pathToFile.fileContents());
+    		return null;
+    	}
+    	
+    	public static string uploadFile(this API_TM_WebServices tmWebServices, string fileName, byte[] fileContents)
+    	{
+    		return tmWebServices.uploadFile(fileName, fileContents.ascii());
+    	}
+    	
+    	public static string uploadFile(this API_TM_WebServices tmWebServices, string fileName, string fileContents)
+    	{
+	    	var uploadToken = tmWebServices.webServices.GetUploadToken(); 
+						
+			var requestParams = "/Aspx_Pages/File_Upload.ashx?uploadToken={0}&qqfile={1}".format(uploadToken, fileName);
+			var uploadHandler = tmWebServices.WebSite_Url.append(requestParams);
+			
+			return uploadHandler.POST(fileContents);
+    	}
+    }
+    	
+
+    
+    public static class API_TeamMentor_WebServices_ExtensionMethods_Utils
+    {
+    	public static List<Article_WS> util_ReSaveArticles (this List<Article_WS> articles)
+    	{
+    		"ReSaving {0} Articles".debug(articles.size());
+    		try
+    		{
+    			var articlesSaved  = 0;
+    			foreach(var article in articles)
+    			{	
+    				"[{0}/{1}] Saving article: {2} - {3}".info(++articlesSaved, articles.size(), article.Id, article.Title);
+    				article.save();    				
+    			}
+    		}
+    		catch(Exception ex)
+    		{
+    			ex.log("util_ReSaveArticles");
+    		}
+    		return articles;
+    	}
+    
+    	public static bool ping (this API_TM_WebServices tmWebServices)
+    	{
+    		try
+    		{
+    			tmWebServices.webServices.GetTime();
+    			return true;
+    		}
+    		catch
+    		{
+    			return false;
+    		}
+    	}
+    }
+    
+    public static class API_TeamMentor_WebServices_ExtensionMethods_XmlFiles
+    {
+    	public static TeamMentor_Article tmArticle(this string localFile)
+    	{
+    		var xml = localFile.fileContents();		
+    		
+    		//fix the anoying fact that the the serialization will fail with the xmlns set
+			xml =  xml.replace("<Metadata>", "<Metadata xmlns=\"http://tempuri.org/\">")
+					  .replace("<Content ", "<Content xmlns=\"http://tempuri.org/\" ");
+			
+			
+			//return xDocument;
+			try
+			{			
+				var tmArticle = (TeamMentor_Article)Serialize.getDeSerializedObjectFromString(xml,typeof(TeamMentor_Article));
+	    		return tmArticle;
+	    	}
+	    	catch(Exception ex)
+	    	{
+	    		ex.log();
+	    		return null;
+	    	}
+    	}
+    }
+    
+    public static class API_TeamMentor_WebServices_REPLs
+    {
+    	public static ascx_Simple_Script_Editor showREPL_for_TeamMentorObject(this API_TM_WebServices teamMentor)
+    	{
+    		var replGui = teamMentor.script_Me("teamMentor");
+    		replGui.Code+="//using SecurityInnovation.TeamMentor;".lineBefore();
+    		return replGui;
+    	}
+    	
+    	public static REPL_Gui showREPL_for_ServerSideScriptExecution(this API_TM_WebServices teamMentor)
+    	{
+			
+			var topPanel = "TeamMentor C# REPL (server-side code execution) ".popupWindow(800,300).insert_LogViewer();
+
+			var replGui = topPanel.add_REPL_Gui();    
+
+			var codeEditor = replGui.Code_Panel.add_TextArea();
+			
+			replGui.On_ExecuteCode = 
+						()=>{
+								var code = codeEditor.get_Text(); 
+								"Executing code in TeamMentor server:".info();
+								var result = teamMentor.webServices.REPL_ExecuteSnippet(code);
+								replGui.showOutput(result);
+							};  
+			
+			var snippet = @"return ""Hello TeamMentor user (from TeamMentor Server)"";";
+			
+			codeEditor.set_Text(snippet);
+			replGui.Execute_Button.click();
+				
+    		return replGui;
+    	}
+    }
+}
+        

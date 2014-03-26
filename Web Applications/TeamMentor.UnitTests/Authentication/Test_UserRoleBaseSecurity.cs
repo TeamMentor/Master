@@ -1,7 +1,6 @@
 ﻿using System;
 using FluentSharp.CoreLib;
 using NUnit.Framework;
-using O2.FluentSharp;
 using TeamMentor.CoreLib;
 
 namespace TeamMentor.UnitTests.Authentication 

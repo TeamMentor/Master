@@ -12,6 +12,7 @@ namespace TeamMentor.CoreLib
         public static List<EmailMessage> Sent_EmailMessages  { get; set; }
         public static string             TM_Server_URL       { get; set; }
         public static bool               Disable_EmailEngine { get; set; }
+        public static bool               Dont_Send_Emails    { get; set; }
         public static bool               Send_Emails_As_Sync { get; set; }
 
         public        string             From                { get; set; }
@@ -40,39 +41,33 @@ namespace TeamMentor.CoreLib
                 }
             }
         }
-        public static void mapTMServerUrl()
-        {
-            try
+        public string mapTMServerUrl()
+        {           
+            TM_Server_URL = TMConsts.DEFAULT_TM_LOCALHOST_SERVER_URL;
+            if (HttpContextFactory.Context.isNotNull() && HttpContextFactory.Request.isNotNull())
             {
-                if (HttpContextFactory.Context.isNotNull())
-                {
-                    var request = HttpContextFactory.Request;
-                    var scheme = request.IsSecureConnection ? "https" : "http";
-                    var serverName = request.ServerVariables["Server_Name"];
-                    var serverPort = request.ServerVariables["Server_Port"];
-                    if (serverName.notNull() && serverPort.notNull())
-                        TM_Server_URL = "{0}://{1}:{2}".format(scheme, serverName, serverPort);
-                    return;
-                }
-            }
-            catch (Exception ex)
-            {
-                ex.log("[SendEmails] mapTMServerUrl ctor");
-            }                
-            TM_Server_URL = "http://localhost";
+                var request = HttpContextFactory.Request;
+                var scheme = request.IsSecureConnection ? "https" : "http";
+                var serverName = request.ServerVariables["Server_Name"];
+                var serverPort = request.ServerVariables["Server_Port"];
+                if (serverName.notNull() && serverPort.notNull())                
+                    TM_Server_URL = "{0}://{1}:{2}".format(scheme, serverName, serverPort);                                    
+            }                            
+            
+            return TM_Server_URL;
         }
 
-        public SendEmails(string smtpServer, string smtpUserName, string smtpPassword ) : this()
+        /*public SendEmails(string smtpServer, string smtpUserName, string smtpPassword ) : this()
         {
             Smtp_Server     = smtpServer;
             Smtp_UserName   = smtpUserName;
             Smtp_Password   = smtpPassword;
-        }
+        }*/
         
 
         public bool send_TestEmail()
         {
-            return send("Test Email", "From TeamMentor");
+            return send(TMConsts.EMAIL_TEST_SUBJECT, TMConsts.EMAIL_TEST_MESSAGE);
         }        
         
         public bool send(string subject, string message)
@@ -138,11 +133,17 @@ namespace TeamMentor.CoreLib
                 var smtpClient = new SmtpClient(Smtp_Server, 587);
                 var credentials = new System.Net.NetworkCredential(Smtp_UserName, Smtp_Password);
                 smtpClient.Credentials = credentials;
-
-                smtpClient.Send(mailMsg);
+                if (Dont_Send_Emails)
+                {
+                    emailMessage.SentStatus = SentStatus.NotSent;
+                }
+                else
+                {
+                    smtpClient.Send(mailMsg);
                 
-                emailMessage.SentStatus = SentStatus.Sent;
-                emailMessage.Sent_Date = DateTime.Now.ToFileTimeUtc();
+                    emailMessage.SentStatus = SentStatus.Sent;
+                    emailMessage.Sent_Date = DateTime.Now.ToFileTimeUtc();
+                }
                 return true;
             }
             catch (Exception ex)

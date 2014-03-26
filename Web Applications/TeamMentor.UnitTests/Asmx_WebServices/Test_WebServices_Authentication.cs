@@ -8,7 +8,7 @@ using TeamMentor.CoreLib;
 namespace TeamMentor.UnitTests.Asmx_WebServices
 {		  
     [TestFixture] 
-    public class Test_Authentication : TM_WebServices_InMemory
+    public class Test_WebServices_Authentication : TM_WebServices_InMemory
     {
         public string default_Pwd   { get; set;}
         public string user_admin    { get; set;}    	
@@ -17,7 +17,7 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
         public string user_test   { get; set;}
 
         [Assert_Admin]
-        public Test_Authentication()
+        public Test_WebServices_Authentication()
         {
             user_admin   = TMConfig.Current.TMSecurity.Default_AdminUserName;
             default_Pwd  = TMConfig.Current.TMSecurity.Default_AdminPassword;
@@ -107,47 +107,23 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             Assert.That(deletedUsers[0].isNull() && deletedUsers[1].isNull(), "users deleted where not there");			
         }
 
-        public Guid Login_As_User(string username, string password)
-        {
-            var sessionId = tmWebServices.Login(username, password);
-            HttpContextFactory.Context.addCookieFromResponseToRequest("Session");
-            Assert.AreNotEqual(sessionId , Guid.Empty, "Failed to login As {0}".format(username));
-            Assert.AreEqual   (tmWebServices.Current_User().UserName, username);
-            return sessionId;
-        }
-
-        [Test] 
-        public void Login_As_Admin()
+        [Test] public void Login_As_Admin()
         {
             Login_As_User(user_admin, default_Pwd);
         }
-        [Test] 
-        public void Login_As_Editor()
+        [Test] public void Login_As_Editor()
         {
             Login_As_User(user_editor, default_Pwd);
         }
-        [Test] 
-        public void Login_As_Reader()
+        [Test] public void Login_As_Reader()
         {
             Login_As_User(user_reader, default_Pwd);
         }
-        [Test] 
-        public void Login_As_Test()
+        [Test] public void Login_As_Test()
         {
             Login_As_User(user_test, default_Pwd);
         }
-
-        
-                                
-        
-        
-        
-        
-        ///**********************
-        ///*** webMethod_IsUserAdmin
-        ///*** 
-        [Test]
-        public void RBAC_IsAdmin()
+        [Test] public void RBAC_IsAdmin()
         {   
             Login_As_Admin();    	        		    					
             var admin_Is_Admin = tmWebServices.RBAC_IsAdmin();						
@@ -165,14 +141,8 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             Assert.IsFalse(reader_Is_Admin, "reader_Is_Admin");
             Assert.IsFalse(test_Is_Admin, "test_Is_Admin");
             Assert.IsTrue (admin_Is_Admin2, "admin_Is_Admin2");    	    
-        }    	
-    
-                
-        ///**********************
-        ///*** webMethods_DemandPrivileges_Admin_and_DemandPrivileges_ReadArticles
-        ///*** 
-        [Test]
-        public void RBAC_Demand_Admin_Editor_Reader_Tester()
+        }    	         
+        [Test] public void RBAC_Demand_Admin_Editor_Reader_Tester()
         {
             Login_As_Test();
             Assert.Throws<SecurityException>(()=> tmWebServices.RBAC_Demand_Admin       (), "logged in as Test");
@@ -217,6 +187,52 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             return "ok: webMethods_DemandPrivileges_Admin_and_DemandPrivileges_ReadArticles";
              */
         }    
-        
+                        
+        [Test] public void Login_Using_AuthToken()
+        {           
+            var tmUser = tmWebServices.CreateUser_Random();
+            Assert.Throws<SecurityException>(()=>tmWebServices.CreateUser_AuthToken(tmUser.UserId));
+            
+            UserGroup.Admin.setPrivileges();                // need admin privs to call CreateUser_AuthToken 
+            var authToken    = tmWebServices.CreateUser_AuthToken(tmUser.UserId);
+            Assert.AreNotEqual(Guid.Empty, authToken);
+            UserGroup.None.setPrivileges();
+            var sessionId    = tmWebServices.Login_Using_AuthToken(authToken);
+            Assert.AreNotEqual(Guid.Empty, sessionId);
+            var currentSessionID  =  tmWebServices.Current_SessionID();
+            var currentUser       =  tmWebServices.Current_User();
+            Assert.AreEqual(currentSessionID, sessionId);
+            Assert.AreEqual(currentUser.UserName , tmUser.UserName);
+            Assert.AreEqual(currentUser.UserId   , tmUser.UserId);
+            Assert.AreEqual(currentUser.FirstName, tmUser.FirstName);
+        }
+
+        [Assert_Admin][Test] public void AuthToken_CreateUser_AuthToken()
+        {
+            var tmUser = tmWebServices.CreateUser_Random();
+            Assert.IsNotNull  (tmUser);
+            Assert.IsNotNull  (tmWebServices.GetUser_byID(tmUser.UserId));
+            
+            var authTokens   = tmWebServices.GetUser_AuthTokens(tmUser.UserId);
+            Assert.AreEqual   (authTokens.size() ,0);
+            
+            var authToken    = tmWebServices.CreateUser_AuthToken(tmUser.UserId);
+            Assert.NotNull    (authToken);
+            Assert.AreNotEqual(Guid.Empty,authToken);
+            
+            authTokens = tmWebServices.GetUser_AuthTokens(tmUser.UserId);
+            Assert.IsNotEmpty (authTokens);
+            Assert.AreEqual   (authTokens.size() ,1);
+            Assert.AreEqual   (authTokens.first(),authToken);
+        }
+        //Helper method
+        public Guid Login_As_User(string username, string password)
+        {
+            var sessionId = tmWebServices.Login(username, password);
+            HttpContextFactory.Context.addCookieFromResponseToRequest("Session");
+            Assert.AreNotEqual(sessionId , Guid.Empty, "Failed to login As {0}".format(username));
+            Assert.AreEqual   (tmWebServices.Current_User().UserName, username);
+            return sessionId;
+        }
     }
 }

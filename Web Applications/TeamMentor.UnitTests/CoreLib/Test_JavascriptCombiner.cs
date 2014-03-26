@@ -2,7 +2,6 @@ using System.Web;
 using FluentSharp.CoreLib.API;
 using NUnit.Framework; 
 using FluentSharp.CoreLib;
-using O2.FluentSharp;
 using TeamMentor.CoreLib;
 
 namespace TeamMentor.UnitTests.CoreLib

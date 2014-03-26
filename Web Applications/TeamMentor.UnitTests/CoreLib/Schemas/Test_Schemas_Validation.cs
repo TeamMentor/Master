@@ -6,7 +6,7 @@ using TeamMentor.CoreLib;
 namespace TeamMentor.UnitTests.CoreLib
 {
     [TestFixture]
-    public class Test_Schemas
+    public class Test_Schemas_Validation
     {
         [Test]
         public void Validation_TM_User()

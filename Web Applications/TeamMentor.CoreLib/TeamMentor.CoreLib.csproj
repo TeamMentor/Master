@@ -92,6 +92,7 @@
   <ItemGroup>
     <Compile Include="TM_AppCode\Authentication\ExtensionMethods\RoleBaseSecurity_ExtensionMethods.cs" />
     <Compile Include="TM_AppCode\Authentication\ExtensionMethods\TeamMentorUserManagement_ExtensionMethods.cs" />
+    <Compile Include="TM_AppCode\Authentication\TokenAuthentication.cs" />
     <Compile Include="TM_AppCode\O2_Scripts_APIs\O2_Utils.cs" />
     <Compile Include="TM_AppCode\TM_Engine.cs" />
     <Compile Include="TM_AppCode\Tracking\API_Firebase.cs" />

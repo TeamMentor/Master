@@ -2,14 +2,16 @@ namespace TeamMentor.CoreLib
 {
 	public class TMConsts
 	{
-		// ReSharper disable InconsistentNaming		
+        public static string AUTH_TOKEN_REQUEST_VAR_NAME      = "auth";
         public static string DEFAULT_ARTICLE_FOLDER_NAME      = "Articles";
 		public static string VIRTUAL_PATH_MAPPING			  = "..\\..";					  
 		public static string XML_DATABASE_VIRTUAL_PATH		  = "TeamMentor";
 		public static string XML_DATABASE_VIRTUAL_PATH_LEGACY = "Library_Data\\XmlDatabase"; // for legacy support (pre 3.3)
         public static string EMAIL_SUBJECT_NEW_USER_WELCOME   = "Welcome to TeamMentor";
         public static string PATH_HTML_PAGE_UNAVAILABLE       = "/Html_Pages/Gui/Pages/unavailable.html";      
-		// ReSharper restore InconsistentNaming
+        public static string DEFAULT_TM_LOCALHOST_SERVER_URL  = "http://localhost";
+        public static string EMAIL_TEST_SUBJECT               = "Test Email";
+        public static string EMAIL_TEST_MESSAGE               = "From TeamMentor";
         public static string EMAIL_BODY_NEW_USER_WELCOME =
 @"Hello,
 

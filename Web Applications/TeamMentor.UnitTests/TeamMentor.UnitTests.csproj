@@ -98,12 +98,14 @@
     <Compile Include="Authentication\Test_RoleBaseSecurity.cs" />
     <Compile Include="Authentication\Test_TeamMentorUserManagement_TMUser.cs" />
     <Compile Include="Authentication\Test_TM_Authentication.cs" />
+    <Compile Include="Authentication\Test_TokenAuthentication.cs" />
     <Compile Include="Authentication\Test_UserRoleBaseSecurity.cs" />
     <Compile Include="Authentication\Test_WindowsAuthentication.cs" />
+    <Compile Include="CoreLib\Schemas\Test_TMUser.cs" />
     <Compile Include="CoreLib\Test_Crypto.cs" />
     <Compile Include="CoreLib\Test_Extra_ExtensionMethods.cs" />
     <Compile Include="CoreLib\Test_HandleRequest_LibraryData.cs" />
-    <Compile Include="CoreLib\Test_Schemas.cs" />
+    <Compile Include="CoreLib\Schemas\Test_Schemas_Validation.cs" />
     <Compile Include="CoreLib\Tracking\Test_TM_Logger_Memory.cs" />
     <Compile Include="Messaging\Test_Email.cs" />
     <Compile Include="CoreLib\Test_HandleRequest.cs" />
@@ -122,8 +124,6 @@
     <Compile Include="TM_XmlDatabase\Test_Users_Sessions.cs" />
     <Compile Include="TM_XmlDatabase\Test_Users_UserActivities.cs" />
     <Compile Include="CoreLib\Test_Utils_GoogleAnalytics.cs" />
-    <Compile Include="_Temp\FluentSharp_ExtensionMethods_To_add.cs" />
-    <Compile Include="_Temp\NGitAPI_ExtraExensionMethods.cs" />
     <Compile Include="_Test_ConfigAndHelpers\Tests_Config.cs" />
     <Compile Include="_Test_ConfigAndHelpers\TM_Config_InMemory.cs" />
     <Compile Include="_Test_ConfigAndHelpers\TM_UserData_InMemory.cs" />
@@ -168,7 +168,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Asmx_WebServices\Test_Authentication.cs" />
+    <Compile Include="Asmx_WebServices\Test_WebServices_Authentication.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

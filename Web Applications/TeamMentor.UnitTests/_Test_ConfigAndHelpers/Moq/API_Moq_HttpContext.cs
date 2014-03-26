@@ -5,14 +5,14 @@ using System.IO;
 using System.Security.Principal;
 using System.Collections.Specialized;
 using System.Web;
-using FluentSharp.CoreLib;
 using Moq;
+using TeamMentor.CoreLib;
 
 
 //O2Ref:Moq.dll
 //O2Ref:System.Web.Abstractions.dll
 
-namespace O2.FluentSharp
+namespace FluentSharp.CoreLib
 {
     public class API_Moq_HttpContext 
     {        	
@@ -138,6 +138,11 @@ namespace O2.FluentSharp
     }
     public static class API_Moq_HttpContext_ExtensionMethods
     {
+        public static HttpContextBase mock(this HttpContextBase contextBase)
+        {
+            HttpContextFactory.Context = new API_Moq_HttpContext().httpContext();
+            return HttpContextFactory.Context;
+        }
         public static HttpContextBase httpContext(this API_Moq_HttpContext moqHttpContext)
         {
             return moqHttpContext.HttpContextBase;

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Web.Services;
+using FluentSharp.CoreLib.API;
 
 namespace TeamMentor.CoreLib
 {
@@ -9,7 +11,8 @@ namespace TeamMentor.CoreLib
     {
         [WebMethod(EnableSession = true)]											public bool PasswordReset(string userName, Guid token, string newPassword)	 {   return userData.passwordReset(userName, token, newPassword);   }
 
-        [WebMethod(EnableSession = true)]											public int CreateUser(NewUser newUser)      				        {   return userData.createTmUser(newUser);	                                }
+        [WebMethod(EnableSession = true)]											public int  CreateUser(NewUser newUser)      				        {   return userData.createTmUser(newUser);	                                }
+        [WebMethod(EnableSession = true)]											public List<String> CreateUser_Validate(NewUser newUser)            {   return newUser.validate().asStringList();	                                }        
         [WebMethod(EnableSession = true)]											public TM_User CreateUser_Random()      					        {   return userData.tmUser(userData.newUser()).user();	                    }
         [WebMethod(EnableSession = true)]		                    			    public bool SendPasswordReminder(string email)                      {   email.sendPasswordReminder();   return true;                            }   // always return true
         [WebMethod(EnableSession = true)]		                    			    public string GetCurrentUserPasswordExpiryUrl()                     {   return Current_User().passwordExpiredUrl();                             }   // always return true
@@ -34,9 +37,12 @@ namespace TeamMentor.CoreLib
         [WebMethod(EnableSession = true)]	[Admin]	                    			public string       GetUserGroupName(int userId)        			{	return userData.getUserGroupName (userId);             }  	
         [WebMethod(EnableSession = true)]	[Admin]	                    			public bool         SetUserGroupId  (int userId, int roleId)  		{	return userData.setUserGroupId   (userId, roleId);     }  	
         [WebMethod(EnableSession = true)]	[Admin]	                    			public List<string> GetUserRoles    (int userId)					{	return userData.getUserRoles     (userId);             }  	
-        [WebMethod(EnableSession = true)]	[Admin]	                                public bool         SendEmail(EmailMessage_Post emailMessagePost)   {   return new SendEmails().send     (emailMessagePost);   }
+
+        [WebMethod(EnableSession = true)]	[Admin]	                                public bool         SendEmail               (EmailMessage_Post emailMessagePost)        {   return new SendEmails().send     (emailMessagePost);                     }
+        [WebMethod(EnableSession = true)]	[Admin]	                    			public List<Guid>   GetUser_AuthTokens      (int userId)                                {	return  userData.getUserAuthTokens(userId);                              }
+        [WebMethod(EnableSession = true)]	[Admin]	                    			public Guid         CreateUser_AuthToken    (int userId)                                {	return  userData.createUserAuthToken(userId);                            }        
         [WebMethod(EnableSession = true)]	[Admin]	                    			public TM_User      SetUser_PostLoginView   (string userName, string postLoginView)	    {	return userName.tmUser().set_PostLoginView(postLoginView).user();        }
         [WebMethod(EnableSession = true)]	[Admin]	                    			public TM_User      SetUser_PostLoginScript (string userName, string postLoginScript)   {	return userName.tmUser().set_PostLoginScript(postLoginScript).user();    }
-
+        
     }
 }

@@ -10,6 +10,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamMentor.UnitTests", "TeamMentor.UnitTests\TeamMentor.UnitTests.csproj", "{04B01F87-4467-454F-B9F3-305647BB4E86}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamMentor.UnitTests.TM_Website", "TeamMentor.UnitTests.TM_Website\TeamMentor.UnitTests.TM_Website.csproj", "{BF942E82-1466-4384-8F87-50E1528473A0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{898BF99D-2F6E-4900-B22A-0CB48B21EA8C} = {898BF99D-2F6E-4900-B22A-0CB48B21EA8C}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution

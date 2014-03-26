@@ -50,6 +50,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             var userSession0 = new UserSession();
             Assert.AreEqual(userSession0.SessionID, Guid.Empty);
             Assert.AreEqual(userSession0.CreationDate, default(DateTime));
+            Assert.AreEqual(userSession0.LoginMethod , default(string));
             Assert.IsNull  (userSession0.IpAddress);
 
             // temp user object
@@ -255,6 +256,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
 
             Assert.IsTrue     (tmUser.account_Enabled(), "New user account should be enabled");
             Assert.AreNotEqual(Guid.Empty, sessionId   , "login should work");
+            Assert.AreEqual   (tmUser.Sessions.last().LoginMethod, "Password");
 
             tmUser.disable_Account();                                                               // disable account
             sessionId = userData.login(testUser, testPwd);
@@ -327,11 +329,6 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
   
             Assert.IsFalse    (tmUser.password_Expired(), "Password expiry should not be set after password change");
             Assert.AreNotEqual(Guid.Empty               , userData.login(tmUser.UserName, newPassword));
-        }        
-        [Test, Ignore("under dev")]
-        public void PasswordComplexity()
-        {
-            
-        }
+        }                
     }
 }

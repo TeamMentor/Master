@@ -67,6 +67,10 @@ namespace TeamMentor.CoreLib
         {
             return TM_UserData.Current.newUser(userName);
         }
+        public static TMUser        createUser                  (this TM_UserData userData)
+        {
+            return userData.newUser().tmUser();
+        }
         public static int           newUser                     (this TM_UserData userData)
         {
             return userData.newUser("test_user_{0}".format(5.randomLetters()));

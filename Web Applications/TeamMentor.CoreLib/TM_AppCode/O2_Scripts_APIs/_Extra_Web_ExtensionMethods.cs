@@ -9,6 +9,15 @@ using FluentSharp.CoreLib;
 
 namespace FluentSharp.CoreLib
 {
+    public static class Extra_ExtensionMethods_String
+    {
+        public static string random_Email(this string emailName)
+        {
+            if (emailName.notValid())
+                emailName = 10.randomLetters();
+            return "{0}@{1}.com".format(emailName, 10.randomLetters());
+        }
+    }
     public static class Extra_ExtensionMethods_StringBuilder
     {
         public static StringBuilder appendLine(this StringBuilder stringBuilder, string line)

@@ -61,12 +61,12 @@ namespace TeamMentor.CoreLib
                     //var logFile = tracking.Location.pathCombine("ApplicationLog.txt");
                     "Saving Application Tracking Log to: {0}".info(logFile);
 
-                    var tmArticle = new TeamMentor_Article
+                   /* var tmArticle = new TeamMentor_Article
                         {
                             Metadata = {Title = "Log Files"},
                             Content = {Data = {Value = logData}}
                         };
-                    tmArticle.saveAs(logFile + ".xml");
+                    tmArticle.saveAs(logFile + ".xml");*/
 
                     logData.saveAs(logFile);
                 }

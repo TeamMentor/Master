@@ -7,28 +7,23 @@ namespace TeamMentor.UnitTests.TM_Website
     [TestFixture]
     public class Test_IE_TBot
     {
-        IE_TBot ieTBot;
+        IE_UnitTest _ieUnitTest;
 
         [SetUp] public void setup()
-        {
-            //ieTBot = IE_TBot.Current;
-            ieTBot = new IE_TBot();
-            //ieTBot.openIE();
+        {            
+            _ieUnitTest = new IE_UnitTest();         
         }        
         [Test] public void openIE()
         {            
-            Assert.NotNull(ieTBot.parentForm);
-            Assert.NotNull(ieTBot.ie);            
+            Assert.NotNull(_ieUnitTest.parentForm);
+            Assert.NotNull(_ieUnitTest.ie);            
         }
-
-        /*[Test] public void Check_Static_Prop_Current()
-        {
-            Assert.IsNotNull(IE_TBot.Current);
-        }*/
+        
         [Test] public void Open_Site_Google()
         {
-            var ie = ieTBot.ie;            
-            ie.open("https://www.google.com");            
+            var ie = _ieUnitTest.ie;            
+            ie.open("https://www.google.com");     
+            "URL: {0}".info(ie.url());
             Assert.IsTrue(ie.url().contains("google"));
         }        
     }
