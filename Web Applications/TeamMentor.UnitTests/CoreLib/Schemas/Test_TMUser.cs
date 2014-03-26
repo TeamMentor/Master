@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using NUnit.Framework;
 using TeamMentor.CoreLib;
 
@@ -15,6 +12,8 @@ namespace TeamMentor.UnitTests.CoreLib.Schemas
         {
             var tmUser = new TMUser();
             Assert.AreNotEqual(Guid.NewGuid(), tmUser.ID);
+            //UserTags
+            Assert.IsNotNull  (tmUser.UserTags);
             //SecretData
             Assert.IsNotNull  (tmUser.SecretData);
             Assert.IsNull     (tmUser.SecretData.PasswordHash);

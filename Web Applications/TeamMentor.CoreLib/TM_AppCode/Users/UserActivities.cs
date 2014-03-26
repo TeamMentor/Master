@@ -32,7 +32,7 @@ namespace TeamMentor.CoreLib
             ActivitiesLog = new List<UserActivity>();
         }
 
-        [LogTo_GoogleAnalytics]
+        //[LogTo_GoogleAnalytics]
         public UserActivity LogUserActivity(TMUser tmUser , UserActivity userActivity)
         {
             if (tmUser.notNull() && tmUser.ID != Guid.Empty)
@@ -40,7 +40,8 @@ namespace TeamMentor.CoreLib
                 tmUser.UserActivities.Add(userActivity);
                 tmUser.saveTmUser();
             }  
-            ActivitiesLog.Add(userActivity);			
+            ActivitiesLog.Add(userActivity);	
+            userActivity.firebase_Log();		    
             return userActivity;
         }
 

@@ -20,10 +20,8 @@ namespace TeamMentor.CoreLib
         [XmlAttribute] public string	State       { get; set; }
         [XmlAttribute] public int		GroupID     { get; set; }                
         
-        [XmlAttribute] public string    PostLoginView               { get; set; }
-        [XmlAttribute] public string    PostLoginScript             { get; set; }
-        
-        [XmlElement]   public UserSecretData        SecretData	    { get; set; }
+        [XmlElement]   public List<UserTag>         UserTags	    { get; set; }
+        [XmlElement]   public UserSecretData        SecretData	    { get; set; }        
         [XmlElement]   public List<UserSession>     Sessions        { get; set; }
         [XmlElement]   public List<AuthToken>       AuthTokens      { get; set; }
         [XmlElement]   public UserAccountStatus     AccountStatus	{ get; set; }
@@ -33,6 +31,7 @@ namespace TeamMentor.CoreLib
         public TMUser()
         {
             ID = Guid.NewGuid();
+            UserTags        = new List<UserTag>();
             SecretData      = new UserSecretData
                                     {                                        
                                         PasswordResetToken  = null                  // default to Null
@@ -52,13 +51,19 @@ namespace TeamMentor.CoreLib
                                     };            
         }
     }
-
+    public class UserTag
+    {
+        [XmlAttribute]	public string   Key		            { get; set; }
+        [XmlAttribute]	public string   Value		        { get; set; }        
+    }
     public class UserSecretData
     {
         [XmlAttribute]	public string   PasswordHash		{ get; set; }        
         [XmlAttribute]	public string   PasswordResetToken	{ get; set; }
         [XmlAttribute]	public string   DecryptionKey       { get; set; }                       
         [XmlAttribute]  public string	CSRF_Token          { get; set; }        
+        [XmlAttribute]  public string   PostLoginView       { get; set; }
+        [XmlAttribute]  public string   PostLoginScript     { get; set; }
     }
     public class UserSession
     {
@@ -79,8 +84,7 @@ namespace TeamMentor.CoreLib
         [XmlAttribute]	public bool     UserEnabled		    { get; set; }        
     }
     public class UserStats
-    {
-        
+    {        
         [XmlAttribute]	public DateTime CreationDate		{ get; set; }		
         [XmlAttribute]	public DateTime LastLogin			{ get; set; }
         [XmlAttribute] public int       LoginOk		        { get; set; }

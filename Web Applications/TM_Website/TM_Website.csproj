@@ -609,6 +609,26 @@
     <Content Include="TBot\Tests\theTime.cshtml" />
     <Content Include="TBot\TBotMain.html" />
     <Content Include="TBot_v2\app.js" />
+    <Content Include="TBot_v2\components\main\controllers.js" />
+    <Content Include="TBot_v2\components\main\directives.js" />
+    <Content Include="TBot_v2\components\main\directives\topMenu.html" />
+    <Content Include="TBot_v2\components\main\routes.js" />
+    <Content Include="TBot_v2\components\main\views\404.html" />
+    <Content Include="TBot_v2\components\main\views\main.html" />
+    <Content Include="TBot_v2\components\main\views\test.html" />
+    <Content Include="TBot_v2\components\monitor\controllers.js" />
+    <Content Include="TBot_v2\components\monitor\directives.js" />
+    <Content Include="TBot_v2\components\monitor\directives\subMenu.html" />
+    <Content Include="TBot_v2\components\monitor\factories.js" />
+    <Content Include="TBot_v2\components\monitor\routes.js" />
+    <Content Include="TBot_v2\components\monitor\views\activities.html" />
+    <Content Include="TBot_v2\components\monitor\views\logs.html" />
+    <Content Include="TBot_v2\components\monitor\views\main.html" />
+    <Content Include="TBot_v2\components\monitor\views\urlRequests.html" />
+    <Content Include="TBot_v2\components\users\directives.js" />
+    <Content Include="TBot_v2\components\users\directives\usersMenu.html" />
+    <Content Include="TBot_v2\components\users\routes.js" />
+    <Content Include="TBot_v2\components\users\views\main.html" />
     <Content Include="TBot_v2\lib\bootstrap\css\bootstrap-theme.min.css" />
     <Content Include="TBot_v2\lib\bootstrap\css\bootstrap.min.css" />
     <Content Include="TBot_v2\lib\bootstrap\fonts\glyphicons-halflings-regular.svg" />
@@ -616,6 +636,7 @@
     <Content Include="TBot_v2\lib\angular\angular.js" />
     <Content Include="TBot_v2\lib\angular\angular.min.js" />
     <Content Include="TBot_v2\default.htm" />
+    <Content Include="TBot_v2\monitor.htm" />
     <Content Include="TBot_v2\users.htm" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

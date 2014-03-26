@@ -45,12 +45,12 @@ namespace TeamMentor.UnitTests.CoreLib
 			Assert.AreEqual(logCount_AtStart + 1, GoogleAnalytics.Current.LogCount);
 		}
 
-		[Test]
+		/*[Test]
 		public void LogUserActivity()
 		{
 			new TMUser().logUserActivity("UnitTest","LogUserActivity");
 			Assert.AreEqual(logCount_AtStart + 1, GoogleAnalytics.Current.LogCount);
-		}
+		}*/
 
 	}
 

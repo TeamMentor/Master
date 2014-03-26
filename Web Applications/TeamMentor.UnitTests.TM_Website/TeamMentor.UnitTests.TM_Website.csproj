@@ -79,6 +79,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="TBot\Test_Tbot_HomePage.cs" />
+    <Compile Include="TBot\Test_Tbot_User_View.cs" />
     <Compile Include="TBot_Users\Tbot_Users_Main.cs" />
     <Compile Include="TBot_Users\TBot_Users_MainPages.cs" />
     <Compile Include="Web References\WebServices\Reference.cs">

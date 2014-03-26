@@ -5,10 +5,10 @@ using NUnit.Framework;
 
 namespace TeamMentor.UnitTests.TM_Website.Bugs 
 {
-    [TestFixture]
+    [TestFixture][Ignore("move to a different project")]
     public class Bugs_TBot_Via_REST : API_IE_TBot
     {
-         [Test]
+        [Test]
         public void Bug_IE_Out_of_Sync_afer_REST_Call___PoC()
         {
             var page1_Url = "http://localhost:3187/tbot_v2/default.htm?";
