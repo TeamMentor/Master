@@ -1,6 +1,8 @@
-﻿var app = angular.module('tbot', ['ngRoute']);
-
-
+﻿var app = angular.module('tbot', ['ngRoute','firebase'])
+                 .value  ('fbAuthToken', '6Q8NwnKwm3DEo5gr0jS9HgryWD1QiBriqJTRYepB')
+                 .value  ('fbURL'      , 'https://tm-admin-test.firebaseio.com')
+                 .value  ('tmUrl'      , 'https://tm-34-qa.azurewebsites.net');
+/*
 app.run(function($rootScope, $location)
     {
         $rootScope.$on('$routeChangeSuccess', function(event, current)
@@ -25,3 +27,4 @@ app.controller('MainController', function($scope, $route, $routeParams, $locatio
 
 
 });
+    */

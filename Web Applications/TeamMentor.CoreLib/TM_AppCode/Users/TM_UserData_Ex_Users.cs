@@ -343,7 +343,7 @@ namespace TeamMentor.CoreLib
         {
             if (tmUser.notNull())
             {
-                tmUser.PostLoginView = postLoginView;
+                tmUser.SecretData.PostLoginView = postLoginView;
                 tmUser.saveTmUser();                
             }
             return tmUser;
@@ -352,7 +352,7 @@ namespace TeamMentor.CoreLib
         {
             if (tmUser.notNull())
             {
-                tmUser.PostLoginScript = postLoginScript;
+                tmUser.SecretData.PostLoginScript = postLoginScript;
                 tmUser.saveTmUser();                
             }
             return tmUser;

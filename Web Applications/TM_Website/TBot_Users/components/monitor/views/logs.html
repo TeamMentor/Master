@@ -1,0 +1,25 @@
+<div class="alert alert-success">
+    <strong>Debug Logs</strong>
+</div>
+<p>
+    Starting with the most recent 50 entries (current server is <a ng-href="{{serverUrl}}" target='_blank'>{{serverUrl}}</a>)
+</p>
+
+<table class="table table-condensed small">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>When</th>
+        <th>Type</th>
+        <th>Text</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="message in messages" ng-class="rowClass(message)">
+        <td>{{message.Index}}</td>
+        <td>{{message.When | date:'H:mm'}}</td>
+        <td>{{message.Type}}</td>
+        <td>{{message.Text}}</td>
+    </tr>
+    </tbody>
+</table>
