@@ -2,7 +2,6 @@
 using System.Web;
 using NUnit.Framework;
 using FluentSharp.CoreLib;
-using O2.FluentSharp;
 using TeamMentor.CoreLib;
 
 namespace TeamMentor.UnitTests
@@ -15,11 +14,19 @@ namespace TeamMentor.UnitTests
 
         [SetUp]
         public void Setup()
-        {
+        {                        
             moqHttpContext = new API_Moq_HttpContext();
             context = HttpContextFactory.Context = moqHttpContext.httpContext();		
         }
 
+        [Test] public void mock()
+        {            
+            HttpContextFactory.Context = null;
+            Assert.IsNull(HttpContextFactory.Context);
+            var mockedContext = HttpContextFactory.Context.mock();
+            Assert.IsNotNull(HttpContextFactory.Context);            
+            Assert.AreEqual(mockedContext, HttpContextFactory.Context);
+        }
         [Test] public void Test_HttpContext_CoreObjectsExist()
         {
             Assert.IsNotNull(HttpContextFactory.Context					     , "Context");

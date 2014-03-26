@@ -1,6 +1,5 @@
 ﻿using FluentSharp.CoreLib;
 using TeamMentor.CoreLib;
-using O2.FluentSharp;
 
 namespace TeamMentor.UnitTests.REST
 {

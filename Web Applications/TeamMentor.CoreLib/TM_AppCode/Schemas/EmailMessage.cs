@@ -37,7 +37,8 @@ namespace TeamMentor.CoreLib
         Sending,
         NoConfig,
         Error,
-        Sent
+        Sent,
+        NotSent
     }
 
 }

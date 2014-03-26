@@ -64,6 +64,7 @@
     <Reference Include="PostSharp, Version=3.2.9.0, Culture=neutral, PublicKeyToken=b13fd38b8f9c99d7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\PostSharp.3.2.9-alpha\lib\net20\PostSharp.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="RazorEngine, Version=3.3.0.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -92,8 +93,11 @@
   <ItemGroup>
     <Compile Include="TM_AppCode\Authentication\ExtensionMethods\RoleBaseSecurity_ExtensionMethods.cs" />
     <Compile Include="TM_AppCode\Authentication\ExtensionMethods\TeamMentorUserManagement_ExtensionMethods.cs" />
+    <Compile Include="TM_AppCode\Authentication\TokenAuthentication.cs" />
     <Compile Include="TM_AppCode\O2_Scripts_APIs\O2_Utils.cs" />
+    <Compile Include="TM_AppCode\TM_Engine.cs" />
     <Compile Include="TM_AppCode\Tracking\API_Firebase.cs" />
+    <Compile Include="TM_AppCode\Tracking\Activities_Firebase.cs" />
     <Compile Include="TM_AppCode\Tracking\Logger_Firebase.cs" />
     <Compile Include="TM_AppCode\Tracking\Logger_LogItem.cs" />
     <Compile Include="TM_AppCode\Tracking\Requests_Firebase.cs" />

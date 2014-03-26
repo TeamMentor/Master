@@ -21,6 +21,15 @@ namespace TeamMentor.CoreLib
 				HttpContextFactory.Response.AddHeader("Access-Control-Allow-Methods", "PUT, GET, POST, DELETE, OPTIONS");
 				HttpContextFactory.Response.AddHeader("Access-Control-Allow-Headers", "Content-Type");				
 			}							 
+
+            if (HttpContextFactory.Request.IsLocal)
+            {
+                HttpContextFactory.Response.AddHeader("Cache-Control" , "no-cache, private");
+                HttpContextFactory.Response.AddHeader("Pragma" , "no-cache");
+
+                //response.addHeader("Cache-Control", "no-cache, private");
+                //response.addHeader("Pragma", "no-cache");
+            }
 		}
 		
 	}

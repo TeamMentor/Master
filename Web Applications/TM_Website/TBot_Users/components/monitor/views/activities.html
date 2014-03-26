@@ -1,0 +1,29 @@
+<div class="alert alert-success">
+    <strong>Activities</strong>
+</div>
+<p>
+    Starting with the most recent 50 entries (current server is <a ng-href="{{serverUrl}}" target='_blank'>{{serverUrl}}</a>)
+</p>
+
+<table class="table table-condensed small">
+    <thead class="warning">
+    <tr>
+        <th>#</th>
+        <th>Who</th>
+        <th>Action</th>
+        <th>Detail</th>
+        <th>Client_IP</th>
+        <th>When</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="activity in activities">
+        <td>{{activity.Index}}</td>
+        <td>{{activity.Who}}</td>
+        <td>{{activity.Action}}</td>
+        <td>{{activity.Detail}}</td>
+        <td>{{activity.IPAddress}}</td>
+        <td>{{activity.When}}</td>
+    </tr>
+    </tbody>
+</table>

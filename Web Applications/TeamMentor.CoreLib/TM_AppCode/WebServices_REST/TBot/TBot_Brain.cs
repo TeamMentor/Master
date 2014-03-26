@@ -19,7 +19,7 @@ namespace TeamMentor.CoreLib
         public static List<int>                 ScriptContentHashes  { get; set; }
         public static ITemplateService          TemplateService { get; set; }
 
-        public DateTime         StartTime       { get; set; }
+        //public DateTime         StartTime       { get; set; }
         public ITM_REST         TmRest          { get; set; }
 
         static TBot_Brain()
@@ -46,7 +46,7 @@ namespace TeamMentor.CoreLib
         public TBot_Brain(ITM_REST tmRest)
         {
             TmRest = tmRest;
-            StartTime = DateTime.Now;       
+            //StartTime = DateTime.Now;       
             
         }
 
@@ -62,15 +62,10 @@ namespace TeamMentor.CoreLib
                                     : "[TBot] could not find file: {0}".format(tbotMainHtmlFile);            
             
             var html = tbotMainHtml.format((htmlEncode) ? content.htmlEncode() : content);
-            var executionTime = DateTime.Now - StartTime;
-            html += "<hr>script executed in: {0}s".format(executionTime.TotalSeconds);
+            //var executionTime = DateTime.Now - StartTime;
+            //html += "<hr>script executed in: {0}s".format(executionTime.TotalSeconds);
             return html.stream_UFT8();
-        }
-        public Stream RenderPage()
-        {
-            var message = "this is some message";
-            return GetHtml(message);
-        }
+        }        
 
         public string ExecuteRazorPage(string page)
         {
@@ -96,7 +91,21 @@ namespace TeamMentor.CoreLib
             }
             return null;
         }
+        public Stream Render(string page)
+        {
+            var result = ExecuteRazorPage(page);            
+            return (result.valid())
+                    ? result.stream_UFT8()
+                    : "".stream_UFT8();            
+        }
+        public Stream Json(string page)
+        {
+            var result = ExecuteRazorPage(page);                 
 
+            return (result.valid())
+                    ? result.stream_UFT8()
+                    : "{}".stream_UFT8();            
+        }
         public Stream Run(string page)
         {                                  
             var result = ExecuteRazorPage(page);

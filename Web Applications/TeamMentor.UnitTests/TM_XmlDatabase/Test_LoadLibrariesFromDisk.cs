@@ -3,7 +3,6 @@ using System.Linq;
 using FluentSharp.CoreLib;
 using FluentSharp.CoreLib.API;
 using NUnit.Framework;
-using O2.FluentSharp;
 using TeamMentor.CoreLib;
 
 namespace TeamMentor.UnitTests.TM_XmlDatabase

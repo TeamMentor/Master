@@ -106,6 +106,11 @@ namespace TeamMentor.CoreLib
                        : default(DateTime);
         }
 
+        public static bool  newAccountsEnabled(this TMConfig tmConfig)
+        {
+            return tmConfig.TMSecurity.NewAccounts_Enabled;
+        }
+
         
     }
 }

@@ -1,0 +1,102 @@
+@using System.Xml.Linq
+@using FluentSharp.CoreLib
+@using FluentSharp.WinForms
+@using TeamMentor.CoreLib
+
+@{
+    var userName        = System.Web.HttpContext.Current.Request["userName"];
+    var ssoToken        = string.Empty;
+    string ssoKey       = string.Empty;
+	var errorMessage    = string.Empty;
+    var ssoUrl          = string.Empty;
+    
+    if (userName.notNull())
+    {
+         var userData = TM_UserData.Current;
+         ssoKey = userData.SecretData.Rijndael_Key;
+		 if (ssoKey.isNull())
+        {
+		   errorMessage="SSO Key not found.Please verify secret data.";
+           return; 
+        }
+        ssoToken = (userName + ssoKey).md5Hash();
+        ssoUrl = "/Aspx_Pages/SSO.aspx?userName={0}&requestToken={1}".format(userName, ssoToken);
+    }
+}
+
+<script language="javascript" type="text/javascript"s>
+    
+    function SSOToken_Controller($scope)
+    {
+        scope = $scope;
+        var userData     =
+        {
+            userName          : '@userName',                
+            ssoToken          : '@ssoToken',
+            sso_Link_Redirect : '',
+            sso_Link_Image    : ''
+        };      
+                
+        if (userData.userName && userData.ssoToken)
+        { 
+            userData.sso_Link_Redirect = '/Aspx_Pages/SSO.aspx?userName=' + userData.userName + '&requestToken='+ userData.ssoToken ;  // this could be done with $interpolate, but I'm not 100% sure of the security implications
+            userData.sso_Link_Image    = userData.sso_Link_Redirect + "&format=img";
+        }
+        
+        $scope.PoC = function()
+            {
+                userData.ssoToken = "TEST";
+            };
+        $scope.clearData = function()
+            {
+                userData.ssoToken          = '';
+                userData.sso_Link_Redirect = '';
+                userData.sso_Link_Image    = '';
+            };
+        $scope.userData = userData;
+   };   
+</script>
+
+<div ng-controller="SSOToken_Controller"> 
+        
+    <h4>Generating a new SSO Token</h4>
+    <br/>
+    <form name="myForm" class="form-horizontal" role="form" method="GET" action="SSO_Token"> 
+        <div class="form-group">
+            <label  class="col-sm-2 control-label">UserName :</label>
+            <div class="col-sm-3">
+                <input class="form-control"     ng-model="userData.userName" 
+                       name="userName" required ng-keyup="clearData()" />
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label  class="col-sm-2 control-label">SSO Token :</label>
+            <div class="col-sm-3">
+                <p class="form-control-static">{{userData.ssoToken}}</p>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label  class="col-sm-2 control-label">SSO Links: </label>
+            <div class="col-sm-10" ng-show="userData.sso_Link_Redirect">
+                <p class="form-control-static"><a href="{{userData.sso_Link_Redirect}}">Redirects to TeamMentor</a> : 
+                    <a ng-href="{{userData.sso_Link_Image}}">Returns an Invisible image</a></p>
+            </div>
+            {{sso_Link_Redirect}}
+        </div>
+        <div class="form-group">
+            <label  class="col-sm-2 control-label"></label>
+            <div class="col-sm-10">
+                <input type="submit" 
+                       class="btn btn-primary" 
+                       ng-disabled="myForm.$invalid"                
+                       value="Generate SSO Token for: {{userData.userName}}" />
+            </div>
+        </div>
+         
+    
+    </form>
+
+    <h2>@errorMessage</h2>      
+</div>

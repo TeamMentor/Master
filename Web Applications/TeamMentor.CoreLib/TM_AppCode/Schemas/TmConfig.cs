@@ -37,6 +37,7 @@ namespace TeamMentor.CoreLib
         {
             public bool 		Show_ContentToAnonymousUsers { get; set; }
             public bool         SSL_RedirectHttpToHttps      { get; set; }
+            public bool         NewAccounts_Enabled          { get; set; }
             public bool         EvalAccounts_Enabled         { get; set; }
             public int          EvalAccounts_Days            { get; set; }
             public bool         REST_AllowCrossDomainAccess  { get; set; }
@@ -51,6 +52,7 @@ namespace TeamMentor.CoreLib
                 Show_ContentToAnonymousUsers = false;               
                 SSL_RedirectHttpToHttps      = true;
                 EvalAccounts_Enabled         = true;
+                NewAccounts_Enabled          = true;
                 EvalAccounts_Days            = 15;
                 Default_AdminUserName        = "admin";
                 Default_AdminPassword        = "!!tmadmin";
