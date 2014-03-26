@@ -56,26 +56,14 @@ namespace TeamMentor.CoreLib
         {
             return TmWebServices.SendEmail(emailMessagePost);            
         }
-        public Stream TBot_Show()
-        {
-            try
-            {
-                this.response_ContentType_Html();
-                return new TBot_Brain(this).RenderPage();
-            }
-            catch (SecurityException)
-            {
-                Redirect_Login("/tbot");
-            }	        
-            return null;
-        }
+        
         public Stream TBot_Run(string what)
         {
             try
             {
                 this.response_ContentType_Html();
-                if (what.lower().contains("git"))
-                    Admin_InvokeScript("load_NGit_Dlls");         // to solve prob with NGit dlls not being avaialble for compilation )
+                //if (what.lower().contains("git"))
+                //    Admin_InvokeScript("load_NGit_Dlls");         // to solve prob with NGit dlls not being avaialble for compilation )
                 return new TBot_Brain(this).Run(what);
             }
             catch (SecurityException)
@@ -84,6 +72,33 @@ namespace TeamMentor.CoreLib
             }	        
             return null;
         }
+
+        public Stream TBot_Render(string what)
+        {
+            try
+            {
+                this.response_ContentType_Html();                
+                return new TBot_Brain(this).Render(what);
+            }
+            catch (SecurityException)
+            {
+                return null;
+            }	                    
+        }
+        public Stream TBot_Json(string what)
+        {
+            try
+            {
+                this.response_ContentType_Json();                
+                return new TBot_Brain(this).Json(what);
+            }
+            catch (SecurityException)
+            {
+                return "{ 'error': 'SecurityException' }".stream_UFT8();    
+            }	                    
+        }
+
+        
         public Stream TBot_List()
         {
             try

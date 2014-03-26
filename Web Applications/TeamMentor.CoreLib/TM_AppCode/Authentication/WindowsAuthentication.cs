@@ -1,5 +1,6 @@
 using System;
 using System.Security.Principal;
+using System.Web;
 using FluentSharp.CoreLib;
 
 //O2File:../XmlDatabase/TM_Xml_Database.Users.cs
@@ -8,58 +9,57 @@ namespace TeamMentor.CoreLib
 {	
 	public class WindowsAuthentication
 	{
-		public static bool windowsAuthentication_Enabled;
+		//public static bool windowsAuthentication_Enabled;
 		public static string readerGroup = "";
 		public static string editorGroup = "";
 		public static string adminGroup  = "";
-		
-        public WindowsIdentity CurrentWindowsIdentity { get; set; }     				
-
+		        		
 		public WindowsAuthentication()
-		{
-            CurrentWindowsIdentity = WindowsIdentity.GetCurrent();
+		{            
             if(readerGroup.notValid())
 			    loadConfiguration();
 		}
 
 		public static void loadConfiguration()
 		{
-			windowsAuthentication_Enabled = TMConfig.Current.WindowsAuthentication.Enabled;
+			//windowsAuthentication_Enabled = TMConfig.Current.WindowsAuthentication.Enabled;
 			readerGroup = TMConfig.Current.WindowsAuthentication.ReaderGroup.trim();
 			editorGroup = TMConfig.Current.WindowsAuthentication.EditorGroup.trim();
 			adminGroup = TMConfig.Current.WindowsAuthentication.AdminGroup.trim();
 		}
 
-		public Guid authenticateUserBaseOn_ActiveDirectory()
-		{
-			var identity = CurrentWindowsIdentity;
-
-			if (identity != null && identity.IsAuthenticated && identity.ImpersonationLevel == TokenImpersonationLevel.Impersonation)
+		public Guid login_Using_WindowsAuthentication(WindowsIdentity identity)
+		{			
+            var userName = "";
+			if (identity != null && identity.IsAuthenticated && identity.ImpersonationLevel == TokenImpersonationLevel.Impersonation)			
+				userName = identity.Name;
+            else
+            {                
+                userName = HttpContextFactory.Current.field("_context").field("_wr").invoke("GetServerVariable", "LOGON_USER") as string;                 
+            }                  
+           
+			if (userName.valid())
 			{
-				var userName = identity.Name;
-				if (userName.valid())
-				{
-                    var tmUser = userName.tmUser();
-                    if(tmUser.isNull())
-                    {
-                        tmUser = userName.newUser().tmUser();
-                    }
-                    if (tmUser.GroupID != (int)calculateUserGroupBasedOnWindowsIdentity())
-                    {
-                        tmUser.GroupID = (int)calculateUserGroupBasedOnWindowsIdentity();
-                        tmUser.save();
-                    }
-                    return tmUser.login();
-				}
-			}
+                var tmUser = userName.tmUser();
+                if(tmUser.isNull())
+                {
+                    tmUser = userName.newUser().tmUser();
+                }
+                if (tmUser.GroupID != (int)calculateUserGroupBasedOnWindowsIdentity(identity))
+                {
+                    tmUser.GroupID = (int)calculateUserGroupBasedOnWindowsIdentity(identity);
+                    tmUser.save();
+                }
+                return tmUser.login("WindowsAuth");
+			}			
 			return Guid.Empty;
 		}
 
-		public UserGroup calculateUserGroupBasedOnWindowsIdentity()
+		public UserGroup calculateUserGroupBasedOnWindowsIdentity(WindowsIdentity identity)
 		{			
-		    if (CurrentWindowsIdentity != null)
+		    if (identity != null)
 		    {
-		        var principal = new WindowsPrincipal(CurrentWindowsIdentity);
+		        var principal = new WindowsPrincipal(identity);
 		        if (principal.IsInRole(adminGroup))
 		            return UserGroup.Admin;
 		        if (principal.IsInRole(editorGroup))

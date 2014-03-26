@@ -51,7 +51,7 @@ namespace TeamMentor.CoreLib
                         if (pwdOk)
                         {
                             if(tmUser.account_Enabled())
-                                return tmUser.login();                    // call login with a new SessionID            
+                                return tmUser.login("Password");                    // call login with a new SessionID            
                             
                             tmUser.logUserActivity("Login Fail",  "pwd ok, but account disabled");
                         }
@@ -69,11 +69,11 @@ namespace TeamMentor.CoreLib
             }
             return Guid.Empty;    			
         }
-        public static Guid              login (this TMUser tmUser)                                         
+        public static Guid              login (this TMUser tmUser, string loginMethod = "Direct")                                         
         {         
-            return TM_UserData.Current.login(tmUser);
+            return TM_UserData.Current.login(tmUser, loginMethod);
         }
-        public static Guid              login (this TM_UserData userData,TMUser tmUser)    
+        public static Guid              login (this TM_UserData userData,TMUser tmUser, string loginMethod = "Direct")    
         {
             try
             {
@@ -81,7 +81,7 @@ namespace TeamMentor.CoreLib
                 {
                     tmUser.Stats.LastLogin = DateTime.Now;
                     tmUser.Stats.LoginOk++;
-                    var userSession = tmUser.add_NewSession();                          // create new session
+                    var userSession = tmUser.add_NewSession(loginMethod);                          // create new session
                     if (userSession.notNull())
                     {
                         tmUser.logUserActivity("User Login", tmUser.UserName);          // will save the user                                              
@@ -141,15 +141,16 @@ namespace TeamMentor.CoreLib
             return false;
         }
 
-        public static UserSession       add_NewSession(this TMUser tmUser)
+        public static UserSession       add_NewSession(this TMUser tmUser, string loginMethod = "Direct")
         {
 
             var ipAddress = HttpContextFactory.Context.ipAddress();            
             var userSession = new UserSession
             {
-                SessionID = Guid.NewGuid(),
-                IpAddress = ipAddress,
-                CreationDate = DateTime.Now
+                SessionID    = Guid.NewGuid(),
+                IpAddress    = ipAddress,
+                CreationDate = DateTime.Now,
+                LoginMethod  = loginMethod
             };
             tmUser.Sessions.add(userSession);
             return userSession;            

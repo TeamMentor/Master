@@ -1,0 +1,35 @@
+﻿@using System.Collections.Generic
+@using FluentSharp.CoreLib
+@using TeamMentor.CoreLib
+
+@{
+    var baseFolder = TBot_Brain.TBotScriptsFolder();
+    var scripts = TBot_Brain.TBotScriptsFiles();
+    var mappedScripts = new Dictionary<string, List<string>> ();    
+    foreach (var script in scripts)
+    {
+        var title = script.contains(baseFolder) 
+                        ? script.parentFolder().remove(baseFolder).removeFirstChar()
+                        : "_Misc";
+        mappedScripts.add(title, script.fileName_WithoutExtension());
+    }
+    mappedScripts.remove("Views");  // don't show the views
+}
+<h4>Available TBot Commands</h4>
+
+<p>
+    Welcome to the TBot control center, please chose the command to execute:
+</p>
+
+<table class="table"> 
+    @foreach (var item in mappedScripts)
+    {
+        <tr>
+            <td><b>@item.Key</b></td>        
+            @foreach (var command in item.Value)
+            {
+                <td><a href="/rest/tbot/run/@command">@command.replace("_"," ")</a></td>
+            }                               
+        </tr>
+        }
+</table>

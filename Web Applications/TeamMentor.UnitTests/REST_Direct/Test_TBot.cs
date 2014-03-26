@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using FluentSharp.Git.APIs;
+using FluentSharp.REPL;
 using NUnit.Framework;
 using FluentSharp.CoreLib;
 using TeamMentor.CoreLib;
@@ -22,13 +23,56 @@ namespace TeamMentor.UnitTests.REST_Direct
             Assert.IsTrue(tmConfig.fileExists(), "couldn't find tmconfig file at: {0}".format(tmConfig));
         }
 
+        [Test][Assert_Admin] public void TBot_Run()
+        {
+            var commandsHtml     = TmRest.TBot_Run("commands").cast<MemoryStream>().ascii();            
+            Assert.NotNull(commandsHtml);
+        }
+        [Test][Assert_Admin] public void TBot_Render()
+        {
+            var commandsHtml   = TmRest.TBot_Run("commands").cast<MemoryStream>().ascii().lower();            
+            var commandsRender = TmRest.TBot_Render("commands").cast<MemoryStream>().ascii().lower();                        
+            Assert.NotNull    (commandsHtml);
+            Assert.NotNull    (commandsRender);            
+
+            Assert.AreNotEqual(commandsHtml, commandsRender);
+            Assert.IsTrue     (commandsHtml  .contains("<body>")    , "commandsHtml should have <body>");
+            Assert.IsFalse    (commandsRender.contains("<body>")    , "commandsRender should not have <body>");
+            Assert.IsTrue     (commandsHtml.contains(commandsRender));
+            Assert.IsFalse    (commandsRender.contains(commandsHtml));
+
+            //test for empty and nulls
+            var noRender   = TmRest.TBot_Render("abcdef12345").cast<MemoryStream>().ascii().lower();            
+            var emptyRender   = TmRest.TBot_Render("").cast<MemoryStream>().ascii().lower();            
+            var nullRender    = TmRest.TBot_Render(null).cast<MemoryStream>().ascii().lower();                                    
+            Assert.AreEqual   ("", noRender);
+            Assert.AreEqual   ("", emptyRender);
+            Assert.AreEqual   ("", nullRender);
+        }
+        [Test][Assert_Admin] public void TBot_Json()
+        {
+            var statusJson  = TmRest.TBot_Json("json_Stats").cast<MemoryStream>().ascii().lower();
+            Assert.NotNull    (statusJson);                         
+            Assert.IsTrue     (statusJson.contains("'status'"));
+            var jsonData = statusJson.json_Deserialize();
+            Assert.NotNull    (jsonData);            
+
+            //test for empty and nulls
+            var noJson    = TmRest.TBot_Json("abcdef12345").cast<MemoryStream>().ascii().lower();
+            var emptyJson    = TmRest.TBot_Json("").cast<MemoryStream>().ascii().lower();
+            var nullJson    = TmRest.TBot_Json(null).cast<MemoryStream>().ascii().lower();
+            Assert.AreEqual   ("{}", noJson    , "noJson");
+            Assert.AreEqual   ("{}", emptyJson , "emptyJson");
+            Assert.AreEqual   ("{}", nullJson  , "nullJson");
+        }
+
         [Test]
         public void RedirectToLoginOnNoAdmin()
         {
             var response = HttpContextFactory.Response;
             Assert.IsFalse  (response.IsRequestBeingRedirected);
             Assert.AreEqual ("", response.RedirectLocation);            
-            Assert.Throws<Exception>(()=>TmRest.TBot_Show());
+            Assert.Throws<Exception>(()=>TmRest.TBot_Run("abc"));
             Assert.IsTrue   (response.IsRequestBeingRedirected);
             Assert.AreEqual ("/Login?LoginReferer=/tbot", response.RedirectLocation);            
         }
@@ -36,7 +80,7 @@ namespace TeamMentor.UnitTests.REST_Direct
         [Test][Assert_Admin]
         public void TbotMainPage()
         {
-            var showTbotHtml     = TmRest.TBot_Show().cast<MemoryStream>().ascii();            
+            var showTbotHtml     = TmRest.TBot_Run("commands").cast<MemoryStream>().ascii();            
             var tbotMainHtmlFile = HttpContextFactory.Server.MapPath(TBot_Brain.TBOT_MAIN_HTML_PAGE);
             Assert.IsNotNull(tbotMainHtmlFile             , "tbotMainHtmlFile was null");
             Assert.IsTrue   (tbotMainHtmlFile.fileExists(), "tbotMainHtmlFile didn't exist");
