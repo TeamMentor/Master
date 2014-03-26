@@ -289,6 +289,7 @@
     <Content Include="Javascript\gAnalytics\ga.js" />
     <Content Include="Javascript\gAnalytics\TrackingCode.js" />
     <Content Include="Javascript\jQuery.DataTable\jquery.dataTables.min.js" />
+    <Content Include="Javascript\jQueryUI\jquery-ui.min-1.10.4.js" />
     <Content Include="Javascript\jQuery\jquery-1.9.1.min.js" />
     <Content Include="Javascript\jQuery\jquery.textarea.js" />
     <Content Include="Javascript\jQuery\jquery-1.8.1.min.js" />
@@ -703,6 +704,7 @@
     <Content Include="TBot\Users\New Random User.cshtml" />
     <Content Include="TBot\Admin\UserData FirstScript.cshtml" />
     <Content Include="TBot\Admin\Config\Edit_TMConfig.cshtml" />
+    <Content Include="TBot\Admin\CVS_User_Import.cshtml" />
     <Content Include="packages.config" />
     <Content Include="TBot\Users\User_Stats\Users_Accounts_Expiration.cshtml" />
     <Content Include="TBot\Users\User_Stats\Users_Mapped_by_Email.cshtml" />

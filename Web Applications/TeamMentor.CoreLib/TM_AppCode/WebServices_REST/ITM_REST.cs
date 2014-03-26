@@ -50,7 +50,9 @@ namespace TeamMentor.CoreLib
         [OperationContract] [WebInvoke(UriTemplate = "/user", Method = "PUT"    )]		            bool		user_Save(TM_User user);
 		//[OperationContract] [WebGet	  (UriTemplate = "/users/{usersIds}"	)]					List<TM_User>	users(string usersIds);
 		[OperationContract] [WebGet	  (UriTemplate = "/users"				    )]					List<TM_User>	users();
-
+        [OperationContract] [WebInvoke(UriTemplate = "/users/create", Method = "POST", BodyStyle = WebMessageBodyStyle.Wrapped)]       string CreateCSVUsers(String payload);
+        [OperationContract] [WebInvoke(UriTemplate = "/users/verify", Method = "POST", BodyStyle = WebMessageBodyStyle.Wrapped)]       string VerifyUserData(String payload);
+  
 //these need CRSF protection
 //		[OperationContract] [WebInvoke(UriTemplate = "/user/update"			,	Method = "PUT", ResponseFormat = WebMessageFormat.Json)]	bool		user_Update(TM_User user);
 //		[OperationContract] [WebInvoke(UriTemplate = "/user/new"			,	Method = "PUT", ResponseFormat = WebMessageFormat.Json)]	int			user_New(TM_User user);
