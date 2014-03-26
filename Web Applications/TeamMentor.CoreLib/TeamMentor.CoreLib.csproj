@@ -64,6 +64,7 @@
     <Reference Include="PostSharp, Version=3.2.9.0, Culture=neutral, PublicKeyToken=b13fd38b8f9c99d7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\PostSharp.3.2.9-alpha\lib\net20\PostSharp.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="RazorEngine, Version=3.3.0.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
