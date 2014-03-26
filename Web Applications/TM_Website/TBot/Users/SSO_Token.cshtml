@@ -63,7 +63,7 @@
     <br/>
     <form name="myForm" class="form-horizontal" role="form" method="GET" action="SSO_Token"> 
         <div class="form-group">
-            <label  class="col-sm-1 control-label">UserName :</label>
+            <label  class="col-sm-2 control-label">UserName :</label>
             <div class="col-sm-3">
                 <input class="form-control"     ng-model="userData.userName" 
                        name="userName" required ng-keyup="clearData()" />
@@ -71,14 +71,14 @@
         </div>
         
         <div class="form-group">
-            <label  class="col-sm-1 control-label">SSO Token :</label>
+            <label  class="col-sm-2 control-label">SSO Token :</label>
             <div class="col-sm-3">
                 <p class="form-control-static">{{userData.ssoToken}}</p>
             </div>
         </div>
         
         <div class="form-group">
-            <label  class="col-sm-1 control-label">SSO Links: </label>
+            <label  class="col-sm-2 control-label">SSO Links: </label>
             <div class="col-sm-10" ng-show="userData.sso_Link_Redirect">
                 <p class="form-control-static"><a href="{{userData.sso_Link_Redirect}}">Redirects to TeamMentor</a> : 
                     <a ng-href="{{userData.sso_Link_Image}}">Returns an Invisible image</a></p>
@@ -86,7 +86,7 @@
             {{sso_Link_Redirect}}
         </div>
         <div class="form-group">
-            <label  class="col-sm-1 control-label"></label>
+            <label  class="col-sm-2 control-label"></label>
             <div class="col-sm-10">
                 <input type="submit" 
                        class="btn btn-primary" 
