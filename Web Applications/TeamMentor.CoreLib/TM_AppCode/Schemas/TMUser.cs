@@ -43,7 +43,8 @@ namespace TeamMentor.CoreLib
                                     {
                                         ExpirationDate  = TMConfig.Current.currentExpirationDate(), 
                                         PasswordExpired = false,
-                                        UserEnabled     = true
+                                        UserEnabled     = TMConfig.Current.newAccountsEnabled(),
+                                        EnableUserToken = Guid.Empty
                                     };
             Stats           = new UserStats
                                     {
@@ -81,7 +82,9 @@ namespace TeamMentor.CoreLib
     {
         [XmlAttribute]	public DateTime ExpirationDate		{ get; set; }
         [XmlAttribute]	public bool     PasswordExpired		{ get; set; }
-        [XmlAttribute]	public bool     UserEnabled		    { get; set; }        
+        [XmlAttribute]	public bool     UserEnabled		    { get; set; }
+        [XmlAttribute]	public Guid     EnableUserToken		{ get; set; }
+        
     }
     public class UserStats
     {        

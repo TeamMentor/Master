@@ -12,7 +12,7 @@ namespace TeamMentor.UnitTests.TM_Website
         [Test]
         public void Check_Root_Level_Pages()
         {                                         
-            var urlTemplate  = "{0}/tbot_v2/{1}";            
+            var urlTemplate  = "{0}/tbot_users/{1}";            
 
             Action<string,string> runTest = 
                     (pageUrl, expectedHtml) =>
@@ -36,7 +36,7 @@ namespace TeamMentor.UnitTests.TM_Website
                 .close_IE()
                 .open_IE();
 
-            ie.open(TargetServer + "/TBot_v2/default.htm?".add_RandomLetters());
+            ie.open(TargetServer + "/tbot_users/default.htm?".add_RandomLetters());
 
             "Url: {0}".info(ie.url());
             "Html: {0}".info(html());
@@ -48,7 +48,7 @@ namespace TeamMentor.UnitTests.TM_Website
         [Test]
         public void Check_Top_Links()
         {             
-            var mainUrl = TargetServer + "/TBot_v2/";
+            var mainUrl = TargetServer + "/tbot_users/";
 
             ie.open("about:blank");
             Assert.AreNotEqual(ie.url(), mainUrl);
@@ -73,11 +73,12 @@ namespace TeamMentor.UnitTests.TM_Website
                     };
 
             //these should exist
-            checkLink("tbot"                , true, mainUrl      + "#/tbot");
+            
             checkLink("users"               , true, mainUrl      + "users.htm#/users/main");                        
-            checkLink("Admin"               , true, mainUrl      + "#");
 
-            checkLink("login"               , true, TargetServer + "/login?LoginReferer=/tbot_v2");
+            checkLink("Admin"               , true, TargetServer + "/admin");            
+            checkLink("tbot"                , true, TargetServer + "/tbot");
+            checkLink("login"               , true, TargetServer + "/login?LoginReferer=/tbot_users");
             checkLink("Logout"              , true, TargetServer + "/logout");
             checkLink("Legacy Control Panel", true, TargetServer + "/admin");
             checkLink("Main TeamMentor site", true, TargetServer + "/TeamMentor");
@@ -91,7 +92,7 @@ namespace TeamMentor.UnitTests.TM_Website
         [Test]
         public void Check_UsersMenu_Directive()
         {
-            var usersPage = TargetServer + "/TBot_v2/users.htm";
+            var usersPage = TargetServer + "/tbot_users/users.htm";
 
             ie.open(usersPage);
             Assert.AreEqual(usersPage, ie.url());

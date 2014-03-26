@@ -196,6 +196,55 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Assert.AreEqual(tmUser.AccountStatus.UserEnabled     , userEnabled);
             
         }
+        [Test] public void userEnabled()
+        {
+            Assert.IsTrue(tmConfig.TMSecurity.NewAccounts_Enabled);
+            var tmUser1      = userData.createUser();
+            Assert.IsTrue(tmUser1.AccountStatus.UserEnabled);
+
+            tmConfig.TMSecurity.NewAccounts_Enabled = false;
+            var tmUser2      = userData.createUser();
+            Assert.IsFalse(tmUser2.AccountStatus.UserEnabled);
+
+            Assert.AreNotEqual(tmUser1, tmUser2);
+            Assert.AreEqual   (Guid.Empty, tmUser1.AccountStatus.EnableUserToken);
+            Assert.AreEqual   (Guid.Empty, tmUser2.AccountStatus.EnableUserToken);
+
+            var accountEnableToken1 = tmUser1.enableUser_Token();
+            var accountEnableToken2 = tmUser2.enableUser_Token();
+
+            Assert.AreNotEqual(Guid.Empty, tmUser1.AccountStatus.EnableUserToken);
+            Assert.AreNotEqual(Guid.Empty, tmUser2.AccountStatus.EnableUserToken);
+
+            Assert.IsTrue     (accountEnableToken1.enableUser_IsTokenValid());
+            Assert.IsTrue     (accountEnableToken2.enableUser_IsTokenValid());            
+            Assert.AreEqual   (tmUser1, accountEnableToken1.enableUser_UserForToken());
+            Assert.AreEqual   (tmUser2, accountEnableToken2.enableUser_UserForToken());
+            
+            Assert.IsFalse    (Guid.NewGuid().enableUser_IsTokenValid());
+            Assert.IsFalse    (Guid.Empty    .enableUser_IsTokenValid());
+            Assert.IsNull     (Guid.NewGuid().enableUser_UserForToken());
+            Assert.IsNull     (Guid.Empty    .enableUser_UserForToken());
+            
+            //enable users
+            var tmUser1_Enabled = accountEnableToken1.enableUser_UsingToken();
+            var tmUser2_Enabled = accountEnableToken2.enableUser_UsingToken();
+            Assert.IsNotNull  (tmUser1_Enabled);
+            Assert.IsNotNull  (tmUser2_Enabled);            
+            Assert.AreEqual   (tmUser1_Enabled, tmUser1);
+            Assert.AreEqual   (tmUser2_Enabled, tmUser2);
+
+            // these should not work anymore:
+            Assert.IsFalse    (accountEnableToken1.enableUser_IsTokenValid());
+            Assert.IsFalse    (accountEnableToken2.enableUser_IsTokenValid());            
+            Assert.IsNull     (accountEnableToken1.enableUser_UserForToken());
+            Assert.IsNull     (accountEnableToken2.enableUser_UserForToken());
+            Assert.IsNull     (accountEnableToken1.enableUser_UsingToken());
+            Assert.IsNull     (accountEnableToken2.enableUser_UsingToken());
+
+            tmConfig.TMSecurity.NewAccounts_Enabled = true;
+        }
+
 
         [Test (Description ="Checks that only UserRole.ManageUsers is able to invoke the userData.users() method")]
         public void CheckUserListPermissions()

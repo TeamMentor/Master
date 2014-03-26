@@ -49,7 +49,7 @@ namespace TeamMentor.UnitTests.REST_Direct
             Assert.AreEqual   ("", emptyRender);
             Assert.AreEqual   ("", nullRender);
         }
-        [Test][Assert_Admin] public void TBot_Json()
+/*        [Test][Assert_Admin] public void TBot_Json()
         {
             var statusJson  = TmRest.TBot_Json("json_Stats").cast<MemoryStream>().ascii().lower();
             Assert.NotNull    (statusJson);                         
@@ -64,7 +64,7 @@ namespace TeamMentor.UnitTests.REST_Direct
             Assert.AreEqual   ("{}", noJson    , "noJson");
             Assert.AreEqual   ("{}", emptyJson , "emptyJson");
             Assert.AreEqual   ("{}", nullJson  , "nullJson");
-        }
+        }*/ 
 
         [Test]
         public void RedirectToLoginOnNoAdmin()

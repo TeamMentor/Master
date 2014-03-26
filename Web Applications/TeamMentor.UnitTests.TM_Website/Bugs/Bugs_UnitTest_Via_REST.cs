@@ -11,9 +11,9 @@ namespace TeamMentor.UnitTests.TM_Website.Bugs
         [Test]
         public void Bug_IE_Out_of_Sync_afer_REST_Call___PoC()
         {
-            var page1_Url = "http://localhost:3187/tbot_v2/default.htm?";
+            var page1_Url = "http://localhost:3187/tbot_users/default.htm?";
             var page1_Text = "TBot v2.0";
-            var page2_Url  = "http://localhost:3187/tbot_v2/users.htm?";
+            var page2_Url  = "http://localhost:3187/tbot_users/users.htm?";
             var page2_Text = "Welcome to the Users page";
 
             Action checkPage1 = ()=>
@@ -55,8 +55,8 @@ namespace TeamMentor.UnitTests.TM_Website.Bugs
         [Test]public void Bug_IE_Out_of_Sync_afer_REST_Call___Fix   ()
         {
             ie.open(TargetServer + "/logout");
-            var page1_Url   = TargetServer + "/tbot_v2/default.htm?";
-            var page2_Url   = TargetServer + "/tbot_v2/users.htm?";
+            var page1_Url   = TargetServer + "/tbot_users/default.htm?";
+            var page2_Url   = TargetServer + "/tbot_users/users.htm?";
             var restRequest = TargetServer + "/rest/login/user/pwd";
             ie.open(page1_Url);
             ie.open(restRequest);                       // open rest request that confuses the IE object

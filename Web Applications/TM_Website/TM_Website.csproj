@@ -88,6 +88,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Aspx_Pages\EnableUser.aspx" />
     <Content Include="Aspx_Pages\SetLibrary.aspx" />
     <Content Include="Aspx_Pages\Debug.aspx" />
     <Content Include="Aspx_Pages\images\back_disabled.jpg" />

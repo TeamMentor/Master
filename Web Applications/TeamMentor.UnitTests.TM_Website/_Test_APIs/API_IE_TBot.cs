@@ -13,9 +13,9 @@ namespace TeamMentor.UnitTests.TM_Website
             this.open("tbot");
             return this;
         }
-        public API_IE_TBot tbot_V2()
+        public API_IE_TBot tbot_Users()
         {
-            this.open("tbot_v2");
+            this.open("tbot_users");
             return this;
         }                   
     }
