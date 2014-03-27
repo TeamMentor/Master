@@ -94,7 +94,12 @@
     <Compile Include="TM_AppCode\Authentication\ExtensionMethods\RoleBaseSecurity_ExtensionMethods.cs" />
     <Compile Include="TM_AppCode\Authentication\ExtensionMethods\TeamMentorUserManagement_ExtensionMethods.cs" />
     <Compile Include="TM_AppCode\Authentication\TokenAuthentication.cs" />
-    <Compile Include="TM_AppCode\O2_Scripts_APIs\O2_Utils.cs" />
+    <Compile Include="TM_AppCode\ExtensionMethods\Extra\Extra_DateTime_ExtensionMethods.cs" />
+    <Compile Include="TM_AppCode\ExtensionMethods\Extra\Extra_Double_ExtensionMethods.cs" />
+    <Compile Include="TM_AppCode\ExtensionMethods\Extra\Extra_Headers_ExtensioMethods.cs" />
+    <Compile Include="TM_AppCode\ExtensionMethods\Extra\Extra_JSON_ExtensionMethods.cs" />
+    <Compile Include="TM_AppCode\ExtensionMethods\Extra\Extra_StringBuilder_ExtensionMethods.cs" />
+    <Compile Include="TM_AppCode\ExtensionMethods\Extra\Extra_String_ExtensionMethods.cs" />
     <Compile Include="TM_AppCode\TM_Engine.cs" />
     <Compile Include="TM_AppCode\Tracking\Firebase\API_Firebase.cs" />
     <Compile Include="TM_AppCode\Tracking\Firebase\Activities_Firebase.cs" />
@@ -116,7 +121,6 @@
     <Compile Include="TM_AppCode\Authentication\UserRoleBaseSecurity.cs" />
     <Compile Include="TM_AppCode\Authentication\UserRoles.cs" />
     <Compile Include="TM_AppCode\Authentication\WindowsAuthentication.cs" />
-    <Compile Include="TM_AppCode\O2_Scripts_APIs\O2_Script_Library.cs" />
     <Compile Include="TM_AppCode\Schemas\Folder_V3.cs" />
     <Compile Include="TM_AppCode\Schemas\Legacy\OnlineStorage_Library.cs" />
     <Compile Include="TM_AppCode\Schemas\Legacy\TM_Library.cs" />
@@ -155,7 +159,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="TM_AppCode\Schemas\TM_Gui_Objects.cs" />
-    <Compile Include="TM_AppCode\O2_Scripts_APIs\_Extra_Web_ExtensionMethods.cs" />
+    <Compile Include="TM_AppCode\ExtensionMethods\Extra\Extra_Cookies_ExtensioMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TM_AppCode\Schemas\DataViewers\JsDataTable.cs" />
     <Compile Include="TM_AppCode\Schemas\DataViewers\JsTreeNode.cs" />
@@ -207,8 +211,7 @@
     <Compile Include="TM_AppCode\WebServices\TM_Xml_Database_JavaScriptProxy.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="TM_AppCode\O2_Scripts_APIs\_Extra_methods_Xml_Linq.cs.txt" />
-    <Compile Include="TM_AppCode\O2_Scripts_APIs\_Extra_methods_HtmlAgilityPack_ExtensionMethods.cs" />
+    <Compile Include="TM_AppCode\ExtensionMethods\Extra\Extra_HtmlAgilityPack_ExtensionMethods.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">

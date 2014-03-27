@@ -45,13 +45,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\FluentSharp.NGit.5.3.121\lib\net40\FluentSharp.NGit.dll</HintPath>
     </Reference>
-    <Reference Include="FluentSharp.REPL, Version=5.3.0.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\FluentSharp.REPL.5.3.121\lib\net35\FluentSharp.REPL.exe</HintPath>
-    </Reference>
-    <Reference Include="FluentSharp.SharpDevelopEditor">
-      <HintPath>..\packages\FluentSharp.SharpDevelopEditor.5.3.121\lib\net35\FluentSharp.SharpDevelopEditor.dll</HintPath>
-    </Reference>
     <Reference Include="FluentSharp.WinForms">
       <HintPath>..\packages\FluentSharp.WinForms.5.3.121\lib\net35\FluentSharp.WinForms.dll</HintPath>
     </Reference>
@@ -101,6 +94,7 @@
     <Compile Include="CoreLib\Authentication\Test_TokenAuthentication.cs" />
     <Compile Include="CoreLib\Authentication\Test_UserRoleBaseSecurity.cs" />
     <Compile Include="CoreLib\Authentication\Test_WindowsAuthentication.cs" />
+    <Compile Include="CoreLib\ExtensionMethods\Test_Extra_Json_ExtensionMethods.cs" />
     <Compile Include="CoreLib\Schemas\Test_TMUser.cs" />
     <Compile Include="CoreLib\Test_Crypto.cs" />
     <Compile Include="CoreLib\Test_Extra_ExtensionMethods.cs" />

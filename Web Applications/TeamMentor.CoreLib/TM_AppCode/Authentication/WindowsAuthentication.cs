@@ -34,8 +34,11 @@ namespace TeamMentor.CoreLib
 			if (identity != null && identity.IsAuthenticated && identity.ImpersonationLevel == TokenImpersonationLevel.Impersonation)			
 				userName = identity.Name;
             else
-            {                
-                userName = HttpContextFactory.Current.field("_context").field("_wr").invoke("GetServerVariable", "LOGON_USER") as string;                 
+            {         
+                // not sure how to test the one bellow since it needs a valid HttpContext                
+                userName = HttpContextFactory.Current.field("_context")
+                                             .field("_wr")
+                                             .invoke("GetServerVariable", "LOGON_USER") as string;                                 
             }                  
            
 			if (userName.valid())
