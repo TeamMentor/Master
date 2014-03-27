@@ -97,7 +97,7 @@
     <Compile Include="CoreLib\Authentication\Test_TokenAuthentication.cs" />
     <Compile Include="CoreLib\Authentication\Test_UserRoleBaseSecurity.cs" />
     <Compile Include="CoreLib\Authentication\Test_WindowsAuthentication.cs" />
-    <Compile Include="CoreLib\ExtensionMethods\Extra.cs" />
+    <Compile Include="CoreLib\ExtensionMethods\Extra_HtmlAgilityPack_ExtensionMethods.cs" />
     <Compile Include="CoreLib\ExtensionMethods\Extra_Cookies_ExtensioMethods.cs" />
     <Compile Include="CoreLib\ExtensionMethods\Test_Extra_Json_ExtensionMethods.cs" />
     <Compile Include="CoreLib\Schemas\Test_TMUser.cs" />
@@ -112,6 +112,7 @@
     <Compile Include="CoreLib\Test_TM_UserData.cs" />
     <Compile Include="CoreLib\Test_Tracking_Application.cs" />
     <Compile Include="Asmx_WebServices\Test_WebServices_Security.cs" />
+    <Compile Include="CoreLib\Tracking\Test_Tracking_Application.cs" />
     <Compile Include="REST_Direct\Test_TBot.cs" />
     <Compile Include="TM_XmlDatabase\Test_Library_SaveToDisk.cs" />
     <Compile Include="TM_XmlDatabase\Test_LoadLibrariesFromDisk.cs" />
