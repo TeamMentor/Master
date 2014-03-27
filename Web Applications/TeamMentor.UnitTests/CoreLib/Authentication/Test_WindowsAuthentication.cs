@@ -74,9 +74,12 @@ namespace TeamMentor.UnitTests.Authentication
         [Test]
         public void login_Using_WindowsAuthentication()
         {
+
             var identity = WindowsIdentity.GetCurrent();
             Assert.NotNull(identity);
             Assert.IsTrue(identity.IsAuthenticated);            
+            Assert.AreEqual(Guid.Empty, windowsAuthentication.login_Using_WindowsAuthentication(identity));            
+            Assert.AreEqual(Guid.Empty, windowsAuthentication.login_Using_WindowsAuthentication(null));            
 
             var loginName = changeIndentityToBeImpersonation(identity);
             
@@ -93,6 +96,9 @@ namespace TeamMentor.UnitTests.Authentication
             identity.field("m_name","");
             Assert.AreEqual   (identity.Name,"");
             Assert.AreEqual(Guid.Empty,windowsAuthentication.login_Using_WindowsAuthentication(identity));
+
+            //at the moment we are not testing the mode to get the user from the live HttpContext server variable (the line below)
+            //userName = HttpContextFactory.Current.field("_context").field("_wr").invoke("GetServerVariable", "LOGON_USER") as string;                 
         }
 
 
@@ -118,6 +124,8 @@ namespace TeamMentor.UnitTests.Authentication
             Assert.IsTrue     (tmAuthentication.sessionID.validSession());
             Assert.IsNotNull  (tmUser_fromSession);
             Assert.AreEqual   (tmUser_fromSession.UserName,identity.Name);
+            
+            tmConfig.WindowsAuthentication.Enabled = false;
         }
 
 

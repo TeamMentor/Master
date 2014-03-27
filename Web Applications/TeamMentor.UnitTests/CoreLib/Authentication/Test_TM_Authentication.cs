@@ -13,9 +13,9 @@ namespace TeamMentor.UnitTests.Authentication
         TM_Authentication tmAuthentication;
 
         public Test_TM_Authentication()
-        {
-            tmConfig.WindowsAuthentication.Enabled = false;
+        {             
             tmAuthentication= tmWebServices.tmAuthentication;
+            Assert.IsFalse(tmConfig.WindowsAuthentication.Enabled);
             Assert.NotNull(tmAuthentication);
         }
 

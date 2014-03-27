@@ -10,7 +10,7 @@ namespace TeamMentor.UnitTests.TM_Website
         IE_UnitTest _ieUnitTest;
 
         [SetUp] public void setup()
-        {            
+        {                        
             _ieUnitTest = new IE_UnitTest();         
         }        
         [Test] public void openIE()
@@ -21,8 +21,12 @@ namespace TeamMentor.UnitTests.TM_Website
         
         [Test] public void Open_Site_Google()
         {
+            var google = "https://www.google.com";
+            if (google.uri().HEAD().isFalse())
+                Assert.Ignore();
+
             var ie = _ieUnitTest.ie;            
-            ie.open("https://www.google.com");     
+            ie.open(google);     
             "URL: {0}".info(ie.url());
             Assert.IsTrue(ie.url().contains("google"));
         }        

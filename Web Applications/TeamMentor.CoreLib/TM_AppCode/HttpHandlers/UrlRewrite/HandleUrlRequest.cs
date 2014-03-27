@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web;
+using System.Web.Script.Serialization;
 using FluentSharp.BCL;
 using FluentSharp.CoreLib;
 using Microsoft.Security.Application;
@@ -442,8 +443,7 @@ namespace TeamMentor.CoreLib
             {
                 var article = tmWebServices.GetGuidanceItemById(guid);
 
-                var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
-                var serializedData = serializer.Serialize(article);
+                var serializedData = article.javascript_Serialize();
                 var callbackRaw = context.Request["callback"];
                 if (callbackRaw.valid())
                 {
