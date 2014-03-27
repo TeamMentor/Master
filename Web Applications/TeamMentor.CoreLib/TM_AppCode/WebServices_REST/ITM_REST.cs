@@ -61,8 +61,7 @@ namespace TeamMentor.CoreLib
 
 		//Admin
 		[OperationContract] [WebGet(UriTemplate = "/admin/reloadCache")]		string		    Admin_ReloadCache();
-        [OperationContract] [WebGet(UriTemplate = "/admin/restart")]		    string		    Admin_Restart();
-        [OperationContract] [WebGet(UriTemplate = "/admin/script/{name}")]	    string		    Admin_InvokeScript(string name);
+        [OperationContract] [WebGet(UriTemplate = "/admin/restart")]		    string		    Admin_Restart();        
         [OperationContract] [WebGet(UriTemplate = "/admin/logs")]		        string		    Admin_Logs();
         [OperationContract] [WebGet(UriTemplate = "/admin/logs/reset")]		    string		    Admin_Logs_Reset();
         [OperationContract] [WebGet(UriTemplate = "/admin/reload_UserData")]    bool		    Reload_UserData();        

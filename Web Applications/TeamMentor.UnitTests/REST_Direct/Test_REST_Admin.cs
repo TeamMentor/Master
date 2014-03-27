@@ -14,28 +14,7 @@ namespace TeamMentor.UnitTests.REST
             SendEmails.Disable_EmailEngine = false;
             UserGroup.Admin.setThreadPrincipalWithRoles();
         }
-
-        //O2 Script Library
-        [Test] public void CompileAllScripts()
-        {
-            PublicDI.log.writeToDebug(true);
-            CompileEngine.clearCompilationCache();
-            foreach (var method in typeof (O2_Script_Library).methods())
-            {
-                var code = method.invoke().str();
-                var assembly = code.compileCodeSnippet();
-                Assert.IsNotNull(assembly, "Failed for compile {0} with code: \n\n {1}".format(method.Name, code));
-                "Compiled OK: {0}".info(method.Name);                
-            }
-        }
-        [Test] public void Invoke_O2_Script_Library()
-        {
-            var result = TmRest.Admin_InvokeScript("AAAAAAAAAA");            
-            Assert.AreEqual("script not found", result);
-            result = TmRest.Admin_InvokeScript("ping");            
-            Assert.AreEqual("pong", result);
-            
-        }
+        
         [Test] public void SendEmail()
         {            
             var emailsSent_Before = SendEmails.Sent_EmailMessages.size();
