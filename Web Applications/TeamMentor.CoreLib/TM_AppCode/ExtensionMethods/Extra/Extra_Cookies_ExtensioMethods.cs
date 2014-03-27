@@ -40,17 +40,18 @@ namespace FluentSharp.CoreLib
 
         public static HttpCookie set_Cookie(this HttpResponseBase response, string name, string value)
         {
-            if (response.isNull())
+            if (response.isNull() || name.isNull())
                 return null;
             var httpCookie = (response.hasCookie(name))
                                 ? response.Cookies[name]
                                 : new HttpCookie(name);
-            if (httpCookie.isNull())
-                return null;
-            httpCookie.Value = value;
+            if (httpCookie.notNull())
+            {
+                httpCookie.Value = value;
 
-            if ((response.hasCookie(name).isFalse()))
-                response.Cookies.Add(httpCookie);
+                if ((response.hasCookie(name).isFalse()))
+                    response.Cookies.Add(httpCookie);
+            }
             return httpCookie;
         }
 
@@ -78,17 +79,18 @@ namespace FluentSharp.CoreLib
         }
         public static HttpCookie set_Cookie(this HttpRequestBase request, string name, string value)
         {
-            if (request.isNull())
+            if (request.isNull() || name.isNull())
                 return null;
             var httpCookie = (request.hasCookie(name))
                                 ? request.Cookies[name]
                                 : new HttpCookie(name);
-            if (httpCookie.isNull())
-                return null;
-            httpCookie.Value = value;
+            if (httpCookie.notNull())
+            {                
+                httpCookie.Value = value;
 
-            if ((request.hasCookie(name).isFalse()))
-                request.Cookies.Add(httpCookie);
+                if ((request.hasCookie(name).isFalse()))
+                    request.Cookies.Add(httpCookie);
+            }
             return httpCookie;
         }
         public static string cookie(this HttpRequestBase request, string cookieName)
