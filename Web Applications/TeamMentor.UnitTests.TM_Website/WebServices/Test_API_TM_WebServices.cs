@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using FluentSharp.CoreLib;
 using NUnit.Framework;
 
 namespace TeamMentor.UnitTests.TM_Website.WebServices
@@ -12,6 +13,9 @@ namespace TeamMentor.UnitTests.TM_Website.WebServices
         [SetUp]
         public void setup()
         {
+            if (WebSite_Url.HEAD().isFalse())
+                Assert.Ignore("TM server is offline");
+
             Assert.IsTrue(this.logout());
         }
         [Test] public void Test_login_As_Admin()

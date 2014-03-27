@@ -8,8 +8,8 @@ namespace TeamMentor.CoreLib
     {    
         public static TM_UserData ResetData     (this TM_UserData userData)  
         {
-            userData.FirstScriptToInvoke = "H2Scripts//FirstScriptToInvoke.h2";
-            userData.Path_WebRootFiles   = "WebRoot_Files";
+            userData.FirstScriptToInvoke = TMConsts.USERDATA_FIRST_SCRIPT_TO_INVOKE;
+            userData.Path_WebRootFiles   = TMConsts.USERDATA_PATH_WEB_ROOT_FILES;
             userData.TMUsers             = new List<TMUser>();                        
             userData.SecretData          = new TM_SecretData();
             userData.AutoGitCommit       = TMConfig.Current.Git.AutoCommit_UserData;           

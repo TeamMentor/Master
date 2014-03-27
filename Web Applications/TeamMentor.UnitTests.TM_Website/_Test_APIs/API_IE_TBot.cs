@@ -1,4 +1,5 @@
 ﻿using FluentSharp.CoreLib;
+using NUnit.Framework;
 
 namespace TeamMentor.UnitTests.TM_Website
 {
@@ -7,6 +8,8 @@ namespace TeamMentor.UnitTests.TM_Website
         public API_IE_TBot()
         {
             TargetServer = "http://localhost:3187";            
+            if (TargetServer.uri().HEAD().isFalse())
+                Assert.Ignore("TM server is offline");
         }                
         public API_IE_TBot tbot_V1()
         {

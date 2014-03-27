@@ -11,15 +11,34 @@ namespace TeamMentor.UnitTests.CoreLib
         [Test]
         public void TM_UserData_Ctor()
         {
-            Assert.IsFalse(userData.UsingFileStorage);
-            userData = new TM_UserData(true);
-            Assert.IsTrue (userData.UsingFileStorage);
-            userData = new TM_UserData();
-            Assert.IsFalse(userData.UsingFileStorage);
+            Assert.IsFalse  (userData.UsingFileStorage);
+            Assert.AreEqual (TM_UserData.Current, userData);
+            Assert.IsNull   (TM_UserData.GitPushThread);
+
+            var userData2 = new TM_UserData(true);
+            
+            Assert.IsNull   (userData2.Path_UserData);
+            Assert.IsNull   (userData2.Path_UserData_Base);            
+            Assert.IsNull   (userData2.Git_UserData);
+            Assert.IsNull   (userData2.NGit);
+            Assert.IsFalse  (userData2.AutoGitCommit);            
+
+            //set by ResetData
+            Assert.IsTrue   (userData2.UsingFileStorage);
+            Assert.AreEqual (userData2.FirstScriptToInvoke, TMConsts.USERDATA_FIRST_SCRIPT_TO_INVOKE);
+            Assert.AreEqual (userData2.Path_WebRootFiles  , TMConsts.USERDATA_PATH_WEB_ROOT_FILES);
+            Assert.AreEqual (userData2.AutoGitCommit      , TMConfig.Current.Git.AutoCommit_UserData);
+            Assert.IsEmpty  (userData2.TMUsers);
+            Assert.IsNotNull(userData2.SecretData);                        
+            
+            userData = new TM_UserData();                   // restore userData to the version that doesn't use the FileStorage
+            Assert.IsFalse    (userData.UsingFileStorage);
+            Assert.AreEqual   (TM_UserData.Current, userData);
+            Assert.AreNotEqual(TM_UserData.Current, userData2);
         }
 
         [Test]
-        public void SecretDataDefault()
+        public void SecretData_Ctor()
         {
             userData.ResetData();
 
@@ -28,9 +47,13 @@ namespace TeamMentor.UnitTests.CoreLib
             Assert.IsNotNull(tmSecretData);
             Assert.IsNotNull(tmSecretData.Rijndael_IV);
             Assert.IsNotNull(tmSecretData.Rijndael_Key);
+
             Assert.IsNotNull(tmSecretData.SMTP_Server);
             Assert.IsNotNull(tmSecretData.SMTP_UserName);
             Assert.IsNull   (tmSecretData.SMTP_Password);
+
+            Assert.IsNull   (tmSecretData.Firebase_Site);
+            Assert.IsNull   (tmSecretData.Firebase_AuthToken);
 
             "TMSecretData xml: \n {0}".info(tmSecretData.toXml());
         }
@@ -57,7 +80,7 @@ namespace TeamMentor.UnitTests.CoreLib
             Assert.IsTrue   (fileExists);
             Assert.IsNotNull(scriptContents);
             Assert.IsNotNull(assembly);            
-            Assert.AreEqual (result_DirectInvoke, 42);    
+            Assert.AreEqual (result_DirectInvoke,  42);    
             Assert.AreEqual (result_TmInvoke    , "42");
             Assert.IsTrue   (fileDeleted);
 

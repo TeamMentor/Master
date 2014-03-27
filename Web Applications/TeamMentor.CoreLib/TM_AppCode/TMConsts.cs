@@ -10,6 +10,10 @@ namespace TeamMentor.CoreLib
         public static string EMAIL_SUBJECT_NEW_USER_WELCOME   = "Welcome to TeamMentor";
         public static string PATH_HTML_PAGE_UNAVAILABLE       = "/Html_Pages/Gui/Pages/unavailable.html";      
         public static string DEFAULT_TM_LOCALHOST_SERVER_URL  = "http://localhost";
+
+        public static string USERDATA_FIRST_SCRIPT_TO_INVOKE = "H2Scripts//FirstScriptToInvoke.h2";
+        public static string USERDATA_PATH_WEB_ROOT_FILES    = "WebRoot_Files";
+
         public static string EMAIL_TEST_SUBJECT               = "Test Email";
         public static string EMAIL_TEST_MESSAGE               = "From TeamMentor";
         public static string EMAIL_BODY_NEW_USER_WELCOME =
