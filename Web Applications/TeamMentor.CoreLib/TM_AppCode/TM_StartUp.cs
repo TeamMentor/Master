@@ -29,16 +29,18 @@ namespace TeamMentor.CoreLib
         }
         public void Session_Start()
         {
+            "[TM_StartUp] Session Start".info();
         }
         public void Session_End()
-        {            
+        {   
+            "[TM_StartUp] Session End".info();
             TrackingApplication.saveLog();
         }
         
         [Assert_Admin]                      // impersonate an admin to load the database
         public void Application_Start()
         {
-            //O2_Utils.showLogViewer_if_LocalHost();                
+            "[TM_StartUp] Application Start".info();            
             Logger_Firebase.createAndHook();
             TmXmlDatabase           = new  TM_Xml_Database(true);                                   // Create FileSystem Based database            
             TrackingApplication     = new Tracking_Application(TmXmlDatabase.Path_XmlDatabase);    // Enabled Application Tracking
@@ -47,6 +49,7 @@ namespace TeamMentor.CoreLib
         } 
         public void Application_End()
         {
+            "[TM_StartUp] Application End".info();            
             TrackingApplication.stop();
         }
         public void Application_Error()
@@ -62,9 +65,9 @@ namespace TeamMentor.CoreLib
             }
                 
             "[TM][Application_Error]: {0}".error(lastError);
-            TrackingApplication.saveLog();
-            //disabling error redirection while in dev
-         //   HttpContextFactory.Response.Redirect("/error");
+                        
+            if(HttpContextFactory.Request.IsLocal.isFalse())  //only redirecting if not from the local box
+               HttpContextFactory.Response.Redirect("/error");
         }           
         public void Application_BeginRequest()
         {
