@@ -70,7 +70,7 @@ namespace TeamMentor.CoreLib
                HttpContextFactory.Response.Redirect("/error");
         }           
         public void Application_BeginRequest()
-        {
+        {            
             TMEngine.performHealthCheck()
                     .logRequest()
                     .handleRequest();

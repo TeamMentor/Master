@@ -9,7 +9,7 @@ namespace TeamMentor.CoreLib
     {
         public static Logger_Firebase Current { get; set; }
 
-        public API_Firebase apiFirebase = new API_Firebase();
+        public API_Firebase apiFirebase = new API_Firebase("testLogs");
 
         public override string writeMemory(string message)
         {

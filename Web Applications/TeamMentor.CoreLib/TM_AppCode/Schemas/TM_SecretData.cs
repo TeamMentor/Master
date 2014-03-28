@@ -8,9 +8,14 @@ namespace TeamMentor.CoreLib
     {        
         public string Rijndael_IV    { get; set; }
         public string Rijndael_Key   { get; set; }
+
         public string SMTP_Server    { get; set; }
         public string SMTP_UserName  { get; set; }
         public string SMTP_Password  { get; set; }
+
+        public string Firebase_Site      { get; set; }
+        public string Firebase_AuthToken { get; set; }
+        public string Firebase_RootArea  { get; set; }        
 
         public List<string> Libraries_Git_Repositories { get; set; }
 

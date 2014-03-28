@@ -53,6 +53,7 @@ namespace TeamMentor.UnitTests.CoreLib.Tracking
         [Test]
         public void saveLog()
         {   
+            tracking.clearLog(false);
             var expected1 = "INFO: an info\r\nINFO: an debug\r\nINFO: an error\r\n";
             var expected2 = "INFO: an message\r\n";
             "an info".info();

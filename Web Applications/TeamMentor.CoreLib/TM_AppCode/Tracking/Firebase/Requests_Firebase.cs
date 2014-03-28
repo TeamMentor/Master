@@ -3,7 +3,7 @@
     public class Requests_Firebase 
     {        
         public static Requests_Firebase Current = new Requests_Firebase();
-        public static API_Firebase apiFirebase = new API_Firebase() { Area = "requestUrls" };
+        public static API_Firebase apiFirebase = new API_Firebase("requestUrls");
     	
         public Log_Request logRequest()
         {

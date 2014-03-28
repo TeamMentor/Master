@@ -10,7 +10,7 @@ namespace TeamMentor.UnitTests.WebSite_Content
         [SetUp]
         public void setup()
         {
-            if (Tests_Config.offline)
+            if (Tests_Consts.offline)
                 Assert.Ignore("Ignoring Test because we are offline");   
         }
 

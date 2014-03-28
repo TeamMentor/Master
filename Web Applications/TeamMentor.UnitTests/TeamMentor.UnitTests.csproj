@@ -100,12 +100,14 @@
     <Compile Include="CoreLib\ExtensionMethods\Extra_HtmlAgilityPack_ExtensionMethods.cs" />
     <Compile Include="CoreLib\ExtensionMethods\Extra_Cookies_ExtensioMethods.cs" />
     <Compile Include="CoreLib\ExtensionMethods\Test_Extra_Json_ExtensionMethods.cs" />
+    <Compile Include="CoreLib\Messaging\Test_SendEmail_SMTP.cs" />
     <Compile Include="CoreLib\Schemas\Test_TMUser.cs" />
     <Compile Include="CoreLib\Test_Crypto.cs" />
     <Compile Include="CoreLib\Test_Extra_ExtensionMethods.cs" />
     <Compile Include="CoreLib\Test_HandleRequest_LibraryData.cs" />
     <Compile Include="CoreLib\Schemas\Test_Schemas_Validation.cs" />
     <Compile Include="CoreLib\Tracking\Firebase\Test_API_Firebase.cs" />
+    <Compile Include="CoreLib\Tracking\Firebase\Test_API_Firebase_SubmitQueue.cs" />
     <Compile Include="CoreLib\Tracking\Test_TM_Logger_Memory.cs" />
     <Compile Include="CoreLib\Messaging\Test_Email.cs" />
     <Compile Include="CoreLib\Test_HandleRequest.cs" />
@@ -127,6 +129,7 @@
     <Compile Include="CoreLib\Test_Utils_GoogleAnalytics.cs" />
     <Compile Include="_Test_ConfigAndHelpers\Tests_Config.cs" />
     <Compile Include="_Test_ConfigAndHelpers\TM_Config_InMemory.cs" />
+    <Compile Include="_Test_ConfigAndHelpers\TM_QA_ConfigFile.cs" />
     <Compile Include="_Test_ConfigAndHelpers\TM_UserData_InMemory.cs" />
     <Compile Include="_Test_ConfigAndHelpers\TM_WebServices_InMemory.cs" />
     <Compile Include="_Test_ConfigAndHelpers\TM_XmlDatabase_InMemory.cs" />
@@ -159,7 +162,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

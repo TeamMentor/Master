@@ -6,7 +6,7 @@ namespace TeamMentor.CoreLib
     public class Activities_Firebase 
     {        
         public static Activities_Firebase Current = new Activities_Firebase();
-        public static API_Firebase apiFirebase = new API_Firebase() { Area = "activities" };
+        public static API_Firebase apiFirebase = new API_Firebase("activities");
     	
         public UserActivity logActivity(UserActivity userActivity)
         {            

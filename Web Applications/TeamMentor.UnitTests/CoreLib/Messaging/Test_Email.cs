@@ -24,12 +24,12 @@ namespace TeamMentor.UnitTests.CoreLib
             Assert.IsTrue(sendEmails.serverNotConfigured()   , "In UnitTests serverNotConfigured should be in offline mode");            
         }
         [TearDown]
-        public void TearDown()                             
+        public void TearDown()                          
         {            
             SendEmails.Send_Emails_As_Sync = false;             // restore value to its default state
         }
 
-        [Test] public void SendEmails_Ctor()
+        [Test] public void SendEmails_Ctor()            
         {   
             SendEmails.Send_Emails_As_Sync = false;             // is false by default
             //static vars
@@ -46,7 +46,7 @@ namespace TeamMentor.UnitTests.CoreLib
             Assert.AreEqual  (sendEmails.Smtp_Password  , userData.SecretData.SMTP_Password     );
 
         }
-        [Test] public void mapTMServerUrl()
+        [Test] public void mapTMServerUrl()             
         {                        
             Assert.AreEqual (SendEmails.TM_Server_URL, TMConsts.DEFAULT_TM_LOCALHOST_SERVER_URL);
             var context = HttpContextFactory.Context.mock();
@@ -62,13 +62,14 @@ namespace TeamMentor.UnitTests.CoreLib
             Assert.AreEqual (request.ServerVariables["Server_Port"], serverPort);            
 
             //request.IsSecureConnection = false;
+            SendEmails.TM_Server_URL = null;
             var expectedServer = "http://{0}:{1}".format(serverName, serverPort);
-            var serverUrl = sendEmails.mapTMServerUrl();
+            var serverUrl = SendEmails.mapTMServerUrl();
             Assert.AreEqual(serverUrl, expectedServer);
             Assert.AreEqual(serverUrl, SendEmails.TM_Server_URL);
             SendEmails.TM_Server_URL = TMConsts.DEFAULT_TM_LOCALHOST_SERVER_URL;
         }
-        [Test] public void send_TestEmail()
+        [Test] public void send_TestEmail()             
         {
             var emailCount = SendEmails.Sent_EmailMessages.size();
             Assert.IsFalse(sendEmails.send_TestEmail());
@@ -78,7 +79,7 @@ namespace TeamMentor.UnitTests.CoreLib
             Assert.AreEqual(lastEmail.SentStatus, SentStatus.NoConfig);
             Assert.AreEqual(emailCount + 1      , SendEmails.Sent_EmailMessages.size());
         }
-        [Test] public void send()
+        [Test] public void send()                       
         {            
             var emailMessage = new EmailMessage 
                                     {

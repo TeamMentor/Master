@@ -198,6 +198,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         }
         [Test] public void userEnabled()
         {
+            tmConfig.TMSecurity.NewAccounts_Enabled = true;
             Assert.IsTrue(tmConfig.TMSecurity.NewAccounts_Enabled);
             var tmUser1      = userData.createUser();
             Assert.IsTrue(tmUser1.AccountStatus.UserEnabled);

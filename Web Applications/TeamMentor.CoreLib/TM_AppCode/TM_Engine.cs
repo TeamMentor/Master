@@ -15,6 +15,7 @@ namespace TeamMentor.CoreLib
                 "[Fatal Error] TMConfig.Current was null".error();
                 HttpContextFactory.Server.Transfer(TMConsts.PATH_HTML_PAGE_UNAVAILABLE);
             }
+            SendEmails.mapTMServerUrl();        // find a better place to put these one-off requests
             return this;
         }
 

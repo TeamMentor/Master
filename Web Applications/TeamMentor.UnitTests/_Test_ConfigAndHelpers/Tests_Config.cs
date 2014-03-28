@@ -9,8 +9,6 @@ namespace TeamMentor.UnitTests
     [SetUpFixture]
     public class Tests_Config
     {
-        public static bool offline = MiscUtils.online().isFalse();
-
         [SetUp]
         public void RunBeforeAllTests()
         {
@@ -24,5 +22,13 @@ namespace TeamMentor.UnitTests
         public void RunAfterAllTests()
         {            
         }
+    }
+
+    public class Tests_Consts
+    {
+        public static bool   offline = MiscUtils.online().isFalse();
+
+        public static string TM_QA_ConfigFile_LOCAL_FOLDER = @"C:\_TeamMentor\_TM_QA";
+        public static string TM_QA_ConfigFile_FILE_NAME    = "TM_QA.config";
     }
 }

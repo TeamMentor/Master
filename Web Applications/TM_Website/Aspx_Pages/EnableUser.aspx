@@ -11,8 +11,8 @@
     var message = (tmUser.notNull())
         ?  "Thanks for enabling an TeamMentor Account<br/><br/>The user '{0}' will be able to login now.".format(tmUser.UserName.htmlEncode())
         :  "Sorry could not enable the user. The Token is invalid or it has been used already";
-         
-    {}
+    if(tmUser.notNull())     
+        SendEmails.SendWelcomeEmailToUser(tmUser);
     
     
 %>
