@@ -26,9 +26,15 @@ namespace TeamMentor.CoreLib
         public static Logger_Firebase createAndHook()
         {          
             try
-            {
-                "[Logger_Firebase][createAndHook] Setting up Logger_Firebase".info();
-                Current = new Logger_Firebase();
+            {                
+                "[Logger_Firebase][createAndHook] Setting up Logger_Firebase".info();                
+                var loggerFirebase = new Logger_Firebase();
+                if (loggerFirebase.apiFirebase.site_Configured().isFalse())
+                {
+                    "[Logger_Firebase] Firebase not configured, so disabling Firebase real-time logs/data support".debug();                    
+                    return null;
+                }
+                Current  = loggerFirebase;
                 PublicDI.log.LogRedirectionTarget = Current;
                 return Current;
             }

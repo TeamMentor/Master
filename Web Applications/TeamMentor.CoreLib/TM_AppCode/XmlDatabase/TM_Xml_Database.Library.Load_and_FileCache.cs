@@ -87,7 +87,8 @@ namespace TeamMentor.CoreLib
                         var targetFolder = tmDatabase.Path_XmlLibraries.pathCombine(libraryName);
                         if (targetFolder.dirExists().isFalse())
                         {
-                            gitLibrary.git_Clone(targetFolder);
+                            tmDatabase.clone_Library(gitLibrary,targetFolder);
+                            //gitLibrary.git_Clone(targetFolder);
                         }
                         else 
                             "[handle_UserData_GitLibraries] skipping git clone since there was already a library called: {0}".info(libraryName);
@@ -102,6 +103,20 @@ namespace TeamMentor.CoreLib
                 ex.log("handle_UserData_GitLibraries");
                 
             }            
+            return tmDatabase;
+        }
+
+        public static TM_Xml_Database   clone_Library      (this TM_Xml_Database tmDatabase, string gitLibrary, string targetFolder)
+        {
+            var start = DateTime.Now;
+            "[TM_Xml_Database][GitClone] Start".info();
+            if (Git.CloneUsingGit(gitLibrary,targetFolder).isFalse())
+            {
+                "[TM_Xml_Database][GitClone] Using NGit for the clone".info();    
+                gitLibrary.git_Clone(targetFolder);
+            }
+            
+            "\n\n[TM_UserData][GitClone] in: {0}\n\n".debug(start.duration_To_Now());
             return tmDatabase;
         }
     }

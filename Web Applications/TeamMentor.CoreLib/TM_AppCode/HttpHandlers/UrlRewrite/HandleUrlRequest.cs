@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web;
-using System.Web.Script.Serialization;
-using FluentSharp.BCL;
 using FluentSharp.CoreLib;
+using FluentSharp.WinForms;
 using Microsoft.Security.Application;
 using System.IO;
 using System.Security;
