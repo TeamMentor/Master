@@ -87,6 +87,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
+    <Compile Include="WebServices\Test_WebServices_Config.cs" />
     <Compile Include="WebServices\Test_WebServices_Users.cs" />
     <Compile Include="WebServices\Test_API_TM_WebServices.cs" />
     <Compile Include="WebServices\Test_WebServices_Setup.cs" />
@@ -131,6 +132,9 @@
       <DependentUpon>Reference.map</DependentUpon>
     </None>
     <None Include="Web References\WebServices\TM_Library.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\WebServices\TM_QA_Config.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </None>
     <None Include="Web References\WebServices\TM_User.datasource">

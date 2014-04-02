@@ -1,34 +1,38 @@
 ﻿using System;
 using System.ServiceModel.Web;
 using FluentSharp.CoreLib;
+using FluentSharp.CoreLib.API;
 using TeamMentor.CoreLib;
 
 namespace TeamMentor.UnitTests.REST
 {
 	public class TM_REST_Host
 	{
-		public static string	Service_Protocol	{ get; set; }
-		public static int		Service_Port		{ get; set; }
-		public static string	Service_IP			{ get; set; }
+		public string	Service_Protocol	{ get; set; }
+		public int		Service_Port		{ get; set; }
+		public string	Service_IP			{ get; set; }
+        public string	Url_Template	    { get; set; }
 				
 		public WebServiceHost	Host				{ get; set; }
 
-		static TM_REST_Host()
+		public TM_REST_Host()
 		{
-			Service_Protocol = "http";
-			Service_Port	 = 20000; 
-			Service_IP		 = "localhost";
-		}
+			Service_Protocol = Tests_Consts.TM_REST_Service_Protocol;
+            Service_Port	 = Tests_Consts.TM_REST_Service_Port; 
+			Service_IP		 = Tests_Consts.TM_REST_Service_IP;
+            Url_Template     = Tests_Consts.TM_REST_Url_Template;
+            // to understand the use of Design_Time_Addresses see http://stackoverflow.com/questions/885744/wcf-servicehost-access-rights/10171284#10171284
+		}              
 
 		public Uri BaseAddress
-		{
-			get { return  "{0}://{1}:{2}".format(Service_Protocol, Service_IP, Service_Port).uri(); }
+		{			
+            get { return  Url_Template.format(Service_Protocol, Service_IP, Service_Port).uri(); }
 		}
 
 		public TM_REST_Host StartHost()
 		{						
 			Host = new WebServiceHost(typeof (TM_REST), BaseAddress);						
-			Host.Open();						            
+            Host.Open();            
 			return this;
 		}
 

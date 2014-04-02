@@ -143,12 +143,11 @@ namespace TeamMentor.CoreLib
 
         public static UserSession       add_NewSession(this TMUser tmUser, string loginMethod = "Direct")
         {
-
-            var ipAddress = HttpContextFactory.Context.ipAddress();            
+            
             var userSession = new UserSession
             {
                 SessionID    = Guid.NewGuid(),
-                IpAddress    = ipAddress,
+                IpAddress    = HttpContextFactory.Request.ipAddress(),
                 CreationDate = DateTime.Now,
                 LoginMethod  = loginMethod
             };

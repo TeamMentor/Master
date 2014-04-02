@@ -25,24 +25,7 @@ namespace TeamMentor.CoreLib
             "[TM_REST]: Received request to restart Application".debug();
             typeof(HttpRuntime).invokeStatic("ShutdownAppDomain", "");
             return "done";
-        }
-        public string Admin_InvokeScript(string scriptName)
-        {
-            var method = typeof (O2_Script_Library).method(scriptName);
-            if (method.isNull())
-                return "script not found";
-            try
-            {
-                var returnValue = method.invokeStatic().str().compileAndExecuteCodeSnippet();
-                return returnValue.str();
-            }
-            catch (Exception ex)
-            {
-                ex.log("[Admin_InvokeScript] for script:" + scriptName);
-                return "script failed to execute";
-            }
-            
-        }
+        }        
         public string Admin_Logs()
         {
             return TmWebServices.GetLogs();	        

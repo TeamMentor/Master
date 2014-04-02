@@ -30,30 +30,32 @@ namespace TeamMentor.CoreLib
         {
             mapTMServerUrl();  
             From = TMConfig.Current.TMSecurity.Default_AdminEmail;
-            if (TM_Xml_Database.Current.notNull())
+            if (TM_UserData.Current.notNull())
             { 
-                var secretData = TM_Xml_Database.Current.UserData.SecretData;
+                var secretData = TM_UserData.Current.SecretData;
                 if (secretData.notNull())
                 {
-                    Smtp_Server = secretData.SMTP_Server;
+                    Smtp_Server   = secretData.SMTP_Server;
                     Smtp_UserName = secretData.SMTP_UserName;
                     Smtp_Password = secretData.SMTP_Password;
                 }
             }
         }
-        public string mapTMServerUrl()
-        {           
-            TM_Server_URL = TMConsts.DEFAULT_TM_LOCALHOST_SERVER_URL;
-            if (HttpContextFactory.Context.isNotNull() && HttpContextFactory.Request.isNotNull())
+        public static string mapTMServerUrl()           // this should be set by an live HTTP request
+        {       
+            if (TM_Server_URL.isNull())
             {
-                var request = HttpContextFactory.Request;
-                var scheme = request.IsSecureConnection ? "https" : "http";
-                var serverName = request.ServerVariables["Server_Name"];
-                var serverPort = request.ServerVariables["Server_Port"];
-                if (serverName.notNull() && serverPort.notNull())                
-                    TM_Server_URL = "{0}://{1}:{2}".format(scheme, serverName, serverPort);                                    
-            }                            
-            
+                TM_Server_URL = TMConsts.DEFAULT_TM_LOCALHOST_SERVER_URL;
+                if (HttpContextFactory.Context.isNotNull() && HttpContextFactory.Request.isNotNull())
+                {
+                    var request = HttpContextFactory.Request;
+                    var scheme = request.IsSecureConnection ? "https" : "http";
+                    var serverName = request.ServerVariables["Server_Name"];
+                    var serverPort = request.ServerVariables["Server_Port"];
+                    if (serverName.notNull() && serverPort.notNull())                
+                        TM_Server_URL = "{0}://{1}:{2}".format(scheme, serverName, serverPort);                                    
+                }                            
+            }
             return TM_Server_URL;
         }
 
@@ -78,7 +80,6 @@ namespace TeamMentor.CoreLib
         {
             return send(to, subject, message, false);
         }
-
         public bool send(string to, string subject, string message, bool htmlMessage)
         {
             var emailMessage = new EmailMessage 
@@ -132,6 +133,9 @@ namespace TeamMentor.CoreLib
                 // Init SmtpClient and send
                 var smtpClient = new SmtpClient(Smtp_Server, 587);
                 var credentials = new System.Net.NetworkCredential(Smtp_UserName, Smtp_Password);
+                
+                smtpClient.EnableSsl = true;
+
                 smtpClient.Credentials = credentials;
                 if (Dont_Send_Emails)
                 {
@@ -157,6 +161,12 @@ namespace TeamMentor.CoreLib
         //sendEmail Helpers
         public static void SendNewUserEmails(string subject, TMUser tmUser)
         {
+            if(TMConfig.Current.newAccountsEnabled().isFalse())
+            {
+                SendNewUserEmails_UserDisabled__Workflow(subject, tmUser);
+                return;
+            }
+
             if (Disable_EmailEngine)
                 return;
             var tmMessage =
@@ -179,17 +189,54 @@ namespace TeamMentor.CoreLib
                               tmUser.Stats.CreationDate.ToLongDateString());
 
             SendEmailToTM(subject, tmMessage);
+            SendWelcomeEmailToUser(tmUser);
+        }
+
+        public static void SendWelcomeEmailToUser(TMUser tmUser)
+        {
             if (tmUser.EMail.valid())
             {
                 var subj = TMConsts.EMAIL_SUBJECT_NEW_USER_WELCOME;
                 var userMessage = TMConsts.EMAIL_BODY_NEW_USER_WELCOME.format(TM_Server_URL, tmUser.UserName);
                 SendEmailToEmail(tmUser.EMail, subj, userMessage);
-                userMessage = "(sent to: {0})\n\n{1}".format(tmUser.EMail, userMessage);
-                SendEmailToTM("(user email) Welcome to TeamMentor", userMessage);
+                //userMessage = "(sent to: {0})\n\n{1}".format(tmUser.EMail, userMessage);
+                //SendEmailToTM("(user email) Welcome to TeamMentor", userMessage);
             }
-
         }
-        
+        public static void SendNewUserEmails_UserDisabled__Workflow(string subject, TMUser tmUser)
+        { 
+            var subj = "Thanks for creating an TeamMentor Account"; //TMConsts.EMAIL_SUBJECT_NEW_USER_WELCOME;
+            var userMessage = TMConsts.EMAIL_BODY_NEW_USER_NEEDS_APPROVAL;
+            SendEmailToEmail(tmUser.EMail, subj, userMessage);
+
+            var enableUserUrl = "{0}/aspx_pages/EnableUser.aspx?token={1}".format(SendEmails.TM_Server_URL, tmUser.enableUser_Token());
+            var tmMessage =
+@"Hello TeamMentor admin, the following new User request as been received:
+
+    UserId: {0}
+    UserName: {1}
+    Company: {2}
+    Email: {3}
+    FirstName: {4}
+    LastName: {5}
+    Title: {6}
+    Creation Date: {7}
+
+Please click on this link if you want to approve it: {8}
+".format(tmUser.UserID, 
+                              tmUser.UserName,
+                              tmUser.Company,
+                              tmUser.EMail,
+                              tmUser.FirstName,
+                              tmUser.LastName,
+                              tmUser.Title,
+                              tmUser.Stats.CreationDate.ToLongDateString(),
+                              enableUserUrl);
+
+            //userMessage = "(sent to: {0})\n\n{1}".format(tmUser.EMail, userMessage);
+            SendEmailToTM("New TeamMentor Account Request", tmMessage);
+            
+        }
         [Assert_Admin]
         public static void SendEmailAboutUserToTM(string action, TMUser tmUser)
         {
@@ -211,30 +258,6 @@ Stats:
             SendEmailToTM(subject, message);
         }
 
-/*        [Assert_Admin]
-        public static bool SendLoginTokenToUser(TMUser tmUser)
-        {
-            try
-            {                 
-var userMessage =
-@"Hi {0} {1} A Login token was requested for your account.
-
-You can login to your {2} account using {4}/rest/{2}/{3}
-
-TeamMentor Team.
-             ".format(tmUser.FirstName, tmUser.LastName, tmUser.UserName, tmUser.current_SingleUseLoginToken(), TM_Server_URL);
-             SendEmailToEmail(tmUser.EMail, "TeamMentor Login Link", userMessage);
-             userMessage = "(sent to: {0})\n\n{1}".format(tmUser.EMail, userMessage);
-             SendEmailToTM("(user email) TeamMentor Login Link", userMessage);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                ex.log();
-            }
-            return false;
-        }
-*/
         [Assert_Admin]
         public static bool SendPasswordReminderToUser(TMUser tmUser, Guid passwordResetToken)
         {

@@ -159,9 +159,9 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             var newUser = new NewUser();
             var result = tmWebServices.CreateUser_Validate(newUser);
             Assert.NotNull(result);
-            Assert.AreEqual(result.size(), 10);
-            Assert.AreEqual(result.first(), "Company:The Company field is required.");            
-            Assert.AreEqual(result.second(), "Country:The Country field is required.");            
+            Assert.AreEqual(result.size(), 3);
+            Assert.AreEqual(result.first(), "Password:The Password field is required.");            
+            Assert.AreEqual(result.second(), "Username:The Username field is required.");            
 
             //try with an a fully populated NewUser object
             newUser       = newTempUser();

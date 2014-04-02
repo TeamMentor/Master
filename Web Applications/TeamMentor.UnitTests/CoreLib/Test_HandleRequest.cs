@@ -39,9 +39,10 @@ namespace TeamMentor.UnitTests.CoreLib
             var targetUrl = "https://localhost/virtualarticles".uri();
             var expectedRedirect = "/Html_Pages/Gui/Pages/login.html?LoginReferer=/virtualarticles";
 
-            moqHttpContext.RequestUrl = targetUrl;
+            context.Request.field("_url", targetUrl);
+            Assert.AreEqual(context.Request.Url, targetUrl);
             handleUrlRequest.routeRequestUrl();
-            var redirecting     = context.Response.IsRequestBeingRedirected;
+            var redirecting  = context.Response.IsRequestBeingRedirected;
             Assert.IsTrue   (redirecting                                        , "redirecting after call to Admin method");
             Assert.AreEqual (expectedRedirect,context.Response.RedirectLocation ,"Login redirect location,  after call to Admin");
         }
@@ -93,9 +94,10 @@ namespace TeamMentor.UnitTests.CoreLib
                                         .add("http://www.google.com"    ,"/")
                                         .add("//www.google.com"         ,"/www.google.com");
             
-            var request               = context.Request;
-            var response              = context.Response;
-            moqHttpContext.RequestUrl = targetServer.append("/some/path").uri();            
+            var request  = context.Request;
+            var response = context.Response;
+            
+            request.field("_url", targetServer.append("/some/path").uri());                      
             
             foreach (var item in okRedirects)
             {         
@@ -119,7 +121,8 @@ namespace TeamMentor.UnitTests.CoreLib
                                                                                                
             var request               = context.Request;
             var response              = context.Response;
-            moqHttpContext.RequestUrl = targetServer.append("/some/path").uri();            
+            moqHttpContext.field("_url", targetServer.append("/some/path").uri());
+            //moqHttpContext.RequestUrl = targetServer.append("/some/path").uri();            
 
             Assert.IsFalse  (response.IsRequestBeingRedirected);  
              

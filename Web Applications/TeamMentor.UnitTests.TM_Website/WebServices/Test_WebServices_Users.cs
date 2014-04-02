@@ -11,6 +11,8 @@ namespace TeamMentor.UnitTests.TM_Website
         [SetUp]
         public void setup()
         {
+            if (WebSite_Url.HEAD().isFalse())
+                Assert.Ignore("TM server is offline");
             this.login_As_Admin();
             Assert.AreEqual(this.current_User().UserName, Tests_Consts.DEFAULT_ADMIN_USERNAME);
         }

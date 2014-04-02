@@ -292,6 +292,8 @@
     <Content Include="Javascript\bootstrap\datetimepicker\moment.min.js" />
     <Content Include="Javascript\bootstrap\glyphicons-halflings-white.png" />
     <Content Include="Javascript\bootstrap\glyphicons-halflings.png" />
+    <Content Include="TBot_Users\lib\firebase\angularfire.js" />
+    <Content Include="TBot_Users\lib\firebase\firebase.js" />
     <Content Include="Javascript\gAnalytics\ga.js" />
     <Content Include="Javascript\gAnalytics\TrackingCode.js" />
     <Content Include="Javascript\jQuery.DataTable\jquery.dataTables.min.js" />

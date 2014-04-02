@@ -1,4 +1,4 @@
-<div id="top-nav" class="navbar navbar-inverse navbar-static-top">
+<div id="top-nav" class="navbar navbar-inverse navbar-static-top" ng-controller="LoggedInController">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -23,9 +23,12 @@
                         <li><a href="/TeamMentor">Main TeamMentor site</a></li>
                     </ul>
                 </li>
-
                 <li><a href="/logout"><i class="glyphicon glyphicon-lock"></i> Logout</a></li>
             </ul>
         </div>
     </div>
 </div>
+        <!--
+            <b>Hello: {{userName}} {{csrfToken}}</b>
+            <br/>
+        -->

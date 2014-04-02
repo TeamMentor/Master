@@ -12,12 +12,14 @@ namespace TeamMentor.UnitTests.TM_Website
 
         public Test_WebServices_Authentication()
         {                        
-            Assert.NotNull(webServices);            
+            Assert.NotNull(webServices);                        
         }
 
         [SetUp]
         public void setup()
-        {
+        {            
+            if (WebSite_Url.HEAD().isFalse())            
+                Assert.Ignore("TM Server is offline");
             Assert.AreEqual(webServices.Logout(), Guid.Empty);
         }
         [Test] public void WS_Method_CurrentUSer()

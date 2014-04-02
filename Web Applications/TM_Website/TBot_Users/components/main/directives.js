@@ -3,6 +3,7 @@ angular.module('tbot')
             {
                 return {
                             restrict    : 'E',
-                            templateUrl : 'components/main/directives/topMenu.html'
+                            templateUrl : 'components/main/directives/topMenu.html',
+                            controller  : 'LoggedInController'
                        };
             });

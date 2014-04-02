@@ -16,10 +16,11 @@ namespace TeamMentor.UnitTests.TM_Website
     {
         public Test_Tbot_User_View()
         {
-            var adminAuthToken = "30ce16e9-d054-4a87-be76-edf0ba8815ec";
+            this.login_As_Admin();
+            /*var adminAuthToken = "30ce16e9-d054-4a87-be76-edf0ba8815ec";
             var tbotPage       = "rest/tbot/run/hello";
             var url            = "{0}?auth={1}".format(tbotPage,adminAuthToken);
-            this.open(url);
+            this.open(url);*/
 
             //parentForm.normal();
         }

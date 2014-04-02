@@ -21,7 +21,7 @@ namespace TeamMentor.UnitTests.TM_Website.TBot
             Assert.IsTrue(ie.url().contains("Html_Pages/Gui/Pages/login.html"));  // means we are not logged in
 
             //Add way to login user
-            //parentForm.waitForClose();
+      //      parentForm.waitForClose();    
         }
     }
 }

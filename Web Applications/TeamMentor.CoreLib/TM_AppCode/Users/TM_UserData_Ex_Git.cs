@@ -98,7 +98,7 @@ namespace TeamMentor.CoreLib
                     //userData.Path_UserData.createDir();
                     "[handleExternalGitPull] userData.Path_UserData set to: {0}".debug(userData.Path_UserData);
              
-                    if (MiscUtils.online().isFalse())
+                    if (MiscUtils.online().isFalse() && gitLocation.dirExists().isFalse())
                         return userData;
 
                     if (userData.Path_UserData.isGitRepository())
@@ -111,10 +111,7 @@ namespace TeamMentor.CoreLib
                     }
                     else
                     {
-                        var start = DateTime.Now;
-                        "[TM_UserData][GitClone] Start".info();
-                        gitLocation.git_Clone(userData.Path_UserData);
-                        "[TM_UserData][GitClone] in ".info(start.duration_To_Now());
+                        userData.clone_UserDataRepo(gitLocation, userData.Path_UserData);
                     }
                 }
             }
@@ -122,6 +119,19 @@ namespace TeamMentor.CoreLib
             {
                 ex.log("[handleExternalGitPull]");
             }
+            return userData;
+        }
+    
+        public static TM_UserData   clone_UserDataRepo      (this TM_UserData userData, string gitLocation, string targetFolder)
+        {
+            var start = DateTime.Now;
+            "[TM_UserData][GitClone] Start".info();
+            if (Git.CloneUsingGit(gitLocation,targetFolder).isFalse())
+            {
+                "[TM_UserData][GitClone] Using NGit for the clone".info();    
+                gitLocation.git_Clone(targetFolder);
+            }
+            "\n\n[TM_UserData][GitClone] in  {0}\n\n".debug(start.duration_To_Now());
             return userData;
         }
     }

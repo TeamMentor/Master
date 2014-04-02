@@ -9,6 +9,8 @@ namespace TeamMentor.UnitTests.TM_Website.WebServices
     {
         public Test_WebServices_Setup()
         {            
+            if (WebSite_Url.HEAD().isFalse())
+                Assert.Ignore("TM server is offline");
             Assert.NotNull(webServices);
         }
 

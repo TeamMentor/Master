@@ -25,14 +25,14 @@ namespace TeamMentor.CoreLib
         [DataMember][Required][StringLength(30)]    public string	UserName	    { get; set; }
         
         [DataMember][Required][StringLength(50)]  
-        [RegularExpression(ValidationRegex.Email)]	public string	Email		    { get; set; }
-        
+        [RegularExpression(ValidationRegex.Email)]	public string	Email		    { get; set; }        
         [DataMember]                                public Int64	CreatedDate	    { get; set; }
         [DataMember]                                public string   CSRF_Token      { get; set; }         
         [DataMember]                                public DateTime ExpirationDate  { get; set; } 
         [DataMember]                                public bool     PasswordExpired { get; set; } 
         [DataMember]                                public bool     UserEnabled     { get; set; } 
         [DataMember]                                public int	    GroupID	        { get; set; }
+        [DataMember]                                public List<UserTag>   UserTags	{ get; set; }
     }
 
 
@@ -60,7 +60,8 @@ namespace TeamMentor.CoreLib
                 UserName = tmUser.UserName,
                 CSRF_Token = tmUser.SecretData.CSRF_Token,                
                 UserEnabled = tmUser.AccountStatus.UserEnabled,
-                GroupID = tmUser.GroupID
+                GroupID = tmUser.GroupID,
+                UserTags = tmUser.UserTags
             };
             try
             {
@@ -90,7 +91,8 @@ namespace TeamMentor.CoreLib
                     Title       = user.Title,                    
                     Username    = user.UserName,                    
                     Country     = user.Country,
-                    State       = user.State
+                    State       = user.State,
+                    UserTags    = user.UserTags
                 };  
         }
     }

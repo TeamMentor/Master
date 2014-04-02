@@ -198,23 +198,24 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         }
         [Test] public void userEnabled()
         {
+            tmConfig.TMSecurity.NewAccounts_Enabled = true;
             Assert.IsTrue(tmConfig.TMSecurity.NewAccounts_Enabled);
             var tmUser1      = userData.createUser();
             Assert.IsTrue(tmUser1.AccountStatus.UserEnabled);
 
             tmConfig.TMSecurity.NewAccounts_Enabled = false;
-            var tmUser2      = userData.createUser();
+            var tmUser2      = userData.createUser();               // this will set the tmUser2.SecretData.EnableUserToken because the admin will be emailed with the EnableUserToken
             Assert.IsFalse(tmUser2.AccountStatus.UserEnabled);
 
             Assert.AreNotEqual(tmUser1, tmUser2);
-            Assert.AreEqual   (Guid.Empty, tmUser1.AccountStatus.EnableUserToken);
-            Assert.AreEqual   (Guid.Empty, tmUser2.AccountStatus.EnableUserToken);
+            Assert.AreEqual   (Guid.Empty, tmUser1.SecretData.EnableUserToken);
+            Assert.AreNotEqual(Guid.Empty, tmUser2.SecretData.EnableUserToken);
 
             var accountEnableToken1 = tmUser1.enableUser_Token();
             var accountEnableToken2 = tmUser2.enableUser_Token();
 
-            Assert.AreNotEqual(Guid.Empty, tmUser1.AccountStatus.EnableUserToken);
-            Assert.AreNotEqual(Guid.Empty, tmUser2.AccountStatus.EnableUserToken);
+            Assert.AreNotEqual(Guid.Empty, tmUser1.SecretData.EnableUserToken);
+            Assert.AreNotEqual(Guid.Empty, tmUser2.SecretData.EnableUserToken);
 
             Assert.IsTrue     (accountEnableToken1.enableUser_IsTokenValid());
             Assert.IsTrue     (accountEnableToken2.enableUser_IsTokenValid());            

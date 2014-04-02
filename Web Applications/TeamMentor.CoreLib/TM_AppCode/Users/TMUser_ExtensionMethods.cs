@@ -137,15 +137,15 @@ namespace TeamMentor.CoreLib
             if (tmUser.notNull())
             {
                 tmUser.AccountStatus.UserEnabled     = true;
-                tmUser.AccountStatus.EnableUserToken = Guid.Empty;
+                tmUser.SecretData.EnableUserToken = Guid.Empty;
             }
             return tmUser;
         }
         public static Guid      enableUser_Token(this TMUser user)
         {
-            if (user.AccountStatus.EnableUserToken == Guid.Empty)
-                user.AccountStatus.EnableUserToken = Guid.NewGuid();
-            return  user.AccountStatus.EnableUserToken;
+            if (user.SecretData.EnableUserToken == Guid.Empty)
+                user.SecretData.EnableUserToken = Guid.NewGuid();
+            return  user.SecretData.EnableUserToken;
         }
         public static bool   enableUser_IsTokenValid(this Guid token)
         {
@@ -156,7 +156,7 @@ namespace TeamMentor.CoreLib
             if (token == Guid.Empty)
                 return null;
             return (from tmUser in TM_UserData.Current.tmUsers()
-                    where tmUser.AccountStatus.EnableUserToken == token
+                    where tmUser.SecretData.EnableUserToken == token
                     select tmUser).first();
         }
 

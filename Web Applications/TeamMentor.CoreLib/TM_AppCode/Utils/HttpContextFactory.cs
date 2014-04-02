@@ -47,17 +47,43 @@ namespace TeamMentor.CoreLib
             return httpContext;
         }
 
-        public static string ipAddress(this HttpContextBase httpContext)
+        public static string sessionId(this HttpSessionStateBase sessionState)
+        {
+            return sessionState.notNull() 
+                        ? sessionState.SessionID 
+                        : "";
+        }
+
+        public static string ipAddress(this HttpRequestBase request)
         {            
-            try
+            return request.notNull() 
+                        ? request.UserHostAddress 
+                        : "";
+            /*try
             {
-                return HttpContextFactory.Request.UserHostAddress ?? ""; // todo:change to available method in 3.4                
+                return HttpContextFactory.Request.UserHostAddress ?? ""; 
             }
             catch (Exception ex)
             {
                 ex.log("[HttpContextBase][ipAddress]");
                 return "";
-            }            
+            }*/            
         }
+        public static bool isLocal(this HttpRequestBase request)
+        {
+            return  request.isNull() || request.IsLocal;
+        }
+        public static string  referer(this HttpRequestBase httpRequest)
+        {
+            if (httpRequest.notNull() && httpRequest.UrlReferrer.notNull())
+                return  httpRequest.UrlReferrer.str();
+            return "";
+        }
+        public static string  url(this HttpRequestBase request)
+        {
+            if (request.notNull() && request.Url.notNull())
+                return  request.Url.str();
+            return "";
+        }        
     }
 }
