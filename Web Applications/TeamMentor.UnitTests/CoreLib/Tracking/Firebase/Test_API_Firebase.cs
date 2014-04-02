@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using FluentSharp.CoreLib;
-using FluentSharp.CoreLib.API;
+﻿using FluentSharp.CoreLib;
 using NUnit.Framework;
 using TeamMentor.CoreLib;
-using TeamMentor.UnitTests._Test_ConfigAndHelpers;
 
 namespace TeamMentor.UnitTests.CoreLib.Tracking.Firebase
 {
@@ -14,11 +8,14 @@ namespace TeamMentor.UnitTests.CoreLib.Tracking.Firebase
     public class Test_API_Firebase : TM_UserData_InMemory
     {
         public API_Firebase     firebase;
-        public TM_QA_ConfigFile tmQAConfig;
+        public TM_QA_Config     tmQAConfig;
 
         public Test_API_Firebase()              
-        {                    
-            tmQAConfig = TM_QA_ConfigFile.Current;
+        {         
+            if (Tests_Consts.offline)
+                Assert.Ignore("Ignoring Test because we are offline");   
+
+            tmQAConfig = TM_QA_Config.Current;
             if (tmQAConfig.isNull())
                 Assert.Ignore("TM_QA_ConfigFile.Current was null (so no Firebase live config values");
             
@@ -56,7 +53,7 @@ namespace TeamMentor.UnitTests.CoreLib.Tracking.Firebase
 
         [Test] public void GET()
         {
-            Web.Https.ignoreServerSslErrors();
+            //Web.Https.ignoreServerSslErrors();
             var getData     = firebase.GET();
             Assert.AreEqual(getData,"null");
         }

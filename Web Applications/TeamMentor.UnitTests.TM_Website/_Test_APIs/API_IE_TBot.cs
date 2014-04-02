@@ -7,8 +7,9 @@ namespace TeamMentor.UnitTests.TM_Website
     {        
         public API_IE_TBot()
         {
-            TargetServer = "http://localhost:3187";            
-            if (TargetServer.uri().HEAD().isFalse())
+            TargetServer = "http://localhost:3187";      
+            var defaultPage = TargetServer.uri().append("default.htm");
+            if (defaultPage.HEAD().isFalse())
                 Assert.Ignore("TM server is offline");
         }                
         public API_IE_TBot tbot_V1()
@@ -47,6 +48,11 @@ namespace TeamMentor.UnitTests.TM_Website
             tBot.open_Page("rest/login/{0}/{1}".format(Tests_Consts.DEFAULT_ADMIN_USERNAME,
                                                        Tests_Consts.DEFAULT_ADMIN_PASSWORD));                
             return tBot;
+        }
+
+        public static API_IE_TBot assert_Admin(this API_IE_TBot tBot)
+        {
+            return null;
         }
     }
 }

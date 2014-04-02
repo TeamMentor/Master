@@ -15,11 +15,10 @@ namespace TeamMentor.CoreLib
             MapData();
         }
         public  void MapData()
-        {
-            var request = System.Web.HttpContext.Current.Request;
-            IP          = request.UserHostAddress.str();
-            Referer     = request.UrlReferrer.isNull() ? "" : request.UrlReferrer.str();
-            Url         = request.Url.str();
+        {            
+            IP          = HttpContextFactory.Request.ipAddress();
+            Referer     = HttpContextFactory.Request.referer();
+            Url         = HttpContextFactory.Request.url();
             When 	    = DateTime.Now.jsDate();
         }
     }

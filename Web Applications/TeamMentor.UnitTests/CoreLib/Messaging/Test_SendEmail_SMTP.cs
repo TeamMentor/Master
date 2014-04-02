@@ -1,23 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using FluentSharp.CoreLib;
+﻿using FluentSharp.CoreLib;
 using NUnit.Framework;
 using TeamMentor.CoreLib;
-using TeamMentor.UnitTests._Test_ConfigAndHelpers;
 
 namespace TeamMentor.UnitTests.CoreLib.Messaging
 {
     [TestFixture]
     public class Test_SendEmail_SMTP : TM_UserData_InMemory
     {         
-        public TM_QA_ConfigFile tmQAConfig;
+        public TM_QA_Config tmQAConfig;
         public SendEmails       sendEmails;
 
         public Test_SendEmail_SMTP()              
         {                    
-            tmQAConfig = TM_QA_ConfigFile.Current;
+            tmQAConfig = TM_QA_Config.Current;
             if (tmQAConfig.isNull())
                 Assert.Ignore("TM_QA_ConfigFile.Current was null (so no SMTP config values");
             

@@ -108,7 +108,8 @@ namespace TeamMentor.UnitTests.CoreLib
             {
                 firebase.submitThread_Start();              // should not start a new thread
                 Assert.AreEqual   (submitThread, firebase.SubmitThread);
-                firebase.SubmitThread.Join();
+                if (firebase.SubmitThread.notNull())
+                    firebase.SubmitThread.Join();
             }
             Assert.IsNull     (firebase.SubmitThread);            
 

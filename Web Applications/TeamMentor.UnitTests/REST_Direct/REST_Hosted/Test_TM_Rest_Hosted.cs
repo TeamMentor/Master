@@ -2,26 +2,52 @@
 using System.ServiceModel;
 using NUnit.Framework;
 using FluentSharp.CoreLib;
-using TeamMentor.CoreLib;
 
 namespace TeamMentor.UnitTests.REST
 
 {	    
     [TestFixture]
-    [Ignore]                // can't run these on TeamCity due to security protection for binding WCF address into Port
-                            // need to find a better solution or a way to automate the setup
-                            // references:http://blogs.msdn.com/b/paulwh/archive/2007/05/04/addressaccessdeniedexception-http-could-not-register-url-http-8080.aspx
-                            //            http://stackoverflow.com/questions/885744/wcf-servicehost-access-rights
+    //[Ignore]                // can't run these on TeamCity due to security protection for binding WCF address into Port                            
     public class Test_TM_Rest_Hosted : TM_Rest_Hosted
     {
-        [SetUp] public static void Initialize()
+        [SetUp] public void setup()
         {
             WCFHost_Start();
+            
+            if (HostStarted.isFalse())
+                Assert.Ignore("Neet to set the security protection for binding WCF address into Port");
+                // need to find a better solution or a way to automate the setup
+                // references:http://blogs.msdn.com/b/paulwh/archive/2007/05/04/addressaccessdeniedexception-http-could-not-register-url-http-8080.aspx
+                //            http://stackoverflow.com/questions/885744/wcf-servicehost-access-rights
+                //            when running inside VisualStudio we can use the Design_Time_Addresses trick
         }
 
-        [Test]  public void CheckWebServiceHost()
+        [TearDown] public void tearDown()
         {
-            var html = TmRestHost.BaseAddress.append("/Version").getHtml();
+            WCFHost_Stop();
+        }
+
+            
+        [Test] public  void Test_WCFHost_Start()
+        {
+            // stop the current one
+            Assert.IsTrue(HostStarted);
+            WCFHost_Stop();
+            Assert.IsFalse(HostStarted);
+
+            // create one with a bad port
+            var currentPort = Tests_Consts.TM_REST_Service_Port;
+            Tests_Consts.TM_REST_Service_Port = 20000;
+            var tmRestHosted = new TM_Rest_Hosted();
+            Assert.IsNotNull(tmRestHosted);
+            tmRestHosted.WCFHost_Start();
+            Assert.IsFalse  (tmRestHosted.HostStarted);
+            Tests_Consts.TM_REST_Service_Port = currentPort;
+        }
+        [Test]  public void CheckWebServiceHost()
+        {           
+            var url = TmRestHost.BaseAddress.str() + "/Version";
+            var html = url.GET();
             Assert.IsTrue(html.valid(), "Html fetch failed");
             //test version
             var version = TmRest.Version();
@@ -75,12 +101,6 @@ namespace TeamMentor.UnitTests.REST
             CheckLogin();       //logs in as admin
 
             TmRest.users();
-        }
-
-        [TearDown] public static void Cleanup()
-        {
-            WCFHost_Stop();
-        }
-        
+        } 
     }
 }

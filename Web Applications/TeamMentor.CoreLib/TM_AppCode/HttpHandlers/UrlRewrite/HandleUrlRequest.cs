@@ -11,12 +11,13 @@ namespace TeamMentor.CoreLib
 {
     public class HandleUrlRequest
     {
-        public static Dictionary<string, string> Server_Transfers   { get; set; }
-        public static Dictionary<string, string> Response_Redirects { get; set; }
+        public static Dictionary<string, string> Server_Transfers           { get; set; }
+        public static Dictionary<string, string> Response_Redirects         { get; set; }
+        public static bool                       SSL_Redirection_Disabled   { get; set; }
 
         public HttpContextBase context = HttpContextFactory.Current;
         public HttpRequestBase request = HttpContextFactory.Request;
-        public TM_WebServices tmWebServices;
+        public TM_WebServices  tmWebServices;
 
         static HandleUrlRequest()
         {
@@ -85,7 +86,9 @@ namespace TeamMentor.CoreLib
         public bool redirectedToSSL()
         {
             try
-            {            
+            {           
+                if (SSL_Redirection_Disabled)               // so that we only do this check once per server
+                    return false;
                 if (TMConfig.Current.TMSecurity.SSL_RedirectHttpToHttps && 
                     context.Request.IsLocal.isFalse() && 
                     context.Request.IsSecureConnection.isFalse())
@@ -107,6 +110,7 @@ namespace TeamMentor.CoreLib
             {
                 ex.log("[in redirectedToSLL]");
             }
+            SSL_Redirection_Disabled = true;                // prevents multiple attemps to check for redirections (was causing lots of error messages on live servers)
             return false;
         }
 

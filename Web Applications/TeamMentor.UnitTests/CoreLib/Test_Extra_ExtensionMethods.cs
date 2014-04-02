@@ -21,8 +21,8 @@ namespace TeamMentor.UnitTests.CoreLib
             Assert.NotNull (jsDate);            
             Assert.AreEqual(jsDate   , jsDate2);
             Assert.AreEqual(date     , date2);
-            Assert.AreEqual(now.str(), date .str());            
-            Assert.AreEqual(now.str(), date2.str());
+            Assert.AreEqual(now.ToUniversalTime().str(), date.str());            
+            Assert.AreEqual(now.ToUniversalTime().str(), date2.str());
             Assert.AreEqual(now.ToUniversalTime().str(), date .ToUniversalTime().str());
             Assert.AreEqual(now.ToUniversalTime().str(), date2.ToUniversalTime().str());
             

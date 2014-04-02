@@ -142,13 +142,19 @@ namespace TeamMentor.CoreLib
             }
             set { _current = value; }
         }
+
+        public static bool      setCurrent(TMConfig tmConfig)
+        {
+            Current = tmConfig;
+            return Current.SaveTMConfig();    
+        }
+
         public static TMConfig      loadConfig()    
         {             
             if (Location.fileExists())
                 _current = Location.load<TMConfig>();
             else
-            {
-             //   "In TMConfig.loadConfig, provided location was not found(returning default object): {0}".debug(Location);
+            {             
                 _current = new TMConfig();
                 _current.SaveTMConfig();
             }
@@ -156,8 +162,7 @@ namespace TeamMentor.CoreLib
         }
 
         public TMConfig()
-        {
-            //this.setDefaultValues();
+        {            
             TMSetup                 = new TMSetup_Config();
             TMSecurity              = new TMSecurity_Config();
             WindowsAuthentication   = new WindowsAuthentication_Config();

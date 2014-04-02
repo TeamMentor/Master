@@ -107,6 +107,8 @@ namespace TeamMentor.UnitTests.Authentication
             Assert.AreEqual(tmAuthentication.sessionID,Guid.Empty);
 
             request.QueryString[authVar] = user_AuthToken.Token.str();
+            
+            Assert.IsNotNull  (request[authVar]);
 
             tmAuthentication.mapUserRoles();
             Assert.AreNotEqual(tmAuthentication.sessionID,Guid.Empty);

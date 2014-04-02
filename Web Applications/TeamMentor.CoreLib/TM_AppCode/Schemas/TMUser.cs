@@ -34,7 +34,8 @@ namespace TeamMentor.CoreLib
             UserTags        = new List<UserTag>();
             SecretData      = new UserSecretData
                                     {                                        
-                                        PasswordResetToken  = null                  // default to Null
+                                        PasswordResetToken  = null,                  // default to Null
+                                        EnableUserToken = Guid.Empty
                                     };
             Sessions        = new List<UserSession>();
             AuthTokens      = new List<AuthToken>();
@@ -43,8 +44,7 @@ namespace TeamMentor.CoreLib
                                     {
                                         ExpirationDate  = TMConfig.Current.currentExpirationDate(), 
                                         PasswordExpired = false,
-                                        UserEnabled     = TMConfig.Current.newAccountsEnabled(),
-                                        EnableUserToken = Guid.Empty
+                                        UserEnabled     = TMConfig.Current.newAccountsEnabled()                                        
                                     };
             Stats           = new UserStats
                                     {
@@ -65,6 +65,7 @@ namespace TeamMentor.CoreLib
         [XmlAttribute]  public string	CSRF_Token          { get; set; }        
         [XmlAttribute]  public string   PostLoginView       { get; set; }
         [XmlAttribute]  public string   PostLoginScript     { get; set; }
+        [XmlAttribute]	public Guid     EnableUserToken		{ get; set; }
     }
     public class UserSession
     {
@@ -82,8 +83,7 @@ namespace TeamMentor.CoreLib
     {
         [XmlAttribute]	public DateTime ExpirationDate		{ get; set; }
         [XmlAttribute]	public bool     PasswordExpired		{ get; set; }
-        [XmlAttribute]	public bool     UserEnabled		    { get; set; }
-        [XmlAttribute]	public Guid     EnableUserToken		{ get; set; }
+        [XmlAttribute]	public bool     UserEnabled		    { get; set; }        
         
     }
     public class UserStats

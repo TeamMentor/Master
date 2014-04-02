@@ -3,6 +3,106 @@
   <wsdl:types>
     <s:schema elementFormDefault="qualified" targetNamespace="http://teammentor.net/">
       <s:import namespace="http://microsoft.com/wsdl/types/" />
+      <s:element name="VirtualArticle_Get_GuidRedirect">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s1:guid" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="VirtualArticle_Get_GuidRedirectResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="VirtualArticle_Get_GuidRedirectResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="VirtualArticle_CreateArticle_from_ExternalServiceData">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="service" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="serviceData" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="VirtualArticle_CreateArticle_from_ExternalServiceDataResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="VirtualArticle_CreateArticle_from_ExternalServiceDataResult" type="tns:TeamMentor_Article" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TeamMentor_Article">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Metadata" type="tns:TeamMentor_Article_Metadata" />
+          <s:element minOccurs="0" maxOccurs="1" name="Content" type="tns:TeamMentor_Article_Content" />
+        </s:sequence>
+        <s:attribute name="Metadata_Hash" type="s:int" use="required" />
+        <s:attribute name="Content_Hash" type="s:int" use="required" />
+      </s:complexType>
+      <s:complexType name="TeamMentor_Article_Metadata">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Id" type="s1:guid" />
+          <s:element minOccurs="0" maxOccurs="1" name="Id_History" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Library_Id" type="s1:guid" />
+          <s:element minOccurs="0" maxOccurs="1" name="Title" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Category" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Phase" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Technology" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Type" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DirectLink" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Tag" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Security_Demand" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Author" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Priority" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Status" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Source" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="License" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="TeamMentor_Article_Content">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Files" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Data">
+            <s:complexType mixed="true">
+              <s:sequence>
+                <s:any />
+              </s:sequence>
+            </s:complexType>
+          </s:element>
+        </s:sequence>
+        <s:attribute name="Sanitized" type="s:boolean" use="required" />
+        <s:attribute name="DataType" type="s:string" />
+      </s:complexType>
+      <s:element name="getGuidForMapping">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="mapping" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getGuidForMappingResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="getGuidForMappingResult" type="s1:guid" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="IsGuidMappedInThisServer">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="guid" type="s1:guid" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="IsGuidMappedInThisServerResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="IsGuidMappedInThisServerResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
       <s:element name="GetFolderStructure_Libraries">
         <s:complexType />
       </s:element>
@@ -224,49 +324,6 @@
         <s:sequence>
           <s:element minOccurs="0" maxOccurs="unbounded" name="TeamMentor_Article" nillable="true" type="tns:TeamMentor_Article" />
         </s:sequence>
-      </s:complexType>
-      <s:complexType name="TeamMentor_Article">
-        <s:sequence>
-          <s:element minOccurs="0" maxOccurs="1" name="Metadata" type="tns:TeamMentor_Article_Metadata" />
-          <s:element minOccurs="0" maxOccurs="1" name="Content" type="tns:TeamMentor_Article_Content" />
-        </s:sequence>
-        <s:attribute name="Metadata_Hash" type="s:int" use="required" />
-        <s:attribute name="Content_Hash" type="s:int" use="required" />
-      </s:complexType>
-      <s:complexType name="TeamMentor_Article_Metadata">
-        <s:sequence>
-          <s:element minOccurs="1" maxOccurs="1" name="Id" type="s1:guid" />
-          <s:element minOccurs="0" maxOccurs="1" name="Id_History" type="s:string" />
-          <s:element minOccurs="1" maxOccurs="1" name="Library_Id" type="s1:guid" />
-          <s:element minOccurs="0" maxOccurs="1" name="Title" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="Category" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="Phase" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="Technology" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="Type" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="DirectLink" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="Tag" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="Security_Demand" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="Author" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="Priority" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="Status" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="Source" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="License" type="s:string" />
-        </s:sequence>
-      </s:complexType>
-      <s:complexType name="TeamMentor_Article_Content">
-        <s:sequence>
-          <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="unbounded" name="Files" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="Data">
-            <s:complexType mixed="true">
-              <s:sequence>
-                <s:any />
-              </s:sequence>
-            </s:complexType>
-          </s:element>
-        </s:sequence>
-        <s:attribute name="Sanitized" type="s:boolean" use="required" />
-        <s:attribute name="DataType" type="s:string" />
       </s:complexType>
       <s:element name="GetGuidanceItemsInView">
         <s:complexType>
@@ -931,9 +988,9 @@
           <s:element minOccurs="0" maxOccurs="1" name="Firstname" type="s:string" />
           <s:element minOccurs="0" maxOccurs="1" name="Lastname" type="s:string" />
           <s:element minOccurs="0" maxOccurs="1" name="Note" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
           <s:element minOccurs="0" maxOccurs="1" name="State" type="s:string" />
           <s:element minOccurs="0" maxOccurs="1" name="Title" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
           <s:element minOccurs="0" maxOccurs="1" name="Username" type="s:string" />
           <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
           <s:element minOccurs="1" maxOccurs="1" name="GroupId" type="s:int" />
@@ -1480,6 +1537,26 @@
           </s:sequence>
         </s:complexType>
       </s:element>
+      <s:element name="XmlDatabase_IsUsingFileStorage">
+        <s:complexType />
+      </s:element>
+      <s:element name="XmlDatabase_IsUsingFileStorageResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="XmlDatabase_IsUsingFileStorageResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="XmlDatabase_WithoutFileStorage">
+        <s:complexType />
+      </s:element>
+      <s:element name="XmlDatabase_WithoutFileStorageResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="XmlDatabase_WithoutFileStorageResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
       <s:element name="XmlDatabase_ImportLibrary_fromZipFile">
         <s:complexType>
           <s:sequence>
@@ -1752,6 +1829,7 @@
         <s:sequence>
           <s:element minOccurs="1" maxOccurs="1" name="Show_ContentToAnonymousUsers" type="s:boolean" />
           <s:element minOccurs="1" maxOccurs="1" name="SSL_RedirectHttpToHttps" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="NewAccounts_Enabled" type="s:boolean" />
           <s:element minOccurs="1" maxOccurs="1" name="EvalAccounts_Enabled" type="s:boolean" />
           <s:element minOccurs="1" maxOccurs="1" name="EvalAccounts_Days" type="s:int" />
           <s:element minOccurs="1" maxOccurs="1" name="REST_AllowCrossDomainAccess" type="s:boolean" />
@@ -1801,6 +1879,51 @@
         <s:complexType>
           <s:sequence>
             <s:element minOccurs="1" maxOccurs="1" name="SetTMConfigFileResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Get_TM_QA_Config">
+        <s:complexType />
+      </s:element>
+      <s:complexType name="TM_QA_Config">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Firebase_Site" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Firebase_AuthToken" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SMTP_Server" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SMTP_UserName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SMTP_Password" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Default_AdminEmail" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="testUsers" type="tns:ArrayOfTest_User" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfTest_User">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Test_User" nillable="true" type="tns:Test_User" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Test_User">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Username" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="UserGroup" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AuthToken" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="Get_TM_QA_ConfigResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Get_TM_QA_ConfigResult" type="tns:TM_QA_Config" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Get_TM_QA_Config_Path">
+        <s:complexType />
+      </s:element>
+      <s:element name="Get_TM_QA_Config_PathResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Get_TM_QA_Config_PathResult" type="s:string" />
           </s:sequence>
         </s:complexType>
       </s:element>
@@ -1982,63 +2105,6 @@
           </s:sequence>
         </s:complexType>
       </s:element>
-      <s:element name="VirtualArticle_Get_GuidRedirect">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="1" maxOccurs="1" name="id" type="s1:guid" />
-          </s:sequence>
-        </s:complexType>
-      </s:element>
-      <s:element name="VirtualArticle_Get_GuidRedirectResponse">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="VirtualArticle_Get_GuidRedirectResult" type="s:string" />
-          </s:sequence>
-        </s:complexType>
-      </s:element>
-      <s:element name="VirtualArticle_CreateArticle_from_ExternalServiceData">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="service" type="s:string" />
-            <s:element minOccurs="0" maxOccurs="1" name="serviceData" type="s:string" />
-          </s:sequence>
-        </s:complexType>
-      </s:element>
-      <s:element name="VirtualArticle_CreateArticle_from_ExternalServiceDataResponse">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="VirtualArticle_CreateArticle_from_ExternalServiceDataResult" type="tns:TeamMentor_Article" />
-          </s:sequence>
-        </s:complexType>
-      </s:element>
-      <s:element name="getGuidForMapping">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="mapping" type="s:string" />
-          </s:sequence>
-        </s:complexType>
-      </s:element>
-      <s:element name="getGuidForMappingResponse">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="1" maxOccurs="1" name="getGuidForMappingResult" type="s1:guid" />
-          </s:sequence>
-        </s:complexType>
-      </s:element>
-      <s:element name="IsGuidMappedInThisServer">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="1" maxOccurs="1" name="guid" type="s1:guid" />
-          </s:sequence>
-        </s:complexType>
-      </s:element>
-      <s:element name="IsGuidMappedInThisServerResponse">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="1" maxOccurs="1" name="IsGuidMappedInThisServerResult" type="s:boolean" />
-          </s:sequence>
-        </s:complexType>
-      </s:element>
     </s:schema>
     <s:schema elementFormDefault="qualified" targetNamespace="http://microsoft.com/wsdl/types/">
       <s:simpleType name="guid">
@@ -2048,6 +2114,30 @@
       </s:simpleType>
     </s:schema>
   </wsdl:types>
+  <wsdl:message name="VirtualArticle_Get_GuidRedirectSoapIn">
+    <wsdl:part name="parameters" element="tns:VirtualArticle_Get_GuidRedirect" />
+  </wsdl:message>
+  <wsdl:message name="VirtualArticle_Get_GuidRedirectSoapOut">
+    <wsdl:part name="parameters" element="tns:VirtualArticle_Get_GuidRedirectResponse" />
+  </wsdl:message>
+  <wsdl:message name="VirtualArticle_CreateArticle_from_ExternalServiceDataSoapIn">
+    <wsdl:part name="parameters" element="tns:VirtualArticle_CreateArticle_from_ExternalServiceData" />
+  </wsdl:message>
+  <wsdl:message name="VirtualArticle_CreateArticle_from_ExternalServiceDataSoapOut">
+    <wsdl:part name="parameters" element="tns:VirtualArticle_CreateArticle_from_ExternalServiceDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="getGuidForMappingSoapIn">
+    <wsdl:part name="parameters" element="tns:getGuidForMapping" />
+  </wsdl:message>
+  <wsdl:message name="getGuidForMappingSoapOut">
+    <wsdl:part name="parameters" element="tns:getGuidForMappingResponse" />
+  </wsdl:message>
+  <wsdl:message name="IsGuidMappedInThisServerSoapIn">
+    <wsdl:part name="parameters" element="tns:IsGuidMappedInThisServer" />
+  </wsdl:message>
+  <wsdl:message name="IsGuidMappedInThisServerSoapOut">
+    <wsdl:part name="parameters" element="tns:IsGuidMappedInThisServerResponse" />
+  </wsdl:message>
   <wsdl:message name="GetFolderStructure_LibrariesSoapIn">
     <wsdl:part name="parameters" element="tns:GetFolderStructure_Libraries" />
   </wsdl:message>
@@ -2576,6 +2666,18 @@
   <wsdl:message name="XmlDatabase_ReloadDataSoapOut">
     <wsdl:part name="parameters" element="tns:XmlDatabase_ReloadDataResponse" />
   </wsdl:message>
+  <wsdl:message name="XmlDatabase_IsUsingFileStorageSoapIn">
+    <wsdl:part name="parameters" element="tns:XmlDatabase_IsUsingFileStorage" />
+  </wsdl:message>
+  <wsdl:message name="XmlDatabase_IsUsingFileStorageSoapOut">
+    <wsdl:part name="parameters" element="tns:XmlDatabase_IsUsingFileStorageResponse" />
+  </wsdl:message>
+  <wsdl:message name="XmlDatabase_WithoutFileStorageSoapIn">
+    <wsdl:part name="parameters" element="tns:XmlDatabase_WithoutFileStorage" />
+  </wsdl:message>
+  <wsdl:message name="XmlDatabase_WithoutFileStorageSoapOut">
+    <wsdl:part name="parameters" element="tns:XmlDatabase_WithoutFileStorageResponse" />
+  </wsdl:message>
   <wsdl:message name="XmlDatabase_ImportLibrary_fromZipFileSoapIn">
     <wsdl:part name="parameters" element="tns:XmlDatabase_ImportLibrary_fromZipFile" />
   </wsdl:message>
@@ -2714,6 +2816,18 @@
   <wsdl:message name="SetTMConfigFileSoapOut">
     <wsdl:part name="parameters" element="tns:SetTMConfigFileResponse" />
   </wsdl:message>
+  <wsdl:message name="Get_TM_QA_ConfigSoapIn">
+    <wsdl:part name="parameters" element="tns:Get_TM_QA_Config" />
+  </wsdl:message>
+  <wsdl:message name="Get_TM_QA_ConfigSoapOut">
+    <wsdl:part name="parameters" element="tns:Get_TM_QA_ConfigResponse" />
+  </wsdl:message>
+  <wsdl:message name="Get_TM_QA_Config_PathSoapIn">
+    <wsdl:part name="parameters" element="tns:Get_TM_QA_Config_Path" />
+  </wsdl:message>
+  <wsdl:message name="Get_TM_QA_Config_PathSoapOut">
+    <wsdl:part name="parameters" element="tns:Get_TM_QA_Config_PathResponse" />
+  </wsdl:message>
   <wsdl:message name="Get_Libraries_Zip_FolderSoapIn">
     <wsdl:part name="parameters" element="tns:Get_Libraries_Zip_Folder" />
   </wsdl:message>
@@ -2792,31 +2906,23 @@
   <wsdl:message name="VirtualArticle_Remove_MappingSoapOut">
     <wsdl:part name="parameters" element="tns:VirtualArticle_Remove_MappingResponse" />
   </wsdl:message>
-  <wsdl:message name="VirtualArticle_Get_GuidRedirectSoapIn">
-    <wsdl:part name="parameters" element="tns:VirtualArticle_Get_GuidRedirect" />
-  </wsdl:message>
-  <wsdl:message name="VirtualArticle_Get_GuidRedirectSoapOut">
-    <wsdl:part name="parameters" element="tns:VirtualArticle_Get_GuidRedirectResponse" />
-  </wsdl:message>
-  <wsdl:message name="VirtualArticle_CreateArticle_from_ExternalServiceDataSoapIn">
-    <wsdl:part name="parameters" element="tns:VirtualArticle_CreateArticle_from_ExternalServiceData" />
-  </wsdl:message>
-  <wsdl:message name="VirtualArticle_CreateArticle_from_ExternalServiceDataSoapOut">
-    <wsdl:part name="parameters" element="tns:VirtualArticle_CreateArticle_from_ExternalServiceDataResponse" />
-  </wsdl:message>
-  <wsdl:message name="getGuidForMappingSoapIn">
-    <wsdl:part name="parameters" element="tns:getGuidForMapping" />
-  </wsdl:message>
-  <wsdl:message name="getGuidForMappingSoapOut">
-    <wsdl:part name="parameters" element="tns:getGuidForMappingResponse" />
-  </wsdl:message>
-  <wsdl:message name="IsGuidMappedInThisServerSoapIn">
-    <wsdl:part name="parameters" element="tns:IsGuidMappedInThisServer" />
-  </wsdl:message>
-  <wsdl:message name="IsGuidMappedInThisServerSoapOut">
-    <wsdl:part name="parameters" element="tns:IsGuidMappedInThisServerResponse" />
-  </wsdl:message>
   <wsdl:portType name="TM_WebServicesSoap">
+    <wsdl:operation name="VirtualArticle_Get_GuidRedirect">
+      <wsdl:input message="tns:VirtualArticle_Get_GuidRedirectSoapIn" />
+      <wsdl:output message="tns:VirtualArticle_Get_GuidRedirectSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="VirtualArticle_CreateArticle_from_ExternalServiceData">
+      <wsdl:input message="tns:VirtualArticle_CreateArticle_from_ExternalServiceDataSoapIn" />
+      <wsdl:output message="tns:VirtualArticle_CreateArticle_from_ExternalServiceDataSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getGuidForMapping">
+      <wsdl:input message="tns:getGuidForMappingSoapIn" />
+      <wsdl:output message="tns:getGuidForMappingSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="IsGuidMappedInThisServer">
+      <wsdl:input message="tns:IsGuidMappedInThisServerSoapIn" />
+      <wsdl:output message="tns:IsGuidMappedInThisServerSoapOut" />
+    </wsdl:operation>
     <wsdl:operation name="GetFolderStructure_Libraries">
       <wsdl:input message="tns:GetFolderStructure_LibrariesSoapIn" />
       <wsdl:output message="tns:GetFolderStructure_LibrariesSoapOut" />
@@ -3169,6 +3275,14 @@
       <wsdl:input message="tns:XmlDatabase_ReloadDataSoapIn" />
       <wsdl:output message="tns:XmlDatabase_ReloadDataSoapOut" />
     </wsdl:operation>
+    <wsdl:operation name="XmlDatabase_IsUsingFileStorage">
+      <wsdl:input message="tns:XmlDatabase_IsUsingFileStorageSoapIn" />
+      <wsdl:output message="tns:XmlDatabase_IsUsingFileStorageSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="XmlDatabase_WithoutFileStorage">
+      <wsdl:input message="tns:XmlDatabase_WithoutFileStorageSoapIn" />
+      <wsdl:output message="tns:XmlDatabase_WithoutFileStorageSoapOut" />
+    </wsdl:operation>
     <wsdl:operation name="XmlDatabase_ImportLibrary_fromZipFile">
       <wsdl:input message="tns:XmlDatabase_ImportLibrary_fromZipFileSoapIn" />
       <wsdl:output message="tns:XmlDatabase_ImportLibrary_fromZipFileSoapOut" />
@@ -3261,6 +3375,14 @@
       <wsdl:input message="tns:SetTMConfigFileSoapIn" />
       <wsdl:output message="tns:SetTMConfigFileSoapOut" />
     </wsdl:operation>
+    <wsdl:operation name="Get_TM_QA_Config">
+      <wsdl:input message="tns:Get_TM_QA_ConfigSoapIn" />
+      <wsdl:output message="tns:Get_TM_QA_ConfigSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Get_TM_QA_Config_Path">
+      <wsdl:input message="tns:Get_TM_QA_Config_PathSoapIn" />
+      <wsdl:output message="tns:Get_TM_QA_Config_PathSoapOut" />
+    </wsdl:operation>
     <wsdl:operation name="Get_Libraries_Zip_Folder">
       <wsdl:input message="tns:Get_Libraries_Zip_FolderSoapIn" />
       <wsdl:output message="tns:Get_Libraries_Zip_FolderSoapOut" />
@@ -3313,25 +3435,45 @@
       <wsdl:input message="tns:VirtualArticle_Remove_MappingSoapIn" />
       <wsdl:output message="tns:VirtualArticle_Remove_MappingSoapOut" />
     </wsdl:operation>
-    <wsdl:operation name="VirtualArticle_Get_GuidRedirect">
-      <wsdl:input message="tns:VirtualArticle_Get_GuidRedirectSoapIn" />
-      <wsdl:output message="tns:VirtualArticle_Get_GuidRedirectSoapOut" />
-    </wsdl:operation>
-    <wsdl:operation name="VirtualArticle_CreateArticle_from_ExternalServiceData">
-      <wsdl:input message="tns:VirtualArticle_CreateArticle_from_ExternalServiceDataSoapIn" />
-      <wsdl:output message="tns:VirtualArticle_CreateArticle_from_ExternalServiceDataSoapOut" />
-    </wsdl:operation>
-    <wsdl:operation name="getGuidForMapping">
-      <wsdl:input message="tns:getGuidForMappingSoapIn" />
-      <wsdl:output message="tns:getGuidForMappingSoapOut" />
-    </wsdl:operation>
-    <wsdl:operation name="IsGuidMappedInThisServer">
-      <wsdl:input message="tns:IsGuidMappedInThisServerSoapIn" />
-      <wsdl:output message="tns:IsGuidMappedInThisServerSoapOut" />
-    </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="TM_WebServicesSoap" type="tns:TM_WebServicesSoap">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="VirtualArticle_Get_GuidRedirect">
+      <soap:operation soapAction="http://teammentor.net/VirtualArticle_Get_GuidRedirect" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VirtualArticle_CreateArticle_from_ExternalServiceData">
+      <soap:operation soapAction="http://teammentor.net/VirtualArticle_CreateArticle_from_ExternalServiceData" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getGuidForMapping">
+      <soap:operation soapAction="http://teammentor.net/getGuidForMapping" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IsGuidMappedInThisServer">
+      <soap:operation soapAction="http://teammentor.net/IsGuidMappedInThisServer" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="GetFolderStructure_Libraries">
       <soap:operation soapAction="http://teammentor.net/GetFolderStructure_Libraries" style="document" />
       <wsdl:input>
@@ -4124,6 +4266,24 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="XmlDatabase_IsUsingFileStorage">
+      <soap:operation soapAction="http://teammentor.net/XmlDatabase_IsUsingFileStorage" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="XmlDatabase_WithoutFileStorage">
+      <soap:operation soapAction="http://teammentor.net/XmlDatabase_WithoutFileStorage" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="XmlDatabase_ImportLibrary_fromZipFile">
       <soap:operation soapAction="http://teammentor.net/XmlDatabase_ImportLibrary_fromZipFile" style="document" />
       <wsdl:input>
@@ -4331,6 +4491,24 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="Get_TM_QA_Config">
+      <soap:operation soapAction="http://teammentor.net/Get_TM_QA_Config" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Get_TM_QA_Config_Path">
+      <soap:operation soapAction="http://teammentor.net/Get_TM_QA_Config_Path" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="Get_Libraries_Zip_Folder">
       <soap:operation soapAction="http://teammentor.net/Get_Libraries_Zip_Folder" style="document" />
       <wsdl:input>
@@ -4448,45 +4626,45 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="VirtualArticle_Get_GuidRedirect">
-      <soap:operation soapAction="http://teammentor.net/VirtualArticle_Get_GuidRedirect" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="VirtualArticle_CreateArticle_from_ExternalServiceData">
-      <soap:operation soapAction="http://teammentor.net/VirtualArticle_CreateArticle_from_ExternalServiceData" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="getGuidForMapping">
-      <soap:operation soapAction="http://teammentor.net/getGuidForMapping" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="IsGuidMappedInThisServer">
-      <soap:operation soapAction="http://teammentor.net/IsGuidMappedInThisServer" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
   </wsdl:binding>
   <wsdl:binding name="TM_WebServicesSoap12" type="tns:TM_WebServicesSoap">
     <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="VirtualArticle_Get_GuidRedirect">
+      <soap12:operation soapAction="http://teammentor.net/VirtualArticle_Get_GuidRedirect" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VirtualArticle_CreateArticle_from_ExternalServiceData">
+      <soap12:operation soapAction="http://teammentor.net/VirtualArticle_CreateArticle_from_ExternalServiceData" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getGuidForMapping">
+      <soap12:operation soapAction="http://teammentor.net/getGuidForMapping" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IsGuidMappedInThisServer">
+      <soap12:operation soapAction="http://teammentor.net/IsGuidMappedInThisServer" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="GetFolderStructure_Libraries">
       <soap12:operation soapAction="http://teammentor.net/GetFolderStructure_Libraries" style="document" />
       <wsdl:input>
@@ -5279,6 +5457,24 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="XmlDatabase_IsUsingFileStorage">
+      <soap12:operation soapAction="http://teammentor.net/XmlDatabase_IsUsingFileStorage" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="XmlDatabase_WithoutFileStorage">
+      <soap12:operation soapAction="http://teammentor.net/XmlDatabase_WithoutFileStorage" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="XmlDatabase_ImportLibrary_fromZipFile">
       <soap12:operation soapAction="http://teammentor.net/XmlDatabase_ImportLibrary_fromZipFile" style="document" />
       <wsdl:input>
@@ -5486,6 +5682,24 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="Get_TM_QA_Config">
+      <soap12:operation soapAction="http://teammentor.net/Get_TM_QA_Config" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Get_TM_QA_Config_Path">
+      <soap12:operation soapAction="http://teammentor.net/Get_TM_QA_Config_Path" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="Get_Libraries_Zip_Folder">
       <soap12:operation soapAction="http://teammentor.net/Get_Libraries_Zip_Folder" style="document" />
       <wsdl:input>
@@ -5596,42 +5810,6 @@
     </wsdl:operation>
     <wsdl:operation name="VirtualArticle_Remove_Mapping">
       <soap12:operation soapAction="http://teammentor.net/VirtualArticle_Remove_Mapping" style="document" />
-      <wsdl:input>
-        <soap12:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap12:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="VirtualArticle_Get_GuidRedirect">
-      <soap12:operation soapAction="http://teammentor.net/VirtualArticle_Get_GuidRedirect" style="document" />
-      <wsdl:input>
-        <soap12:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap12:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="VirtualArticle_CreateArticle_from_ExternalServiceData">
-      <soap12:operation soapAction="http://teammentor.net/VirtualArticle_CreateArticle_from_ExternalServiceData" style="document" />
-      <wsdl:input>
-        <soap12:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap12:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="getGuidForMapping">
-      <soap12:operation soapAction="http://teammentor.net/getGuidForMapping" style="document" />
-      <wsdl:input>
-        <soap12:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap12:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="IsGuidMappedInThisServer">
-      <soap12:operation soapAction="http://teammentor.net/IsGuidMappedInThisServer" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

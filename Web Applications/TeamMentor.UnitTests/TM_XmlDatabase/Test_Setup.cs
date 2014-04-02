@@ -37,7 +37,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             var fileToCopy_InTarget = targetFolder.pathCombine(fileToCopy_Name);
             fileToCopy_Text.saveAs(fileToCopy_InSource);
             
-            var result = tmXmlDatabase.copy_FilesIntoWebRoot();
+            var result = userData.copy_FilesIntoWebRoot();
 
             //check if copy went ok
             Assert.IsTrue(result, "copy_FilesIntoWebRoot result");

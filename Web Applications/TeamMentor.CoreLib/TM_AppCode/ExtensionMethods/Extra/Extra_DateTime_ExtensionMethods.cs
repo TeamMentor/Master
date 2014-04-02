@@ -21,7 +21,7 @@ namespace FluentSharp.CoreLib
         {
             if (date_Milliseconds_After_1970.valid() && date_Milliseconds_After_1970.isDouble())
             {
-                var dateTime = new DateTime(1970, 1, 1);
+                var dateTime = new DateTime(1970, 1, 1).ToUniversalTime();
                 return dateTime.AddMilliseconds(date_Milliseconds_After_1970.toDouble());                
             }
             return default(DateTime);

@@ -39,7 +39,7 @@ namespace TeamMentor.UnitTests.CoreLib
         public void Validation_NewUser_RequiredFields()
         {            
             var newUser            = new NewUser();                        
-            var requiredValues    = "Company,Country,Firstname,Lastname,Note,Password,State,Title,Username,Email".split(",");
+            var requiredValues    = "Password,Username,Email".split(",");
             var validationResults = newUser.validate();
             var resultsMapped     = validationResults.indexed_By_MemberName();
             var validationok      = newUser.validation_Ok();

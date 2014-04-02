@@ -29,13 +29,13 @@ namespace TeamMentor.CoreLib
         public Dictionary<Guid, VirtualArticleAction>   VirtualArticles			    { get; set; }
                                                             
         
-
-        [Log("TM_Xml_Database Setup")]        
+        
         public TM_Xml_Database          () : this(false)                    // defaults to creating a TM_Instance in memory    
         {
         }
         public TM_Xml_Database          (bool useFileStorage)
         {
+            "[TM_Xml_Database] Setup".info();
             Current = this;
             try
             {
@@ -93,7 +93,7 @@ namespace TeamMentor.CoreLib
                     return;
                 }
                 UserData.SetUp();
-                this.copy_FilesIntoWebRoot();
+                this.userData().copy_FilesIntoWebRoot();
                 if (UsingFileStorage)
                 {                       
                     SetPaths_XmlDatabase();            
@@ -190,26 +190,5 @@ namespace TeamMentor.CoreLib
                                     this.tmGuidanceItems().size());
             return stats;                                               // return some stats
         }        
-    }
-
-    public static class TM_Xml_Database_ExtensionMethods
-    {
-        public static TM_UserData     userData                   (this TM_Xml_Database tmDatabase)
-        {
-            return tmDatabase.notNull()
-                       ? tmDatabase.UserData
-                       : null;
-        }
-        public static bool            setupThread_Active         (this TM_Xml_Database tmDatabase)
-        {
-            return tmDatabase.SetupThread.isNull();
-        }
-        public static TM_Xml_Database setupThread_WaitForComplete(this TM_Xml_Database tmDatabase)
-        {
-            if (tmDatabase.SetupThread.notNull())
-                tmDatabase.SetupThread.Join();
-            return tmDatabase;
-        }
-        
     }
 }

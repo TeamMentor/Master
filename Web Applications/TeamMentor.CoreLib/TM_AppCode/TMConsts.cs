@@ -2,6 +2,8 @@ namespace TeamMentor.CoreLib
 {
 	public class TMConsts
 	{
+        public static string TM_QA_ConfigFile_LOCAL_FOLDER    = @"C:\_TeamMentor\_TM_QA";
+        public static string TM_QA_ConfigFile_FILE_NAME       = "TM_QA.config";
         public static string AUTH_TOKEN_REQUEST_VAR_NAME      = "auth";
 		public static string PATH_HTML_PAGE_UNAVAILABLE       = "/Html_Pages/Gui/Pages/unavailable.html";      
 

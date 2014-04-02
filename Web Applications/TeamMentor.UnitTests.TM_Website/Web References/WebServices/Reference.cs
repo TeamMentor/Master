@@ -31,6 +31,14 @@ namespace TeamMentor.UnitTests.TM_Website.WebServices {
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(object[][]))]
     public partial class TM_WebServices : System.Web.Services.Protocols.SoapHttpClientProtocol {
         
+        private System.Threading.SendOrPostCallback VirtualArticle_Get_GuidRedirectOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback VirtualArticle_CreateArticle_from_ExternalServiceDataOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback getGuidForMappingOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback IsGuidMappedInThisServerOperationCompleted;
+        
         private System.Threading.SendOrPostCallback GetFolderStructure_LibrariesOperationCompleted;
         
         private System.Threading.SendOrPostCallback GetFolderStructure_LibraryOperationCompleted;
@@ -207,6 +215,10 @@ namespace TeamMentor.UnitTests.TM_Website.WebServices {
         
         private System.Threading.SendOrPostCallback XmlDatabase_ReloadDataOperationCompleted;
         
+        private System.Threading.SendOrPostCallback XmlDatabase_IsUsingFileStorageOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback XmlDatabase_WithoutFileStorageOperationCompleted;
+        
         private System.Threading.SendOrPostCallback XmlDatabase_ImportLibrary_fromZipFileOperationCompleted;
         
         private System.Threading.SendOrPostCallback XmlDatabase_SetLibraryPathOperationCompleted;
@@ -253,6 +265,10 @@ namespace TeamMentor.UnitTests.TM_Website.WebServices {
         
         private System.Threading.SendOrPostCallback SetTMConfigFileOperationCompleted;
         
+        private System.Threading.SendOrPostCallback Get_TM_QA_ConfigOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback Get_TM_QA_Config_PathOperationCompleted;
+        
         private System.Threading.SendOrPostCallback Get_Libraries_Zip_FolderOperationCompleted;
         
         private System.Threading.SendOrPostCallback Get_Libraries_Zip_Folder_FilesOperationCompleted;
@@ -278,14 +294,6 @@ namespace TeamMentor.UnitTests.TM_Website.WebServices {
         private System.Threading.SendOrPostCallback VirtualArticle_Add_Mapping_ExternalServiceOperationCompleted;
         
         private System.Threading.SendOrPostCallback VirtualArticle_Remove_MappingOperationCompleted;
-        
-        private System.Threading.SendOrPostCallback VirtualArticle_Get_GuidRedirectOperationCompleted;
-        
-        private System.Threading.SendOrPostCallback VirtualArticle_CreateArticle_from_ExternalServiceDataOperationCompleted;
-        
-        private System.Threading.SendOrPostCallback getGuidForMappingOperationCompleted;
-        
-        private System.Threading.SendOrPostCallback IsGuidMappedInThisServerOperationCompleted;
         
         private bool useDefaultCredentialsSetExplicitly;
         
@@ -324,6 +332,18 @@ namespace TeamMentor.UnitTests.TM_Website.WebServices {
                 this.useDefaultCredentialsSetExplicitly = true;
             }
         }
+        
+        /// <remarks/>
+        public event VirtualArticle_Get_GuidRedirectCompletedEventHandler VirtualArticle_Get_GuidRedirectCompleted;
+        
+        /// <remarks/>
+        public event VirtualArticle_CreateArticle_from_ExternalServiceDataCompletedEventHandler VirtualArticle_CreateArticle_from_ExternalServiceDataCompleted;
+        
+        /// <remarks/>
+        public event getGuidForMappingCompletedEventHandler getGuidForMappingCompleted;
+        
+        /// <remarks/>
+        public event IsGuidMappedInThisServerCompletedEventHandler IsGuidMappedInThisServerCompleted;
         
         /// <remarks/>
         public event GetFolderStructure_LibrariesCompletedEventHandler GetFolderStructure_LibrariesCompleted;
@@ -590,6 +610,12 @@ namespace TeamMentor.UnitTests.TM_Website.WebServices {
         public event XmlDatabase_ReloadDataCompletedEventHandler XmlDatabase_ReloadDataCompleted;
         
         /// <remarks/>
+        public event XmlDatabase_IsUsingFileStorageCompletedEventHandler XmlDatabase_IsUsingFileStorageCompleted;
+        
+        /// <remarks/>
+        public event XmlDatabase_WithoutFileStorageCompletedEventHandler XmlDatabase_WithoutFileStorageCompleted;
+        
+        /// <remarks/>
         public event XmlDatabase_ImportLibrary_fromZipFileCompletedEventHandler XmlDatabase_ImportLibrary_fromZipFileCompleted;
         
         /// <remarks/>
@@ -659,6 +685,12 @@ namespace TeamMentor.UnitTests.TM_Website.WebServices {
         public event SetTMConfigFileCompletedEventHandler SetTMConfigFileCompleted;
         
         /// <remarks/>
+        public event Get_TM_QA_ConfigCompletedEventHandler Get_TM_QA_ConfigCompleted;
+        
+        /// <remarks/>
+        public event Get_TM_QA_Config_PathCompletedEventHandler Get_TM_QA_Config_PathCompleted;
+        
+        /// <remarks/>
         public event Get_Libraries_Zip_FolderCompletedEventHandler Get_Libraries_Zip_FolderCompleted;
         
         /// <remarks/>
@@ -698,16 +730,122 @@ namespace TeamMentor.UnitTests.TM_Website.WebServices {
         public event VirtualArticle_Remove_MappingCompletedEventHandler VirtualArticle_Remove_MappingCompleted;
         
         /// <remarks/>
-        public event VirtualArticle_Get_GuidRedirectCompletedEventHandler VirtualArticle_Get_GuidRedirectCompleted;
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://teammentor.net/VirtualArticle_Get_GuidRedirect", RequestNamespace="http://teammentor.net/", ResponseNamespace="http://teammentor.net/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        public string VirtualArticle_Get_GuidRedirect(System.Guid id) {
+            object[] results = this.Invoke("VirtualArticle_Get_GuidRedirect", new object[] {
+                        id});
+            return ((string)(results[0]));
+        }
         
         /// <remarks/>
-        public event VirtualArticle_CreateArticle_from_ExternalServiceDataCompletedEventHandler VirtualArticle_CreateArticle_from_ExternalServiceDataCompleted;
+        public void VirtualArticle_Get_GuidRedirectAsync(System.Guid id) {
+            this.VirtualArticle_Get_GuidRedirectAsync(id, null);
+        }
         
         /// <remarks/>
-        public event getGuidForMappingCompletedEventHandler getGuidForMappingCompleted;
+        public void VirtualArticle_Get_GuidRedirectAsync(System.Guid id, object userState) {
+            if ((this.VirtualArticle_Get_GuidRedirectOperationCompleted == null)) {
+                this.VirtualArticle_Get_GuidRedirectOperationCompleted = new System.Threading.SendOrPostCallback(this.OnVirtualArticle_Get_GuidRedirectOperationCompleted);
+            }
+            this.InvokeAsync("VirtualArticle_Get_GuidRedirect", new object[] {
+                        id}, this.VirtualArticle_Get_GuidRedirectOperationCompleted, userState);
+        }
+        
+        private void OnVirtualArticle_Get_GuidRedirectOperationCompleted(object arg) {
+            if ((this.VirtualArticle_Get_GuidRedirectCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.VirtualArticle_Get_GuidRedirectCompleted(this, new VirtualArticle_Get_GuidRedirectCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
         
         /// <remarks/>
-        public event IsGuidMappedInThisServerCompletedEventHandler IsGuidMappedInThisServerCompleted;
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://teammentor.net/VirtualArticle_CreateArticle_from_ExternalServiceData", RequestNamespace="http://teammentor.net/", ResponseNamespace="http://teammentor.net/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        public TeamMentor_Article VirtualArticle_CreateArticle_from_ExternalServiceData(string service, string serviceData) {
+            object[] results = this.Invoke("VirtualArticle_CreateArticle_from_ExternalServiceData", new object[] {
+                        service,
+                        serviceData});
+            return ((TeamMentor_Article)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void VirtualArticle_CreateArticle_from_ExternalServiceDataAsync(string service, string serviceData) {
+            this.VirtualArticle_CreateArticle_from_ExternalServiceDataAsync(service, serviceData, null);
+        }
+        
+        /// <remarks/>
+        public void VirtualArticle_CreateArticle_from_ExternalServiceDataAsync(string service, string serviceData, object userState) {
+            if ((this.VirtualArticle_CreateArticle_from_ExternalServiceDataOperationCompleted == null)) {
+                this.VirtualArticle_CreateArticle_from_ExternalServiceDataOperationCompleted = new System.Threading.SendOrPostCallback(this.OnVirtualArticle_CreateArticle_from_ExternalServiceDataOperationCompleted);
+            }
+            this.InvokeAsync("VirtualArticle_CreateArticle_from_ExternalServiceData", new object[] {
+                        service,
+                        serviceData}, this.VirtualArticle_CreateArticle_from_ExternalServiceDataOperationCompleted, userState);
+        }
+        
+        private void OnVirtualArticle_CreateArticle_from_ExternalServiceDataOperationCompleted(object arg) {
+            if ((this.VirtualArticle_CreateArticle_from_ExternalServiceDataCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.VirtualArticle_CreateArticle_from_ExternalServiceDataCompleted(this, new VirtualArticle_CreateArticle_from_ExternalServiceDataCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://teammentor.net/getGuidForMapping", RequestNamespace="http://teammentor.net/", ResponseNamespace="http://teammentor.net/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        public System.Guid getGuidForMapping(string mapping) {
+            object[] results = this.Invoke("getGuidForMapping", new object[] {
+                        mapping});
+            return ((System.Guid)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void getGuidForMappingAsync(string mapping) {
+            this.getGuidForMappingAsync(mapping, null);
+        }
+        
+        /// <remarks/>
+        public void getGuidForMappingAsync(string mapping, object userState) {
+            if ((this.getGuidForMappingOperationCompleted == null)) {
+                this.getGuidForMappingOperationCompleted = new System.Threading.SendOrPostCallback(this.OngetGuidForMappingOperationCompleted);
+            }
+            this.InvokeAsync("getGuidForMapping", new object[] {
+                        mapping}, this.getGuidForMappingOperationCompleted, userState);
+        }
+        
+        private void OngetGuidForMappingOperationCompleted(object arg) {
+            if ((this.getGuidForMappingCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.getGuidForMappingCompleted(this, new getGuidForMappingCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://teammentor.net/IsGuidMappedInThisServer", RequestNamespace="http://teammentor.net/", ResponseNamespace="http://teammentor.net/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        public bool IsGuidMappedInThisServer(System.Guid guid) {
+            object[] results = this.Invoke("IsGuidMappedInThisServer", new object[] {
+                        guid});
+            return ((bool)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void IsGuidMappedInThisServerAsync(System.Guid guid) {
+            this.IsGuidMappedInThisServerAsync(guid, null);
+        }
+        
+        /// <remarks/>
+        public void IsGuidMappedInThisServerAsync(System.Guid guid, object userState) {
+            if ((this.IsGuidMappedInThisServerOperationCompleted == null)) {
+                this.IsGuidMappedInThisServerOperationCompleted = new System.Threading.SendOrPostCallback(this.OnIsGuidMappedInThisServerOperationCompleted);
+            }
+            this.InvokeAsync("IsGuidMappedInThisServer", new object[] {
+                        guid}, this.IsGuidMappedInThisServerOperationCompleted, userState);
+        }
+        
+        private void OnIsGuidMappedInThisServerOperationCompleted(object arg) {
+            if ((this.IsGuidMappedInThisServerCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.IsGuidMappedInThisServerCompleted(this, new IsGuidMappedInThisServerCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
         
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://teammentor.net/GetFolderStructure_Libraries", RequestNamespace="http://teammentor.net/", ResponseNamespace="http://teammentor.net/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
@@ -3290,6 +3428,60 @@ namespace TeamMentor.UnitTests.TM_Website.WebServices {
         }
         
         /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://teammentor.net/XmlDatabase_IsUsingFileStorage", RequestNamespace="http://teammentor.net/", ResponseNamespace="http://teammentor.net/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        public bool XmlDatabase_IsUsingFileStorage() {
+            object[] results = this.Invoke("XmlDatabase_IsUsingFileStorage", new object[0]);
+            return ((bool)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void XmlDatabase_IsUsingFileStorageAsync() {
+            this.XmlDatabase_IsUsingFileStorageAsync(null);
+        }
+        
+        /// <remarks/>
+        public void XmlDatabase_IsUsingFileStorageAsync(object userState) {
+            if ((this.XmlDatabase_IsUsingFileStorageOperationCompleted == null)) {
+                this.XmlDatabase_IsUsingFileStorageOperationCompleted = new System.Threading.SendOrPostCallback(this.OnXmlDatabase_IsUsingFileStorageOperationCompleted);
+            }
+            this.InvokeAsync("XmlDatabase_IsUsingFileStorage", new object[0], this.XmlDatabase_IsUsingFileStorageOperationCompleted, userState);
+        }
+        
+        private void OnXmlDatabase_IsUsingFileStorageOperationCompleted(object arg) {
+            if ((this.XmlDatabase_IsUsingFileStorageCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.XmlDatabase_IsUsingFileStorageCompleted(this, new XmlDatabase_IsUsingFileStorageCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://teammentor.net/XmlDatabase_WithoutFileStorage", RequestNamespace="http://teammentor.net/", ResponseNamespace="http://teammentor.net/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        public bool XmlDatabase_WithoutFileStorage() {
+            object[] results = this.Invoke("XmlDatabase_WithoutFileStorage", new object[0]);
+            return ((bool)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void XmlDatabase_WithoutFileStorageAsync() {
+            this.XmlDatabase_WithoutFileStorageAsync(null);
+        }
+        
+        /// <remarks/>
+        public void XmlDatabase_WithoutFileStorageAsync(object userState) {
+            if ((this.XmlDatabase_WithoutFileStorageOperationCompleted == null)) {
+                this.XmlDatabase_WithoutFileStorageOperationCompleted = new System.Threading.SendOrPostCallback(this.OnXmlDatabase_WithoutFileStorageOperationCompleted);
+            }
+            this.InvokeAsync("XmlDatabase_WithoutFileStorage", new object[0], this.XmlDatabase_WithoutFileStorageOperationCompleted, userState);
+        }
+        
+        private void OnXmlDatabase_WithoutFileStorageOperationCompleted(object arg) {
+            if ((this.XmlDatabase_WithoutFileStorageCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.XmlDatabase_WithoutFileStorageCompleted(this, new XmlDatabase_WithoutFileStorageCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://teammentor.net/XmlDatabase_ImportLibrary_fromZipFile", RequestNamespace="http://teammentor.net/", ResponseNamespace="http://teammentor.net/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public bool XmlDatabase_ImportLibrary_fromZipFile(string pathToZipFile, string unzipPassword) {
             object[] results = this.Invoke("XmlDatabase_ImportLibrary_fromZipFile", new object[] {
@@ -3933,6 +4125,60 @@ namespace TeamMentor.UnitTests.TM_Website.WebServices {
         }
         
         /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://teammentor.net/Get_TM_QA_Config", RequestNamespace="http://teammentor.net/", ResponseNamespace="http://teammentor.net/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        public TM_QA_Config Get_TM_QA_Config() {
+            object[] results = this.Invoke("Get_TM_QA_Config", new object[0]);
+            return ((TM_QA_Config)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void Get_TM_QA_ConfigAsync() {
+            this.Get_TM_QA_ConfigAsync(null);
+        }
+        
+        /// <remarks/>
+        public void Get_TM_QA_ConfigAsync(object userState) {
+            if ((this.Get_TM_QA_ConfigOperationCompleted == null)) {
+                this.Get_TM_QA_ConfigOperationCompleted = new System.Threading.SendOrPostCallback(this.OnGet_TM_QA_ConfigOperationCompleted);
+            }
+            this.InvokeAsync("Get_TM_QA_Config", new object[0], this.Get_TM_QA_ConfigOperationCompleted, userState);
+        }
+        
+        private void OnGet_TM_QA_ConfigOperationCompleted(object arg) {
+            if ((this.Get_TM_QA_ConfigCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.Get_TM_QA_ConfigCompleted(this, new Get_TM_QA_ConfigCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://teammentor.net/Get_TM_QA_Config_Path", RequestNamespace="http://teammentor.net/", ResponseNamespace="http://teammentor.net/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        public string Get_TM_QA_Config_Path() {
+            object[] results = this.Invoke("Get_TM_QA_Config_Path", new object[0]);
+            return ((string)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void Get_TM_QA_Config_PathAsync() {
+            this.Get_TM_QA_Config_PathAsync(null);
+        }
+        
+        /// <remarks/>
+        public void Get_TM_QA_Config_PathAsync(object userState) {
+            if ((this.Get_TM_QA_Config_PathOperationCompleted == null)) {
+                this.Get_TM_QA_Config_PathOperationCompleted = new System.Threading.SendOrPostCallback(this.OnGet_TM_QA_Config_PathOperationCompleted);
+            }
+            this.InvokeAsync("Get_TM_QA_Config_Path", new object[0], this.Get_TM_QA_Config_PathOperationCompleted, userState);
+        }
+        
+        private void OnGet_TM_QA_Config_PathOperationCompleted(object arg) {
+            if ((this.Get_TM_QA_Config_PathCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.Get_TM_QA_Config_PathCompleted(this, new Get_TM_QA_Config_PathCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://teammentor.net/Get_Libraries_Zip_Folder", RequestNamespace="http://teammentor.net/", ResponseNamespace="http://teammentor.net/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public string Get_Libraries_Zip_Folder() {
             object[] results = this.Invoke("Get_Libraries_Zip_Folder", new object[0]);
@@ -4310,124 +4556,6 @@ namespace TeamMentor.UnitTests.TM_Website.WebServices {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://teammentor.net/VirtualArticle_Get_GuidRedirect", RequestNamespace="http://teammentor.net/", ResponseNamespace="http://teammentor.net/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        public string VirtualArticle_Get_GuidRedirect(System.Guid id) {
-            object[] results = this.Invoke("VirtualArticle_Get_GuidRedirect", new object[] {
-                        id});
-            return ((string)(results[0]));
-        }
-        
-        /// <remarks/>
-        public void VirtualArticle_Get_GuidRedirectAsync(System.Guid id) {
-            this.VirtualArticle_Get_GuidRedirectAsync(id, null);
-        }
-        
-        /// <remarks/>
-        public void VirtualArticle_Get_GuidRedirectAsync(System.Guid id, object userState) {
-            if ((this.VirtualArticle_Get_GuidRedirectOperationCompleted == null)) {
-                this.VirtualArticle_Get_GuidRedirectOperationCompleted = new System.Threading.SendOrPostCallback(this.OnVirtualArticle_Get_GuidRedirectOperationCompleted);
-            }
-            this.InvokeAsync("VirtualArticle_Get_GuidRedirect", new object[] {
-                        id}, this.VirtualArticle_Get_GuidRedirectOperationCompleted, userState);
-        }
-        
-        private void OnVirtualArticle_Get_GuidRedirectOperationCompleted(object arg) {
-            if ((this.VirtualArticle_Get_GuidRedirectCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.VirtualArticle_Get_GuidRedirectCompleted(this, new VirtualArticle_Get_GuidRedirectCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
-        
-        /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://teammentor.net/VirtualArticle_CreateArticle_from_ExternalServiceData", RequestNamespace="http://teammentor.net/", ResponseNamespace="http://teammentor.net/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        public TeamMentor_Article VirtualArticle_CreateArticle_from_ExternalServiceData(string service, string serviceData) {
-            object[] results = this.Invoke("VirtualArticle_CreateArticle_from_ExternalServiceData", new object[] {
-                        service,
-                        serviceData});
-            return ((TeamMentor_Article)(results[0]));
-        }
-        
-        /// <remarks/>
-        public void VirtualArticle_CreateArticle_from_ExternalServiceDataAsync(string service, string serviceData) {
-            this.VirtualArticle_CreateArticle_from_ExternalServiceDataAsync(service, serviceData, null);
-        }
-        
-        /// <remarks/>
-        public void VirtualArticle_CreateArticle_from_ExternalServiceDataAsync(string service, string serviceData, object userState) {
-            if ((this.VirtualArticle_CreateArticle_from_ExternalServiceDataOperationCompleted == null)) {
-                this.VirtualArticle_CreateArticle_from_ExternalServiceDataOperationCompleted = new System.Threading.SendOrPostCallback(this.OnVirtualArticle_CreateArticle_from_ExternalServiceDataOperationCompleted);
-            }
-            this.InvokeAsync("VirtualArticle_CreateArticle_from_ExternalServiceData", new object[] {
-                        service,
-                        serviceData}, this.VirtualArticle_CreateArticle_from_ExternalServiceDataOperationCompleted, userState);
-        }
-        
-        private void OnVirtualArticle_CreateArticle_from_ExternalServiceDataOperationCompleted(object arg) {
-            if ((this.VirtualArticle_CreateArticle_from_ExternalServiceDataCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.VirtualArticle_CreateArticle_from_ExternalServiceDataCompleted(this, new VirtualArticle_CreateArticle_from_ExternalServiceDataCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
-        
-        /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://teammentor.net/getGuidForMapping", RequestNamespace="http://teammentor.net/", ResponseNamespace="http://teammentor.net/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        public System.Guid getGuidForMapping(string mapping) {
-            object[] results = this.Invoke("getGuidForMapping", new object[] {
-                        mapping});
-            return ((System.Guid)(results[0]));
-        }
-        
-        /// <remarks/>
-        public void getGuidForMappingAsync(string mapping) {
-            this.getGuidForMappingAsync(mapping, null);
-        }
-        
-        /// <remarks/>
-        public void getGuidForMappingAsync(string mapping, object userState) {
-            if ((this.getGuidForMappingOperationCompleted == null)) {
-                this.getGuidForMappingOperationCompleted = new System.Threading.SendOrPostCallback(this.OngetGuidForMappingOperationCompleted);
-            }
-            this.InvokeAsync("getGuidForMapping", new object[] {
-                        mapping}, this.getGuidForMappingOperationCompleted, userState);
-        }
-        
-        private void OngetGuidForMappingOperationCompleted(object arg) {
-            if ((this.getGuidForMappingCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.getGuidForMappingCompleted(this, new getGuidForMappingCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
-        
-        /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://teammentor.net/IsGuidMappedInThisServer", RequestNamespace="http://teammentor.net/", ResponseNamespace="http://teammentor.net/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        public bool IsGuidMappedInThisServer(System.Guid guid) {
-            object[] results = this.Invoke("IsGuidMappedInThisServer", new object[] {
-                        guid});
-            return ((bool)(results[0]));
-        }
-        
-        /// <remarks/>
-        public void IsGuidMappedInThisServerAsync(System.Guid guid) {
-            this.IsGuidMappedInThisServerAsync(guid, null);
-        }
-        
-        /// <remarks/>
-        public void IsGuidMappedInThisServerAsync(System.Guid guid, object userState) {
-            if ((this.IsGuidMappedInThisServerOperationCompleted == null)) {
-                this.IsGuidMappedInThisServerOperationCompleted = new System.Threading.SendOrPostCallback(this.OnIsGuidMappedInThisServerOperationCompleted);
-            }
-            this.InvokeAsync("IsGuidMappedInThisServer", new object[] {
-                        guid}, this.IsGuidMappedInThisServerOperationCompleted, userState);
-        }
-        
-        private void OnIsGuidMappedInThisServerOperationCompleted(object arg) {
-            if ((this.IsGuidMappedInThisServerCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.IsGuidMappedInThisServerCompleted(this, new IsGuidMappedInThisServerCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
-        
-        /// <remarks/>
         public new void CancelAsync(object userState) {
             base.CancelAsync(userState);
         }
@@ -4452,65 +4580,55 @@ namespace TeamMentor.UnitTests.TM_Website.WebServices {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://teammentor.net/")]
-    public partial class Library_V3 {
+    public partial class TeamMentor_Article {
         
-        private System.Guid libraryIdField;
+        private TeamMentor_Article_Metadata metadataField;
         
-        private string nameField;
+        private TeamMentor_Article_Content contentField;
         
-        private Folder_V3[] subFoldersField;
+        private int metadata_HashField;
         
-        private View_V3[] viewsField;
-        
-        private System.Guid[] guidanceItemsField;
+        private int content_HashField;
         
         /// <remarks/>
-        public System.Guid libraryId {
+        public TeamMentor_Article_Metadata Metadata {
             get {
-                return this.libraryIdField;
+                return this.metadataField;
             }
             set {
-                this.libraryIdField = value;
+                this.metadataField = value;
             }
         }
         
         /// <remarks/>
-        public string name {
+        public TeamMentor_Article_Content Content {
             get {
-                return this.nameField;
+                return this.contentField;
             }
             set {
-                this.nameField = value;
+                this.contentField = value;
             }
         }
         
         /// <remarks/>
-        public Folder_V3[] subFolders {
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public int Metadata_Hash {
             get {
-                return this.subFoldersField;
+                return this.metadata_HashField;
             }
             set {
-                this.subFoldersField = value;
+                this.metadata_HashField = value;
             }
         }
         
         /// <remarks/>
-        public View_V3[] views {
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public int Content_Hash {
             get {
-                return this.viewsField;
+                return this.content_HashField;
             }
             set {
-                this.viewsField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public System.Guid[] guidanceItems {
-            get {
-                return this.guidanceItemsField;
-            }
-            set {
-                this.guidanceItemsField = value;
+                this.content_HashField = value;
             }
         }
     }
@@ -4521,133 +4639,152 @@ namespace TeamMentor.UnitTests.TM_Website.WebServices {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://teammentor.net/")]
-    public partial class Folder_V3 {
+    public partial class TeamMentor_Article_Metadata {
         
-        private System.Guid libraryIdField;
+        private System.Guid idField;
         
-        private System.Guid folderIdField;
+        private string id_HistoryField;
         
-        private string nameField;
+        private System.Guid library_IdField;
         
-        private View_V3[] viewsField;
+        private string titleField;
         
-        private Folder_V3[] subFoldersField;
+        private string categoryField;
         
-        /// <remarks/>
-        public System.Guid libraryId {
-            get {
-                return this.libraryIdField;
-            }
-            set {
-                this.libraryIdField = value;
-            }
-        }
+        private string phaseField;
         
-        /// <remarks/>
-        public System.Guid folderId {
-            get {
-                return this.folderIdField;
-            }
-            set {
-                this.folderIdField = value;
-            }
-        }
+        private string technologyField;
         
-        /// <remarks/>
-        public string name {
-            get {
-                return this.nameField;
-            }
-            set {
-                this.nameField = value;
-            }
-        }
+        private string typeField;
         
-        /// <remarks/>
-        public View_V3[] views {
-            get {
-                return this.viewsField;
-            }
-            set {
-                this.viewsField = value;
-            }
-        }
+        private string directLinkField;
         
-        /// <remarks/>
-        public Folder_V3[] subFolders {
-            get {
-                return this.subFoldersField;
-            }
-            set {
-                this.subFoldersField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.0.30319.18408")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://teammentor.net/")]
-    public partial class View_V3 {
+        private string tagField;
         
-        private System.Guid libraryIdField;
-        
-        private System.Guid folderIdField;
-        
-        private System.Guid viewIdField;
-        
-        private string captionField;
+        private string security_DemandField;
         
         private string authorField;
         
-        private string guidanceItems_IndexesField;
+        private string priorityField;
         
-        private System.Guid[] guidanceItemsField;
+        private string statusField;
+        
+        private string sourceField;
+        
+        private string licenseField;
         
         /// <remarks/>
-        public System.Guid libraryId {
+        public System.Guid Id {
             get {
-                return this.libraryIdField;
+                return this.idField;
             }
             set {
-                this.libraryIdField = value;
+                this.idField = value;
             }
         }
         
         /// <remarks/>
-        public System.Guid folderId {
+        public string Id_History {
             get {
-                return this.folderIdField;
+                return this.id_HistoryField;
             }
             set {
-                this.folderIdField = value;
+                this.id_HistoryField = value;
             }
         }
         
         /// <remarks/>
-        public System.Guid viewId {
+        public System.Guid Library_Id {
             get {
-                return this.viewIdField;
+                return this.library_IdField;
             }
             set {
-                this.viewIdField = value;
+                this.library_IdField = value;
             }
         }
         
         /// <remarks/>
-        public string caption {
+        public string Title {
             get {
-                return this.captionField;
+                return this.titleField;
             }
             set {
-                this.captionField = value;
+                this.titleField = value;
             }
         }
         
         /// <remarks/>
-        public string author {
+        public string Category {
+            get {
+                return this.categoryField;
+            }
+            set {
+                this.categoryField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string Phase {
+            get {
+                return this.phaseField;
+            }
+            set {
+                this.phaseField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string Technology {
+            get {
+                return this.technologyField;
+            }
+            set {
+                this.technologyField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string Type {
+            get {
+                return this.typeField;
+            }
+            set {
+                this.typeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string DirectLink {
+            get {
+                return this.directLinkField;
+            }
+            set {
+                this.directLinkField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string Tag {
+            get {
+                return this.tagField;
+            }
+            set {
+                this.tagField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string Security_Demand {
+            get {
+                return this.security_DemandField;
+            }
+            set {
+                this.security_DemandField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string Author {
             get {
                 return this.authorField;
             }
@@ -4657,22 +4794,42 @@ namespace TeamMentor.UnitTests.TM_Website.WebServices {
         }
         
         /// <remarks/>
-        public string guidanceItems_Indexes {
+        public string Priority {
             get {
-                return this.guidanceItems_IndexesField;
+                return this.priorityField;
             }
             set {
-                this.guidanceItems_IndexesField = value;
+                this.priorityField = value;
             }
         }
         
         /// <remarks/>
-        public System.Guid[] guidanceItems {
+        public string Status {
             get {
-                return this.guidanceItemsField;
+                return this.statusField;
             }
             set {
-                this.guidanceItemsField = value;
+                this.statusField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string Source {
+            get {
+                return this.sourceField;
+            }
+            set {
+                this.sourceField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string License {
+            get {
+                return this.licenseField;
+            }
+            set {
+                this.licenseField = value;
             }
         }
     }
@@ -4773,6 +4930,168 @@ namespace TeamMentor.UnitTests.TM_Website.WebServices {
             }
             set {
                 this.service_DataField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.0.30319.18408")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://teammentor.net/")]
+    public partial class Test_User {
+        
+        private string usernameField;
+        
+        private string passwordField;
+        
+        private string emailField;
+        
+        private string userGroupField;
+        
+        private string authTokenField;
+        
+        /// <remarks/>
+        public string Username {
+            get {
+                return this.usernameField;
+            }
+            set {
+                this.usernameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string Password {
+            get {
+                return this.passwordField;
+            }
+            set {
+                this.passwordField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string Email {
+            get {
+                return this.emailField;
+            }
+            set {
+                this.emailField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string UserGroup {
+            get {
+                return this.userGroupField;
+            }
+            set {
+                this.userGroupField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string AuthToken {
+            get {
+                return this.authTokenField;
+            }
+            set {
+                this.authTokenField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.0.30319.18408")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://teammentor.net/")]
+    public partial class TM_QA_Config {
+        
+        private string firebase_SiteField;
+        
+        private string firebase_AuthTokenField;
+        
+        private string sMTP_ServerField;
+        
+        private string sMTP_UserNameField;
+        
+        private string sMTP_PasswordField;
+        
+        private string default_AdminEmailField;
+        
+        private Test_User[] testUsersField;
+        
+        /// <remarks/>
+        public string Firebase_Site {
+            get {
+                return this.firebase_SiteField;
+            }
+            set {
+                this.firebase_SiteField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string Firebase_AuthToken {
+            get {
+                return this.firebase_AuthTokenField;
+            }
+            set {
+                this.firebase_AuthTokenField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string SMTP_Server {
+            get {
+                return this.sMTP_ServerField;
+            }
+            set {
+                this.sMTP_ServerField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string SMTP_UserName {
+            get {
+                return this.sMTP_UserNameField;
+            }
+            set {
+                this.sMTP_UserNameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string SMTP_Password {
+            get {
+                return this.sMTP_PasswordField;
+            }
+            set {
+                this.sMTP_PasswordField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string Default_AdminEmail {
+            get {
+                return this.default_AdminEmailField;
+            }
+            set {
+                this.default_AdminEmailField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public Test_User[] testUsers {
+            get {
+                return this.testUsersField;
+            }
+            set {
+                this.testUsersField = value;
             }
         }
     }
@@ -4924,6 +5243,8 @@ namespace TeamMentor.UnitTests.TM_Website.WebServices {
         
         private bool sSL_RedirectHttpToHttpsField;
         
+        private bool newAccounts_EnabledField;
+        
         private bool evalAccounts_EnabledField;
         
         private int evalAccounts_DaysField;
@@ -4957,6 +5278,16 @@ namespace TeamMentor.UnitTests.TM_Website.WebServices {
             }
             set {
                 this.sSL_RedirectHttpToHttpsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool NewAccounts_Enabled {
+            get {
+                return this.newAccounts_EnabledField;
+            }
+            set {
+                this.newAccounts_EnabledField = value;
             }
         }
         
@@ -5467,11 +5798,11 @@ namespace TeamMentor.UnitTests.TM_Website.WebServices {
         
         private string noteField;
         
-        private string passwordField;
-        
         private string stateField;
         
         private string titleField;
+        
+        private string passwordField;
         
         private string usernameField;
         
@@ -5530,16 +5861,6 @@ namespace TeamMentor.UnitTests.TM_Website.WebServices {
         }
         
         /// <remarks/>
-        public string Password {
-            get {
-                return this.passwordField;
-            }
-            set {
-                this.passwordField = value;
-            }
-        }
-        
-        /// <remarks/>
         public string State {
             get {
                 return this.stateField;
@@ -5556,6 +5877,16 @@ namespace TeamMentor.UnitTests.TM_Website.WebServices {
             }
             set {
                 this.titleField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string Password {
+            get {
+                return this.passwordField;
+            }
+            set {
+                this.passwordField = value;
             }
         }
         
@@ -6290,6 +6621,305 @@ namespace TeamMentor.UnitTests.TM_Website.WebServices {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://teammentor.net/")]
+    public partial class TM_Library {
+        
+        private System.Guid idField;
+        
+        private string captionField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public System.Guid Id {
+            get {
+                return this.idField;
+            }
+            set {
+                this.idField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string Caption {
+            get {
+                return this.captionField;
+            }
+            set {
+                this.captionField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.0.30319.18408")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://teammentor.net/")]
+    public partial class TM_GUI_Objects {
+        
+        private string[] guidanceItemsMappingsField;
+        
+        private string[] uniqueStringsField;
+        
+        /// <remarks/>
+        public string[] GuidanceItemsMappings {
+            get {
+                return this.guidanceItemsMappingsField;
+            }
+            set {
+                this.guidanceItemsMappingsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string[] UniqueStrings {
+            get {
+                return this.uniqueStringsField;
+            }
+            set {
+                this.uniqueStringsField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.0.30319.18408")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://teammentor.net/")]
+    public partial class View_V3 {
+        
+        private System.Guid libraryIdField;
+        
+        private System.Guid folderIdField;
+        
+        private System.Guid viewIdField;
+        
+        private string captionField;
+        
+        private string authorField;
+        
+        private string guidanceItems_IndexesField;
+        
+        private System.Guid[] guidanceItemsField;
+        
+        /// <remarks/>
+        public System.Guid libraryId {
+            get {
+                return this.libraryIdField;
+            }
+            set {
+                this.libraryIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public System.Guid folderId {
+            get {
+                return this.folderIdField;
+            }
+            set {
+                this.folderIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public System.Guid viewId {
+            get {
+                return this.viewIdField;
+            }
+            set {
+                this.viewIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string caption {
+            get {
+                return this.captionField;
+            }
+            set {
+                this.captionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string author {
+            get {
+                return this.authorField;
+            }
+            set {
+                this.authorField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string guidanceItems_Indexes {
+            get {
+                return this.guidanceItems_IndexesField;
+            }
+            set {
+                this.guidanceItems_IndexesField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public System.Guid[] guidanceItems {
+            get {
+                return this.guidanceItemsField;
+            }
+            set {
+                this.guidanceItemsField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.0.30319.18408")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://teammentor.net/")]
+    public partial class Folder_V3 {
+        
+        private System.Guid libraryIdField;
+        
+        private System.Guid folderIdField;
+        
+        private string nameField;
+        
+        private View_V3[] viewsField;
+        
+        private Folder_V3[] subFoldersField;
+        
+        /// <remarks/>
+        public System.Guid libraryId {
+            get {
+                return this.libraryIdField;
+            }
+            set {
+                this.libraryIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public System.Guid folderId {
+            get {
+                return this.folderIdField;
+            }
+            set {
+                this.folderIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string name {
+            get {
+                return this.nameField;
+            }
+            set {
+                this.nameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public View_V3[] views {
+            get {
+                return this.viewsField;
+            }
+            set {
+                this.viewsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public Folder_V3[] subFolders {
+            get {
+                return this.subFoldersField;
+            }
+            set {
+                this.subFoldersField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.0.30319.18408")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://teammentor.net/")]
+    public partial class Library_V3 {
+        
+        private System.Guid libraryIdField;
+        
+        private string nameField;
+        
+        private Folder_V3[] subFoldersField;
+        
+        private View_V3[] viewsField;
+        
+        private System.Guid[] guidanceItemsField;
+        
+        /// <remarks/>
+        public System.Guid libraryId {
+            get {
+                return this.libraryIdField;
+            }
+            set {
+                this.libraryIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string name {
+            get {
+                return this.nameField;
+            }
+            set {
+                this.nameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public Folder_V3[] subFolders {
+            get {
+                return this.subFoldersField;
+            }
+            set {
+                this.subFoldersField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public View_V3[] views {
+            get {
+                return this.viewsField;
+            }
+            set {
+                this.viewsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public System.Guid[] guidanceItems {
+            get {
+                return this.guidanceItemsField;
+            }
+            set {
+                this.guidanceItemsField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.0.30319.18408")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://teammentor.net/")]
     public partial class TeamMentor_Article_Content {
         
         private string descriptionField;
@@ -6357,329 +6987,105 @@ namespace TeamMentor.UnitTests.TM_Website.WebServices {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.0.30319.18408")]
-    [System.SerializableAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
+    public delegate void VirtualArticle_Get_GuidRedirectCompletedEventHandler(object sender, VirtualArticle_Get_GuidRedirectCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://teammentor.net/")]
-    public partial class TeamMentor_Article_Metadata {
+    public partial class VirtualArticle_Get_GuidRedirectCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
-        private System.Guid idField;
+        private object[] results;
         
-        private string id_HistoryField;
-        
-        private System.Guid library_IdField;
-        
-        private string titleField;
-        
-        private string categoryField;
-        
-        private string phaseField;
-        
-        private string technologyField;
-        
-        private string typeField;
-        
-        private string directLinkField;
-        
-        private string tagField;
-        
-        private string security_DemandField;
-        
-        private string authorField;
-        
-        private string priorityField;
-        
-        private string statusField;
-        
-        private string sourceField;
-        
-        private string licenseField;
-        
-        /// <remarks/>
-        public System.Guid Id {
-            get {
-                return this.idField;
-            }
-            set {
-                this.idField = value;
-            }
+        internal VirtualArticle_Get_GuidRedirectCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
         }
         
         /// <remarks/>
-        public string Id_History {
+        public string Result {
             get {
-                return this.id_HistoryField;
-            }
-            set {
-                this.id_HistoryField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public System.Guid Library_Id {
-            get {
-                return this.library_IdField;
-            }
-            set {
-                this.library_IdField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string Title {
-            get {
-                return this.titleField;
-            }
-            set {
-                this.titleField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string Category {
-            get {
-                return this.categoryField;
-            }
-            set {
-                this.categoryField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string Phase {
-            get {
-                return this.phaseField;
-            }
-            set {
-                this.phaseField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string Technology {
-            get {
-                return this.technologyField;
-            }
-            set {
-                this.technologyField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string Type {
-            get {
-                return this.typeField;
-            }
-            set {
-                this.typeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string DirectLink {
-            get {
-                return this.directLinkField;
-            }
-            set {
-                this.directLinkField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string Tag {
-            get {
-                return this.tagField;
-            }
-            set {
-                this.tagField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string Security_Demand {
-            get {
-                return this.security_DemandField;
-            }
-            set {
-                this.security_DemandField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string Author {
-            get {
-                return this.authorField;
-            }
-            set {
-                this.authorField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string Priority {
-            get {
-                return this.priorityField;
-            }
-            set {
-                this.priorityField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string Status {
-            get {
-                return this.statusField;
-            }
-            set {
-                this.statusField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string Source {
-            get {
-                return this.sourceField;
-            }
-            set {
-                this.sourceField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string License {
-            get {
-                return this.licenseField;
-            }
-            set {
-                this.licenseField = value;
+                this.RaiseExceptionIfNecessary();
+                return ((string)(this.results[0]));
             }
         }
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.0.30319.18408")]
-    [System.SerializableAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
+    public delegate void VirtualArticle_CreateArticle_from_ExternalServiceDataCompletedEventHandler(object sender, VirtualArticle_CreateArticle_from_ExternalServiceDataCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://teammentor.net/")]
-    public partial class TeamMentor_Article {
+    public partial class VirtualArticle_CreateArticle_from_ExternalServiceDataCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
-        private TeamMentor_Article_Metadata metadataField;
+        private object[] results;
         
-        private TeamMentor_Article_Content contentField;
-        
-        private int metadata_HashField;
-        
-        private int content_HashField;
-        
-        /// <remarks/>
-        public TeamMentor_Article_Metadata Metadata {
-            get {
-                return this.metadataField;
-            }
-            set {
-                this.metadataField = value;
-            }
+        internal VirtualArticle_CreateArticle_from_ExternalServiceDataCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
         }
         
         /// <remarks/>
-        public TeamMentor_Article_Content Content {
+        public TeamMentor_Article Result {
             get {
-                return this.contentField;
-            }
-            set {
-                this.contentField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public int Metadata_Hash {
-            get {
-                return this.metadata_HashField;
-            }
-            set {
-                this.metadata_HashField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public int Content_Hash {
-            get {
-                return this.content_HashField;
-            }
-            set {
-                this.content_HashField = value;
+                this.RaiseExceptionIfNecessary();
+                return ((TeamMentor_Article)(this.results[0]));
             }
         }
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.0.30319.18408")]
-    [System.SerializableAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
+    public delegate void getGuidForMappingCompletedEventHandler(object sender, getGuidForMappingCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://teammentor.net/")]
-    public partial class TM_Library {
+    public partial class getGuidForMappingCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
-        private System.Guid idField;
+        private object[] results;
         
-        private string captionField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public System.Guid Id {
-            get {
-                return this.idField;
-            }
-            set {
-                this.idField = value;
-            }
+        internal getGuidForMappingCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string Caption {
+        public System.Guid Result {
             get {
-                return this.captionField;
-            }
-            set {
-                this.captionField = value;
+                this.RaiseExceptionIfNecessary();
+                return ((System.Guid)(this.results[0]));
             }
         }
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.0.30319.18408")]
-    [System.SerializableAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
+    public delegate void IsGuidMappedInThisServerCompletedEventHandler(object sender, IsGuidMappedInThisServerCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://teammentor.net/")]
-    public partial class TM_GUI_Objects {
+    public partial class IsGuidMappedInThisServerCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
-        private string[] guidanceItemsMappingsField;
+        private object[] results;
         
-        private string[] uniqueStringsField;
-        
-        /// <remarks/>
-        public string[] GuidanceItemsMappings {
-            get {
-                return this.guidanceItemsMappingsField;
-            }
-            set {
-                this.guidanceItemsMappingsField = value;
-            }
+        internal IsGuidMappedInThisServerCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
         }
         
         /// <remarks/>
-        public string[] UniqueStrings {
+        public bool Result {
             get {
-                return this.uniqueStringsField;
-            }
-            set {
-                this.uniqueStringsField = value;
+                this.RaiseExceptionIfNecessary();
+                return ((bool)(this.results[0]));
             }
         }
     }
@@ -8974,6 +9380,58 @@ namespace TeamMentor.UnitTests.TM_Website.WebServices {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
+    public delegate void XmlDatabase_IsUsingFileStorageCompletedEventHandler(object sender, XmlDatabase_IsUsingFileStorageCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class XmlDatabase_IsUsingFileStorageCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal XmlDatabase_IsUsingFileStorageCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public bool Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((bool)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
+    public delegate void XmlDatabase_WithoutFileStorageCompletedEventHandler(object sender, XmlDatabase_WithoutFileStorageCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class XmlDatabase_WithoutFileStorageCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal XmlDatabase_WithoutFileStorageCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public bool Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((bool)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
     public delegate void XmlDatabase_ImportLibrary_fromZipFileCompletedEventHandler(object sender, XmlDatabase_ImportLibrary_fromZipFileCompletedEventArgs e);
     
     /// <remarks/>
@@ -9572,6 +10030,58 @@ namespace TeamMentor.UnitTests.TM_Website.WebServices {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
+    public delegate void Get_TM_QA_ConfigCompletedEventHandler(object sender, Get_TM_QA_ConfigCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class Get_TM_QA_ConfigCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal Get_TM_QA_ConfigCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public TM_QA_Config Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((TM_QA_Config)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
+    public delegate void Get_TM_QA_Config_PathCompletedEventHandler(object sender, Get_TM_QA_Config_PathCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class Get_TM_QA_Config_PathCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal Get_TM_QA_Config_PathCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public string Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((string)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
     public delegate void Get_Libraries_Zip_FolderCompletedEventHandler(object sender, Get_Libraries_Zip_FolderCompletedEventArgs e);
     
     /// <remarks/>
@@ -9895,110 +10405,6 @@ namespace TeamMentor.UnitTests.TM_Website.WebServices {
         private object[] results;
         
         internal VirtualArticle_Remove_MappingCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public bool Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((bool)(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
-    public delegate void VirtualArticle_Get_GuidRedirectCompletedEventHandler(object sender, VirtualArticle_Get_GuidRedirectCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class VirtualArticle_Get_GuidRedirectCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal VirtualArticle_Get_GuidRedirectCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public string Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((string)(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
-    public delegate void VirtualArticle_CreateArticle_from_ExternalServiceDataCompletedEventHandler(object sender, VirtualArticle_CreateArticle_from_ExternalServiceDataCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class VirtualArticle_CreateArticle_from_ExternalServiceDataCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal VirtualArticle_CreateArticle_from_ExternalServiceDataCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public TeamMentor_Article Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((TeamMentor_Article)(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
-    public delegate void getGuidForMappingCompletedEventHandler(object sender, getGuidForMappingCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class getGuidForMappingCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal getGuidForMappingCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public System.Guid Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((System.Guid)(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
-    public delegate void IsGuidMappedInThisServerCompletedEventHandler(object sender, IsGuidMappedInThisServerCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class IsGuidMappedInThisServerCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal IsGuidMappedInThisServerCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
                 base(exception, cancelled, userState) {
             this.results = results;
         }
