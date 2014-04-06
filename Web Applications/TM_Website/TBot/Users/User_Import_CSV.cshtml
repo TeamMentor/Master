@@ -28,7 +28,7 @@
         $scope.CreateUsers = function ()
 		{
             var serviceUrl = "/rest/users/create";
-
+            $scope.isProcessing = true;
             $http.post(serviceUrl, JSON.stringify({ 'payload': $scope.usersToCreate })).
                 success(function(data) 
 				{
@@ -42,6 +42,7 @@
                         //Closing dialog after 3 seconds.
                         setTimeout(function () 
                         {
+                            $scope.isProcessing = false;
                             $("#dialog").dialog('close');
                         }, 3000);
                     } 
@@ -51,8 +52,10 @@
                         $("#messages").addClass("alert-danger");
                         $("#messages").removeClass("alert-success");
                         $("#messages").fadeIn('slow');
+                        $scope.isProcessing = false;
                     }
                 });
+               
         };
         $scope.OpenModal = function ()
         {
@@ -154,7 +157,7 @@
             </table>
             <div class="alert-danger alert" ng-model="messageDiv" id="messages"></div>
              <div id="groupButtons" align="right">
-                <input type="button" class="btn-primary" id="createusers" value="Create users" ng-click="CreateUsers()"/>
+                <input type="button" class="btn-primary" id="createusers" value="Create users" ng-click="CreateUsers()" ng-disabled="isProcessing"/>
                  <input type="button" class="btn-primary" value="Cancel" ng-click="CloseModal()"/>
             </div>
       </div>
