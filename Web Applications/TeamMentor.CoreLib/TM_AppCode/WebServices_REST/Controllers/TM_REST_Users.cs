@@ -82,7 +82,7 @@ namespace TeamMentor.CoreLib
                 var role = rawData[10] ?? "";
                 var passwordExpire = rawData[11] ?? "";
                 var userEnabled = rawData[12] ?? "";
-                //Safecheck in case the user clicked several times.
+                //Safe check in case the user clicked several times.
                 if (userName.tmUser().notNull())
                 {
                     errorMessage = string.Format("Username {0} already exist.", userName);

@@ -20,7 +20,7 @@
     {   
      //Default text
         var testUsers = "user_1_reader,Secure1Pwd!!,Email,FirstName,LastName,Company,JobTitle,Country,State,ExpirationDate,2,N,Y \n" +
-            "user_2_editor, Secure1Pwd!!,Email,FirstName,LastName,Company,JobTitle,Country,State,ExpirationDate,3,N,Y";
+            "user_2_editor,Secure1Pwd!!,Email,FirstName,LastName,Company,JobTitle,Country,State,ExpirationDate,3,N,Y";
         
         $scope.usersToCreate = testUsers;
         $scope.data = $scope.usersToCreate.split("\n");
@@ -28,7 +28,7 @@
         $scope.CreateUsers = function ()
 		{
             var serviceUrl = "/rest/users/create";
-            $scope.isProcessing = true;
+            $scope.isDisabled = true;
             $http.post(serviceUrl, JSON.stringify({ 'payload': $scope.usersToCreate })).
                 success(function(data) 
 				{
@@ -42,7 +42,7 @@
                         //Closing dialog after 3 seconds.
                         setTimeout(function () 
                         {
-                            $scope.isProcessing = false;
+                            $scope.isDisabled = false;
                             $("#dialog").dialog('close');
                         }, 3000);
                     } 
@@ -52,7 +52,7 @@
                         $("#messages").addClass("alert-danger");
                         $("#messages").removeClass("alert-success");
                         $("#messages").fadeIn('slow');
-                        $scope.isProcessing = false;
+                        $scope.isDisabled = false;
                     }
                 });
                
@@ -71,10 +71,12 @@
                     var msg = JSON.parse(JSON.stringify(data));
                     if (msg.VerifyUserDataResult.toString().trim().toLowerCase() == "success")
                     {
-                        $('#createusers').prop('disabled', false);
+                        $scope.isDisabled = false;
                         $("#messages").fadeOut('fast');
+                        
                     } else
                     {
+                        $scope.isDisabled = true;
                         $("#messages").html("<b> " + msg.VerifyUserDataResult + " </b>");
                         $("#messages").addClass("alert-danger");
                         $("#messages").removeClass("alert-success");
@@ -102,7 +104,7 @@
         {
             $('.alert-danger').hide();
         });
-        $('#createusers').prop('disabled', true);
+        //$('#createusers').prop('disabled', true);
     });
 </script>
     <body ng-controller="UsersCtrl">
@@ -157,7 +159,7 @@
             </table>
             <div class="alert-danger alert" ng-model="messageDiv" id="messages"></div>
              <div id="groupButtons" align="right">
-                <input type="button" class="btn-primary" id="createusers" value="Create users" ng-click="CreateUsers()" ng-disabled="isProcessing"/>
+                <input type="button" class="btn-primary" id="createusers" value="Create users" ng-click="CreateUsers()" ng-disabled="isDisabled"/>
                  <input type="button" class="btn-primary" value="Cancel" ng-click="CloseModal()"/>
             </div>
       </div>
