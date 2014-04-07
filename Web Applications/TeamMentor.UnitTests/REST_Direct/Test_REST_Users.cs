@@ -3,7 +3,7 @@ using NUnit.Framework;
 using TeamMentor.CoreLib;
 using TeamMentor.UnitTests.REST;
 
-namespace eamMentor.UnitTests.REST
+namespace TeamMentor.UnitTests.REST
 {
     [TestFixture]
     public class Test_REST_Users : TM_Rest_Direct
@@ -102,6 +102,43 @@ namespace eamMentor.UnitTests.REST
             var payload = "username1test,Secure1Pwd!!,someemail@gmail.com,FirstName,Last Name,Company,JobTitle,Country,State,2030-01-01,5,N,N \n";
             var result = TMRestUser.VerifyUserData(payload.TrimEnd());
             Assert.AreEqual(result, "The group value set for user username1test is invalid. Valid groups are Admin Editor and Reader");
+        }
+        [Test]
+        public void VerifyUserDataUserUserNameUsed()
+        {
+            var payload = "username1test,Secure1Pwd!!,a@gmail.com,FirstName,Last Name,Company,JobTitle,Country,State,2030-01-01,2,N,N" +
+                          "\nusername1test,Secure1Pwd!!,b@gmail.com,FirstName,Last Name,Company,JobTitle,Country,State,2030-01-01,2,N,N" +
+                          "\nusername2test,Secure1Pwd!!,c@gmail.com,FirstName,Last Name,Company,JobTitle,Country,State,2030-01-01,2,N,N";
+            var result = TMRestUser.VerifyUserData(payload.TrimEnd());
+            Assert.AreEqual(result, "Username username1test is already being used in this import.Please verify.");
+        }
+        [Test]
+        public void VerifyUserDataUserSameEmailAddressUsed()
+        {
+            var payload = "username1test,Secure1Pwd!!,someemail@gmail.com,FirstName,Last Name,Company,JobTitle,Country,State,2030-01-01,2,N,N" +
+                          "\nusername2test,Secure1Pwd!!,somesmail@gmail.com,FirstName,Last Name,Company,JobTitle,Country,State,2030-01-01,2,N,N" +
+                          "\nusername3test,Secure1Pwd!!,somesmail@gmail.com,FirstName,Last Name,Company,JobTitle,Country,State,2030-01-01,2,N,N";
+            var result = TMRestUser.VerifyUserData(payload.TrimEnd());
+            Assert.AreEqual(result, "Email address somesmail@gmail.com is already being used for another user in this import.Please verify.");
+        }
+
+        [Test]
+        public void VerifyUserDataUserCreationUserSameEmailAddressUsed()
+        {
+            var payload = "username1test,Secure1Pwd!!,someemail@gmail.com,FirstName,Last Name,Company,JobTitle,Country,State,2030-01-01,2,N,N" +
+                          "\nusername2test,Secure1Pwd!!,somesmail@gmail.com,FirstName,Last Name,Company,JobTitle,Country,State,2030-01-01,2,N,N" +
+                          "\nusername3test,Secure1Pwd!!,somesmail@gmail.com,FirstName,Last Name,Company,JobTitle,Country,State,2030-01-01,2,N,N";
+            var result = TMRestUser.CreateCSVUsers(payload.TrimEnd());
+            Assert.AreEqual(result, "Email address somesmail@gmail.com is already being used for another user in this import.Please verify.");
+        }
+        [Test]
+        public void VerifyUserDataUserCreationUserUserNameUsed()
+        {
+            var payload = "username1test,Secure1Pwd!!,a@gmail.com,FirstName,Last Name,Company,JobTitle,Country,State,2030-01-01,2,N,N" +
+                          "\nusername1test,Secure1Pwd!!,b@gmail.com,FirstName,Last Name,Company,JobTitle,Country,State,2030-01-01,2,N,N" +
+                          "\nusername2test,Secure1Pwd!!,c@gmail.com,FirstName,Last Name,Company,JobTitle,Country,State,2030-01-01,2,N,N";
+            var result = TMRestUser.CreateCSVUsers(payload.TrimEnd());
+            Assert.AreEqual(result, "Username username1test is already being used in this import.Please verify.");
         }
     }
        #endregion

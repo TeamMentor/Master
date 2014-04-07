@@ -62,6 +62,13 @@ namespace TeamMentor.CoreLib
 		}
         [Admin] public string CreateCSVUsers(string payload)
         {
+            //Since the verification is performed in another call, an authenticated user can execute this method and eventually bypass any validation
+            //By performing the validationa again on user creation, we prevent this.
+            var verification = VerifyUserData(payload);
+            if (String.Compare(verification, "Success", System.StringComparison.OrdinalIgnoreCase) != 0)
+            {
+                return verification;
+            }
             var users = payload.split("\n");
             var xmlDatabase = TM_Xml_Database.Current;
             var userData = xmlDatabase.UserData;
@@ -111,6 +118,8 @@ namespace TeamMentor.CoreLib
             var xmlDatabase = TM_Xml_Database.Current;
             var userData = xmlDatabase.UserData;
             var errorMessage = string.Empty;
+            var emails = new HashSet<string>();
+            var usernames = new HashSet<string>();
             foreach (var user in users)
             {
                 var rawData = user.split(",");
@@ -134,7 +143,20 @@ namespace TeamMentor.CoreLib
                 var passwordExpire = rawData[11] ?? "";
                 var userEnabled = rawData[12] ?? "";
                 var tmUser = new NewUser { Username = userName, Password = password, Company = company, Country = country, Email = email, Firstname = firstName, Lastname = lastName, GroupId = int.Parse(role), Note = "CSV user creation", State = state, Title = title };
-
+                if (!usernames.Contains(userName))
+                    usernames.Add(userName);
+                else
+                {
+                    errorMessage = string.Format("Username {0} is already being used in this import.Please verify.", userName);
+                    break; 
+                }
+                if (!emails.Contains(email.ToString()))
+                    emails.Add(email);
+                else
+                {
+                    errorMessage = string.Format("Email address {0} is already being used for another user in this import.Please verify.", email);
+                    break;
+                }
                 //Check wether or not the user does exist.
                 if (userName.tmUser().notNull())
                 {
