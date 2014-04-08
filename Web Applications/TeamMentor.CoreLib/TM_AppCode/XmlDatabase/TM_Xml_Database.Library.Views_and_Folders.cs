@@ -73,16 +73,20 @@ namespace TeamMentor.CoreLib
         }
 
         [EditArticles] 	public static View_V3                                       newView                             (this TM_Xml_Database tmDatabase, Guid parentFolderId, View tmView)
-        {
+        {            
             var view = tmDatabase.xmlDB_NewView(parentFolderId, tmView);
-            return tmDatabase.tmView(view.id.guid());
+            return (view.notNull()) 
+                        ? tmDatabase.tmView(view.id.guid())
+                        : null;
         }		
         [EditArticles] 	public static urn.microsoft.guidanceexplorer.View           xmlDB_NewView                       (this TM_Xml_Database tmDatabase, View tmView)
         {
             return tmDatabase.xmlDB_NewView(Guid.Empty,  tmView);
         }		
         [EditArticles] 	public static urn.microsoft.guidanceexplorer.View           xmlDB_NewView                       (this TM_Xml_Database tmDatabase, Guid parentFolderId, View tmView)
-        {			
+        {
+			if (tmView.isNull())
+                return null;
             var tmLibrary = tmDatabase.tmLibrary(tmView.library.guid());
             //var guidanceExplorer = tmDatabase.xmlDB_GuidanceExplorer(tmView.library.guid());
             if (tmLibrary.notNull())
@@ -120,7 +124,8 @@ namespace TeamMentor.CoreLib
         }		
         [EditArticles] 	public static urn.microsoft.guidanceexplorer.View           xmlDB_UpdateView                    (this TM_Xml_Database tmDatabase, View tmView, List<Guid> guidanceItems)
         {
-            ".... in  xmlDB_UpdateView".info();
+            if (tmView.isNull())
+                return null;
             var tmLibrary = tmDatabase.tmLibrary(tmView.library.guid());
             if (tmLibrary.isNull())
             {

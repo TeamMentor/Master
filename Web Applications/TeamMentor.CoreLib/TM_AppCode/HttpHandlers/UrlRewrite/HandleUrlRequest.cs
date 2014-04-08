@@ -288,7 +288,7 @@ namespace TeamMentor.CoreLib
                         //    return handleAction_SSO();                                                            
                 }
                 
-                tmWebServices.tmAuthentication.mapUserRoles(false);			 // enable  CSRF protection
+                tmWebServices.tmAuthentication.mapUserRoles();			 // enable  CSRF protection
                 switch (action.lower())
                 {
                     case "external":
@@ -303,6 +303,9 @@ namespace TeamMentor.CoreLib
                     case "removevirtualarticle":
                         removeVirtualArticleMapping(data);
                         break;                    
+                    case "whoami":
+                        showWhoAmI();
+                        break;
                 }
             }                
             catch (Exception ex)
@@ -313,22 +316,7 @@ namespace TeamMentor.CoreLib
                     ex.logWithStackTrace("at handleRequest");                                    
             }                                                		
         }
-        
-
-/*        public void reload_Config()
-        {
-            TMConfig.loadConfig();
-            response_Redirect("home");
-        }*/
-
-/*        public void reload_UserData()
-        {
-            TM_UserData.Current.ReloadData();
-            HttpContextFactory.Response.Write("Done");
-            endResponse();
-        }*/
-        
-
+                
         //Virtual Articles
         public void showVirtualArticles()
         {
@@ -438,6 +426,8 @@ namespace TeamMentor.CoreLib
                 }
             }            
         }
+        
+        
         //handlers
         public void handleAction_JsonP(string data)
         {
@@ -561,7 +551,7 @@ namespace TeamMentor.CoreLib
             else
                 transfer_Request("articleViewer");              // will trigger exception     
         }
-        public  void handle_ArticleViewRequest(string data)
+        public void handle_ArticleViewRequest(string data)
         {			
             if ( data.isGuid())
             {				
@@ -577,7 +567,7 @@ namespace TeamMentor.CoreLib
             }
             transfer_Request("articleViewer");              // will trigger exception    
         }		
-        private void handleAction_Content(string data)
+        public void handleAction_Content(string data)
         { 
             var guid = tmWebServices.getGuidForMapping(data);
             if (guid != Guid.Empty)
@@ -592,6 +582,18 @@ namespace TeamMentor.CoreLib
 
         }
 
+        //User related
+        public void showWhoAmI()
+        {
+            if (tmWebServices.notNull() && tmWebServices.tmAuthentication.notNull())
+            {
+                var currentUser = tmWebServices.tmAuthentication.currentUser;
+                context.Response.ContentType = "application/json";
+                var json = currentUser.whoAmI().json();                
+                context.Response.Write(currentUser.whoAmI().json());
+                endResponse();             
+            }
+        }
         //utils
         public void endResponse()
         { 

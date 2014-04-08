@@ -34,7 +34,8 @@ namespace TeamMentor.CoreLib
 
 		public static string executeGitCommand(string gitCommand)
 		{
-			var gitExe = @"C:\Program Files\Git\bin\git.exe";
+            return null;     // disabling this since it is not used anymore
+			/*var gitExe = @"C:\Program Files\Git\bin\git.exe";
 			if (gitExe.fileExists().isFalse())
 				gitExe = @"C:\Program Files (x86)\Git\bin\git.exe";
 			if (gitExe.fileExists().isFalse())
@@ -46,10 +47,10 @@ namespace TeamMentor.CoreLib
 			var cmdOutput = Processes.startAsCmdExe(gitExe, gitCommand, gitLocalProjectFolder)
 			                         .fix_CRLF()
 			                         .replace("\t", "    ");
-			return cmdOutput;
+			return cmdOutput;*/
 		}
 
-
+        // this is the one used now
         public static bool CloneUsingGit(string gitLocation, string targetFolder)
         {
             if ("git.exe".startProcess_getConsoleOut().valid())     // we found Git

@@ -9,7 +9,7 @@ namespace TeamMentor.CoreLib
     {        
         public static bool setUserDataPath(this TM_UserData userData, string userDataPath)
         {
-            if (userDataPath.dirExists().isFalse())
+            if (userDataPath.isNull() || userDataPath.dirExists().isFalse())
             {
                 "[TM_UserData][setUserDataPath] provided userDataPath didn't exist: {0}".error("userDataPath");
                 return false;

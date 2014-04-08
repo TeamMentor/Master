@@ -12,7 +12,7 @@ namespace TeamMentor.CoreLib
     {		
         
         [WebMethod(EnableSession = true)]                       public string GetTime() 						{   return "...Via Proxy:" + DateTime.Now.str();                        }  	         
-        [WebMethod(EnableSession = true)]                       public string Ping(string message)  			{   return "received ping: {0}".format(message);                        }
+        [WebMethod(EnableSession = true)]                       public string Ping(string message)  			{   return "received ping: {0}".format(message);                        }        
         
         //Xml Database Specific
         [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_GetDatabasePath()		{	return tmXmlDatabase.Path_XmlDatabase;	                            }
@@ -55,9 +55,13 @@ namespace TeamMentor.CoreLib
         
         [WebMethod(EnableSession = true)] [Admin]	            public string		CreateWebEditorSecret()	
                                                                                                     {
+                                                                                                         //disabled to be removed
+                                                                                                         return null;
+                                                                                                        /*
                                                                                                         var webEditorSecretDataFile = AppDomain.CurrentDomain.BaseDirectory.pathCombine("webEditorSecretData.config");
                                                                                                         Guid.NewGuid().str().serialize(webEditorSecretDataFile);
                                                                                                         return webEditorSecretDataFile.load<string>();
+                                                                                                        */
                                                                                                         //this (below) doesn't work because the webeditor is an *.ashx and doesn't have access to the HttpContext Session object
                                                                                                         /*var session = HttpContextFactory.Current.Session;
                                                                                                         if (session["webEditorSecretData"].isNull())
@@ -65,12 +69,10 @@ namespace TeamMentor.CoreLib
                                                                                                         return (string)session["webEditorSecretData"];
                                                                                                         */
                                                                                                     }						
-        [WebMethod(EnableSession = true)] [Admin]	            public string		TMConfigFileLocation()			    {	return TMConfig.Location;             }		
-        [WebMethod(EnableSession = true)] [Admin]	            public TMConfig		TMConfigFile()                      {	return TMConfig.Current;              }																					        
-        [WebMethod(EnableSession = true)] [Admin]	            public bool		    SetTMConfigFile(TMConfig tmConfig)  {   return TMConfig.setCurrent(tmConfig); }                                                                                    
-        [WebMethod(EnableSession = true)] [Admin]	            public TM_QA_Config	Get_TM_QA_Config()                  {   return TM_QA_Config.Current;          }
-      //[WebMethod(EnableSession = true)]  	                    public string	    Get_TM_QA_Config_Path()             {   return TM_QA_Config.Current_Path;     }
-        [WebMethod(EnableSession = true)] [Admin] 	            public Firebase_ClientConfig Get_TM_QA_Config_Path()    {   return userData.firebase_ClientConfig();  }
+        [WebMethod(EnableSession = true)] [Admin]	            public string		TMConfigFileLocation()			     {	return TMConfig.Location;             }		
+        [WebMethod(EnableSession = true)] [Admin]	            public TMConfig		TMConfigFile()                       {	return TMConfig.Current;              }																					        
+        [WebMethod(EnableSession = true)] [Admin]	            public bool		    SetTMConfigFile(TMConfig tmConfig)   {   return TMConfig.setCurrent(tmConfig); }                                                                                            
+        [WebMethod(EnableSession = true)] [Admin] 	            public Firebase_ClientConfig Get_Firebase_ClientConfig() {   return userData.firebase_ClientConfig();  }
         
 
         // Install libraries from ZIP
@@ -85,11 +87,14 @@ namespace TeamMentor.CoreLib
                                                                                     }																							
         [WebMethod(EnableSession = true)] [Admin]	            public string		Set_Libraries_Zip_Folder(string folder)
                                                                                     {
-                                                                                        var tmConfig = TMConfig.Current;
-                                                                                        tmConfig.TMSetup.LibrariesUploadedFiles = folder;
-                                                                                        //folder.createDir();
-                                                                                        if (tmConfig.SaveTMConfig())																																										
-                                                                                            return "Path set to '{0}' which currently has {1} files".format(folder.fullPath(), folder.files().size());
+                                                                                        if (folder.valid())
+                                                                                        {
+                                                                                            var tmConfig = TMConfig.Current;
+                                                                                            tmConfig.TMSetup.LibrariesUploadedFiles = folder;
+                                                                                            //folder.createDir();
+                                                                                            if (tmConfig.SaveTMConfig())																																										
+                                                                                                return "Path set to '{0}' which currently has {1} files".format(folder.fullPath(), folder.files().size());
+                                                                                        }
                                                                                         return null;
                                                                                     }
 

@@ -145,6 +145,8 @@ namespace TeamMentor.CoreLib
 
         public static bool      setCurrent(TMConfig tmConfig)
         {
+            if (tmConfig.isNull())
+                return false;
             Current = tmConfig;
             return Current.SaveTMConfig();    
         }

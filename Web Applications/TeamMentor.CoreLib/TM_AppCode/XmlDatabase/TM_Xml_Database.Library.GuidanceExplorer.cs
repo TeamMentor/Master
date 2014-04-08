@@ -19,9 +19,16 @@ namespace TeamMentor.CoreLib
             "[isValidGuidanceExplorerName] failed validation for: {0}".info(name);
             return false;
         }		
+        
+        public static guidanceExplorer       xmlDB_NewGuidanceExplorer(this TM_Xml_Database tmDatabase, Library library)
+        {
+            if (library.notNull())
+                return tmDatabase.xmlDB_NewGuidanceExplorer(library.id.guid(), library.caption);
+            return null;
+        }
         public static guidanceExplorer       xmlDB_NewGuidanceExplorer(this TM_Xml_Database tmDatabase, Guid libraryId, string caption)
         {			
-            if (caption.isValidGuidanceExplorerName().isFalse())
+            if (caption.isNull() || caption.isValidGuidanceExplorerName().isFalse())
             {
                 "[TM_Xml_Database][xmlDB_NewGuidanceExplorer] provided caption didn't pass validation regex".error();
                 throw new Exception("Provided Library name didn't pass validation regex"); 				
@@ -131,7 +138,14 @@ namespace TeamMentor.CoreLib
             foreach(var guidanceExplorer in tmDatabase.xmlDB_GuidanceExplorers())
                 guidanceExplorer.xmlDB_Save_GuidanceExplorer(tmDatabase);
             return tmDatabase;
-        }		
+        }
+		public static bool       xmlDB_UpdateGuidanceExplorer(this TM_Xml_Database tmDatabase, Library library)
+		{
+		    if (library.notNull())
+                return tmDatabase.xmlDB_UpdateGuidanceExplorer(library.id.guid(), library.caption, library.delete);
+            return false;
+		}
+        
         public static bool       xmlDB_UpdateGuidanceExplorer(this TM_Xml_Database tmDatabase, Guid libraryId, string caption, bool deleteLibrary)
         {
             //"[xmlDB_UpdateGuidanceExplorer]".info();

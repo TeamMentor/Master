@@ -121,6 +121,7 @@
     <Content Include="Aspx_Pages\images\ui-icons_f7a50d_256x240.png" />
     <Content Include="Aspx_Pages\images\ui-icons_fcd113_256x240.png" />
     <Content Include="Aspx_Pages\SSO.aspx" />
+    <Content Include="Aspx_Pages\WhoAmI.aspx" />
     <Content Include="Css\ArticleEditor.css" />
     <Content Include="Css\ArticleViewer.css" />
     <Content Include="Css\default.css" />

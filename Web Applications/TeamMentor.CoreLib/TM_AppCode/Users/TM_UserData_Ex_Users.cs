@@ -153,6 +153,8 @@ namespace TeamMentor.CoreLib
         }
         public static List<int>     createTmUsers               (this TM_UserData userData, string batchUserData) 
         {						
+            if (batchUserData.valid().isFalse())
+                return new List<int>();
             var newUsers = new List<NewUser>();
             foreach(var line in batchUserData.fix_CRLF().split_onLines())
             {
@@ -196,8 +198,10 @@ namespace TeamMentor.CoreLib
         }
 
         public static bool          setPassword                 (this TMUser tmUser, string password)
-        {		                      
-              return setPasswordHash(tmUser, tmUser.createPasswordHash(password));         
+        {		          
+            if (tmUser.isNull() || password.notValid())
+                return false;
+            return setPasswordHash(tmUser, tmUser.createPasswordHash(password));         
         }
 
         public static bool          setPasswordHash             (this TMUser tmUser, string passwordHash)
@@ -293,6 +297,8 @@ namespace TeamMentor.CoreLib
         
         public static List<TMUser>  tmUsers             (this List<int> usersId)
         {
+            if (usersId.isNull())
+                return new List<TMUser>();
             return usersId.Select(userId => userId.tmUser()).toList();
         }
         public static List<TMUser>  tmUsers             (this TM_UserData userData)
@@ -302,10 +308,14 @@ namespace TeamMentor.CoreLib
 
         [ManageUsers]   public static List<int>     createTmUsers       (this TM_UserData userData, List<NewUser> newUsers)
         {
+            if(newUsers.isNull())
+                return new List<int>();
             return newUsers.Select(newUser => userData.createTmUser(newUser)).toList();
         }
         [ManageUsers]   public static List<bool>    deleteTmUsers       (this TM_UserData userData, List<int> userIds)
         {
+            if(userIds.isNull())
+                return new List<bool>();
             return userIds.Select(userId => userData.deleteTmUser(userId)).toList();
         }
         [ManageUsers]   public static bool          deleteTmUser        (this TM_UserData userData, int userId)

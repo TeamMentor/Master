@@ -104,6 +104,12 @@ namespace TeamMentor.CoreLib
         {
             try
             {
+                if (tmSecretData.Rijndael_IV != TM_UserData.Current.SecretData.Rijndael_IV && 
+                    tmSecretData.Rijndael_Key !=TM_UserData.Current.SecretData.Rijndael_Key)
+                {
+                    "[Set_TM_SecretData] both Rijndael_IV and Rijndael_Key are different from current value (not supported scenario and possible attack".error();
+                    return false;
+                }
                 TM_UserData.Current.SecretData = tmSecretData;
                 TM_UserData.Current.secretData_Save();
                 return true;

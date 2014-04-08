@@ -24,7 +24,9 @@ namespace TeamMentor.CoreLib
         }        
         public static TM_Xml_Database reload_WithoutFileStorage  (this TM_Xml_Database tmDatabase)  
         {
-            return new TM_Xml_Database();
+            //disable for now (need to add a load_WithoutFileStorage (or the Security unit tests will leave the DB in this mode
+         //   return new TM_Xml_Database();
+            return null;
         }        
     }
 }

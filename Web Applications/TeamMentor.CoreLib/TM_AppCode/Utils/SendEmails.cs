@@ -96,11 +96,15 @@ namespace TeamMentor.CoreLib
         //Refactor into SMTP class
         public bool send(EmailMessage_Post emailMessagePost)
         {
+            if (emailMessagePost.isNull())
+                return false;
             var emailMessage = new EmailMessage(emailMessagePost);
             return send(emailMessage);
         }
         public bool send(EmailMessage emailMessage)
         {
+            if (emailMessage.isNull())
+                return false;
             emailMessage.Message += TMConsts.EMAIL_DEFAULT_FOOTER;
             Sent_EmailMessages.Add(emailMessage);
             try
