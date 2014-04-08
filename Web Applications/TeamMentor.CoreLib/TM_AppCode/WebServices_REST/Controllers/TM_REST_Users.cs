@@ -62,10 +62,17 @@ namespace TeamMentor.CoreLib
 		}
         [Admin] public string CreateCSVUsers(string payload)
         {
+            //Since the verification is performed in another call, an authenticated user can execute this method and eventually bypass any validation
+            //By performing the validationa again on user creation, we prevent this.
+            var verification = VerifyUserData(payload);
+            if (String.Compare(verification, "Success", System.StringComparison.OrdinalIgnoreCase) != 0)
+            {
+                return verification;
+            }
             var users = payload.split("\n");
             var xmlDatabase = TM_Xml_Database.Current;
             var userData = xmlDatabase.UserData;
-          
+            var errorMessage = string.Empty;
             foreach (var user in users)
             {
                 var rawData = user.split(",");
@@ -82,6 +89,12 @@ namespace TeamMentor.CoreLib
                 var role = rawData[10] ?? "";
                 var passwordExpire = rawData[11] ?? "";
                 var userEnabled = rawData[12] ?? "";
+                //Safe check in case the user clicked several times.
+                if (userName.tmUser().notNull())
+                {
+                    errorMessage = string.Format("Username {0} already exist.", userName);
+                    break;
+                }
                 var userId = userData.newUser(userName, password);
                 DateTime outputDate;
                 DateTime.TryParse(expiryDate, out outputDate);
@@ -96,7 +109,7 @@ namespace TeamMentor.CoreLib
                 else
                     throw new Exception(String.Format("Failed to create user {0}", userName));
             }
-            return "Success";
+            return (String.IsNullOrEmpty(errorMessage) ? "Success" : errorMessage);
         }
 
         [Admin]public string VerifyUserData(string payload)
@@ -105,12 +118,15 @@ namespace TeamMentor.CoreLib
             var xmlDatabase = TM_Xml_Database.Current;
             var userData = xmlDatabase.UserData;
             var errorMessage = string.Empty;
+            var emails = new HashSet<string>();
+            var usernames = new HashSet<string>();
             foreach (var user in users)
             {
                 var rawData = user.split(",");
+                //Safe check for
                 if (rawData.count() < 13)
                 {
-                    errorMessage = string.Format("There is a missing field for user {0}", rawData[0] ?? "");
+                    errorMessage = string.Format("There is a missing field for user {0}.Please verify.", rawData[0] ?? "");
                     break;
                 }
                 var userName = rawData[0] ?? "";
@@ -127,7 +143,20 @@ namespace TeamMentor.CoreLib
                 var passwordExpire = rawData[11] ?? "";
                 var userEnabled = rawData[12] ?? "";
                 var tmUser = new NewUser { Username = userName, Password = password, Company = company, Country = country, Email = email, Firstname = firstName, Lastname = lastName, GroupId = int.Parse(role), Note = "CSV user creation", State = state, Title = title };
-
+                if (!usernames.Contains(userName))
+                    usernames.Add(userName);
+                else
+                {
+                    errorMessage = string.Format("Username {0} is already being used in this import.Please verify.", userName);
+                    break; 
+                }
+                if (!emails.Contains(email.ToString()))
+                    emails.Add(email);
+                else
+                {
+                    errorMessage = string.Format("Email address {0} is already being used for another user in this import.Please verify.", email);
+                    break;
+                }
                 //Check wether or not the user does exist.
                 if (userName.tmUser().notNull())
                 {
@@ -136,7 +165,7 @@ namespace TeamMentor.CoreLib
                 }
                 if (tmUser.validate().Count > 0)
                 {
-                    errorMessage = string.Format(" Please verify data for user {0}  :", userName);
+                    errorMessage = string.Format("Please verify data for user {0}  :", userName);
                     errorMessage = tmUser.validate().Aggregate(errorMessage, (current, message) => current + " {0}".format(message.ErrorMessage));
                     break;
                 }
@@ -145,13 +174,18 @@ namespace TeamMentor.CoreLib
                     errorMessage = string.Format("Email {0} already exist", email);
                     break;
                 }
-                if (firstName.isNull() || lastName.isNull())
+                if (firstName=="")
                 {
-                    errorMessage = string.Format("FirstName and LastName are required fields for user {0}", userName);
+                    errorMessage = string.Format("FirstName is a required field for user {0}", userName);
+                    break;
+                }
+                if (lastName=="")
+                {
+                    errorMessage = string.Format("Last Name is a required field for user {0}", userName);
                     break;
                 }
                 DateTime outputDate;
-                if (!DateTime.TryParse(expiryDate, out outputDate))
+                if (String.IsNullOrEmpty(expiryDate)||!DateTime.TryParse(expiryDate, out outputDate))
                 {
                     errorMessage = string.Format("Please enter a valid Expiration date for user {0}. Format must be {1}.", userName, "yy/mm/dd");
                     break;

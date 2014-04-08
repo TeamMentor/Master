@@ -119,6 +119,7 @@
     <Compile Include="CoreLib\Tracking\Test_Tracking_Application.cs" />
     <Compile Include="CoreLib\Utils\Test_HttpContextFactory.cs" />
     <Compile Include="QA_Tests\Test_Loading_TM_Repos.cs" />
+    <Compile Include="REST_Direct\Test_REST_Users.cs" />
     <Compile Include="REST_Direct\Test_TBot.cs" />
     <Compile Include="TM_XmlDatabase\Test_Library_SaveToDisk.cs" />
     <Compile Include="TM_XmlDatabase\Test_LoadLibrariesFromDisk.cs" />
