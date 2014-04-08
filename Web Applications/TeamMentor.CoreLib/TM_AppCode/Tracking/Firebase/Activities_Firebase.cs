@@ -10,7 +10,9 @@ namespace TeamMentor.CoreLib
     	
         public UserActivity logActivity(UserActivity userActivity)
         {            
-            apiFirebase.push(userActivity);
+            var submitData = new API_Firebase.SubmitData("activities", userActivity, API_Firebase.Submit_Type.ADD);
+            apiFirebase.submit(submitData);
+            //apiFirebase.push(userActivity);
             return userActivity;
         }
     }

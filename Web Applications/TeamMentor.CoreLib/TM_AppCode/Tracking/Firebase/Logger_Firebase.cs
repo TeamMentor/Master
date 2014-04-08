@@ -19,7 +19,9 @@ namespace TeamMentor.CoreLib
     	
         public override  Log_Item logItem(Log_Item item)
         {
-            apiFirebase.push(item);
+            var submitData = new API_Firebase.SubmitData("testLogs", item, API_Firebase.Submit_Type.ADD);
+            apiFirebase.submit(submitData);
+            //apiFirebase.push(item);
             return item;
         }
 

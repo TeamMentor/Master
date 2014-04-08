@@ -34,8 +34,8 @@ namespace TeamMentor.CoreLib
 	        SubmitQueue  = new BlockingCollection<SubmitData>();
             OfflineQueue = new BlockingCollection<SubmitData>();
             
-		    Area	     = "QA_Server_Dev";//this.firebase_RootArea();
-            Area        += (Area.valid()) ? "/" + area : area;
+		    Area	     = this.firebase_RootArea();
+            Area        += (area.valid()) ? "/" + area : area;
 		    MessageFormat = "{{\"text\": {0}}}";            
             QueueMaxWait = TMConsts.FIREBASE_SUBMIT_QUEUE_MAX_WAIT;
             Offline      = false;
@@ -144,6 +144,34 @@ namespace TeamMentor.CoreLib
             web.Headers_Request.Add("X-HTTP-Method-Override",method);            
             return web.getUrlContents_POST(targetUrl,jsonData);            
         }
+
+        public static string  submit_Via_REST(this API_Firebase firebase, API_Firebase.SubmitData submitData)
+        {            
+            if (submitData.notNull())
+            {
+                try
+                {
+                    switch(submitData.Type)
+                    {
+                        case API_Firebase.Submit_Type.GET:
+                            return firebase.GET();
+                        
+                        case API_Firebase.Submit_Type.ADD:
+                            return firebase.POST(submitData.Data);
+                        case API_Firebase.Submit_Type.SET:
+                            return firebase.PUT(submitData.Data);;
+                    }
+                }
+                catch(Exception ex)
+                {
+                    var type    = submitData.Type;
+                    var data    = submitData.Data;
+                    var message = ex.Message;
+                  //  ex.log("[API_Firebase][submit_Via_REST] for: {0}".format(submitData));
+                }
+            }
+            return "";
+        }
         
     }
 
@@ -215,10 +243,13 @@ namespace TeamMentor.CoreLib
             var next = firebase.next();
             if (next.notNull())
             {
-                "[SubmitThread] got next: {0}".info(next);
+               // "[SubmitThread] got next: {0}".info(next);
+
                 if (firebase.offline())
                     firebase.offlineQueue().add(next);
-                //next.send();
+                else
+                    ThreadPool.QueueUserWorkItem((o)=>firebase.submit_Via_REST(next));
+
                 firebase.submitThread_HandleQueue();        
             }
             return firebase;

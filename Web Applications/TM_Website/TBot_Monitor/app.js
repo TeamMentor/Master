@@ -1,6 +1,6 @@
 ﻿var app = angular.module('tbot', ['ngRoute','firebase'])
-                 .value  ('fbAuthToken', '6Q8NwnKwm3DEo5gr0jS9HgryWD1QiBriqJTRYepB')
-                 .value  ('fbURL'      , 'https://tm-admin-test.firebaseio.com/QA_Server_Dev')
+                 //.value  ('fbAuthToken', '6Q8NwnKwm3DEo5gr0jS9HgryWD1QiBriqJTRYepB')
+                 //.value  ('fbURL'      , 'https://tm-admin-test.firebaseio.com/QA_Server_Dev')
                  .value  ('tmUrl'      , 'https://tm-34-qa.azurewebsites.net');
 /*
 app.run(function($rootScope, $location)

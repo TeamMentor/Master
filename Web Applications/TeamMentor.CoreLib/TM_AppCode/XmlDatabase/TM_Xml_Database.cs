@@ -93,6 +93,7 @@ namespace TeamMentor.CoreLib
                     return;
                 }
                 UserData.SetUp();
+                Logger_Firebase.createAndHook();
                 this.userData().copy_FilesIntoWebRoot();
                 if (UsingFileStorage)
                 {                       

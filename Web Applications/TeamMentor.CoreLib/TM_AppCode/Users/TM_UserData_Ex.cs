@@ -62,7 +62,7 @@ namespace TeamMentor.CoreLib
                 }
                 if (sourceFolder.dirExists().isFalse())
                 {
-                    "[copy_FilesIntoWebRoot] skipped because targetFolder was not found: {0}".error(targetFolder);
+                    "[copy_FilesIntoWebRoot] skipped because targetFolder was not found: {0}".debug(targetFolder);
                     return false;
                 }            
                 Files.copyFolder(sourceFolder, targetFolder,true,true,"");            

@@ -1,11 +1,11 @@
     angular.module('tbot')
-           .controller('LoggedInController', function($scope, $http, asmxService, $window)
+           .controller('LoggedInController', function($scope, $http, $window, asmxService )
                 {
                     $scope.currentUser = 'This is the current user....';
                     _asmxService = asmxService;
                     _http = $http
 
-                    asmxService.set_CSRF_Token(function(userData)
+                    asmxService.set_CSRF_Token().then(function(userData)
                                                 {
                                                     if (userData == null)
                                                     {

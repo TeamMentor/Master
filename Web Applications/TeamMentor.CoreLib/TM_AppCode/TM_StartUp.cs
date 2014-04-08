@@ -40,8 +40,7 @@ namespace TeamMentor.CoreLib
         [Assert_Admin]                      // impersonate an admin to load the database
         public void Application_Start()
         {
-            "[TM_StartUp] Application Start".info();            
-            Logger_Firebase.createAndHook();
+            "[TM_StartUp] Application Start".info();                        
             TmXmlDatabase           = new  TM_Xml_Database(true);                                   // Create FileSystem Based database            
             TrackingApplication     = new Tracking_Application(TmXmlDatabase.Path_XmlDatabase);    // Enabled Application Tracking
             TM_REST.SetRouteTable();	// Set REST routes            
