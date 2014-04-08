@@ -4,19 +4,26 @@ using NUnit.Framework;
 
 namespace TeamMentor.UnitTests.TM_Website
 {
-    [TestFixture]
+    [TestFixture][Ignore]
     public class Test_IE_TBot
     {
-        IE_UnitTest _ieUnitTest;
+        IE_UnitTest ieUnitTest;        
 
         [SetUp] public void setup()
         {                        
-            _ieUnitTest = new IE_UnitTest();         
+            ieUnitTest = new IE_UnitTest();         
         }        
+
+        [Test] public void Test_IE_TBot_Ctor()
+        {
+            Assert.IsNull(ieUnitTest.TargetServer);
+            Assert.NotNull(ieUnitTest.parentForm);
+            Assert.NotNull(ieUnitTest.ie);
+        }
         [Test] public void openIE()
         {            
-            Assert.NotNull(_ieUnitTest.parentForm);
-            Assert.NotNull(_ieUnitTest.ie);            
+            Assert.NotNull(ieUnitTest.parentForm);
+            Assert.NotNull(ieUnitTest.ie);            
         }
         
         [Test] public void Open_Site_Google()
@@ -25,7 +32,7 @@ namespace TeamMentor.UnitTests.TM_Website
             if (google.uri().HEAD().isFalse())
                 Assert.Ignore();
 
-            var ie = _ieUnitTest.ie;            
+            var ie = ieUnitTest.ie;            
             ie.open(google);     
             "URL: {0}".info(ie.url());
             Assert.IsTrue(ie.url().contains("google"));

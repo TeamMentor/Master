@@ -9,6 +9,7 @@ namespace TeamMentor.UnitTests.TM_Website.WebServices
 {    
     public enum Allowed_User
     {
+        Nobody    = 5,
         Admin     = 4, 
         Editor    = 3, 
         Reader    = 2,
@@ -16,7 +17,7 @@ namespace TeamMentor.UnitTests.TM_Website.WebServices
     }
     public class SecurityMapping
     {
-        public string        MethodName        { get; set; }
+        public string        MethodName        { get; set; }        
         public object[]      MethodParameters  { get; set; }
         public Allowed_User  AllowedUser       { get; set; }        
     }
@@ -39,6 +40,10 @@ namespace TeamMentor.UnitTests.TM_Website.WebServices
         {
             return securityMappings.add_Mapping(Allowed_User.Admin, methodName, methodParameters);
         }
+        public static List<SecurityMapping> add_Nobody(this List<SecurityMapping> securityMappings, string methodName, object[] methodParameters)
+        {
+            return securityMappings.add_Mapping(Allowed_User.Nobody, methodName, methodParameters);
+        }
         public static List<SecurityMapping> add_Mapping(this List<SecurityMapping> securityMappings, Allowed_User allowedUser , string methodName, object[] methodParameters)
         {
             securityMappings.Add(new SecurityMapping
@@ -54,18 +59,18 @@ namespace TeamMentor.UnitTests.TM_Website.WebServices
     [TestFixture]
     public class Test_WSDL_Security : TestFixture_WebServices
     {
-        public List<SecurityMapping> securityMappings { get; set; }
+        public List<SecurityMapping> SecurityMappings { get; set; }
         public Type                  WebServices_BaseType;
 
         public Test_WSDL_Security()
         {
             WebServices_BaseType = webServices.type().BaseType;
-            securityMappings = new  List<SecurityMapping>();
+            SecurityMappings = new  List<SecurityMapping>();
             
             
             // These methods dont have any demands or demand the ReadArticleTitles priviledge (which all admin users have)
 
-            securityMappings.add_Anonymous("ClearGUIObjects"                                        , new object[0] )
+            SecurityMappings.add_Anonymous("ClearGUIObjects"                                        , new object[0] )
                             .add_Anonymous("CreateUser"                                             , new object[1] )
                             .add_Anonymous("CreateUser_Random"                                      , new object[0] )
                             .add_Anonymous("CreateUser_Validate"                                    , new object[1] )
@@ -118,7 +123,7 @@ namespace TeamMentor.UnitTests.TM_Website.WebServices
      
             // These methods demand the ReadArticles priviledge
 
-            securityMappings.add_Reader   ("IsGuidMappedInThisServer"                               , new object[1] )
+            SecurityMappings.add_Reader   ("IsGuidMappedInThisServer"                               , new object[1] )
 
                             .add_Reader   ("GetGuidanceItemsInFolder"                               , new object[1] )
                             .add_Reader   ("GetGuidanceItemHtml"                                    , new object[1] )
@@ -136,7 +141,7 @@ namespace TeamMentor.UnitTests.TM_Website.WebServices
 
             // These methods demand the EditArticles priviledge   
         
-            securityMappings.add_Editor   ("AddGuidanceItemsToView"                                 , new object[2] )
+            SecurityMappings.add_Editor   ("AddGuidanceItemsToView"                                 , new object[2] )
                             
                             .add_Editor   ("CreateArticle"                                          , new object[1] )
                             .add_Editor   ("CreateArticle_Simple"                                   , new object[4] )
@@ -171,7 +176,7 @@ namespace TeamMentor.UnitTests.TM_Website.WebServices
 
             // These methods demand the Admin priviledge     
 
-            securityMappings.add_Admin    ("BatchUserCreation"                                      , new object[1] )
+            SecurityMappings.add_Admin    ("BatchUserCreation"                                      , new object[1] )
                             
                             .add_Admin    ("CreateUser_AuthToken"                                   , new object[1] )
                             .add_Admin    ("CreateUsers"                                            , new object[1] )
@@ -247,34 +252,8 @@ namespace TeamMentor.UnitTests.TM_Website.WebServices
                             .add_Anonymous("Login"                                                  , new object[2] )
                             .add_Anonymous("Logout"                                                 , new object[0] )
                        ;
-            // 2
-            // 1
-            // 0
-            // 0
-            // 0
-            // ,0
-            // 2
-            //  0
-            
             // 
 
-        }
-
-
-           //helper methods
-        public void checkSecurityMappings(Allowed_User allowedUser)
-        {
-            foreach(var securityMapping in securityMappings)
-            {
-                var targetMethod     = WebServices_BaseType.method(securityMapping.MethodName);
-                var methodParameters = securityMapping.MethodParameters;   
-                             
-
-                if (securityMapping.AllowedUser <= allowedUser)
-                    Assert.DoesNotThrow                     (()=> targetMethod.Invoke(webServices,methodParameters), "On method: '{0}' for user '{1}'".format(targetMethod, allowedUser));
-                else
-                    Assert.Throws<TargetInvocationException>(()=> targetMethod.Invoke(webServices,methodParameters), "On method: '{0}' for user '{1}'".format(targetMethod, allowedUser));
-            }
         }
         
         [SetUp]
@@ -339,5 +318,20 @@ namespace TeamMentor.UnitTests.TM_Website.WebServices
         }
 
      
+        //helper methods
+        public void checkSecurityMappings(Allowed_User allowedUser)
+        {
+            foreach(var securityMapping in SecurityMappings)
+            {
+                var targetMethod     = WebServices_BaseType.method(securityMapping.MethodName);
+                var methodParameters = securityMapping.MethodParameters;   
+                             
+
+                if (securityMapping.AllowedUser <= allowedUser)
+                    Assert.DoesNotThrow                     (()=> targetMethod.Invoke(webServices,methodParameters), "On method: '{0}' for user '{1}'".format(targetMethod, allowedUser));
+                else
+                    Assert.Throws<TargetInvocationException>(()=> targetMethod.Invoke(webServices,methodParameters), "On method: '{0}' for user '{1}'".format(targetMethod, allowedUser));
+            }
+        }
     }
 }

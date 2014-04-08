@@ -12,10 +12,11 @@ using FluentSharp.WinForms.Controls;
 using TeamMentor.UnitTests.TM_Website.WebServices;
 
 
-namespace TeamMentor.UnitTests.TM_Website
+namespace TeamMentor.UnitTests.TM_Website.TODO
 {
     public class API_TM_WebServices 
     {    
+        public TM_QA_Config     TmQAConfig      { get; set; }
     	public Uri 				WebSite_Url 	{ get; set; }    	
     	public string 			WebSite_Path 	{ get; set; }   
     	public Guid				SessionId		{ get; set; }
@@ -28,12 +29,10 @@ namespace TeamMentor.UnitTests.TM_Website
     	
     	
     	public TM_WebServices_Configured 	webServices;
-    	
-    	public static string 	DEFAULT_TM_SITE	 = "http://localhost.:3187";    	
-    	    	
-    	public API_TM_WebServices() : this(DEFAULT_TM_SITE)
+    	    	   	    	    	
+    	/*public API_TM_WebServices() : this(null)
     	{            
-    	}
+    	}*/
     	
     	public API_TM_WebServices(string ip, int port) : this ("http://{0}:{1}".format(ip,port))
     	{    		
@@ -41,15 +40,11 @@ namespace TeamMentor.UnitTests.TM_Website
     	
     	public API_TM_WebServices(string websiteUrl)
     	{    	
-    		this.Libraries = new List<Library_WS>();
-    		this.set_TM_Server(websiteUrl);
+            TmQAConfig     = new TM_QA_Config_Loader().load(); 
+    		Libraries = new List<Library_WS>();
+    		this.set_TM_Server(websiteUrl.uri());
     	}		
-    	
-/*    	Action setAdminPriviledges = 
-	()=>{
-			"setAdminPriviledges".info();
-			UserGroup.Admin.setThreadPrincipalWithRoles();				
-		};		*/				
+
     }
     
     public class Base_Structure
@@ -158,25 +153,27 @@ namespace TeamMentor.UnitTests.TM_Website
     
     public static class API_TeamMentor_WebServices_ExtensionMethods_Libraries
     {
-    	public static API_TM_WebServices connectToServer(this string serverUrl, bool login, string username, string password)
+        public static API_TM_WebServices connectToServer(this string serverUrl, bool login, string username, string password)
     	{
-			var teamMentor = new API_TM_WebServices(serverUrl);
-			if (login)
-			{
-				teamMentor.login(username, password);
-				if (teamMentor.loggedIn()) 
-					"[API_TM_WebServices] Connected and logged in OK to to TM server".info();
-				else
-					"[API_TM_WebServices] Failed to connect or login to server".error();
-			}
-			return teamMentor;
-		 }
-
-    	public static API_TM_WebServices set_TM_Server(this API_TM_WebServices tmWebServices, string websiteUrl)
-    	{
-            tmWebServices.WebSite_Url = websiteUrl.uri();
-            //Reflection_ExtensionMethods_Properties.prop(tmWebServices, "WebSite_Url", websiteUrl.uri());
-    		tmWebServices.webServices  	 = new TM_WebServices_Configured(tmWebServices.WebSite_Url);
+		    var teamMentor = new API_TM_WebServices(serverUrl);
+		    if (login)
+		    {
+			    teamMentor.webServices.login(username, password);
+			    if (teamMentor.webServices.loggedIn()) 
+				    "[API_TM_WebServices] Connected and logged in OK to to TM server".info();
+			    else
+				    "[API_TM_WebServices] Failed to connect or login to server".error();
+		    }
+		    return teamMentor;
+		}
+        public static Uri default_TM_Server(this API_TM_WebServices tmWebServices)
+        {
+            return new TM_QA_Config_Loader().load().Url_Target_TM_Site.uri();
+        }
+        
+    	public static API_TM_WebServices set_TM_Server(this API_TM_WebServices tmWebServices, Uri websiteUrl)
+    	{            
+    		tmWebServices.webServices  	 = new TM_WebServices_Configured(websiteUrl);
     		return tmWebServices;
     	}
     	
@@ -887,114 +884,9 @@ namespace TeamMentor.UnitTests.TM_Website
     
     	
     
-    public static class API_TeamMentor_WebServices_ExtensionMethods_Users
+    /*public static class API_TeamMentor_WebServices_ExtensionMethods_Users
     {
-        public static TM_User current_User(this API_TM_WebServices tmWebServices)
-        {
-            return tmWebServices.webServices.Current_User();
-        }
-        public static Guid current_SessionId(this API_TM_WebServices tmWebServices)
-        {
-            return tmWebServices.webServices.Current_SessionID();
-        }
-        public static bool logout(this API_TM_WebServices tmWebServices)
-        {
-            return tmWebServices.webServices.Logout() == Guid.Empty;
-        }
-        public static bool login_As_Admin(this API_TM_WebServices tmWebServices)
-        {
-            return tmWebServices.login(Tests_Consts.DEFAULT_ADMIN_USERNAME, Tests_Consts.DEFAULT_ADMIN_PASSWORD);
-        }
-    	public static bool login(this API_TM_WebServices tmWebServices, string username, string password)
-    	{
-    		try
-    		{
-	    		"[TeamMentor] login as: {0}".info(username);
-	    		tmWebServices.SessionId = tmWebServices.webServices.Login(username, password);
-	    		"[TeamMentor] SessionId is now: {0}".info(tmWebServices.SessionId);
-	    		tmWebServices.webServices.CurrentUser = tmWebServices.webServices.Current_User();    		
-	    		return tmWebServices.loggedIn();
-	    	}
-	    	catch(Exception ex)
-	    	{
-	    		ex.log();
-	    	}
-	    	return false;
-    	}
-    	
-    	public static bool loggedIn(this API_TM_WebServices tmWebServices)
-    	{
-    		return tmWebServices.SessionId != Guid.Empty;
-    	}
-    	
-    	public static List<TM_User> users(this API_TM_WebServices tmWebServices)
-    	{
-    		return tmWebServices.webServices.GetUsers().toList();
-    	}
-    	
-        public static TM_User user(this API_TM_WebServices tmWebServices, int userId)
-    	{
-    		return tmWebServices.webServices.GetUser_byID(userId);
-    	}
-    	public static TM_User user(this API_TM_WebServices tmWebServices, string userName)
-    	{
-    		return tmWebServices.webServices.GetUser_byName(userName);
-    	}    	
-    	
-        public static int add_User(this API_TM_WebServices tmWebServices)
-        {
-            return tmWebServices.add_User(10.randomLetters(), "!!123".add_RandomLetters(10));
-        }
-    	public static int add_User(this API_TM_WebServices tmWebServices, string username, 	string password)
-    	{
-            var newUser = new NewUser
-    		    {
-    		        Username = username, 
-                    Password = password, 
-                    Email    = "{0}@{1}.com".format(10.randomLetters(), 10.randomLetters()),
-                    Firstname = "..",
-                    Lastname = "..",
-                    Title    = "..", 
-                    Company  = "..",
-                    Country  = "..",
-                    State    = "..", 
-                    Note     = ".."
-    		    };
-            
-    		return tmWebServices.add_User(newUser); 
-    	}
-    	
-    	public static int add_User(this API_TM_WebServices tmWebServices, NewUser newUser)
-		{
-            var userValidationErrors = tmWebServices.webServices.CreateUser_Validate(newUser);
-            if (userValidationErrors.notEmpty())
-            {
-                "[add_User] There where validations: {0}".error(userValidationErrors.asString());
-                return -1;
-            }
-    	    var userId =  tmWebServices.webServices.CreateUser(newUser);
-
-            return userId;
-		}
-		public static bool delete_User(this API_TM_WebServices tmWebServices, string userName)
-		{
-			var tmUser = tmWebServices.user(userName);
-			if(tmUser.notNull())
-				return tmWebServices.webServices.DeleteUser(tmUser.UserId);
-			return false;
-		}
-		public static bool delete_User(this API_TM_WebServices tmWebServices, int userId)
-		{
-			return tmWebServices.webServices.DeleteUser(userId);
-		}
-    
-        public static Guid create_AuthToken(this API_TM_WebServices tmWebServices, int userId)
-        {
-            var authToken = tmWebServices.webServices.CreateUser_AuthToken(userId);
-            "[create_AuthToken] got token {0} for userId {1}".info(authToken, userId);
-            return authToken;
-        }
-    }
+    }*/
     
     public static class API_TeamMentor_WebServices_ExtensionMethods_Upload_Files
     {    

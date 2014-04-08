@@ -7,7 +7,7 @@ using NUnit.Framework;
 namespace TeamMentor.UnitTests.TM_Website
 {
     [TestFixture]
-    public class Test_WebServices_Authentication : API_TM_WebServices
+    public class Test_WebServices_Authentication : TestFixture_WebServices
     {
 
         public Test_WebServices_Authentication()
@@ -16,29 +16,27 @@ namespace TeamMentor.UnitTests.TM_Website
         }
 
         [SetUp]
-        public void setup()
-        {            
-            if (WebSite_Url.HEAD().isFalse())            
-                Assert.Ignore("TM Server is offline");
+        public void setup()                         
+        {                        
             Assert.AreEqual(webServices.Logout(), Guid.Empty);
         }
-        [Test] public void WS_Method_CurrentUSer()
+        [Test] public void WS_Method_CurrentUSer()  
         {
             Assert.AreEqual(webServices.Current_SessionID(), Guid.Empty);
             Assert.AreEqual(webServices.Current_User()     , null);
         }        
-        [Test] public void Check_AuthTokens()
+        [Test] public void Check_AuthTokens()       
         {
-            var userId = this.add_User();
+            var userId = webServices.add_User();
             Assert.Less(-1, userId);
 
-            this.login_As_Admin();
+            Assert.NotNull(this.login_As_Admin());
                         
             var authTokens1 = webServices.GetUser_AuthTokens(userId);            
             Assert.IsEmpty(authTokens1);
                         
             var authToken1 = webServices.CreateUser_AuthToken(userId);
-            var authToken2 = this.create_AuthToken(userId);            
+            var authToken2 = webServices.CreateUser_AuthToken(userId);            
             var authTokens2 = webServices.GetUser_AuthTokens(userId).toList();
             Assert.AreNotEqual(Guid.Empty, authTokens1);
             Assert.AreNotEqual(Guid.Empty, authTokens2);
@@ -47,27 +45,29 @@ namespace TeamMentor.UnitTests.TM_Website
             Assert.AreEqual(authTokens2.second(),authToken2);
             
             //check that user exists and delete it
-            var tmUser = this.user(userId);
+            var tmUser = webServices.user(userId);
             Assert.AreEqual(tmUser.UserId, userId);
-            Assert.IsTrue(this.delete_User(userId));
-            Assert.IsNull(this.user(userId));
+            Assert.IsTrue(webServices.delete_User(userId));
+            Assert.IsNull(webServices.user(userId));
         }
-
-        [Test] public void Login_Using_AuthTokens()
+        [Test] public void Login_Using_AuthTokens() 
         {
-            this.login_As_Admin();
-            var userId = this.add_User();
-            var tmUser = this.user(userId);
-            var authToken = this.create_AuthToken(userId);
-            var current_User_Before    = this.current_User();
-            var before_SessionId   = this.current_SessionId();
-            this.logout();
-            var current_User_LoggedOut = this.current_User();            
-            var loggedOut_SessionId    = this.current_SessionId();
-            var authToken_SessionId    = this.webServices.Login_Using_AuthToken(authToken);
-            var current_User_After     = this.current_User();
-            var after_SessionId        = this.current_SessionId();
+            var testUser                = this.login_As_Admin();
+            var userId                  = webServices.add_User();
+            var tmUser                  = webServices.user(userId);
+            var authToken               = webServices.CreateUser_AuthToken(userId);
+            var current_User_Before     = webServices.current_User();
+            var before_SessionId        = webServices.current_SessionId();
 
+            webServices.logout();
+
+            var current_User_LoggedOut  = webServices.current_User();            
+            var loggedOut_SessionId     = webServices.current_SessionId();
+            var authToken_SessionId     = this.webServices.Login_Using_AuthToken(authToken);
+            var current_User_After      = webServices.current_User();
+            var after_SessionId         = webServices.current_SessionId();
+
+            Assert.NotNull    (testUser);
             Assert.NotNull    (current_User_Before);
             Assert.IsNull     (current_User_LoggedOut);
             Assert.NotNull    (current_User_After);
@@ -75,13 +75,15 @@ namespace TeamMentor.UnitTests.TM_Website
             Assert.AreNotEqual(before_SessionId   ,after_SessionId);
             Assert.AreEqual   (loggedOut_SessionId,Guid.Empty);
             Assert.AreNotEqual(after_SessionId    ,Guid.Empty);
-            Assert.AreEqual   (current_User_Before.UserName, Tests_Consts.DEFAULT_ADMIN_USERNAME);
+            Assert.NotNull    (authToken_SessionId           );
+            Assert.AreNotEqual(authToken_SessionId,Guid.Empty);
+            Assert.AreEqual   (current_User_Before.UserName, testUser.UserName);
             Assert.AreEqual   (current_User_After .UserName, tmUser.UserName);
-            Assert.Throws<SoapException>(()=>this.delete_User(userId));
+            Assert.Throws<SoapException>(()=>webServices.delete_User(userId));
+            
             this.login_As_Admin();
-            Assert.IsTrue(this.delete_User(userId));
+            Assert.IsTrue(webServices.delete_User(userId));
         }
-
         [Test] public void Login_Admin_CurrentUser()
         {
             var sessionId        = webServices.Login(Tests_Consts.DEFAULT_ADMIN_USERNAME, Tests_Consts.DEFAULT_ADMIN_PASSWORD);
@@ -91,10 +93,8 @@ namespace TeamMentor.UnitTests.TM_Website
             Assert.AreNotEqual(currentUser          , null);
             Assert.AreNotEqual(currentSessionId     , Guid.Empty);
             Assert.AreEqual   (currentSessionId     , sessionId);
-            Assert.AreEqual   (currentUser.UserName , Tests_Consts.DEFAULT_ADMIN_USERNAME);
-            //not working as expected
-            var isAdmin      = webServices.RBAC_IsAdmin();
-            Assert.AreEqual   (isAdmin         , false);            
+            Assert.AreEqual   (currentUser.UserName , Tests_Consts.DEFAULT_ADMIN_USERNAME);            
+            Assert.IsTrue     (webServices.RBAC_IsAdmin());
         }
 
     }

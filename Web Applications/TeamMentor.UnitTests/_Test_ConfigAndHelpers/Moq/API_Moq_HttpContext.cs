@@ -86,7 +86,12 @@ namespace FluentSharp.CoreLib
             MockResponse.Setup   (response => response.Cookies      ).Returns(new HttpCookieCollection()); 	     	
             MockResponse.Setup   (response => response.Headers      ).Returns(new NameValueCollection());
             MockResponse.Setup   (response => response.OutputStream ).Returns(outputStream);
-            MockResponse.Setup   (response => response.Write        (It.IsAny<string>())                    ).Callback((string code)              => outputStream.Write(code.asciiBytes(), 0, code.size()));
+            MockResponse.Setup   (response => response.Write        (It.IsAny<string>())                    ).Callback((string code)
+                =>
+                {
+                    HttpContextBase.response_Write(code);
+                    //outputStream.Write(code.asciiBytes(), 0, code.size());
+                });
             MockResponse.Setup   (response => response.AddHeader    (It.IsAny<string>(), It.IsAny<string>())).Callback((string name,string value) => MockResponse.Object.Headers.Add(name,value));
             MockResponse.Setup   (response => response.Redirect     (It.IsAny<string>())                    ).Callback((string target)            =>{ redirectTarget = target; throw new Exception("Thread was being aborted.");});            
             

@@ -25,7 +25,7 @@ namespace TeamMentor.UnitTests
     }
 
     public class Tests_Consts
-    {
+    {        
         public static bool      offline                     = MiscUtils.online().isFalse();        
         public static string    TM_REST_Service_Protocol    = "http";
         public static int       TM_REST_Service_Port        =  8732;

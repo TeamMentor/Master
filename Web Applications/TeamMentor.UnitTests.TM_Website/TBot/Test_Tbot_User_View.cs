@@ -1,22 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.EnterpriseServices;
-using System.Linq;
-using System.Text;
-using FluentSharp.CoreLib;
+﻿using FluentSharp.CoreLib;
 using FluentSharp.Watin;
 using FluentSharp.WinForms;
 using NUnit.Framework;
-using TeamMentor.UnitTests.TM_Website.WebServices;
 
 namespace TeamMentor.UnitTests.TM_Website
 {
     [TestFixture]
-    public class Test_Tbot_User_View : API_IE_TBot
+    public class Test_Tbot_User_View : TestFixture_TBot
     {
         public Test_Tbot_User_View()
         {
-            this.login_As_Admin();
+            
+            tbot.login_As_Admin();            
             /*var adminAuthToken = "30ce16e9-d054-4a87-be76-edf0ba8815ec";
             var tbotPage       = "rest/tbot/run/hello";
             var url            = "{0}?auth={1}".format(tbotPage,adminAuthToken);
@@ -29,8 +24,8 @@ namespace TeamMentor.UnitTests.TM_Website
         {
             var testUserName = "CUfDduDCgQ";
             var url = "/rest/tbot/run/User_View?userName={0}".format(testUserName);
-            this.open(url);
-            Assert.AreEqual(ie.url(), TargetServer + url);
+            tbot.open(url);
+            Assert.AreEqual(ie.url(), tbot.TargetServer + url);
             Assert.IsTrue (ie.hasLink("View User"));
             Assert.IsTrue (ie.hasLink("Edit User"));
             Assert.IsTrue (ie.hasLink("View Activity/Logs"));

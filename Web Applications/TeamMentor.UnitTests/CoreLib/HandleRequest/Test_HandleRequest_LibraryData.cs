@@ -45,9 +45,6 @@ namespace TeamMentor.UnitTests.CoreLib
             Assert.DoesNotThrow     (() => handleUrlRequest.handleRequest("xsl"     , guid.str()), "xsl");
             Assert.Throws<Exception>(() => handleUrlRequest.handleRequest("jsonp"   , guid.str()), "jsonp");
             Assert.Throws<Exception>(() => handleUrlRequest.handleRequest("article" , guid.str()), "article");
-
-            
-            
             //Assert.AreEqual (false,jsonp   , "jsonp");         
         }
     }

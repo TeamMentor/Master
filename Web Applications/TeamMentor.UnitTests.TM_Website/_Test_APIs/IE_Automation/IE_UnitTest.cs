@@ -58,9 +58,9 @@ namespace TeamMentor.UnitTests.TM_Website
         {
             var windowState = FormWindowState.Minimized; //FormWindowState.Normal; 
             Form form = null;             
-            
+      /*      
             var formShown = new AutoResetEvent(false);
-            O2Thread.staThread(()=>
+            O2Thread.mtaThread(()=> O2Thread.staThread(()=>
                 {
                     form      = new Form
                         {
@@ -70,7 +70,7 @@ namespace TeamMentor.UnitTests.TM_Website
                         };                                                                                                           
                     form.Shown += (sender, e) => formShown.Set();                                                                            
                     form.ShowDialog();                                                                                                        
-                });
+                }));
             
             //wait for Form Load event            
             formShown.WaitOne(1000); // it should not take more than one sec to start the form
@@ -89,7 +89,7 @@ namespace TeamMentor.UnitTests.TM_Website
             {
                 Assert.AreEqual(form.Height     , height);
                 Assert.AreEqual(form.Width      , width);
-            }
+            }*/
             return form;
         }
         public static T close_IE<T>(this T tbot) where T : IE_UnitTest
@@ -103,11 +103,9 @@ namespace TeamMentor.UnitTests.TM_Website
             if (IE_UnitTest.Current.isNull())
             {
                 IE_UnitTest.Current = tbot;            
-                tbot.parentForm   = tbot.newForm_Minimized(800, 800);
-                //tbot.parentForm = panel.parentForm()                                       
-                //                       .width(800)
-                //                       .height(500);                
-                tbot.ie         = tbot.parentForm.add_IE();
+                tbot.parentForm   = tbot.newForm_Minimized(800, 500);                                        
+                tbot.ie           = tbot.parentForm.add_IE();
+             //   tbot.ie.HostControl.insert_LogViewer();
             }
             else
             {

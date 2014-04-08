@@ -59,12 +59,13 @@ namespace TeamMentor.UnitTests.CoreLib
 			scriptCombiner.ProcessRequest(null); 
 			Assert.AreEqual(scriptCombiner.setName,"setName", "setName value"); 
 			Assert.AreEqual(scriptCombiner.version,"version", "setName value");			
-			 
+			responseHtml = context.response_Read_All();
+			Assert.AreEqual(responseHtml, "othing to do"); 
 			//test test handshake			
 			request.QueryString["Hello"] = "TM"; 
 			scriptCombiner.ProcessRequest(null); 
 			responseHtml = context.response_Read_All();
-			Assert.AreEqual(responseHtml, "Good Morning", "handshake");
+			Assert.AreEqual(responseHtml, "othing to doGood Morning", "handshake");
 		}		
 		[Test] public void serverCode_minifyCodeSetting()		            
 		{				

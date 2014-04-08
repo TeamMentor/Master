@@ -1,13 +1,12 @@
 ﻿using System;
 using FluentSharp.CoreLib;
 using FluentSharp.Watin;
-using FluentSharp.WinForms;
 using NUnit.Framework;
 
 namespace TeamMentor.UnitTests.TM_Website
 {
     [TestFixture]
-    public class TBot_Users_MainPages : API_IE_TBot
+    public class TBot_Users_MainPages : TestFixture_TBot
     {
         [Test]
         public void Check_Root_Level_Pages()
@@ -17,11 +16,11 @@ namespace TeamMentor.UnitTests.TM_Website
             Action<string,string> runTest = 
                     (pageUrl, expectedHtml) =>
                         {                            
-                            var url         = urlTemplate.format(TargetServer, pageUrl);                            
+                            var url         = urlTemplate.format(tbot.TargetServer, pageUrl);                            
                             ie.open(url);                                                     
                             "Current Url: {0}".info(ie.url());
                             //"Current HTML {0}".info(ie.html()); 
-                          Assert.IsTrue( html().contains(expectedHtml));                            
+                          Assert.IsTrue( tbot.html().contains(expectedHtml));                            
                         };
             
             
@@ -32,30 +31,30 @@ namespace TeamMentor.UnitTests.TM_Website
         [Test]
         public void Page_main()
         {            
-            this.login_As_Admin()
+            tbot.login_As_Admin()
                 .close_IE()
                 .open_IE();
 
-            ie.open(TargetServer + "/tbot_users/default.htm?".add_RandomLetters());
+            ie.open(tbot.TargetServer + "/tbot_users/default.htm?".add_RandomLetters());
 
             "Url: {0}".info(ie.url());
-            "Html: {0}".info(html());
+            "Html: {0}".info(tbot.html());
             
             
-            Assert.IsTrue(html().contains("TBot v2.0"));
+            Assert.IsTrue(tbot.html().contains("TBot v2.0"));
         }
 
-        [Test]
+        [Test][Ignore]
         public void Check_Top_Links()
         {             
-            var mainUrl = TargetServer + "/tbot_users/";
+            var mainUrl = tbot.TargetServer + "/tbot_users/";
 
             ie.open("about:blank");
             Assert.AreNotEqual(ie.url(), mainUrl);
 
             ie.open(mainUrl);
             Assert.AreEqual(ie.url(), mainUrl);
-            Assert.IsTrue (html().contains("TBot v2.0"));
+            Assert.IsTrue (tbot.html().contains("TBot v2.0"));
             
             var links = ie.links();            
             Assert.IsNotEmpty(links);
@@ -76,12 +75,12 @@ namespace TeamMentor.UnitTests.TM_Website
             
             checkLink("users"               , true, mainUrl      + "users.htm#/users/main");                        
 
-            checkLink("Admin"               , true, TargetServer + "/admin");            
-            checkLink("tbot"                , true, TargetServer + "/tbot");
-            checkLink("login"               , true, TargetServer + "/login?LoginReferer=/tbot_users");
-            checkLink("Logout"              , true, TargetServer + "/logout");
-            checkLink("Legacy Control Panel", true, TargetServer + "/admin");
-            checkLink("Main TeamMentor site", true, TargetServer + "/TeamMentor");
+            checkLink("Admin"               , true, tbot.TargetServer + "/admin");            
+            checkLink("tbot"                , true, tbot.TargetServer + "/tbot");
+            checkLink("login"               , true, tbot.TargetServer + "/login?LoginReferer=/tbot_users");
+            checkLink("Logout"              , true, tbot.TargetServer + "/logout");
+            checkLink("Legacy Control Panel", true, tbot.TargetServer + "/admin");
+            checkLink("Main TeamMentor site", true, tbot.TargetServer + "/TeamMentor");
             
             //these shouldn't
             checkLink("tbot1234"            , false, null);
@@ -92,7 +91,7 @@ namespace TeamMentor.UnitTests.TM_Website
         [Test]
         public void Check_UsersMenu_Directive()
         {
-            var usersPage = TargetServer + "/tbot_users/users.htm";
+            var usersPage = tbot.TargetServer + "/tbot_users/users.htm";
 
             ie.open(usersPage);
             Assert.AreEqual(usersPage, ie.url());

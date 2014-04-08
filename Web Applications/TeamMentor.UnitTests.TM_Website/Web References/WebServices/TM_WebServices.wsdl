@@ -3,20 +3,6 @@
   <wsdl:types>
     <s:schema elementFormDefault="qualified" targetNamespace="http://teammentor.net/">
       <s:import namespace="http://microsoft.com/wsdl/types/" />
-      <s:element name="VirtualArticle_Get_GuidRedirect">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="1" maxOccurs="1" name="id" type="s1:guid" />
-          </s:sequence>
-        </s:complexType>
-      </s:element>
-      <s:element name="VirtualArticle_Get_GuidRedirectResponse">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="VirtualArticle_Get_GuidRedirectResult" type="s:string" />
-          </s:sequence>
-        </s:complexType>
-      </s:element>
       <s:element name="VirtualArticle_CreateArticle_from_ExternalServiceData">
         <s:complexType>
           <s:sequence>
@@ -994,7 +980,17 @@
           <s:element minOccurs="0" maxOccurs="1" name="Username" type="s:string" />
           <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
           <s:element minOccurs="1" maxOccurs="1" name="GroupId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="UserTags" type="tns:ArrayOfUserTag" />
         </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfUserTag">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="UserTag" nillable="true" type="tns:UserTag" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="UserTag">
+        <s:attribute name="Key" type="s:string" />
+        <s:attribute name="Value" type="s:string" />
       </s:complexType>
       <s:element name="CreateUserResponse">
         <s:complexType>
@@ -1037,6 +1033,7 @@
           <s:element minOccurs="1" maxOccurs="1" name="PasswordExpired" type="s:boolean" />
           <s:element minOccurs="1" maxOccurs="1" name="UserEnabled" type="s:boolean" />
           <s:element minOccurs="1" maxOccurs="1" name="GroupID" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="UserTags" type="tns:ArrayOfUserTag" />
         </s:sequence>
       </s:complexType>
       <s:element name="CreateUser_RandomResponse">
@@ -1882,48 +1879,21 @@
           </s:sequence>
         </s:complexType>
       </s:element>
-      <s:element name="Get_TM_QA_Config">
+      <s:element name="Get_Firebase_ClientConfig">
         <s:complexType />
       </s:element>
-      <s:complexType name="TM_QA_Config">
+      <s:complexType name="Firebase_ClientConfig">
         <s:sequence>
           <s:element minOccurs="0" maxOccurs="1" name="Firebase_Site" type="s:string" />
           <s:element minOccurs="0" maxOccurs="1" name="Firebase_AuthToken" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="SMTP_Server" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="SMTP_UserName" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="SMTP_Password" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="Default_AdminEmail" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="testUsers" type="tns:ArrayOfTest_User" />
+          <s:element minOccurs="0" maxOccurs="1" name="Firebase_RootArea" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Enabled" type="s:boolean" />
         </s:sequence>
       </s:complexType>
-      <s:complexType name="ArrayOfTest_User">
-        <s:sequence>
-          <s:element minOccurs="0" maxOccurs="unbounded" name="Test_User" nillable="true" type="tns:Test_User" />
-        </s:sequence>
-      </s:complexType>
-      <s:complexType name="Test_User">
-        <s:sequence>
-          <s:element minOccurs="0" maxOccurs="1" name="Username" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="UserGroup" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="AuthToken" type="s:string" />
-        </s:sequence>
-      </s:complexType>
-      <s:element name="Get_TM_QA_ConfigResponse">
+      <s:element name="Get_Firebase_ClientConfigResponse">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="Get_TM_QA_ConfigResult" type="tns:TM_QA_Config" />
-          </s:sequence>
-        </s:complexType>
-      </s:element>
-      <s:element name="Get_TM_QA_Config_Path">
-        <s:complexType />
-      </s:element>
-      <s:element name="Get_TM_QA_Config_PathResponse">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="Get_TM_QA_Config_PathResult" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Get_Firebase_ClientConfigResult" type="tns:Firebase_ClientConfig" />
           </s:sequence>
         </s:complexType>
       </s:element>
@@ -2105,6 +2075,20 @@
           </s:sequence>
         </s:complexType>
       </s:element>
+      <s:element name="VirtualArticle_Get_GuidRedirect">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s1:guid" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="VirtualArticle_Get_GuidRedirectResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="VirtualArticle_Get_GuidRedirectResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
     </s:schema>
     <s:schema elementFormDefault="qualified" targetNamespace="http://microsoft.com/wsdl/types/">
       <s:simpleType name="guid">
@@ -2114,12 +2098,6 @@
       </s:simpleType>
     </s:schema>
   </wsdl:types>
-  <wsdl:message name="VirtualArticle_Get_GuidRedirectSoapIn">
-    <wsdl:part name="parameters" element="tns:VirtualArticle_Get_GuidRedirect" />
-  </wsdl:message>
-  <wsdl:message name="VirtualArticle_Get_GuidRedirectSoapOut">
-    <wsdl:part name="parameters" element="tns:VirtualArticle_Get_GuidRedirectResponse" />
-  </wsdl:message>
   <wsdl:message name="VirtualArticle_CreateArticle_from_ExternalServiceDataSoapIn">
     <wsdl:part name="parameters" element="tns:VirtualArticle_CreateArticle_from_ExternalServiceData" />
   </wsdl:message>
@@ -2816,17 +2794,11 @@
   <wsdl:message name="SetTMConfigFileSoapOut">
     <wsdl:part name="parameters" element="tns:SetTMConfigFileResponse" />
   </wsdl:message>
-  <wsdl:message name="Get_TM_QA_ConfigSoapIn">
-    <wsdl:part name="parameters" element="tns:Get_TM_QA_Config" />
+  <wsdl:message name="Get_Firebase_ClientConfigSoapIn">
+    <wsdl:part name="parameters" element="tns:Get_Firebase_ClientConfig" />
   </wsdl:message>
-  <wsdl:message name="Get_TM_QA_ConfigSoapOut">
-    <wsdl:part name="parameters" element="tns:Get_TM_QA_ConfigResponse" />
-  </wsdl:message>
-  <wsdl:message name="Get_TM_QA_Config_PathSoapIn">
-    <wsdl:part name="parameters" element="tns:Get_TM_QA_Config_Path" />
-  </wsdl:message>
-  <wsdl:message name="Get_TM_QA_Config_PathSoapOut">
-    <wsdl:part name="parameters" element="tns:Get_TM_QA_Config_PathResponse" />
+  <wsdl:message name="Get_Firebase_ClientConfigSoapOut">
+    <wsdl:part name="parameters" element="tns:Get_Firebase_ClientConfigResponse" />
   </wsdl:message>
   <wsdl:message name="Get_Libraries_Zip_FolderSoapIn">
     <wsdl:part name="parameters" element="tns:Get_Libraries_Zip_Folder" />
@@ -2906,11 +2878,13 @@
   <wsdl:message name="VirtualArticle_Remove_MappingSoapOut">
     <wsdl:part name="parameters" element="tns:VirtualArticle_Remove_MappingResponse" />
   </wsdl:message>
+  <wsdl:message name="VirtualArticle_Get_GuidRedirectSoapIn">
+    <wsdl:part name="parameters" element="tns:VirtualArticle_Get_GuidRedirect" />
+  </wsdl:message>
+  <wsdl:message name="VirtualArticle_Get_GuidRedirectSoapOut">
+    <wsdl:part name="parameters" element="tns:VirtualArticle_Get_GuidRedirectResponse" />
+  </wsdl:message>
   <wsdl:portType name="TM_WebServicesSoap">
-    <wsdl:operation name="VirtualArticle_Get_GuidRedirect">
-      <wsdl:input message="tns:VirtualArticle_Get_GuidRedirectSoapIn" />
-      <wsdl:output message="tns:VirtualArticle_Get_GuidRedirectSoapOut" />
-    </wsdl:operation>
     <wsdl:operation name="VirtualArticle_CreateArticle_from_ExternalServiceData">
       <wsdl:input message="tns:VirtualArticle_CreateArticle_from_ExternalServiceDataSoapIn" />
       <wsdl:output message="tns:VirtualArticle_CreateArticle_from_ExternalServiceDataSoapOut" />
@@ -3375,13 +3349,9 @@
       <wsdl:input message="tns:SetTMConfigFileSoapIn" />
       <wsdl:output message="tns:SetTMConfigFileSoapOut" />
     </wsdl:operation>
-    <wsdl:operation name="Get_TM_QA_Config">
-      <wsdl:input message="tns:Get_TM_QA_ConfigSoapIn" />
-      <wsdl:output message="tns:Get_TM_QA_ConfigSoapOut" />
-    </wsdl:operation>
-    <wsdl:operation name="Get_TM_QA_Config_Path">
-      <wsdl:input message="tns:Get_TM_QA_Config_PathSoapIn" />
-      <wsdl:output message="tns:Get_TM_QA_Config_PathSoapOut" />
+    <wsdl:operation name="Get_Firebase_ClientConfig">
+      <wsdl:input message="tns:Get_Firebase_ClientConfigSoapIn" />
+      <wsdl:output message="tns:Get_Firebase_ClientConfigSoapOut" />
     </wsdl:operation>
     <wsdl:operation name="Get_Libraries_Zip_Folder">
       <wsdl:input message="tns:Get_Libraries_Zip_FolderSoapIn" />
@@ -3435,18 +3405,13 @@
       <wsdl:input message="tns:VirtualArticle_Remove_MappingSoapIn" />
       <wsdl:output message="tns:VirtualArticle_Remove_MappingSoapOut" />
     </wsdl:operation>
+    <wsdl:operation name="VirtualArticle_Get_GuidRedirect">
+      <wsdl:input message="tns:VirtualArticle_Get_GuidRedirectSoapIn" />
+      <wsdl:output message="tns:VirtualArticle_Get_GuidRedirectSoapOut" />
+    </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="TM_WebServicesSoap" type="tns:TM_WebServicesSoap">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
-    <wsdl:operation name="VirtualArticle_Get_GuidRedirect">
-      <soap:operation soapAction="http://teammentor.net/VirtualArticle_Get_GuidRedirect" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="VirtualArticle_CreateArticle_from_ExternalServiceData">
       <soap:operation soapAction="http://teammentor.net/VirtualArticle_CreateArticle_from_ExternalServiceData" style="document" />
       <wsdl:input>
@@ -4491,17 +4456,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="Get_TM_QA_Config">
-      <soap:operation soapAction="http://teammentor.net/Get_TM_QA_Config" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="Get_TM_QA_Config_Path">
-      <soap:operation soapAction="http://teammentor.net/Get_TM_QA_Config_Path" style="document" />
+    <wsdl:operation name="Get_Firebase_ClientConfig">
+      <soap:operation soapAction="http://teammentor.net/Get_Firebase_ClientConfig" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -4626,18 +4582,18 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="VirtualArticle_Get_GuidRedirect">
+      <soap:operation soapAction="http://teammentor.net/VirtualArticle_Get_GuidRedirect" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
   </wsdl:binding>
   <wsdl:binding name="TM_WebServicesSoap12" type="tns:TM_WebServicesSoap">
     <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
-    <wsdl:operation name="VirtualArticle_Get_GuidRedirect">
-      <soap12:operation soapAction="http://teammentor.net/VirtualArticle_Get_GuidRedirect" style="document" />
-      <wsdl:input>
-        <soap12:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap12:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="VirtualArticle_CreateArticle_from_ExternalServiceData">
       <soap12:operation soapAction="http://teammentor.net/VirtualArticle_CreateArticle_from_ExternalServiceData" style="document" />
       <wsdl:input>
@@ -5682,17 +5638,8 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="Get_TM_QA_Config">
-      <soap12:operation soapAction="http://teammentor.net/Get_TM_QA_Config" style="document" />
-      <wsdl:input>
-        <soap12:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap12:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="Get_TM_QA_Config_Path">
-      <soap12:operation soapAction="http://teammentor.net/Get_TM_QA_Config_Path" style="document" />
+    <wsdl:operation name="Get_Firebase_ClientConfig">
+      <soap12:operation soapAction="http://teammentor.net/Get_Firebase_ClientConfig" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -5810,6 +5757,15 @@
     </wsdl:operation>
     <wsdl:operation name="VirtualArticle_Remove_Mapping">
       <soap12:operation soapAction="http://teammentor.net/VirtualArticle_Remove_Mapping" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VirtualArticle_Get_GuidRedirect">
+      <soap12:operation soapAction="http://teammentor.net/VirtualArticle_Get_GuidRedirect" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

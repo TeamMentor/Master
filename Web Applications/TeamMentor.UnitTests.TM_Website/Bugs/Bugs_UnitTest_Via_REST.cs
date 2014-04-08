@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace TeamMentor.UnitTests.TM_Website.Bugs 
 {
     [TestFixture][Ignore("move to a different project")]
-    public class Bugs_TBot_Via_REST : API_IE_TBot
+    public class Bugs_TBot_Via_REST : TestFixture_TBot
     {
         [Test]
         public void Bug_IE_Out_of_Sync_afer_REST_Call___PoC()
@@ -20,16 +20,16 @@ namespace TeamMentor.UnitTests.TM_Website.Bugs
                 {
                     Assert.AreEqual   (ie.url(),page1_Url);
                     Assert.AreNotEqual(ie.url(),page2_Url);
-                    Assert.IsTrue     (html().contains(page1_Text));               
-                    Assert.IsFalse    (html().contains(page2_Text));          
+                    Assert.IsTrue     (tbot.html().contains(page1_Text));               
+                    Assert.IsFalse    (tbot.html().contains(page2_Text));          
                 };
 
             Action checkPage2 = ()=>
                 {
                     Assert.AreNotEqual(ie.url(),page1_Url);
                     Assert.AreEqual   (ie.url(),page2_Url);
-                    Assert.IsFalse    (html().contains(page1_Text));  
-                    Assert.IsTrue     (html().contains(page2_Text));                     
+                    Assert.IsFalse    (tbot.html().contains(page1_Text));  
+                    Assert.IsTrue     (tbot.html().contains(page2_Text));                     
                 };       
      
             //open and check page1 and page1
@@ -40,7 +40,7 @@ namespace TeamMentor.UnitTests.TM_Website.Bugs
             checkPage2();
 
             // rest request that confuses the IE object
-            var restRequest = TargetServer + "/rest/login/user/pwd";
+            var restRequest = tbot.TargetServer + "/rest/login/user/pwd";
             ie.open(restRequest);
             // and now all these are wrong (i.e. the next set of tests should be reversed)
             Assert.AreNotEqual(ie.url(),restRequest);   // ie.url() should be == restRequest  
@@ -49,23 +49,23 @@ namespace TeamMentor.UnitTests.TM_Website.Bugs
             ie.open(page1_Url);                         // this is also not working as expected
             checkPage2();                               // since this will still pass (and it should fail)            
 
-            this.close_IE().open_IE();                  // see Bug_IE_Out_of_Sync_afer_REST_Call___Fix()
+            tbot.close_IE().open_IE();                  // see Bug_IE_Out_of_Sync_afer_REST_Call___Fix()
         }
 
         [Test]public void Bug_IE_Out_of_Sync_afer_REST_Call___Fix   ()
         {
-            ie.open(TargetServer + "/logout");
-            var page1_Url   = TargetServer + "/tbot_users/default.htm?";
-            var page2_Url   = TargetServer + "/tbot_users/users.htm?";
-            var restRequest = TargetServer + "/rest/login/user/pwd";
+            ie.open(tbot.TargetServer + "/logout");
+            var page1_Url   = tbot.TargetServer + "/tbot_users/default.htm?";
+            var page2_Url   = tbot.TargetServer + "/tbot_users/users.htm?";
+            var restRequest = tbot.TargetServer + "/rest/login/user/pwd";
             ie.open(page1_Url);
             ie.open(restRequest);                       // open rest request that confuses the IE object
             ie.open(page2_Url);
             Assert.AreNotEqual(ie.url(),restRequest);   // ie.url() should be == restRequest  
             Assert.AreEqual   (ie.url(),page2_Url);     // ie.url() should not be page2_Url
             
-            this.close_IE();                            // forces the creation of a new IE object on next UnitTest
-            this.open_IE();                             // or like this
+            tbot.close_IE();                            // forces the creation of a new IE object on next UnitTest
+            tbot.open_IE();                             // or like this
 
             ie.open(page1_Url);
             Assert.AreEqual   (ie.url(),page1_Url);    

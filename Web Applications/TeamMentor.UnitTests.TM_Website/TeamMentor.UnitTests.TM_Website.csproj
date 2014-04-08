@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -73,6 +74,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bugs\Bugs_UnitTest_Via_REST.cs" />
+    <Compile Include="CoreLib\Test_TM_QA_Config_Loader.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -87,22 +91,36 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
+    <Content Include="WebServices\CSharp_Script_to_Clearn_References.txt" />
+    <Compile Include="WebServices\Test_WSDL_Security.cs" />
+    <Compile Include="WebServices\Test_TestFixture_WebServices.cs" />
+    <Compile Include="WebServices\Test_TM_WebServices_Configured.cs" />
     <Compile Include="WebServices\Test_WebServices_Config.cs" />
     <Compile Include="WebServices\Test_WebServices_Users.cs" />
-    <Compile Include="WebServices\Test_API_TM_WebServices.cs" />
     <Compile Include="WebServices\Test_WebServices_Setup.cs" />
     <Compile Include="WebServices\Test_WebServices_Authentication.cs" />
-    <Compile Include="_Test_APIs\API_IE_TBot.cs" />
-    <Compile Include="_Test_APIs\API_TM_WebServices.cs" />
-    <Compile Include="_Test_ConfigAndHelpers\TM_WebServices_Configured.cs" />
-    <Compile Include="_Test_ConfigAndHelpers\IE_UnitTest.cs" />
+    <Compile Include="WebSite\Rest_GET_API.cs" />
+    <Compile Include="WebSite\Test_REST_Security.cs" />
+    <Compile Include="WebSite\Test_Website_HandleRequest.cs" />
+    <Compile Include="_Test_APIs\Extra_ExtensionMethods\Extra_ExtensionMethods_Stream.cs" />
+    <Compile Include="_Test_APIs\IE_Automation\API_IE_TBot.cs" />
+    <Compile Include="_Test_APIs\TestFixture_TBot.cs" />
+    <Compile Include="_Test_APIs\WebServices\TM_WebServices_Users_ExtensionMethods.cs" />
+    <Content Include="_Test_APIs\WebServices\_to_do\API_TM_WebServices.cs.txt" />
+    <Compile Include="_Test_APIs\TestFixture_WebServices.cs" />
+    <Compile Include="_Test_ConfigAndHelpers\TM_QA_Config.cs" />
+    <Compile Include="_Test_APIs\WebServices\TM_WebServices_Configured.cs" />
+    <Compile Include="_Test_APIs\IE_Automation\IE_UnitTest.cs" />
     <Compile Include="_Test_ConfigAndHelpers\Tests_Config.cs" />
     <Compile Include="_Test_ConfigAndHelpers\Tests_Consts.cs" />
-    <Compile Include="_Test_ConfigAndHelpers\Test_IE_TBot.cs" />
+    <Compile Include="_Test_APIs\IE_Automation\Test_IE_TBot.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="WatiN_Dlls\FluentSharp.WatiN.dll" />
     <Content Include="WatiN_Dlls\WatiN.Core.dll" />
+    <None Include="Web References\WebServices\Firebase_ClientConfig.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
     <None Include="Web References\WebServices\Folder_V3.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </None>
@@ -132,9 +150,6 @@
       <DependentUpon>Reference.map</DependentUpon>
     </None>
     <None Include="Web References\WebServices\TM_Library.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WebServices\TM_QA_Config.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </None>
     <None Include="Web References\WebServices\TM_User.datasource">
@@ -176,6 +191,7 @@
   <ItemGroup>
     <WebReferences Include="Web References\" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

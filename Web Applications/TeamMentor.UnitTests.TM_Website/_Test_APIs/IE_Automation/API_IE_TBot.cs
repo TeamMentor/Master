@@ -7,10 +7,7 @@ namespace TeamMentor.UnitTests.TM_Website
     {        
         public API_IE_TBot()
         {
-            TargetServer = "http://localhost:3187";      
-            var defaultPage = TargetServer.uri().append("default.htm");
-            if (defaultPage.HEAD().isFalse())
-                Assert.Ignore("TM server is offline");
+                           
         }                
         public API_IE_TBot tbot_V1()
         {

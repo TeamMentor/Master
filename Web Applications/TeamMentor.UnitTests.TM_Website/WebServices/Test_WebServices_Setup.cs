@@ -5,12 +5,10 @@ using FluentSharp.CoreLib;
 namespace TeamMentor.UnitTests.TM_Website.WebServices
 {
     [TestFixture]
-    public class Test_WebServices_Setup : API_TM_WebServices
+    public class Test_WebServices_Setup : TestFixture_WebServices
     {
         public Test_WebServices_Setup()
-        {            
-            if (WebSite_Url.HEAD().isFalse())
-                Assert.Ignore("TM server is offline");
+        {                        
             Assert.NotNull(webServices);
         }
 
