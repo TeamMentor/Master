@@ -12,7 +12,7 @@ namespace TeamMentor.CoreLib
             userData.FirstScriptToInvoke = TMConsts.USERDATA_FIRST_SCRIPT_TO_INVOKE;
             userData.Path_WebRootFiles   = TMConsts.USERDATA_PATH_WEB_ROOT_FILES;
             userData.TMUsers             = new List<TMUser>();                        
-            userData.SecretData          = new TM_SecretData();
+            userData.SecretData          = new TM_SecretData();            
             userData.AutoGitCommit       = TMConfig.Current.Git.AutoCommit_UserData;           
             return userData;
         }
@@ -26,7 +26,7 @@ namespace TeamMentor.CoreLib
             }
             catch (Exception ex)
             {
-                ex.log("[TM_UserData][SetUp]");
+                ex.log("[TM_UserData] [SetUp]");
             }            
             return userData;
         }
@@ -57,12 +57,12 @@ namespace TeamMentor.CoreLib
                 var targetFolder = TMConfig.BaseFolder;            
                 if (targetFolder.pathCombine("web.config").fileExists().isFalse())
                 {
-                    "[copy_FilesIntoWebRoot] failed because web.config was not found on targetFolder: {0}".error(targetFolder);
+                    "[TM_UserData] [copy_FilesIntoWebRoot] failed because web.config was not found on targetFolder: {0}".error(targetFolder);
                     return false;
                 }
                 if (sourceFolder.dirExists().isFalse())
                 {
-                    "[copy_FilesIntoWebRoot] skipped because targetFolder was not found: {0}".debug(targetFolder);
+                    "[TM_UserData] [copy_FilesIntoWebRoot] skipped because targetFolder was not found: {0}".debug(targetFolder);
                     return false;
                 }            
                 Files.copyFolder(sourceFolder, targetFolder,true,true,"");            

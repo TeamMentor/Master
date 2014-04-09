@@ -2,7 +2,7 @@
     <strong>Activities</strong>
 </div>
 <p>
-    Starting with the most recent 50 entries (current server is <a ng-href="{{serverUrl}}" target='_blank'>{{serverUrl}}</a>)
+    Starting with the most recent 50 entries
 </p>
 
 <table class="table table-condensed small">
@@ -17,7 +17,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="activity in activities">
+    <tr ng-repeat="activity in activities"  ng-class="rowClass(activity)">
         <td>{{activity.Index}}</td>
         <td>{{activity.Who}}</td>
         <td>{{activity.Action}}</td>

@@ -49,7 +49,7 @@ namespace TeamMentor.CoreLib
                 if (logData.notNull())
                 {                    
                     var logFile = tracking.LogFilePath;                    
-                    "Saving Application Tracking Log to: {0}".info(logFile);
+                    "[Tracking_Application Saving Application Tracking Log to: {0}".info(logFile);
                     logData.saveAs(logFile);
                 }
             }

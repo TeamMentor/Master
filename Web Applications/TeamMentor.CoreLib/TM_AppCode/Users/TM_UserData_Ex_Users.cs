@@ -120,6 +120,7 @@ namespace TeamMentor.CoreLib
         
             //save it
             SendEmails.SendNewUserEmails("New user created: {0}".format(tmUser.UserName), tmUser);
+            tmUser.logUserActivity("New User",  "");
             tmUser.saveTmUser();            
                     
             return userId;    		
@@ -201,6 +202,7 @@ namespace TeamMentor.CoreLib
         {		          
             if (tmUser.isNull() || password.notValid())
                 return false;
+            tmUser.logUserActivity("Password Change", "Direct change (by an admin)");
             return setPasswordHash(tmUser, tmUser.createPasswordHash(password));         
         }
 
@@ -210,8 +212,7 @@ namespace TeamMentor.CoreLib
             { 
                 tmUser.SecretData.PasswordHash       = passwordHash;
                 tmUser.AccountStatus.PasswordExpired = false;
-                tmUser.saveTmUser();
-                tmUser.logUserActivity("Password Change", tmUser.UserName);
+                tmUser.saveTmUser();                
                 return true;
             }
             return false;    		
@@ -226,6 +227,7 @@ namespace TeamMentor.CoreLib
                     var newPasswordHash =  tmUser.createPasswordHash(newPassword);
                     if (newPasswordHash != tmUser.SecretData.PasswordHash)                        // check that password are not repeated
                     {
+                        tmUser.logUserActivity("User Password Change", "With previous password provided");
                         return tmUser.setPasswordHash(newPasswordHash);
                     }
                 }
@@ -242,7 +244,8 @@ namespace TeamMentor.CoreLib
                     tmUser.SecretData.PasswordHash       = tmUser.createPasswordHash(newPassword);
                     tmUser.AccountStatus.PasswordExpired = false;
                     tmUser.SecretData.PasswordResetToken = null;
-                    tmUser.saveTmUser();                        
+                    tmUser.saveTmUser();       
+                    tmUser.logUserActivity("Password Change", "Using Password Reset: {0}".format(token));
                     return true;
                 }            
             }

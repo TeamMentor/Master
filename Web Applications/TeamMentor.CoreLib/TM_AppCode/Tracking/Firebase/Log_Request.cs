@@ -1,14 +1,16 @@
 ﻿using System;
+using System.Runtime.Serialization;
 using FluentSharp.CoreLib;
 
 namespace TeamMentor.CoreLib
 {
+    [DataContract]
     public class Log_Request
     {
-        public string   When    { get; set; }
-        public string   IP      { get; set; }
-        public string   Referer { get; set; }
-        public string   Url     { get; set; }
+        [DataMember] public string   When    { get; set; }
+        [DataMember] public string   IP      { get; set; }
+        [DataMember] public string   Referer { get; set; }
+        [DataMember] public string   Url     { get; set; }
     	
         public  Log_Request()
         {

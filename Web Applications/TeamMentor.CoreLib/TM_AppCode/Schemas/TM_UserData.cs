@@ -17,7 +17,7 @@ namespace TeamMentor.CoreLib
         public string                   FirstScriptToInvoke { get; set; }
         public string 	                Git_UserData 	    { get; set; }
         public List<TMUser>	            TMUsers			    { get; set; }
-        public TM_SecretData            SecretData          { get; set; }                
+        public TM_SecretData            SecretData          { get; set; }                        
         public bool                     UsingFileStorage    { get; set; }        
         public bool                     AutoGitCommit       { get; set; }
         public API_NGit                 NGit                { get; set; }

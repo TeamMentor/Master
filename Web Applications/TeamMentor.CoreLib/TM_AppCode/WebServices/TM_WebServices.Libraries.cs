@@ -38,7 +38,7 @@ namespace TeamMentor.CoreLib
         [WebMethod(EnableSession = true)]	[EditArticles]	                     	public bool MoveViewToFolder(Guid viewId, Guid targetFolderId, Guid targetLibraryId)    { resetCache(); return tmXmlDatabase.xmlDB_MoveViewToFolder(viewId,targetFolderId, targetLibraryId);   }
         [WebMethod(EnableSession = true)]	[EditArticles]	                     	public Guid CreateGuidanceItem(GuidanceItem_V3 guidanceItem)						    { resetCache(); return tmXmlDatabase.createGuidanceItem(guidanceItem);                                 }  	
         [WebMethod(EnableSession = true)]	[EditArticles]	                     	public Guid CreateArticle(TeamMentor_Article article)					                { resetCache(); return tmXmlDatabase.xmlDB_Create_Article(article);                                    }
-        [WebMethod(EnableSession = true)]	[EditArticles]	                     	public Guid CreateArticle_Simple(Guid libraryId, string title, string dataType, string htmlCode)					       
+        [WebMethod(EnableSession = true)]	[EditArticles]	                     	public Guid CreateArticle_Simple(Guid libraryId, string title, string dataType, string htmlCode)		
                                                                                         { 
                                                                                             resetCache(); 
                                                                                             var article = new TeamMentor_Article
@@ -56,20 +56,20 @@ namespace TeamMentor.CoreLib
                                                                                                 };
                                                                                             return CreateArticle(article); 
                                                                                         }        
-        [WebMethod(EnableSession = true)]	[EditArticles]	                     	public bool UpdateGuidanceItem(TeamMentor_Article guidanceItem)						
+        [WebMethod(EnableSession = true)]	[EditArticles]	                     	public bool UpdateGuidanceItem(TeamMentor_Article guidanceItem)						                    
                                                                                         { 
                                                                                             if (guidanceItem.isNull())
                                                                                                 return false;
                                                                                             resetCache();    
                                                                                             var result = guidanceItem.xmlDB_Save_Article(tmXmlDatabase); 
-                                                                                            this.LogUserActivity("Update Article", "{0} - {1}  [{2}".format(guidanceItem.Metadata.Id, guidanceItem.Metadata.Title, result));
+                                                                                            this.logUserActivity("Update Article", "{0} - {1}".format(guidanceItem.Metadata.Id, guidanceItem.Metadata.Title));
                                                                                             return result;
                                                                                         }                                                                                                
-        [WebMethod(EnableSession = true)]   [EditArticles]	                        public bool SetArticleHtml (Guid articleId,string htmlContent)					        
+        [WebMethod(EnableSession = true)]   [EditArticles]	                        public bool SetArticleHtml (Guid articleId,string htmlContent)					                        
                                                                                         {
                                                                                             return SetArticleContent(articleId, "html", htmlContent);
                                                                                         }
-        [WebMethod(EnableSession = true)]   [EditArticles]	                        public bool SetArticleContent (Guid articleId, string dataType,  string content)					        
+        [WebMethod(EnableSession = true)]   [EditArticles]	                        public bool SetArticleContent (Guid articleId, string dataType,  string content)					    
                                                                                         { 
                                                                                             resetCache();
                                                                                             var article = GetGuidanceItemById(articleId);
@@ -89,7 +89,7 @@ namespace TeamMentor.CoreLib
 
         
                 
-        [WebMethod(EnableSession = true)] [EditArticles]	                     		public bool DeleteLibrary(Guid libraryId)
+        [WebMethod(EnableSession = true)] [EditArticles]	                        public bool DeleteLibrary(Guid libraryId)
         {
             resetCache();
             if (GetLibraryById(libraryId).isNull())
@@ -99,7 +99,7 @@ namespace TeamMentor.CoreLib
             var libraryDeleted = GetLibraryById(libraryId);
             return libraryDeleted.isNull();// || libraryDeleted.delete;
         }		
-        [WebMethod(EnableSession = true)] [EditArticles]	                     	    public bool RenameLibrary(Guid libraryId, string newName)
+        [WebMethod(EnableSession = true)] [EditArticles]	                     	public bool RenameLibrary(Guid libraryId, string newName)
         {
             resetCache();
             if (GetLibraryById(libraryId).isNull())
@@ -118,7 +118,7 @@ namespace TeamMentor.CoreLib
         }*/				
         
         //carefull: both methods below will generate a JSON object with more than 1Mb (with the default SI library)
-        [WebMethod(EnableSession = true)]	public List<TeamMentor_Article> GetAllGuidanceItems()						{	return tmXmlDatabase.tmGuidanceItems();                 }  	
-        [WebMethod(EnableSession = true)]	public List<TeamMentor_Article> GetGuidanceItemsInLibrary(Guid libraryId)	{	return tmXmlDatabase.tmGuidanceItems(libraryId);        }  	
+        public List<TeamMentor_Article> GetAllGuidanceItems()						{	return tmXmlDatabase.tmGuidanceItems();                 }  	
+        public List<TeamMentor_Article> GetGuidanceItemsInLibrary(Guid libraryId)	{	return tmXmlDatabase.tmGuidanceItems(libraryId);        }  	
     }
 }

@@ -11,7 +11,7 @@ namespace TeamMentor.CoreLib
         {
             if (userDataPath.isNull() || userDataPath.dirExists().isFalse())
             {
-                "[TM_UserData][setUserDataPath] provided userDataPath didn't exist: {0}".error("userDataPath");
+                "[TM_UserData] [setUserDataPath] provided userDataPath didn't exist: {0}".error("userDataPath");
                 return false;
             }
             try
@@ -24,7 +24,7 @@ namespace TeamMentor.CoreLib
             }
             catch (Exception ex)
             {
-                ex.log("[TM_UserData][setUserDataPath]");
+                ex.log("[TM_UserData] [setUserDataPath]");
                 return false;
             }            
         }
@@ -34,7 +34,7 @@ namespace TeamMentor.CoreLib
             userData.TMUsers = new List<TMUser>();	        
             if (userData.Path_UserData.dirExists().isFalse())
             {
-                "[TM_UserData_Ex_Users_Persistance] in loadTmUserObjects, provided userDataPath didn't exist: {0}"
+                "[TM_UserData_Ex_Users_Persistance] [loadTmUserData] provided userDataPath didn't exist: {0}"
                     .error(userData.Path_UserData);
             }
             else
@@ -45,6 +45,8 @@ namespace TeamMentor.CoreLib
                     var tmUser = file.load<TMUser>();
                     if (tmUser.notNull() && tmUser.UserID > 0)
                         userData.TMUsers.Add(tmUser);
+                    else
+                        "[TM_UserData_Ex_Users_Persistance] [loadTmUserData] error loading tmUser file (or UserId < 1): {0}".error(file);
                 }
             }            
             return userData;
@@ -83,7 +85,8 @@ namespace TeamMentor.CoreLib
                         tmUser.getTmUserXmlFile().file_Delete();
                         userData.triggerGitCommit();
                     }
-                }
+                }  
+                userData.logTBotActivity("User Delete","{0} - {1}".format(tmUser.UserName, tmUser.UserID));
                 return true;
             }
             return false;
@@ -107,6 +110,9 @@ namespace TeamMentor.CoreLib
                 tmUser.AccountStatus.PasswordExpired = passwordExpired;
                 tmUser.AccountStatus.UserEnabled = userEnabled;
                 tmUser.saveTmUser();
+                            
+                tmUser.logUserActivity("User Updated",""); // so that we don't get this log entry on new user creation
+
                 return true;
             }
             

@@ -99,6 +99,7 @@
     <Compile Include="TM_AppCode\ExtensionMethods\Extra\Extra_JSON_ExtensionMethods.cs" />
     <Compile Include="TM_AppCode\ExtensionMethods\Extra\Extra_StringBuilder_ExtensionMethods.cs" />
     <Compile Include="TM_AppCode\ExtensionMethods\Extra\Extra_String_ExtensionMethods.cs" />
+    <Compile Include="TM_AppCode\Schemas\TM_FirebaseConfig.cs" />
     <Compile Include="TM_AppCode\TM_Engine.cs" />
     <Compile Include="TM_AppCode\Tracking\Firebase\API_Firebase.cs" />
     <Compile Include="TM_AppCode\Tracking\Firebase\Activities_Firebase.cs" />

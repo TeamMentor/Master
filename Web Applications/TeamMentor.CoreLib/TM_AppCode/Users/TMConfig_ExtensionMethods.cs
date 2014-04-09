@@ -90,7 +90,7 @@ namespace TeamMentor.CoreLib
                     gitUserConfigFile.file_Delete();
                 }
                 else
-                    gitUserConfig_Data.saveAs(gitUserConfigFile);
+                    gitUserConfig_Data.saveAs(gitUserConfigFile);                
                 return true;
             }
             catch (Exception ex)

@@ -6,13 +6,15 @@ namespace TeamMentor.CoreLib
     public class Activities_Firebase 
     {        
         public static Activities_Firebase Current = new Activities_Firebase();
-        public static API_Firebase apiFirebase = new API_Firebase("activities");
+        public static API_Firebase apiFirebase = new API_Firebase(TMConsts.FIREBASE_AREA_ACTIVITIES);
     	
         public UserActivity logActivity(UserActivity userActivity)
         {            
-            var submitData = new API_Firebase.SubmitData("activities", userActivity, API_Firebase.Submit_Type.ADD);
-            apiFirebase.submit(submitData);
-            //apiFirebase.push(userActivity);
+            if(TM_UserData.Current.firebase_Log_Activities())
+            {
+                var submitData = new API_Firebase.SubmitData(userActivity, API_Firebase.Submit_Type.ADD);
+                apiFirebase.submit(submitData);
+            }            
             return userActivity;
         }
     }
@@ -26,7 +28,7 @@ namespace TeamMentor.CoreLib
             }
             catch(Exception ex)
             {
-                ex.log("[Activities_Firebase][firebase_Log] with activity: {0}",userActivity);
+                ex.log("[Activities_Firebase] [firebase_Log] with activity: {0}",userActivity);
             }
             return userActivity;        
         }

@@ -107,6 +107,11 @@ namespace TeamMentor.CoreLib
                 return false;
             emailMessage.Message += TMConsts.EMAIL_DEFAULT_FOOTER;
             Sent_EmailMessages.Add(emailMessage);
+
+            if (emailMessage.From.notValid())
+                emailMessage.From = this.From;
+            TM_UserData.Current.logTBotActivity("Send Email","From: {0}    To: {1}    Subject: {2}".format(emailMessage.From, emailMessage.To, emailMessage.Subject));
+
             try
             {
                 if (this.serverNotConfigured())
@@ -114,8 +119,7 @@ namespace TeamMentor.CoreLib
                     emailMessage.SentStatus = SentStatus.NoConfig;
                     return false;   
                 }
-                if (emailMessage.From.notValid())
-                    emailMessage.From = this.From;
+            
                 emailMessage.SentStatus = SentStatus.Sending;
                 "Sending email:\n  to: {0}\n  from: {0}\n  subject: {0} ".info(emailMessage.To, emailMessage.Subject, emailMessage.Message);
                 var mailMsg = new MailMessage();

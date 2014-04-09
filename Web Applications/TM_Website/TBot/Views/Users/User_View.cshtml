@@ -1,7 +1,6 @@
 ﻿
 @using FluentSharp.CoreLib
 @using TeamMentor.CoreLib
-@using FluentSharp
 
 @{
     var userData = TM_UserData.Current;
@@ -64,17 +63,7 @@
                 <li><a href="/aspx_pages/EnableUser.aspx?token=@tmUser.enableUser_Token()" target="_blank" >open 'Enable User' page</a></li>                
             </ul>
         </li>
-    </ul>
-@*    <ul>
-        <li><b>SingleUse Token: </b> @tmUser.SecretData.SingleUseLoginToken  
-            <ul>
-                <li><a href="/rest/loginToken/@tmUser.UserName" target="_blank" >renew</a> </li>
-                <li><a href="/rest/redirect/afterLoginToken/@tmUser.UserName/@tmUser.SecretData.SingleUseLoginToken">use token</a> and login as user (you will lose your current admin session)</li>
-            </ul>
-         </li>                                                                    
-    </ul>
-*@   
-    
+    </ul>    
 }
 else
 {

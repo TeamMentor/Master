@@ -16,15 +16,15 @@ angular.module ('tbot' )
                                                                 {
                                                                     if (onSuccess)
                                                                         onSuccess(data.d);
-                                                                    else
-                                                                        console.log(data.d);
+                                                                //    else
+                                                                //        console.log(data.d);
                                                                 });
                                             },
                                     Current_User  : function(onSuccess)
                                             {
                                                 return asmxService.invokeService("Current_User", {} , onSuccess);
                                             },
-                                    set_CSRF_Token : function(onSuccess)
+                                    set_CSRF_Token : function()
                                             {
                                                 return asmxService.Current_User(function (data)
                                                     {
@@ -33,26 +33,21 @@ angular.module ('tbot' )
                                                             asmxService.currentUser = data;
                                                             $http.defaults.headers.post['CSRF-Token'] = data.CSRF_Token;
                                                         }
-                                                        if (onSuccess)
-                                                            onSuccess(data);
                                                     });
                                             } ,
                                     Get_Firebase_ClientConfig  : function(onSuccess)
                                             {
-
-                                                return asmxService.invokeService("Get_Firebase_ClientConfig");
-
-                                                          /*  asmxService.set_CSRF_Token()
-                                                                  .success(function()
-                                                                    {
-                                                                        return asmxService.invokeService("Get_Firebase_ClientConfig");
-                                                                    });    */
+                                                return  asmxService.set_CSRF_Token()
+                                                                   .then(function (data)
+                                                                        {
+                                                                            return asmxService.invokeService("Get_Firebase_ClientConfig");
+                                                                        })
+                                                                    .then(function (data)
+                                                                        {
+                                                                            return data.data.d
+                                                                        });
                                             }
 
                             };
             return asmxService
-        })
-    .factory("firebaseConfig",function(asmxService)
-        {
-           return asmxService.Get_Firebase_ClientConfig();
         });

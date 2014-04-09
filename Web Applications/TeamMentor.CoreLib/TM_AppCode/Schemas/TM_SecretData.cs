@@ -6,16 +6,14 @@ namespace TeamMentor.CoreLib
 {
     public class TM_SecretData
     {        
-        public string Rijndael_IV    { get; set; }
-        public string Rijndael_Key   { get; set; }
+        public string           Rijndael_IV    { get; set; }
+        public string           Rijndael_Key   { get; set; }
 
-        public string SMTP_Server    { get; set; }
-        public string SMTP_UserName  { get; set; }
-        public string SMTP_Password  { get; set; }
-
-        public string Firebase_Site      { get; set; }
-        public string Firebase_AuthToken { get; set; }
-        public string Firebase_RootArea  { get; set; }        
+        public string           SMTP_Server    { get; set; }
+        public string           SMTP_UserName  { get; set; }
+        public string           SMTP_Password  { get; set; }
+        
+        public TM_FirebaseConfig   FirebaseConfig      { get; set; }                
 
         public List<string> Libraries_Git_Repositories { get; set; }
 
@@ -26,8 +24,9 @@ namespace TeamMentor.CoreLib
             Rijndael_Key    = rijndael.Key.base64Encode();
             SMTP_Server     = "smtp.sendgrid.net";
             SMTP_UserName   = "TeamMentor";
-
-            Libraries_Git_Repositories = new List<string>();
-        }
+            
+            FirebaseConfig              = new TM_FirebaseConfig();
+            Libraries_Git_Repositories  = new List<string>();
+        }        
     }
 }

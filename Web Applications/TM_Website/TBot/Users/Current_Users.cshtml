@@ -2,10 +2,9 @@
 @using System.Linq
 @using FluentSharp.CoreLib
 @using TeamMentor.CoreLib
-@using FluentSharp
 
 @{
-    var tmRest = (TeamMentor.CoreLib.TM_REST) @Model;
+    var tmRest = (TM_REST) @Model;
     var users  = tmRest.users();
     var count = 0;
 }

@@ -109,14 +109,14 @@ namespace TeamMentor.CoreLib
         public static TM_Xml_Database   clone_Library      (this TM_Xml_Database tmDatabase, string gitLibrary, string targetFolder)
         {
             var start = DateTime.Now;
-            "[TM_Xml_Database][GitClone] Start".info();
+            "[TM_Xml_Database] [GitClone] Start".info();
             if (Git.CloneUsingGit(gitLibrary,targetFolder).isFalse())
             {
-                "[TM_Xml_Database][GitClone] Using NGit for the clone".info();    
+                "[TM_Xml_Database] [GitClone] Using NGit for the clone".info();    
                 gitLibrary.git_Clone(targetFolder);
             }
             
-            "\n\n[TM_UserData][GitClone] in: {0}\n\n".debug(start.duration_To_Now());
+            "\n\n[TM_UserData] [GitClone] in: {0}\n\n".debug(start.duration_To_Now());
             return tmDatabase;
         }
     }
@@ -127,7 +127,7 @@ namespace TeamMentor.CoreLib
         public static void populateGuidanceItemsFileMappings(this TM_Xml_Database tmXmlDatabase)
         {
             tmXmlDatabase.GuidanceItems_FileMappings.Clear();
-            var o2Timer = new O2Timer("populateGuidanceExplorersFileMappings").start();
+            var o2Timer = new O2Timer("[TM_Xml_Database] populateGuidanceExplorersFileMappings").start();
             foreach (var filePath in tmXmlDatabase.Path_XmlLibraries.files(true, "*.xml"))
             {
                 var fileId = filePath.fileName().remove(".xml");
@@ -137,14 +137,14 @@ namespace TeamMentor.CoreLib
                     var guid = fileId.guid();
                     if (tmXmlDatabase.GuidanceItems_FileMappings.hasKey(guid))
                     {
-                        "[populateGuidanceItemsFileMappings] duplicate GuidanceItem ID found {0}".error(guid);
+                        "[TM_Xml_Database] [populateGuidanceItemsFileMappings] duplicate GuidanceItem ID found {0}".error(guid);
                     }
                     else
                         TM_Xml_Database.Current.GuidanceItems_FileMappings.Add(guid, filePath);				
                 }
             }
             o2Timer.stop();
-            "There are {0} files mapped in GuidanceItems_FileMappings".info(TM_Xml_Database.Current.GuidanceItems_FileMappings.size());			
+            "[TM_Xml_Database] [populateGuidanceItemsFileMappings] There are {0} files mapped in GuidanceItems_FileMappings".info(TM_Xml_Database.Current.GuidanceItems_FileMappings.size());			
         }
     }
 
@@ -270,19 +270,19 @@ namespace TeamMentor.CoreLib
             var chacheFile = tmDatabase.getCacheLocation();
             if (chacheFile.fileExists().isFalse())
             {
-                "[TM_Xml_Database] in loadGuidanceItemsFromCache, cached file not found: {0}".error(chacheFile);
+                "[TM_Xml_Database] [load_GuidanceItemsFromCache] cached file not found: {0}".error(chacheFile);
                 tmDatabase.xmlDB_Load_GuidanceItems_and_Create_CacheFile();
             }
             else
             {
-                var o2Timer = new O2Timer("loadGuidanceItemsFromCache").start();
+                var o2Timer = new O2Timer("[TM_Xml_Database] [loadGuidanceItemsFromCache] loaded cache ").start();
                 var loadedGuidanceItems = chacheFile.load<List<TeamMentor_Article>>();
                 o2Timer.stop();
                 if (loadedGuidanceItems.isNull()) //if we couldn't load it , delete it
                     Files.deleteFile(chacheFile);
                 else
                 {
-                    o2Timer = new O2Timer("mapping to memory loadGuidanceItemsFromCache").start();
+                    o2Timer = new O2Timer("[TM_Xml_Database] [loadGuidanceItemsFromCache] loading files ").start();
                     foreach (var loadedGuidanceItem in loadedGuidanceItems)
                         if (loadedGuidanceItem.notNull())
                             TM_Xml_Database.Current.Cached_GuidanceItems.add(loadedGuidanceItem.Metadata.Id,

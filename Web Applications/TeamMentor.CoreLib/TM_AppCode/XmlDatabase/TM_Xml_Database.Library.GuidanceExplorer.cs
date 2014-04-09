@@ -30,7 +30,7 @@ namespace TeamMentor.CoreLib
         {			
             if (caption.isNull() || caption.isValidGuidanceExplorerName().isFalse())
             {
-                "[TM_Xml_Database][xmlDB_NewGuidanceExplorer] provided caption didn't pass validation regex".error();
+                "[TM_Xml_Database] [xmlDB_NewGuidanceExplorer] provided caption didn't pass validation regex".error();
                 throw new Exception("Provided Library name didn't pass validation regex"); 				
             }
             
@@ -54,7 +54,7 @@ namespace TeamMentor.CoreLib
             
             TM_Xml_Database.Current.GuidanceExplorers_XmlFormat.add(libraryId, newGuidanceExplorer);    //add to in memory database
             newGuidanceExplorer.xmlDB_Save_GuidanceExplorer(tmDatabase);                             
-            "[TM_Xml_Database][xmlDB_NewGuidanceExplorer] Created new Library with id {0} and caption {1}".info(libraryId, caption);
+            "[TM_Xml_Database] [xmlDB_NewGuidanceExplorer] Created new Library with id {0} and caption {1}".info(libraryId, caption);
             return newGuidanceExplorer;
         }		
         public static bool                   xmlDB_DeleteGuidanceExplorer(this TM_Xml_Database tmDatabase, Guid libraryId)
@@ -70,13 +70,13 @@ namespace TeamMentor.CoreLib
                 if (pathToLibraryFolder.notValid() || pathToLibraryFolder == tmDatabase.Path_XmlDatabase ||
                     pathToLibraryFolder == tmDatabase.Path_XmlLibraries)
                 {
-                    "[xmlDB_DeleteGuidanceExplorer][Stopping delete] Something is wrong with the pathToLibrary to delete : {0}"
+                    "[xmlDB_DeleteGuidanceExplorer] [Stopping delete] Something is wrong with the pathToLibrary to delete : {0}"
                         .error(pathToLibraryFolder);
                     return false;
                 }
                 if (pathToLibraryFolder.contains(tmDatabase.Path_XmlLibraries).isFalse())
                 {
-                    "[xmlDB_DeleteGuidanceExplorer][Stopping delete] the  pathToLibrary should contain tmDatabase.Path_XmlLibraries : {0}"
+                    "[xmlDB_DeleteGuidanceExplorer] [Stopping delete] the  pathToLibrary should contain tmDatabase.Path_XmlLibraries : {0}"
                         .error(pathToLibraryFolder);
                     return false;
                 }
@@ -170,13 +170,13 @@ namespace TeamMentor.CoreLib
         {
             if (newCaption.isValidGuidanceExplorerName().isFalse())
             {
-                "[TM_Xml_Database][xmlDB_RenameGuidanceExplorer] provided caption didn't pass validation regex".error();
+                "[TM_Xml_Database] [xmlDB_RenameGuidanceExplorer] provided caption didn't pass validation regex".error();
                 //throw new Exception("Provided Library name didn't pass validation regex"); 				                
             }
             else if(guidanceExplorer.notNull())
             {                
                 guidanceExplorer.library.caption = newCaption;  // update in memory library name value
-
+                 
                 return guidanceExplorer.xmlDB_Save_GuidanceExplorer(tmDatabase);                // save it 
                
 

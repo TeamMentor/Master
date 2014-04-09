@@ -55,8 +55,8 @@ namespace TeamMentor.UnitTests.CoreLib.ExtensionMethods
         }
         [Test] public void json_Serialize()
         {
-            Assert.AreEqual(default(string)        .json_Serialize(), null);
-            Assert.AreEqual(default(List<string>)  .json_Serialize(), null);             
+            Assert.AreEqual((null as string)       .json_Serialize(), null);
+            Assert.AreEqual((null as List<string>) .json_Serialize(), null);             
             Assert.AreEqual(AppDomain.CurrentDomain.json_Serialize(), null );
 
             //the other cases are tested by json_Deserialize
@@ -81,8 +81,8 @@ namespace TeamMentor.UnitTests.CoreLib.ExtensionMethods
 
         [Test] public void javascript_Serialize()
         {            
-            Assert.AreEqual(default(string)        .javascript_Serialize() , "null");
-            Assert.AreEqual(default(List<string>)  .javascript_Serialize() , "null");             
+            Assert.AreEqual((null as string)       .javascript_Serialize() , "null");
+            Assert.AreEqual((null as List<string>) .javascript_Serialize() , "null");             
             Assert.AreEqual(AppDomain.CurrentDomain.javascript_Serialize() ,  null );
             //the other cases are tested by javascript_Deserialize
         }

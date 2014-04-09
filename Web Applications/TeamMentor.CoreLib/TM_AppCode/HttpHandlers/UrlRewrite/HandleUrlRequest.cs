@@ -181,24 +181,30 @@ namespace TeamMentor.CoreLib
                 case ".asmx":
                 case ".ashx":
                 case ".aspx":
+                case ".ico":
+                case ".woff":
                     return true;
                 //default:
                 //    return false;
             }
             var absolutePath = request.Url.AbsolutePath;
-            if (absolutePath.lower().contains("/images/"))
+            if (absolutePath.lower().contains("/images/","/javascript/"))
                 return true;
+            
             return false;
         }
 
         //All mappings are here
         public void handleRequest(string action , string data)
-        {
+        {            
             try
             {
                 tmWebServices = new TM_WebServices(true);       // enable webservices access (and security checks with CSRF disabled)
+                
+                //tmWebServices.tmXmlDatabase.logTBotActivity("Handle Request","/{0}/{1}".format(action,data.replace(",","/")));
+
                 action = Encoder.HtmlEncode(action);
-                data = Encoder.HtmlEncode(data).replace("%20"," ");
+                data = Encoder.HtmlEncode(data).replace("%20"," ");                                
 
                 if (action.isGuid() & data.inValid())
                 {
@@ -311,7 +317,10 @@ namespace TeamMentor.CoreLib
             catch (Exception ex)
             {
                 if (ex is SecurityException)
-                    redirect_Login();              
+                {
+                    var originalUrl = "/{0}/{1}".format(action,data.replace(",","/"));
+                    redirect_Login_AccessDenied(originalUrl);              
+                }
                 if (ex.Message != "Thread was being aborted.")                
                     ex.logWithStackTrace("at handleRequest");                                    
             }                                                		
@@ -485,6 +494,25 @@ namespace TeamMentor.CoreLib
 
                         context.Response.ContentType = "text/html";
                         context.Response.Write(stringWriter.str());
+
+                        var article = tmWebServices.GetGuidanceItemById(guid);
+                        switch(xsltToUse)
+                        {
+                            case "Notepad_Edit.xslt":
+                                tmWebServices.RBAC_Demand_EditArticles();           // will trigger an Security exception if the user if not authorized
+                                tmWebServices.logUserActivity("Edit Article (Notepad)", "{0} ({1})".format(article.Metadata.Title, guid));
+                                break;
+                            case "TeamMentor_Article.xslt":
+                                tmWebServices.logUserActivity("View Article (xslt)", "{0} ({1})".format(article.Metadata.Title, guid));
+                                break;
+                            case "JsCreole_Article.xslt":
+                                tmWebServices.logUserActivity("View Article (wiki)", "{0} ({1})".format(article.Metadata.Title, guid));
+                                break;
+                            default:
+                                tmWebServices.logUserActivity("View Article ({0})", "{1} ({2})".format(xsltToUse, data,xsltToUse));
+                                break;
+                        }                        
+
                         endResponse();                        
                     }                    
                 }
@@ -499,6 +527,9 @@ namespace TeamMentor.CoreLib
                                     .add_Xslt("Article_Edit.xslt"); 
             context.Response.ContentType = "application/xml";
             context.Response.Write(xmlContent);  
+
+            tmWebServices.logUserActivity("Create Article (Notepad)", "{0} ({1})".info(article.Metadata.Title, data));
+
             endResponse();            
         }        
         public void handleAction_Raw(string data)
@@ -509,6 +540,9 @@ namespace TeamMentor.CoreLib
                 var xmlContent = tmWebServices.XmlDatabase_GetGuidanceItemXml(guid);
                 context.Response.ContentType = "application/xml";
                 context.Response.Write(xmlContent);
+                
+                tmWebServices.logUserActivity("View Article (raw)", data);
+
                 endResponse(); 
             }
             else
@@ -522,6 +556,9 @@ namespace TeamMentor.CoreLib
                 var xmlContent = tmWebServices.GetGuidanceItemHtml(guid);
                 context.Response.ContentType = "application/xml";
                 context.Response.Write(xmlContent);
+                
+                tmWebServices.logUserActivity("View Article (XML)", data);
+
                 endResponse(); 
             }
             else
@@ -545,6 +582,8 @@ namespace TeamMentor.CoreLib
                                                   .replace("#ARTICLE_HTML", article.Content.Data.Value);
                     context.Response.Write(htmlContent);      
                 
+                    tmWebServices.logUserActivity("View Article (HTML)", "{0} ({1})".info(article.Metadata.Title, data));
+
                     endResponse(); 
                 }
             }
@@ -556,7 +595,8 @@ namespace TeamMentor.CoreLib
             if ( data.isGuid())
             {				
                 var guid = data.guid();
-                if (tmWebServices.GetGuidanceItemById(guid).isNull())
+                var guidanceItem = tmWebServices.GetGuidanceItemById(guid);
+                if (guidanceItem.isNull())
                 {
                     var redirectTarget = tmWebServices.VirtualArticle_Get_GuidRedirect(guid);
                     if (redirectTarget.valid())
@@ -564,7 +604,12 @@ namespace TeamMentor.CoreLib
                         context.Response.Redirect(redirectTarget); // ends request                        
                     }
                 }
+                else
+                    tmWebServices.logUserActivity("View Article (direct)", "{0} ({1})".info(guidanceItem.Metadata.Title, data));
             }
+            else
+                tmWebServices.logUserActivity("View Article (direct)", data);
+            
             transfer_Request("articleViewer");              // will trigger exception    
         }		
         public void handleAction_Content(string data)
@@ -607,11 +652,25 @@ namespace TeamMentor.CoreLib
                 transfer_Request("articleViewer");              // will trigger exception
             else
             {
-                tmWebServices.XmlDatabase_GetGuidanceItemXml(guid); // will trigger an Security exception if the user if not authorized
+                tmWebServices.RBAC_Demand_EditArticles();           // will trigger an Security exception if the user if not authorized
+                
+                var article = tmWebServices.GetGuidanceItemById(guid); 
+                        
+                tmWebServices.logUserActivity("Edit Article (WYSIWYG)", "{0} ({1})".format(article.Metadata.Title, guid));
+                                
                 transfer_Request("articleEditor");    
             }            
             //context.Server.Transfer("/html_pages/GuidanceItemEditor/GuidanceItemEditor.html");                        
-        }     
+        }
+        
+        public void redirect_Login_AccessDenied(string urlRequested)
+        {
+            if(tmWebServices.tmAuthentication.currentUser.notNull())
+                tmWebServices.tmAuthentication.currentUser.logUserActivity("Access Denied", urlRequested);
+            else
+                tmWebServices.logUserActivity("Access Denied", urlRequested);
+            redirect_Login();
+        }
         public void redirect_Login()
         {
             var loginPage = "/Html_Pages/Gui/Pages/login.html";
@@ -623,6 +682,9 @@ namespace TeamMentor.CoreLib
                                             : context.Request.Url.AbsolutePath;
                 if (redirectTarget.lower() == "/login")
                     redirectTarget = "/";
+
+                //tmWebServices.logUserActivity("Login Page", "Redirect: {0}".format(redirectTarget));
+
                 context.Response.Redirect("{0}?LoginReferer={1}".format(loginPage, redirectTarget));                
             }
             context.Response.Redirect(loginPage);

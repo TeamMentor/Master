@@ -31,14 +31,12 @@ namespace TeamMentor.CoreLib
 	    }
         public API_Firebase(string area) 
 	    {	
+            Area         = area;
 	        SubmitQueue  = new BlockingCollection<SubmitData>();
-            OfflineQueue = new BlockingCollection<SubmitData>();
-            
-		    Area	     = this.firebase_RootArea();
-            Area        += (area.valid()) ? "/" + area : area;
+            OfflineQueue = new BlockingCollection<SubmitData>();            		    
 		    MessageFormat = "{{\"text\": {0}}}";            
             QueueMaxWait = TMConsts.FIREBASE_SUBMIT_QUEUE_MAX_WAIT;
-            Offline      = false;
+            Offline      = MiscUtils.offline();
 	    }
         
         public enum  Submit_Type 
@@ -49,23 +47,23 @@ namespace TeamMentor.CoreLib
         }
         public class SubmitData  
         {
-            public 	string 	    Area	      { get; set; }
+            //public 	string 	    Area	      { get; set; }
             public  object      Data          { get; set; }
             public  string      Json_Data     { get; set; }
             public  Submit_Type Type          { get; set; }
 
             public SubmitData()
             {}
-            public SubmitData(string area, object data, Submit_Type type)
+            public SubmitData(object data, Submit_Type type)
             {
-                Area      = area;
+                //Area      = area;
                 Data      = data;
                 Json_Data = data.json();
                 Type      = type;
             }
             public override string ToString()
             {
-                return "[{0}][{1}] with size: {2}".format(Type, Area, Json_Data.size());
+                return "[{0}] with size: {2}".format(Type, Json_Data.size());
             }
         }
         public class PostResponse
@@ -78,7 +76,7 @@ namespace TeamMentor.CoreLib
 
 
     // all these need to be moved into extension methods
-    public partial class API_Firebase  
+  /*  public partial class API_Firebase  
     {
 	    public string formatedText(object value)
 	    {
@@ -115,7 +113,7 @@ namespace TeamMentor.CoreLib
 		    return new JavaScriptSerializer().Serialize(target);
 	    }
     }
-
+    */
     public static class API_Firebase_Extensionmethods_REST
     {
         public static string GET(this API_Firebase firebase)
@@ -167,7 +165,7 @@ namespace TeamMentor.CoreLib
                     var type    = submitData.Type;
                     var data    = submitData.Data;
                     var message = ex.Message;
-                  //  ex.log("[API_Firebase][submit_Via_REST] for: {0}".format(submitData));
+                    ex.log("[API_Firebase] [submit_Via_REST] for: {0}".format(submitData));
                 }
             }
             return "";
@@ -181,21 +179,21 @@ namespace TeamMentor.CoreLib
         {
             var userData = TM_UserData.Current;
             if (userData.notNull() && userData.SecretData.notNull())
-                return userData.SecretData.Firebase_Site;
+                return userData.SecretData.FirebaseConfig.Site;
             return null;
         }
         public static string firebase_AuthToken(this API_Firebase firebase)
         {
             var userData = TM_UserData.Current;
             if (userData.notNull() && userData.SecretData.notNull())
-                return userData.SecretData.Firebase_AuthToken;
+                return userData.SecretData.FirebaseConfig.AuthToken;
             return null;
         }        
         public static string firebase_RootArea(this API_Firebase firebase)
         {
             var userData = TM_UserData.Current;
             if (userData.notNull() && userData.SecretData.notNull())
-                return userData.SecretData.Firebase_RootArea;
+                return userData.SecretData.FirebaseConfig.RootArea;
             return null;
         }
         public static bool   offline(this API_Firebase firebase)
@@ -212,8 +210,9 @@ namespace TeamMentor.CoreLib
         }
         public static Uri  site_Uri(this API_Firebase firebase, string area)
         {
-            return "https://{0}.firebaseio.com/{1}.json?auth={2}".format(
+            return "https://{0}.firebaseio.com/{1}/{2}.json?auth={3}".format(
                         firebase.firebase_Site(),
+                        firebase.firebase_RootArea(),
                         area,
                         firebase.firebase_AuthToken()).uri();
         }
@@ -226,7 +225,7 @@ namespace TeamMentor.CoreLib
         public static bool site_Online(this API_Firebase firebase)
         {
             if (firebase.site_Configured())
-            {                               
+            {                                
                 var randomAreaUri  = firebase.site_Uri(10.randomLetters());  // sets a random area  
                 randomAreaUri.str().info();
                 var result         = randomAreaUri.GET();                    // makes a GET request to it                
@@ -245,7 +244,7 @@ namespace TeamMentor.CoreLib
             {
                // "[SubmitThread] got next: {0}".info(next);
 
-                if (firebase.offline())
+                if (firebase.offline() || firebase.site_Configured().isFalse())
                     firebase.offlineQueue().add(next);
                 else
                     ThreadPool.QueueUserWorkItem((o)=>firebase.submit_Via_REST(next));

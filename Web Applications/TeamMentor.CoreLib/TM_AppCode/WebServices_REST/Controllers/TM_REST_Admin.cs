@@ -51,6 +51,7 @@ namespace TeamMentor.CoreLib
             }
             catch (SecurityException)
             {
+                TmWebServices.logUserActivity("Access Denied","TBot Page: {0}".format(what));
                 Redirect_Login("/tbot");
             }	        
             return null;
@@ -111,7 +112,7 @@ namespace TeamMentor.CoreLib
                     return false;
                 }
                 TM_UserData.Current.SecretData = tmSecretData;
-                TM_UserData.Current.secretData_Save();
+                TM_UserData.Current.secretData_Save();                
                 return true;
             }
             catch (Exception ex)

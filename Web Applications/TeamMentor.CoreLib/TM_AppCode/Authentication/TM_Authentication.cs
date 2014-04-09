@@ -23,33 +23,33 @@ namespace TeamMentor.CoreLib
         public Guid                 sessionID
         {
             get
-            {                
-                // first check if there s a session variable already set                
-/*                if (HttpContextFactory.Session.notNull() && HttpContextFactory.Session["sessionID"].notNull() && HttpContextFactory.Session["sessionID"] is Guid)
-                {
-                    var sessionGuid = (Guid)HttpContextFactory.Session["sessionID"];
-                    if(sessionGuid != Guid.Empty)
-                        return sessionGuid;
-                }*/
+            {      
+                var value = Guid.Empty;                
 
-                // then check the cookie
+                // first check the cookies then the headers
                 var sessionCookie = HttpContextFactory.Request.cookie("Session");
                 if (sessionCookie.notNull() && sessionCookie.isGuid())
-                    return sessionCookie.guid();
-
-                var sessionHeader = HttpContextFactory.Request.header("Session");
-                if (sessionHeader.notNull() && sessionHeader.isGuid())
-                    return sessionHeader.guid();
+                {
+                    value = sessionCookie.guid();
+                }
+                else
+                {                    
+                    var sessionHeader = HttpContextFactory.Request.header("Session");
+                    if (sessionHeader.notNull() && sessionHeader.isGuid())
+                        value = sessionHeader.guid();
+                }
+                if (HttpContextFactory.Session.notNull())                
+                    HttpContextFactory.Session["sessionID"] = value;            // used to track currently users with sessions
 
                 //if none is set, return an empty Guid	
-                return Guid.Empty;                
+                return value;
             }
             set
             {                
                 var previousSessionId = sessionID;
              
-//                if (HttpContextFactory.Session.notNull())                
-//                    HttpContextFactory.Session["sessionID"] = value;
+                if (HttpContextFactory.Session.notNull())                
+                    HttpContextFactory.Session["sessionID"] = value;            // used to track currently users with sessions
 
                 HttpContextFactory.Response.set_Cookie("Session", value.str()).httpOnly();
                 HttpContextFactory.Request .set_Cookie("Session", value.str()).httpOnly();   

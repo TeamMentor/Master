@@ -16,7 +16,10 @@ namespace TeamMentor.CoreLib
         public static string USERDATA_FIRST_SCRIPT_TO_INVOKE  = "H2Scripts//FirstScriptToInvoke.h2";
         public static string USERDATA_PATH_WEB_ROOT_FILES     = "WebRoot_Files";
 
-        public static int   FIREBASE_SUBMIT_QUEUE_MAX_WAIT    = 60000;
+        public static int    FIREBASE_SUBMIT_QUEUE_MAX_WAIT    = 60000;
+        public static string FIREBASE_AREA_DEBUG_MSGS          = "debugMsgs";
+        public static string FIREBASE_AREA_ACTIVITIES          = "activities";
+        public static string FIREBASE_AREA_REQUESTS_URLS       = "requestUrls";
         
         public static string EMAIL_SUBJECT_NEW_USER_WELCOME   = "Welcome to TeamMentor";
         public static string EMAIL_TEST_SUBJECT               = "Test Email";

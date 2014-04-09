@@ -34,7 +34,8 @@ namespace TeamMentor.CoreLib
         {
         }
         public TM_Xml_Database          (bool useFileStorage)
-        {
+        {            
+            this.logTBotActivity("TM Xml Database", (useFileStorage) ? "Started using File Storage" : "Started in Memory mode");
             "[TM_Xml_Database] Setup".info();
             Current = this;
             try
@@ -94,12 +95,15 @@ namespace TeamMentor.CoreLib
                 }
                 UserData.SetUp();
                 Logger_Firebase.createAndHook();
+               "TM is Rebooting".info();
+                this.logTBotActivity("TM Xml Database", "TM is (re)starting and user Data is now loaded");
                 this.userData().copy_FilesIntoWebRoot();
                 if (UsingFileStorage)
                 {                       
                     SetPaths_XmlDatabase();            
                     this.handle_UserData_GitLibraries();
-                    loadDataIntoMemory();                                                       
+                    loadDataIntoMemory();
+                    this.logTBotActivity("TM Xml Database", "Library Data is loaded");
                 }
                 UserData.createDefaultAdminUser();  // make sure the admin user exists and is configured
             }
@@ -122,7 +126,7 @@ namespace TeamMentor.CoreLib
                 var userDataPath = tmConfig.TMSetup.UserDataPath;
                 var xmlDatabasePath = tmConfig.xmlDatabasePath();
 
-                "[TM_Xml_Database][setDataFromCurrentScript] TMConfig.Current.UserDataPath: {0}".debug(userDataPath);
+                "[TM_Xml_Database] [setDataFromCurrentScript] TMConfig.Current.UserDataPath: {0}".debug(userDataPath);
 
                 if (userDataPath.dirExists().isFalse())
                 {
@@ -134,7 +138,7 @@ namespace TeamMentor.CoreLib
             }        
             catch(Exception ex)
             {
-                "[TM_Xml_Database][SetPaths_UserData] {0} \n\n {1}".error(ex.Message, ex.StackTrace);
+                "[TM_Xml_Database] [SetPaths_UserData] {0} \n\n {1}".error(ex.Message, ex.StackTrace);
             }
         }
 
@@ -148,8 +152,8 @@ namespace TeamMentor.CoreLib
                 
                 AutoGitCommit           = tmConfig.Git.AutoCommit_LibraryData;
                 
-                "[TM_Xml_Database][setDataFromCurrentScript] TM_Xml_Database.Path_XmlDatabase: {0}" .debug(xmlDatabasePath);
-                "[TM_Xml_Database][setDataFromCurrentScript] TMConfig.Current.XmlLibrariesPath: {0}".debug(libraryPath);
+                "[TM_Xml_Database] [setDataFromCurrentScript] TM_Xml_Database.Path_XmlDatabase: {0}" .debug(xmlDatabasePath);
+                "[TM_Xml_Database] [setDataFromCurrentScript] TMConfig.Current.XmlLibrariesPath: {0}".debug(libraryPath);
                 
                                             
                 if (libraryPath.dirExists().isFalse())						
@@ -163,7 +167,7 @@ namespace TeamMentor.CoreLib
             }
             catch(Exception ex)
             {
-                "[TM_Xml_Database][SetPaths_XmlDatabase]: {0} \n\n {1}".error(ex.Message, ex.StackTrace);
+                "[TM_Xml_Database] [SetPaths_XmlDatabase]: {0} \n\n {1}".error(ex.Message, ex.StackTrace);
             }
         }        
         [Admin] public string           ReloadData()

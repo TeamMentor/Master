@@ -1,9 +1,8 @@
 ﻿
 @using TeamMentor.CoreLib
-@using FluentSharp
 
 @{
-    var tmRest = (TeamMentor.CoreLib.TM_REST) @Model;
+    var tmRest = (TM_REST) @Model;
     var users  = tmRest.users();
 }
 <h4>TM users in CSV Format</h4>

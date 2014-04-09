@@ -35,20 +35,17 @@ namespace TeamMentor.UnitTests.CoreLib
             Assert.AreEqual (firebase.QueueMaxWait, TMConsts.FIREBASE_SUBMIT_QUEUE_MAX_WAIT);            
         }
         [Test] public void SubmitData_Ctor()    
-        {
-            var area = 10.randomLetters();
+        {            
             var data = new List<object> { 10.randomLetters(),  10.randomLetters(), 10000.random()};
             var type = API_Firebase.Submit_Type.SET;
 
             var submitData1 = new API_Firebase.SubmitData(); 
-            var submitData2 = new API_Firebase.SubmitData(area, data, type); 
-
-            Assert.AreEqual(submitData1.Area     , null);
+            var submitData2 = new API_Firebase.SubmitData(data, type); 
+            
             Assert.AreEqual(submitData1.Data     , null);
             Assert.AreEqual(submitData1.Json_Data, null);
             Assert.AreEqual(submitData1.Type     , API_Firebase.Submit_Type.ADD);
 
-            Assert.AreEqual(submitData2.Area     , area);
             Assert.AreEqual(submitData2.Data     , data);
             Assert.AreEqual(submitData2.Json_Data, data.json());
             Assert.AreEqual(submitData2.Type     , type);
@@ -57,26 +54,27 @@ namespace TeamMentor.UnitTests.CoreLib
         // API_Firebase methods
         [Test] public void firebase_Site()      
         {
-            Assert.IsNull(userData.SecretData.Firebase_AuthToken);
-            Assert.IsNull(userData.SecretData.Firebase_Site     );            
-            Assert.IsNull(firebase.firebase_AuthToken()         );            
-            Assert.IsNull(firebase.firebase_Site()              );
+            var firebaseConfig = userData.SecretData.FirebaseConfig;
+            Assert.IsNull(firebaseConfig.AuthToken      );
+            Assert.IsNull(firebaseConfig.Site           );            
+            Assert.IsNull(firebase.firebase_AuthToken() );            
+            Assert.IsNull(firebase.firebase_Site()      );
 
             var site      = 10.randomLetters();
             var authToken = 10.randomLetters();
-            userData.SecretData.Firebase_Site      = site;
-            userData.SecretData.Firebase_AuthToken = authToken;
+            firebaseConfig.Site      = site;
+            firebaseConfig.AuthToken = authToken;
 
-            Assert.AreEqual(userData.SecretData.Firebase_AuthToken, authToken);
-            Assert.AreEqual(userData.SecretData.Firebase_Site     , site);
-            Assert.AreEqual(firebase.firebase_AuthToken()         , authToken);            
-            Assert.AreEqual(firebase.firebase_Site()              , site);
+            Assert.AreEqual(firebaseConfig.AuthToken     , authToken);
+            Assert.AreEqual(firebaseConfig.Site          , site);
+            Assert.AreEqual(firebase.firebase_AuthToken(), authToken);            
+            Assert.AreEqual(firebase.firebase_Site()     , site);
 
             //test nulls
             var _tmUserdata     = TM_UserData.Current;
             TM_UserData.Current = null;
-            Assert.IsNull(firebase.firebase_AuthToken()         );            
-            Assert.IsNull(firebase.firebase_Site()              );       
+            Assert.IsNull(firebase.firebase_AuthToken()  );
+            Assert.IsNull(firebase.firebase_Site()       );
             TM_UserData.Current = _tmUserdata;                          // restore or the other NCrunch tests will be affected
         }
         [Test] public void offline()            
@@ -131,7 +129,7 @@ namespace TeamMentor.UnitTests.CoreLib
         {
             Assert.AreEqual(firebase.submitQueue_Size(), 0);
             Assert.IsFalse (firebase.submitThread_Alive());
-            var submitData = new API_Firebase.SubmitData("area", "data", API_Firebase.Submit_Type.GET);
+            var submitData = new API_Firebase.SubmitData("data", API_Firebase.Submit_Type.GET);
             
             //send one submitData
             firebase.add(submitData);

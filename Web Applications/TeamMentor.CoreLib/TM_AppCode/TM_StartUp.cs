@@ -54,16 +54,28 @@ namespace TeamMentor.CoreLib
         public void Application_Error()
         {              
             var lastError = HttpContextFactory.Server.GetLastError();
-            if (lastError is HttpException && (lastError as HttpException).GetHttpCode() == 404)
-            {				
+            if (lastError is HttpException && ((HttpException)lastError).GetHttpCode()== 404)
+            {				                
                 new HandleUrlRequest().routeRequestUrl_for404();
+                // if we got this far it means that the request was not handled by one of TM's mappings
+                "[TM] [Application_Error]: 404 Error on {0}".error(HttpContextFactory.Request.Url.str());    
+                TM_Xml_Database.Current.logTBotActivity("404", HttpContextFactory.Request.Url.str());
             }
+            else
+            {
+                "[TM] [Application_Error]: {0}".error(lastError);                        
+                TM_Xml_Database.Current.logTBotActivity("Application Error", "{0} : {1}".format(lastError.Message, HttpContextFactory.Request.Url.str()));
+            }
+
             if (lastError is SecurityException)
             {
+                TM_Xml_Database.Current.logTBotActivity("Security Exception", HttpContextFactory.Request.Url.str());
                // HttpContextFactory.Response.Redirect("~/Error/Permission.aspx");
             }
+            else
                 
-            "[TM][Application_Error]: {0}".error(lastError);
+                
+            
                         
             if(HttpContextFactory.Request.IsLocal.isFalse())  //only redirecting if not from the local box
                HttpContextFactory.Response.Redirect("/error");

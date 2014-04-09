@@ -9,7 +9,7 @@ namespace TeamMentor.CoreLib
     {
         public static Logger_Firebase Current { get; set; }
 
-        public API_Firebase apiFirebase = new API_Firebase("testLogs");
+        public API_Firebase apiFirebase = new API_Firebase(TMConsts.FIREBASE_AREA_DEBUG_MSGS);
 
         public override string writeMemory(string message)
         {
@@ -19,9 +19,12 @@ namespace TeamMentor.CoreLib
     	
         public override  Log_Item logItem(Log_Item item)
         {
-            var submitData = new API_Firebase.SubmitData("testLogs", item, API_Firebase.Submit_Type.ADD);
-            apiFirebase.submit(submitData);
-            //apiFirebase.push(item);
+            
+            if (TM_UserData.Current.firebase_Log_DebugMsg())
+            {
+                var submitData = new API_Firebase.SubmitData(item, API_Firebase.Submit_Type.ADD);
+                apiFirebase.submit(submitData);            
+            }
             return item;
         }
 
@@ -29,7 +32,7 @@ namespace TeamMentor.CoreLib
         {          
             try
             {                
-                "[Logger_Firebase][createAndHook] Setting up Logger_Firebase".info();                
+                "[Logger_Firebase] [createAndHook] Setting up Logger_Firebase".info();                
                 var loggerFirebase = new Logger_Firebase();
                 if (loggerFirebase.apiFirebase.site_Configured().isFalse())
                 {

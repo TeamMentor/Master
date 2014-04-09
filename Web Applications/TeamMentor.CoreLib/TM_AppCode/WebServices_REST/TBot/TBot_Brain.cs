@@ -70,7 +70,8 @@ namespace TeamMentor.CoreLib
         public string ExecuteRazorPage(string page)
         {
             try
-            {                
+            {      
+                TM_Xml_Database.Current.logTBotActivity("Open TBot page", page);
                 if (AvailableScripts.hasKey(page))
                 {                    
                     var csFile = AvailableScripts[page];

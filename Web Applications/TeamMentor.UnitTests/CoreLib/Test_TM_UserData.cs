@@ -51,10 +51,7 @@ namespace TeamMentor.UnitTests.CoreLib
             Assert.IsNotNull(tmSecretData.SMTP_Server);
             Assert.IsNotNull(tmSecretData.SMTP_UserName);
             Assert.IsNull   (tmSecretData.SMTP_Password);
-
-            Assert.IsNull   (tmSecretData.Firebase_Site);
-            Assert.IsNull   (tmSecretData.Firebase_AuthToken);
-
+        
             "TMSecretData xml: \n {0}".info(tmSecretData.toXml());
         }
 

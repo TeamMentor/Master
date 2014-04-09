@@ -61,6 +61,8 @@ namespace TeamMentor.CoreLib
                             tmUser.logUserActivity("Login Fail", "bad pwd");                            
                         }
                     }
+                    else
+                        userData.logTBotActivity("Login Fail", "bad username: {0}".format(username));
                 }
             }
             catch (Exception ex)
@@ -92,7 +94,7 @@ namespace TeamMentor.CoreLib
             }
             catch (Exception ex)
             {
-                ex.log("[TM_UserData][login]");
+                ex.log("[TM_UserData] [login]");
             }
             return Guid.Empty;
         }

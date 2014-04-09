@@ -65,7 +65,7 @@ namespace TeamMentor.CoreLib
             }
             catch (Exception ex)
             {
-                ex.log("[HttpContextBase][ipAddress]");
+                ex.log("[HttpContextBase] [ipAddress]");
                 return "";
             }*/            
         }

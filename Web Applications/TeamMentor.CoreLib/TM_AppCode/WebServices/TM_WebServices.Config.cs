@@ -29,7 +29,12 @@ namespace TeamMentor.CoreLib
         [WebMethod(EnableSession = true)] [Admin]	            public bool XmlDatabase_SetUserDataPath(string userDataPath)	{	return tmXmlDatabase.UserData.setUserDataPath(userDataPath); }
 
 
-        [WebMethod(EnableSession = true)] public List<Guid>     XmlDatabase_GuidanceItems_SearchTitleAndHtml(List<Guid> guidanceItemsIds, string searchText)		{	 return  TM_Xml_Database.Current.guidanceItems_SearchTitleAndHtml(guidanceItemsIds,searchText); }																																		
+        [WebMethod(EnableSession = true)] public List<Guid>     XmlDatabase_GuidanceItems_SearchTitleAndHtml(List<Guid> guidanceItemsIds, string searchText)
+                                                                                                                                {
+                                                                                                                                    var results = TM_Xml_Database.Current.guidanceItems_SearchTitleAndHtml(guidanceItemsIds,searchText);
+                                                                                                                                    this.logUserActivity("User Search", "for '{0}' with {1} results".format(searchText,results.size()));
+                                                                                                                                    return results;
+                                                                                                                                }																																		
         [WebMethod(EnableSession = true)] public string         XmlDatabase_GetGuidanceItemXml(Guid guidanceItemId)	    {	return  TM_Xml_Database.Current.xmlDB_guidanceItemXml(guidanceItemId); }        
         [WebMethod(EnableSession = true)] public string         XmlDatabase_GetGuidanceItemPath(Guid guidanceItemId)	{	return  TM_Xml_Database.Current.xmlDB_guidanceItemPath(guidanceItemId); }                
                                                                     
@@ -113,14 +118,19 @@ namespace TeamMentor.CoreLib
 
 
         //Virtual Articles
-        [WebMethod(EnableSession = true)] [Admin]	            public List<VirtualArticleAction>	VirtualArticle_GetCurrentMappings           ()                                          { return TM_Xml_Database.Current.getVirtualArticles().Values.toList();                      }				
-        [WebMethod(EnableSession = true)] [Admin]	            public VirtualArticleAction			VirtualArticle_Add_Mapping_VirtualId        (Guid id, Guid virtualId)                   { return TM_Xml_Database.Current.add_Mapping_VirtualId(id, virtualId);                      }
-        [WebMethod(EnableSession = true)] [Admin]	            public VirtualArticleAction			VirtualArticle_Add_Mapping_Redirect         (Guid id, string redirectUri)               { return TM_Xml_Database.Current.add_Mapping_Redirect(id, redirectUri.uri());				}
-        [WebMethod(EnableSession = true)] [Admin]	            public VirtualArticleAction			VirtualArticle_Add_Mapping_ExternalArticle  (Guid id, string tmServer, Guid externalId) { return TM_Xml_Database.Current.add_Mapping_ExternalArticle(id, tmServer, externalId);		}
-        [WebMethod(EnableSession = true)] [Admin]	            public VirtualArticleAction			VirtualArticle_Add_Mapping_ExternalService  (Guid id, string service, string data)      { return TM_Xml_Database.Current.add_Mapping_ExternalService(id, service, data);			}
-        [WebMethod(EnableSession = true)] [Admin]	            public bool							VirtualArticle_Remove_Mapping               (Guid id)                                   { return TM_Xml_Database.Current.remove_Mapping_VirtualId(id);								}
-        [WebMethod(EnableSession = true)] [ReadArticles]        public string					    VirtualArticle_Get_GuidRedirect             (Guid id)                                   { return TM_Xml_Database.Current.get_GuidRedirect(id);										}
-        [WebMethod(EnableSession = true)] [ReadArticles]        public TeamMentor_Article		    VirtualArticle_CreateArticle_from_ExternalServiceData(string service, string serviceData)   {   return service.createArticle_from_ExternalServiceData(serviceData);					}
+        [WebMethod(EnableSession = true)] [Admin]	            public List<VirtualArticleAction>	VirtualArticle_GetCurrentMappings           ()                                              { return TM_Xml_Database.Current.getVirtualArticles().Values.toList();                      }				
+        [WebMethod(EnableSession = true)] [Admin]	            public VirtualArticleAction			VirtualArticle_Add_Mapping_VirtualId        (Guid id, Guid virtualId)                       { return TM_Xml_Database.Current.add_Mapping_VirtualId(id, virtualId);                      }
+        [WebMethod(EnableSession = true)] [Admin]	            public VirtualArticleAction			VirtualArticle_Add_Mapping_Redirect         (Guid id, string redirectUri)                   { return TM_Xml_Database.Current.add_Mapping_Redirect(id, redirectUri.uri());				}
+        [WebMethod(EnableSession = true)] [Admin]	            public VirtualArticleAction			VirtualArticle_Add_Mapping_ExternalArticle  (Guid id, string tmServer, Guid externalId)     { return TM_Xml_Database.Current.add_Mapping_ExternalArticle(id, tmServer, externalId);		}
+        [WebMethod(EnableSession = true)] [Admin]	            public VirtualArticleAction			VirtualArticle_Add_Mapping_ExternalService  (Guid id, string service, string data)          { return TM_Xml_Database.Current.add_Mapping_ExternalService(id, service, data);			}
+        [WebMethod(EnableSession = true)] [Admin]	            public bool							VirtualArticle_Remove_Mapping               (Guid id)                                       { return TM_Xml_Database.Current.remove_Mapping_VirtualId(id);								}
+        [WebMethod(EnableSession = true)] [ReadArticles]        public string					    VirtualArticle_Get_GuidRedirect             (Guid id)
+                                                                                                                                                                                                {
+                                                                                                                                                                                                    var guidRedirect = TM_Xml_Database.Current.get_GuidRedirect(id);
+                                                                                                                                                                                                    this.logUserActivity("VirtualArticle Redirect", "from '{0}' to '{1}'".format(id, guidRedirect));
+                                                                                                                                                                                                    return guidRedirect;
+                                                                                                                                                                                                }
+        [WebMethod(EnableSession = true)] [ReadArticles]        public TeamMentor_Article		    VirtualArticle_CreateArticle_from_ExternalServiceData(string service, string serviceData)   { return service.createArticle_from_ExternalServiceData(serviceData);					}
         
 
         //Article Guid Mappings
