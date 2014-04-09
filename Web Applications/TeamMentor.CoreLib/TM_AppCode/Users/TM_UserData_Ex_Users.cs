@@ -142,12 +142,15 @@ namespace TeamMentor.CoreLib
                 return 0;
 
             // if there is a groupId provided we must check if the user has the manageUsers Priviledge							
-            if (newUser.GroupId !=0)		        
+            if (newUser.GroupId !=0)		 
                 UserRole.ManageUsers.demand();		
 
             // Check if there is already a user with the provided username or email
             if (newUser.Username.tmUser().notNull() || newUser.Email.tmUser_FromEmail().notNull())
+            {
+                userData.logTBotActivity("User Creation Fail","Username ('{0}') or Email ('{1})already existed".format(newUser.Username, newUser.Email));
                 return 0;  
+            }
 
             // Create user             
             return userData.newUser(newUser.Username, newUser.Password, newUser.Email, newUser.Firstname, newUser.Lastname, newUser.Note, newUser.Title, newUser.Company, newUser.Country, newUser.State,newUser.GroupId);						

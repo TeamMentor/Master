@@ -20,8 +20,8 @@ namespace TeamMentor.UnitTests.CoreLib
             
             sendEmails = new SendEmails();
             Assert.IsNotNull(sendEmails);
-            Assert.IsNull(sendEmails.Smtp_Password , "In UnitTests SendEmails SMTP password should not be set");
-            Assert.IsTrue(sendEmails.serverNotConfigured()   , "In UnitTests serverNotConfigured should be in offline mode");            
+            Assert.AreEqual (sendEmails.Smtp_Password, "" , "In UnitTests SendEmails SMTP password should not be set");
+            Assert.IsTrue   (sendEmails.serverNotConfigured()   , "In UnitTests serverNotConfigured should be in offline mode");            
         }
         [TearDown]
         public void TearDown()                          
@@ -40,10 +40,11 @@ namespace TeamMentor.UnitTests.CoreLib
             Assert.IsFalse  (SendEmails.Dont_Send_Emails);
             
             //instance vars                        
-            Assert.AreEqual  (sendEmails.From           , tmConfig.TMSecurity.Default_AdminEmail);
-            Assert.AreEqual  (sendEmails.Smtp_Server    , userData.SecretData.SMTP_Server       );
-            Assert.AreEqual  (sendEmails.Smtp_UserName  , userData.SecretData.SMTP_UserName     );
-            Assert.AreEqual  (sendEmails.Smtp_Password  , userData.SecretData.SMTP_Password     );
+            Assert.AreEqual  (sendEmails.From           , tmConfig.TMSecurity.Default_AdminEmail      );
+            Assert.AreEqual  (sendEmails.To             , tmConfig.TMSecurity.Default_AdminEmail      );
+            Assert.AreEqual  (sendEmails.Smtp_Server    , userData.SecretData.SmtpConfig.Server       );
+            Assert.AreEqual  (sendEmails.Smtp_UserName  , userData.SecretData.SmtpConfig.UserName     );
+            Assert.AreEqual  (sendEmails.Smtp_Password  , userData.SecretData.SmtpConfig.Password     );
 
         }
         [Test] public void mapTMServerUrl()             

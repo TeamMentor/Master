@@ -23,7 +23,7 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             Assert.IsFalse  (tmWebServices.XmlDatabase_IsUsingFileStorage());
         }
 
-        [Test][Assert_Admin]
+        [Test][Assert_Admin][Ignore("WithoutFileStorage is not enabled on the current version")]
         public void XmlDatabase_WithoutFileStorage()
         {
             var original_TM_XmlDatabase = tmXmlDatabase;
@@ -35,6 +35,7 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
 
             var result = tmWebServices.XmlDatabase_WithoutFileStorage();
             var new_TM_XmlDatabase = TM_Xml_Database.Current;
+            
             
             Assert.IsTrue (result);
             Assert.IsFalse(new_TM_XmlDatabase.UsingFileStorage);

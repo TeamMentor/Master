@@ -138,6 +138,7 @@ namespace TeamMentor.CoreLib
             {
                 tmUser.AccountStatus.UserEnabled     = true;
                 tmUser.SecretData.EnableUserToken = Guid.Empty;
+                tmUser.logUserActivity("User Enabled", "Using Token: {0}".format(token));
             }
             return tmUser;
         }
@@ -216,7 +217,9 @@ namespace TeamMentor.CoreLib
             {
                 var context = new ValidationContext(objectTovalidate, null, null);
                 Validator.TryValidateObject(objectTovalidate, context, results, true);
-            }
+                if (results.size()>0)
+                    TM_UserData.Current.logTBotActivity("User Validation Failed",results.asStringList().asString());
+            }            
             return results;
         }
         public static bool                             validation_Ok        (this object objectTovalidate)

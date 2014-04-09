@@ -55,13 +55,18 @@ namespace TeamMentor.UnitTests.CoreLib
         [Test] public void firebase_Site()      
         {
             var firebaseConfig = userData.SecretData.FirebaseConfig;
-            Assert.IsNull(firebaseConfig.AuthToken      );
-            Assert.IsNull(firebaseConfig.Site           );            
-            Assert.IsNull(firebase.firebase_AuthToken() );            
-            Assert.IsNull(firebase.firebase_Site()      );
+
+            Assert.AreEqual(firebaseConfig.AuthToken   , "");
+            Assert.AreEqual(firebaseConfig.Site        , "");            
+            Assert.AreEqual(firebase.firebase_AuthToken(), "");            
+            Assert.AreEqual(firebase.firebase_Site()     , "");
+            Assert.IsTrue  (firebaseConfig.Log_Activities);            
+            Assert.IsTrue  (firebaseConfig.Log_DebugMsgs);
+            Assert.IsFalse (firebaseConfig.Log_RequestUrls);
 
             var site      = 10.randomLetters();
             var authToken = 10.randomLetters();
+
             firebaseConfig.Site      = site;
             firebaseConfig.AuthToken = authToken;
 

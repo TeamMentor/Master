@@ -142,7 +142,7 @@ namespace TeamMentor.UnitTests.TM_Website.WebServices
         }
         [Test] public void http_POST()
         {
-            tfWebServices.set_TM_Server("http://local:3187");
+            //tfWebServices.set_TM_Server("http://local:3187");
             var postUrl = "rest/users/verify";
             var postData = "{}";
 

@@ -73,6 +73,7 @@
 <b>Important Note:</b> This will edit the  TMConfig.Config file <b>located in the WebRoot</b> (which if you have set the GitUserLocation will not be the one currently used). Please contact support if you need help.
 <br/>
 <br/>
+<!--
 <div ng-controller="EditObject" ng-submit="update(userData)">
     
     <pre>
@@ -81,5 +82,31 @@
     <textarea ng-model="objectToEdit"  rows="15" class="input-xxlarge" >        </textarea>
     <button class="btn btn-primary" ng-click="saveObject()">Save</button>
     <span>{{message}}</span>
-    <!--<textarea ng-model="liveObject"  rows="15" class="input-xxlarge" disabled>        </textarea>-->
+    <!--<textarea ng-model="liveObject"  rows="15" class="input-xxlarge" disabled>        </textarea>- ->
+</div>
+
+-->
+
+
+<div ng-controller="EditObject" ng-submit="update(userData)">
+    
+    <div class ="alert alert-warning"><strong>TMConfig.Config path</strong>          : {{TMConfigPath}}</div>
+
+    <form role="form">
+        <div class="form-group">
+            <label  class="col-sm-2 control-label">File Contents</label>
+            <div class="col-sm-10">
+
+                <textarea ng-model="objectToEdit"  rows="15" class="form-control" >        </textarea>
+                <br />
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button class="btn btn-primary" ng-click="saveObject()">Save</button>
+                    <span>{{message}}</span>            
+                </div>
+            </div>
+        </div>
+    </form>
+
 </div>

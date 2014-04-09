@@ -48,9 +48,12 @@ namespace TeamMentor.UnitTests.CoreLib
             Assert.IsNotNull(tmSecretData.Rijndael_IV);
             Assert.IsNotNull(tmSecretData.Rijndael_Key);
 
-            Assert.IsNotNull(tmSecretData.SMTP_Server);
-            Assert.IsNotNull(tmSecretData.SMTP_UserName);
-            Assert.IsNull   (tmSecretData.SMTP_Password);
+            Assert.IsNotNull(tmSecretData.SmtpConfig.Server         );
+            Assert.IsNotNull(tmSecretData.SmtpConfig.UserName       );
+            Assert.AreEqual (tmSecretData.SmtpConfig.Password   , "");
+            Assert.IsNotNull(tmSecretData.SmtpConfig.Default_From   );
+            Assert.IsNotNull(tmSecretData.SmtpConfig.Default_To     );
+            Assert.IsNotNull(tmSecretData.SmtpConfig.Server         );
         
             "TMSecretData xml: \n {0}".info(tmSecretData.toXml());
         }

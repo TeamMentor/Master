@@ -90,7 +90,7 @@ namespace TeamMentor.UnitTests.TM_Website
 
                 Assert.IsNotNull(testUser.AuthToken);  // should be IsNotNull
                 var sessionId = webServices.Login_Using_AuthToken(testUser.AuthToken);
-                Assert.AreNotEqual(Guid.Empty, sessionId);
+                Assert.AreNotEqual(Guid.Empty, sessionId, "userId: {0} , userName: {1} token: {2}".format(testUser.UserId,testUser.UserName,testUser.AuthToken));
                 var currentUser = webServices.Current_User();
                 Assert.AreEqual   (currentUser.UserName,testUser.UserName);
                 Assert.AreEqual   (currentUser.UserId  ,testUser.UserId);

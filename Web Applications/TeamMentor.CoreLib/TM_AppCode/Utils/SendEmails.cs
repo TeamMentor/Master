@@ -16,6 +16,7 @@ namespace TeamMentor.CoreLib
         public static bool               Send_Emails_As_Sync { get; set; }
 
         public        string             From                { get; set; }
+        public        string             To                  { get; set; }
         public        string             Smtp_Server         { get; set; }
         public        string             Smtp_UserName       { get; set; }
         public        string             Smtp_Password       { get; set; }
@@ -29,15 +30,17 @@ namespace TeamMentor.CoreLib
         public SendEmails()
         {
             mapTMServerUrl();  
-            From = TMConfig.Current.TMSecurity.Default_AdminEmail;
+            
             if (TM_UserData.Current.notNull())
             { 
                 var secretData = TM_UserData.Current.SecretData;
                 if (secretData.notNull())
                 {
-                    Smtp_Server   = secretData.SMTP_Server;
-                    Smtp_UserName = secretData.SMTP_UserName;
-                    Smtp_Password = secretData.SMTP_Password;
+                    Smtp_Server   = secretData.SmtpConfig.Server;
+                    Smtp_UserName = secretData.SmtpConfig.UserName;
+                    Smtp_Password = secretData.SmtpConfig.Password;
+                    From          = secretData.SmtpConfig.Default_From;
+                    To            = secretData.SmtpConfig.Default_To;
                 }
             }
         }
@@ -74,7 +77,7 @@ namespace TeamMentor.CoreLib
         
         public bool send(string subject, string message)
         {
-            return send(From, subject, message, false);
+            return send(this.To, subject, message, false);
         }
         public bool send(string to, string subject, string message)
         {
