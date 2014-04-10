@@ -205,8 +205,9 @@ namespace TeamMentor.CoreLib
         {
             try
             {
-                var validSessions = TM_UserData.Current.validSessions();
-                return validSessions.contains(sessionId);
+                return sessionId.session_TmUser().notNull();
+                //var validSessions = TM_UserData.Current.validSessions();
+                //return validSessions.contains(sessionId);
                 //return TM_UserData.Current.ActiveSessions.hasKey(sessionId);
             }
             catch (Exception ex)
@@ -215,7 +216,7 @@ namespace TeamMentor.CoreLib
             }             
             return false;
         }
-        public static TMUser            session_TmUser       (this Guid sessionId)
+        public static TMUser            session_TmUser       (this Guid sessionId, bool logAccountDisabled = true)
         {
             try
             {
@@ -229,9 +230,18 @@ namespace TeamMentor.CoreLib
 
                 if (tmUserInSession.notNull())
                 {                    
-                    if (tmUserInSession.AccountStatus.UserEnabled)
-                        return tmUserInSession;
-                    tmUserInSession.logUserActivity("User Disabled", "User had an active session, but his account is disabled");
+                    if (tmUserInSession.account_Expired())
+                    {
+                        if (logAccountDisabled)
+                            tmUserInSession.logUserActivity("SessionId Not Accepted", "Account was expired. Expiry date: {0}".format(tmUserInSession.AccountStatus.ExpirationDate));                            
+                    }
+                    else
+                    {
+                        if (tmUserInSession.AccountStatus.UserEnabled)
+                            return tmUserInSession;
+                        if (logAccountDisabled)                              // this is required due to the multiple calls to the CurrentUser web method
+                            tmUserInSession.logUserActivity("SessionId Not Accepted", "User account was Disabled");
+                    }
                 }
             }
             catch (Exception ex)

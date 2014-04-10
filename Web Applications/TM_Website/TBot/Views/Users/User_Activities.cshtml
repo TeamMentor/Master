@@ -4,26 +4,27 @@
 @using FluentSharp
 
 @{
-    var userData = TM_UserData.Current;
-    var userName   = System.Web.HttpContext.Current.Request["userName"];
-    var max   = System.Web.HttpContext.Current.Request["max"].toInt();
-    var tmUser = userData.tmUser(userName);
+    var userData       = TM_UserData.Current;    
+    var max            = HttpContextFactory.Request["max"].toInt();
+    var userNameOrId   = HttpContextFactory.Current.Request["user"];        
+    var tmUser         = userData.tmUser_by_Name_or_Id(userNameOrId);    
 
     if (max == 0)
     {
         max = 50;
     }
-    var index = tmUser.UserActivities.size();
+    
 }
 
 
 @if (tmUser.notNull())
 {
+    var index = tmUser.UserActivities.size();
     
-    <a href="User_View?userName=@tmUser.UserName" class="btn btn-info" >View User</a>
-    <a href="User_Edit?@tmUser.UserName" class="btn btn-info" >Edit User</a>
-    <a href="User_Activities?userName={{userData.UserName}}" class="btn btn-info" disabled>View Activity/Logs</a>
-    <a href="User_Raw?userName=@tmUser.UserName">Raw/Xml Data</a>
+    <a href="User_View?user=@userNameOrId" class="btn btn-info" >View User</a>
+    <a href="User_Edit?@userNameOrId" class="btn btn-info" >Edit User</a>
+    <a href="User_Activities?user=@userNameOrId" class="btn btn-info" disabled>View Activity/Logs</a>
+    <a href="User_Raw?user=@userNameOrId">Raw/Xml Data</a>
 
     <h5>User Activity (top @max of @tmUser.UserActivities.size())</h5>
 

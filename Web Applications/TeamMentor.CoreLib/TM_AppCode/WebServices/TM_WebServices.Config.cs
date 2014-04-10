@@ -32,7 +32,7 @@ namespace TeamMentor.CoreLib
         [WebMethod(EnableSession = true)] public List<Guid>     XmlDatabase_GuidanceItems_SearchTitleAndHtml(List<Guid> guidanceItemsIds, string searchText)
                                                                                                                                 {
                                                                                                                                     var results = TM_Xml_Database.Current.guidanceItems_SearchTitleAndHtml(guidanceItemsIds,searchText);
-                                                                                                                                    this.logUserActivity("User Search", "for '{0}' with {1} results".format(searchText,results.size()));
+                                                                                                                                    this.logUserActivity("User Search", "on {0} item(s) for '{1}' with {2} results".format(guidanceItemsIds.size(), searchText,results.size()));
                                                                                                                                     return results;
                                                                                                                                 }																																		
         [WebMethod(EnableSession = true)] public string         XmlDatabase_GetGuidanceItemXml(Guid guidanceItemId)	    {	return  TM_Xml_Database.Current.xmlDB_guidanceItemXml(guidanceItemId); }        

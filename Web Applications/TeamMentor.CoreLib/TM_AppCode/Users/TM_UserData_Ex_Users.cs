@@ -274,31 +274,48 @@ namespace TeamMentor.CoreLib
                 return tmUser.GroupID;
             return -1;
         }
-
+        
+        public static TMUser        tmUser_by_Name_or_Id(this TM_UserData userData, string userNameOrId)
+        {
+            var tmUser = userData.tmUser(userNameOrId);
+            if (tmUser.isNull() && userNameOrId.isInt())
+                return userData.tmUser(userNameOrId.toInt());
+            return tmUser;
+        }
         public static TMUser        tmUser              (this TM_UserData userData, string userName)
-        {            
-            return userData.TMUsers.Where((tmUser) => tmUser.UserName == userName).first() ;
+        {        
+            lock( userData.TMUsers)
+            {
+                return userData.TMUsers.Where((tmUser) => tmUser.UserName == userName).first() ;
+            }
         }
         public static TMUser        tmUser              (this TM_UserData userData, int userId)
         {
-            return userData.TMUsers.Where((tmUser) => tmUser.UserID == userId).first() ;
+            lock( userData.TMUsers)
+            {
+                return userData.TMUsers.Where((tmUser) => tmUser.UserID == userId).first() ;
+            }
         }        
         public static TMUser        tmUser_FromEmail    (this TM_UserData userData, string eMail)
         {
             if (eMail.isNull())
                 return null;
-            var tmUsers = userData.TMUsers.where((tmUser) => tmUser.EMail == eMail);
-            switch (tmUsers.size())
+            lock( userData.TMUsers)
             {
-                case 0:
-                    //"Could not find TM User with email'{0}'".error(eMail);
-                    return null;
-                case 1:
-                    return tmUsers.first();
-                default:
-                    "There were multiple users resolved to the email '{0}', so returning null".error(eMail);
-                    return null;
-            }            
+                var tmUsers = userData.TMUsers.where((tmUser) => tmUser.EMail == eMail);
+            
+                switch (tmUsers.size())
+                {
+                    case 0:
+                        //"Could not find TM User with email'{0}'".error(eMail);
+                        return null;
+                    case 1:
+                        return tmUsers.first();
+                    default:
+                        "There were multiple users resolved to the email '{0}', so returning null".error(eMail);
+                        return null;
+                }  
+            }
         }
         
         public static List<TMUser>  tmUsers             (this List<int> usersId)
@@ -328,9 +345,9 @@ namespace TeamMentor.CoreLib
         {
             return userData.deleteTmUser(userId.tmUser());
         }        
-        [ManageUsers]   public static bool          updateTmUser        (this TM_UserData userData, int userId, string userName, string firstname, string lastname, string title, string company, string email, string country, string state, DateTime accountExpiration, bool passwordExpired, bool userEnabled, int groupId)
+        [ManageUsers]   public static bool          updateTmUser        (this TM_UserData userData, int userId, string userName, string firstname, string lastname, string title, string company, string email, string country, string state, DateTime accountExpiration, bool passwordExpired, bool userEnabled, bool accountNeverExpires, int groupId)
         {
-            return userData.tmUser(userId).updateTmUser(userName, firstname, lastname,  title, company, email,country, state, accountExpiration, passwordExpired,userEnabled,groupId);
+            return userData.tmUser(userId).updateTmUser(userName, firstname, lastname,  title, company, email,country, state, accountExpiration, passwordExpired,userEnabled, accountNeverExpires,groupId);
         }	
 	    [ManageUsers]  public static List<TMUser>   users               (this TM_UserData userData)
 	    {            

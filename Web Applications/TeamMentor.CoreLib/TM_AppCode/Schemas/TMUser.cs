@@ -42,9 +42,10 @@ namespace TeamMentor.CoreLib
             UserActivities  = new List<UserActivity>();
             AccountStatus   = new UserAccountStatus
                                     {
-                                        ExpirationDate  = TMConfig.Current.currentExpirationDate(), 
-                                        PasswordExpired = false,
-                                        UserEnabled     = TMConfig.Current.newAccountsEnabled()                                        
+                                        ExpirationDate      = TMConfig.Current.currentExpirationDate(), 
+                                        PasswordExpired     = false,
+                                        AccountNeverExpires = TMConfig.Current.TMSecurity.NewAccounts_DontExpire,
+                                        UserEnabled         = TMConfig.Current.newAccountsEnabled()                                        
                                     };
             Stats           = new UserStats
                                     {
@@ -81,6 +82,7 @@ namespace TeamMentor.CoreLib
     }
     public class UserAccountStatus
     {
+        [XmlAttribute]	public bool     AccountNeverExpires	{ get; set; }
         [XmlAttribute]	public DateTime ExpirationDate		{ get; set; }
         [XmlAttribute]	public bool     PasswordExpired		{ get; set; }
         [XmlAttribute]	public bool     UserEnabled		    { get; set; }        

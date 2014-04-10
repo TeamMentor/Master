@@ -34,8 +34,8 @@ namespace TeamMentor.CoreLib
                 UserName  = tmUser.UserName;
                 UserId    = tmUser.UserID;
                 GroupId   = tmUser.GroupID;
-            GroupName = tmUser.userGroup().str();
-            UserRoles = tmUser.userRoles().toStringArray().toList().join(",");
+                GroupName = tmUser.userGroup().str();
+                UserRoles = tmUser.userRoles().toStringArray().toList().join(",");
             }
         }
     }

@@ -1,3 +1,4 @@
+<div id="UserNotLoggedIn">
 <span id="notLoggedInMessage">	
     <h2>Login required</h2>
      <br/>
@@ -100,7 +101,12 @@
             {
                 $(".SignupTable").find("input").focus(function() { $("#guidanceItems").hide(); });  // to deal with DataTable bug
                 $(".SignupTable").find("input").focusout(function() { $("#guidanceItems").show(); });
-            }                    
+            }     
+            
+            if (TM.Gui.showLibraryStructureToAnonymous === false)                    
+            {
+                $('#UserNotLoggedIn').css('padding','60px');                
+            }
     });
 
 </script>	
@@ -167,4 +173,6 @@
         </table>
 
     </div>
+</div>
+
 </div>

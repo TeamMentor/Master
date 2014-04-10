@@ -3,7 +3,7 @@
 @using TeamMentor.CoreLib
 
 @{
-    var userName        = System.Web.HttpContext.Current.Request["userName"];
+    var userName        = HttpContextFactory.Request["userName"];
     var ssoToken        = string.Empty;
     string ssoKey       = string.Empty;
 	var errorMessage    = string.Empty;
@@ -14,12 +14,12 @@
          var userData = TM_UserData.Current;
          ssoKey = userData.SecretData.Rijndael_Key;
 		 if (ssoKey.isNull())
-        {
+         {
 		   errorMessage="SSO Key not found.Please verify secret data.";
            return; 
-        }
-        ssoToken = (userName + ssoKey).md5Hash();
-        ssoUrl = "/Aspx_Pages/SSO.aspx?userName={0}&requestToken={1}".format(userName, ssoToken);
+         }
+         ssoToken = (userName + ssoKey).md5Hash();
+         ssoUrl = "/Aspx_Pages/SSO.aspx?userName={0}&requestToken={1}".format(userName, ssoToken);
     }
 }
 

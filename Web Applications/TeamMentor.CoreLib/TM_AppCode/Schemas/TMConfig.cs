@@ -30,14 +30,16 @@ namespace TeamMentor.CoreLib
                 UserDataPath                = "User_Data";
                 LibrariesUploadedFiles      = "LibrariesUploadedFiles";
                 Enable304Redirects          = true;
-                EnableGZipForWebServices    = true;
+                EnableGZipForWebServices    = true;                
             }
         }
         public class TMSecurity_Config
         {
             public bool 		Show_ContentToAnonymousUsers { get; set; }
+            public bool 		Show_LibraryToAnonymousUsers { get; set; }
             public bool         SSL_RedirectHttpToHttps      { get; set; }
             public bool         NewAccounts_Enabled          { get; set; }
+            public bool         NewAccounts_DontExpire       { get; set; }            
             public bool         EvalAccounts_Enabled         { get; set; }
             public int          EvalAccounts_Days            { get; set; }
             public bool         REST_AllowCrossDomainAccess  { get; set; }
@@ -49,6 +51,7 @@ namespace TeamMentor.CoreLib
 
             public TMSecurity_Config()                                          //need to do this here so that they survive serialization
             {
+                Show_LibraryToAnonymousUsers = false;
                 Show_ContentToAnonymousUsers = false;               
                 SSL_RedirectHttpToHttps      = true;
                 EvalAccounts_Enabled         = true;

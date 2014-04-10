@@ -47,6 +47,7 @@ namespace TeamMentor.CoreLib
 		//Admin: User Management				
 						
 		[OperationContract] [WebGet	  (UriTemplate = "/user/{nameOrId}"			)]					TM_User		user(string nameOrId);
+        [OperationContract] [WebGet	  (UriTemplate = "/user/{domain}/{name}"	)]					TM_User		user_inDomain(string domain, string name);
         [OperationContract] [WebInvoke(UriTemplate = "/user", Method = "PUT"    )]		            bool		user_Save(TM_User user);
 		//[OperationContract] [WebGet	  (UriTemplate = "/users/{usersIds}"	)]					List<TM_User>	users(string usersIds);
 		[OperationContract] [WebGet	  (UriTemplate = "/users"				    )]					List<TM_User>	users();

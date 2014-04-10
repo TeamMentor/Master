@@ -8,22 +8,23 @@
 <table class="table table-condensed small">
     <thead class="warning">
     <tr>
-        <th>#</th>
-        <th>Who</th>
-        <th>Action</th>
-        <th>Detail</th>
-        <th>Client_IP</th>
-        <th>When</th>
+        <th class="col-sm-0">#</th>
+        <th class="col-sm-0">When</th>
+        <th class="col-sm-2">Who</th>
+        <th class="col-sm-2">Action</th>
+        <th class="col-sm-8">Detail</th>
+        <th class="col-sm-0">Client_IP</th>
     </tr>
     </thead>
     <tbody>
     <tr ng-repeat="activity in activities"  ng-class="rowClass(activity)">
         <td>{{activity.Index}}</td>
-        <td>{{activity.Who}}</td>
+        <td>{{activity.When_JS | date:'H:mm:ss'}}</td>
+        <td ng-show="activity.Who!='TBot'"><a href="/rest/tbot/run/User_Activities?user={{activity.Who}}" target="_blank">{{activity.Who}}</a></td>
+        <td ng-show="activity.Who=='TBot'"><b>{{activity.Who}}</b></td>
         <td>{{activity.Action}}</td>
         <td>{{activity.Detail}}</td>
         <td>{{activity.IPAddress}}</td>
-        <td>{{activity.When}}</td>
     </tr>
     </tbody>
 </table>

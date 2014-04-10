@@ -77,8 +77,7 @@ namespace TeamMentor.CoreLib
         {
             get
             {
-
-                var tmUser = sessionID.session_TmUser();
+                var tmUser = sessionID.session_TmUser(false);
                 if (tmUser.notNull())
                     tmUser.SecretData.CSRF_Token = sessionID.csrfToken();	
                 return tmUser;
@@ -138,8 +137,9 @@ namespace TeamMentor.CoreLib
             {
                 if (TMConfig.Current.TMSecurity.Show_ContentToAnonymousUsers)
                     UserGroup.Reader.setThreadPrincipalWithRoles();
-                else
-                    UserGroup.Anonymous.setThreadPrincipalWithRoles();
+                else 
+                    if (TMConfig.Current.TMSecurity.Show_LibraryToAnonymousUsers)
+                        UserGroup.Anonymous.setThreadPrincipalWithRoles();
             }            
             //var userRoles = Thread.CurrentPrincipal.roles().toList().join(",");            
             if (HttpContextFactory.Session.notNull())

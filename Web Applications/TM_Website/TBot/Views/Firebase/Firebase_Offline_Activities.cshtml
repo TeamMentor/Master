@@ -31,7 +31,14 @@
         <tr>
             
             <td>@(count--)</td>
-            <td>@activity.Who</td>
+            @if(activity.Who == "TBot")
+            {
+                <td>@activity.Who</td>
+            }
+            else
+            {
+                <td><a href="User_Activities?user=@activity.Who" target="_blank">@activity.Who</a></td>
+            }
             <td>@activity.When.fromFileTimeUtc().ToString("HH:MM:ss")</td>
             <td>@activity.Action</td>                                
             <td>@activity.Detail</td>

@@ -70,8 +70,7 @@ namespace TeamMentor.CoreLib
         public string ExecuteRazorPage(string page)
         {
             try
-            {      
-                TM_Xml_Database.Current.logTBotActivity("Open TBot page", page);
+            {                      
                 if (AvailableScripts.hasKey(page))
                 {                    
                     var csFile = AvailableScripts[page];
@@ -88,6 +87,7 @@ namespace TeamMentor.CoreLib
             }
             catch (Exception ex)
             {
+                ex.log("[TBot Brain] [ExecuteRazorPage] {0} : {1}".format(page, ex.Message));
                 return "Opps: Something went wrong: {0}".format(ex.Message);
             }
             return null;

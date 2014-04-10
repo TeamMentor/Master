@@ -50,7 +50,9 @@ namespace TeamMentor.CoreLib
         {            
             action = action.lower();
             if (Server_Transfers.hasKey(action))
-            {                
+            {        
+                if (action == "teammentor")
+                    tmWebServices.logUserActivity("Open TeamMentor", "The HomePage (ie. http://.../teamMentor)");
                 context.Response.ContentType = "text/html";		
                 context.Server.Transfer(Server_Transfers[action],true);   // will throw "Thread was being aborted exception                
             }            
@@ -211,6 +213,7 @@ namespace TeamMentor.CoreLib
                     redirectTo_Article(action);
                     endResponse();
                 }
+                
                 transfer_Request(action.lower());       // throw "Thread was being aborted." exception if worked
                 response_Redirect(action.lower());      // throw "Thread was being aborted." exception if worked
                 

@@ -47,6 +47,7 @@ namespace TeamMentor.CoreLib
                 this.response_ContentType_Html();
                 //if (what.lower().contains("git"))
                 //    Admin_InvokeScript("load_NGit_Dlls");         // to solve prob with NGit dlls not being avaialble for compilation )
+                TmWebServices.logUserActivity("Open TBot Page", what);
                 return new TBot_Brain(this).Run(what);
             }
             catch (SecurityException)

@@ -169,14 +169,15 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             var email       = 10.randomLetters(); 
             var country     = 10.randomLetters(); 
             var state       = 10.randomLetters(); 
-            var accountExpiration = tmUser.AccountStatus.ExpirationDate.AddSeconds(10); 
-            var passwordExpired   = tmUser.AccountStatus.PasswordExpired.not();
-            var userEnabled       = tmUser.AccountStatus.UserEnabled.not();
+            var accountExpiration   = tmUser.AccountStatus.ExpirationDate.AddSeconds(10); 
+            var passwordExpired     = tmUser.AccountStatus.PasswordExpired.not();
+            var userEnabled         = tmUser.AccountStatus.UserEnabled.not();
+            var accountNeverExpires = false; 
             var groupId           = 4.random(); 
             
-            var result1 = userData.updateTmUser(tmUser.UserID, userName, firstname, lastname,  title, company, email,country, state, accountExpiration, passwordExpired,userEnabled,groupId);
-            var result2 = userData.updateTmUser(tmUser.UserID, userName, firstname, lastname,  title, company, email,country, state, accountExpiration, passwordExpired,userEnabled,groupId);
-            var result3 = userData.updateTmUser(tmUser.UserID, "new value", firstname, lastname,  title, company, email,country, state, accountExpiration, passwordExpired,userEnabled,groupId);
+            var result1 = userData.updateTmUser(tmUser.UserID, userName, firstname, lastname,  title, company, email,country, state, accountExpiration, passwordExpired,userEnabled,accountNeverExpires, groupId);
+            var result2 = userData.updateTmUser(tmUser.UserID, userName, firstname, lastname,  title, company, email,country, state, accountExpiration, passwordExpired,userEnabled,accountNeverExpires, groupId);
+            var result3 = userData.updateTmUser(tmUser.UserID, "new value", firstname, lastname,  title, company, email,country, state, accountExpiration, passwordExpired,userEnabled,accountNeverExpires, groupId);
 
             Assert.IsTrue  (result1, "First update should work");
             Assert.IsTrue  (result2, "Second update (with same data) should work");

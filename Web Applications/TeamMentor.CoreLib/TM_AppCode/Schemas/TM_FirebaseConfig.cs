@@ -10,7 +10,8 @@ namespace TeamMentor.CoreLib
         public string RequestUrls_Match { get; set; }
         public bool   Log_RequestUrls   { get; set; }        
         public bool   Log_Activities    { get; set; }        
-        public bool   Log_DebugMsgs      { get; set; }
+        public bool   Log_DebugMsgs     { get; set; }
+        public bool   Force_Offline     { get; set; }
         
 
         public TM_FirebaseConfig()
@@ -22,6 +23,7 @@ namespace TeamMentor.CoreLib
             Log_RequestUrls     = false;
             Log_Activities      = true; 
             Log_DebugMsgs       = true;
+            Force_Offline       = false;
         }
     }
 

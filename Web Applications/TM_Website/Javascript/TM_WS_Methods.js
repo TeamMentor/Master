@@ -80,24 +80,25 @@ function batchUserCreation(batchUserData, callback)
 }
 
 function updateUser(userId, userName, firstname, lastname, title, company, email, 
-                    country, state, accountExpiration,  passwordExpired, userEnabled, groupId, callback)
+                    country, state, accountExpiration,  passwordExpired, userEnabled, accountNeverExpires, groupId, callback)
 {
     var url = TM.tmWebServices + 'UpdateUser';
     var params =  JSON.stringify(
         {
-                 userId          : userId  ,
-                 userName        : userName , 
-                 firstname       : firstname, 
-                 lastname        : lastname, 
-                 title           : title, 
-                 company         : company, 
-                 email           : email, 
-                 country         : country, 
-                 state           : state,  
-                 accountExpiration  : accountExpiration,
-                 passwordExpired : passwordExpired, 
-                 userEnabled     : userEnabled,
-                 groupId         : groupId
+                 userId              : userId  ,
+                 userName            : userName , 
+                 firstname           : firstname, 
+                 lastname            : lastname, 
+                 title               : title, 
+                 company             : company, 
+                 email               : email, 
+                 country             : country, 
+                 state               : state,  
+                 accountExpiration   : accountExpiration,
+                 passwordExpired     : passwordExpired, 
+                 userEnabled         : userEnabled,
+                 accountNeverExpires : accountNeverExpires,
+                 groupId             : groupId
         } );	
     //alert("updating user with: {0}".format(JSON.stringify(params)));
     invokeWebService( url, params, callback, defaultErrorHandler);

@@ -77,21 +77,24 @@ namespace TeamMentor.CoreLib
         {    		
             if (tmUser.notNull())
             {
-                userData.TMUsers.remove(tmUser);
-                if (userData.UsingFileStorage)
+                lock(userData.TMUsers)
                 {
-                    lock (tmUser)
+                    userData.TMUsers.remove(tmUser);
+                    if (userData.UsingFileStorage)
                     {
-                        tmUser.getTmUserXmlFile().file_Delete();
-                        userData.triggerGitCommit();
-                    }
-                }  
-                userData.logTBotActivity("User Delete","{0} - {1}".format(tmUser.UserName, tmUser.UserID));
-                return true;
+                        lock (tmUser)
+                        {
+                            tmUser.getTmUserXmlFile().file_Delete();
+                            userData.triggerGitCommit();
+                        }
+                    }  
+                    userData.logTBotActivity("User Delete","{0} - {1}".format(tmUser.UserName, tmUser.UserID));
+                    return true;
+                }
             }
             return false;
         }
-        public static bool          updateTmUser     (this TMUser tmUser, string userName, string firstname, string lastname, string title, string company, string email, string country, string state, DateTime accountExpiration, bool passwordExpired, bool userEnabled, int groupId)
+        public static bool          updateTmUser     (this TMUser tmUser, string userName, string firstname, string lastname, string title, string company, string email, string country, string state, DateTime accountExpiration, bool passwordExpired, bool userEnabled, bool accountNeverExpires, int groupId)
         {                         
             if (tmUser.isNull())
                 return false;
@@ -106,9 +109,10 @@ namespace TeamMentor.CoreLib
                 tmUser.Country = Encoder.XmlEncode(country);
                 tmUser.State = Encoder.XmlEncode(state);
                 tmUser.GroupID = groupId > -1 ? groupId : tmUser.GroupID;
-                tmUser.AccountStatus.ExpirationDate = accountExpiration;
-                tmUser.AccountStatus.PasswordExpired = passwordExpired;
-                tmUser.AccountStatus.UserEnabled = userEnabled;
+                tmUser.AccountStatus.ExpirationDate      = accountExpiration;
+                tmUser.AccountStatus.PasswordExpired     = passwordExpired;
+                tmUser.AccountStatus.UserEnabled         = userEnabled;
+                tmUser.AccountStatus.AccountNeverExpires = accountNeverExpires; 
                 tmUser.saveTmUser();
                             
                 tmUser.logUserActivity("User Updated",""); // so that we don't get this log entry on new user creation

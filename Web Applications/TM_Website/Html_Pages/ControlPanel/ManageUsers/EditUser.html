@@ -53,7 +53,9 @@
 	        "state".$().val(userData.State);	
 	        "passwordExpired".$().val(userData.PasswordExpired);	
 	        "userEnabled".$().val(userData.UserEnabled);	
-			"groupId".$().find('option').eq(userData.GroupID).attr('selected','selected')			
+			"groupId".$().find('option').eq(userData.GroupID).attr('selected','selected');
+	        "accountNeverExpires".$().val(userData.AccountNeverExpires);	
+	    
 		//	"groupId".$().val(userData.GroupID);
 			"newPassword".$().val('');
 			
@@ -79,7 +81,8 @@
 			           "state".$().val(),
 			            expirationDate,
 			           "passwordExpired".$().val(),
-			           "userEnabled".$().val(),
+			           "userEnabled".$().val(),		
+			           "accountNeverExpires".$().val(),
 					   "groupId".$().val(),
 					   onSave);			
 		}
@@ -97,6 +100,7 @@
 			    currentUserData.State = "state".$().val();
 			    currentUserData.PasswordExpired = "passwordExpired".$().val();
 			    currentUserData.UserEnabled = "userEnabled".$().val();
+			    currentUserData.AccountNeverExpires = "accountNeverExpires".$().val();			    
 				currentUserData.GroupID = "groupId".$().val();								
 			    
 				if (typeof(onSaveCallback) != "undefined")
@@ -124,6 +128,7 @@
 	        addGroupsSelect(fieldsId, "Group ID", "groupId");	        
 	        addTextField(fieldsId, "PasswordExpired", "passwordExpired");
 	        addTextField(fieldsId, "UserEnabled", "userEnabled");	        
+	        addTextField(fieldsId, "AccountNeverExpires", "accountNeverExpires");	
 			addPasswordField(fieldsId, "New Password", "newPassword");
 			addButton(fieldsId, "Save Changes","saveData");
 

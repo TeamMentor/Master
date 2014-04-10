@@ -63,7 +63,7 @@ namespace TeamMentor.CoreLib
             }
             public override string ToString()
             {
-                return "[{0}] with size: {2}".format(Type, Json_Data.size());
+                return "[{0}] with size: {1}".format(Type, Json_Data.size());
             }
         }
         public class PostResponse
@@ -174,7 +174,7 @@ namespace TeamMentor.CoreLib
     }
 
     public static class API_Firebase_Extensionmethods_Misc
-    {
+    {        
         public static string firebase_Site(this API_Firebase firebase)
         {
             var userData = TM_UserData.Current;
@@ -196,9 +196,17 @@ namespace TeamMentor.CoreLib
                 return userData.SecretData.FirebaseConfig.RootArea;
             return null;
         }
+
+        public static bool firebase_ForceOffline(this API_Firebase firebase)
+        {
+            var userData = TM_UserData.Current;
+            if (userData.notNull() && userData.SecretData.notNull())
+                return userData.SecretData.FirebaseConfig.Force_Offline;
+            return false;
+        }
         public static bool   offline(this API_Firebase firebase)
         {            
-            return !firebase.notNull() || firebase.Offline;
+            return !firebase.notNull() || firebase.Offline || firebase.firebase_ForceOffline();
         }
     }
 
@@ -240,7 +248,7 @@ namespace TeamMentor.CoreLib
         public static API_Firebase submitThread_HandleQueue(this API_Firebase firebase)
         {
             var next = firebase.next();
-            if (next.notNull())
+            while(next.notNull())
             {
                // "[SubmitThread] got next: {0}".info(next);
 
@@ -249,7 +257,7 @@ namespace TeamMentor.CoreLib
                 else
                     ThreadPool.QueueUserWorkItem((o)=>firebase.submit_Via_REST(next));
 
-                firebase.submitThread_HandleQueue();        
+                next = firebase.next();     
             }
             return firebase;
         }

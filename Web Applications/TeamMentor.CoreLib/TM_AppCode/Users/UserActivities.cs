@@ -9,11 +9,12 @@ namespace TeamMentor.CoreLib
     [DataContract] 
     public class UserActivity
     {
-        [DataMember] public string	Action		{ get; set; }
-        [DataMember] public string	Detail		{ get; set; }
-        [DataMember] public string	Who		    { get; set; }
-        [DataMember] public string	IPAddress	{ get; set; }
-        [DataMember] public long      When		{ get; set; }        
+        [DataMember] [XmlAttribute] public string	Action		{ get; set; }
+        [DataMember] [XmlAttribute]  public string	Detail		{ get; set; }
+        [DataMember] [XmlAttribute]  public string	Who		    { get; set; }
+        [DataMember] [XmlAttribute]  public string	IPAddress	{ get; set; }
+        [DataMember] [XmlAttribute]  public long    When		{ get; set; }        
+        [DataMember] [XmlAttribute]  public string  When_JS		{ get; set; }
     }
 
     public class UserActivities
@@ -46,6 +47,7 @@ namespace TeamMentor.CoreLib
                         Detail    = detail, 
                         Who       = who,
                         When      = DateTime.Now.ToFileTimeUtc(),
+                        When_JS   = DateTime.Now.jsDate(),
                         IPAddress = HttpContextFactory.Request.ipAddress()
                     };
             }
@@ -90,7 +92,7 @@ namespace TeamMentor.CoreLib
             return null;
         }
         public static UserActivity logTBotActivity  (this TM_Xml_Database tmXmlDatabase, string action, string detail)
-        {
+        {            
             return tmXmlDatabase.userData().logTBotActivity(action, detail);   
         }
         public static UserActivity logTBotActivity  (this TM_UserData userData, string action, string detail)

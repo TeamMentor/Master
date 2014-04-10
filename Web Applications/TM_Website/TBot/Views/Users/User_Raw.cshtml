@@ -4,13 +4,13 @@
 
 @{
     var userData = TM_UserData.Current;
-    var userName   = System.Web.HttpContext.Current.Request["userName"];    
-    var tmUser = userData.tmUser(userName);
+    var userNameOrId   = HttpContextFactory.Current.Request["user"];        
+    var tmUser = userData.tmUser_by_Name_or_Id(userNameOrId);    
 }
 
-<a href="User_View?userName=@tmUser.UserName" class="btn btn-info">View User</a>
-<a href="User_Edit?@tmUser.UserName" class="btn btn-info" >Edit User</a>
-<a href="User_Activities?userName=@tmUser.UserName" class="btn btn-info" >View Activity/Logs</a>
+<a href="User_View?user=@userNameOrId" class="btn btn-info">View User</a>
+<a href="User_Edit?@userNameOrId" class="btn btn-info" >Edit User</a>
+<a href="User_Activities?user=@userNameOrId" class="btn btn-info" >View Activity/Logs</a>
 Raw/Xml Data
 
 <h4>User details</h4>

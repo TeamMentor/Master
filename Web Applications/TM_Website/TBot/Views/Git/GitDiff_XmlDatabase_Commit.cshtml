@@ -15,8 +15,8 @@
     var xmlLibrariesLocation = tmDatabase.Path_XmlLibraries;
 
 
-    var fromId = System.Web.HttpContext.Current.Request["fromId"];
-    var toId = System.Web.HttpContext.Current.Request["toId"];
+    var fromId = HttpContextFactory.Request["fromId"];
+    var toId   = HttpContextFactory.Request["toId"];
 
     if (fromId.notValid() || toId.notValid())
     {

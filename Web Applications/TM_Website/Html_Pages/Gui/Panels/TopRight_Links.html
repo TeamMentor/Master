@@ -101,12 +101,13 @@
                                                             else
                                                                 this.add_Link("Edit Mode", TM.Gui.showEditMode);
                                                         }				
-                                                        
-                                                        this.add_Link("Change Password", this.changePwdPage);
+                                                        if (window.TM.WindowsAuthentication == false)
+                                                            this.add_Link("Change Password", this.changePwdPage);
                                                         
                                                         if (TM.Gui.CurrentUser.isAdmin())
                                                         {															
                                                             //this.add_Link("Control Panel", this.controlPanel);
+                                                            this.add_SimpleLink("TBot", "/tbot");
                                                             this.add_SimpleLink("Control Panel", "/admin");
                                                         }																								
                                                         if(TM.Gui.CurrentUser.userName().indexOf('\\') === -1)

@@ -29,7 +29,7 @@ public class UserRequest
 				
 		//this (below) doesn't work because the webeditor is an *.ashx and doesn't have access to the HttpContext Session object
         /*
-	    var webEditorSecretData = System.Web.HttpContext.Current.Session["webEditorSecretData"];
+	    var webEditorSecretData = HttpContextFactory.Session["webEditorSecretData"];
 		if (webEditorSecretData is Guid)
 			return securityToken == webEditorSecretData.str();		
 		return false;

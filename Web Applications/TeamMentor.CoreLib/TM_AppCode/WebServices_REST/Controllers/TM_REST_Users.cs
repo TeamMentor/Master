@@ -42,15 +42,20 @@ namespace TeamMentor.CoreLib
 	    {
 	        return TmWebServices.UpdateUser(user.UserId, user.UserName, user.FirstName, 
                                             user.LastName, user.Title, user.Company, user.Email,
-                                            user.Country, user.State, user.ExpirationDate, user.PasswordExpired, user.UserEnabled, -1);
+                                            user.Country, user.State, user.ExpirationDate, user.PasswordExpired, user.UserEnabled,user.AccountNeverExpires,  -1);
 	    }
-	    [Admin] public TM_User			user(string userNameOrId)
-		{
-		    var user = TmWebServices.GetUser_byID(userNameOrId.toInt());
+	    [Admin] public TM_User			user(string userNameOrId    )
+		{            
+		    var user = TmWebServices.GetUser_byName(userNameOrId);      // need to this one first in case the username is an int
 			if (user.notNull())
 				return user;
-		    return TmWebServices.GetUser_byName(userNameOrId);
+		    return TmWebServices.GetUser_byID(userNameOrId.toInt());
 		}
+        [Admin] public TM_User          user_inDomain(string domain, string user)
+        {
+            var username = "{0}\\{1}".format(domain,user);
+            return TmWebServices.GetUser_byName(username);
+        }
 		[Admin] public List<TM_User>	users(string usersIds)
 		{
 			var ids = usersIds.split(",").Select((id) => id.toInt()).toList();
@@ -88,6 +93,7 @@ namespace TeamMentor.CoreLib
                 var expiryDate = rawData[9] ?? "";
                 var role = rawData[10] ?? "";
                 var passwordExpire = rawData[11] ?? "";
+                var accountNeverExpires = TMConfig.Current.TMSecurity.NewAccounts_DontExpire;
                 var userEnabled = rawData[12] ?? "";
                 //Safe check in case the user clicked several times.
                 if (userName.tmUser().notNull())
@@ -104,7 +110,8 @@ namespace TeamMentor.CoreLib
                     var enabled = userEnabled.trim().ToLower() == "y";
                     userData.updateTmUser(userId, userName, firstName, lastName, title, company, email, country,
                                           state, outputDate, doesPwdExpire,
-                                          enabled, int.Parse(role));
+                                          enabled, accountNeverExpires, 
+                                          int.Parse(role));
                 }
                 else
                     throw new Exception(String.Format("Failed to create user {0}", userName));
@@ -224,7 +231,7 @@ namespace TeamMentor.CoreLib
         [Admin] public bool             user_Update(TM_User user)
 		{
 			var groupId = -1; //not implemented for now
-			return TmWebServices.UpdateUser(user.UserId, user.UserName, user.FirstName, user.LastName, user.Title, user.Company,user.Email, user.Country , user.State, user.ExpirationDate, user.PasswordExpired, user.UserEnabled ,groupId);
+			return TmWebServices.UpdateUser(user.UserId, user.UserName, user.FirstName, user.LastName, user.Title, user.Company,user.Email, user.Country , user.State, user.ExpirationDate, user.PasswordExpired, user.UserEnabled , user.AccountNeverExpires, groupId);
 		}
 	}
 }

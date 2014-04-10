@@ -36,6 +36,8 @@ namespace TeamMentor.CoreLib
         {
             if (tmUser.isNull())
                 return true;
+            if (tmUser.AccountStatus.AccountNeverExpires)                   // this overwrites the ExpirationDate value
+                return false;
             if (tmUser.AccountStatus.ExpirationDate == default(DateTime))   // if this ExpirationDate is not set, the user account is NOT expired
                 return false;
             return tmUser.AccountStatus.ExpirationDate < DateTime.Now;      // if it is set, check if value is bigger than now

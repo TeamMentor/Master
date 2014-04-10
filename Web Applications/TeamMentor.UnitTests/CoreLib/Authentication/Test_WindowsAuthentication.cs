@@ -19,27 +19,11 @@ namespace TeamMentor.UnitTests.Authentication
         [SetUp]
         public void setup()
         {
-            tmConfig.WindowsAuthentication.Enabled = false;
-            WindowsAuthentication.readerGroup      = null;
+            tmConfig.WindowsAuthentication.Enabled = false;            
             windowsAuthentication                  = new WindowsAuthentication();            
             userData                               = new TM_UserData();
             
-        }
-        [Test]
-        public void WindowsAuthentication_Static_Ctor()             // and loadConfiguration
-        {            
-            Assert.IsFalse(tmConfig.WindowsAuthentication.Enabled);
-            Assert.NotNull(WindowsAuthentication.readerGroup);
-            Assert.NotNull(WindowsAuthentication.editorGroup);
-            Assert.NotNull(WindowsAuthentication.adminGroup);            
-        }
-        [Test]
-        public void WindowsAuthentication_Ctor()
-        {                        
-            Assert.NotNull(WindowsAuthentication.readerGroup);
-            Assert.NotNull(WindowsAuthentication.editorGroup);
-            Assert.NotNull(WindowsAuthentication.adminGroup);            
-        }
+        }        
     
         [Test]
         public void calculateUserGroupBasedOnWindowsIdentity()
@@ -59,16 +43,23 @@ namespace TeamMentor.UnitTests.Authentication
          
             testMappings(UserGroup.None);
             
-            WindowsAuthentication.readerGroup = "Users";
+            //create a copy of the current values before changing them in the test below
+            var tmConfig_ReaderGroup = tmConfig.WindowsAuthentication.ReaderGroup;
+            var tmConfig_EditorGroup = tmConfig.WindowsAuthentication.EditorGroup;
+            var tmConfig_AdminGroup  = tmConfig.WindowsAuthentication.AdminGroup;
+
+
+            tmConfig.WindowsAuthentication.ReaderGroup = "Users";
             testMappings(UserGroup.Reader);
+            tmConfig.WindowsAuthentication.ReaderGroup = tmConfig_ReaderGroup;
             
-            WindowsAuthentication.editorGroup = "Users";
+            tmConfig.WindowsAuthentication.EditorGroup = "Users";
             testMappings(UserGroup.Editor);
-
-            WindowsAuthentication.adminGroup = "Users";
+            tmConfig.WindowsAuthentication.EditorGroup = tmConfig_EditorGroup;
+            
+            tmConfig.WindowsAuthentication.AdminGroup =  "Users";
             testMappings(UserGroup.Admin);
-
-            WindowsAuthentication.loadConfiguration();  // rest
+            tmConfig.WindowsAuthentication.AdminGroup = tmConfig_AdminGroup;
         }
 
         [Test]

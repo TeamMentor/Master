@@ -19,7 +19,7 @@
     <tbody>
     <tr ng-repeat="url in urls">
         <td>{{url.Index}}</td>
-        <td>{{url.When | date:'H:mm'}}</td>
+        <td>{{url.When | date:'H:mm:ss'}}</td>
         <td>{{url.IP}}</td>
         <td>{{url.Url    .replace('https://tm-34-qa.azurewebsites.net', '') }}</td>
         <td>{{url.Referer.replace('https://tm-34-qa.azurewebsites.net', '') }}</td>

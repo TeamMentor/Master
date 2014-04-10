@@ -4,13 +4,45 @@
 @using TeamMentor.CoreLib
 
 @{
-    var tmRest = (TM_REST) @Model;
-    var users  = tmRest.users();
     var count = 0;
+    var nameFilter  = HttpContextFactory.Request["nameFilter"];
+    var emailFilter = HttpContextFactory.Request["emailFilter"];
+    var tmRest = (TM_REST) @Model;
+    var allUsers = tmRest.users();
+    var users  = (from user in allUsers
+                  where nameFilter.notValid()  || user.UserName.regEx(nameFilter)
+                  where emailFilter.notValid() || user.Email.regEx(emailFilter)
+                  select user).toList();;    
+       
 }
-<h4>Current users (#@users.Count):</h4>
 
-    <table class="table table-striped table-condensed">
+<style>
+    .alert-small {
+                padding: 8px 8px 8px 15px;
+                width  : 540px;
+           }
+</style>
+
+<h4>Current users </h4>
+       
+<div class="alert alert-success alert-block alert-small">
+    <form class="form-inline" action="Current_Users" method="get">
+        <div class="form-group">
+            Name:
+            <input type="text" class="form-control" name="nameFilter" placeholder="filter regEx" value="@nameFilter">
+        </div>
+        <div class="form-group">
+            Email:
+            <input type="text" class="form-control" name="emailFilter" placeholder="filter regEx" value="@emailFilter">
+        </div>
+  
+        <button type="submit" class="btn btn-default">filter</button>
+    </form>             
+</div>
+
+<p>Showing @users.size() out of @allUsers.size()</p>
+      
+<table class="table table-striped table-condensed">
         <tr>
             <th>#</th>
             <th>Name</th>            
@@ -23,13 +55,13 @@
         {
             <tr>
                 <td>@(++count)</td>
-                <td><a href="User_View?userName=@user.UserName">@user.UserName</a></td>
-                <td> @user.UserId</td>
+                <td><a href="User_View?user=@user.UserName">@user.UserName</a></td>
+                <td><a href="User_View?user=@user.UserId">@user.UserId</a></td>                
                 <td id="CreatedDate">@user.CreatedDate.fromFileTimeUtc().ToString("MMM/dd/yyyy")</td>
                 <td id="Actions">@user.Email</td>
                 <td>
                     <a href="User_Edit?@user.UserName">edit user</a> | 
-                    <a href="User_Activities?userName=@user.UserName&max=50">view activity</a>
+                    <a href="User_Activities?user=@user.UserName&max=50">view activity</a>
                 </td>
 
             </tr>

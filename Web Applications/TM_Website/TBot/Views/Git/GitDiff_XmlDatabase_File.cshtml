@@ -19,7 +19,7 @@
     var xmlLibrariesLocation = tmDatabase.Path_XmlLibraries;
 
 
-    var file = System.Web.HttpContext.Current.Request["file"];
+    var file = HttpContextFactory.Request["file"];
 
     if (file.notValid())
     {

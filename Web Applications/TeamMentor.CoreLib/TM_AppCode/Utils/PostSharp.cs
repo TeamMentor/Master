@@ -216,7 +216,7 @@ namespace TeamMentor.CoreLib
         public override void  OnExit(MethodExecutionArgs args)
         {
             UserGroup.Anonymous.setPrivileges();
- 	         base.OnExit(args);
+ 	        base.OnExit(args);
         }        
     }    
 }

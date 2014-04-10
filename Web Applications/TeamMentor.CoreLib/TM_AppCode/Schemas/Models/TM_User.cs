@@ -15,24 +15,25 @@ namespace TeamMentor.CoreLib
     [DataContract]
     public class TM_User
     {   
-        [DataMember][StringLength(30)]              public string	Company		    { get; set; }
-        [DataMember][StringLength(30)]              public string	Country		    { get; set; }
-        [DataMember][StringLength(30)]              public string	FirstName	    { get; set; }
-        [DataMember][StringLength(30)]              public string	LastName	    { get; set; }
-        [DataMember][StringLength(30)]              public string	State		    { get; set; }
-        [DataMember][StringLength(30)]              public string	Title		    { get; set; }
-        [DataMember][Required]	                    public int	    UserId		    { get; set; }
-        [DataMember][Required][StringLength(30)]    public string	UserName	    { get; set; }
+        [DataMember][StringLength(30)]              public string	Company		        { get; set; }
+        [DataMember][StringLength(30)]              public string	Country		        { get; set; }
+        [DataMember][StringLength(30)]              public string	FirstName	        { get; set; }
+        [DataMember][StringLength(30)]              public string	LastName	        { get; set; }
+        [DataMember][StringLength(30)]              public string	State		        { get; set; }
+        [DataMember][StringLength(30)]              public string	Title		        { get; set; }
+        [DataMember][Required]	                    public int	    UserId		        { get; set; }
+        [DataMember][Required][StringLength(30)]    public string	UserName	        { get; set; }
         
         [DataMember][Required][StringLength(50)]  
-        [RegularExpression(ValidationRegex.Email)]	public string	Email		    { get; set; }        
-        [DataMember]                                public Int64	CreatedDate	    { get; set; }
-        [DataMember]                                public string   CSRF_Token      { get; set; }         
-        [DataMember]                                public DateTime ExpirationDate  { get; set; } 
-        [DataMember]                                public bool     PasswordExpired { get; set; } 
-        [DataMember]                                public bool     UserEnabled     { get; set; } 
-        [DataMember]                                public int	    GroupID	        { get; set; }
-        [DataMember]                                public List<UserTag>   UserTags	{ get; set; }
+        [RegularExpression(ValidationRegex.Email)]	public string	Email		        { get; set; }        
+        [DataMember]                                public Int64	CreatedDate	        { get; set; }
+        [DataMember]                                public string   CSRF_Token          { get; set; }         
+        [DataMember]                                public DateTime ExpirationDate      { get; set; } 
+        [DataMember]                                public bool     PasswordExpired     { get; set; } 
+        [DataMember]                                public bool     AccountNeverExpires { get; set; }
+        [DataMember]                                public bool     UserEnabled         { get; set; } 
+        [DataMember]                                public int	    GroupID	            { get; set; }
+        [DataMember]                                public List<UserTag>   UserTags	    { get; set; }
     }
 
 
@@ -49,19 +50,18 @@ namespace TeamMentor.CoreLib
             var user = new TM_User
             {
                 
-                Company = tmUser.Company,
-                Email = tmUser.EMail,
-                FirstName = tmUser.FirstName,
-                LastName = tmUser.LastName,
-                Title = tmUser.Title,
-                Country = tmUser.Country,
-                State = tmUser.State,
-                UserId = tmUser.UserID,
-                UserName = tmUser.UserName,
-                CSRF_Token = tmUser.SecretData.CSRF_Token,                
-                UserEnabled = tmUser.AccountStatus.UserEnabled,
-                GroupID = tmUser.GroupID,
-                UserTags = tmUser.UserTags
+                Company             = tmUser.Company,
+                Email               = tmUser.EMail,
+                FirstName           = tmUser.FirstName,
+                LastName            = tmUser.LastName,
+                Title               = tmUser.Title,
+                Country             = tmUser.Country,
+                State               = tmUser.State,
+                UserId              = tmUser.UserID,
+                UserName            = tmUser.UserName,
+                CSRF_Token          = tmUser.SecretData.CSRF_Token,                                
+                GroupID             = tmUser.GroupID,
+                UserTags            = tmUser.UserTags
             };
             try
             {
@@ -71,6 +71,8 @@ namespace TeamMentor.CoreLib
                 user.CreatedDate        = (tmUser.Stats.CreationDate) != default(DateTime)
                                             ? tmUser.Stats.CreationDate.ToFileTimeUtc()
                                             : 0;
+                user.UserEnabled         = tmUser.AccountStatus.UserEnabled;
+                user.AccountNeverExpires = tmUser.AccountStatus.AccountNeverExpires;
             }
             catch (Exception ex)
             {
