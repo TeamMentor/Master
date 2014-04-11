@@ -12,11 +12,23 @@
         <script src="/Javascript/bootstrap/3.1.1/js/bootstrap.min.js"    type='text/javascript'                   ></script> 
         <script src="/Javascript/angularJS/1.2.14/angular.js"            type="text/javascript"                   ></script>
         <script src="/Javascript/Tbot/tbot.js"                           type="text/javascript"                   ></script>
+        <script>            
+            angular.module('tbot') 
+                   .run(function($http)
+                            {
+                                _http = $http;
+                                //set the CSRFToken for TBot pages
+                                $http.defaults.headers.common ['CSRF-Token'] = '{{CSRFToken}}';
+                                //$http.defaults.headers.get ['CSRF-Token'] = '{{CSRFToken}}';
+                                //$http.defaults.headers.post['CSRF-Token'] = '{{CSRFToken}}';
+
+                            });
+        </script>
     </head>
     <body>
         <div class='container-fluid'>
             <div class='alert alert-info'><a href="/rest/tbot/run/Commands"><b>TBot</b></a> - your friendly TeamMentor Bot</div>                
-            <ul><p>{0}</p></ul>
+            <ul><p>{{TBOT_PAGE}}</p></ul>
             <hr/>
             <p>back to <a href="/rest/tbot/run/Commands">commands list</a></p>            
         </div>

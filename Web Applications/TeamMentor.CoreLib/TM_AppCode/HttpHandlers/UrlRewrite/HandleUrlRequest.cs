@@ -618,10 +618,13 @@ namespace TeamMentor.CoreLib
         public void handleAction_Content(string data)
         { 
             var guid = tmWebServices.getGuidForMapping(data);
+            tmWebServices.logUserActivity("View Article (content)", "{0} ".info(data));
             if (guid != Guid.Empty)
-            {
+            {                
                 context.Response.ContentType = "text/html";
                 var htmlContent = tmWebServices.GetGuidanceItemHtml(guid);
+                if(htmlContent.notValid())
+                    "[handleAction_Content] there was no GuidanceItemHtml for id: {0}".error(guid);
                 context.Response.Write(htmlContent);
                 endResponse();
             }

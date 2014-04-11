@@ -344,7 +344,11 @@ namespace TeamMentor.CoreLib
         [ManageUsers]   public static bool          deleteTmUser        (this TM_UserData userData, int userId)
         {
             return userData.deleteTmUser(userId.tmUser());
-        }        
+        }
+        [ManageUsers]   public static bool          updateTmUser        (this TM_UserData userData, TM_User user)
+        {
+            return userData.tmUser(user.UserId).updateTmUser(user);
+        }
         [ManageUsers]   public static bool          updateTmUser        (this TM_UserData userData, int userId, string userName, string firstname, string lastname, string title, string company, string email, string country, string state, DateTime accountExpiration, bool passwordExpired, bool userEnabled, bool accountNeverExpires, int groupId)
         {
             return userData.tmUser(userId).updateTmUser(userName, firstname, lastname,  title, company, email,country, state, accountExpiration, passwordExpired,userEnabled, accountNeverExpires,groupId);

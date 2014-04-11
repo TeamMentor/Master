@@ -140,8 +140,8 @@ namespace TeamMentor.UnitTests.CoreLib
             firebase.add(submitData);
             if (firebase.submitThread_Alive())
             {
-                Assert.IsTrue(firebase.submitQueue_Size() > 0);
-                firebase.SubmitThread.Join();                       //let the queue handle it
+                if(firebase.submitQueue_Size() > 0)
+                    firebase.SubmitThread.Join();                       //let the queue handle it
             }
 
             Assert.AreEqual(firebase.submitQueue_Size(), 0);

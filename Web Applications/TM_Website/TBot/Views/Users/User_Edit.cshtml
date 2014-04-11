@@ -24,7 +24,7 @@
                     $http.put('/rest/user',userData)
                         .success(function(data)
                             {    
-                                $scope.result = (data) ? "(User details saved)" : "Error: Failed to Save user!";                                
+                                $scope.result = (data) ? "(User saved)" : "(Save ERROR!)";
                                 $scope.userEnabled = userData.UserEnabled;
                             });
                 };
@@ -50,7 +50,8 @@
                                 var picker = $('#expirationDate').datetimepicker();
                                 var dateTimePicker = picker.data('DateTimePicker');
                                 dateTimePicker.setDate(currentExpirationDate);
-                                
+                                //if (scope.userData.UserTags === undefined)
+                                //    scope.userData.UserTags = [];
                                 $scope.dataLoaded = true;
                                 $scope.userEnabled = data.UserEnabled;
                             }
@@ -63,6 +64,17 @@
                 {
                     $scope.userDeleted = true;
                 };
+            
+            $scope.newUserTag = function()
+                {
+                    $scope.userData.UserTags.push({ Key:'' , Value : ''});                    
+                };
+            $scope.removeTag = function(index)
+                {
+                    scope.userData.UserTags.splice(index,1);
+                };
+
+
 		    $('#expirationDate').datetimepicker({
 		      pickTime:false
 		    });
@@ -76,9 +88,12 @@
 
 <style>
     .form-group {
-                        margin-top    : 5px;
-                        margin-bottom : 5px;
-                   }
+                    margin-top    : 5px;
+                    margin-bottom : 5px;
+                }
+    .input-tag  {
+                    height        : 20px
+                }
 </style>
 <div ng-controller="TMUser">
   
@@ -105,7 +120,7 @@
             <div class="form-group">
                 <label  class="col-sm-2 control-label">UserName</label>
                 <div class="col-sm-6">
-                    <input class="form-control" type="text" ng-model="userData.UserName" required ng-disabled="true"/>
+                    <input class="form-control input-small" type="text" ng-model="userData.UserName" required ng-disabled="true"/>
                 </div>
             </div>
 
@@ -139,27 +154,46 @@
                     <input class="form-control" ng-model="userData.Company"/>
                 </div>
             </div>
-
             <div class="form-group">
                 <label class="col-sm-2 control-label">Job/Title</label>
                 <div class="col-sm-6">
                     <input class="form-control" ng-model="userData.Title"/>
                 </div>
             </div>
-
             <div class="form-group">
                 <label class="col-sm-2 control-label">Country</label>
                 <div class="col-sm-6">
                     <input class="form-control" ng-model="userData.Country"/>
                 </div>
-            </div>
-            
+            </div>            
             <div class="form-group">
                 <label class="col-sm-2 control-label">State</label>
                 <div class="col-sm-6">
                     <input class="form-control" ng-model="userData.State"/>
                 </div>
             </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">UserTags<small><br /><a href="" ng-click="newUserTag()">NewTag</a></small></label>                
+                <div class="col-sm-offset-1 col-sm-4 well">                    
+                    <div ng-repeat="userTag in userData.UserTags">                        
+                        <div class="col-sm-12">
+                            <div class="col-lg-5">                       
+                                <input type="text" class='form-control input-tag' ng-model='userTag.Key' placeholder="key" />  
+                            </div>
+                            <div class="col-lg-5">         
+                                <input type="text" class='form-control input-tag' ng-model='userTag.Value' placeholder="value" />
+                            </div>
+                            <div class="col-sm-2">
+                                <a href="" ng-click="removeTag($index)">remove</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-offset-0 col-sm-6">                      
+                        
+                    </div>
+                    <!--<textarea ng-model="userData.UserTags"  rows="3" class="form-control" >        </textarea>  -->
+                </div>
+            </div>            
             <div class="form-group">
                 <label class="col-sm-2 control-label">Expires at:</label>
                 <div class="col-sm-6">
@@ -196,29 +230,23 @@
             </div>        
             <br />
             <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-6">
-                                  
-                    <button class="btn btn-primary" ng-disabled="myForm.$invalid" ng-click="update(userData)">
-                        Save User
-                    </button>  
-                    <span class="result">{{result}}</span>                                            
-                
-                </div>
-            </div>
-            <br />
-            <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-1">                
-                    <button class="btn btn-danger" ng-disabled="deleteButtonEnabled===false" ng-click="deleteUser()">
+                <div class="col-sm-offset-2 col-sm-2">                                  
+                    <button class="btn btn-primary col-sm-12" ng-disabled="myForm.$invalid" ng-click="update(userData)">
+                        Save User {{result}}
+                    </button>                                                                             
+                </div>    
+                <div class="col-sm-2">    
+                    <button class="btn btn-danger col-sm-12" ng-disabled="deleteButtonEnabled===false" ng-click="deleteUser()">
                         Delete
                     </button> 
                 </div>
-                <div class="col-sm-5">                
+                <div class="col-sm-3">                
                     <div class="checkbox">                                                            
                         <input type="checkbox" ng-model="deleteButtonEnabled"/> Enable Delete Button
                     </div>
                 </div>
-            </div>               
-            <br/>                    
+            </div>
+                  
         </form> 
         <br/>            
     </div>

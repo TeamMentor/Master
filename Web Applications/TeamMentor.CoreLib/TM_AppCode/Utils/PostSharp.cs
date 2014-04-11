@@ -186,7 +186,7 @@ namespace TeamMentor.CoreLib
         }
         public override void  OnExit(MethodExecutionArgs args)
         {
-            UserGroup.Anonymous.setPrivileges();
+            UserGroup.None.setPrivileges();
  	         base.OnExit(args);
         }        
     }
@@ -201,7 +201,7 @@ namespace TeamMentor.CoreLib
         }
         public override void  OnExit(MethodExecutionArgs args)
         {
-            UserGroup.Anonymous.setPrivileges();
+            UserGroup.None.setPrivileges();
  	         base.OnExit(args);
         }        
     }
@@ -215,7 +215,7 @@ namespace TeamMentor.CoreLib
         }
         public override void  OnExit(MethodExecutionArgs args)
         {
-            UserGroup.Anonymous.setPrivileges();
+            UserGroup.None.setPrivileges();
  	        base.OnExit(args);
         }        
     }    

@@ -145,30 +145,33 @@ namespace TeamMentor.CoreLib
 
         public static string  submit_Via_REST(this API_Firebase firebase, API_Firebase.SubmitData submitData)
         {            
+            var result = "";
             if (submitData.notNull())
-            {
+            {                
                 try
-                {
+                {                    
                     switch(submitData.Type)
                     {
                         case API_Firebase.Submit_Type.GET:
-                            return firebase.GET();
-                        
+                            result = firebase.GET();
+                            break;
                         case API_Firebase.Submit_Type.ADD:
-                            return firebase.POST(submitData.Data);
+                            result = firebase.POST(submitData.Data);
+                            break;
                         case API_Firebase.Submit_Type.SET:
-                            return firebase.PUT(submitData.Data);;
+                            result = firebase.PUT(submitData.Data);
+                            break;
                     }
                 }
                 catch(Exception ex)
-                {
-                    var type    = submitData.Type;
-                    var data    = submitData.Data;
-                    var message = ex.Message;
+                {                    
                     ex.log("[API_Firebase] [submit_Via_REST] for: {0}".format(submitData));
                 }
+                if (result.notValid())                          // this could happen in the cases where the SSL failed to connect 
+                    firebase.offlineQueue().add(submitData);
+                    
             }
-            return "";
+            return result;
         }
         
     }

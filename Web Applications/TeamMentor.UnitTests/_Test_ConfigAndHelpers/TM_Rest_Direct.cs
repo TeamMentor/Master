@@ -8,7 +8,7 @@ namespace TeamMentor.UnitTests.REST
     {
         public TM_Xml_Database      tmXmlDatabase;
         public API_Moq_HttpContext  moq_HttpContext;
-        public ITM_REST             TmRest				{ get; set; }
+        public TM_REST              TmRest				{ get; set; }
                 
         public TM_Rest_Direct()
         {            

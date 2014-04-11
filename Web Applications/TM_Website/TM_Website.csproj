@@ -616,7 +616,7 @@
     <Content Include="TBot\Admin\Internal\UserData_FirstScript.cshtml" />
     <Content Include="TBot\Admin\LiveData\Offline_Firebase.cshtml" />
     <Content Include="TBot\Admin\Internal\CSharp_REPL.cshtml" />
-    <None Include="TBot\Admin\Restart_Server.cshtml" />
+    <Content Include="TBot\Admin\Restart_Server.cshtml" />
     <Content Include="TBot\TBotMain.html" />
     <Content Include="TBot_Monitor\app.js" />
     <Content Include="TBot_Monitor\components\main\controllers.js" />

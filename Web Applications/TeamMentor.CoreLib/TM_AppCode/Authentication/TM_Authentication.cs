@@ -94,13 +94,12 @@ namespace TeamMentor.CoreLib
             }
             if (Disable_Csrf_Check)
                 return true;
-            var header_Csrf_Token = HttpContextFactory.Context.Request.Headers["CSRF-Token"];
             
-            if (header_Csrf_Token != null && header_Csrf_Token.valid())
-            {            
-                if (header_Csrf_Token == sessionID.csrfToken())		
-                    return true;
-            }            
+            var csrf_Token = HttpContextFactory.Request.header("CSRF-Token");
+            
+            if (csrf_Token.valid())                    
+                if (csrf_Token == sessionID.csrfToken())		
+                    return true;                        
             return false;            
         }
         public TM_Authentication    mapUserRoles()
@@ -115,6 +114,8 @@ namespace TeamMentor.CoreLib
             if (authToken != Guid.Empty)
             {
                 sessionID = new TokenAuthentication().login_Using_AuthToken(authToken, sessionID);
+                if (sessionID != Guid.Empty)
+                    Disable_Csrf_Check = true;
             }            
             else if (TMConfig.Current.WindowsAuthentication.Enabled)
                 if (sessionID == Guid.Empty || sessionID.validSession() == false)
@@ -140,6 +141,8 @@ namespace TeamMentor.CoreLib
                 else 
                     if (TMConfig.Current.TMSecurity.Show_LibraryToAnonymousUsers)
                         UserGroup.Anonymous.setThreadPrincipalWithRoles();
+                    else 
+                        UserGroup.None.setThreadPrincipalWithRoles();
             }            
             //var userRoles = Thread.CurrentPrincipal.roles().toList().join(",");            
             if (HttpContextFactory.Session.notNull())

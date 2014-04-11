@@ -2,6 +2,7 @@
 using System.ServiceModel;
 using NUnit.Framework;
 using FluentSharp.CoreLib;
+using TeamMentor.CoreLib;
 
 namespace TeamMentor.UnitTests.REST
 
@@ -35,14 +36,18 @@ namespace TeamMentor.UnitTests.REST
             WCFHost_Stop();
             Assert.IsFalse(HostStarted);
 
-            // create one with a bad port
-            var currentPort = Tests_Consts.TM_REST_Service_Port;
-            Tests_Consts.TM_REST_Service_Port = 20000;
+            // create a rest service with a random port and without using the Design_Time_Addresses 
+            // NOTE: this test will fail if VS is run with Admin privs
+            var currentTemplate = Tests_Consts.TM_REST_Url_Template;
+            var currentPort     = Tests_Consts.TM_REST_Service_Port;
+            Tests_Consts.TM_REST_Url_Template = currentTemplate.replace("Design_Time_Addresses","ABCD");
+            Tests_Consts.TM_REST_Service_Port = 20000.randomNumber();
             var tmRestHosted = new TM_Rest_Hosted();
             Assert.IsNotNull(tmRestHosted);
             tmRestHosted.WCFHost_Start();
             Assert.IsFalse  (tmRestHosted.HostStarted);
             Tests_Consts.TM_REST_Service_Port = currentPort;
+            Tests_Consts.TM_REST_Url_Template = currentTemplate;
         }
         [Test]  public void CheckWebServiceHost()
         {           
@@ -68,24 +73,31 @@ namespace TeamMentor.UnitTests.REST
 
             Assert.IsTrue (identity_IsAuthenticated);
             Assert.IsNull  (identity_Name);
-            Assert.AreEqual(identity_Roles.size(), 1);
+            Assert.AreEqual(identity_Roles.size(), 0);
             Assert.IsFalse (identity_IsAdmin);
             var username   = tmConfig.TMSecurity.Default_AdminUserName;
             var pwd        = tmConfig.TMSecurity.Default_AdminPassword;
             var sessionId  = TmRest.Login(username, pwd);
             
             Assert.AreNotEqual(Guid.Empty,sessionId);
-            
+                        
             identity_IsAuthenticated = TmRest.RBAC_CurrentIdentity_IsAuthenticated();
             identity_Name            = TmRest.RBAC_CurrentIdentity_Name();
-            identity_Roles           = TmRest.RBAC_CurrentPrincipal_Roles();
-            identity_IsAdmin         = TmRest.RBAC_IsAdmin();
 
             Assert.IsTrue  (identity_IsAuthenticated);
             Assert.AreEqual(username, identity_Name);
-            Assert.AreEqual(identity_Roles.size(), 5);
-            Assert.IsTrue  (identity_IsAdmin);
             
+            //without the CSRF-token these should fail
+
+            Assert.IsFalse  (TmRest.RBAC_IsAdmin());
+            Assert.AreEqual (TmRest.RBAC_CurrentPrincipal_Roles().size(), 0);
+
+            sessionId.set_Guid_as_CsrfToken_on_Request();
+            
+            //Now the mappings should work
+            
+            Assert.IsTrue  (TmRest.RBAC_IsAdmin());
+            Assert.AreEqual(TmRest.RBAC_CurrentPrincipal_Roles().size(), 5);            
         }
 
         [Test]

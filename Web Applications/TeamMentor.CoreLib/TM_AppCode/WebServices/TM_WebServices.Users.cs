@@ -27,9 +27,11 @@ namespace TeamMentor.CoreLib
         [WebMethod(EnableSession = true)]	[Admin]	                    			public List<TM_User> BatchUserCreation(string batchUserData) {	return userData.createTmUsers(batchUserData).tmUsers().users(); }        
         [WebMethod(EnableSession = true)]	[Admin]	                    			public bool DeleteUser(int userId)	        				 {	return userData.deleteTmUser(userId);                           }
         [WebMethod(EnableSession = true)]	[Admin]	                    			public List<bool> DeleteUsers(List<int> userIds)        	 {	return userData.deleteTmUsers(userIds);                         }
+        [WebMethod(EnableSession = true)]	[Admin]	                    			public bool UpdateTmUser(TM_User user)                       {  return userData.updateTmUser(user);                             }
         [WebMethod(EnableSession = true)]	[Admin]	                    			public bool UpdateUser(int userId, string userName, 
                                                                                                            string firstname, string lastname, 
-                                                                                                           string title, string company, string email, string country,string state, DateTime accountExpiration, bool passwordExpired,
+                                                                                                           string title, string company, string email, string country,
+                                                                                                           string state, DateTime accountExpiration, bool passwordExpired,
                                                                                                            bool userEnabled, bool accountNeverExpires, int groupId) 			    {	return userData.updateTmUser(userId, userName, firstname, lastname, title, company, email,country, state, accountExpiration, passwordExpired, userEnabled,accountNeverExpires, groupId); }  			
 
         [WebMethod(EnableSession = true)]	[Admin]	                    			public bool         SetUserPassword (int userId,  string password) 	{ 	return userData.setUserPassword  (userId, password);   }

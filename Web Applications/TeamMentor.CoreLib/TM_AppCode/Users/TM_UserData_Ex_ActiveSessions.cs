@@ -299,10 +299,19 @@ namespace TeamMentor.CoreLib
             return new List<Guid>();
         }        
 
-        public static string            csrfToken            (this Guid guid)
+        public static string            csrfToken                       (this Guid guid)
         {
             return guid.str().hash().str();	  	// interrestingly guid.hash().str() produces a different value
         }
+
+        
+        public static string            set_Guid_as_CsrfToken_on_Request(this Guid guid)
+        {
+            var csrfToken = guid.csrfToken();            
+            HttpContextFactory.Request.Headers["CSRF-Token"] = csrfToken;
+            return csrfToken;
+        }
             
+        
     }
 }

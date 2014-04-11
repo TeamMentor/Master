@@ -94,25 +94,48 @@ namespace TeamMentor.CoreLib
             }
             return false;
         }
-        public static bool          updateTmUser     (this TMUser tmUser, string userName, string firstname, string lastname, string title, string company, string email, string country, string state, DateTime accountExpiration, bool passwordExpired, bool userEnabled, bool accountNeverExpires, int groupId)
+        public static bool          updateTmUser     (this TMUser tmUser, string userName, string firstname, string lastname, string title, string company, 
+                                                      string email, string country, string state, DateTime accountExpiration, bool passwordExpired, 
+                                                      bool userEnabled, bool accountNeverExpires, int groupId)
+        {
+            var user = new TM_User
+                {
+                    UserName            = userName,
+                    FirstName           = firstname,
+                    LastName            = lastname,
+                    Title               = title,
+                    Company             = company,
+                    Email               = email,
+                    Country             = country,
+                    State               = state,
+                    ExpirationDate      = accountExpiration,
+                    PasswordExpired     = passwordExpired,
+                    UserEnabled         = userEnabled, 
+                    AccountNeverExpires = accountNeverExpires,
+                    GroupID             = groupId
+                };
+            return tmUser.updateTmUser(user);
+        }
+        public static bool          updateTmUser     (this TMUser tmUser, TM_User user)
         {                         
             if (tmUser.isNull())
                 return false;
-            if (tmUser.UserName == userName)
+            if (tmUser.UserName == user.UserName)
             {
-                tmUser.EMail = Encoder.XmlEncode(email);
-                tmUser.UserName = Encoder.XmlEncode(userName);
-                tmUser.FirstName = Encoder.XmlEncode(firstname);
-                tmUser.LastName = Encoder.XmlEncode(lastname);
-                tmUser.Title = Encoder.XmlEncode(title);
-                tmUser.Company = Encoder.XmlEncode(company);
-                tmUser.Country = Encoder.XmlEncode(country);
-                tmUser.State = Encoder.XmlEncode(state);
-                tmUser.GroupID = groupId > -1 ? groupId : tmUser.GroupID;
-                tmUser.AccountStatus.ExpirationDate      = accountExpiration;
-                tmUser.AccountStatus.PasswordExpired     = passwordExpired;
-                tmUser.AccountStatus.UserEnabled         = userEnabled;
-                tmUser.AccountStatus.AccountNeverExpires = accountNeverExpires; 
+                tmUser.EMail        = Encoder.XmlEncode(user.Email);
+                tmUser.UserName     = Encoder.XmlEncode(user.UserName);
+                tmUser.FirstName    = Encoder.XmlEncode(user.FirstName);
+                tmUser.LastName     = Encoder.XmlEncode(user.LastName);
+                tmUser.Title        = Encoder.XmlEncode(user.Title);
+                tmUser.Company      = Encoder.XmlEncode(user.Company);
+                tmUser.Country      = Encoder.XmlEncode(user.Country);
+                tmUser.State        = Encoder.XmlEncode(user.State);
+                tmUser.UserTags     = user.UserTags;
+                tmUser.GroupID      = user.GroupID > -1 ? user.GroupID : tmUser.GroupID;
+                tmUser.AccountStatus.ExpirationDate      = user.ExpirationDate;
+                tmUser.AccountStatus.PasswordExpired     = user.PasswordExpired;
+                tmUser.AccountStatus.UserEnabled         = user.UserEnabled;
+                tmUser.AccountStatus.AccountNeverExpires = user.AccountNeverExpires; 
                 tmUser.saveTmUser();
                             
                 tmUser.logUserActivity("User Updated",""); // so that we don't get this log entry on new user creation

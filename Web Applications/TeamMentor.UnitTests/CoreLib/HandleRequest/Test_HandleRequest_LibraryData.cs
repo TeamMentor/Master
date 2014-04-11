@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security;
 using System.Web;
 using FluentSharp.CoreLib;
 using NUnit.Framework;
@@ -35,17 +36,17 @@ namespace TeamMentor.UnitTests.CoreLib
         }
 
         [Test][Assert_Editor]
-        public void GetContentForRandomGuid()
+        public void GetContentForRandomGuid_CheckThrowOf_ThreadAborted()
         {
-            var guid = Guid.NewGuid();            
+            var guid = Guid.NewGuid();       
+            // the throws should all be'Thread was being aborted
             Assert.Throws<Exception>(() => handleUrlRequest.handleRequest("content" , guid.str()), "content");            
             Assert.Throws<Exception>(() => handleUrlRequest.handleRequest("raw"     , guid.str()), "raw");            
             Assert.Throws<Exception>(() => handleUrlRequest.handleRequest("xml"     , guid.str()), "xml");
             Assert.Throws<Exception>(() => handleUrlRequest.handleRequest("html"    , guid.str()), "html");
             Assert.DoesNotThrow     (() => handleUrlRequest.handleRequest("xsl"     , guid.str()), "xsl");
             Assert.Throws<Exception>(() => handleUrlRequest.handleRequest("jsonp"   , guid.str()), "jsonp");
-            Assert.Throws<Exception>(() => handleUrlRequest.handleRequest("article" , guid.str()), "article");
-            //Assert.AreEqual (false,jsonp   , "jsonp");         
+            Assert.Throws<Exception>(() => handleUrlRequest.handleRequest("article" , guid.str()), "article");            
         }
     }
 }

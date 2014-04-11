@@ -20,7 +20,7 @@ namespace TeamMentor.CoreLib
         public static ITemplateService          TemplateService { get; set; }
 
         //public DateTime         StartTime       { get; set; }
-        public ITM_REST         TmRest          { get; set; }
+        public TM_REST         TmRest          { get; set; }
 
         static TBot_Brain()
         {
@@ -42,12 +42,36 @@ namespace TeamMentor.CoreLib
             
         }
         
-        [Admin]
-        public TBot_Brain(ITM_REST tmRest)
+        //[Admin]
+        public TBot_Brain(TM_REST tmRest)
         {
             TmRest = tmRest;
+            checkIfUserIsAdmin();
+            
             //StartTime = DateTime.Now;       
             
+        }
+        public Guid user_SessionId()
+        {
+            return TmRest.TmWebServices.tmAuthentication.sessionID;
+        }
+        public  string user_CsrfToken()
+        {
+            return user_SessionId().csrfToken();
+        }
+        public void checkIfUserIsAdmin()
+        {
+            // so that we can have direct links to TBOT pages
+            // need to check it like this since the CSRT is not vailable 
+            var sessionId = user_SessionId();
+            if (sessionId.validSession())
+            {
+                var tmUser     = sessionId.session_TmUser();
+                var groupId    = sessionId.session_GroupID();                
+                if (tmUser.notNull() && groupId == (int)UserGroup.Admin)
+                    UserGroup.Admin.setThreadPrincipalWithRoles();    
+            }
+            UserRole.Admin.demand();
         }
 
         public Stream GetHtml(string content)
@@ -61,7 +85,9 @@ namespace TeamMentor.CoreLib
                                     ? tbotMainHtmlFile.fileContents()
                                     : "[TBot] could not find file: {0}".format(tbotMainHtmlFile);            
             
-            var html = tbotMainHtml.format((htmlEncode) ? content.htmlEncode() : content);
+            
+            var html = tbotMainHtml.replace("{{TBOT_PAGE}}", (htmlEncode) ? content.htmlEncode() : content)
+                                   .replace("{{CSRFToken}}", user_CsrfToken());
             //var executionTime = DateTime.Now - StartTime;
             //html += "<hr>script executed in: {0}s".format(executionTime.TotalSeconds);
             return html.stream_UFT8();

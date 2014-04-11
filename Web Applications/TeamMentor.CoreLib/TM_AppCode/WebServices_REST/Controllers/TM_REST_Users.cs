@@ -40,9 +40,7 @@ namespace TeamMentor.CoreLib
 		}
 	    [Admin] public bool user_Save(TM_User user)
 	    {
-	        return TmWebServices.UpdateUser(user.UserId, user.UserName, user.FirstName, 
-                                            user.LastName, user.Title, user.Company, user.Email,
-                                            user.Country, user.State, user.ExpirationDate, user.PasswordExpired, user.UserEnabled,user.AccountNeverExpires,  -1);
+            return TmWebServices.UpdateTmUser(user);	        
 	    }
 	    [Admin] public TM_User			user(string userNameOrId    )
 		{            

@@ -10,11 +10,18 @@ namespace TeamMentor.CoreLib
     {
         public TM_Engine performHealthCheck()
         {
-            if(TMConfig.Current.isNull())   // this is a catastrofic even and TM cannot recover from it
+            // these are a catastrofic errors and TM cannot recover from it
+            if(TM_Xml_Database.Current.isNull())   // this is a catastrofic even and TM cannot recover from it
+            {
+                "[Fatal Error] TM_Xml_Database.Current was null".error();
+                HttpContextFactory.Server.Transfer(TMConsts.PATH_HTML_PAGE_UNAVAILABLE);
+            }
+            else if(TMConfig.Current.isNull())       
             {
                 "[Fatal Error] TMConfig.Current was null".error();
                 HttpContextFactory.Server.Transfer(TMConsts.PATH_HTML_PAGE_UNAVAILABLE);
             }
+            
             SendEmails.mapTMServerUrl();        // find a better place to put these one-off requests
             return this;
         }
