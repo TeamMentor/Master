@@ -39,7 +39,7 @@
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <CodeAnalysisIgnoreGeneratedCode>false</CodeAnalysisIgnoreGeneratedCode>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <FilesToIncludeForPublish>OnlyFilesToRunTheApp</FilesToIncludeForPublish>
     <SkipPostSharp>True</SkipPostSharp>
   </PropertyGroup>
@@ -714,7 +714,6 @@
     <Content Include="TBot\Admin\Config\View_TMConfig.cshtml.txt" />
     <Content Include="TBot\Admin\Config\View_SecretData.cshtml.txt" />
     <Content Include="TBot\Admin\LiveData\DebugInfo.cshtml" />
-    <Content Include="TBot\Admin\Reset_Razor_Templates.cshtml" />
     <Content Include="TBot\Admin\LiveData\IISSessions.cshtml" />
     <Content Include="TBot\Views\Users\User_Activities.cshtml" />
     <Content Include="TBot\Messaging\Send_Test_Email.cshtml" />

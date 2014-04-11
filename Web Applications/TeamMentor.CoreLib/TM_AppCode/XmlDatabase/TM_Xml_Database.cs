@@ -34,12 +34,11 @@ namespace TeamMentor.CoreLib
         {
         }
         public TM_Xml_Database          (bool useFileStorage)
-        {            
-            this.logTBotActivity("TM Xml Database", (useFileStorage) ? "Started using File Storage" : "Started in Memory mode");
-            "[TM_Xml_Database] Setup".info();
-            Current = this;
+        {   
+            Current = this;            
             try
-            {
+            {                
+             //   "[TM_Xml_Database] Setup".info();
                 O2Thread.mtaThread(CheckIfServerIsOnline);
                 UsingFileStorage = useFileStorage;                
                 Setup();
