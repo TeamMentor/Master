@@ -178,15 +178,23 @@
                     }                    
                 };   
             
+            
+
+            $scope.applyFilter = function() 
+                {       
+                        if ($scope.showSearchingIcon)        //don't apply the filter if we are currently searching
+                            return;
+                        $scope.showSearchingIcon  = true;
+                        $timeout(function() {
+                                                $scope.filteredUsers = $filter('filter')($scope.tmUserData, {UserName: $scope.nameFilter , EMail: $scope.emailFilter});                        
+                                                $scope.filteredUsers = $filter('orderBy')($scope.filteredUsers, $scope.orderBy, $scope.orderByReverse);
+                                                $scope.showSearchingIcon  = false;
+                                            },250);
+                };
+                        
             $scope.orderByFields = ["UserName","FullName","EMail","Created", "Group","Status","Activities","Sessions"]; 
             $scope.orderBy       = "UserName";
             $scope.filteredUsers = [];
-
-            $scope.applyFilter = function() 
-                {                
-                        $scope.filteredUsers = $filter('filter')($scope.tmUserData, {UserName: $scope.nameFilter , EMail: $scope.emailFilter});                        
-                        $scope.filteredUsers = $filter('orderBy')($scope.filteredUsers, $scope.orderBy, $scope.orderByReverse);
-                };
             
             $scope.$watch('emailFilter'     ,$scope.applyFilter); 
             $scope.$watch('nameFilter'      ,$scope.applyFilter); 
@@ -227,7 +235,9 @@
     </div>
     
     <p>
-        <b>Showing {{filteredUsers.length}} out of {{tmUserData.length}}</b>
+        <b>Showing {{filteredUsers.length}} out of {{tmUserData.length}}</b>        
+        <span class="glyphicon glyphicon-search" ng-show="showSearchingIcon"></span>        
+        
     </p>
 
     <table class="table table-striped table-condensed">
