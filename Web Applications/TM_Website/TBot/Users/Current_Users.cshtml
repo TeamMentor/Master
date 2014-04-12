@@ -84,12 +84,12 @@
 <style>
     .alert-small {
                 padding: 8px 8px 8px 15px;
-                width  : 720px;
+                width  : 750px;
            }
 </style>
 
 <h4>Current users </h4>
-       
+@*       
 <div class="alert alert-success alert-block alert-small">
     <form class="form-inline" action="Current_Users" method="get">
         <div class="form-group">
@@ -118,6 +118,7 @@
         
     </form>             
 </div>
+*@
 <script>
    
     var tmUserData = [
@@ -126,15 +127,15 @@
             @: { "UserName"   : "@tmUser.UserName.replace("\\","\\\\")" ,  
             @:   "FullName"   : "@tmUser.FirstName @tmUser.LastName", 
             @:   "EMail"      : "@tmUser.EMail" ,
-            @:   "Creation"   : "@tmUser.Stats.CreationDate.ToString("MMM/dd/yyyy")",
-            @:   "UserGroup"  : "@tmUser.userGroup().str()",
-            @:   "UserStatus" : "@tmUser.userStatus().str()",
-            @:   "Activities" : "@tmUser.UserActivities.size()",
-            @:   "Sessions"   : "@tmUser.Sessions.size()" } ,
+            @:   "Created"    : @tmUser.Stats.CreationDate.jsDate(),
+            @:   "Group"      : "@tmUser.userGroup().str()",
+            @:   "Status"     : "@tmUser.userStatus().str()",
+            @:   "Activities" : @tmUser.UserActivities.size(),
+            @:   "Sessions"   : @tmUser.Sessions.size() } ,
         }
     ]
 </script>
-<p>Showing @tmUsers.size() out of @allUsers.size()</p>
+
 <script type="text/javascript">
     
     
@@ -177,18 +178,57 @@
                     }                    
                 };   
             
+            $scope.orderByFields = ["UserName","FullName","EMail","Created", "Group","Status","Activities","Sessions"]; 
+            $scope.orderBy       = "UserName";
+            $scope.filteredUsers = [];
 
+            $scope.applyFilter = function() 
+                {                
+                        $scope.filteredUsers = $filter('filter')($scope.tmUserData, {UserName: $scope.nameFilter , EMail: $scope.emailFilter});                        
+                        $scope.filteredUsers = $filter('orderBy')($scope.filteredUsers, $scope.orderBy, $scope.orderByReverse);
+                };
             
-       
+            $scope.$watch('emailFilter'     ,$scope.applyFilter); 
+            $scope.$watch('nameFilter'      ,$scope.applyFilter); 
+            $scope.$watch('orderBy'         ,$scope.applyFilter);            
+            $scope.$watch('orderByReverse',$scope.applyFilter);
+           
        });
 
 </script>
 
-<div ng-controller="TMUsers">
-          
-
-    user search<input ng-model="userSearch"/><br />
-    email search<input ng-model="emailSearch"/><br />
+<div ng-controller="TMUsers">         
+    <div class="alert alert-success alert-block alert-small">
+        <form class="form-inline" action="Current_Users" method="get">
+            <div class="form-group">
+                Name:
+                <input type="text" class="form-control" placeholder="filter" ng-model="nameFilter">
+            </div>
+            <div class="form-group">
+                Email:
+                <input type="text" class="form-control" placeholder="filter" ng-model="emailFilter">
+            </div>        
+            <div class="form-group">
+                Order By:
+                <select     class="form-control"     ng-model  = "orderBy"        name="orderBy">                                           
+                    <option value="{{orderByField}}" ng-repeat = "orderByField in orderByFields">
+                        {{orderByField}}
+                    </option>
+                </select>              
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" ng-model="orderByReverse"/> Reverse 
+                    </label>
+                </div>                
+            </div>
+        </form>                          
+    </div>
+    
+    <p>
+        <b>Showing {{filteredUsers.length}} out of {{tmUserData.length}}</b>
+    </p>
 
     <table class="table table-striped table-condensed">
         <tr>
@@ -202,15 +242,17 @@
             <th                 >Activities</th>
             <th                 >Sessions</th>            
         </tr> 
-        <tr ng-repeat ="tmUser in tmUserData | orderBy:'UserGroup':reverse=false | filter: { UserName : userSearch } | filter: { EMail : emailSearch }">
+    <!--<tr ng-repeat ="tmUser in tmUserData | orderBy:'UserGroup':reverse=false | filter: { UserName : userSearch } | filter: { EMail : emailSearch }">-->
+        <tr ng-repeat ="tmUser in filteredUsers">
             <td>{{$index+1}}</td>
-            <td><a ng-href="User_Edit?{{tmUser.UserName}}">{{tmUser.UserName}}</a> </td>                            
+            <td><a ng-href="User_Edit?{{tmUser.UserName}}" target="_blank">{{tmUser.UserName}}</a> </td>                            
             <td>{{tmUser.FullName}}</td>
-            <td>{{tmUser.EMail}}</td>
-            <td>{{tmUser.Created}}</td>            
-            <td><span ng-class="cssForUserGroup(tmUser.UserGroup)">{{tmUser.UserGroup}}</span></td>
-            <td><span ng-class="cssForUserStatus(tmUser.UserStatus)">{{tmUser.UserStatus}}</span></td>              
-            <td><a    ng-href="User_Activities?user={{tmUser.UserName}}&max=50">{{tmUser.Activities}}</a></td>
+            <td>{{tmUser.EMail}}   </td>
+            <td>{{tmUser.Created | date:'dd MMM yyyy'}}</td>
+                     
+            <td><span ng-class="cssForUserGroup(tmUser.Group)"  >{{tmUser.Group}}</span></td>
+            <td><span ng-class="cssForUserStatus(tmUser.Status)">{{tmUser.Status}}</span></td>              
+            <td><a    ng-href="User_Activities?user={{tmUser.UserName}}&max=50"  target="_blank">{{tmUser.Activities}}</a></td>
             <td>{{tmUser.Sessions}}</td>            
         </tr>
     </table>

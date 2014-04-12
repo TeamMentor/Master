@@ -22,12 +22,14 @@ namespace TeamMentor.CoreLib
 					select role.str()).toList();
 		}		
         public static string         userStatus(this TMUser tmUser)
-        {
+        {            
+            if(tmUser.account_Enabled().isFalse())
+                return "Disabled";
             if(tmUser.account_Expired())
                 return "Expired";
-            if(tmUser.account_Enabled())
-                return "Enabled";
-            return "Disabled";
+            if(tmUser.password_Expired())
+                return "Pwd Expired";
+            return "Enabled";
         }
         
     }
