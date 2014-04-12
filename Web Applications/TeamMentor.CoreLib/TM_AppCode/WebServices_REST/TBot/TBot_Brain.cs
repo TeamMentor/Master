@@ -76,9 +76,9 @@ namespace TeamMentor.CoreLib
 
         public Stream GetHtml(string content)
         {
-            return GetHtml(content, true);
+            return GetHtml(content, true,-1);
         }
-        public Stream GetHtml(string content, bool htmlEncode)
+        public Stream GetHtml(string content, bool htmlEncode, double executionTime)
         {
             var tbotMainHtmlFile = HttpContextFactory.Server.MapPath(TBOT_MAIN_HTML_PAGE);
             var tbotMainHtml = (tbotMainHtmlFile.fileExists())
@@ -87,9 +87,9 @@ namespace TeamMentor.CoreLib
             
             
             var html = tbotMainHtml.replace("{{TBOT_PAGE}}", (htmlEncode) ? content.htmlEncode() : content)
-                                   .replace("{{CSRFToken}}", user_CsrfToken());
-            //var executionTime = DateTime.Now - StartTime;
-            //html += "<hr>script executed in: {0}s".format(executionTime.TotalSeconds);
+                                   .replace("{{CSRFToken}}", user_CsrfToken())
+                                   .replace("{{ExecutionTime}}", executionTime.str());            
+            
             return html.stream_UFT8();
         }        
 
@@ -134,10 +134,11 @@ namespace TeamMentor.CoreLib
                     : "{}".stream_UFT8();            
         }
         public Stream Run(string page)
-        {                                  
+        {           
+            var start = DateTime.Now;           
             var result = ExecuteRazorPage(page);
             return result.valid() 
-                    ? GetHtml(result.trim(), false) 
+                    ? GetHtml(result.trim(), false, (DateTime.Now - start).TotalSeconds) 
                     : GetHtml("Couldn't find requested actions");                            
         }
         public Stream List()
@@ -146,7 +147,7 @@ namespace TeamMentor.CoreLib
                                 (current, items) => current + "<li><a href='/rest/tbot/run/{0}'>{0}</a> - {1}</li>"
                                                                 .format(items.Key, items.Value.fileContents().hash()));
             filesHtml += "</ul>";
-            return GetHtml(filesHtml, false);            
+            return GetHtml(filesHtml, false,-1);            
         }
 
 

@@ -4,7 +4,7 @@
 @using FluentSharp.CoreLib
 @using TeamMentor.CoreLib
 
-@{
+@{        
     var count = 0;
     var nameFilter    = HttpContextFactory.Request["nameFilter"];
     var emailFilter   = HttpContextFactory.Request["emailFilter"];    
@@ -118,10 +118,47 @@
         
     </form>             
 </div>
-
+<script>
+    @*
+        The reason the field initials are used below, is due to shave of about 10% of page size
+           UN = UserName
+           FN = FirstName
+           EM = EMail
+           CR = Creation Date
+           UG = User Group
+           US = User Status
+    *@
+    var tmUserData = [
+        @foreach(var tmUser in tmUsers)
+        {
+            @: { "UN"   : "@tmUser.UserName" ,  
+            @:   "FN"   : "@tmUser.FirstName @tmUser.LastName", 
+            @:   "EM"   : "@tmUser.EMail" ,
+            @:   "CR"   : "@tmUser.Stats.CreationDate.ToString("MMM/dd/yyyy")",
+            @:   "UG"   : "@tmUser.userGroup().str()",
+            @:   "US"   : "@tmUser.userStatus().str()",
+            @:   "AC"   : "@tmUser.UserActivities.size()",
+            @:   "SE"   : "@tmUser.Sessions.size()" } ,
+        }
+    ]
+</script>
 <p>Showing @tmUsers.size() out of @allUsers.size()</p>
-      
-<table class="table table-striped table-condensed">
+<script type="text/javascript">
+    
+    
+    var tbot = angular.module("tbot");
+    
+    tbot.controller("TMUsers", function($scope,$http, $timeout)
+        { 
+            _scope = $scope;
+            $scope.count = 0;
+            $scope.tmUserData = tmUserData;
+        });
+
+</script>
+
+<div ng-controller="TMUsers">    
+    <table class="table table-striped table-condensed">
         <tr>
             <th>#</th> 
             <th>UserName</th>
@@ -131,30 +168,20 @@
             <th>Group</th>
             <th>Status</th>
             <th>Activities</th>
-            <th>Sessions</th>
-           <!-- <th>User Id</th>
-            <th>Actions</th>    -->     
-        </tr>   
-        @foreach (var tmUser in tmUsers)
-        {
-            var userGroup = tmUser.userGroup().str();
-            var userStatus = tmUser.userStatus();
-            <tr>
-                <td>@(++count)</td>
-                <td><a href="User_Edit?@tmUser.UserName">@tmUser.UserName</a> </td>                
-                <td>@tmUser.FirstName @tmUser.LastName</td>
-                <td>@tmUser.EMail</td>                
-                <td>@tmUser.Stats.CreationDate.ToString("MMM/dd/yyyy")</td>                
-                <td><span class="label label-@cssForUserGroup(userGroup)">@userGroup</span></td>
-                <td><span class="label label-@cssForUserStatus(userStatus)">@userStatus</span></td>
-                <td><a href="User_Activities?user=@tmUser.UserName&max=50">@tmUser.UserActivities.size()</a></td>
-                <td>@tmUser.Sessions.size()</td>                
-                <!--<td><a href="User_View?user=@tmUser.UserID"  >@tmUser.UserID</a></td>                
-                <td>
-                    <a href="User_Edit?@tmUser.UserName">edit user</a> | 
-                    
-                </td>-->
-
-            </tr>
-        }
+            <th>Sessions</th>            
+        </tr> 
+        <tr ng-repeat ="tmUser in tmUserData">
+            <td>{{$index=1}}</td>
+            <td>{{tmUser.UN}}</td>
+            <td>{{tmUser.FN}}</td>
+            <td>{{tmUser.EM}}</td>
+            <td>{{tmUser.CD}}</td>
+            <td>{{tmUser.UG}}</td>
+            <td>{{tmUser.US}}</td>
+            <td>{{tmUser.AC}}</td>
+            <td>{{tmUser.SE}}</td>
+        </tr>
     </table>
+</div>
+
+
