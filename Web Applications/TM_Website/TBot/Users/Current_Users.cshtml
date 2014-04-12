@@ -25,13 +25,19 @@
             tmUsers = tmUsers.OrderBy((user)=> "{0} {1}".format(user.FirstName, user.LastName)).toList();
             break;            
         case "created":
-            tmUsers = tmUsers.OrderBy((user)=> user.Stats.CreationDate).toList();
-            break;            
+            tmUsers = tmUsers.OrderBy((user)=> user.Stats.CreationDate).Reverse().toList();
+            break;
+        case "group":
+            tmUsers = tmUsers.OrderBy((user)=> user.userGroup()).toList();
+            break;
+        case "status":
+            tmUsers = tmUsers.OrderBy((user)=> user.userStatus()).toList();
+            break;                    
         case "activities":
-            tmUsers = tmUsers.OrderBy((user)=> "{0} {1}".format(user.FirstName, user.LastName)).toList();
+            tmUsers = tmUsers.OrderBy((user)=> user.UserActivities.size()).Reverse().toList();
             break;            
         case "sessions":
-            tmUsers = tmUsers.OrderBy((user)=> "{0} {1}".format(user.FirstName, user.LastName)).toList();
+            tmUsers = tmUsers.OrderBy((user)=> user.Sessions.size()).Reverse().toList();
             break;            
         default:
             tmUsers = tmUsers.OrderBy((user)=> user.UserName).toList();
@@ -44,8 +50,35 @@
                 return "selected";
             return "";        
         };
-                    
-                    
+        
+    Func<string,string> cssForUserGroup =(group)=>
+        {             
+            switch(group.lower())
+            {
+                case "admin":
+                    return "danger";
+                case "editor":
+                    return "warning";
+                case "reader":
+                    return "primary";
+            }
+            return "info";
+        };  
+        
+        
+    Func<string,string> cssForUserStatus =(status)=>
+        {             
+            switch(status.lower())
+            {
+                case "account expired":
+                    return "info";
+                case "disabled":
+                    return "danger";
+                case "enabled":
+                    return "success";
+            }
+            return "default";
+        };          
 }
 
 <style>
@@ -74,6 +107,8 @@
                 <option value="FullName"   @orderBySelection("FullName") >Full Name</option>
                 <option value="Email"      @orderBySelection("Email")    >Email</option>
                 <option value="Created"    @orderBySelection("Created")  >Created</option>
+                <option value="Group"      @orderBySelection("Group")    >Group</option>
+                <option value="Status"     @orderBySelection("Status")   >Status</option>
                 <option value="Activities" @orderBySelection("Activites")>Activities</option>
                 <option value="Sessions"   @orderBySelection("Sessions") >Sessions</option>
             </select>
@@ -94,27 +129,31 @@
             <th>Email</th>   
             <th>Created</th>            
             <th>Group</th>
+            <th>Status</th>
             <th>Activities</th>
             <th>Sessions</th>
-            <th>User Id</th>
-            <th>Actions</th>         
+           <!-- <th>User Id</th>
+            <th>Actions</th>    -->     
         </tr>   
         @foreach (var tmUser in tmUsers)
         {
+            var userGroup = tmUser.userGroup().str();
+            var userStatus = tmUser.userStatus();
             <tr>
                 <td>@(++count)</td>
-                <td><a href="User_View?user=@tmUser.UserName">@tmUser.UserName</a></td>                
+                <td><a href="User_Edit?@tmUser.UserName">@tmUser.UserName</a> </td>                
                 <td>@tmUser.FirstName @tmUser.LastName</td>
                 <td>@tmUser.EMail</td>                
                 <td>@tmUser.Stats.CreationDate.ToString("MMM/dd/yyyy")</td>                
-                <td>@tmUser.userGroup()</td>
-                <td>@tmUser.UserActivities.size()</td>
-                <td>@tmUser.Sessions.size()</td>
-                <td><a href="User_View?user=@tmUser.UserID"  >@tmUser.UserID</a></td>                
+                <td><span class="label label-@cssForUserGroup(userGroup)">@userGroup</span></td>
+                <td><span class="label label-@cssForUserStatus(userStatus)">@userStatus</span></td>
+                <td><a href="User_Activities?user=@tmUser.UserName&max=50">@tmUser.UserActivities.size()</a></td>
+                <td>@tmUser.Sessions.size()</td>                
+                <!--<td><a href="User_View?user=@tmUser.UserID"  >@tmUser.UserID</a></td>                
                 <td>
                     <a href="User_Edit?@tmUser.UserName">edit user</a> | 
-                    <a href="User_Activities?user=@tmUser.UserName&max=50">view activity</a>
-                </td>
+                    
+                </td>-->
 
             </tr>
         }
