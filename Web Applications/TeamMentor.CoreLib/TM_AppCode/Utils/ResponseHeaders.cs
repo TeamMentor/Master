@@ -23,10 +23,7 @@ namespace TeamMentor.CoreLib
 			}							 
 
             if (HttpContextFactory.Request.IsLocal)
-            {
-                HttpContextFactory.Response.AddHeader("Cache-Control" , "no-cache, private");
-                HttpContextFactory.Response.AddHeader("Pragma" , "no-cache");
-
+            {               
                 //response.addHeader("Cache-Control", "no-cache, private");
                 //response.addHeader("Pragma", "no-cache");
             }

@@ -22,6 +22,7 @@
         windowsAuthentication           = "true";
     }
     
+        
 %>        
 <!-- dynamic Javascript settings -->
 
@@ -29,3 +30,6 @@ window.TM.Gui.showLibraryStructureToAnonymous =  <%= showLibraryStructureToAnony
 window.TM.WindowsAuthentication               =  <%= windowsAuthentication%>;
 window.TM.UserNotLoggedInPage                 = "<%= notAuthorizedPage %>"; 
 window.TM.NotAuthorizedPage                   = "<%= notAuthorizedPage %>";
+
+<!-- static mappings -->
+window.TM.Debug.addTimeStampToLoadedPages     = false; 

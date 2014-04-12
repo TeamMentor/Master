@@ -6,15 +6,17 @@
 <script type="text/javascript">
     var tbot = angular.module("tbot");
     
-    tbot.controller("TMUser", function($scope,$http)
+    tbot.controller("TMUser", function($scope,$http, $timeout)
         {   
             scope = $scope;
             $scope.dataLoaded = false;
             $("#txtEmail").focus();	
             $scope.update = function(userData)
                 {                
-                    $scope.result = " ... saving user";
-            
+                    $scope.result_Info  = "Saving user details";
+                    $scope.result_Ok    = "";
+                    $scope.result_Error    = "";
+                
                     var picker = $('#expirationDate').datetimepicker();
 
                     var selectedDate = picker.data('DateTimePicker').getDate();
@@ -24,7 +26,12 @@
                     $http.put('/rest/user',userData)
                         .success(function(data)
                             {    
-                                $scope.result = (data) ? "(User saved)" : "(Save ERROR!)";
+                                $scope.result_Info = "";
+                                if (data)
+                                    $scope.result_Ok    = "User saved";
+                                else
+                                    $scope.result_Error = "Failed to save user";
+                                
                                 $scope.userEnabled = userData.UserEnabled;
                             });
                 };
@@ -35,8 +42,7 @@
                     $scope.userName = userName;
                                         
                     $http.get('/rest/user/' + userName).success(function(data)
-                        {
-                            $scope.loadingMessage = "";
+                        {                            
                             if (data=== "")
                             {
                                 $scope.userData = { UserName :  "No user found with provided UserName!!!" };
@@ -54,6 +60,8 @@
                                 //    scope.userData.UserTags = [];
                                 $scope.dataLoaded = true;
                                 $scope.userEnabled = data.UserEnabled;
+                                
+                                $scope.result_Info = "";
                             }
                         });        
             }
@@ -78,8 +86,12 @@
 		    $('#expirationDate').datetimepicker({
 		      pickTime:false
 		    });
-            
-            $scope.loadingMessage = "Loading user data";
+            $scope.userGroups = [{name:"Anonymous", id:0},{name:"Admin", id:1},{name:"Reader", id:2},
+                                 {name:"Editor", id:3}]; //, {name:"Developer", id:4}];
+                                     
+            $scope.result_Info       = "Loading user data";
+            $scope.result_Ok         = "";
+            $scope.result_Error      = "";
             $scope.userDeleted = false;
             $scope.deleteButtonEnabled = false;
         });
@@ -87,23 +99,37 @@
 </script>
 
 <style>
-    .form-group {
-                    margin-top    : 5px;
-                    margin-bottom : 5px;
-                }
-    .input-tag  {
-                    height        : 20px
-                }
+    .form-group 
+        {
+            margin-top    : 5px;
+            margin-bottom : 5px;
+        }
+    .input-tag  
+        {
+            height        : 20px
+        }
+    
+    .borderless td
+        {
+            border-top    : none !important 
+        }   
+    .alert-small 
+        {
+            padding: 8px 35px 8px 14px; 
+        }
 </style>
-<div ng-controller="TMUser">
+<div ng-controller="TMUser"> 
   
+    <h4>User Edit: {{userData.UserName}} </h4>
+
+    <a href="Current_Users">Users list</a>
+    <hr/>
+
     <a href="User_View?user={{userName}}" class="btn btn-info" >View User</a>
     <a href="User_Edit?{{userName}}" class="btn btn-info" disabled>Edit User</a>
     <a href="User_Activities?user={{userName}}" class="btn btn-info" >View Activity/Logs</a>
     <a href="User_Raw?user={{userName}}">Raw/Xml Data</a>
 
-    <h4>Editing user </h4>
-    
     <div ng-show="userDeleted">
         <b>User {{userData.UserName}} will be deleted when this is implemented :)</b>
     </div>
@@ -113,7 +139,7 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label">User ID</label>
                 <div class="col-sm-6">
-                    <p class="form-control-static">{{userData.UserId}}{{loadingMessage}}</p>
+                    <p class="form-control-static">{{userData.UserId}}</p>
                 </div>
             </div>
        
@@ -123,7 +149,7 @@
                     <input class="form-control input-small" type="text" ng-model="userData.UserName" required ng-disabled="true"/>
                 </div>
             </div>
-
+            <!-- Email, FirstName, LastName, Company, Job Title, Country, State-->
             <div class="form-group">
                 <label  class="col-sm-2 control-label">Email</label>
                 <div class="col-sm-6">
@@ -172,31 +198,40 @@
                     <input class="form-control" ng-model="userData.State"/>
                 </div>
             </div>
+            <!-- User Tags-->
             <div class="form-group">
                 <label class="col-sm-2 control-label">UserTags<small><br /><a href="" ng-click="newUserTag()">NewTag</a></small></label>                
-                <div class="col-sm-offset-1 col-sm-4 well">                    
-                    <div ng-repeat="userTag in userData.UserTags">                        
-                        <div class="col-sm-12">
-                            <div class="col-lg-5">                       
-                                <input type="text" class='form-control input-tag' ng-model='userTag.Key' placeholder="key" />  
-                            </div>
-                            <div class="col-lg-5">         
-                                <input type="text" class='form-control input-tag' ng-model='userTag.Value' placeholder="value" />
-                            </div>
-                            <div class="col-sm-2">
-                                <a href="" ng-click="removeTag($index)">remove</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-offset-0 col-sm-6">                      
-                        
-                    </div>
-                    <!--<textarea ng-model="userData.UserTags"  rows="3" class="form-control" >        </textarea>  -->
-                </div>
-            </div>            
+                <div class="col-sm-offset-0 col-sm-6">
+                    <table class="table table-condensed borderless" >
+                        <tr>
+                            <th>Key</th>
+                            <th>Value</th>
+                            <th></th>
+                        </tr>
+                        <tr ng-repeat="userTag in userData.UserTags" class="borderless">
+                            <td  ><input type="text" class='form-control input-tag' ng-model='userTag.Value' placeholder="value" /></td>
+                            <td><input type="text" class='form-control input-tag' ng-model='userTag.Key'   placeholder="key" />  </td>
+                            <td><a href="" ng-click="removeTag($index)">remove</a></td>
+                        </tr>
+                    </table>
+                </div>                                    
+            </div>
+            <!-- Security Group -->           
             <div class="form-group">
+                <label  class="col-sm-2 control-label">Security Group</label>
+                <div class="col-sm-3">
+                    <select name="userGroup" class="form-control"  ng-model  = "userData.GroupID">
+                        <option value="-1" ng-hide="userData.GroupID"> </option>                        
+                        <option ng-repeat = "group in userGroups"  value     = "{{group.id}}">
+                            {{group.name}}
+                        </option>
+                    </select>
+                </div>
+            </div> 
+            <!-- Expiration date picker-->
+            <div class="form-group" ng-hide="userData.AccountNeverExpires">
                 <label class="col-sm-2 control-label">Expires at:</label>
-                <div class="col-sm-6">
+                <div class="col-sm-3">
                     <div class='input-group date' id='expirationDate' data-date-format='MMM/DD/YYYY'>
                         <input type='text' class="form-control" readonly/>
                         <span class="input-group-addon">
@@ -204,7 +239,9 @@
                         </span>
                     </div>
                 </div>
-            </div>               
+            </div>        
+            <br />
+            <!-- options -->       
             <div class="form-group">                
                 <div class="col-sm-offset-2  col-sm-2">
                     <div class="checkbox">
@@ -228,11 +265,12 @@
                     </div>
                 </div>
             </div>        
+            <!-- Save, Delete buttons-->
             <br />
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-2">                                  
                     <button class="btn btn-primary col-sm-12" ng-disabled="myForm.$invalid" ng-click="update(userData)">
-                        Save User {{result}}
+                        Save User
                     </button>                                                                             
                 </div>    
                 <div class="col-sm-2">    
@@ -246,17 +284,29 @@
                     </div>
                 </div>
             </div>
-                  
+            <!-- Ok, Info and Error messages-->
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-4" ng-hide="result_Ok =='' ">
+                    <div class="alert alert-success alert-small">
+                        {{result_Ok}}
+                    </div>
+                </div>    
+                <div class="col-sm-offset-2 col-sm-4" ng-hide="result_Info =='' ">
+                    <div class="alert alert-warning alert-small">
+                        {{result_Info}}
+                    </div>
+                </div>    
+                <div class="col-sm-offset-2 col-sm-4" ng-hide="result_Error =='' ">                                  
+                    <div class="alert alert-danger alert-small">
+                        {{result_Error}}
+                    </div>
+                </div>    
+            </div>
         </form> 
         <br/>            
     </div>
-
-
+    
     <pre>
         {{userData}}
     </pre>
-
 </div>
-
-<hr/>
-<a href="Current_Users">back to users list</a>

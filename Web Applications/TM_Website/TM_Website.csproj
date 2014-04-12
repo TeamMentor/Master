@@ -281,7 +281,9 @@
     <Content Include="Javascript\bootstrap\2.3.1\img\glyphicons-halflings.png" />
     <Content Include="Javascript\bootstrap\2.3.1\js\bootstrap.js" />
     <Content Include="Javascript\bootstrap\2.3.1\js\bootstrap.min.js" />
+    <Content Include="Javascript\bootstrap\3.1.1\css\bootstrap-theme.css" />
     <Content Include="Javascript\bootstrap\3.1.1\css\bootstrap-theme.min.css" />
+    <Content Include="Javascript\bootstrap\3.1.1\css\bootstrap.css" />
     <Content Include="Javascript\bootstrap\3.1.1\css\bootstrap.min.css" />
     <Content Include="Javascript\bootstrap\3.1.1\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Javascript\bootstrap\3.1.1\js\bootstrap.min.js" />

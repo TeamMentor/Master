@@ -12,7 +12,7 @@ namespace TeamMentor.CoreLib
 	public class ScriptCombiner : IHttpHandler
 	{    
 		public static string   MappingsLocation			 {get;set;}
-		public static DateTime LastModified_HeaderDate	{ get; set; }
+		
 	
 		public string setName 				{ get; set;}
 		public string version 				{ get; set;}
@@ -25,11 +25,7 @@ namespace TeamMentor.CoreLib
 		public bool 		 ignoreCache	{ get; set; }
 	
 		public HttpContextBase context;
-
-		static ScriptCombiner()
-		{
-			LastModified_HeaderDate = DateTime.Now;			//used to calculate if we will send a '302 Not Modified' to the user
-		}
+		
 		public ScriptCombiner()
 		{
 			MappingsLocation = "../javascript/_mappings/{0}.txt";				
@@ -42,14 +38,8 @@ namespace TeamMentor.CoreLib
 			var response = context.Response;		
 			response.Clear();
 
-			if (TMConfig.Current.TMSetup.Enable304Redirects && send304Redirect())
-			{
-				context.Response.StatusCode = 304;
-				context.Response.StatusDescription = "Not Modified";
-				return;
-			}
-			setCacheHeaders();		
-
+            if (context.sent304Redirect())			
+                return;
 			try
 			{
 				minifyCode = true;
@@ -187,25 +177,6 @@ namespace TeamMentor.CoreLib
 					}
 				}	
 			return scripts.ToArray();
-		}
-
-		//Cache code
-
-		public bool send304Redirect()
-		{
-			var ifModifiedSinceHeader = context.Request.Headers["If-Modified-Since"];
-			if (ifModifiedSinceHeader.valid() && ifModifiedSinceHeader.isDate())
-			{
-				var ifModifiedSinceDate = DateTime.Parse(ifModifiedSinceHeader);
-				if (LastModified_HeaderDate.str() == ifModifiedSinceDate.str())
-					return true;
-			}
-			return false;
-		}
-
-		public void setCacheHeaders()
-		{	
-			context.Response.Cache.SetLastModified(LastModified_HeaderDate);
 		}
 	}
 }

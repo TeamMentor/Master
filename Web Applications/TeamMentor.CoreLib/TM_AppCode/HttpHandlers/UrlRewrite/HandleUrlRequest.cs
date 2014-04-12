@@ -176,23 +176,27 @@ namespace TeamMentor.CoreLib
             var extension = path.extension();
             switch (extension)
             {                 
-                case ".htm":
-                case ".js":
-                case ".css":
-                case ".html":
+                //case ".htm":
+                //case ".js":
+                //case ".css":
+                //case ".html":
                 case ".asmx":
                 case ".ashx":
                 case ".aspx":
-                case ".ico":
-                case ".woff":
+                //case ".ico":
+                //case ".woff":
                     return true;
                 //default:
                 //    return false;
             }
             var absolutePath = request.Url.AbsolutePath;
-            if (absolutePath.lower().contains("/images/","/javascript/"))
-                return true;
-            
+            if (absolutePath.lower().contains("/images/","/javascript/","/html_pages","/css/") || 
+                extension.contains(".ico"))
+            {
+                if(context.sent304Redirect())
+                    context.Response.End();
+                return true;    
+            }
             return false;
         }
 

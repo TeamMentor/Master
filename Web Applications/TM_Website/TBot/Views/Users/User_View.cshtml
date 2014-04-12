@@ -11,8 +11,13 @@
     if (max == 0)
     {
         max = 50;
-    }    
+    }                
 }
+
+<h4>View user: @userNameOrId</h4>
+
+<a href="Current_Users">Users list</a>
+<hr/>
 
 <a href="User_View?userName=@userNameOrId" class="btn btn-info" disabled>View User</a>
 <a href="User_Edit?@userNameOrId" class="btn btn-info" >Edit User</a>
@@ -24,17 +29,18 @@
     <h4>User details</h4>
     <ul>
         <b>User Name:       </b> @tmUser.UserName <br/>
+        <b>Security Group:  </b> @tmUser.userGroup()  <!--(@tmUser.GroupID)--> <br />
         <b>Email:           </b> @tmUser.EMail <br/>
         <b>First Name:      </b> @tmUser.FirstName <br/>              
         <b>Last Name:       </b> @tmUser.LastName <br/>             
         <b>Company:         </b> @tmUser.Company <br/>             
         <b>Job/Title:       </b> @tmUser.Title <br/>             
         <b>County:          </b> @tmUser.Country <br/>             
-        <b>State:           </b> @tmUser.State <br/>             
-        <b>GroupID:         </b> @tmUser.GroupID <br/>
+        <b>State:           </b> @tmUser.State <br/>                             
         <b>Account Expires: </b> @tmUser.AccountStatus.ExpirationDate.ToString("MMM/dd/yyyy")<br/>            
         <b>Account Enabled: </b> @tmUser.AccountStatus.UserEnabled <br/>            
         <b>PasswordExpired: </b> @tmUser.AccountStatus.PasswordExpired  <br/>                                    
+        <b>Account Next Expires: </b> @tmUser.AccountStatus.AccountNeverExpires <br/>            
     </ul>
     <h4>Stats</h4>
     <ul>                                     
