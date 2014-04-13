@@ -4,125 +4,27 @@
 @using FluentSharp.CoreLib
 @using TeamMentor.CoreLib
 
-@{        
-    var count = 0;
-    var nameFilter    = HttpContextFactory.Request["nameFilter"];
-    var emailFilter   = HttpContextFactory.Request["emailFilter"];    
-    var orderBy       = HttpContextFactory.Request["orderBy"];    
-    var userData = TM_UserData.Current;
-    var allUsers = userData.tmUsers();
-    var tmUsers  = (from user in allUsers
-                    where nameFilter.notValid()  || user.UserName.regEx(nameFilter)
-                    where emailFilter.notValid() || user.EMail.regEx(emailFilter)
-                    select user).toList();;    
- 
-    switch(orderBy.lower())
-    {
-        case "email":
-            tmUsers = tmUsers.OrderBy((user)=> user.EMail).toList();
-            break;
-        case "fullname":
-            tmUsers = tmUsers.OrderBy((user)=> "{0} {1}".format(user.FirstName, user.LastName)).toList();
-            break;            
-        case "created":
-            tmUsers = tmUsers.OrderBy((user)=> user.Stats.CreationDate).Reverse().toList();
-            break;
-        case "group":
-            tmUsers = tmUsers.OrderBy((user)=> user.userGroup()).toList();
-            break;
-        case "status":
-            tmUsers = tmUsers.OrderBy((user)=> user.userStatus()).toList();
-            break;                    
-        case "activities":
-            tmUsers = tmUsers.OrderBy((user)=> user.UserActivities.size()).Reverse().toList();
-            break;            
-        case "sessions":
-            tmUsers = tmUsers.OrderBy((user)=> user.Sessions.size()).Reverse().toList();
-            break;            
-        default:
-            tmUsers = tmUsers.OrderBy((user)=> user.UserName).toList();
-            break;
-    }
-    
-    Func<string,string> orderBySelection =(value)=>
-        {
-            if (value==orderBy)
-                return "selected";
-            return "";        
-        };
-        
-    Func<string,string> cssForUserGroup =(group)=>
-        {             
-            switch(group.lower())
-            {
-                case "admin":
-                    return "danger";
-                case "editor":
-                    return "warning";
-                case "reader":
-                    return "primary";
-            }
-            return "info";
-        };  
-        
-        
-    Func<string,string> cssForUserStatus =(status)=>
-        {             
-            switch(status.lower())
-            {
-                case "account expired":
-                    return "info";
-                case "disabled":
-                    return "danger";
-                case "enabled":
-                    return "success";
-            }
-            return "default";
-        };          
-}
-
 <style>
-    .alert-small {
-                padding: 8px 8px 8px 15px;
-                width  : 750px;
-           }
+    .alert-small 
+        {
+            padding: 8px 8px 8px 15px;
+            width  : 750px;
+        }
+    .pointer 
+        {
+            cursor : pointer
+        }
 </style>
 
 <h4>Current users </h4>
-@*       
-<div class="alert alert-success alert-block alert-small">
-    <form class="form-inline" action="Current_Users" method="get">
-        <div class="form-group">
-            Name:
-            <input type="text" class="form-control" name="nameFilter" placeholder="filter regEx" value="@nameFilter">
-        </div>
-        <div class="form-group">
-            Email:
-            <input type="text" class="form-control" name="emailFilter" placeholder="filter regEx" value="@emailFilter">
-        </div>        
-        <div class="form-group">
-            Sort By:
-            <select name="orderBy" class="form-control">
-                <option value="UserName"   @orderBySelection("UserName") >User Name</option>
-                <option value="FullName"   @orderBySelection("FullName") >Full Name</option>
-                <option value="Email"      @orderBySelection("Email")    >Email</option>
-                <option value="Created"    @orderBySelection("Created")  >Created</option>
-                <option value="Group"      @orderBySelection("Group")    >Group</option>
-                <option value="Status"     @orderBySelection("Status")   >Status</option>
-                <option value="Activities" @orderBySelection("Activites")>Activities</option>
-                <option value="Sessions"   @orderBySelection("Sessions") >Sessions</option>
-            </select>
-        </div>
 
-        <button type="submit" class="btn btn-default">filter</button>
-        
-    </form>             
-</div>
-*@
 <script>
-   
-    var tmUserData = [
-        @foreach(var tmUser in tmUsers)
+    @{
+        // transfor the 
+        var userData = TM_UserData.Current;
+     }
+     var tmUserData = [
+        @foreach(var tmUser in userData.tmUsers())
         {
             @: { "UserName"   : "@tmUser.UserName.replace("\\","\\\\")" ,  
             @:   "FullName"   : "@tmUser.FirstName @tmUser.LastName", 
@@ -178,7 +80,13 @@
                     }                    
                 };   
             
-            
+            $scope.setOrderBy = function(value)
+                {
+                    if ($scope.orderBy === value)
+                        $scope.orderByReverse = !$scope.orderByReverse;
+                    else
+                        $scope.orderBy = value;                    
+                };
 
             $scope.applyFilter = function() 
                 {       
@@ -189,7 +97,7 @@
                                                 $scope.filteredUsers = $filter('filter')($scope.tmUserData, {UserName: $scope.nameFilter , EMail: $scope.emailFilter});                        
                                                 $scope.filteredUsers = $filter('orderBy')($scope.filteredUsers, $scope.orderBy, $scope.orderByReverse);
                                                 $scope.showSearchingIcon  = false;
-                                            },250);
+                                            },150);
                 };
                         
             $scope.orderByFields = ["UserName","FullName","EMail","Created", "Group","Status","Activities","Sessions"]; 
@@ -243,16 +151,16 @@
     <table class="table table-striped table-condensed">
         <tr>
             <th>#</th> 
-            <th class="col-sm-2">UserName</th>
-            <th class="col-sm-2">FullName</th>
-            <th class="col-sm-4">Email</th>   
-            <th class="col-sm-1">Created</th>            
-            <th class="col-sm-1">Group</th>
-            <th class="col-sm-1">Status</th>
-            <th                 >Activities</th>
-            <th                 >Sessions</th>            
+            <th class="col-sm-2 pointer" ng-click="setOrderBy('UserName')"  >UserName</th>
+            <th class="col-sm-2 pointer" ng-click="setOrderBy('FullName')"  >FullName</th>
+            <th class="col-sm-4 pointer" ng-click="setOrderBy('EMail')"     >EMail</th>   
+            <th class="col-sm-1 pointer" ng-click="setOrderBy('Created')"   >Created</th>            
+            <th class="col-sm-1 pointer" ng-click="setOrderBy('Group')"     >Group</th>
+            <th class="col-sm-1 pointer" ng-click="setOrderBy('Status')"    >Status</th>
+            <th class="         pointer" ng-click="setOrderBy('Activities')">Activities</th>
+            <th class="         pointer" ng-click="setOrderBy('Sessions')"  >Sessions</th>            
         </tr> 
-    <!--<tr ng-repeat ="tmUser in tmUserData | orderBy:'UserGroup':reverse=false | filter: { UserName : userSearch } | filter: { EMail : emailSearch }">-->
+            
         <tr ng-repeat ="tmUser in filteredUsers">
             <td>{{$index+1}}</td>
             <td><a ng-href="User_Edit?{{tmUser.UserName}}" target="_blank">{{tmUser.UserName}}</a> </td>                            
@@ -267,44 +175,3 @@
         </tr>
     </table>
 </div>
-
-@*
-
-<table class="table table-striped table-condensed">
-        <tr>
-            <th>#</th> 
-            <th>UserName</th>
-            <th>FullName</th>
-            <th>Email</th>   
-            <th>Created</th>            
-            <th>Group</th>
-            <th>Status</th>
-            <th>Activities</th>
-            <th>Sessions</th>
-           <!-- <th>User Id</th>
-            <th>Actions</th>    -->     
-        </tr>   
-        @foreach (var tmUser in tmUsers)
-        {
-            var userGroup = tmUser.userGroup().str();
-            var userStatus = tmUser.userStatus();
-            <tr>
-                <td>@(++count)</td>
-                <td><a href="User_Edit?@tmUser.UserName">@tmUser.UserName</a> </td>                
-                <td>@tmUser.FirstName @tmUser.LastName</td>
-                <td>@tmUser.EMail</td>                
-                <td>@tmUser.Stats.CreationDate.ToString("MMM/dd/yyyy")</td>                
-                <td><span class="label label-@cssForUserGroup(userGroup)">@userGroup</span></td>
-                <td><span class="label label-@cssForUserStatus(userStatus)">@userStatus</span></td>
-                <td><a href="User_Activities?user=@tmUser.UserName&max=50">@tmUser.UserActivities.size()</a></td>
-                <td>@tmUser.Sessions.size()</td>                
-                <!--<td><a href="User_View?user=@tmUser.UserID"  >@tmUser.UserID</a></td>                
-                <td>
-                    <a href="User_Edit?@tmUser.UserName">edit user</a> | 
-                    
-                </td>-->
-
-            </tr>
-        }
-    </table>
-*@

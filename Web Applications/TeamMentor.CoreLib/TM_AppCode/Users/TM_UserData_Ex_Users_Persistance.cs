@@ -122,14 +122,14 @@ namespace TeamMentor.CoreLib
                 return false;
             if (tmUser.UserName == user.UserName)
             {
-                tmUser.EMail        = Encoder.XmlEncode(user.Email);
-                tmUser.UserName     = Encoder.XmlEncode(user.UserName);
-                tmUser.FirstName    = Encoder.XmlEncode(user.FirstName);
-                tmUser.LastName     = Encoder.XmlEncode(user.LastName);
-                tmUser.Title        = Encoder.XmlEncode(user.Title);
-                tmUser.Company      = Encoder.XmlEncode(user.Company);
-                tmUser.Country      = Encoder.XmlEncode(user.Country);
-                tmUser.State        = Encoder.XmlEncode(user.State);
+                tmUser.EMail        = user.Email;     //Encoder.XmlEncode(user.Email);    // these encodings should now be enfored on TBOT (and the user does not see them)
+                tmUser.UserName     = user.UserName;  //Encoder.XmlEncode(user.UserName); // they were causing double encoding isues on the new TBOT editor
+                tmUser.FirstName    = user.FirstName; //Encoder.XmlEncode(user.FirstName);
+                tmUser.LastName     = user.LastName;  //Encoder.XmlEncode(user.LastName);
+                tmUser.Title        = user.Title;     //Encoder.XmlEncode(user.Title);
+                tmUser.Company      = user.Company;   //Encoder.XmlEncode(user.Company);
+                tmUser.Country      = user.Country;   //Encoder.XmlEncode(user.Country);
+                tmUser.State        = user.State;     //Encoder.XmlEncode(user.State);
                 tmUser.UserTags     = user.UserTags;
                 tmUser.GroupID      = user.GroupID > -1 ? user.GroupID : tmUser.GroupID;
                 tmUser.AccountStatus.ExpirationDate      = user.ExpirationDate;
