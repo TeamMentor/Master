@@ -100,7 +100,7 @@ namespace TeamMentor.CoreLib
             var userActivities = UserActivities.Current;
             if (userActivities.notNull())
             {
-                   var userActivity = userActivities.newUserActivity("TBot",action,detail);
+                var userActivity = userActivities.newUserActivity("TBot",action,detail);
                 return userActivities.logUserActivity(userActivity, null);                                                
             }
             return null;

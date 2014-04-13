@@ -46,13 +46,17 @@ namespace TeamMentor.CoreLib
 
 		//Admin: User Management				
 						
-		[OperationContract] [WebGet	  (UriTemplate = "/user/{nameOrId}"			)]					TM_User		user(string nameOrId);
-        [OperationContract] [WebGet	  (UriTemplate = "/user/{domain}/{name}"	)]					TM_User		user_inDomain(string domain, string name);
-        [OperationContract] [WebInvoke(UriTemplate = "/user", Method = "PUT"    )]		            bool		user_Save(TM_User user);
+		[OperationContract] [WebGet	  (UriTemplate = "/user/{nameOrId}"			)]					TM_User		 user(string nameOrId);
+        [OperationContract] [WebGet	  (UriTemplate = "/user/{domain}/{name}"	)]					TM_User		 user_inDomain(string domain, string name);
+        [OperationContract] [WebInvoke(UriTemplate = "/user", Method = "PUT"    )]		            bool		 user_Save  (TM_User user);
+        [OperationContract] [WebInvoke(UriTemplate = "/user/{userId}"  , Method = "DELETE")]		bool		 user_Delete(string userId);
+        [OperationContract] [WebInvoke(UriTemplate = "/user/new/verify", Method = "PUT"   )]		List<string> user_Verify(NewUser newUser);
+        [OperationContract] [WebInvoke(UriTemplate = "/user/new/create", Method = "PUT"   )]		int		     user_Create(NewUser newUser);        
+        
 		//[OperationContract] [WebGet	  (UriTemplate = "/users/{usersIds}"	)]					List<TM_User>	users(string usersIds);
 		[OperationContract] [WebGet	  (UriTemplate = "/users"				    )]					List<TM_User>	users();
-        [OperationContract] [WebInvoke(UriTemplate = "/users/create", Method = "POST", BodyStyle = WebMessageBodyStyle.Wrapped)]       string CreateCSVUsers(String payload);
-        [OperationContract] [WebInvoke(UriTemplate = "/users/verify", Method = "POST", BodyStyle = WebMessageBodyStyle.Wrapped)]       string VerifyUserData(String payload);
+        [OperationContract] [WebInvoke(UriTemplate = "/users/create" , Method = "POST", BodyStyle = WebMessageBodyStyle.Wrapped)]       string CreateCSVUsers(String payload);
+        [OperationContract] [WebInvoke(UriTemplate = "/users/verify" , Method = "POST", BodyStyle = WebMessageBodyStyle.Wrapped)]       string VerifyUserData(String payload);
   
 //these need CRSF protection
 //		[OperationContract] [WebInvoke(UriTemplate = "/user/update"			,	Method = "PUT", ResponseFormat = WebMessageFormat.Json)]	bool		user_Update(TM_User user);

@@ -34,14 +34,30 @@ namespace TeamMentor.CoreLib
 		}
 
         //Admin: User Management
-		[Admin] public int              user_New(TM_User user)
+		[Admin] public int              user_New   (TM_User user)
 		{
 			return TmWebServices.CreateUser(user.newUser());
 		}
-	    [Admin] public bool user_Save(TM_User user)
+	    [Admin] public bool             user_Save  (TM_User user)
 	    {
             return TmWebServices.UpdateTmUser(user);	        
 	    }
+        [Admin] public bool             user_Delete(string userId)
+	    {
+            if (userId.isInt())
+                return TmWebServices.DeleteUser(userId.toInt());
+            return false;
+	    }
+        [Admin] public List<string>             user_Verify(NewUser newUser)
+	    {            
+            return TmWebServices.CreateUser_Validate(newUser);
+	    }
+        [Admin] public int                      user_Create(NewUser newUser)
+	    {            
+            return TmWebServices.CreateUser(newUser);                                
+	    }
+
+        
 	    [Admin] public TM_User			user(string userNameOrId    )
 		{            
 		    var user = TmWebServices.GetUser_byName(userNameOrId);      // need to this one first in case the username is an int

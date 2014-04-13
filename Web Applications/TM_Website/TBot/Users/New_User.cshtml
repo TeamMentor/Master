@@ -1,0 +1,160 @@
+﻿
+<script type="text/javascript">
+    var tbot = angular.module("tbot");
+    
+    tbot.controller("TMUser", function($scope,$http, $window)
+        {               
+            $("#txtUserName").focus();	
+
+            $scope.verifyAndCreateUser = function()
+                {
+                                    
+                    $scope.result_Info  = "Verifying user details";                
+                    $scope.result_Error = "";
+                    $scope.result_Ok = "";
+                    var serviceUrl = "/rest/user/new/verify";                    
+                    $http.put(serviceUrl, $scope.newUser)
+                         .success(function(data)
+				            {             
+                                $scope.result_Info  = "";
+                                if (data.length>0)
+                                    $scope.result_Error  = data;
+                                else                                                                    
+                                    $scope.createUser();
+                            })
+                         .error(function(data)
+				            {
+                                $scope.result_Error  = "error: " + data;
+                            });                                
+                };
+            
+            $scope.createUser = function()
+                {
+                    $scope.result_Info  = "Creating user";                                        
+                    var serviceUrl = "/rest/user/new/create";
+                    $http.put(serviceUrl, $scope.newUser)
+                         .success(function(userId)
+				            {                                              
+                                $scope.result_Info  = "";
+                                if (userId < 1)
+                                    $scope.result_Error = "Failed to create user";
+                                else            
+                                {
+                                    $scope.userCreated  = true;
+                                    $scope.result_Ok    = "User created with UserID: " + userId +". Redirecting to User Edit page";
+                                    $scope.redirectToNewUser();
+                                }
+                            })
+                         .error(function(data)
+				            {
+                                $scope.result_Error  = "error: " + data;
+                            });
+                };
+            
+            
+            $scope.redirectToNewUser = function()
+                {
+                    document.location = "User_Edit?"+ $scope.newUser.Username;    
+                };
+            
+            var randomString = function()
+                {
+                    return Math.random().toString(36).substr(2, 15);
+                };
+            
+            $scope.fillRandomData = function()
+                {
+                    $scope.newUser.Username = randomString();
+                    $scope.newUser.Password = "!!123" + randomString();
+                    $scope.newUser.Email    = randomString() + "@@" + randomString() + ".abc";
+                };
+     
+
+                                     
+            $scope.result_Info       = "";
+            $scope.result_Ok         = "";
+            $scope.result_Error      = "";
+            
+            $scope.newUser = {};
+            
+           // $scope.fillRandomData();
+        });
+
+</script>
+
+<style>
+    .form-group
+        {
+            margin-top    : 5px;
+            margin-bottom : 5px;
+        }
+       
+</style>
+<div ng-controller="TMUser"> 
+  
+    <h4>New User</h4>
+    
+    <p>Only the required fields are shown.</p>
+    <p>After the user is created you will be redirected to the user edit page (where you will be able to edit the other details)</p>
+    <p>If you want to create a random user with random details <a href="" ng-click="fillRandomData()">click here</a></p>
+    <br />
+    
+    <form name="myForm" class="form-horizontal" role="form">      <!-- change this form to be a directive-->        
+
+        <div class="form-group">
+            <label  class="col-sm-2 control-label">UserName</label>
+            <div class="col-sm-6">
+                <input class="form-control input-small" type="text" ng-model="newUser.Username" required  id="txtUserName"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label  class="col-sm-2 control-label">Password</label>
+            <div class="col-sm-6">
+                <input class="form-control input-small" type="password" ng-model="newUser.Password" required  />
+            </div>
+        </div>
+        <!-- Email, FirstName, LastName, Company, Job Title, Country, State-->
+        <div class="form-group">
+            <label  class="col-sm-2 control-label">Email</label>
+            <div class="col-sm-6">
+                <input class="form-control" type="email" id="txtEmail" name="txtEmail" ng-model="newUser.Email" required/>
+            </div>
+            <div class="col-sm-3">
+                <span style="color:red;font-weight:bold" ng-show="dataLoaded && myForm.txtEmail.$error.required">This field is required!</span>
+                <span style="color:red;font-weight:bold" ng-show="myForm.txtEmail.$error.email">Email is invalid!</span>
+            </div>
+        </div>
+                    
+      
+        <!-- Create User Button-->
+        <br />
+        <div class="form-group" ng-hide="userCreated">
+            <div class="col-sm-offset-2 col-sm-2">                                  
+                <button class="btn btn-primary col-sm-12" ng-disabled="myForm.$invalid" ng-click="verifyAndCreateUser()">
+                    Create User
+                </button>                                                                             
+            </div>                        
+        </div>
+
+        <!-- Ok, Info and Error messages-->
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-4" ng-hide="result_Ok =='' ">
+                <div class="alert alert-success alert-small">
+                    {{result_Ok}}
+                </div>
+            </div>    
+            <div class="col-sm-offset-2 col-sm-4" ng-hide="result_Info =='' ">
+                <div class="alert alert-warning alert-small">
+                    {{result_Info}}
+                </div>
+            </div>    
+            <div class="col-sm-offset-2 col-sm-4" ng-hide="result_Error =='' ">                                  
+                <div class="alert alert-danger alert-small">
+                    {{result_Error}}
+                </div>
+            </div>    
+        </div>
+    </form> 
+    <br/>                
+</div>
+

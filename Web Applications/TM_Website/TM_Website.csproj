@@ -745,6 +745,8 @@
     <Content Include="TBot\Views\Firebase\Firebase_Offline_RequestUrls.cshtml" />
     <Content Include="TBot\Users\Import\Users_in_CSV.cshtml" />
     <Content Include="TBot\Users\Import\User_Import_CSV.cshtml" />
+    <Content Include="TBot\Views\Users\Password_Reset_Page.cshtml" />
+    <Content Include="TBot\Users\New_User.cshtml" />
     <None Include="TBot_Monitor\lib\bootstrap\fonts\glyphicons-halflings-regular.eot" />
     <None Include="TBot_Monitor\lib\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
     <None Include="TBot_Monitor\lib\bootstrap\fonts\glyphicons-halflings-regular.woff" />
