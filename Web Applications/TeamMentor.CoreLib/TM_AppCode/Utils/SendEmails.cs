@@ -198,8 +198,8 @@ namespace TeamMentor.CoreLib
                               tmUser.LastName,
                               tmUser.Title,
                               tmUser.Stats.CreationDate.ToLongDateString());
-
-            SendEmailToTM(subject, tmMessage);
+            if(TMConfig.Current.emailAdminOnNewUsers())
+                SendEmailToTM(subject, tmMessage);
             SendWelcomeEmailToUser(tmUser);
         }
 
@@ -245,6 +245,7 @@ Please click on this link if you want to approve it: {8}
                               enableUserUrl);
 
             //userMessage = "(sent to: {0})\n\n{1}".format(tmUser.EMail, userMessage);
+            
             SendEmailToTM("New TeamMentor Account Request", tmMessage);
             
         }

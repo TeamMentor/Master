@@ -30,7 +30,7 @@ namespace TeamMentor.CoreLib
                 UserDataPath                = "User_Data";
                 LibrariesUploadedFiles      = "LibrariesUploadedFiles";
                 Enable304Redirects          = true;
-                EnableGZipForWebServices    = true;                
+                EnableGZipForWebServices    = true;                  
             }
         }
         public class TMSecurity_Config
@@ -48,6 +48,7 @@ namespace TeamMentor.CoreLib
             public string 		Default_AdminUserName        { get; set; }
             public string 		Default_AdminPassword        { get; set; }	
             public string 		Default_AdminEmail           { get; set; }
+            public bool 		EmailAdmin_On_NewUsers       { get; set; }
 
             public TMSecurity_Config()                                          //need to do this here so that they survive serialization
             {
@@ -60,6 +61,7 @@ namespace TeamMentor.CoreLib
                 Default_AdminUserName        = "admin";
                 Default_AdminPassword        = "!!tmadmin";
                 Default_AdminEmail           = "TM_alerts@securityinnovation.com";
+                EmailAdmin_On_NewUsers       = true; 
             }
         }
 

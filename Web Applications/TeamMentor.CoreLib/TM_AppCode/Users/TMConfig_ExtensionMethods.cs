@@ -108,9 +108,18 @@ namespace TeamMentor.CoreLib
 
         public static bool  newAccountsEnabled(this TMConfig tmConfig)
         {
-            return tmConfig.TMSecurity.NewAccounts_Enabled;
+            if (tmConfig.TMSecurity.notNull())
+                return tmConfig.TMSecurity.NewAccounts_Enabled;
+            return false;
         }
 
+        public static bool  emailAdminOnNewUsers(this TMConfig tmConfig)
+        {
+            if (tmConfig.TMSecurity.notNull())
+                return tmConfig.TMSecurity.EmailAdmin_On_NewUsers;
+            return false;
+        }
+        
         
     }
 }

@@ -92,6 +92,10 @@ namespace TeamMentor.CoreLib
             var xmlDatabase = TM_Xml_Database.Current;
             var userData = xmlDatabase.UserData;
             var errorMessage = string.Empty;
+
+            var emailAdmin_On_NewUsers_originalValue = TMConfig.Current.TMSecurity.EmailAdmin_On_NewUsers;
+            TMConfig.Current.TMSecurity.EmailAdmin_On_NewUsers = false;
+
             foreach (var user in users)
             {
                 var rawData = user.split(",");
@@ -115,7 +119,7 @@ namespace TeamMentor.CoreLib
                     errorMessage = string.Format("Username {0} already exist.", userName);
                     break;
                 }
-                var userId = userData.newUser(userName, password);
+                var userId = userData.newUser(userName, password,email);
                 DateTime outputDate;
                 DateTime.TryParse(expiryDate, out outputDate);
                 if (userId > 0)
@@ -128,8 +132,12 @@ namespace TeamMentor.CoreLib
                                           int.Parse(role));
                 }
                 else
+                {
+                    TMConfig.Current.TMSecurity.EmailAdmin_On_NewUsers = emailAdmin_On_NewUsers_originalValue;
                     throw new Exception(String.Format("Failed to create user {0}", userName));
+                }
             }
+            TMConfig.Current.TMSecurity.EmailAdmin_On_NewUsers = emailAdmin_On_NewUsers_originalValue;
             return (String.IsNullOrEmpty(errorMessage) ? "Success" : errorMessage);
         }
 

@@ -107,8 +107,8 @@
                             restrict    : 'E',
                             scope       : { tmModel : "=" , tmName : "="},
                             template    : ' <div class="form-group">                                       ' +
-                                          '     <label  class="col-sm-5 control-label">{{tmName}}</label>  ' +
-                                          '      <div class="col-sm-7">                                    ' +
+                                          '     <label  class="col-sm-6 control-label">{{tmName}}</label>  ' +
+                                          '      <div class="col-sm-6">                                    ' +
                                           '          <input class="form-control" type="text"               ' +
                                           '                 ng-model="tmModel"/>                           ' +
                                           '      </div>                                                    ' +       
@@ -121,8 +121,8 @@
                             restrict    : 'E',
                             scope       : { tmModel : "=" , tmName : "="},
                             template    : ' <div class="form-group">                                        ' +
-                                          '     <label  class="col-sm-5 control-label">{{tmName}}</label>   ' +
-                                          '     <div class="col-sm-7">                                      ' +
+                                          '     <label  class="col-sm-6 control-label">{{tmName}}</label>   ' +
+                                          '     <div class="col-sm-6">                                      ' +
                                           '         <div class="checkbox">                                  ' +                                          
                                           '                 <input type="checkbox" ng-model="tmModel"/>     ' +                                          
                                           '         </div>                                                  ' +
@@ -170,7 +170,7 @@
                         <tm-input    tm-name="'Libraries Uploaded Files'"         tm-model="tmConfig.TMSetup.LibrariesUploadedFiles"></tm-input>
                         <tm-checkbox tm-name="'Use AppData Folder'"               tm-model="tmConfig.TMSetup.UseAppDataFolder"></tm-checkbox>
                         <tm-checkbox tm-name="'Only Load UserData'"               tm-model="tmConfig.TMSetup.OnlyLoadUserData"></tm-checkbox>
-                        <tm-checkbox tm-name="'Enable GZip for Web Services'"       tm-model="tmConfig.TMSetup.EnableGZipForWebServices"></tm-checkbox>
+                        <tm-checkbox tm-name="'Enable GZip for Web Services'"     tm-model="tmConfig.TMSetup.EnableGZipForWebServices"></tm-checkbox>
                         <tm-checkbox tm-name="'Enable 304 Redirects'"             tm-model="tmConfig.TMSetup.Enable304Redirects"></tm-checkbox>
                     </div>
                 </div>
@@ -182,21 +182,22 @@
                     <div class="panel-heading">
                         <h3 class="panel-title"><b>TM Security</b></h3>
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body">                        
+                        <tm-checkbox tm-name="'Show Content to Anonymous Users'"     tm-model="tmConfig.TMSecurity.Show_ContentToAnonymousUsers"></tm-checkbox>                  
+                        <tm-checkbox tm-name="'Show Library to Anonymous Users'"     tm-model="tmConfig.TMSecurity.Show_LibraryToAnonymousUsers"></tm-checkbox>                  
+                        <tm-checkbox tm-name="'SSL Redirect Http to Https'"          tm-model="tmConfig.TMSecurity.SSL_RedirectHttpToHttps"></tm-checkbox>                  
+                        <tm-checkbox tm-name="'New Accounts Enabled'"                tm-model="tmConfig.TMSecurity.NewAccounts_Enabled"></tm-checkbox>                                                                  
+                        <tm-checkbox tm-name="'New Accounts Don\'t Expire'"          tm-model="tmConfig.TMSecurity.NewAccounts_DontExpire"></tm-checkbox>
+                        <tm-checkbox tm-name="'Eval Accounts Enabled'"               tm-model="tmConfig.TMSecurity.EvalAccounts_Enabled"></tm-checkbox>
+                        <tm-input    tm-name="'Eval Accounts Days'"                  tm-model="tmConfig.TMSecurity.EvalAccounts_Days"></tm-input>
+                        <tm-checkbox tm-name="'REST Allow Cross-Domain Access'"      tm-model="tmConfig.TMSecurity.REST_AllowCrossDomainAccess"></tm-checkbox>
+                        <tm-checkbox tm-name="'Single Sign-on Enabled'"              tm-model="tmConfig.TMSecurity.SingleSignOn_Enabled"></tm-checkbox>
+                        <tm-checkbox tm-name="'Sanitize Html Content'"               tm-model="tmConfig.TMSecurity.Sanitize_HtmlContent"></tm-checkbox>
+                        <tm-input    tm-name="'Default Admin: UserName'"             tm-model="tmConfig.TMSecurity.Default_AdminUserName"></tm-input>
+                        <tm-input    tm-name="'Default Admin: Password'"             tm-model="tmConfig.TMSecurity.Default_AdminPassword"></tm-input>
+                        <tm-input    tm-name="'Default Admin: Email'"                tm-model="tmConfig.TMSecurity.Default_AdminEmail"></tm-input>
+                        <tm-checkbox tm-name="'Email Admin:On NewUsers'"             tm-model="tmConfig.TMSecurity.EmailAdmin_On_NewUsers"></tm-checkbox>
                         
-                        <tm-checkbox tm-name="'Show_ContentToAnonymousUsers'"       tm-model="tmConfig.TMSecurity.Show_ContentToAnonymousUsers"></tm-checkbox>                  
-                        <tm-checkbox tm-name="'Show_LibraryToAnonymousUsers'"       tm-model="tmConfig.TMSecurity.Show_LibraryToAnonymousUsers"></tm-checkbox>                  
-                        <tm-checkbox tm-name="'SSL_RedirectHttpToHttps'"            tm-model="tmConfig.TMSecurity.SSL_RedirectHttpToHttps"></tm-checkbox>                  
-                        <tm-checkbox tm-name="'NewAccounts_Enabled'"                tm-model="tmConfig.TMSecurity.NewAccounts_Enabled"></tm-checkbox>                                                                  
-                        <tm-checkbox tm-name="'NewAccounts_DontExpire'"             tm-model="tmConfig.TMSecurity.NewAccounts_DontExpire"></tm-checkbox>
-                        <tm-checkbox tm-name="'EvalAccounts_Enabled'"               tm-model="tmConfig.TMSecurity.EvalAccounts_Enabled"></tm-checkbox>
-                        <tm-input    tm-name="'EvalAccounts_Days'"                  tm-model="tmConfig.TMSecurity.EvalAccounts_Days"></tm-input>
-                        <tm-checkbox tm-name="'REST_AllowCrossDomainAccess'"        tm-model="tmConfig.TMSecurity.REST_AllowCrossDomainAccess"></tm-checkbox>
-                        <tm-checkbox tm-name="'SingleSignOn_Enabled'"               tm-model="tmConfig.TMSecurity.SingleSignOn_Enabled"></tm-checkbox>
-                        <tm-checkbox tm-name="'Sanitize_HtmlContent'"               tm-model="tmConfig.TMSecurity.Sanitize_HtmlContent"></tm-checkbox>
-                        <tm-input    tm-name="'Default_AdminUserName'"              tm-model="tmConfig.TMSecurity.Default_AdminUserName"></tm-input>
-                        <tm-input    tm-name="'Default_AdminPassword'"              tm-model="tmConfig.TMSecurity.Default_AdminPassword"></tm-input>
-                        <tm-input    tm-name="'Default_AdminEmail'"                 tm-model="tmConfig.TMSecurity.Default_AdminEmail"></tm-input>
                     </div>
                 </div>
             </div>
@@ -239,9 +240,9 @@
                         <h3 class="panel-title"><b>OnInstallation</b></h3>
                     </div>
                     <div class="panel-body">                        
-                        <tm-checkbox tm-name="'Force Admin Password Reset'"          tm-model="tmConfig.OnInstallation.ForceAdminPasswordReset"></tm-checkbox>
-                        <tm-input    tm-name="'DefaultLibraryToInstall_Name'"     tm-model="tmConfig.OnInstallation.DefaultLibraryToInstall_Name"></tm-input>
-                        <tm-input    tm-name="'DefaultLibraryToInstall_Location'" tm-model="tmConfig.OnInstallation.DefaultLibraryToInstall_Location"></tm-input>
+                        <tm-checkbox tm-name="'Force Admin Password Reset'"           tm-model="tmConfig.OnInstallation.ForceAdminPasswordReset"></tm-checkbox>
+                        <tm-input    tm-name="'Default Library to Install: Name'"     tm-model="tmConfig.OnInstallation.DefaultLibraryToInstall_Name"></tm-input>
+                        <tm-input    tm-name="'Default Library to Install: Location'" tm-model="tmConfig.OnInstallation.DefaultLibraryToInstall_Location"></tm-input>
                     </div>
                 </div>
             </div>

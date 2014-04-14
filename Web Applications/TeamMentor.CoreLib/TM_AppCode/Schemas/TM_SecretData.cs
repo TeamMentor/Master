@@ -10,7 +10,7 @@ namespace TeamMentor.CoreLib
         public string           UserName     { get; set; }
         public string           Password     { get; set; }
         public string           Default_From { get; set; }
-        public string           Default_To   { get; set; }
+        public string           Default_To   { get; set; }       
 
         public TM_SMTPConfig()
         {
