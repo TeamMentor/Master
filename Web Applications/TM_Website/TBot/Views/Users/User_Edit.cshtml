@@ -6,7 +6,7 @@
 <script type="text/javascript">
     var tbot = angular.module("tbot");
     
-    tbot.controller("TMUser", function($scope,$http, $timeout)
+    tbot.controller("TMUser", function($scope,$http)
         {   
             scope = $scope;
             $scope.dataLoaded = false;
@@ -167,7 +167,7 @@
                 <div class="form-group">
                     <label  class="col-sm-2 control-label">UserName</label>
                     <div class="col-sm-6">
-                        <input class="form-control input-small" type="text" ng-model="userData.UserName" required ng-disabled="true"/>
+                        <input class="form-control" type="text" ng-model="userData.UserName" required ng-disabled="true"/>
                     </div>
                 </div>
                 <!-- Email, FirstName, LastName, Company, Job Title, Country, State-->

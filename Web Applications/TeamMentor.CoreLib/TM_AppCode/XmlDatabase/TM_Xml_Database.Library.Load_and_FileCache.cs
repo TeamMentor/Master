@@ -23,8 +23,11 @@ namespace TeamMentor.CoreLib
                         var nGit = libraryPath.git_Open();
                         try
                         {
-                            nGit.pull();                            
-                            nGit.push();
+                            if(MiscUtils.online())
+                            {
+                                nGit.pull();                            
+                                nGit.push();
+                            }                            
                         }
                         catch (Exception ex)
                         {

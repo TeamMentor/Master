@@ -1,7 +1,66 @@
 ﻿
 <h4>Restart TM Server</h4>
 
-<p>If you want to restart the current TM server click on the button below
-</p>
+<script type="text/javascript">
+    var tbot = angular.module("tbot");
+    
+    tbot.controller("TMRestart", function($scope,$http, $timeout)
+        {   
+            $scope.phase = "show restart button";
+            
+            $scope.restartServer = function()
+                {
+                    $scope.phase = 'stop server';
+                    $timeout($scope.stopServer, 1000);          // so that the user can read the first message 
+                };
+            $scope.stopServer = function()
+                {                    
+                    $http.get("/rest/admin/restart")
+                         .success($scope.startServer)
+                         .error  ($scope.errorRestarting);                    
+                };
+            
+            $scope.startServer = function()
+                {
+                    $scope.phase = 'start server';
+                    $http.get("/rest/version")
+                         .success($scope.restartComplete)
+                         .error  ($scope.errorRestarting);                                        
+                };
+            
+            $scope.restartComplete = function()
+                {
+                    $scope.phase = 'restart complete';                    
+                };
+            $scope.errorRestarting = function()
+                {
+                    $scope.phase = 'error restarting';                    
+                };
+        });
+</script>
 
-<a class="btn btn-danger" href="/rest/admin/restart">restart</a>
+<div ng-controller="TMRestart"> 
+    <div ng-show = "phase === 'show restart button' ">
+        
+        <p>If you want to restart the current TM server click on the button below
+        </p>
+        <p>This will make TeamMentor unavailable for a couple seconds.</p>
+
+        <a class="btn btn-danger" ng-click="restartServer()">restart</a> 
+    </div>
+    <div ng-show = "phase === 'stop server' ">
+        <div class="alert alert-warning"><b>Stopping Server</b> By calling the ShutdownAppDomain method of the HttpRuntime object</div>
+    </div>
+    <div ng-show = "phase === 'start server'">
+        <div class="alert alert-warning"><b>Server Stopped</b> Opening up a page to trigger TeamMentor startup sequence</div>
+    </div>
+    <div ng-show = "phase === 'restart complete' ">
+        <div class="alert alert-success">
+            <b>Restart Complete</b> You can now access a fresh instance of TeamMentor :)
+        </div>
+        <p>You can now go back to <a href="/TBot">Tbot</a> or the main <a href="/TeamMentor">TeamMentor</a> homepage.</p>
+    </div>
+    <div ng-show = "phase === 'error restarting' ">
+        <div class="alert alert-danger"><b>Error Restarting</b> Please check the logs to see what happened</div>        
+    </div>
+</div>

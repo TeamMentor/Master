@@ -7,7 +7,7 @@ namespace TeamMentor.CoreLib
         public string Site              { get; set; }
         public string AuthToken         { get; set; }
         public string RootArea          { get; set; }        
-        public string RequestUrls_Match { get; set; }
+//        public string RequestUrls_Match { get; set; }
         public bool   Log_RequestUrls   { get; set; }        
         public bool   Log_Activities    { get; set; }        
         public bool   Log_DebugMsgs     { get; set; }
@@ -19,7 +19,7 @@ namespace TeamMentor.CoreLib
             Site                = "";
             AuthToken           = "";
             RootArea            = "";
-            RequestUrls_Match   = "";
+//            RequestUrls_Match   = "";
             Log_RequestUrls     = false;
             Log_Activities      = true; 
             Log_DebugMsgs       = true;
