@@ -12,6 +12,7 @@ namespace TeamMentor.CoreLib
     {		    
         public static TM_Xml_Database   Current               { get; set; }         
         public static bool              SkipServerOnlineCheck { get; set; }        
+        public object			        setupLock             = new object();
 
         public bool			            UsingFileStorage	  { get; set; }         //config                   
         public bool                     ServerOnline          { get; set; }         
@@ -35,26 +36,26 @@ namespace TeamMentor.CoreLib
         }
         public TM_Xml_Database          (bool useFileStorage)
         {   
-            Current = this;            
-            try
-            {                
-             //   "[TM_Xml_Database] Setup".info();
-                O2Thread.mtaThread(CheckIfServerIsOnline);
-                lock (this)
-                {
+            Current = this;             
+            lock (setupLock)
+            {
+                try
+                {                
+                        //   "[TM_Xml_Database] Setup".info();
+                    O2Thread.mtaThread(CheckIfServerIsOnline);
+                
                     UsingFileStorage = useFileStorage;                
                     Setup();
                         
-                    this.setupThread_WaitForComplete();
+                    this.setupThread_WaitForComplete();                        
+                }
+                catch (Exception ex)
+                {
+                    ex.logWithStackTrace("[in TM_Xml_Database.ctor]");
+                    if (TM_StartUp.Current.notNull())                       //will happen when TM_Xml_Database ctor is called by an user with no admin privs
+                        TM_StartUp.Current.TrackingApplication.saveLog();
                 }
             }
-            catch (Exception ex)
-            {
-                ex.logWithStackTrace("[in TM_Xml_Database.ctor]");
-                if (TM_StartUp.Current.notNull())                       //will happen when TM_Xml_Database ctor is called by an user with no admin privs
-                    TM_StartUp.Current.TrackingApplication.saveLog();
-            }
-            
         }
 
         [Admin] public TM_Xml_Database ResetDatabase()

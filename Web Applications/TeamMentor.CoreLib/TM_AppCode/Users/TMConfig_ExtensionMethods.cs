@@ -39,7 +39,7 @@ namespace TeamMentor.CoreLib
 
             tmConfig.OnInstallation = new TMConfig.OnInstallation_Config
                 {
-                    ForceAdminPasswordReset          = false,
+                    ForceDefaultAdminPassword          = false,
                     DefaultLibraryToInstall_Name     = "",
                     DefaultLibraryToInstall_Location = ""
                 };
@@ -108,18 +108,23 @@ namespace TeamMentor.CoreLib
 
         public static bool  newAccountsEnabled(this TMConfig tmConfig)
         {
-            if (tmConfig.TMSecurity.notNull())
+            if (tmConfig.notNull() && tmConfig.TMSecurity.notNull())
                 return tmConfig.TMSecurity.NewAccounts_Enabled;
             return false;
         }
 
         public static bool  emailAdminOnNewUsers(this TMConfig tmConfig)
         {
-            if (tmConfig.TMSecurity.notNull())
+            if (tmConfig.notNull() && tmConfig.TMSecurity.notNull())
                 return tmConfig.TMSecurity.EmailAdmin_On_NewUsers;
             return false;
         }
-        
+        public static bool  windowsAuth(this TMConfig tmConfig)
+        {
+            if (tmConfig.notNull() && tmConfig.TMSecurity.notNull())
+                return tmConfig.WindowsAuthentication.Enabled;
+            return false;
+        }
         
     }
 }

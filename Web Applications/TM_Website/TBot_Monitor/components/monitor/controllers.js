@@ -78,7 +78,7 @@ project.controller('ActivitiesCtrl', function($scope, firebase_Activities)
         if (activity.Action === "User Login")
             return "success";
         if (activity.Action === "Access Denied" || activity.Action === "404" ||  activity.Action === "Login Fail" ||
-            activity.Action === "Account Expired")
+            activity.Action === "Account Expired" || activity.Action ==="SessionId Not Accepted")
         {
             return "danger";
         }

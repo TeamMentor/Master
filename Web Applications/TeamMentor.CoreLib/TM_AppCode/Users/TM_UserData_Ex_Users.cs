@@ -20,9 +20,9 @@ namespace TeamMentor.CoreLib
                 
                 if (adminUser.notNull())
                 {
-                    if (adminUser.SecretData.PasswordHash.notValid() || tmConfig.OnInstallation.ForceAdminPasswordReset)
+                    if (adminUser.SecretData.PasswordHash.notValid() || tmConfig.OnInstallation.ForceDefaultAdminPassword)
                     {
-                        "[createDefaultAdminUser] reseting password since passwordHash was not valid and ForceAdminPasswordReset was set".error();
+                        "[createDefaultAdminUser] reseting password since passwordHash was not valid and ForceDefaultAdminPassword was set".error();
                         adminUser.SecretData.PasswordHash = adminUser.createPasswordHash(defaultAdminUser_Pwd);                                                
                         adminUser.saveTmUser();
                     }
@@ -118,8 +118,8 @@ namespace TeamMentor.CoreLib
             tmUser.SecretData.PasswordHash = tmUser.createPasswordHash(password);            
             userData.TMUsers.Add(tmUser);            
         
-            //save it
-            SendEmails.SendNewUserEmails("New user created: {0}".format(tmUser.UserName), tmUser);
+            if (TMConfig.Current.windowsAuth().isFalse())                
+                SendEmails.SendNewUserEmails("New user created: {0}".format(tmUser.UserName), tmUser);
             tmUser.logUserActivity("New User",  "");
             tmUser.saveTmUser();            
                     

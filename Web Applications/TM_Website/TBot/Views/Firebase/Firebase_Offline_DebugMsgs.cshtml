@@ -4,6 +4,16 @@
 @using TeamMentor.CoreLib
 
 @{
+    if (Logger_Firebase.Current.isNull())
+    {
+        @: <h4>Firebase Offline Data</h4>
+        @: <div class="alert alert-danger">
+        @:     <b>Firebase Not configured</b>
+        @: </div>
+        return;
+    }
+}
+@{
         
     
     var debugMessages = Logger_Firebase.Current.apiFirebase.OfflineQueue

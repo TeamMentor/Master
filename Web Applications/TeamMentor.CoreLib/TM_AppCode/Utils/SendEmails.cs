@@ -4,6 +4,7 @@ using System.Net.Mail;
 using System.Net.Mime;
 using FluentSharp.CoreLib;
 using FluentSharp.CoreLib.API;
+using FluentSharp.WinForms;
 
 namespace TeamMentor.CoreLib
 {    
@@ -221,7 +222,9 @@ namespace TeamMentor.CoreLib
             SendEmailToEmail(tmUser.EMail, subj, userMessage);
 
             var enableUserUrl = "{0}/aspx_pages/EnableUser.aspx?token={1}".format(SendEmails.TM_Server_URL, tmUser.enableUser_Token());
-            var tmMessage =
+
+            var userEditUrl   = "{0}/rest/tbot/run/User_Edit?{1}".format(SendEmails.TM_Server_URL, tmUser.UserName.urlEncode());
+            var tmMessage    =
 @"Hello TeamMentor admin, the following new User request as been received:
 
     UserId: {0}
@@ -234,6 +237,8 @@ namespace TeamMentor.CoreLib
     Creation Date: {7}
 
 Please click on this link if you want to approve it: {8}
+
+If you want to see this user details, please visit: {9}
 ".format(tmUser.UserID, 
                               tmUser.UserName,
                               tmUser.Company,
@@ -242,7 +247,8 @@ Please click on this link if you want to approve it: {8}
                               tmUser.LastName,
                               tmUser.Title,
                               tmUser.Stats.CreationDate.ToLongDateString(),
-                              enableUserUrl);
+                              enableUserUrl,
+                              userEditUrl);
 
             //userMessage = "(sent to: {0})\n\n{1}".format(tmUser.EMail, userMessage);
             

@@ -747,6 +747,7 @@
     <Content Include="TBot\Users\Import\User_Import_CSV.cshtml" />
     <Content Include="TBot\Views\Users\Password_Reset_Page.cshtml" />
     <Content Include="TBot\Users\New_User.cshtml" />
+    <Content Include="TBot\Users\User_Stats\Users_Mapped_by_UserTags.cshtml" />
     <None Include="TBot_Monitor\lib\bootstrap\fonts\glyphicons-halflings-regular.eot" />
     <None Include="TBot_Monitor\lib\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
     <None Include="TBot_Monitor\lib\bootstrap\fonts\glyphicons-halflings-regular.woff" />

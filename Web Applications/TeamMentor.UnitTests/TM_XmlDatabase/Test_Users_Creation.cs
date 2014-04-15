@@ -32,13 +32,13 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             var userId2      = userData.createDefaultAdminUser();
             Assert.AreEqual (userId,userId2);
 
-            //when tmConfig.OnInstallation.ForceAdminPasswordReset
+            //when tmConfig.OnInstallation.ForceDefaultAdminPassword
             var otherPasswordHash = tmUser.createPasswordHash("123");
             tmUser.SecretData.PasswordHash = otherPasswordHash;
             userData.createDefaultAdminUser();
             Assert.AreEqual(otherPasswordHash, tmUser.SecretData.PasswordHash);
             Assert.AreNotEqual(otherPasswordHash, passwordHash);
-            tmConfig.OnInstallation.ForceAdminPasswordReset = true;
+            tmConfig.OnInstallation.ForceDefaultAdminPassword = true;
             userData.createDefaultAdminUser();
             Assert.AreNotEqual(otherPasswordHash, tmUser.SecretData.PasswordHash);
             Assert.AreEqual   (passwordHash     , tmUser.SecretData.PasswordHash);

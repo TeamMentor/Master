@@ -25,7 +25,7 @@ namespace TeamMentor.UnitTests.TM_Website.WebSite
             // ************************************
             SecurityMappings_GET  = new List<SecurityMapping>();
            
-            SecurityMappings_GET.add_Anonymous("admin/reloadCache"          , new object[0]                )
+        /*    SecurityMappings_GET.add_Anonymous("admin/reloadCache"          , new object[0]                )
                                 .add_Anonymous("folders/{0}"                , new object[1] { Guid.Empty } ) //folders/{LIBRARYID}
                                 .add_Anonymous("libraries"                  , new object[0]                )
                                 .add_Anonymous("library/{0}"                , new object[1] { Guid.Empty } ) //REST/library/{NAMEORID}                                
@@ -37,7 +37,7 @@ namespace TeamMentor.UnitTests.TM_Website.WebSite
                                 .add_Anonymous("user/roles"                 , new object[0]                )
                                 .add_Anonymous("sessionId"                  , new object[0]                )
                                 .add_Anonymous("version"                    , new object[0]                ); 
-
+            */
             SecurityMappings_GET.add_Reader   ("article/{0}"                , new object[1] { Guid.Empty } ) //article/{ARTICLEID}
                                 .add_Reader   ("article/html/{0}"           , new object[1] { Guid.Empty } ); // article/html/{ARTICLEID}
 
@@ -129,8 +129,7 @@ namespace TeamMentor.UnitTests.TM_Website.WebSite
                 {   
                     if (loginFunction.notNull())                                                   // we need to login before each invocation since there are GET and POST calls that reset the current user
                     {
-                        Assert.NotNull(loginFunction.invoke().notNull());                                
-                        webServices.Cached_CurrentUser.CSRF_Token = null;                          //simulate the lack of suport for CSRF in REST webservices
+                        Assert.NotNull(loginFunction.invoke().notNull());                                                        
                     }
                 };
             

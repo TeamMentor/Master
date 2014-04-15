@@ -119,7 +119,6 @@
     <Compile Include="TM_AppCode\Schemas\Legacy\guidanceexplorer.cs" />
     <Compile Include="TM_AppCode\Schemas\WhoAmI.cs" />
     <Compile Include="TM_AppCode\XmlDatabase\TM_Xml_Database_ExtensionMethods.cs" />
-    <Content Include="TM_AppCode\Users\SingleSignOn.cs.txt" />
     <Compile Include="TM_AppCode\Authentication\TM_Authentication.cs" />
     <Compile Include="TM_AppCode\Authentication\UserRoleBaseSecurity.cs" />
     <Compile Include="TM_AppCode\Authentication\UserRoles.cs" />

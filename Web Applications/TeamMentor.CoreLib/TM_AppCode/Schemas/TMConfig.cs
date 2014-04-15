@@ -42,8 +42,7 @@ namespace TeamMentor.CoreLib
             public bool         NewAccounts_DontExpire       { get; set; }            
             public bool         EvalAccounts_Enabled         { get; set; }
             public int          EvalAccounts_Days            { get; set; }
-            public bool         REST_AllowCrossDomainAccess  { get; set; }
-            public bool         SingleSignOn_Enabled         { get; set; }            
+            public bool         REST_AllowCrossDomainAccess  { get; set; }                       
             public bool 		Sanitize_HtmlContent         { get; set; }            
             public string 		Default_AdminUserName        { get; set; }
             public string 		Default_AdminPassword        { get; set; }	
@@ -52,7 +51,7 @@ namespace TeamMentor.CoreLib
 
             public TMSecurity_Config()                                          //need to do this here so that they survive serialization
             {
-                Show_LibraryToAnonymousUsers = false;
+                Show_LibraryToAnonymousUsers = true;
                 Show_ContentToAnonymousUsers = false;               
                 SSL_RedirectHttpToHttps      = true;
                 EvalAccounts_Enabled         = true;
@@ -94,13 +93,13 @@ namespace TeamMentor.CoreLib
         }
         public class OnInstallation_Config
         {
-            public bool         ForceAdminPasswordReset			    { get; set; }
+            public bool         ForceDefaultAdminPassword			    { get; set; }
             public string       DefaultLibraryToInstall_Name		{ get; set; }
             public string       DefaultLibraryToInstall_Location	{ get; set; }
 
             public OnInstallation_Config()
             {
-                ForceAdminPasswordReset          = false;
+                ForceDefaultAdminPassword          = false;
                 DefaultLibraryToInstall_Name     = "";
                 DefaultLibraryToInstall_Location = "";
             }

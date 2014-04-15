@@ -157,25 +157,7 @@
     <small></small>
     <form class="form-horizontal">        
         <div class= "row">
-            <!--TMConfig-->
-            <div class="col-sm-6">
-                <div class="panel panel-success">
-                    <div class="panel-heading">
-                        <h3 class="panel-title"><b>TM Setup</b></h3>
-                    </div>
-                    <div class="panel-body">                        
-                        <tm-input    tm-name="'TM Library Data Virtual Path'"   tm-model="tmConfig.TMSetup.TMLibraryDataVirtualPath"></tm-input>
-                        <tm-input    tm-name="'Xml Libraries Path'"               tm-model="tmConfig.TMSetup.XmlLibrariesPath"></tm-input>
-                        <tm-input    tm-name="'User Data Path'"                   tm-model="tmConfig.TMSetup.UserDataPath"></tm-input>
-                        <tm-input    tm-name="'Libraries Uploaded Files'"         tm-model="tmConfig.TMSetup.LibrariesUploadedFiles"></tm-input>
-                        <tm-checkbox tm-name="'Use AppData Folder'"               tm-model="tmConfig.TMSetup.UseAppDataFolder"></tm-checkbox>
-                        <tm-checkbox tm-name="'Only Load UserData'"               tm-model="tmConfig.TMSetup.OnlyLoadUserData"></tm-checkbox>
-                        <tm-checkbox tm-name="'Enable GZip for Web Services'"     tm-model="tmConfig.TMSetup.EnableGZipForWebServices"></tm-checkbox>
-                        <tm-checkbox tm-name="'Enable 304 Redirects'"             tm-model="tmConfig.TMSetup.Enable304Redirects"></tm-checkbox>
-                    </div>
-                </div>
-            </div>
-                 
+            
             <!--TMSecurity-->
             <div class="col-sm-6">
                 <div class="panel panel-success">
@@ -187,39 +169,37 @@
                         <tm-checkbox tm-name="'Show Library to Anonymous Users'"     tm-model="tmConfig.TMSecurity.Show_LibraryToAnonymousUsers"></tm-checkbox>                  
                         <tm-checkbox tm-name="'SSL Redirect Http to Https'"          tm-model="tmConfig.TMSecurity.SSL_RedirectHttpToHttps"></tm-checkbox>                  
                         <tm-checkbox tm-name="'New Accounts Enabled'"                tm-model="tmConfig.TMSecurity.NewAccounts_Enabled"></tm-checkbox>                                                                  
-                        <tm-checkbox tm-name="'New Accounts Don\'t Expire'"          tm-model="tmConfig.TMSecurity.NewAccounts_DontExpire"></tm-checkbox>
+                        <tm-checkbox tm-name="'New Accounts Don\'t Expire'"          tm-model="tmConfig.TMSecurity.NewAccounts_DontExpire"></tm-checkbox>                        
                         <tm-checkbox tm-name="'Eval Accounts Enabled'"               tm-model="tmConfig.TMSecurity.EvalAccounts_Enabled"></tm-checkbox>
-                        <tm-input    tm-name="'Eval Accounts Days'"                  tm-model="tmConfig.TMSecurity.EvalAccounts_Days"></tm-input>
-                        <tm-checkbox tm-name="'REST Allow Cross-Domain Access'"      tm-model="tmConfig.TMSecurity.REST_AllowCrossDomainAccess"></tm-checkbox>
-                        <tm-checkbox tm-name="'Single Sign-on Enabled'"              tm-model="tmConfig.TMSecurity.SingleSignOn_Enabled"></tm-checkbox>
-                        <tm-checkbox tm-name="'Sanitize Html Content'"               tm-model="tmConfig.TMSecurity.Sanitize_HtmlContent"></tm-checkbox>
+                        <tm-input    tm-name="'Eval Accounts Days'"                  tm-model="tmConfig.TMSecurity.EvalAccounts_Days"></tm-input>                        
+                        <tm-checkbox tm-name="'Email Admin: On NewUsers'"            tm-model="tmConfig.TMSecurity.EmailAdmin_On_NewUsers"></tm-checkbox>
                         <tm-input    tm-name="'Default Admin: UserName'"             tm-model="tmConfig.TMSecurity.Default_AdminUserName"></tm-input>
                         <tm-input    tm-name="'Default Admin: Password'"             tm-model="tmConfig.TMSecurity.Default_AdminPassword"></tm-input>
                         <tm-input    tm-name="'Default Admin: Email'"                tm-model="tmConfig.TMSecurity.Default_AdminEmail"></tm-input>
-                        <tm-checkbox tm-name="'Email Admin:On NewUsers'"             tm-model="tmConfig.TMSecurity.EmailAdmin_On_NewUsers"></tm-checkbox>
-                        
+                        <tm-checkbox tm-name="'REST Allow Cross-Domain Access'"      tm-model="tmConfig.TMSecurity.REST_AllowCrossDomainAccess"></tm-checkbox>                        
+                        <tm-checkbox tm-name="'Sanitize Html Content'"               tm-model="tmConfig.TMSecurity.Sanitize_HtmlContent"></tm-checkbox>
                     </div>
                 </div>
             </div>
-        </div>    
-        
-        <div class= "row">
+
             <!--TMConfig-->
             <div class="col-sm-6">
                 <div class="panel panel-success">
                     <div class="panel-heading">
-                        <h3 class="panel-title"><b>WindowsAuthentication</b></h3>
+                        <h3 class="panel-title"><b>TM Setup</b></h3>
                     </div>
-                    <div class="panel-body">
-                        <tm-checkbox    tm-name="'Enabled'"   tm-model="tmConfig.WindowsAuthentication.Enabled"></tm-checkbox>                                                
-                        <tm-input    tm-name="'Reader Group'"   tm-model="tmConfig.WindowsAuthentication.ReaderGroup"></tm-input>
-                        <tm-input    tm-name="'Editor Group'"   tm-model="tmConfig.WindowsAuthentication.EditorGroup"></tm-input>
-                        <tm-input    tm-name="'Admin Group'"   tm-model="tmConfig.WindowsAuthentication.AdminGroup"></tm-input>
+                    <div class="panel-body">                        
+                        <tm-input    tm-name="'TM Library Data Virtual Path'"     tm-model="tmConfig.TMSetup.TMLibraryDataVirtualPath"></tm-input>
+                        <tm-input    tm-name="'Xml Libraries Path'"               tm-model="tmConfig.TMSetup.XmlLibrariesPath"></tm-input>
+                        <tm-input    tm-name="'User Data Path'"                   tm-model="tmConfig.TMSetup.UserDataPath"></tm-input>
+                        <tm-input    tm-name="'Libraries Uploaded Files'"         tm-model="tmConfig.TMSetup.LibrariesUploadedFiles"></tm-input>
+                        <tm-checkbox tm-name="'Use AppData Folder'"               tm-model="tmConfig.TMSetup.UseAppDataFolder"></tm-checkbox>
+                        <tm-checkbox tm-name="'Only Load UserData'"               tm-model="tmConfig.TMSetup.OnlyLoadUserData"></tm-checkbox>
+                        <tm-checkbox tm-name="'Enable GZip for Web Services'"     tm-model="tmConfig.TMSetup.EnableGZipForWebServices"></tm-checkbox>
+                        <tm-checkbox tm-name="'Enable 304 Redirects'"             tm-model="tmConfig.TMSetup.Enable304Redirects"></tm-checkbox>
                     </div>
                 </div>
             </div>
-                 
-            <!--TMSecurity-->
             <div class="col-sm-6">
                 <div class="panel panel-success">
                     <div class="panel-heading">
@@ -230,17 +210,33 @@
                         <tm-checkbox tm-name="'Auto Commit LibraryData'"    tm-model="tmConfig.Git.AutoCommit_LibraryData"></tm-checkbox>                                          
                     </div>
                 </div>
-            </div>
-        </div>  
+            </div>  
+        </div>    
+        
         <div class= "row">
-            <!--TMConfig-->
+            <!--WindowsAuthentication-->
+            <div class="col-sm-6">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><b>WindowsAuthentication</b></h3>
+                    </div>
+                    <div class="panel-body">
+                        <tm-checkbox   tm-name="'Enabled'"              tm-model="tmConfig.WindowsAuthentication.Enabled"></tm-checkbox>                                                
+                        <tm-input      tm-name="'Reader Group'"         tm-model="tmConfig.WindowsAuthentication.ReaderGroup"></tm-input>
+                        <tm-input      tm-name="'Editor Group'"         tm-model="tmConfig.WindowsAuthentication.EditorGroup"></tm-input>
+                        <tm-input      tm-name="'Admin Group'"          tm-model="tmConfig.WindowsAuthentication.AdminGroup"></tm-input>
+                    </div>
+                </div>
+            </div>
+                             
+            <!--OnInstallation-->
             <div class="col-sm-6">
                 <div class="panel panel-success">
                     <div class="panel-heading">
                         <h3 class="panel-title"><b>OnInstallation</b></h3>
                     </div>
                     <div class="panel-body">                        
-                        <tm-checkbox tm-name="'Force Admin Password Reset'"           tm-model="tmConfig.OnInstallation.ForceAdminPasswordReset"></tm-checkbox>
+                        <tm-checkbox tm-name="'Force Default Admin Password'"           tm-model="tmConfig.OnInstallation.ForceDefaultAdminPassword"></tm-checkbox>
                         <tm-input    tm-name="'Default Library to Install: Name'"     tm-model="tmConfig.OnInstallation.DefaultLibraryToInstall_Name"></tm-input>
                         <tm-input    tm-name="'Default Library to Install: Location'" tm-model="tmConfig.OnInstallation.DefaultLibraryToInstall_Location"></tm-input>
                     </div>
