@@ -229,9 +229,9 @@
                                 <th>Value</th>
                                 <th></th>
                             </tr>
-                            <tr ng-repeat="userTag in userData.UserTags" class="borderless">
-                                <td  ><input type="text" class='form-control input-tag' ng-model='userTag.Value' placeholder="value" /></td>
+                            <tr ng-repeat="userTag in userData.UserTags" class="borderless">                                
                                 <td><input type="text" class='form-control input-tag' ng-model='userTag.Key'   placeholder="key" />  </td>
+                                <td><input type="text" class='form-control input-tag' ng-model='userTag.Value' placeholder="value" /></td>
                                 <td><a href="" ng-click="removeTag($index)">remove</a></td>
                             </tr>
                         </table>

@@ -40,10 +40,13 @@ namespace TeamMentor.CoreLib
             {                
              //   "[TM_Xml_Database] Setup".info();
                 O2Thread.mtaThread(CheckIfServerIsOnline);
-                UsingFileStorage = useFileStorage;                
-                Setup();
-            
-                this.setupThread_WaitForComplete();
+                lock (this)
+                {
+                    UsingFileStorage = useFileStorage;                
+                    Setup();
+                        
+                    this.setupThread_WaitForComplete();
+                }
             }
             catch (Exception ex)
             {
@@ -68,12 +71,9 @@ namespace TeamMentor.CoreLib
         [Admin] public TM_Xml_Database  Setup()
         {
             SetupThread = O2Thread.mtaThread(
-                ()=>{
-                        lock (this)
-                        {    
-                            Setup_Thread();                            
-                            SetupThread = null;
-                        }                        
+                ()=>{                            
+                        Setup_Thread();                            
+                        SetupThread = null;                        
                 });
             return this;
         }
@@ -162,7 +162,8 @@ namespace TeamMentor.CoreLib
                 }
                 
                 Path_XmlDatabase            = xmlDatabasePath;
-                Path_XmlLibraries           = libraryPath;                
+                Path_XmlLibraries           = libraryPath;          
+                "[TM_Xml_Database] Paths configured".info();
             }
             catch(Exception ex)
             {

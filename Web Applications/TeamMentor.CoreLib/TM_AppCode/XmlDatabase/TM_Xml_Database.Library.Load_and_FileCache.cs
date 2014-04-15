@@ -12,30 +12,37 @@ namespace TeamMentor.CoreLib
     public static class TM_Xml_Database_Git
     {
         public static TM_Xml_Database setupGitSupport(this TM_Xml_Database tmDatabase)
-        {            
+        {                        
             if (tmDatabase.AutoGitCommit)
             {
+                var online = MiscUtils.online();
+                if (online)
+                    "[TM_Xml_Database] [setupGitSupport] we are online, so git Pull and Pull will be attempted".info();
+                else
+                    "[TM_Xml_Database] [setupGitSupport] we are offline, so no git Pull and Pulls".info();
                 foreach (var library in tmDatabase.tmLibraries())
                 {
                     var libraryPath = tmDatabase.xmlDB_Path_Library_XmlFile(library).parentFolder();
                     if (libraryPath.isGitRepository())
                     {
                         var nGit = libraryPath.git_Open();
-                        try
+                        if (online)   
                         {
-                            if(MiscUtils.online())
-                            {
+                            try
+                            {              
+                                "[TM_Xml_Database] [setupGitSupport] doing git Pull and Push for: {0}".debug(libraryPath.folderName());
                                 nGit.pull();                            
-                                nGit.push();
-                            }                            
-                        }
-                        catch (Exception ex)
-                        {
-                            ex.log();
-                        }
-                        
+                                nGit.push();                                                        
+                            }
+                            catch (Exception ex)
+                            {
+                                ex.log();
+                            }
+                        }                        
                         tmDatabase.NGits.Add(nGit);
                     }
+                    else
+                        "[TM_Xml_Database] [setupGitSupport]  library {0} is currently not a git repo".info(libraryPath.folderName());
                 }
                 tmDatabase.triggerGitCommit();
                 /*tmDatabase.NGit = tmDatabase.Path_XmlLibraries.isGitRepository() 
@@ -82,6 +89,10 @@ namespace TeamMentor.CoreLib
         {
             try
             {
+                if (MiscUtils.online())
+                    "[TM_Xml_Database] [handle_UserData_GitLibraries] online, so checking for TM UserData repos to clone".info();
+                else
+                    "[TM_Xml_Database] [handle_UserData_GitLibraries] online".info();
                 foreach (var gitLibrary in tmDatabase.UserData.SecretData.Libraries_Git_Repositories)
                 {
                     if (gitLibrary.regEx("Lib_.*.git"))
@@ -90,12 +101,12 @@ namespace TeamMentor.CoreLib
                         var targetFolder = tmDatabase.Path_XmlLibraries.pathCombine(libraryName);
                         if (targetFolder.dirExists().isFalse())
                         {
+                            "[TM_Xml_Database] [handle_UserData_GitLibraries] cloning {0}".info(libraryName);
                             tmDatabase.clone_Library(gitLibrary,targetFolder);
                             //gitLibrary.git_Clone(targetFolder);
                         }
                         else 
-                            "[handle_UserData_GitLibraries] skipping git clone since there was already a library called: {0}".info(libraryName);
-
+                            "[TM_Xml_Database] [handle_UserData_GitLibraries] skipping git clone since there was already a library called: {0}".info(libraryName);
                     }
                     else
                         "[handle_UserData_GitLibraries] provided git library didn't fit expected format (it should be called Lib_{LibName}.git, and it was: {0}".error(gitLibrary);
