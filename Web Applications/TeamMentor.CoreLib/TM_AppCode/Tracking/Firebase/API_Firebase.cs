@@ -37,6 +37,8 @@ namespace TeamMentor.CoreLib
 		    MessageFormat = "{{\"text\": {0}}}";            
             QueueMaxWait = TMConsts.FIREBASE_SUBMIT_QUEUE_MAX_WAIT;
             Offline      = MiscUtils.offline();
+            if (this.firebase_DisableSslCertCheck())
+                Web.Https.ignoreServerSslErrors();
 	    }
         
         public enum  Submit_Type 
@@ -176,7 +178,7 @@ namespace TeamMentor.CoreLib
         
     }
 
-    public static class API_Firebase_Extensionmethods_Misc
+    public static class API_Firebase_Extensionmethods_Config
     {        
         public static string firebase_Site(this API_Firebase firebase)
         {
@@ -211,6 +213,14 @@ namespace TeamMentor.CoreLib
         {            
             return !firebase.notNull() || firebase.Offline || firebase.firebase_ForceOffline();
         }
+
+        public static bool firebase_DisableSslCertCheck(this API_Firebase firebase)
+        {
+            var userData = TM_UserData.Current;
+            if (userData.notNull() && userData.SecretData.notNull())
+                return userData.SecretData.FirebaseConfig.DisableSslCertCheck;
+            return false;
+        }    
     }
 
     public static class API_Firebase_Extensionmethods_LiveData
@@ -243,7 +253,7 @@ namespace TeamMentor.CoreLib
                 return result     == "null";                                 // if the URL exists and the AuthToken is valid, we will get a null value as response
             }
             return false;
-        }   
+        }        
     }
 
     public static class API_Firebase_Extensionmethods_SubmitThread
