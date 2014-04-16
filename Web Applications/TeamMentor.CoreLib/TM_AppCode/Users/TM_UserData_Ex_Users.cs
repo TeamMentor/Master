@@ -90,9 +90,9 @@ namespace TeamMentor.CoreLib
         }        
         public static int           newUser                     (this TM_UserData userData, string  username, string password, string email, int groupId)
         {
-            return userData.newUser(username, password, email,"...","...","...", "...","...","...","...",groupId);
+            return userData.newUser(username, password, email,"...","...","...", "...","...","...","...",null,groupId);
         }        
-        public static int           newUser                     (this TM_UserData userData, string  username, string password, string email, string firstname, string lastname, string note , string title, string company, string country, string state, int groupId)
+        public static int           newUser                     (this TM_UserData userData, string  username, string password, string email, string firstname, string lastname, string note , string title, string company, string country, string state, List<UserTag> userTags , int groupId)
         {			
             var userId = Math.Abs(Guid.NewGuid().hash()); 
             
@@ -113,7 +113,8 @@ namespace TeamMentor.CoreLib
                 State 	     = Encoder.XmlEncode(state),
                 GroupID 	 = groupId,
                 Title 		 = Encoder.XmlEncode(title), 										
-                EMail 		 = Encoder.XmlEncode(email) ?? "",                     
+                EMail 		 = Encoder.XmlEncode(email) ?? "",    
+                UserTags     = userTags 
             };
             tmUser.SecretData.PasswordHash = tmUser.createPasswordHash(password);            
             userData.TMUsers.Add(tmUser);            
@@ -152,8 +153,9 @@ namespace TeamMentor.CoreLib
                 return 0;  
             }
 
-            // Create user             
-            return userData.newUser(newUser.Username, newUser.Password, newUser.Email, newUser.Firstname, newUser.Lastname, newUser.Note, newUser.Title, newUser.Company, newUser.Country, newUser.State,newUser.GroupId);						
+            // Create user      
+            
+            return userData.newUser(newUser.Username, newUser.Password, newUser.Email, newUser.Firstname, newUser.Lastname, newUser.Note, newUser.Title, newUser.Company, newUser.Country, newUser.State, newUser.UserTags,newUser.GroupId);						
         }
         public static List<int>     createTmUsers               (this TM_UserData userData, string batchUserData) 
         {						

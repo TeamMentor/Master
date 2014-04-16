@@ -53,7 +53,7 @@ function deleteUser(userId, callback)
     invokeWebService( url, params, callback, defaultErrorHandler);
 }
 
-function createUser(username , password,  email, firstname, lastname, company, title, country, state, note, callback)
+function createUser(username , password,  email, firstname, lastname, company, title, country, state, note, userTags, callback)
 {
     var url = TM.tmWebServices + 'CreateUser';
     //var params = "{ newUser: { 	username: '"+  username+ "', password: '"+  password + "',email:  '"+ email+ "', firstname:  '"+ firstname+ "',lastname:  '"+ lastname+ "',note: '"+  note+ "' } }";
@@ -67,7 +67,8 @@ function createUser(username , password,  email, firstname, lastname, company, t
                                             Title:  title,
                                             Country:  country,
                                             State:  state,
-                                            Note: note
+                                            Note: note,
+                                            UserTags: userTags
                                         } });
     invokeWebService( url, params, callback, defaultErrorHandler);	
 }

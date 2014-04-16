@@ -45,10 +45,10 @@
             if (title       == "")  title     = "NA";
             if (country     == "")  country   = "NA";
             if (state       == "")  state     = "NA";*/
-                   
+            var userTags = [  {"Key":"source","Value":"HomePage Form"} ];
             setTimeout(
                 function() {
-                                createUser(username, password, email, firstName, lastName,company, title, country, state, 'created from web', signupResult);
+                                createUser(username, password, email, firstName, lastName,company, title, country, state, 'created from web',userTags, signupResult);
                             }, 200);
         }
     
