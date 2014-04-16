@@ -62,7 +62,7 @@ namespace TeamMentor.CoreLib
                                                                                                 return false;
                                                                                             resetCache();    
                                                                                             var result = guidanceItem.xmlDB_Save_Article(tmXmlDatabase); 
-                                                                                            this.logUserActivity("Update Article", "{0} - {1}".format(guidanceItem.Metadata.Id, guidanceItem.Metadata.Title));
+                                                                                            this.logUserActivity("Update Article", "{0} ({1})".format(guidanceItem.Metadata.Title, guidanceItem.Metadata.Id));
                                                                                             return result;
                                                                                         }                                                                                                
         [WebMethod(EnableSession = true)]   [EditArticles]	                        public bool SetArticleHtml (Guid articleId,string htmlContent)					                        
