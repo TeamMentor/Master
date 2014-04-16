@@ -22,15 +22,23 @@
     var usersToShow = new Dictionary<string, List<TMUser>>();
     
     
-    var tmUsers2 = userData.TMUsers;
+    var tmUsers2 = userData.TMUsers.take(10);
     
     usersToShow.Add("No Expiration Date", tmUsers2.where((user)=> user.AccountStatus.ExpirationDate  == default(DateTime)));
     usersToShow.Add("Not Expired"       , tmUsers2.where((user)=> user.AccountStatus.ExpirationDate  > DateTime.Now));
     usersToShow.Add("Not Enabled"       , tmUsers2.where((user)=> user.AccountStatus.UserEnabled.isFalse()));
     usersToShow.Add("Empty Email"       , tmUsers2.where((user)=> user.EMail.notValid())
                                                  .OrderBy((user)=>user.Stats.CreationDate).toList());
-                                                 
-                                                 
+                               
+    var response =  HttpContextFactory.Response;
+    //response.ContentType = "application/json";                                               
+//    response.Write(usersToShow.javascript_Serialize());    
+//    return;
+}
+@Raw(usersToShow.javascript_Serialize());
+
+@{
+    return;
 }
 <h2>Users Mapped by UserTags</h2>
 

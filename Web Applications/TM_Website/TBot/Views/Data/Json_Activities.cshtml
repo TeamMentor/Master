@@ -1,0 +1,15 @@
+﻿
+@using System.Linq
+@using FluentSharp.CoreLib
+@using TeamMentor.CoreLib
+
+@{
+    var userData = TM_UserData.Current;
+        
+    var activities = (from tmUser in userData.tmUsers()
+                      from activity in tmUser.UserActivities
+                      orderby activity.When
+                      select activity).Reverse().toList();
+}
+
+@Raw(activities.javascript_Serialize());

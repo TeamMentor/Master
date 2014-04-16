@@ -106,6 +106,7 @@ namespace TeamMentor.CoreLib
                     this.logTBotActivity("TM Xml Database", "Library Data is loaded");
                 }
                 UserData.createDefaultAdminUser();  // make sure the admin user exists and is configured
+                this.logTBotActivity("TM Xml Database", "TM started at: {0}".format(DateTime.Now));
             }
             catch (Exception ex)
             {

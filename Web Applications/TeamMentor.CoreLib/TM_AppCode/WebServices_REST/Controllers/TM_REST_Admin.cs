@@ -52,7 +52,7 @@ namespace TeamMentor.CoreLib
             }
             catch (SecurityException)
             {
-                TmWebServices.logUserActivity("Access Denied","TBot Page: {0}".format(what));
+                TmWebServices.logUserActivity("Access Denied","TBot Page (Run): {0}".format(what));
                 Redirect_Login("/tbot");
             }	        
             return null;
@@ -67,6 +67,7 @@ namespace TeamMentor.CoreLib
             }
             catch (SecurityException)
             {
+                TmWebServices.logUserActivity("Access Denied","TBot Page (Render): {0}".format(what));
                 return null;
             }	                    
         }
@@ -79,6 +80,7 @@ namespace TeamMentor.CoreLib
             }
             catch (SecurityException)
             {
+                TmWebServices.logUserActivity("Access Denied","TBot Page (Json): {0}".format(what));
                 return "{ 'error': 'SecurityException' }".stream_UFT8();    
             }	                    
         }
@@ -93,6 +95,7 @@ namespace TeamMentor.CoreLib
             }
             catch (SecurityException)
             {
+                TmWebServices.logUserActivity("Access Denied","TBot List Command");
                 Redirect_Login("/tbot");           
             }
             return null;
