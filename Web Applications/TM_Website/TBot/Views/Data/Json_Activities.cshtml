@@ -13,6 +13,15 @@
                       where (who   .notValid() || activity.Who   .regEx(who   )) &&
                             (action.notValid() || activity.Action.regEx(action))
                       orderby activity.When
-                      select activity).Reverse().toList().take(max);
+                      //select activity                         // can't do this because of legacy issue with When and When_JS
+                      select new
+                          {
+                                When      = activity.When.fromFileTimeUtc().jsDate(),
+                                When_JS   = activity.When_JS,
+                                Who       = activity.Who,
+                                Action    = activity.Action,
+                                IPAddress = activity.IPAddress
+                          }
+                      ).Reverse().toList().take(max);
 }
 @Raw(activities.javascript_Serialize())

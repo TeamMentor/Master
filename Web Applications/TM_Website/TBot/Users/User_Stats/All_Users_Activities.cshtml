@@ -3,11 +3,11 @@
     .alert-small 
         {
             padding: 8px 8px 8px 15px;
-            width  : 560px;
+            width  : 580px;
         }    
-    .input-sm
+    .input-short
         {
-            width:100px !important;  
+            width:50px !important;  
         }
     .pointer 
         {
@@ -24,13 +24,28 @@
             _scope = $scope;
             
             $scope.orderByFields      = ["When","Who","Action","Detail","Created","IPAddress"];             
-            $scope.howMany            = 500;
+            $scope.howMany            = 1000;
             $scope.whoFilter          = "";
             $scope.actionFilter       = "";
             $scope.filteredActivities = [];
             $scope.orderBy            = "When";
             $scope.orderByReverse     = true;
+            $scope.uniqueActions      = [];
             
+            $scope.loadUniqueActionsList = function()
+                {
+                    var url ='/rest/tbot/json/Json_Activities_Unique_Action';
+                    $http.get(url).success(function(uniqueActions)
+                        {
+                            $scope.uniqueActions = uniqueActions;
+                        });
+                };
+            
+            $scope.showAction = function(action)
+                {
+                    $scope.actionFilter = action;
+                    $scope.loadData();
+                };
             $scope.loadData = function()
                 {
                     $scope.filteredActivities = [];
@@ -69,6 +84,7 @@
             $scope.$watch('orderBy'         ,$scope.applyFilter);            
             $scope.$watch('orderByReverse'  ,$scope.applyFilter);   
 
+            $scope.loadUniqueActionsList();
             $scope.loadData();
 
         });
@@ -83,7 +99,13 @@
         This view shows the last user activities (i.e. these are the actually User Activities stored in the UserData files, so no TBot events will show here)
     </p>
     
-
+    <b>Chose Action to view:</b>
+    <p>At the moment there are the following actions logged on this server: 
+        <span ng-repeat="action in uniqueActions">
+            <a  href="" ng-click="showAction(action)">{{action}}</a>     ,
+        </span>
+        
+     </p>
     <b>Load data (from server):</b>    
     <div class="alert alert-success alert-block alert-small">    
         <form class="form-inline" ng-submit="loadData()">            
@@ -96,8 +118,8 @@
                 <input type="text" class="form-control input-sm" placeholder="filter" ng-model="actionFilter">
             </div>                    
             <div class="form-group">
-                How Many:
-                <input type="text" class="form-control input-sm" placeholder="filter" ng-model="howMany">
+                Fetch:
+                <input type="text" class="form-control input-sm input-short" placeholder="filter" ng-model="howMany">
             </div>            
             <div class="form-group">
                 <button class="btn btn-primary btn-sm" bt-click="loadData()">Load
@@ -147,13 +169,17 @@
         </tr> 
         <tr ng-repeat="activity in filteredActivities">
             <td>{{$index+1}}</td>
-            <td>{{activity.When_JS | date:'dd MMM , H:mm:ss'}}</td>
+            <td>
+                {{activity.When | date:'dd MMM , H:mm:ss'}} = 
+                {{activity.When_JS | date:'dd MMM , H:mm:ss'}}</td>
             <td><a href="User_Edit?{{activity.Who}}" target="_blank">{{activity.Who}}</a></td>            
             <td>{{activity.Action}}</td>
             <td>{{activity.Detail}}</td>            
             <td>{{activity.IPAddress}}</td>
         </tr>
     </table>    
+    
+    AAAA 
 </div>
 
 
