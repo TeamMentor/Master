@@ -16,8 +16,8 @@
                       //select activity                         // can't do this because of legacy issue with When and When_JS
                       select new
                           {
-                                When      = activity.When.fromFileTimeUtc().jsDate(),
-                                When_JS   = activity.When_JS,
+                                When      = activity.When.fromFileTimeUtc().jsDate(),   
+//                                When_JS   = activity.When_JS,                            // this was only introducedin 3.4.1 (so older version of the data don't have it)
                                 Who       = activity.Who,
                                 Action    = activity.Action,
                                 IPAddress = activity.IPAddress

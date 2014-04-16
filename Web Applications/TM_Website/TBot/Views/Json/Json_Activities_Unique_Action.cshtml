@@ -7,7 +7,7 @@
     var userData = TM_UserData.Current;    
     
     var actions = (from tmUser in userData.tmUsers()
-                      from activity in tmUser.UserActivities  
+                      from activity in tmUser.UserActivities                        
                       where activity.Action.valid()                    
                       select activity.Action).unique().sort();
 }

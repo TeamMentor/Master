@@ -20,22 +20,23 @@
 
 <script>
     @{
-        // transfor the 
+        // transform the data into a json object
         var userData = TM_UserData.Current;
      }
      var tmUserData = [
-        @foreach(var tmUser in userData.tmUsers())
-        {
-            @: { "UserName"   : "@tmUser.UserName.replace("\\","\\\\")" ,  
-            @:   "FullName"   : "@tmUser.FirstName @tmUser.LastName", 
-            @:   "EMail"      : "@tmUser.EMail" ,
-            @:   "Created"    : @tmUser.Stats.CreationDate.jsDate(),
-            @:   "Group"      : "@tmUser.userGroup().str()",
-            @:   "Status"     : "@tmUser.userStatus().str()",
-            @:   "Activities" : @tmUser.UserActivities.size(),
-            @:   "Sessions"   : @tmUser.Sessions.size() } ,
-        }
-    ]
+                        @foreach(var tmUser in userData.tmUsers())
+                        {
+                            @: { "UserName"   : "@tmUser.UserName.replace("\\","\\\\")" ,  
+                            @:   "FullName"   : "@tmUser.FirstName @tmUser.LastName"    , 
+                            @:   "EMail"      : "@tmUser.EMail"                         ,
+                            @:   "Created"    :  @tmUser.Stats.CreationDate.jsDate()    ,
+                            @:   "Group"      : "@tmUser.userGroup().str()"             ,
+                            @:   "Status"     : "@tmUser.userStatus().str()"            ,
+                            @:   "Activities" :  @tmUser.UserActivities.size()          ,
+                            @:   "Sessions"   :  @tmUser.Sessions.size()                ,
+                            @:   "Tags"       :  @tmUser.UserTags.size()              } , 
+                        }
+                    ];
 </script>
 
 <script type="text/javascript">
@@ -100,7 +101,7 @@
                                             },150);
                 };
                         
-            $scope.orderByFields = ["UserName","FullName","EMail","Created", "Group","Status","Activities","Sessions"]; 
+            $scope.orderByFields = ["UserName","FullName","EMail","Created", "Group","Status","Activities","Tags","Sessions"]; 
             $scope.orderBy       = "UserName";
             $scope.filteredUsers = [];
             
@@ -157,8 +158,9 @@
             <th class="col-sm-1 pointer" ng-click="setOrderBy('Created')"   >Created</th>            
             <th class="col-sm-1 pointer" ng-click="setOrderBy('Group')"     >Group</th>
             <th class="col-sm-1 pointer" ng-click="setOrderBy('Status')"    >Status</th>
-            <th class="         pointer" ng-click="setOrderBy('Activities')">Activities</th>
-            <th class="         pointer" ng-click="setOrderBy('Sessions')"  >Sessions</th>            
+            <th class="         pointer" ng-click="setOrderBy('Activities')">Activities</th>                      
+            <th class="         pointer" ng-click="setOrderBy('Tags')"      >Tags</th>     
+            <th class="         pointer" ng-click="setOrderBy('Sessions')"  >Sessions</th>  
         </tr> 
             
         <tr ng-repeat ="tmUser in filteredUsers">
@@ -171,7 +173,8 @@
             <td><span ng-class="cssForUserGroup(tmUser.Group)"  >{{tmUser.Group}}</span></td>
             <td><span ng-class="cssForUserStatus(tmUser.Status)">{{tmUser.Status}}</span></td>              
             <td><a    ng-href="User_Activities?user={{tmUser.UserName}}&max=50"  target="_blank">{{tmUser.Activities}}</a></td>
-            <td>{{tmUser.Sessions}}</td>            
+            <td>{{tmUser.Tags}}</td>        
+            <td>{{tmUser.Sessions}}</td>                        
         </tr>
     </table>
 </div>

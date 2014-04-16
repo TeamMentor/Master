@@ -149,9 +149,6 @@
 
     </div>
 
-            
-
-    
         <p>
         <b>Showing {{filteredActivities.length}} out of {{activities.length}}</b>        
         <span class="glyphicon glyphicon-search" ng-show="showSearchingIcon"></span>        
@@ -169,17 +166,13 @@
         </tr> 
         <tr ng-repeat="activity in filteredActivities">
             <td>{{$index+1}}</td>
-            <td>
-                {{activity.When | date:'dd MMM , H:mm:ss'}} = 
-                {{activity.When_JS | date:'dd MMM , H:mm:ss'}}</td>
+            <td>{{activity.When | date:'dd MMM , H:mm:ss'}}</td>
             <td><a href="User_Edit?{{activity.Who}}" target="_blank">{{activity.Who}}</a></td>            
             <td>{{activity.Action}}</td>
             <td>{{activity.Detail}}</td>            
             <td>{{activity.IPAddress}}</td>
         </tr>
     </table>    
-    
-    AAAA 
 </div>
 
 
