@@ -1,0 +1,159 @@
+﻿
+<style>
+    .alert-small 
+        {
+            padding: 8px 8px 8px 15px;
+            width  : 560px;
+        }    
+    .input-sm
+        {
+            width:100px !important;  
+        }
+    .pointer 
+        {
+            cursor : pointer
+        }
+</style>
+
+<script  type="text/javascript">    
+            
+    var tbot = angular.module("tbot");
+    
+    tbot.controller("TMStats", function($scope, $http, $timeout, $filter)
+        {  
+            _scope = $scope;
+            
+            $scope.orderByFields      = ["When","Who","Action","Detail","Created","IPAddress"];             
+            $scope.howMany            = 500;
+            $scope.whoFilter          = "";
+            $scope.actionFilter       = "";
+            $scope.filteredActivities = [];
+            $scope.orderBy            = "When";
+            $scope.orderByReverse     = true;
+            
+            $scope.loadData = function()
+                {
+                    $scope.filteredActivities = [];
+                    var url = '/rest/tbot/json/Json_Activities?who=' + $scope.whoFilter + '&action=' + $scope.actionFilter +'&max=' + $scope.howMany;
+                    $http.get(url).success(function(activities)
+                        {                                        
+                            $scope.activities = activities;                    
+                            $scope.applyFilter();
+                        });                
+                };
+
+            $scope.setOrderBy = function(value)
+                {
+                    if ($scope.orderBy === value)
+                        $scope.orderByReverse = !$scope.orderByReverse;
+                    else
+                        $scope.orderBy = value;                    
+                };
+
+            $scope.applyFilter = function() 
+                {       
+                    if ($scope.showSearchingIcon)        //don't apply the filter if we are currently searching
+                        return;
+                    $scope.showSearchingIcon  = true;
+                    $timeout(function() 
+                        {
+                            $scope.filteredActivities = $filter('filter')($scope.activities, {Who: $scope.whoFilter , Action: $scope.actionFilter});                        
+                            $scope.filteredActivities = $filter('orderBy')($scope.filteredActivities, $scope.orderBy, $scope.orderByReverse);
+                            $scope.showSearchingIcon  = false;
+                        },150);
+                };
+                                    
+            
+            /*$scope.$watch('whoFilter'       ,$scope.applyFilter); 
+            $scope.$watch('actionFilter'    ,$scope.applyFilter); */
+            $scope.$watch('orderBy'         ,$scope.applyFilter);            
+            $scope.$watch('orderByReverse'  ,$scope.applyFilter);   
+
+            $scope.loadData();
+
+        });
+    
+</script>
+
+<div ng-controller="TMStats">
+    
+    <h2>All User's Activity</h2>   
+
+    <p>
+        This view shows the last user activities (i.e. these are the actually User Activities stored in the UserData files, so no TBot events will show here)
+    </p>
+    
+
+    <b>Load data (from server):</b>    
+    <div class="alert alert-success alert-block alert-small">    
+        <form class="form-inline" ng-submit="loadData()">            
+            <div class="form-group">
+                Who:
+                <input type="text" class="form-control input-sm" placeholder="filter" ng-model="whoFilter">
+            </div>
+            <div class="form-group">
+                Action:
+                <input type="text" class="form-control input-sm" placeholder="filter" ng-model="actionFilter">
+            </div>                    
+            <div class="form-group">
+                How Many:
+                <input type="text" class="form-control input-sm" placeholder="filter" ng-model="howMany">
+            </div>            
+            <div class="form-group">
+                <button class="btn btn-primary btn-sm" bt-click="loadData()">Load
+                </button>                
+            </div>
+                
+        </form>                          
+    </div>
+    
+    <b>Filter data (locally):</b>
+    <div class="alert alert-success alert-block alert-small">
+        <form class="form-inline" >
+            <div class="form-group">
+                Order By:
+                <select     class="form-control input-sm"     ng-model  = "orderBy"        name="orderBy">                                           
+                    <option value="{{orderByField}}" ng-repeat = "orderByField in orderByFields">
+                        {{orderByField}}
+                    </option>
+                </select>              
+            </div>  
+            <div class="form-group">
+                <div class="checkbox">                    
+                    <input type="checkbox" ng-model="orderByReverse"/> Reverse                    
+                </div>                
+            </div>
+        </form>
+
+    </div>
+
+            
+
+    
+        <p>
+        <b>Showing {{filteredActivities.length}} out of {{activities.length}}</b>        
+        <span class="glyphicon glyphicon-search" ng-show="showSearchingIcon"></span>        
+        
+    </p>
+
+    <table class="table table-striped table-condensed">
+        <tr>
+            <th>#</th>             
+            <th class="col-sm-2 pointer" ng-click="setOrderBy('When')"     >When</th>
+            <th class="col-sm-2 pointer" ng-click="setOrderBy('Who')"      >Who</th>
+            <th class="col-sm-2 pointer" ng-click="setOrderBy('Action')"   >Action</th>   
+            <th class="col-sm-5 pointer" ng-click="setOrderBy('Detail')"   >Detail</th>            
+            <th class="col-sm-1 pointer" ng-click="setOrderBy('IPAddress')">IPAddress</th>            
+        </tr> 
+        <tr ng-repeat="activity in filteredActivities">
+            <td>{{$index+1}}</td>
+            <td>{{activity.When_JS | date:'dd MMM , H:mm:ss'}}</td>
+            <td><a href="User_Edit?{{activity.Who}}" target="_blank">{{activity.Who}}</a></td>            
+            <td>{{activity.Action}}</td>
+            <td>{{activity.Detail}}</td>            
+            <td>{{activity.IPAddress}}</td>
+        </tr>
+    </table>    
+</div>
+
+

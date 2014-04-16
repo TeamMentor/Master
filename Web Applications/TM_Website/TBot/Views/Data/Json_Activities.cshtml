@@ -5,7 +5,7 @@
 
 @{
     var userData = TM_UserData.Current;    
-    var max      = "max".request_Value_Int(500);
+    var max      = "max".request_Value_Int(1000);
     var action   = "action".request_Value_String();
     var activities = (from tmUser in userData.tmUsers()
                       from activity in tmUser.UserActivities
@@ -13,8 +13,4 @@
                       orderby activity.When
                       select activity).Reverse().toList().take(max);
 }
-var max  = @max;
-var size = @activities.size();
-var action = '@action';
-
-@Raw(activities.javascript_Serialize());
+@Raw(activities.javascript_Serialize())
