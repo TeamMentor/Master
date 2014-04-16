@@ -57,8 +57,8 @@
                     $scope.showSearchingIcon  = true;
                     $timeout(function() 
                         {
-                            $scope.filteredActivities = $filter('filter')($scope.activities, {Who: $scope.whoFilter , Action: $scope.actionFilter});                        
-                            $scope.filteredActivities = $filter('orderBy')($scope.filteredActivities, $scope.orderBy, $scope.orderByReverse);
+                            //$scope.filteredActivities = $filter('filter')($scope.activities, {Who: $scope.whoFilter , Action: $scope.actionFilter});                        
+                            $scope.filteredActivities = $filter('orderBy')($scope.activities, $scope.orderBy, $scope.orderByReverse);
                             $scope.showSearchingIcon  = false;
                         },150);
                 };

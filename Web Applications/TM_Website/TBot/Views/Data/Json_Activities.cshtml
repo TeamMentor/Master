@@ -6,10 +6,12 @@
 @{
     var userData = TM_UserData.Current;    
     var max      = "max".request_Value_Int(1000);
+    var who      = "who".request_Value_String();
     var action   = "action".request_Value_String();
     var activities = (from tmUser in userData.tmUsers()
                       from activity in tmUser.UserActivities
-                      where action.notValid() || activity.Action.regEx(action)
+                      where (who   .notValid() || activity.Who   .regEx(who   )) &&
+                            (action.notValid() || activity.Action.regEx(action))
                       orderby activity.When
                       select activity).Reverse().toList().take(max);
 }
