@@ -37,7 +37,7 @@ namespace TeamMentor.CoreLib
 
     public static class HttpContextFactory_ExtensionMethods
     {
-        
+        //Context
         public static HttpContextBase addCookieFromResponseToRequest(this HttpContextBase    httpContext, string cookieName)
         {
             if (httpContext.Response.hasCookie(cookieName))
@@ -54,14 +54,16 @@ namespace TeamMentor.CoreLib
             return httpContext;
         }
 
-        public static string sessionId(this HttpSessionStateBase sessionState)
+        //Session
+        public static string    sessionId(this HttpSessionStateBase sessionState)
         {
             return sessionState.notNull() 
                         ? sessionState.SessionID 
                         : "";
         }
 
-        public static string ipAddress(this HttpRequestBase request)
+        //Request
+        public static string    ipAddress(this HttpRequestBase request)
         {            
             return request.notNull() 
                         ? request.UserHostAddress 
@@ -76,27 +78,49 @@ namespace TeamMentor.CoreLib
                 return "";
             }*/            
         }
-        public static bool isLocal(this HttpRequestBase request)
+        public static bool      isLocal  (this HttpRequestBase request)
         {
             return  request.isNull() || request.IsLocal;
         }
-        public static string  referer(this HttpRequestBase httpRequest)
+        public static string    referer  (this HttpRequestBase httpRequest)
         {
             if (httpRequest.notNull() && httpRequest.UrlReferrer.notNull())
                 return  httpRequest.UrlReferrer.str();
             return "";
         }
-        public static string  url(this HttpRequestBase request)
+        public static string    url      (this HttpRequestBase request)
         {
             if (request.notNull() && request.Url.notNull())
                 return  request.Url.str();
             return "";
         } 
-       
-        //cache
-                
-
-        public static bool sent304Redirect(this HttpContextBase context)
+        
+        public static int       request_Value_Int(this string variableName, int defaultValue = -1)
+        {
+            return  HttpContextFactory.Request.value_Int(variableName, defaultValue);
+        }
+        public static int    value_Int(this HttpRequestBase request, string variableName, int defaultValue)
+        {
+            var value = request.value_String(variableName);
+            if (value.valid() && value.isInt())
+                return value.toInt();
+            return defaultValue;
+        }
+        public static string    request_Value_String(this string variableName, string defaultValue = "")
+        {
+            return  HttpContextFactory.Request.value_String(variableName, defaultValue);
+        }
+        public static string    value_String(this HttpRequestBase request, string variableName, string defaultValue = "")
+        {
+            if (request.notNull())
+                if(request[variableName].notNull())                
+                    return request[variableName];                
+            return defaultValue;
+        }
+            
+        
+        //Cache                
+        public static bool            sent304Redirect(this HttpContextBase context)
         {
             try
             {
@@ -113,9 +137,8 @@ namespace TeamMentor.CoreLib
                 ex.log("[HttpContextBase] [sent304Redirect]");
             }
             return false;
-        }
-        
-		public static bool  send304Redirect(this HttpContextBase context)
+        }        
+		public static bool            send304Redirect(this HttpContextBase context)
 		{            
 			var ifModifiedSinceHeader = context.Request.Headers["If-Modified-Since"];
 			if (ifModifiedSinceHeader.valid() && ifModifiedSinceHeader.isDate())
@@ -126,7 +149,6 @@ namespace TeamMentor.CoreLib
 			}
 			return false;
 		}
-
 		public static HttpContextBase setCacheHeaders(this HttpContextBase context)
 		{	
 			context.Response.Cache.SetLastModified(HttpContextFactory.LastModified_HeaderDate);

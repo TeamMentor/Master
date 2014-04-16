@@ -1,53 +1,11 @@
 ﻿
-@using System
-@using System.Collections.Generic
-@using System.Linq
-@using FluentSharp.CoreLib
-@using TeamMentor.CoreLib
 
-@{
-    var userData = TM_UserData.Current;
-        
-    var tmUsers = (from tmUser in userData.tmUsers().take(10)
-                   select new
-                       {
-                           UserName  = tmUser.UserName , 
-                           EMail     = tmUser.EMail, 
-                           FirstName = tmUser.FirstName
-                       }).toList();
-    var json = tmUsers.javascript_Serialize();
-    
-    
-    
-    var usersToShow = new Dictionary<string, List<TMUser>>();
-    
-    
-    var tmUsers2 = userData.TMUsers.take(10);
-    
-    usersToShow.Add("No Expiration Date", tmUsers2.where((user)=> user.AccountStatus.ExpirationDate  == default(DateTime)));
-    usersToShow.Add("Not Expired"       , tmUsers2.where((user)=> user.AccountStatus.ExpirationDate  > DateTime.Now));
-    usersToShow.Add("Not Enabled"       , tmUsers2.where((user)=> user.AccountStatus.UserEnabled.isFalse()));
-    usersToShow.Add("Empty Email"       , tmUsers2.where((user)=> user.EMail.notValid())
-                                                 .OrderBy((user)=>user.Stats.CreationDate).toList());
-                               
-    var response =  HttpContextFactory.Response;
-    //response.ContentType = "application/json";                                               
-//    response.Write(usersToShow.javascript_Serialize());    
-//    return;
-}
-@Raw(usersToShow.javascript_Serialize());
-
-@{
-    return;
-}
 <h2>Users Mapped by UserTags</h2>
 
 
 <script  type="text/javascript">    
-    var usersToShow = @Raw(usersToShow.javascript_Serialize());
-    var statsConfig = {"fields" : ["EMail","UserName", "FirstName"] };
-    
-    var statsData = @Raw(json);
+
+    var statsConfig = {"fields" : ["Email","UserName", "FirstName","LastName","Company"] };
     
 
     var tbot = angular.module("tbot");
@@ -55,9 +13,11 @@
     tbot.controller("TMStats", function($scope,$http)
         {  
             _scope = $scope;
-            $scope.usersToShow = usersToShow;
+            $http.get('/rest/tbot/json/Json_Users').success(function(tmUsers)
+                {                
+                    $scope.tmUsers = tmUsers;
+                });
             $scope.statsConfig = statsConfig;
-            $scope.tmUsers = statsData;
         });
     
 </script>
