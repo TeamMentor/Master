@@ -111,7 +111,8 @@ namespace TeamMentor.CoreLib
     public partial class TMConfig
     {	
         private static string		_baseFolder;
-        private static TMConfig		_current;
+        private static string		_location;
+        private static TMConfig		_current;        
 
         public static string        BaseFolder      
         { 
@@ -131,10 +132,15 @@ namespace TeamMentor.CoreLib
         }
         public static string        Location	    
         {
-            get
-            {				
-                return BaseFolder.pathCombine("TMConfig.config");
-            }
+             get {
+                    if (_location.isNull())
+                        _location = BaseFolder.pathCombine("TMConfig.config");
+                    return _location;
+                } 
+                
+            set {
+                    _location = value;
+                }            
         }				        
         public static TMConfig      Current         
         { 

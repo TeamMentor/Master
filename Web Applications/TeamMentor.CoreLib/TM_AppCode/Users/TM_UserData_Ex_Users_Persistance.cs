@@ -152,13 +152,15 @@ namespace TeamMentor.CoreLib
         {
             var userConfigFile = userData.Path_UserData.pathCombine("TMConfig.config");
             if (userConfigFile.fileExists())
-            {
-                var newConfig = userConfigFile.load<TMConfig>();
+            {                
+                var newConfig = userConfigFile.load<TMConfig>();    // to check that the new TMConfig is not corrupted
                 if (newConfig.isNull())
                     "[handleUserDataConfigActions] failed to load config file from: {0}".error(userConfigFile);
                 else
                 {
-                    TMConfig.Current = newConfig;
+                    TMConfig.Location = userConfigFile;             // update the value of TMConfig.config location
+                    TMConfig.loadConfig();                          // reload the TMConfig from the updated location
+                    //TMConfig.Current = newConfig;
                     userData.AutoGitCommit = newConfig.Git.AutoCommit_UserData;     // in case this changed
                 }
             }
