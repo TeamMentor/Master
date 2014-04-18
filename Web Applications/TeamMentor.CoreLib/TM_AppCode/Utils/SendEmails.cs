@@ -217,7 +217,7 @@ namespace TeamMentor.CoreLib
         }
         public static void SendNewUserEmails_UserDisabled__Workflow(string subject, TMUser tmUser)
         { 
-            var subj = "Thanks for creating an TeamMentor Account"; //TMConsts.EMAIL_SUBJECT_NEW_USER_WELCOME;
+            var subj = "Thanks for creating a TeamMentor account"; //TMConsts.EMAIL_SUBJECT_NEW_USER_WELCOME;
             var userMessage = TMConsts.EMAIL_BODY_NEW_USER_NEEDS_APPROVAL;
             SendEmailToEmail(tmUser.EMail, subj, userMessage);
 
@@ -238,7 +238,9 @@ namespace TeamMentor.CoreLib
 
 Please click on this link if you want to approve it: {8}
 
-If you want to see this user details, please visit: {9}
+If you don't want to enable this account, you can ignore this email and the account will stay in the current disabled state.
+
+If you want to see this user details (or delete it), please visit: {9}
 ".format(tmUser.UserID, 
                               tmUser.UserName,
                               tmUser.Company,

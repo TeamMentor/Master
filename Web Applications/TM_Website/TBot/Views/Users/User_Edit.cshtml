@@ -58,9 +58,7 @@
                                 var picker = $('#expirationDate').datetimepicker();
                                 var dateTimePicker = picker.data('DateTimePicker');
                                 dateTimePicker.setDate(currentExpirationDate);
-                                $scope.accountExpired = (currentExpirationDate < new Date());
-                                //if (scope.userData.UserTags === undefined)
-                                //    scope.userData.UserTags = [];
+                                $scope.accountExpired = (currentExpirationDate < new Date());                                
                                 $scope.dataLoaded = true;
                                 $scope.userEnabled = data.UserEnabled;
                                 
@@ -93,6 +91,8 @@
             
             $scope.newUserTag = function()
                 {
+                    if ($scope.userData.UserTags ==null)
+ 				        $scope.userData.UserTags = new [];
                     $scope.userData.UserTags.push({ Key:'' , Value : ''});                    
                 };
             $scope.removeTag = function(index)
