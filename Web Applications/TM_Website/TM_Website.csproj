@@ -716,7 +716,7 @@
     <Content Include="TBot\Admin\Config\View_TMConfig.cshtml.txt" />
     <Content Include="TBot\Admin\Config\View_SecretData.cshtml.txt" />
     <Content Include="TBot\Admin\LiveData\DebugInfo.cshtml" />
-    <Content Include="TBot\Admin\LiveData\IISSessions.cshtml" />
+    <Content Include="TBot\Views\Admin\IISSessions.cshtml" />
     <Content Include="TBot\Views\Users\User_Activities.cshtml" />
     <Content Include="TBot\Messaging\Send_Test_Email.cshtml" />
     <Content Include="TBot\Views\Git\GitDiff_UserData_Commit.cshtml" />
