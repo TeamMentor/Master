@@ -1,4 +1,6 @@
-﻿
+﻿@using FluentSharp.CoreLib
+@using TeamMentor.CoreLib
+
 <script type="text/javascript">
     var tbot = angular.module("tbot");
     
@@ -98,6 +100,10 @@
     <p>After the user is created you will be redirected to the user edit page (where you will be able to edit the other details)</p>
     <p>If you want to create a random user with random details <a href="" ng-click="fillRandomData()">click here</a></p>
     <br />
+@if(TMConfig.Current.TMSecurity.NewAccounts_Enabled.isFalse())
+{
+    @: <div class="alert alert-warning"><b>Important note:</b> Since TMConfig.TMSecurity.NewAccounts_Enabled is set to false, the user will get an 'Thanks for creating a TeamMentor account' email (which says that the account is being reviewed for approval), and until the account is enabled, the user will  not be able to login into TeamMentor </div>
+}
     
     <form name="myForm" class="form-horizontal" role="form">      <!-- change this form to be a directive-->        
 
