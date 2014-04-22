@@ -11,13 +11,22 @@ Here are the current IIS sessions (and its Session Variables):
 <pre>
 @{
     var caches = (object[])typeof(HttpRuntime).prop("CacheInternal").field("_caches");
-    
+    if (caches.isNull())
+    {
+        @: <div class="alert alert-danger">Could not get reference to the CacheInternal object</div>
+        return;
+    }
     foreach (var cache in caches)
     {
         "cache: {0}".info(cache);
         var entries = (Hashtable) cache.field("_entries");
-        foreach (DictionaryEntry entry in entries)
+        if (entries.isNull())
         {
+            @: <div class="alert alert-danger">Could not get reference to the CacheInternal's _entries object</div>
+            return;
+        }
+        foreach (DictionaryEntry entry in entries)
+        {            
             var key = entry.Value.prop("Key");
             var value = entry.Value.prop("Value");
             if (value.str() == "System.Web.SessionState.InProcSessionState")
