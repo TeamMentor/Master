@@ -21,6 +21,7 @@ namespace TeamMentor.CoreLib
         public        string             Smtp_Server         { get; set; }
         public        string             Smtp_UserName       { get; set; }
         public        string             Smtp_Password       { get; set; }
+        public        string             Email_Footer        { get; set; }
 
         static SendEmails()
         {
@@ -42,6 +43,7 @@ namespace TeamMentor.CoreLib
                     Smtp_Password = secretData.SmtpConfig.Password;
                     From          = secretData.SmtpConfig.Default_From;
                     To            = secretData.SmtpConfig.Default_To;
+                    Email_Footer  = secretData.SmtpConfig.Email_Footer.lineBefore();
                 }
             }
         }
@@ -109,7 +111,9 @@ namespace TeamMentor.CoreLib
         {
             if (emailMessage.isNull())
                 return false;
-            emailMessage.Message += TMConsts.EMAIL_DEFAULT_FOOTER;
+            
+            //emailMessage.Message += TMConsts.EMAIL_DEFAULT_FOOTER;
+            emailMessage.Message += Email_Footer;
             Sent_EmailMessages.Add(emailMessage);
 
             if (emailMessage.From.notValid())
@@ -181,24 +185,14 @@ namespace TeamMentor.CoreLib
 
             if (Disable_EmailEngine)
                 return;
-            var tmMessage =
-@"New TeamMentor User Created:
-
-    UserId: {0}
-    UserName: {1}
-    Company: {2}
-    Email: {3}
-    FirstName: {4}
-    LastName: {5}
-    Title: {6}
-    Creation Date: {7}".format(tmUser.UserID, 
-                              tmUser.UserName,
-                              tmUser.Company,
-                              tmUser.EMail,
-                              tmUser.FirstName,
-                              tmUser.LastName,
-                              tmUser.Title,
-                              tmUser.Stats.CreationDate.ToLongDateString());
+            var tmMessage = TMConsts.EMAIL_BODY_ADMIN_EMAIL_ON_NEW_USER.format(tmUser.UserID, 
+                                                                               tmUser.UserName,
+                                                                               tmUser.Company,
+                                                                               tmUser.EMail,
+                                                                               tmUser.FirstName,
+                                                                               tmUser.LastName,
+                                                                               tmUser.Title,
+                                                                               tmUser.Stats.CreationDate.ToLongDateString());
             if(TMConfig.Current.emailAdminOnNewUsers())
                 SendEmailToTM(subject, tmMessage);
             SendWelcomeEmailToUser(tmUser);
@@ -224,33 +218,16 @@ namespace TeamMentor.CoreLib
             var enableUserUrl = "{0}/aspx_pages/EnableUser.aspx?token={1}".format(SendEmails.TM_Server_URL, tmUser.enableUser_Token());
 
             var userEditUrl   = "{0}/rest/tbot/run/User_Edit?{1}".format(SendEmails.TM_Server_URL, tmUser.UserName.urlEncode());
-            var tmMessage    =
-@"Hello TeamMentor admin, the following new User request as been received:
-
-    UserId: {0}
-    UserName: {1}
-    Company: {2}
-    Email: {3}
-    FirstName: {4}
-    LastName: {5}
-    Title: {6}
-    Creation Date: {7}
-
-Please click on this link if you want to approve it: {8}
-
-If you don't want to enable this account, you can ignore this email and the account will stay in the current disabled state.
-
-If you want to see this user details (or delete it), please visit: {9}
-".format(tmUser.UserID, 
-                              tmUser.UserName,
-                              tmUser.Company,
-                              tmUser.EMail,
-                              tmUser.FirstName,
-                              tmUser.LastName,
-                              tmUser.Title,
-                              tmUser.Stats.CreationDate.ToLongDateString(),
-                              enableUserUrl,
-                              userEditUrl);
+            var tmMessage     = TMConsts.EMAIL_BODY_ADMIN_NEW_USER_APPROVAL.format(tmUser.UserID, 
+                                                                                   tmUser.UserName,
+                                                                                   tmUser.Company,
+                                                                                   tmUser.EMail,
+                                                                                   tmUser.FirstName,
+                                                                                   tmUser.LastName,
+                                                                                   tmUser.Title,
+                                                                                   tmUser.Stats.CreationDate.ToLongDateString(),
+                                                                                   enableUserUrl,
+                                                                                   userEditUrl);
 
             //userMessage = "(sent to: {0})\n\n{1}".format(tmUser.EMail, userMessage);
             

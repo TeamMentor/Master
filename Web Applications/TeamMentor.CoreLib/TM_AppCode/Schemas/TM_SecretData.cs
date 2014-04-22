@@ -11,6 +11,7 @@ namespace TeamMentor.CoreLib
         public string           Password     { get; set; }
         public string           Default_From { get; set; }
         public string           Default_To   { get; set; }       
+        public string           Email_Footer { get; set; }
 
         public TM_SMTPConfig()
         {
@@ -19,6 +20,7 @@ namespace TeamMentor.CoreLib
             Password        = "";
             Default_From    = TMConfig.Current.TMSecurity.Default_AdminEmail ;
             Default_To      = TMConfig.Current.TMSecurity.Default_AdminEmail ;
+            Email_Footer    = TMConsts.EMAIL_DEFAULT_FOOTER;
         }
     }
 

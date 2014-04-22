@@ -40,14 +40,13 @@ Thanks,
 
 ";
         public static string EMAIL_DEFAULT_FOOTER =
-@"
-Sent by TeamMentor. 
+@"Sent by TeamMentor. 
 
 ";        
 	
 
 
-    public static string EMAIL_BODY_NEW_USER_NEEDS_APPROVAL =
+        public static string EMAIL_BODY_NEW_USER_NEEDS_APPROVAL =
 @"Hello,
 
 Thanks for creating an account in TeamMentor. 
@@ -56,6 +55,37 @@ The account is being reviewed and you will be notified if it is approved.
 
 Thanks,
 
+";
+
+        public static string EMAIL_BODY_ADMIN_EMAIL_ON_NEW_USER = 
+@"New TeamMentor User Created:
+
+    UserId: {0}
+    UserName: {1}
+    Company: {2}
+    Email: {3}
+    FirstName: {4}
+    LastName: {5}
+    Title: {6}
+    Creation Date: {7}";
+
+        public static string EMAIL_BODY_ADMIN_NEW_USER_APPROVAL = 
+@"Hello TeamMentor admin, the following new User request as been received:
+
+    UserId: {0}
+    UserName: {1}
+    Company: {2}
+    Email: {3}
+    FirstName: {4}
+    LastName: {5}
+    Title: {6}
+    Creation Date: {7}
+
+Please click on this link if you want to approve it: {8}
+
+If you don't want to enable this account, you can ignore this email and the account will stay in the current disabled state.
+
+If you want to see this user details (or delete it), please visit: {9}
 ";
 
     }
