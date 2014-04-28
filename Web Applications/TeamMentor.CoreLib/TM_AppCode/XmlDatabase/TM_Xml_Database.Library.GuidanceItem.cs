@@ -2,11 +2,9 @@ using System;
 using System.Web;
 using System.Linq;
 using System.Collections.Generic;
-using FluentSharp;
-using O2.DotNetWrappers.ExtensionMethods;
-using O2.DotNetWrappers.DotNet;
-using O2.DotNetWrappers.Windows;
-
+using FluentSharp.CoreLib;
+using FluentSharp.CoreLib.API;
+using FluentSharp.WinForms;
 
 namespace TeamMentor.CoreLib
 {
@@ -326,10 +324,13 @@ namespace TeamMentor.CoreLib
             return null;
         }
         [EditArticles]  public static Guid xmlDB_Create_Article(this TM_Xml_Database tmDatabase, TeamMentor_Article article)
-        {             
-            article.Metadata.Id = Guid.NewGuid();
-            if(article.xmlDB_Save_Article(tmDatabase))
-                return article.Metadata.Id;
+        {      
+            if (article.notNull())
+            {
+                article.Metadata.Id = Guid.NewGuid();
+                if(article.xmlDB_Save_Article(tmDatabase))
+                    return article.Metadata.Id;
+            }
             return Guid.Empty;
         }
         [EditArticles]  public static bool xmlDB_Save_Article(this TeamMentor_Article article, TM_Xml_Database tmDatabase)
@@ -374,20 +375,22 @@ namespace TeamMentor.CoreLib
         }        
         [EditArticles]  public static bool xmlDB_Delete_GuidanceItems(this TM_Xml_Database tmDatabase, List<Guid> guidanceItemIds)
         {
+            if (guidanceItemIds.isNull())
+                return false;
             var result = true;
-            foreach(var guidanceItemId in guidanceItemIds)
-            {
+            foreach(var guidanceItemId in guidanceItemIds)            
                 if (tmDatabase.xmlDB_Delete_GuidanceItem(guidanceItemId).isFalse())
-                    result = false;
-            }
+                    result = false;            
             return result;
         }
         [EditArticles]  public static bool xmlDB_Delete_GuidanceItem(this TM_Xml_Database tmDatabase, Guid guidanceItemId)
         {
+            if (guidanceItemId ==  Guid.Empty)
+                return false;
             var guidanceItemXmlPath = tmDatabase.removeGuidanceItemFileMapping(guidanceItemId);
             "removing GuidanceItem with Id:{0} located at {1}".info(guidanceItemId, guidanceItemXmlPath);
             if (guidanceItemXmlPath.valid())				
-            Files.deleteFile(guidanceItemXmlPath);
+                Files.deleteFile(guidanceItemXmlPath);
             if (TM_Xml_Database.Current.Cached_GuidanceItems.hasKey(guidanceItemId))
                 TM_Xml_Database.Current.Cached_GuidanceItems.Remove(guidanceItemId);
 
@@ -398,14 +401,17 @@ namespace TeamMentor.CoreLib
         }                
         [ReadArticles]  public static string xmlDB_guidanceItemXml(this TM_Xml_Database tmDatabase, Guid guidanceItemId)
         {
+            if (guidanceItemId ==  Guid.Empty)
+                return null;
             var guidanceXmlPath = tmDatabase.getXmlFilePathForGuidanceId(guidanceItemId);
             return guidanceXmlPath.fileContents();//.xmlFormat();
         }
 
         [Admin]	        public static string xmlDB_guidanceItemPath(this TM_Xml_Database tmDatabase, Guid guidanceItemId)
         {
-            if (TM_Xml_Database.Current.GuidanceItems_FileMappings.hasKey(guidanceItemId))                            
-                return TM_Xml_Database.Current.GuidanceItems_FileMappings[guidanceItemId];            
+            if (guidanceItemId !=  Guid.Empty)                
+                if (TM_Xml_Database.Current.GuidanceItems_FileMappings.hasKey(guidanceItemId))                            
+                    return TM_Xml_Database.Current.GuidanceItems_FileMappings[guidanceItemId];            
             return null;
         }
 
@@ -497,6 +503,9 @@ namespace TeamMentor.CoreLib
         }
         public static Guid xmlBD_resolveMappingToArticleGuid(this TM_Xml_Database tmDatabase, string mapping)
         {
+            if (mapping.notValid())
+                return Guid.Empty;
+
             if (mapping.isGuid())
             {
                 return tmDatabase.getVirtualGuid_if_MappingExists(mapping.guid());

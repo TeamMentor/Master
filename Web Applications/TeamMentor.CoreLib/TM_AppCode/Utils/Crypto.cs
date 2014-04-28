@@ -3,7 +3,7 @@ using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-using O2.DotNetWrappers.ExtensionMethods;
+using FluentSharp.CoreLib;
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable SuggestUseVarKeywordEvident

@@ -53,7 +53,7 @@ function deleteUser(userId, callback)
     invokeWebService( url, params, callback, defaultErrorHandler);
 }
 
-function createUser(username , password,  email, firstname, lastname, company, title, country, state, note, callback)
+function createUser(username , password,  email, firstname, lastname, company, title, country, state, note, userTags, callback)
 {
     var url = TM.tmWebServices + 'CreateUser';
     //var params = "{ newUser: { 	username: '"+  username+ "', password: '"+  password + "',email:  '"+ email+ "', firstname:  '"+ firstname+ "',lastname:  '"+ lastname+ "',note: '"+  note+ "' } }";
@@ -67,7 +67,8 @@ function createUser(username , password,  email, firstname, lastname, company, t
                                             Title:  title,
                                             Country:  country,
                                             State:  state,
-                                            Note: note
+                                            Note: note,
+                                            UserTags: userTags
                                         } });
     invokeWebService( url, params, callback, defaultErrorHandler);	
 }
@@ -80,24 +81,25 @@ function batchUserCreation(batchUserData, callback)
 }
 
 function updateUser(userId, userName, firstname, lastname, title, company, email, 
-                    country, state, accountExpiration,  passwordExpired, userEnabled, groupId, callback)
+                    country, state, accountExpiration,  passwordExpired, userEnabled, accountNeverExpires, groupId, callback)
 {
     var url = TM.tmWebServices + 'UpdateUser';
     var params =  JSON.stringify(
         {
-                 userId          : userId  ,
-                 userName        : userName , 
-                 firstname       : firstname, 
-                 lastname        : lastname, 
-                 title           : title, 
-                 company         : company, 
-                 email           : email, 
-                 country         : country, 
-                 state           : state,  
-                 accountExpiration  : accountExpiration,
-                 passwordExpired : passwordExpired, 
-                 userEnabled     : userEnabled,
-                 groupId         : groupId
+                 userId              : userId  ,
+                 userName            : userName , 
+                 firstname           : firstname, 
+                 lastname            : lastname, 
+                 title               : title, 
+                 company             : company, 
+                 email               : email, 
+                 country             : country, 
+                 state               : state,  
+                 accountExpiration   : accountExpiration,
+                 passwordExpired     : passwordExpired, 
+                 userEnabled         : userEnabled,
+                 accountNeverExpires : accountNeverExpires,
+                 groupId             : groupId
         } );	
     //alert("updating user with: {0}".format(JSON.stringify(params)));
     invokeWebService( url, params, callback, defaultErrorHandler);

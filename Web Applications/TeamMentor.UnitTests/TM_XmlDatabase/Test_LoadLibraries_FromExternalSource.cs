@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using O2.DotNetWrappers.ExtensionMethods;
+using FluentSharp.CoreLib;
 using TeamMentor.CoreLib;
 
 namespace TeamMentor.UnitTests.TM_XmlDatabase
@@ -9,7 +9,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
     {        
         public Test_LoadLibraries_FromExternalSource()
         {
-            if (Tests_Config.offline)
+            if (Tests_Consts.offline)
                 Assert.Ignore("Ignoring Test because we are offline");   
         }
 

@@ -1,6 +1,7 @@
 ﻿<%@ Page Language="C#"  Trace="true" %>
-<%@ Import Namespace ="O2.Kernel" %>
-<%@ Import Namespace ="O2.DotNetWrappers.ExtensionMethods" %>
+<%@ Import Namespace="FluentSharp.CoreLib" %>
+<%@ Import Namespace="FluentSharp.CoreLib.API" %>
+<%@ Import Namespace="FluentSharp.WinForms" %>
 <%@ Import Namespace="TeamMentor.CoreLib" %>
 
 <%	

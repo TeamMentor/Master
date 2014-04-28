@@ -1,0 +1,44 @@
+﻿
+@using System.Collections.Generic
+@using FluentSharp.CoreLib
+@using TeamMentor.CoreLib
+
+@{
+
+    var baseFolder = TBot_Brain.TBotScriptsFolder();
+    var scripts = TBot_Brain.TBotScriptsFiles();
+    var mappedScripts = new Dictionary<string, List<string>> ();    
+    foreach (var script in scripts)
+    {
+        if (script.contains("Views").isFalse())
+        {
+            var title = script.contains(baseFolder) 
+                            ? script.parentFolder().remove(baseFolder).removeFirstChar()
+                            : "_Misc";        
+            title = title.replace("\\" ," - ");
+            mappedScripts.add(title, script.fileName_WithoutExtension());
+        }
+    }    
+}
+<h4>Available TBot Commands</h4>
+
+<p>
+    Welcome to the TBot control center, please chose the command to execute from the list below: <br />        
+</p>
+
+<table class="table"> 
+    @foreach (var item in mappedScripts)
+    {
+        <tr>
+            <td><b>@item.Key</b></td>        
+            @foreach (var command in item.Value)
+            {
+                <td><a href="/rest/tbot/run/@command">@command.replace("_"," ")</a></td>
+            }                               
+        </tr>
+    }
+</table>
+<hr />
+<div class="alert alert-success">
+See also: <a href="/Teammentor">TeamMentor UI</a> , <a href="/Tbot_Monitor/monitor.htm#/monitor/activities">TBot Monitor</a>  , <a href="/admin">Control Panel (legacy)</a>
+</div>

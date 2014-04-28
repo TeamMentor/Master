@@ -1,27 +1,58 @@
 ﻿using System;
 using System.ServiceModel;
 using NUnit.Framework;
-using O2.DotNetWrappers.ExtensionMethods;
+using FluentSharp.CoreLib;
 using TeamMentor.CoreLib;
 
 namespace TeamMentor.UnitTests.REST
 
 {	    
     [TestFixture]
-    [Ignore]                // can't run these on TeamCity due to security protection for binding WCF address into Port
-                            // need to find a better solution or a way to automate the setup
-                            // references:http://blogs.msdn.com/b/paulwh/archive/2007/05/04/addressaccessdeniedexception-http-could-not-register-url-http-8080.aspx
-                            //            http://stackoverflow.com/questions/885744/wcf-servicehost-access-rights
+    //[Ignore]                // can't run these on TeamCity due to security protection for binding WCF address into Port                            
     public class Test_TM_Rest_Hosted : TM_Rest_Hosted
     {
-        [SetUp] public static void Initialize()
+        [SetUp] public void setup()
         {
             WCFHost_Start();
+            
+            if (HostStarted.isFalse())
+                Assert.Ignore("Neet to set the security protection for binding WCF address into Port");
+                // need to find a better solution or a way to automate the setup
+                // references:http://blogs.msdn.com/b/paulwh/archive/2007/05/04/addressaccessdeniedexception-http-could-not-register-url-http-8080.aspx
+                //            http://stackoverflow.com/questions/885744/wcf-servicehost-access-rights
+                //            when running inside VisualStudio we can use the Design_Time_Addresses trick
         }
 
-        [Test]  public void CheckWebServiceHost()
+        [TearDown] public void tearDown()
         {
-            var html = TmRestHost.BaseAddress.append("/Version").getHtml();
+            WCFHost_Stop();
+        }
+
+            
+        [Test] public  void Test_WCFHost_Start()
+        {
+            // stop the current one
+            Assert.IsTrue(HostStarted);
+            WCFHost_Stop();
+            Assert.IsFalse(HostStarted);
+
+            // create a rest service with a random port and without using the Design_Time_Addresses 
+            // NOTE: this test will fail if VS is run with Admin privs
+            var currentTemplate = Tests_Consts.TM_REST_Url_Template;
+            var currentPort     = Tests_Consts.TM_REST_Service_Port;
+            Tests_Consts.TM_REST_Url_Template = currentTemplate.replace("Design_Time_Addresses","ABCD");
+            Tests_Consts.TM_REST_Service_Port = 20000.randomNumber();
+            var tmRestHosted = new TM_Rest_Hosted();
+            Assert.IsNotNull(tmRestHosted);
+            tmRestHosted.WCFHost_Start();
+            Assert.IsFalse  (tmRestHosted.HostStarted);
+            Tests_Consts.TM_REST_Service_Port = currentPort;
+            Tests_Consts.TM_REST_Url_Template = currentTemplate;
+        }
+        [Test]  public void CheckWebServiceHost()
+        {           
+            var url = TmRestHost.BaseAddress.str() + "/Version";
+            var html = url.GET();
             Assert.IsTrue(html.valid(), "Html fetch failed");
             //test version
             var version = TmRest.Version();
@@ -49,17 +80,24 @@ namespace TeamMentor.UnitTests.REST
             var sessionId  = TmRest.Login(username, pwd);
             
             Assert.AreNotEqual(Guid.Empty,sessionId);
-            
+                        
             identity_IsAuthenticated = TmRest.RBAC_CurrentIdentity_IsAuthenticated();
             identity_Name            = TmRest.RBAC_CurrentIdentity_Name();
-            identity_Roles           = TmRest.RBAC_CurrentPrincipal_Roles();
-            identity_IsAdmin         = TmRest.RBAC_IsAdmin();
 
             Assert.IsTrue  (identity_IsAuthenticated);
             Assert.AreEqual(username, identity_Name);
-            Assert.AreEqual(identity_Roles.size(), 5);
-            Assert.IsTrue  (identity_IsAdmin);
             
+            //without the CSRF-token these should fail
+
+            Assert.IsFalse  (TmRest.RBAC_IsAdmin());
+            Assert.AreEqual (TmRest.RBAC_CurrentPrincipal_Roles().size(), 1);
+
+            sessionId.set_Guid_as_CsrfToken_on_Request();
+            
+            //Now the mappings should work
+            
+            Assert.IsTrue  (TmRest.RBAC_IsAdmin());
+            Assert.AreEqual(TmRest.RBAC_CurrentPrincipal_Roles().size(), 5);            
         }
 
         [Test]
@@ -75,12 +113,6 @@ namespace TeamMentor.UnitTests.REST
             CheckLogin();       //logs in as admin
 
             TmRest.users();
-        }
-
-        [TearDown] public static void Cleanup()
-        {
-            WCFHost_Stop();
-        }
-        
+        } 
     }
 }

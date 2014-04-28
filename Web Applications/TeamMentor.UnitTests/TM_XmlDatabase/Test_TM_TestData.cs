@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security;
 using NUnit.Framework;
-using O2.DotNetWrappers.ExtensionMethods;
+using FluentSharp.CoreLib;
 using TeamMentor.CoreLib;
 using urn.microsoft.guidanceexplorer;
 using View = TeamMentor.CoreLib.View;

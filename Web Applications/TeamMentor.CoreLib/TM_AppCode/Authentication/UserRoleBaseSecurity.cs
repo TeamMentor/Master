@@ -1,24 +1,24 @@
 ﻿using System;
 using System.Threading;
-using O2.DotNetWrappers.ExtensionMethods;
+using FluentSharp.CoreLib;
 
 namespace TeamMentor.CoreLib
 {
     public class UserRoleBaseSecurity
     {
-        public void MapRolesBasedOnSessionGuid(string sessionId)
+        public UserGroup MapRolesBasedOnSessionGuid(string sessionId)
         {
             if (sessionId.isGuid())
-                MapRolesBasedOnSessionGuid(new Guid(sessionId));
+                return MapRolesBasedOnSessionGuid(new Guid(sessionId));
+            return UserGroup.None;
         }
 
         public UserGroup MapRolesBasedOnSessionGuid(Guid sessionIdGuid)
         {
 			if (sessionIdGuid != Guid.Empty)
 			{
-				var userGroup = sessionIdGuid.session_UserGroup();
-                //"[MapRolesBasedOnSessionGuid] userGroup = {0}".info(userGroup);
-				HttpContextFactory.Current.SetCurrentUserRoles(userGroup);            
+				var userGroup = sessionIdGuid.session_UserGroup();                
+				HttpContextFactory.Current.setCurrentUserRoles(userGroup);            
                 return userGroup;
 			}
             return UserGroup.None;
@@ -39,4 +39,12 @@ namespace TeamMentor.CoreLib
 			return Thread.CurrentPrincipal.roles();
 		}		
     }			
+
+/*    public static class UserRoleBaseSecurity_ExtensionMethods
+    {        
+        public static UserGroup mapRolesBasedOnSessionId(this Guid sessionID)
+        {
+            return new UserRoleBaseSecurity().MapRolesBasedOnSessionGuid(sessionID);
+        }        
+    }*/
 }

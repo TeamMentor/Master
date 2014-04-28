@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security;
 using NUnit.Framework;
-using O2.DotNetWrappers.ExtensionMethods;
+using FluentSharp.CoreLib;
 using TeamMentor.CoreLib;
 
 namespace TeamMentor.UnitTests.TM_XmlDatabase
@@ -94,12 +94,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
 
             Func<int> createUser		  = () => userData.newUser(tempUserName, tmpPassword);
             Func<int> createUser_In_Group = () => userData.newUser(tempUserName, tmpPassword, tmpEmail, testGroupId);	
-            
-
-            //Readers cannot get users
-            //UserGroup.Reader.setThreadPrincipalWithRoles();
-            //Assert.Throws<SecurityException>(() => userData.tmUser(111111111), "Reader: GetUser_byID");
-
+                       
             //Anonymous can create users
             UserGroup.Anonymous.setThreadPrincipalWithRoles();
 
@@ -134,11 +129,30 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Assert.That(result, "user delete failed");
 
             //check that only admins can call BatchUserCreation
-            var batchUserCreation = "";			
+            var batchUserCreation = "123,qwe,asd,zxc";			
             UserGroup.Anonymous	.setThreadPrincipalWithRoles(); Assert.Throws<SecurityException>(() => userData.createTmUsers(batchUserCreation), "Anonymous: BatchUserCreation");
             UserGroup.Reader	.setThreadPrincipalWithRoles(); Assert.Throws<SecurityException>(() => userData.createTmUsers(batchUserCreation), "Reader	  : BatchUserCreation");
             UserGroup.Editor	.setThreadPrincipalWithRoles(); Assert.Throws<SecurityException>(() => userData.createTmUsers(batchUserCreation), "Editor   : BatchUserCreation");
             UserGroup.Admin		.setThreadPrincipalWithRoles(); Assert.DoesNotThrow(			 () => userData.createTmUsers(batchUserCreation), "Admin	  : BatchUserCreation");
+        }
+
+        [Test]
+        public void isAdminEditorReaderAnonymous()
+        {
+            var tmUser = new TMUser();
+            Assert.IsTrue(tmUser.isAnonymous());
+
+            tmUser.make_Reader();
+            Assert.IsTrue (tmUser.isReader());
+
+            tmUser.make_Editor();
+            Assert.IsTrue(tmUser.isEditor());
+
+            tmUser.make_Admin();
+            Assert.IsTrue (tmUser.isAdmin());
+            Assert.IsFalse(tmUser.isEditor());
+            Assert.IsFalse(tmUser.isReader());
+            Assert.IsFalse(tmUser.isAnonymous());
         }
 
     }

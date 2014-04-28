@@ -1,5 +1,5 @@
 ﻿using System;
-using O2.DotNetWrappers.ExtensionMethods;
+using FluentSharp.CoreLib;
 
 namespace TeamMentor.CoreLib
 {
@@ -46,6 +46,7 @@ namespace TeamMentor.CoreLib
                 result = userData.SecretData.saveAs(secretDataFile);
                 userData.triggerGitCommit();
             }
+            userData.logTBotActivity("TM_SecretData saved","");
             return result;
         }
     }

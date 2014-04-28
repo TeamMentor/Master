@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web;
-using O2.DotNetWrappers.ExtensionMethods;
+using FluentSharp.CoreLib;
 
 namespace TeamMentor.CoreLib
 {
@@ -37,9 +37,7 @@ namespace TeamMentor.CoreLib
         }
          
         protected void Application_Start				(object sender, EventArgs e)
-        {
-            //UserGroup.Admin.setThreadPrincipalWithRoles();           // Assert admin privs - only use for special debugging/deployment issues
-            //AdminAttribute.GlobalDisableFor_AdminAttribute = true;   // Disable admin checks - only use for special debugging/deployment issues
+        {            
             TMEvents.OnApplication_Start.invoke();            
         }
         
@@ -56,8 +54,7 @@ namespace TeamMentor.CoreLib
                 {
                     if (ex.Message != "Thread was being aborted.") // as per the recommendation in http://support.microsoft.com/kb/312629
                         ex.logWithStackTrace("[in Application_BeginRequest]");
-                }
-                
+                }                
             }
         }
 

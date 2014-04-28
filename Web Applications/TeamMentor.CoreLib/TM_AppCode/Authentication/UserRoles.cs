@@ -60,7 +60,9 @@ namespace TeamMentor.CoreLib
                             {
                                 UserRole.ReadArticlesTitles, 
                                 UserRole.ReadArticles
-                            }}
+                            }},
+                    {UserGroup.Developer, 
+                        new List<UserRole>()},
                 };
         }
     }	

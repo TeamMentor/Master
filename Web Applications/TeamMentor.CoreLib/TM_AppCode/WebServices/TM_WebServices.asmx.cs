@@ -12,7 +12,7 @@ namespace TeamMentor.CoreLib
         public TM_Xml_Database      tmXmlDatabase;
         public TM_UserData          userData;
 
-        [LogUrl("WebService")]
+        //[LogUrl("WebService")]
         public TM_WebServices() : this(false)
         {            
         }      

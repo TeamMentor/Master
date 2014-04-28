@@ -1,0 +1,49 @@
+﻿
+@using System.Linq
+@using TeamMentor.CoreLib
+@using FluentSharp.CoreLib
+
+@{
+    
+    var activities = Activities_Firebase.apiFirebase.OfflineQueue
+                                                    .Select(submitData => (UserActivity)submitData.Data)
+                                                    .Reverse()
+                                                    .toList();
+    var count          = activities.size();
+}
+<h4>Firebase Offline Data</h4>
+
+
+<div class="alert alert-warning">    
+    <a href="Firebase_Offline_DebugMsgs">Debug Messages</a> - <b>Activities</b> - <a href="Firebase_Offline_RequestUrls">Request Urls</a>
+</div>
+
+<table class="table table-striped table-condensed">
+    <tr>
+        <th>#</th>            
+        <th>Who</th>
+        <th>When</th>            
+        <th>Action</th>            
+        <th>Detail</th>               
+    </tr>   
+    @foreach (var activity in activities)
+    {
+        <tr>
+            
+            <td>@(count--)</td>
+            @if(activity.Who == "TBot")
+            {
+                <td>@activity.Who</td>
+            }
+            else
+            {
+                <td><a href="User_Activities?user=@activity.Who" target="_blank">@activity.Who</a></td>
+            }
+            <td>@activity.When.fromFileTimeUtc().ToString("HH:MM:ss")</td>
+            <td>@activity.Action</td>                                
+            <td>@activity.Detail</td>
+        </tr>
+    }
+</table>
+
+

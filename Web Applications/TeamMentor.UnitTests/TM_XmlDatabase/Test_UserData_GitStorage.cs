@@ -1,7 +1,8 @@
 ﻿using System;
+using FluentSharp.CoreLib;
+using FluentSharp.Git;
+using FluentSharp.Git.APIs;
 using NUnit.Framework;
-using O2.DotNetWrappers.ExtensionMethods;
-using O2.FluentSharp;
 using TeamMentor.CoreLib;
 
 namespace TeamMentor.UnitTests.TM_XmlDatabase
@@ -57,13 +58,13 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             
             var tmUser      = userData.newUser().tmUser();            
             var userXmlFile = tmUser.getTmUserXmlFile().fileName();
-            var untracked   = nGit.status_Untracked();            
+            var untracked   = nGit.status_Raw().untracked();            
             
             Assert.AreEqual (1,untracked.size());
             Assert.AreEqual (userXmlFile, untracked.first());
 
             nGit.add_and_Commit_using_Status();            
-            untracked         = nGit.status_Untracked();
+            untracked         = nGit.status_Raw().untracked();
             var head2         = nGit.head();
             Assert.AreEqual   (0,untracked.size());
             Assert.IsFalse    (nGit.head().isNull());

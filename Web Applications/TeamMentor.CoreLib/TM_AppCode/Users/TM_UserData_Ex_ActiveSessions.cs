@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using O2.DotNetWrappers.ExtensionMethods;
+using FluentSharp.CoreLib;
 
 namespace TeamMentor.CoreLib
 {
@@ -51,7 +51,7 @@ namespace TeamMentor.CoreLib
                         if (pwdOk)
                         {
                             if(tmUser.account_Enabled())
-                                return tmUser.login();                    // call login with a new SessionID            
+                                return tmUser.login("Password");                    // call login with a new SessionID            
                             
                             tmUser.logUserActivity("Login Fail",  "pwd ok, but account disabled");
                         }
@@ -61,6 +61,8 @@ namespace TeamMentor.CoreLib
                             tmUser.logUserActivity("Login Fail", "bad pwd");                            
                         }
                     }
+                    else
+                        userData.logTBotActivity("Login Fail", "bad username: {0}".format(username));
                 }
             }
             catch (Exception ex)
@@ -69,11 +71,11 @@ namespace TeamMentor.CoreLib
             }
             return Guid.Empty;    			
         }
-        public static Guid              login (this TMUser tmUser)                                         
+        public static Guid              login (this TMUser tmUser, string loginMethod = "Direct")                                         
         {         
-            return TM_UserData.Current.login(tmUser);
+            return TM_UserData.Current.login(tmUser, loginMethod);
         }
-        public static Guid              login (this TM_UserData userData,TMUser tmUser)    
+        public static Guid              login (this TM_UserData userData,TMUser tmUser, string loginMethod = "Direct")    
         {
             try
             {
@@ -81,7 +83,7 @@ namespace TeamMentor.CoreLib
                 {
                     tmUser.Stats.LastLogin = DateTime.Now;
                     tmUser.Stats.LoginOk++;
-                    var userSession = tmUser.add_NewSession();                          // create new session
+                    var userSession = tmUser.add_NewSession(loginMethod);                          // create new session
                     if (userSession.notNull())
                     {
                         tmUser.logUserActivity("User Login", tmUser.UserName);          // will save the user                                              
@@ -92,7 +94,7 @@ namespace TeamMentor.CoreLib
             }
             catch (Exception ex)
             {
-                ex.log("[TM_UserData][login]");
+                ex.log("[TM_UserData] [login]");
             }
             return Guid.Empty;
         }
@@ -141,15 +143,15 @@ namespace TeamMentor.CoreLib
             return false;
         }
 
-        public static UserSession       add_NewSession(this TMUser tmUser)
+        public static UserSession       add_NewSession(this TMUser tmUser, string loginMethod = "Direct")
         {
-
-            var ipAddress = HttpContextFactory.Context.ipAddress();            
+            
             var userSession = new UserSession
             {
-                SessionID = Guid.NewGuid(),
-                IpAddress = ipAddress,
-                CreationDate = DateTime.Now
+                SessionID    = Guid.NewGuid(),
+                IpAddress    = HttpContextFactory.Request.ipAddress(),
+                CreationDate = DateTime.Now,
+                LoginMethod  = loginMethod
             };
             tmUser.Sessions.add(userSession);
             return userSession;            
@@ -188,7 +190,7 @@ namespace TeamMentor.CoreLib
                     select session.SessionID).toList();
         }
 
-        public static TM_UserData resetAllSessions(this TM_UserData userData)
+        public static TM_UserData       resetAllSessions(this TM_UserData userData)
         {
             var sessionIDs = userData.validSessions();
             foreach (var sessionID in sessionIDs)
@@ -203,8 +205,9 @@ namespace TeamMentor.CoreLib
         {
             try
             {
-                var validSessions = TM_UserData.Current.validSessions();
-                return validSessions.contains(sessionId);
+                return sessionId.session_TmUser().notNull();
+                //var validSessions = TM_UserData.Current.validSessions();
+                //return validSessions.contains(sessionId);
                 //return TM_UserData.Current.ActiveSessions.hasKey(sessionId);
             }
             catch (Exception ex)
@@ -213,7 +216,7 @@ namespace TeamMentor.CoreLib
             }             
             return false;
         }
-        public static TMUser            session_TmUser       (this Guid sessionId)
+        public static TMUser            session_TmUser       (this Guid sessionId, bool logAccountDisabled = true)
         {
             try
             {
@@ -227,9 +230,18 @@ namespace TeamMentor.CoreLib
 
                 if (tmUserInSession.notNull())
                 {                    
-                    if (tmUserInSession.AccountStatus.UserEnabled)
-                        return tmUserInSession;
-                    tmUserInSession.logUserActivity("User Disabled", "User had an active session, but his account is disabled");
+                    if (tmUserInSession.account_Expired())
+                    {
+                        if (logAccountDisabled)
+                            tmUserInSession.logUserActivity("SessionId Not Accepted", "Account was expired. Expiry date: {0}".format(tmUserInSession.AccountStatus.ExpirationDate));                            
+                    }
+                    else
+                    {
+                        if (tmUserInSession.AccountStatus.UserEnabled)
+                            return tmUserInSession;
+                        if (logAccountDisabled)                              // this is required due to the multiple calls to the CurrentUser web method
+                            tmUserInSession.logUserActivity("SessionId Not Accepted", "User account was Disabled");
+                    }
                 }
             }
             catch (Exception ex)
@@ -273,7 +285,7 @@ namespace TeamMentor.CoreLib
         {
             return UserGroup.Admin == sessionId.session_UserGroup();
         }  
-        public static List<Guid>              session_sessionIds    (this TMUser tmUser)
+        public static List<Guid>        session_sessionIds   (this TMUser tmUser)
         {
             try
             {
@@ -286,5 +298,20 @@ namespace TeamMentor.CoreLib
             }
             return new List<Guid>();
         }        
+
+        public static string            csrfToken                       (this Guid guid)
+        {
+            return guid.str().hash().str();	  	// interrestingly guid.hash().str() produces a different value
+        }
+
+        
+        public static string            set_Guid_as_CsrfToken_on_Request(this Guid guid)
+        {
+            var csrfToken = guid.csrfToken();            
+            HttpContextFactory.Request.Headers["CSRF-Token"] = csrfToken;
+            return csrfToken;
+        }
+            
+        
     }
 }

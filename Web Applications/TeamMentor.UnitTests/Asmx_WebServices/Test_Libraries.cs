@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using O2.DotNetWrappers.ExtensionMethods;
+using FluentSharp.CoreLib;
 using NUnit.Framework;
 using TeamMentor.CoreLib;
 
@@ -109,14 +109,14 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             Assert.That(html != null , "GuidanceItemHtml was null");
             Assert.That(html.size() > 0 , "GuidanceItemHtml was empty");    					
         } 		
-        [Test] public void GetAllGuidanceItems() 
+        [Test][Assert_Reader] public void GetAllGuidanceItems() 
         {   
             var allGuidanceItems = tmWebServices.GetAllGuidanceItems(); 
             Assert.That(allGuidanceItems != null , "allGuidanceItems was null");
             Assert.That(allGuidanceItems.size()> 0 , "no allGuidanceItems returned");    		
             "There where  {0} items returned".info(allGuidanceItems.size());    		
         }    	    	    	
-        [Test] public void GetGuidanceItemsInLibrary() 
+        [Test][Assert_Reader] public void GetGuidanceItemsInLibrary() 
         {   		    	
             var guidanceItemsInLibrary = tmWebServices.GetGuidanceItemsInLibrary(OWASP_LIBRARY_GUID);
             Assert.That(guidanceItemsInLibrary != null , "guidanceItemsInLibrary was null");
@@ -140,10 +140,15 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
         {
             tmXmlDatabase.UsingFileStorage      = true;                                  // need this since we are checking the file paths
             //tmConfig.Git.AutoCommit_LibraryData = false;
-            
+                        
             var testOwaspViewId                 = "fc1c5b9c-becb-44a2-9812-40090d9bd135".guid();
             var originalName                    = "createAndDelete";  
             var newName 	                    = "_" + originalName + "_new";
+            
+            Assert.IsNull   (tmXmlDatabase.Path_XmlDatabase, null);
+            Assert.IsNotNull(tmXmlDatabase.Path_XmlLibraries, null);
+            Assert.IsTrue   (tmXmlDatabase.Path_XmlLibraries.dirExists());
+            Assert.IsNull   (tmXmlDatabase.tmLibrary(originalName), "Library {0} should not exist".format(originalName));
 
             var newLibrary                       = tmWebServices.CreateLibrary(new Library { caption = originalName }); //Create Library
             var tmLibrary                        = tmXmlDatabase.tmLibrary(newLibrary.libraryId);

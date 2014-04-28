@@ -22,6 +22,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <SkipPostSharp>False</SkipPostSharp>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -36,14 +37,16 @@
     <Reference Include="AntiXssLibrary, Version=4.2.0.0, Culture=neutral, PublicKeyToken=d127efab8a9c114f, processorArchitecture=MSIL">
       <HintPath>..\packages\AntiXSS.4.2.1\lib\net40\AntiXssLibrary.dll</HintPath>
     </Reference>
-    <Reference Include="FluentSharp.BCL, Version=5.1.1.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
-      <HintPath>..\packages\FluentSharp.BCL.5.0.73\lib\net35\FluentSharp.BCL.dll</HintPath>
+    <Reference Include="FluentSharp.CoreLib, Version=5.3.0.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\FluentSharp.CoreLib.5.3.121\lib\net35\FluentSharp.CoreLib.dll</HintPath>
     </Reference>
-    <Reference Include="FluentSharp.CoreLib, Version=5.1.1.1, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
-      <HintPath>..\packages\FluentSharp.CoreLib.5.0.77\lib\net35\FluentSharp.CoreLib.dll</HintPath>
+    <Reference Include="FluentSharp.NGit, Version=5.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\FluentSharp.NGit.5.3.121\lib\net40\FluentSharp.NGit.dll</HintPath>
     </Reference>
-    <Reference Include="FluentSharp.NGit, Version=5.1.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\FluentSharp.NGit.5.0.76\lib\net40\FluentSharp.NGit.dll</HintPath>
+    <Reference Include="FluentSharp.WinForms">
+      <HintPath>..\packages\FluentSharp.WinForms.5.3.121\lib\net35\FluentSharp.WinForms.dll</HintPath>
     </Reference>
     <Reference Include="HtmlAgilityPack">
       <HintPath>..\packages\HtmlAgilityPack.1.4.6\lib\Net40\HtmlAgilityPack.dll</HintPath>
@@ -54,11 +57,18 @@
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
-    <Reference Include="PostSharp, Version=2.1.0.0, Culture=neutral, PublicKeyToken=b13fd38b8f9c99d7, processorArchitecture=MSIL">
-      <HintPath>..\packages\PostSharp.2.1.7.28\lib\net20\PostSharp.dll</HintPath>
+    <Reference Include="NGit, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\TeamMentor.UnitTests\NGit_Dlls\NGit.dll</HintPath>
     </Reference>
-    <Reference Include="RazorEngine">
-      <HintPath>..\packages\RazorEngine.3.2.0\lib\net40\RazorEngine.dll</HintPath>
+    <Reference Include="PostSharp, Version=3.2.9.0, Culture=neutral, PublicKeyToken=b13fd38b8f9c99d7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\PostSharp.3.2.9-alpha\lib\net20\PostSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="RazorEngine, Version=3.3.0.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\RazorEngine.3.3.0\lib\net40\RazorEngine.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -73,7 +83,7 @@
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
-      <HintPath>..\packages\Microsoft.AspNet.Razor.2.0.20715.0\lib\net40\System.Web.Razor.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.2.0.30506.0\lib\net40\System.Web.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Windows.Forms" />
@@ -83,8 +93,23 @@
   <ItemGroup>
     <Compile Include="TM_AppCode\Authentication\ExtensionMethods\RoleBaseSecurity_ExtensionMethods.cs" />
     <Compile Include="TM_AppCode\Authentication\ExtensionMethods\TeamMentorUserManagement_ExtensionMethods.cs" />
-    <Compile Include="TM_AppCode\O2_Scripts_APIs\O2_Utils.cs" />
-    <Compile Include="TM_AppCode\Users\TmConfig_ExtensionMethods.cs" />
+    <Compile Include="TM_AppCode\Authentication\TokenAuthentication.cs" />
+    <Compile Include="TM_AppCode\ExtensionMethods\Extra\Extra_DateTime_ExtensionMethods.cs" />
+    <Compile Include="TM_AppCode\ExtensionMethods\Extra\Extra_Double_ExtensionMethods.cs" />
+    <Compile Include="TM_AppCode\ExtensionMethods\Extra\Extra_Headers_ExtensioMethods.cs" />
+    <Compile Include="TM_AppCode\ExtensionMethods\Extra\Extra_JSON_ExtensionMethods.cs" />
+    <Compile Include="TM_AppCode\ExtensionMethods\Extra\Extra_StringBuilder_ExtensionMethods.cs" />
+    <Compile Include="TM_AppCode\ExtensionMethods\Extra\Extra_String_ExtensionMethods.cs" />
+    <Compile Include="TM_AppCode\Schemas\TM_FirebaseConfig.cs" />
+    <Compile Include="TM_AppCode\TM_Engine.cs" />
+    <Compile Include="TM_AppCode\Tracking\Firebase\API_Firebase.cs" />
+    <Compile Include="TM_AppCode\Tracking\Firebase\Activities_Firebase.cs" />
+    <Compile Include="TM_AppCode\Tracking\Firebase\Firebase_ClientConfig.cs" />
+    <Compile Include="TM_AppCode\Tracking\Firebase\Logger_Firebase.cs" />
+    <Compile Include="TM_AppCode\Tracking\Firebase\Log_Request.cs" />
+    <Compile Include="TM_AppCode\Tracking\Logger_LogItem.cs" />
+    <Compile Include="TM_AppCode\Tracking\Firebase\Requests_Firebase.cs" />
+    <Compile Include="TM_AppCode\Users\TMConfig_ExtensionMethods.cs" />
     <Compile Include="TM_AppCode\Schemas\TM_SecretData.cs" />
     <Compile Include="TM_AppCode\Users\TM_Secret_Data_ExtensionMethods.cs" />
     <Compile Include="TM_AppCode\Users\TM_UserData_Ex.cs" />
@@ -92,13 +117,12 @@
     <Compile Include="TM_AppCode\Users\TM_UserData_Ex_Scripts.cs" />
     <Compile Include="TM_AppCode\Utils\Crypto.cs" />
     <Compile Include="TM_AppCode\Schemas\Legacy\guidanceexplorer.cs" />
-    <Compile Include="TM_AppCode\XmlDatabase\TM_Xml_Database_Ex_Config.cs" />
-    <Content Include="TM_AppCode\Users\SingleSignOn.cs.txt" />
+    <Compile Include="TM_AppCode\Schemas\WhoAmI.cs" />
+    <Compile Include="TM_AppCode\XmlDatabase\TM_Xml_Database_ExtensionMethods.cs" />
     <Compile Include="TM_AppCode\Authentication\TM_Authentication.cs" />
     <Compile Include="TM_AppCode\Authentication\UserRoleBaseSecurity.cs" />
     <Compile Include="TM_AppCode\Authentication\UserRoles.cs" />
     <Compile Include="TM_AppCode\Authentication\WindowsAuthentication.cs" />
-    <Compile Include="TM_AppCode\O2_Scripts_APIs\O2_Script_Library.cs" />
     <Compile Include="TM_AppCode\Schemas\Folder_V3.cs" />
     <Compile Include="TM_AppCode\Schemas\Legacy\OnlineStorage_Library.cs" />
     <Compile Include="TM_AppCode\Schemas\Legacy\TM_Library.cs" />
@@ -110,7 +134,7 @@
     <Compile Include="TM_AppCode\Schemas\View_V3.cs" />
     <Compile Include="TM_AppCode\TMConsts.cs" />
     <Compile Include="TM_AppCode\TM_StartUp.cs" />
-    <Compile Include="TM_AppCode\Users\TM_UserData.cs" />
+    <Compile Include="TM_AppCode\Schemas\TM_UserData.cs" />
     <Compile Include="TM_AppCode\Users\TM_UserData_Ex_ActiveSessions.cs" />
     <Compile Include="TM_AppCode\Users\TM_UserData_Ex_Users.cs" />
     <Compile Include="TM_AppCode\Users\TM_UserData_Ex_Users_Persistance.cs" />
@@ -121,7 +145,6 @@
     <Compile Include="TM_AppCode\Utils\GZip.cs" />
     <Compile Include="TM_AppCode\Schemas\KeyValue.cs" />
     <Compile Include="TM_AppCode\Utils\MiscUtils.cs" />
-    <Compile Include="TM_AppCode\Utils\NGit.cs" />
     <Compile Include="TM_AppCode\Utils\PostSharp.cs" />
     <Compile Include="TM_AppCode\Utils\REPL.cs" />
     <Compile Include="TM_AppCode\Utils\ResponseHeaders.cs" />
@@ -138,15 +161,16 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="TM_AppCode\Schemas\TM_Gui_Objects.cs" />
-    <Compile Include="TM_AppCode\O2_Scripts_APIs\_Extra_Web_ExtensionMethods.cs" />
+    <Compile Include="TM_AppCode\ExtensionMethods\Extra\Extra_Cookies_ExtensioMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TM_AppCode\Schemas\DataViewers\JsDataTable.cs" />
     <Compile Include="TM_AppCode\Schemas\DataViewers\JsTreeNode.cs" />
+    <None Include="app.config" />
     <None Include="TM_AppCode\Schemas\Legacy\GuidanceItem.cs.txt" />
     <None Include="TM_AppCode\Schemas\Legacy\library.cs.txt" />
     <Compile Include="TM_AppCode\Schemas\TeamMentor_Article.cs" />
     <Compile Include="TM_AppCode\Schemas\TMUser.cs" />
-    <Compile Include="TM_AppCode\Schemas\TmConfig.cs" />
+    <Compile Include="TM_AppCode\Schemas\TMConfig.cs" />
     <Compile Include="TM_AppCode\WebServices\TM_WebServices.asmx.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -189,8 +213,7 @@
     <Compile Include="TM_AppCode\WebServices\TM_Xml_Database_JavaScriptProxy.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="TM_AppCode\O2_Scripts_APIs\_Extra_methods_Xml_Linq.cs.txt" />
-    <Compile Include="TM_AppCode\O2_Scripts_APIs\_Extra_methods_HtmlAgilityPack_ExtensionMethods.cs" />
+    <Compile Include="TM_AppCode\ExtensionMethods\Extra\Extra_HtmlAgilityPack_ExtensionMethods.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">
@@ -202,7 +225,11 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\PostSharp.2.1.7.28\tools\PostSharp.targets" Condition="Exists('..\packages\PostSharp.2.1.7.28\tools\PostSharp.targets')" />
+  <Import Project="..\packages\PostSharp.3.2.9-alpha\tools\PostSharp.targets" Condition="Exists('..\packages\PostSharp.3.2.9-alpha\tools\PostSharp.targets')" />
+  <Target Name="EnsurePostSharpImported" BeforeTargets="BeforeBuild" Condition="'$(PostSharp30Imported)' == ''">
+    <Error Condition="!Exists('..\packages\PostSharp.3.2.9-alpha\tools\PostSharp.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://www.postsharp.net/links/nuget-restore." />
+    <Error Condition="Exists('..\packages\PostSharp.3.2.9-alpha\tools\PostSharp.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://www.postsharp.net/links/nuget-restore." />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
