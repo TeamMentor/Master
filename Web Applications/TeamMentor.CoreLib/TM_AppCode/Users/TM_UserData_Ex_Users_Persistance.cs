@@ -68,7 +68,7 @@ namespace TeamMentor.CoreLib
                 lock (tmUser)
                 {                    
                     tmUser.saveAs(tmUser.getTmUserXmlFile());
-                    tmUser.triggerGitCommit();
+                    //tmUser.triggerGitCommit();
                 }
             }
             return tmUser;
