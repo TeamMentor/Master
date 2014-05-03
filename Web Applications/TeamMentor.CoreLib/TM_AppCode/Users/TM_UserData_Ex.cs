@@ -11,19 +11,21 @@ namespace TeamMentor.CoreLib
         {
             return TMConfig.Current;
         }
-        public static TM_UserData ResetData             (this TM_UserData userData)          {
+        public static TM_UserData ResetData             (this TM_UserData userData)          
+        {
+            userData.NGit_Author_Name    = "tm-bot";
+            userData.NGit_Author_Email   = "tm-bot@teammentor.net";
             userData.FirstScriptToInvoke = TMConsts.USERDATA_FIRST_SCRIPT_TO_INVOKE;
             userData.Path_WebRootFiles   = TMConsts.USERDATA_PATH_WEB_ROOT_FILES;
             userData.TMUsers             = new List<TMUser>();                        
-            userData.SecretData          = new TM_SecretData();            
-            userData.AutoGitCommit       = TMConfig.Current.Git.AutoCommit_UserData;           
+            userData.SecretData          = new TM_SecretData();                        
             return userData;
         }
         public static TM_UserData SetUp                 (this TM_UserData userData)  
         {
             try
             {
-                userData.setupGitSupport();
+                userData.setupGitSupportAndLoadTMConfigFile();                
                 userData.firstScript_Invoke();                
                 userData.SecretData = userData.secretData_Load();
             }
@@ -57,7 +59,7 @@ namespace TeamMentor.CoreLib
                 var sourceFolder = userData.webRootFiles();
                 if (sourceFolder.notValid())
                     return false;
-                var targetFolder = TMConfig.BaseFolder;            
+                var targetFolder = TMConfig.WebRoot;
                 if (targetFolder.pathCombine("web.config").fileExists().isFalse())
                 {
                     "[TM_UserData] [copy_FilesIntoWebRoot] failed because web.config was not found on targetFolder: {0}".error(targetFolder);

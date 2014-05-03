@@ -32,12 +32,7 @@ namespace TeamMentor.CoreLib
                         {
                             nGit.git_Pull_Library();
                             nGit.git_Push_Library();
-                        }
-                        catch (Exception ex)
-                        {
-                            ex.log();
-                        }
-                        
+                        }                                                
                         tmDatabase.NGits.Add(nGit);
                     }
                     else
@@ -140,7 +135,7 @@ namespace TeamMentor.CoreLib
         {
             var start = DateTime.Now;
             "[TM_Xml_Database] [GitClone] Start".info();
-            if (Git.CloneUsingGit(gitLibrary,targetFolder).isFalse())
+            if (GitExe.CloneUsingGitExe(gitLibrary,targetFolder).isFalse())
             {
                 "[TM_Xml_Database] [GitClone] Using NGit for the clone".info();    
                 gitLibrary.git_Clone(targetFolder);

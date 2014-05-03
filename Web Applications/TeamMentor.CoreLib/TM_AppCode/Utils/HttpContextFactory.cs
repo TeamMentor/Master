@@ -53,7 +53,7 @@ namespace TeamMentor.CoreLib
             }
             return httpContext;
         }
-<<<<<<< HEAD
+
         public static string serverUrl(this HttpContextBase context)
         {
             try
@@ -82,8 +82,6 @@ namespace TeamMentor.CoreLib
             }
             return "";
         }
-        public static string ipAddress(this HttpContextBase httpContext)
-=======
 
         //Session
         public static string    sessionId(this HttpSessionStateBase sessionState)
@@ -95,20 +93,10 @@ namespace TeamMentor.CoreLib
 
         //Request
         public static string    ipAddress(this HttpRequestBase request)
->>>>>>> master
         {            
             return request.notNull() 
                         ? request.UserHostAddress 
                         : "";
-            /*try
-            {
-                return HttpContextFactory.Request.UserHostAddress ?? ""; 
-            }
-            catch (Exception ex)
-            {
-                ex.log("[HttpContextBase] [ipAddress]");
-                return "";
-            }*/            
         }
         public static bool      isLocal  (this HttpRequestBase request)
         {

@@ -80,13 +80,7 @@ namespace TeamMentor.CoreLib
             {
                 if (tmUser.notNull())                                                   // there is a valid user
                 {
-<<<<<<< HEAD
-                    var userSession = tmUser.add_NewSession();                          // create new session
-=======
-                    tmUser.Stats.LastLogin = DateTime.Now;
-                    tmUser.Stats.LoginOk++;
                     var userSession = tmUser.add_NewSession(loginMethod);                          // create new session
->>>>>>> master
                     if (userSession.notNull())
                     {
                         tmUser.logUserActivity("User Login", tmUser.UserName);          // will save the user                                              

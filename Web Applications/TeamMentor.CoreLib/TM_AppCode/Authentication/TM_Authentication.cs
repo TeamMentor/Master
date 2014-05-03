@@ -155,8 +155,10 @@ namespace TeamMentor.CoreLib
         public void                 setGitUser()
         {
             if(currentUser.notNull())
-             TM_UserData.Current.NGit_Author_Name  = currentUser.UserName;
-             TM_UserData.Current.NGit_Author_Email =  currentUser.EMail;
+            {
+                TM_UserData.Current.NGit_Author_Name  = currentUser.UserName;
+                TM_UserData.Current.NGit_Author_Email =  currentUser.EMail;
+            }
         }
         public Guid                 logout()
         {

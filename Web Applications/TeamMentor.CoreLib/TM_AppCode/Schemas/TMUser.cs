@@ -89,18 +89,8 @@ namespace TeamMentor.CoreLib
         
     }
     public class UserStats
-<<<<<<< HEAD
     {
-        
         [XmlAttribute]	public DateTime CreationDate		{ get; set; }		        
-=======
-    {        
-        [XmlAttribute]	public DateTime CreationDate		{ get; set; }		
-        [XmlAttribute]	public DateTime LastLogin			{ get; set; }
-        [XmlAttribute] public int       LoginOk		        { get; set; }
-        [XmlAttribute] public int       LoginFail           { get; set; }
->>>>>>> master
     }
-
 }
 

@@ -143,7 +143,7 @@ namespace TeamMentor.CoreLib
         {
             var start = DateTime.Now;
             "[TM_UserData] [GitClone] Start".info();
-            if (Git.CloneUsingGit(gitLocation,targetFolder).isFalse())
+            if (GitExe.CloneUsingGitExe(gitLocation,targetFolder).isFalse())
             {
                 "[TM_UserData] [GitClone] Using NGit for the clone".info();    
                 gitLocation.git_Clone(targetFolder);

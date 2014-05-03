@@ -100,6 +100,8 @@
     <Compile Include="TM_AppCode\ExtensionMethods\Extra\Extra_JSON_ExtensionMethods.cs" />
     <Compile Include="TM_AppCode\ExtensionMethods\Extra\Extra_StringBuilder_ExtensionMethods.cs" />
     <Compile Include="TM_AppCode\ExtensionMethods\Extra\Extra_String_ExtensionMethods.cs" />
+    <Compile Include="TM_AppCode\Schemas\TMServer.cs" />
+    <Compile Include="TM_AppCode\Schemas\TMServer_ExtMet.cs" />
     <Compile Include="TM_AppCode\Schemas\TM_FirebaseConfig.cs" />
     <Compile Include="TM_AppCode\TM_Engine.cs" />
     <Compile Include="TM_AppCode\Tracking\Firebase\API_Firebase.cs" />
@@ -118,6 +120,7 @@
     <Compile Include="TM_AppCode\Utils\Crypto.cs" />
     <Compile Include="TM_AppCode\Schemas\Legacy\guidanceexplorer.cs" />
     <Compile Include="TM_AppCode\Schemas\WhoAmI.cs" />
+    <Compile Include="TM_AppCode\Utils\GitExe.cs" />
     <Compile Include="TM_AppCode\XmlDatabase\TM_Xml_Database_ExtensionMethods.cs" />
     <Compile Include="TM_AppCode\Authentication\TM_Authentication.cs" />
     <Compile Include="TM_AppCode\Authentication\UserRoleBaseSecurity.cs" />

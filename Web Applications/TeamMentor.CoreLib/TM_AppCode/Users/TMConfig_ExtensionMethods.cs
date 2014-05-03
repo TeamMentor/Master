@@ -67,38 +67,14 @@ namespace TeamMentor.CoreLib
         {									
             //set xmlDatabasePath based on virtualPathMapping			
             var virtualPathMapping = tmConfig.virtualPathMapping();			
-            var xmlDatabasePath = TMConfig.BaseFolder.pathCombine(virtualPathMapping).fullPath();
+            var xmlDatabasePath = TMConfig.WebRoot.pathCombine(virtualPathMapping).fullPath();
 
             //check if we can write to xmlDatabasePath (and default to App_Data if we can't write to provided direct)
             if (xmlDatabasePath.canNotWriteToPath())
                 xmlDatabasePath = TMConfig.AppData_Folder; 
 
             return xmlDatabasePath;
-        }
-        public static string    getGitUserConfigFile(this TMConfig tmConfig)
-        {
-            return TMConfig.BaseFolder.pathCombine("gitUserData.config");
-        }
-        public static bool      setGitUserConfigFile(this TMConfig tmConfig, string gitUserConfig_Data)
-        {
-            try
-            {
-                var gitUserConfigFile = tmConfig.getGitUserConfigFile();
-                if (gitUserConfig_Data.notValid() && gitUserConfigFile.fileExists())
-                {
-                    "[setGitUserConfigFile] Deleting current gitUserconfigFile: {0}".info(gitUserConfigFile);
-                    gitUserConfigFile.file_Delete();
-                }
-                else
-                    gitUserConfig_Data.saveAs(gitUserConfigFile);                
-                return true;
-            }
-            catch (Exception ex)
-            {
-                ex.log("[setGitUserConfigFile]");
-                return false;
-            }            
-        }
+        }        
         public static DateTime  currentExpirationDate(this TMConfig tmConfig)
         {
             return (tmConfig.TMSecurity.EvalAccounts_Enabled)

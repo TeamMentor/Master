@@ -15,13 +15,14 @@ namespace TeamMentor.CoreLib
         public string 	                Path_UserData_Base 	{ get; set; }
         public string 	                Path_WebRootFiles   { get; set; }
         public string                   FirstScriptToInvoke { get; set; }
-        public string 	                Git_UserData 	    { get; set; }
         public List<TMUser>	            TMUsers			    { get; set; }
         public TM_SecretData            SecretData          { get; set; }                        
-        public bool                     UsingFileStorage    { get; set; }        
-        public bool                     AutoGitCommit       { get; set; }
-        public API_NGit                 NGit                { get; set; }
         
+        public bool                     UsingFileStorage    { get; set; }        
+        public API_NGit                 NGit                { get; set; }
+        public string                   NGit_Author_Name    { get; set; } 
+        public string                   NGit_Author_Email   { get; set; }
+  
         
         public TM_UserData() : this (false)
         {

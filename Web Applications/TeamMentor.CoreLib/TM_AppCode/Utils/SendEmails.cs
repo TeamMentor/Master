@@ -234,27 +234,7 @@ namespace TeamMentor.CoreLib
             
             SendEmailToTM("New TeamMentor Account Request", tmMessage);
             
-        }
-        [Assert_Admin]
-        public static void SendEmailAboutUserToTM(string action, TMUser tmUser)
-        {
-            var subject = "User {0} {1}".format(tmUser.UserName, action);
-            var message =
-@"The user {0} has just {1}
-
-Stats:
-
-- last  login: {2}
-- login fails: {3}
-- login Oks  : {4}
-
-                ".format(tmUser.UserName, 
-                         action, 
-                         tmUser.Stats.LastLogin,
-                         tmUser.Stats.LoginFail,
-                         tmUser.Stats.LoginOk);
-            SendEmailToTM(subject, message);
-        }
+        }      
 
         [Assert_Admin]
         public static bool SendPasswordReminderToUser(TMUser tmUser, Guid passwordResetToken)

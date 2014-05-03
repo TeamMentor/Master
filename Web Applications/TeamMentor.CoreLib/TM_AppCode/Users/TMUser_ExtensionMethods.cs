@@ -132,7 +132,7 @@ namespace TeamMentor.CoreLib
             }
             return "/error";
         }
-<<<<<<< HEAD
+
         public static string    userHostAddress     (this TMUser tmUser)
         {
             try
@@ -156,7 +156,6 @@ namespace TeamMentor.CoreLib
                 }
             return "";
         } 
-=======
 
         public static TMUser      enableUser_UsingToken(this Guid token)
         {
@@ -188,7 +187,6 @@ namespace TeamMentor.CoreLib
                     select tmUser).first();
         }
 
->>>>>>> master
         public static TMUser    set_UserGroup       (this TMUser tmUser, UserGroup userGroup)
         {
             if (tmUser.notNull())
