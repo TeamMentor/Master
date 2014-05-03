@@ -681,8 +681,6 @@
     <Content Include="TBot\Messaging\Send_Test_Email.cshtml" />
     <Content Include="TBot\Views\Git\GitDiff_UserData_Commit.cshtml" />
     <Content Include="TBot\Views\Git\GitDiff_UserData_File.cshtml" />
-    <Content Include="TBot\Views\Git\GitDiff_XmlDatabase_File.cshtml" />
-    <Content Include="TBot\Views\Git\GitDiff_XmlDatabase_Commit.cshtml" />
     <Content Include="TBot\Views\Users\User_Edit.cshtml" />
     <Content Include="TBot\Views\Users\User_View.cshtml" />
     <Content Include="TBot\Views\Users\User_Raw.cshtml" />
@@ -714,6 +712,7 @@
     <Content Include="TBot\Views\Json\Json_Activities_Unique_Action.cshtml" />
     <Content Include="TBot\Views\Json\Json_UserTags.cshtml" />
     <Content Include="TBot\Users\Analysis\All_Users_Tags.cshtml" />
+    <Content Include="TBot\NGit\GitStatus.cshtml" />
     <None Include="TBot_Monitor\lib\bootstrap\fonts\glyphicons-halflings-regular.eot" />
     <None Include="TBot_Monitor\lib\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
     <None Include="TBot_Monitor\lib\bootstrap\fonts\glyphicons-halflings-regular.woff" />
