@@ -114,28 +114,7 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             Assert.IsNotNull(currentUser.CSRF_Token                                 , "CSRF_Token was not set");
             Assert.AreEqual (sessionId.str().hash().str(), currentUser.CSRF_Token   , "CSRF_Token didn't match");
             
-        }
-    /*    [Test] public void SingleUseLoginToken()
-        {
-            var newUser       = newTempUser();
-            var tmUser        = tmWebServices.CreateUser(newUser).tmUser();
-
-            var loginToken_BeforeSet    = tmUser.SecretData.SingleUseLoginToken;
-            var loginToken_BeforeUse    = tmUser.current_SingleUseLoginToken();
-            var loginToken              = tmUser.SecretData.SingleUseLoginToken;
-            var sessionId_UsingToken    = tmWebServices.Login_Using_LoginToken(tmUser.UserName, loginToken);
-            var loginToken_AfterUse     = tmUser.SecretData.SingleUseLoginToken;
-            var loginToken_NextRequest  = tmUser.current_SingleUseLoginToken();
-
-            Assert.AreNotEqual(Guid.Empty, loginToken_BeforeSet , "loginToken_BeforeSet");
-            Assert.AreNotEqual(Guid.Empty, loginToken_BeforeUse , "loginToken_BeforeUse");
-            Assert.AreEqual   (loginToken, loginToken_BeforeUse , "loginToken_BeforeUse");
-            Assert.AreNotEqual(Guid.Empty, sessionId_UsingToken , "sessionId_UsingToken");
-            Assert.AreEqual   (Guid.Empty, loginToken_AfterUse  , "loginToken_AfterUse");
-            Assert.AreNotEqual(Guid.Empty, loginToken_NextRequest, "loginToken_NextRequest is Empty");
-            Assert.AreNotEqual(loginToken, loginToken_NextRequest, "loginToken_NextRequest should be new");
-            
-        } */
+        }  
         [Test] public void PasswordResetToken()
         {            
             var newUser       = newTempUser();
@@ -174,6 +153,23 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             Assert.IsFalse      (result_BadToken);
             
         }
+        [Test] public void CreateUser_Validate()
+        {
+            //try with an empty NewUser object
+            var newUser = new NewUser();
+            var result = tmWebServices.CreateUser_Validate(newUser);
+            Assert.NotNull(result);
+            Assert.AreEqual(result.size(), 3);
+            Assert.AreEqual(result.first(), "Password:The Password field is required.");            
+            Assert.AreEqual(result.second(), "Username:The Username field is required.");            
+
+            //try with an a fully populated NewUser object
+            newUser       = newTempUser();
+            result = tmWebServices.CreateUser_Validate(newUser);
+            Assert.NotNull(result);
+            Assert.AreEqual(result.size(), 0);
+        }
+        
         //Helper methods
         public NewUser newTempUser()
         {

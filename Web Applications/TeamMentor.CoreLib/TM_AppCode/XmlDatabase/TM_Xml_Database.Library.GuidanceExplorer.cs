@@ -19,11 +19,18 @@ namespace TeamMentor.CoreLib
             "[isValidGuidanceExplorerName] failed validation for: {0}".info(name);
             return false;
         }		
+        
+        public static guidanceExplorer       xmlDB_NewGuidanceExplorer(this TM_Xml_Database tmDatabase, Library library)
+        {
+            if (library.notNull())
+                return tmDatabase.xmlDB_NewGuidanceExplorer(library.id.guid(), library.caption);
+            return null;
+        }
         public static guidanceExplorer       xmlDB_NewGuidanceExplorer(this TM_Xml_Database tmDatabase, Guid libraryId, string caption)
         {			
-            if (caption.isValidGuidanceExplorerName().isFalse())
+            if (caption.isNull() || caption.isValidGuidanceExplorerName().isFalse())
             {
-                "[TM_Xml_Database][xmlDB_NewGuidanceExplorer] provided caption didn't pass validation regex".error();
+                "[TM_Xml_Database] [xmlDB_NewGuidanceExplorer] provided caption didn't pass validation regex".error();
                 throw new Exception("Provided Library name didn't pass validation regex"); 				
             }
             
@@ -47,7 +54,7 @@ namespace TeamMentor.CoreLib
             
             TM_Xml_Database.Current.GuidanceExplorers_XmlFormat.add(libraryId, newGuidanceExplorer);    //add to in memory database
             newGuidanceExplorer.xmlDB_Save_GuidanceExplorer(tmDatabase);                             
-            "[TM_Xml_Database][xmlDB_NewGuidanceExplorer] Created new Library with id {0} and caption {1}".info(libraryId, caption);
+            "[TM_Xml_Database] [xmlDB_NewGuidanceExplorer] Created new Library with id {0} and caption {1}".info(libraryId, caption);
             return newGuidanceExplorer;
         }		
         public static bool                   xmlDB_DeleteGuidanceExplorer(this TM_Xml_Database tmDatabase, Guid libraryId)
@@ -63,13 +70,13 @@ namespace TeamMentor.CoreLib
                 if (pathToLibraryFolder.notValid() || pathToLibraryFolder == tmDatabase.Path_XmlDatabase ||
                     pathToLibraryFolder == tmDatabase.Path_XmlLibraries)
                 {
-                    "[xmlDB_DeleteGuidanceExplorer][Stopping delete] Something is wrong with the pathToLibrary to delete : {0}"
+                    "[xmlDB_DeleteGuidanceExplorer] [Stopping delete] Something is wrong with the pathToLibrary to delete : {0}"
                         .error(pathToLibraryFolder);
                     return false;
                 }
                 if (pathToLibraryFolder.contains(tmDatabase.Path_XmlLibraries).isFalse())
                 {
-                    "[xmlDB_DeleteGuidanceExplorer][Stopping delete] the  pathToLibrary should contain tmDatabase.Path_XmlLibraries : {0}"
+                    "[xmlDB_DeleteGuidanceExplorer] [Stopping delete] the  pathToLibrary should contain tmDatabase.Path_XmlLibraries : {0}"
                         .error(pathToLibraryFolder);
                     return false;
                 }
@@ -131,7 +138,14 @@ namespace TeamMentor.CoreLib
             foreach(var guidanceExplorer in tmDatabase.xmlDB_GuidanceExplorers())
                 guidanceExplorer.xmlDB_Save_GuidanceExplorer(tmDatabase);
             return tmDatabase;
-        }		
+        }
+		public static bool       xmlDB_UpdateGuidanceExplorer(this TM_Xml_Database tmDatabase, Library library)
+		{
+		    if (library.notNull())
+                return tmDatabase.xmlDB_UpdateGuidanceExplorer(library.id.guid(), library.caption, library.delete);
+            return false;
+		}
+        
         public static bool       xmlDB_UpdateGuidanceExplorer(this TM_Xml_Database tmDatabase, Guid libraryId, string caption, bool deleteLibrary)
         {
             //"[xmlDB_UpdateGuidanceExplorer]".info();
@@ -156,13 +170,13 @@ namespace TeamMentor.CoreLib
         {
             if (newCaption.isValidGuidanceExplorerName().isFalse())
             {
-                "[TM_Xml_Database][xmlDB_RenameGuidanceExplorer] provided caption didn't pass validation regex".error();
+                "[TM_Xml_Database] [xmlDB_RenameGuidanceExplorer] provided caption didn't pass validation regex".error();
                 //throw new Exception("Provided Library name didn't pass validation regex"); 				                
             }
             else if(guidanceExplorer.notNull())
             {                
                 guidanceExplorer.library.caption = newCaption;  // update in memory library name value
-
+                 
                 return guidanceExplorer.xmlDB_Save_GuidanceExplorer(tmDatabase);                // save it 
                
 

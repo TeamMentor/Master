@@ -9,7 +9,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
     {        
         public Test_LoadLibraries_FromExternalSource()
         {
-            if (Tests_Config.offline)
+            if (Tests_Consts.offline)
                 Assert.Ignore("Ignoring Test because we are offline");   
         }
 

@@ -1,6 +1,6 @@
-﻿using FluentSharp.CoreLib;
+﻿using System;
+using FluentSharp.CoreLib;
 using TeamMentor.CoreLib;
-using O2.FluentSharp;
 
 namespace TeamMentor.UnitTests.REST
 {
@@ -9,6 +9,8 @@ namespace TeamMentor.UnitTests.REST
 	{		
 		public static TM_REST_Host TmRestHost { get; set; }
 		public static ITM_REST     TmRest	  { get; set; }
+        
+        public bool HostStarted    { get; set;}
 
 		public TM_Rest_Hosted()
 		{
@@ -17,19 +19,32 @@ namespace TeamMentor.UnitTests.REST
 			TmRest = new TM_REST();
 		}
 
-		public static void WCFHost_Start()
+		public void WCFHost_Start()
 		{
-			"Starting Host".info();
+			"Starting WCFHost Host".info();
 			HttpContextFactory.Context = new API_Moq_HttpContext().httpContext();
-			TmRestHost = new TM_REST_Host().StartHost();
-			TmRest = TmRestHost.GetProxy();
+            TmRestHost = new TM_REST_Host();
+            try
+            {
+			    TmRestHost.StartHost();
+			    TmRest = TmRestHost.GetProxy();
+                HostStarted = true;
+            }
+            catch(Exception ex)
+            {
+                ex.log();
+            }
 		}
 
 
-		public static void WCFHost_Stop()
+		public void WCFHost_Stop()
 		{
-			"Stopping Host".info();
-			TmRestHost.StoptHost();
+            if (HostStarted)
+            {
+			    "Stopping Host".info();
+			    TmRestHost.StoptHost();
+                HostStarted = false;
+            }
 		}
 	}
 }

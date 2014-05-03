@@ -32,13 +32,13 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             var userId2      = userData.createDefaultAdminUser();
             Assert.AreEqual (userId,userId2);
 
-            //when tmConfig.OnInstallation.ForceAdminPasswordReset
+            //when tmConfig.OnInstallation.ForceDefaultAdminPassword
             var otherPasswordHash = tmUser.createPasswordHash("123");
             tmUser.SecretData.PasswordHash = otherPasswordHash;
             userData.createDefaultAdminUser();
             Assert.AreEqual(otherPasswordHash, tmUser.SecretData.PasswordHash);
             Assert.AreNotEqual(otherPasswordHash, passwordHash);
-            tmConfig.OnInstallation.ForceAdminPasswordReset = true;
+            tmConfig.OnInstallation.ForceDefaultAdminPassword = true;
             userData.createDefaultAdminUser();
             Assert.AreNotEqual(otherPasswordHash, tmUser.SecretData.PasswordHash);
             Assert.AreEqual   (passwordHash     , tmUser.SecretData.PasswordHash);
@@ -169,16 +169,15 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             var email       = 10.randomLetters(); 
             var country     = 10.randomLetters(); 
             var state       = 10.randomLetters(); 
-            var accountExpiration = tmUser.AccountStatus.ExpirationDate.AddSeconds(10); 
-            var passwordExpired   = tmUser.AccountStatus.PasswordExpired.not();
-            var userEnabled       = tmUser.AccountStatus.UserEnabled.not();
+            var accountExpiration   = tmUser.AccountStatus.ExpirationDate.AddSeconds(10); 
+            var passwordExpired     = tmUser.AccountStatus.PasswordExpired.not();
+            var userEnabled         = tmUser.AccountStatus.UserEnabled.not();
+            var accountNeverExpires = false; 
             var groupId           = 4.random(); 
-            var result1 = userData.updateTmUser(tmUser.user());
-            var result2 = userData.updateTmUser(tmUser.user());
-            var result3 = userData.updateTmUser(tmUser.user());
-            /*var result1 = userData.updateTmUser(tmUser.UserID, userName, firstname, lastname,  title, company, email,country, state, accountExpiration, passwordExpired,userEnabled,groupId);
-            var result2 = userData.updateTmUser(tmUser.UserID, userName, firstname, lastname,  title, company, email,country, state, accountExpiration, passwordExpired,userEnabled,groupId);
-            var result3 = userData.updateTmUser(tmUser.UserID, "new value", firstname, lastname,  title, company, email,country, state, accountExpiration, passwordExpired,userEnabled,groupId);*/
+            
+            var result1 = userData.updateTmUser(tmUser.UserID, userName, firstname, lastname,  title, company, email,country, state, accountExpiration, passwordExpired,userEnabled,accountNeverExpires, groupId);
+            var result2 = userData.updateTmUser(tmUser.UserID, userName, firstname, lastname,  title, company, email,country, state, accountExpiration, passwordExpired,userEnabled,accountNeverExpires, groupId);
+            var result3 = userData.updateTmUser(tmUser.UserID, "new value", firstname, lastname,  title, company, email,country, state, accountExpiration, passwordExpired,userEnabled,accountNeverExpires, groupId);
 
             Assert.IsTrue  (result1, "First update should work");
             Assert.IsTrue  (result2, "Second update (with same data) should work");
@@ -198,6 +197,56 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Assert.AreEqual(tmUser.AccountStatus.UserEnabled     , userEnabled);
             
         }
+        [Test] public void userEnabled()
+        {
+            tmConfig.TMSecurity.NewAccounts_Enabled = true;
+            Assert.IsTrue(tmConfig.TMSecurity.NewAccounts_Enabled);
+            var tmUser1      = userData.createUser();
+            Assert.IsTrue(tmUser1.AccountStatus.UserEnabled);
+
+            tmConfig.TMSecurity.NewAccounts_Enabled = false;
+            var tmUser2      = userData.createUser();               // this will set the tmUser2.SecretData.EnableUserToken because the admin will be emailed with the EnableUserToken
+            Assert.IsFalse(tmUser2.AccountStatus.UserEnabled);
+
+            Assert.AreNotEqual(tmUser1, tmUser2);
+            Assert.AreEqual   (Guid.Empty, tmUser1.SecretData.EnableUserToken);
+            Assert.AreNotEqual(Guid.Empty, tmUser2.SecretData.EnableUserToken);
+
+            var accountEnableToken1 = tmUser1.enableUser_Token();
+            var accountEnableToken2 = tmUser2.enableUser_Token();
+
+            Assert.AreNotEqual(Guid.Empty, tmUser1.SecretData.EnableUserToken);
+            Assert.AreNotEqual(Guid.Empty, tmUser2.SecretData.EnableUserToken);
+
+            Assert.IsTrue     (accountEnableToken1.enableUser_IsTokenValid());
+            Assert.IsTrue     (accountEnableToken2.enableUser_IsTokenValid());            
+            Assert.AreEqual   (tmUser1, accountEnableToken1.enableUser_UserForToken());
+            Assert.AreEqual   (tmUser2, accountEnableToken2.enableUser_UserForToken());
+            
+            Assert.IsFalse    (Guid.NewGuid().enableUser_IsTokenValid());
+            Assert.IsFalse    (Guid.Empty    .enableUser_IsTokenValid());
+            Assert.IsNull     (Guid.NewGuid().enableUser_UserForToken());
+            Assert.IsNull     (Guid.Empty    .enableUser_UserForToken());
+            
+            //enable users
+            var tmUser1_Enabled = accountEnableToken1.enableUser_UsingToken();
+            var tmUser2_Enabled = accountEnableToken2.enableUser_UsingToken();
+            Assert.IsNotNull  (tmUser1_Enabled);
+            Assert.IsNotNull  (tmUser2_Enabled);            
+            Assert.AreEqual   (tmUser1_Enabled, tmUser1);
+            Assert.AreEqual   (tmUser2_Enabled, tmUser2);
+
+            // these should not work anymore:
+            Assert.IsFalse    (accountEnableToken1.enableUser_IsTokenValid());
+            Assert.IsFalse    (accountEnableToken2.enableUser_IsTokenValid());            
+            Assert.IsNull     (accountEnableToken1.enableUser_UserForToken());
+            Assert.IsNull     (accountEnableToken2.enableUser_UserForToken());
+            Assert.IsNull     (accountEnableToken1.enableUser_UsingToken());
+            Assert.IsNull     (accountEnableToken2.enableUser_UsingToken());
+
+            tmConfig.TMSecurity.NewAccounts_Enabled = true;
+        }
+
 
         [Test (Description ="Checks that only UserRole.ManageUsers is able to invoke the userData.users() method")]
         public void CheckUserListPermissions()

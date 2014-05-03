@@ -25,10 +25,10 @@ namespace TeamMentor.CoreLib
 	
 	public static class JsDataTable_ExtensionMethods
 	{
-		public static string jsonString(this JsDataTable jsDataTable)
+		/*public static string jsonString(this JsDataTable jsDataTable)
 		{
 			return new JavaScriptSerializer().Serialize(jsDataTable);
-		}
+		}*/
 		
 		public static JsDataTable add_Row(this JsDataTable jsDataTable, params object[] cells)
 		{

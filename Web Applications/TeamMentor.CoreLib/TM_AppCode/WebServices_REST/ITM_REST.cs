@@ -46,11 +46,18 @@ namespace TeamMentor.CoreLib
 
 		//Admin: User Management				
 						
-		[OperationContract] [WebGet	  (UriTemplate = "/user/{nameOrId}"			)]					TM_User		user(string nameOrId);
-        [OperationContract] [WebInvoke(UriTemplate = "/user", Method = "PUT"    )]		            bool		user_Save(TM_User user);
+		[OperationContract] [WebGet	  (UriTemplate = "/user/{nameOrId}"			)]					TM_User		 user(string nameOrId);
+        [OperationContract] [WebGet	  (UriTemplate = "/user/{domain}/{name}"	)]					TM_User		 user_inDomain(string domain, string name);
+        [OperationContract] [WebInvoke(UriTemplate = "/user", Method = "PUT"    )]		            bool		 user_Save  (TM_User user);
+        [OperationContract] [WebInvoke(UriTemplate = "/user/{userId}"  , Method = "DELETE")]		bool		 user_Delete(string userId);
+        [OperationContract] [WebInvoke(UriTemplate = "/user/new/verify", Method = "PUT"   )]		List<string> user_Verify(NewUser newUser);
+        [OperationContract] [WebInvoke(UriTemplate = "/user/new/create", Method = "PUT"   )]		int		     user_Create(NewUser newUser);        
+        
 		//[OperationContract] [WebGet	  (UriTemplate = "/users/{usersIds}"	)]					List<TM_User>	users(string usersIds);
 		[OperationContract] [WebGet	  (UriTemplate = "/users"				    )]					List<TM_User>	users();
-
+        [OperationContract] [WebInvoke(UriTemplate = "/users/create" , Method = "POST", BodyStyle = WebMessageBodyStyle.Wrapped)]       string CreateCSVUsers(String payload);
+        [OperationContract] [WebInvoke(UriTemplate = "/users/verify" , Method = "POST", BodyStyle = WebMessageBodyStyle.Wrapped)]       string VerifyUserData(String payload);
+  
 //these need CRSF protection
 //		[OperationContract] [WebInvoke(UriTemplate = "/user/update"			,	Method = "PUT", ResponseFormat = WebMessageFormat.Json)]	bool		user_Update(TM_User user);
 //		[OperationContract] [WebInvoke(UriTemplate = "/user/new"			,	Method = "PUT", ResponseFormat = WebMessageFormat.Json)]	int			user_New(TM_User user);
@@ -59,8 +66,7 @@ namespace TeamMentor.CoreLib
 
 		//Admin
 		[OperationContract] [WebGet(UriTemplate = "/admin/reloadCache")]		string		    Admin_ReloadCache();
-        [OperationContract] [WebGet(UriTemplate = "/admin/restart")]		    string		    Admin_Restart();
-        [OperationContract] [WebGet(UriTemplate = "/admin/script/{name}")]	    string		    Admin_InvokeScript(string name);
+        [OperationContract] [WebGet(UriTemplate = "/admin/restart")]		    string		    Admin_Restart();        
         [OperationContract] [WebGet(UriTemplate = "/admin/logs")]		        string		    Admin_Logs();
         [OperationContract] [WebGet(UriTemplate = "/admin/logs/reset")]		    string		    Admin_Logs_Reset();
         [OperationContract] [WebGet(UriTemplate = "/admin/reload_UserData")]    bool		    Reload_UserData();        
@@ -83,9 +89,11 @@ namespace TeamMentor.CoreLib
 		//[OperationContract] [WebGet(UriTemplate = "/users/activites"		)]  Stream		users_Activities();
 
         //TBot
-        [OperationContract] [WebGet(UriTemplate = "/tbot"	        )]      Stream		TBot_Show();
-        [OperationContract] [WebGet(UriTemplate = "/tbot/list"      )]	    Stream		TBot_List();
-        [OperationContract] [WebGet(UriTemplate = "/tbot/run/{what}")]	    Stream		TBot_Run (string what);
+        
+        [OperationContract] [WebGet(UriTemplate = "/tbot/list"         )]	Stream		TBot_List  ();
+        [OperationContract] [WebGet(UriTemplate = "/tbot/run/{what}"   )]	Stream		TBot_Run   (string what);
+        [OperationContract] [WebGet(UriTemplate = "/tbot/render/{what}")]	Stream		TBot_Render(string what);
+        [OperationContract] [WebGet(UriTemplate = "/tbot/json/{what}"  )]	Stream		TBot_Json  (string what);
         
         //html page redirects
 //        [OperationContract][WebGet   (UriTemplate = "/redirect/afterLoginToken/{username}/{loginToken}" )]	void Redirect_After_Login_Using_Token(string username, string loginToken);

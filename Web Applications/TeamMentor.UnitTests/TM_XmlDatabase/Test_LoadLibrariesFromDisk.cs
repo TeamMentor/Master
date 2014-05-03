@@ -3,7 +3,6 @@ using System.Linq;
 using FluentSharp.CoreLib;
 using FluentSharp.CoreLib.API;
 using NUnit.Framework;
-using O2.FluentSharp;
 using TeamMentor.CoreLib;
 
 namespace TeamMentor.UnitTests.TM_XmlDatabase
@@ -13,7 +12,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
     {                        
         public Test_LoadLibrariesFromDisk()
         {
-            if (Tests_Config.offline)
+            if (Tests_Consts.offline)
                 Assert.Ignore("Ignoring Test because we are offline");   
 
            if(new O2Kernel_Web().online().isFalse())

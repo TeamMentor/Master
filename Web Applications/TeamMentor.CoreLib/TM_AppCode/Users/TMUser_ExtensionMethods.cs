@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using FluentSharp.CoreLib;
 
 
@@ -35,6 +36,8 @@ namespace TeamMentor.CoreLib
         {
             if (tmUser.isNull())
                 return true;
+            if (tmUser.AccountStatus.AccountNeverExpires)                   // this overwrites the ExpirationDate value
+                return false;
             if (tmUser.AccountStatus.ExpirationDate == default(DateTime))   // if this ExpirationDate is not set, the user account is NOT expired
                 return false;
             return tmUser.AccountStatus.ExpirationDate < DateTime.Now;      // if it is set, check if value is bigger than now
@@ -71,17 +74,7 @@ namespace TeamMentor.CoreLib
 
             return passwordHash;
         }
-
-        /*public static Guid      current_SingleUseLoginToken(this TMUser tmUser, bool reset = false)
-        {
-            if (reset || tmUser.SecretData.SingleUseLoginToken == Guid.Empty)
-            {
-                tmUser.SecretData.SingleUseLoginToken = Guid.NewGuid();
-                tmUser.saveTmUser();
-                tmUser.logUserActivity("SingleUseLoginToken Requested", "by asp.netSessionId: {0}".format(HttpContextFactory.Session.SessionID));
-            }
-            return tmUser.SecretData.SingleUseLoginToken;
-        }*/
+       
         public static bool      sendPasswordReminder(this string email)
         {
             var tmUser = email.tmUser_FromEmail();
@@ -93,50 +86,28 @@ namespace TeamMentor.CoreLib
             return false;
         } 
         
-        /*public static Guid      current_PasswordResetToken(this string email)
-        {
-            var tmUser = email.tmUser_FromEmail();
-            if (tmUser.notNull())
-                return tmUser.current_PasswordResetToken();
-            "[current_PasswordResetToken] failed for email= {0}".error(email);
-            return Guid.Empty;
-        }
-        public static Guid      current_PasswordResetToken(this TMUser tmUser, bool reset = false)
-        {
-            if (tmUser.notNull())
-            {
-                if (reset || tmUser.SecretData.PasswordResetToken.isNull())
-                {
-                    var passwordResetToken = tmUser.new_PasswordResetToken();                    
-                }
-                tmUser.logUserActivity("PasswordReset Requested","by asp.netSessionId: {0}".format(HttpContextFactory.Session.SessionID));
-                return tmUser.SecretData.PasswordResetToken;                                    
-                //tmUser.logUserActivity("Error:PasswordResetToken","wrong email used, by asp.netSessionId: {0}".format(HttpContextFactory.Session.SessionID));                                    
-            }            
-            return Guid.Empty;
-        }*/
-        public static bool passwordResetToken_isValid(this TMUser tmUser, Guid resetToken)
+   
+        public static bool      passwordResetToken_isValid(this TMUser tmUser, Guid resetToken)
         {
             if(tmUser.notNull())
                 if (tmUser.SecretData.PasswordResetToken == tmUser.passwordResetToken_getHash(resetToken))
                     return true;
             return false;
-        }
-        
-        public static string passwordResetToken_getHash(this TMUser tmUser, Guid resetToken)
+        }        
+        public static string    passwordResetToken_getHash(this TMUser tmUser, Guid resetToken)
         {
             if(tmUser.notNull())                
                 return tmUser.UserName.hash_PBKDF2(resetToken);
             return null;
         }
-        public static Guid passwordResetToken_getHash(this string email)
+        public static Guid      passwordResetToken_getHash(this string email)
         {
             var tmUser = email.tmUser_FromEmail();
             if (tmUser.notNull())
                 return tmUser.passwordResetToken_getTokenAndSetHash();
             return Guid.NewGuid();
         }
-        public static Guid passwordResetToken_getTokenAndSetHash(this TMUser tmUser)
+        public static Guid      passwordResetToken_getTokenAndSetHash(this TMUser tmUser)
         {
             if (tmUser.notNull())
             {
@@ -161,6 +132,7 @@ namespace TeamMentor.CoreLib
             }
             return "/error";
         }
+<<<<<<< HEAD
         public static string    userHostAddress     (this TMUser tmUser)
         {
             try
@@ -184,6 +156,39 @@ namespace TeamMentor.CoreLib
                 }
             return "";
         } 
+=======
+
+        public static TMUser      enableUser_UsingToken(this Guid token)
+        {
+            var tmUser = token.enableUser_UserForToken();
+            if (tmUser.notNull())
+            {
+                tmUser.AccountStatus.UserEnabled     = true;
+                tmUser.SecretData.EnableUserToken = Guid.Empty;
+                tmUser.logUserActivity("User Enabled", "Using Token: {0}".format(token));
+            }
+            return tmUser;
+        }
+        public static Guid      enableUser_Token(this TMUser user)
+        {
+            if (user.SecretData.EnableUserToken == Guid.Empty)
+                user.SecretData.EnableUserToken = Guid.NewGuid();
+            return  user.SecretData.EnableUserToken;
+        }
+        public static bool   enableUser_IsTokenValid(this Guid token)
+        {
+            return token.enableUser_UserForToken() != null;
+        }
+        public static TMUser enableUser_UserForToken(this Guid token)
+        {
+            if (token == Guid.Empty)
+                return null;
+            return (from tmUser in TM_UserData.Current.tmUsers()
+                    where tmUser.SecretData.EnableUserToken == token
+                    select tmUser).first();
+        }
+
+>>>>>>> master
         public static TMUser    set_UserGroup       (this TMUser tmUser, UserGroup userGroup)
         {
             if (tmUser.notNull())
@@ -232,7 +237,7 @@ namespace TeamMentor.CoreLib
     }
 
     public static class DataContracts_ExtensionMethods
-    {
+    {        
         public static List<ValidationResult>           validate             (this object objectTovalidate)
         {
             var results = new List<ValidationResult>();
@@ -240,7 +245,9 @@ namespace TeamMentor.CoreLib
             {
                 var context = new ValidationContext(objectTovalidate, null, null);
                 Validator.TryValidateObject(objectTovalidate, context, results, true);
-            }
+                if (results.size()>0)
+                    TM_UserData.Current.logTBotActivity("User Validation Failed",results.asStringList().asString());
+            }            
             return results;
         }
         public static bool                             validation_Ok        (this object objectTovalidate)
@@ -250,6 +257,12 @@ namespace TeamMentor.CoreLib
         public static bool                             validation_Failed    (this object objectTovalidate)
         {
             return objectTovalidate.validate().notEmpty();
+        }
+        public static List<string> asStringList(this List<ValidationResult> validationResults)
+        {
+            return (from validationResult in validationResults
+                    from memberName in validationResult.MemberNames
+                    select "{0}:{1}".format(memberName,validationResult.ErrorMessage)).toList();
         }
         public static Dictionary<string, List<string>> indexed_By_MemberName(this List<ValidationResult> validationResults)
         {

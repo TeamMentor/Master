@@ -1,3 +1,4 @@
+<div id="UserNotLoggedIn">
 <span id="notLoggedInMessage">	
     <h2>Login required</h2>
      <br/>
@@ -38,16 +39,16 @@
             var country   = jQuery('#ctl00_ContentPlaceHolder1_Country').attr('value');
             var state     = jQuery('#ctl00_ContentPlaceHolder1_State').attr('value');
             
-            if (firstName   == "")  firstName = "NA";
-            if (lastName    == "")  lastName = "NA";
-            if (company     == "")  company = "NA";
-            if (title       == "")  title = "NA";
-            if (country     == "")  country = "NA";
-            if (state       == "")  state = "NA";
-                   
+            /*if (firstName   == "")  firstName = "NA";
+            if (lastName    == "")  lastName  = "NA";
+            if (company     == "")  company   = "NA";
+            if (title       == "")  title     = "NA";
+            if (country     == "")  country   = "NA";
+            if (state       == "")  state     = "NA";*/
+            var userTags = [  {"Key":"source","Value":"HomePage Form"} ];
             setTimeout(
                 function() {
-                                createUser(username, password, email, firstName, lastName,company, title, country, state, 'created from web', signupResult);
+                                createUser(username, password, email, firstName, lastName,company, title, country, state, 'created from web',userTags, signupResult);
                             }, 200);
         }
     
@@ -100,7 +101,12 @@
             {
                 $(".SignupTable").find("input").focus(function() { $("#guidanceItems").hide(); });  // to deal with DataTable bug
                 $(".SignupTable").find("input").focusout(function() { $("#guidanceItems").show(); });
-            }                    
+            }     
+            
+            if (TM.Gui.showLibraryStructureToAnonymous === false)                    
+            {
+                $('#UserNotLoggedIn').css('padding','60px');                
+            }
     });
 
 </script>	
@@ -150,7 +156,7 @@
             </tr>			
             <tr>
                 <td class="SignUpCol1">Title/Job:</td>
-                <td><input type="text" id="ctl00_ContentPlaceHolder1_Title" class="otherTextBox" style="width:100%;" /></td>
+                <td><input type="text" id="ctl00_ContentPlaceHolder1_Title" class="otherTextBox" style="width:100%;" maxlength="255" /></td>
             </tr>
             <tr>
                 <td class="SignUpCol1">Country:</td>
@@ -167,4 +173,6 @@
         </table>
 
     </div>
+</div>
+
 </div>

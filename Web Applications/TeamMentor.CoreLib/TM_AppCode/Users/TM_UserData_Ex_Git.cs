@@ -40,14 +40,14 @@ namespace TeamMentor.CoreLib
                 {                                                         
                     if (userData.Path_UserData.isGitRepository())
                     {
-                        //"[TM_UserData][setupGitSupport] open repository: {0}".info(userData.Path_UserData);
-                        "[TM_UserData][GitOpen]".info();
+                        //"[TM_UserData] [setupGitSupport] open repository: {0}".info(userData.Path_UserData);
+                        "[TM_UserData] [GitOpen]".info();
                         userData.NGit = userData.Path_UserData.git_Open();                    
                     }
                     else
                     {
-                        //"[TM_UserData][setupGitSupport] initializing repository at: {0}".info(userData.Path_UserData);
-                        "[TM_UserData][GitInit]".info();
+                        //"[TM_UserData] [setupGitSupport] initializing repository at: {0}".info(userData.Path_UserData);
+                        "[TM_UserData] [GitInit]".info();
                         userData.NGit = userData.Path_UserData.git_Init();
                     }
                     userData.triggerGitCommit();        // in case there are any files that need to be commited                
@@ -68,7 +68,7 @@ namespace TeamMentor.CoreLib
                     var start = DateTime.Now;
                     userData.NGit.setDefaultAuthor();
                     userData.NGit.add_and_Commit_using_Status();
-                    "[TM_UserData][GitCommit] in ".info(start.duration_To_Now());
+                    "[TM_UserData] [GitCommit] in ".info(start.duration_To_Now());
                 }
             return userData;
         }
@@ -79,15 +79,15 @@ namespace TeamMentor.CoreLib
 
             if (MiscUtils.runningOnLocalHost())  //don't push local changes in order to prevent git merge conflicts            
             {
-                "[triggerGitCommit] skipping because it is a local request and getGitUserConfigFile is set".info();
+                "[TM_UserData] [triggerGitCommit] skipping because it is a local request and getGitUserConfigFile is set".info();
                 return userData;
             }
             TM_UserData.GitPushThread = O2Thread.mtaThread(
                 ()=>{                                            
                         var start = DateTime.Now;
-                        "[TM_UserData][GitPush] Start".info();
+                        "[TM_UserData] [GitPush] Start".info();
                         nGit.push();
-                        "[TM_UserData][GitPush] in ".info(start.duration_To_Now());
+                        "[TM_UserData] [GitPush] in ".info(start.duration_To_Now());
                     });
             return userData;
         }
@@ -110,9 +110,9 @@ namespace TeamMentor.CoreLib
 
                     userData.Path_UserData = userData.Path_UserData_Base + extraFolderName;
                     //userData.Path_UserData.createDir();
-                    "[handleExternalGitPull] userData.Path_UserData set to: {0}".debug(userData.Path_UserData);
+                    "[TM_UserData] [handleExternalGitPull] userData.Path_UserData set to: {0}".debug(userData.Path_UserData);
              
-                    if (MiscUtils.online().isFalse())
+                    if (MiscUtils.online().isFalse() && gitLocation.dirExists().isFalse())
                         return userData;
 
                     if (userData.Path_UserData.isGitRepository())
@@ -120,7 +120,7 @@ namespace TeamMentor.CoreLib
                         if (gitConfig.UserData_Auto_Pull.isFalse())     //skip if this is set     
                             return userData;
 
-                        "[TM_UserData][GitPull]".info();
+                        "[TM_UserData] [GitPull]".info();
                         var nGit = userData.Path_UserData.git_Open();
                         nGit.pull();
                         //var nGit = userData.Path_UserData.git_Pull();
@@ -128,17 +128,27 @@ namespace TeamMentor.CoreLib
                     }
                     else
                     {
-                        var start = DateTime.Now;
-                        "[TM_UserData][GitClone] Start".info();
-                        gitLocation.git_Clone(userData.Path_UserData);
-                        "[TM_UserData][GitClone] in ".info(start.duration_To_Now());
+                        userData.clone_UserDataRepo(gitLocation, userData.Path_UserData);
                     }
                 }
             }
             catch (Exception ex)
             {
-                ex.log("[handleExternalGitPull]");
+                ex.log("[TM_UserData]  [handleExternalGitPull]");
             }
+            return userData;
+        }
+    
+        public static TM_UserData   clone_UserDataRepo      (this TM_UserData userData, string gitLocation, string targetFolder)
+        {
+            var start = DateTime.Now;
+            "[TM_UserData] [GitClone] Start".info();
+            if (Git.CloneUsingGit(gitLocation,targetFolder).isFalse())
+            {
+                "[TM_UserData] [GitClone] Using NGit for the clone".info();    
+                gitLocation.git_Clone(targetFolder);
+            }
+            "\n\n[TM_UserData] [GitClone] in  {0}\n\n".debug(start.duration_To_Now());
             return userData;
         }
     }

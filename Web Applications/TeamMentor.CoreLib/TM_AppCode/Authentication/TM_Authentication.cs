@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Principal;
 using System.Threading;
 using FluentSharp.CoreLib;
 
@@ -9,39 +10,46 @@ namespace TeamMentor.CoreLib
         public static bool          Global_Disable_Csrf_Check   { get; set; }    
         public  TM_WebServices      TmWebServices               { get; set; }    
         public  bool                Disable_Csrf_Check          { get; set; }    
+        public WindowsIdentity      Current_WindowsIdentity     { get; set; }
 
         public TM_Authentication    (TM_WebServices tmWebServices)
         {
             TmWebServices = tmWebServices;
             Disable_Csrf_Check = false;	
+            Current_WindowsIdentity = WindowsIdentity.GetCurrent();
         }        
-
+        
+        //properties
         public Guid                 sessionID
         {
             get
-            {                
-                // first check if there s a session variable already set                
-                if (HttpContextFactory.Session.notNull() && HttpContextFactory.Session["sessionID"].notNull() && HttpContextFactory.Session["sessionID"] is Guid)
-                    return (Guid)HttpContextFactory.Session["sessionID"];
+            {      
+                var value = Guid.Empty;                
 
-                // then check the cookie
+                // first check the cookies then the headers
                 var sessionCookie = HttpContextFactory.Request.cookie("Session");
                 if (sessionCookie.notNull() && sessionCookie.isGuid())
-                    return sessionCookie.guid();
-
-                var sessionHeader = HttpContextFactory.Request.header("Session");
-                if (sessionHeader.notNull() && sessionHeader.isGuid())
-                    return sessionHeader.guid();
+                {
+                    value = sessionCookie.guid();
+                }
+                else
+                {                    
+                    var sessionHeader = HttpContextFactory.Request.header("Session");
+                    if (sessionHeader.notNull() && sessionHeader.isGuid())
+                        value = sessionHeader.guid();
+                }
+                if (HttpContextFactory.Session.notNull())                
+                    HttpContextFactory.Session["sessionID"] = value;            // used to track currently users with sessions
 
                 //if none is set, return an empty Guid	
-                return Guid.Empty;                
+                return value;
             }
             set
             {                
                 var previousSessionId = sessionID;
              
                 if (HttpContextFactory.Session.notNull())                
-                    HttpContextFactory.Session["sessionID"] = value;
+                    HttpContextFactory.Session["sessionID"] = value;            // used to track currently users with sessions
 
                 HttpContextFactory.Response.set_Cookie("Session", value.str()).httpOnly();
                 HttpContextFactory.Request .set_Cookie("Session", value.str()).httpOnly();   
@@ -49,22 +57,34 @@ namespace TeamMentor.CoreLib
                 if (value == Guid.Empty)
                 {
                     UserGroup.Anonymous.setThreadPrincipalWithRoles();          // ensure that from now on the current user as no more privileges
-                    previousSessionId.logout();				                    // and that the previous sessionIS is logged out
+                    previousSessionId.logout();				                    // and that the previous session IS is logged out
                 }		
                 else    
                     new UserRoleBaseSecurity().MapRolesBasedOnSessionGuid(value);
             }
         }
+        public Guid                 authToken
+        {
+            get
+            {
+                var authValue =  HttpContextFactory.Request.QueryString[TMConsts.AUTH_TOKEN_REQUEST_VAR_NAME];
+                if (authValue.notNull() && authValue.isGuid())
+                    return authValue.guid();
+                return Guid.Empty;
+            }   
+        }
         public TMUser               currentUser
         {
             get
             {
-                var tmUser = sessionID.session_TmUser();
+                var tmUser = sessionID.session_TmUser(false);
                 if (tmUser.notNull())
                     tmUser.SecretData.CSRF_Token = sessionID.csrfToken();	
                 return tmUser;
             }
         }
+
+        //methods
         public bool                 check_CSRF_Token()
         {
             if (Global_Disable_Csrf_Check)
@@ -74,35 +94,38 @@ namespace TeamMentor.CoreLib
             }
             if (Disable_Csrf_Check)
                 return true;
-            var header_Csrf_Token = HttpContextFactory.Context.Request.Headers["CSRF-Token"];
             
-            if (header_Csrf_Token != null && header_Csrf_Token.valid())
-            {            
-                if (header_Csrf_Token == sessionID.csrfToken())		
-                    return true;
-            }            
+            var csrf_Token = HttpContextFactory.Request.header("CSRF-Token");
+            
+            if (csrf_Token.valid())                    
+                if (csrf_Token == sessionID.csrfToken())		
+                    return true;                        
             return false;            
         }
         public TM_Authentication    mapUserRoles()
         {
             return mapUserRoles(false);
         }
-        public TM_Authentication    mapUserRoles(bool disable_Csrf_Check)
+        public TM_Authentication    mapUserRoles(bool disable_Csrf_Check)           // todo: rename to something like logging request
         {
             setGitUser();            
             Disable_Csrf_Check = disable_Csrf_Check;            
-            if (sessionID == Guid.Empty || sessionID.validSession() == false)
-                /*if (SingleSignOn.singleSignOn_Enabled)
-                {
-                    sessionID = new SingleSignOn().authenticateUserBasedOn_SSOToken();
-                }
-                else*/
-                if (WindowsAuthentication.windowsAuthentication_Enabled)
-                {                    
-                    sessionID = new WindowsAuthentication().authenticateUserBaseOn_ActiveDirectory();
+
+            // check if there is an AuthToken in the current request, then try WindowsAuthentication (if enabled)
+            if (authToken != Guid.Empty)
+            {
+                sessionID = new TokenAuthentication().login_Using_AuthToken(authToken, sessionID);
+                if (sessionID != Guid.Empty)
+                    Disable_Csrf_Check = true;
+            }            
+            else if (TMConfig.Current.WindowsAuthentication.Enabled)
+                if (sessionID == Guid.Empty || sessionID.validSession() == false)
+                {                
+            
+                    sessionID = new WindowsAuthentication().login_Using_WindowsAuthentication(Current_WindowsIdentity);
                 }            
             
-            
+            //if there is a valid session maps its permissions
             var userGroup = UserGroup.None;
             
             if (sessionID != Guid.Empty)
@@ -116,8 +139,11 @@ namespace TeamMentor.CoreLib
             {
                 if (TMConfig.Current.TMSecurity.Show_ContentToAnonymousUsers)
                     UserGroup.Reader.setThreadPrincipalWithRoles();
-                else
-                    UserGroup.Anonymous.setThreadPrincipalWithRoles();
+                else 
+                    if (TMConfig.Current.TMSecurity.Show_LibraryToAnonymousUsers)
+                        UserGroup.Anonymous.setThreadPrincipalWithRoles();
+                    else 
+                        UserGroup.None.setThreadPrincipalWithRoles();
             }            
             //var userRoles = Thread.CurrentPrincipal.roles().toList().join(",");            
             if (HttpContextFactory.Session.notNull())

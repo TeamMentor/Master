@@ -1,0 +1,337 @@
+﻿
+<link   href="/Javascript/bootstrap/datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />        
+<script src="/Javascript/bootstrap/datetimepicker/moment.min.js" type="text/javascript"></script> 
+<script src="/Javascript/bootstrap/datetimepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script> 
+
+<script type="text/javascript">
+    var tbot = angular.module("tbot");
+    
+    tbot.controller("TMUser", function($scope,$http)
+        {   
+            scope = $scope;
+            $scope.dataLoaded = false;
+            $("#txtEmail").focus();	
+            $scope.update = function(userData)
+                {                
+                    $scope.result_Info  = "Saving user details";
+                    $scope.result_Ok    = "";
+                    $scope.result_Error    = "";
+                
+                    var picker = $('#expirationDate').datetimepicker();
+
+                    var selectedDate = picker.data('DateTimePicker').getDate();
+
+                    userData.ExpirationDate = "\/Date(" + Date.parse(selectedDate) + ")\/";
+                    
+                    $http.put('/rest/user',userData)
+                        .success(function(data)
+                            {       
+                                $scope.result_Info = "";
+                                if (data)
+                                    $scope.result_Ok    = "User saved";
+                                else
+                                    $scope.result_Error = "Failed to save user";
+                                
+                                $scope.userEnabled = userData.UserEnabled;
+                                
+                                $scope.accountExpired = (selectedDate < new Date());
+                            });
+                };
+            
+            var userName = window.location.search.substring(1);
+            if (userName != "")
+            {
+                    $scope.userName = userName;
+                                        
+                    $http.get('/rest/user/' + userName).success(function(data)
+                        {                            
+                            if (data=== "")
+                            {
+                                $scope.userData = { UserName :  "No user found with provided UserName!!!" };
+                            }
+                            else
+                            {
+                                $scope.userData = data;
+
+                                var currentExpirationDate = new Date(parseInt($scope.userData.ExpirationDate.replace("/Date(", "").replace(")/",""), 10));
+
+                                var picker = $('#expirationDate').datetimepicker();
+                                var dateTimePicker = picker.data('DateTimePicker');
+                                dateTimePicker.setDate(currentExpirationDate);
+                                $scope.accountExpired = (currentExpirationDate < new Date());                                
+                                $scope.dataLoaded = true;
+                                $scope.userEnabled = data.UserEnabled;
+                                
+                                $scope.result_Info = "";
+                            }
+                        });        
+            }
+            else        
+                $scope.userData = { UserName :  "No user found with provided UserName!!!" };
+		
+            $scope.deleteUser = function(userId)
+                {
+                    $scope.userDeleted = true;
+                    $scope.deleteResult = "deleting: " + userId;
+                
+                     $http.delete('/rest/user/' + userId,{})
+                        .success(function(result)
+                            {                    
+                                if (result)
+                                    $scope.deleteResult = "User deleted";
+                                else
+                                    $scope.deleteResult = "ERROR: user could not be deleted";
+                            })
+                         .error(function()
+                             {
+                                 $scope.deleteResult = "ERROR: delete action failed";
+                             });
+  
+                };
+            
+            $scope.newUserTag = function()
+                {
+                    if ($scope.userData.UserTags ==null)
+ 				        $scope.userData.UserTags = [];
+                    $scope.userData.UserTags.push({ Key:'' , Value : ''});                    
+                };
+            $scope.removeTag = function(index)
+                {
+                    scope.userData.UserTags.splice(index,1);
+                };
+
+
+		    $('#expirationDate').datetimepicker({
+		      pickTime:false
+		    });
+            $scope.userGroups = [{name:"Anonymous", id:0},{name:"Admin", id:1},{name:"Reader", id:2},
+                                 {name:"Editor", id:3}]; //, {name:"Developer", id:4}];
+                                     
+            $scope.result_Info       = "Loading user data";
+            $scope.result_Ok         = "";
+            $scope.result_Error      = "";
+            $scope.userDeleted = false;
+            $scope.deleteButtonEnabled = false;
+        });
+
+</script>
+
+<style>
+    .form-group 
+        {
+            margin-top    : 5px;
+            margin-bottom : 5px;
+        }
+    .input-tag  
+        {
+            height        : 20px
+        }
+    
+    .borderless td
+        {
+            border-top    : none !important 
+        }   
+    .alert-small 
+        {
+            padding: 8px 35px 8px 14px; 
+        }
+</style>
+<div ng-controller="TMUser"> 
+  
+    <h4>User Edit: {{userData.UserName}} </h4>
+    
+    <div ng-show="userDeleted">        
+        <div class="alert alert-warning">{{deleteResult}}</div>
+    </div>
+    
+    <div ng-show="userDeleted == false">
+        
+        <a href="Current_Users">Users list</a> | <a href="New_User">New User</a> 
+        <hr/>
+        
+        <a href="User_View?user={{userName}}" class="btn btn-info" >View User</a>
+        <a href="User_Edit?{{userName}}" class="btn btn-info" disabled>Edit User</a>
+        <a href="User_Activities?user={{userName}}" class="btn btn-info" >View Activity/Logs</a>
+        <a href="User_Raw?user={{userName}}">Raw/Xml Data</a>
+
+        <div ng-class="{ 'bg-danger' : userEnabled ==false }"> 
+            <form name="myForm" class="form-horizontal" role="form">      <!-- change this form to be a directive-->        
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">User ID</label>
+                    <div class="col-sm-6">
+                        <p class="form-control-static">{{userData.UserId}}</p>
+                    </div>
+                </div>
+       
+                <div class="form-group">
+                    <label  class="col-sm-2 control-label">UserName</label>
+                    <div class="col-sm-6">
+                        <input class="form-control" type="text" ng-model="userData.UserName" required ng-disabled="true"/>
+                    </div>
+                </div>
+                <!-- Email, FirstName, LastName, Company, Job Title, Country, State-->
+                <div class="form-group">
+                    <label  class="col-sm-2 control-label">Email</label>
+                    <div class="col-sm-6">
+                        <input class="form-control" type="email" id="txtEmail" name="txtEmail" ng-model="userData.Email" required/>
+                    </div>
+                    <div class="col-sm-3">
+                        <span style="color:red;font-weight:bold" ng-show="dataLoaded && myForm.txtEmail.$error.required">This field is required!</span>
+                        <span style="color:red;font-weight:bold" ng-show="myForm.txtEmail.$error.email">Email is invalid!</span>
+                    </div>
+                </div>
+        
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">FirstName</label>
+                    <div class="col-sm-6">
+                        <input class="form-control"      ng-model="userData.FirstName"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">LastName</label>
+                    <div class="col-sm-6">
+                        <input class="form-control" ng-model="userData.LastName"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Company</label>
+                    <div class="col-sm-6">
+                        <input class="form-control" ng-model="userData.Company"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Job/Title</label>
+                    <div class="col-sm-6">
+                        <input class="form-control" ng-model="userData.Title" maxlength="255"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Country</label>
+                    <div class="col-sm-6">
+                        <input class="form-control" ng-model="userData.Country"/>
+                    </div>
+                </div>            
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">State</label>
+                    <div class="col-sm-6">
+                        <input class="form-control" ng-model="userData.State"/>
+                    </div>
+                </div>
+                <!-- User Tags-->
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">UserTags<small><br /><a href="" ng-click="newUserTag()">NewTag</a></small></label>                
+                    <div class="col-sm-offset-0 col-sm-6">
+                        <table class="table table-condensed borderless" >
+                            <tr>
+                                <th>Key</th>
+                                <th>Value</th>
+                                <th></th>
+                            </tr>
+                            <tr ng-repeat="userTag in userData.UserTags" class="borderless">                                
+                                <td><input type="text" class='form-control input-tag' ng-model='userTag.Key'   placeholder="key" />  </td>
+                                <td><input type="text" class='form-control input-tag' ng-model='userTag.Value' placeholder="value" /></td>
+                                <td><a href="" ng-click="removeTag($index)">remove</a></td>
+                            </tr>
+                        </table>
+                    </div>                                    
+                </div>
+                <!-- Security Group -->           
+                <div class="form-group">
+                    <label  class="col-sm-2 control-label">Security Group</label>
+                    <div class="col-sm-3">
+                        <select name="userGroup" class="form-control"  ng-model  = "userData.GroupID">
+                            <option value="-1" ng-hide="userData.GroupID"> </option>                        
+                            <option ng-repeat = "group in userGroups"  value     = "{{group.id}}">
+                                {{group.name}}
+                            </option>
+                        </select>
+                    </div>
+                </div> 
+                <!-- Expiration date picker-->
+                <div class="form-group" ng-hide="userData.AccountNeverExpires">
+                    <label class="col-sm-2 control-label">Expires at:</label>
+                    <div class="col-sm-3">
+                        <div class='input-group date' id='expirationDate' data-date-format='MMM/DD/YYYY'>
+                            <input type='text' class="form-control" readonly/>
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <span class="label label-default" ng-show="accountExpired">Acount expired</span>
+                    </div>
+                </div>        
+                <br />
+                <!-- options -->       
+                <div class="form-group">                
+                    <div class="col-sm-offset-2  col-sm-2">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" ng-model="userData.UserEnabled"/> User Enabled
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" ng-model="userData.AccountNeverExpires"/> Never expires
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" ng-model="userData.PasswordExpired"/> Password Expired
+                            </label>
+                        </div>
+                    </div>
+                </div>        
+                <!-- Save, Delete buttons-->
+                <br />
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-2">                                  
+                        <button class="btn btn-primary col-sm-12" ng-disabled="myForm.$invalid" ng-click="update(userData)">
+                            Save User
+                        </button>                                                                             
+                    </div>    
+                    <div class="col-sm-2">    
+                        <button class="btn btn-danger col-sm-12" ng-disabled="deleteButtonEnabled===false" ng-click="deleteUser(userData.UserId)">
+                            Delete
+                        </button> 
+                    </div>
+                    <div class="col-sm-3">                
+                        <div class="checkbox">                                                            
+                            <input type="checkbox" ng-model="deleteButtonEnabled"/> Enable Delete Button
+                        </div>
+                    </div>
+                </div>
+                <!-- Ok, Info and Error messages-->
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-4" ng-hide="result_Ok =='' ">
+                        <div class="alert alert-success alert-small">
+                            {{result_Ok}}
+                        </div>
+                    </div>    
+                    <div class="col-sm-offset-2 col-sm-4" ng-hide="result_Info =='' ">
+                        <div class="alert alert-warning alert-small">
+                            {{result_Info}}
+                        </div>
+                    </div>    
+                    <div class="col-sm-offset-2 col-sm-4" ng-hide="result_Error =='' ">                                  
+                        <div class="alert alert-danger alert-small">
+                            {{result_Error}}
+                        </div>
+                    </div>    
+                </div>
+            </form> 
+            <br/>            
+        </div>
+    </div>
+    
+    <!--<pre>
+        {{userData}}
+    </pre> -->
+</div>

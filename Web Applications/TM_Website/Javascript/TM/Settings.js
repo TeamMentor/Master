@@ -1,15 +1,16 @@
 //TM Settings
-window.TM.tmVersion            = "TM 3.4";
+window.TM.tmVersion            = "TM 3.4.1";
 window.TM.ArticleTitle         = "TeamMentor 3.4";
 
 window.TM.tmWebServices        = '/Aspx_Pages/TM_WebServices.asmx/';
 window.TM.NotAuthorizedPage    = '/Html_Pages/Gui/Panels/AD_Non_Authorized_User.html';
+window.TM.UserNotLoggedInPage  = '/html_pages/Gui/Panels/User_Not_Logged.html'
 
 window.TM.Tracking_Google_Analytics_ID                 = null;    // configure this in  TM_Custom_Settings.js
 window.TM.Gui.showLibraryStructureToAnonymous          = true;
 window.TM.Gui.LoadLibraryData                          = true;
 window.TM.Gui.editMode                                 = false;
-
+window.TM.WindowsAuthentication                        = false;              
 window.TM.Debug.addTimeStampToLoadedPages              = true;     // set true true during dev
 window.TM.Debug.reuseLibraryMappingsObject             = true;
 window.TM.Debug.load_HomePage                          = true;

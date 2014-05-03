@@ -1,0 +1,42 @@
+﻿
+@using System.Linq
+@using FluentSharp.CoreLib
+@using TeamMentor.CoreLib
+
+@{
+        
+    
+    var urlRequests = Requests_Firebase.apiFirebase.OfflineQueue
+                                                   .Select(submitData => (Log_Request)submitData.Data)
+                                                   .Reverse()
+                                                   .toList();
+    var count       = urlRequests.size();
+    
+}
+<h4>Firebase Offline Data</h4>
+
+
+<div class="alert alert-warning">
+    <a href="Firebase_Offline_DebugMsgs">Debug Messages</a> - <a href="Firebase_Offline_Activities">Activities</a> - Request Urls
+</div>
+
+<table class="table table-striped table-condensed">
+    <tr>
+        <th>#</th>            
+        <th>When</th>
+        <th>IP</th>            
+        <th>Referer</th>    
+        <th>Url</th>
+    </tr>   
+    @foreach (var urlRequest in urlRequests)
+    {
+        <tr>
+            
+            <td>@(count--)</td>
+            <td>@urlRequest.When.fromJsDate().ToString("HH:MM:ss")</td>
+            <td>@urlRequest.IP</td>            
+            <td>@urlRequest.Url</td>            
+            <td>@urlRequest.Referer</td>            
+        </tr>
+    }
+</table>

@@ -8,6 +8,7 @@ using System.ServiceModel.Dispatcher;
 using System.ServiceModel.Web;
 using System.Web;
 using System.Web.Routing;
+    using FluentSharp.CoreLib;
 
 namespace TeamMentor.CoreLib  
 {
@@ -32,10 +33,17 @@ namespace TeamMentor.CoreLib
         public TM_REST()
         {           
             Context       = HttpContextFactory.Current;
-            Session       = HttpContextFactory.Session;									
-            TmWebServices = new TM_WebServices(true);	//Disabling CSRF            
+            Session       = HttpContextFactory.Session;
+			check_CSRF_Header();						
+            //TmWebServices = new TM_WebServices(true);	//Disabling CSRF            
+            TmWebServices = new TM_WebServices(false);	//Disabling CSRF            
         }
 
+        public void check_CSRF_Header()
+        {
+            
+            //HttpContextFactory.Request.header("CSRF-Token");
+        }
 
 
         public static void SetRouteTable()

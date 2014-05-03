@@ -11,25 +11,30 @@ namespace TeamMentor.CoreLib
     public partial class TM_WebServices 
     {		
         
-        [WebMethod(EnableSession = true)] public string GetTime() 						{   return "...Via Proxy:" + DateTime.Now.str(); }  	         
-        [WebMethod(EnableSession = true)] public string Ping(string message)  			{   return "received ping: {0}".format(message); }
+        [WebMethod(EnableSession = true)]                       public string GetTime() 						{   return "...Via Proxy:" + DateTime.Now.str();                        }  	         
+        [WebMethod(EnableSession = true)]                       public string Ping(string message)  			{   return "received ping: {0}".format(message);                        }        
         
         //Xml Database Specific
-        [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_GetDatabasePath()		{	return tmXmlDatabase.Path_XmlDatabase;	}
-        [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_GetLibraryPath()		{	return tmXmlDatabase.Path_XmlLibraries;	}		
-        [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_GetUserDataPath()		{	return tmXmlDatabase.UserData.Path_UserData;	}		
-        [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_ReloadData()			{	
-                                                                                                                    guiObjectsCacheOk = false; 
-                                                                                                                    return  tmXmlDatabase.ReloadData(null); 
-                                                                                                                }
-        [WebMethod(EnableSession = true)] [Admin]	            public bool XmlDatabase_ImportLibrary_fromZipFile(string pathToZipFile, string unzipPassword) { return TM_Xml_Database.Current.xmlDB_Libraries_ImportFromZip(pathToZipFile, unzipPassword); }                                                                                                                                     
+        [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_GetDatabasePath()		{	return tmXmlDatabase.Path_XmlDatabase;	                            }
+        [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_GetLibraryPath()		{	return tmXmlDatabase.Path_XmlLibraries;	                            }		
+        [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_GetUserDataPath()		{	return tmXmlDatabase.UserData.Path_UserData;	                    }		
+        [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_ReloadData()			{	guiObjectsCacheOk = false; return  tmXmlDatabase.ReloadData(null);  }
+        [WebMethod(EnableSession = true)] [Admin]	            public bool   XmlDatabase_IsUsingFileStorage()	{	return tmXmlDatabase.UsingFileStorage;                              }
+        [WebMethod(EnableSession = true)] [Admin]	            public bool   XmlDatabase_WithoutFileStorage()	{	return tmXmlDatabase.reload_WithoutFileStorage().notNull();  }
+        
+        [WebMethod(EnableSession = true)] [Admin]	            public bool   XmlDatabase_ImportLibrary_fromZipFile(string pathToZipFile, string unzipPassword) { return TM_Xml_Database.Current.xmlDB_Libraries_ImportFromZip(pathToZipFile, unzipPassword); }                                                                                                                                     
         [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_SetLibraryPath(string libraryPath)	{	guiObjectsCacheOk = false; 
                                                                                                                                     return  tmXmlDatabase.ReloadData(libraryPath); 
                                                                                                                                 }
         [WebMethod(EnableSession = true)] [Admin]	            public bool XmlDatabase_SetUserDataPath(string userDataPath)	{	return tmXmlDatabase.UserData.setUserDataPath(userDataPath); }
 
 
-        [WebMethod(EnableSession = true)] public List<Guid>     XmlDatabase_GuidanceItems_SearchTitleAndHtml(List<Guid> guidanceItemsIds, string searchText)		{	 return  TM_Xml_Database.Current.guidanceItems_SearchTitleAndHtml(guidanceItemsIds,searchText); }																																		
+        [WebMethod(EnableSession = true)] public List<Guid>     XmlDatabase_GuidanceItems_SearchTitleAndHtml(List<Guid> guidanceItemsIds, string searchText)
+                                                                                                                                {
+                                                                                                                                    var results = TM_Xml_Database.Current.guidanceItems_SearchTitleAndHtml(guidanceItemsIds,searchText);
+                                                                                                                                    this.logUserActivity("User Search", "on {0} item(s) for '{1}' with {2} results".format(guidanceItemsIds.size(), searchText,results.size()));
+                                                                                                                                    return results;
+                                                                                                                                }																																		
         [WebMethod(EnableSession = true)] public string         XmlDatabase_GetGuidanceItemXml(Guid guidanceItemId)	    {	return  TM_Xml_Database.Current.xmlDB_guidanceItemXml(guidanceItemId); }        
         [WebMethod(EnableSession = true)] public string         XmlDatabase_GetGuidanceItemPath(Guid guidanceItemId)	{	return  TM_Xml_Database.Current.xmlDB_guidanceItemPath(guidanceItemId); }                
                                                                     
@@ -38,25 +43,23 @@ namespace TeamMentor.CoreLib
         [WebMethod(EnableSession = true)] public List<string>   RBAC_CurrentPrincipal_Roles()		                    {	return new UserRoleBaseSecurity().currentPrincipal_Roles().toList(); }
         [WebMethod(EnableSession = true)] public bool           RBAC_HasRole(string role)					            {	return RBAC_CurrentPrincipal_Roles().contains(role); }
         [WebMethod(EnableSession = true)] public bool           RBAC_IsAdmin()											{	return RBAC_CurrentPrincipal_Roles().contains("Admin"); }        
-        [WebMethod(EnableSession = true)] [Admin]	        public bool      RBAC_Demand_Admin()						{	return true; }        
-        [WebMethod(EnableSession = true)] [EditArticles]	public bool      RBAC_Demand_EditArticles()					{	return true; }
-        [WebMethod(EnableSession = true)] [ReadArticles]	public bool      RBAC_Demand_ReadArticles()					{	return true; }
-        [WebMethod(EnableSession = true)] [ManageUsers]	    public bool      RBAC_Demand_ManageUsers()					{	return true; }
+        
+        [WebMethod(EnableSession = true)] [Admin]	            public bool      RBAC_Demand_Admin()						{	return true; }        
+        [WebMethod(EnableSession = true)] [EditArticles]	    public bool      RBAC_Demand_EditArticles()					{	return true; }
+        [WebMethod(EnableSession = true)] [ReadArticles]	    public bool      RBAC_Demand_ReadArticles()					{	return true; }
+        [WebMethod(EnableSession = true)] [ManageUsers]	        public bool      RBAC_Demand_ManageUsers()					{	return true; }
 
 //        [WebMethod(EnableSession = true)]		                public Guid		SSO_AuthenticateUser(string ssoToken)            {   return new SingleSignOn().authenticateUserBasedOn_SSOToken(ssoToken); }
 //        [WebMethod(EnableSession = true)] [Admin]			    public string	SSO_GetSSOTokenForUser(string userName)          {   return new SingleSignOn().getSSOTokenForUser(userName); }
 //        [WebMethod(EnableSession = true)] [Admin]			    public TM_User	SSO_GetUserFromSSOToken(string ssoToken)         {   return new SingleSignOn().getUserFromSSOToken(ssoToken).user(); }                
                                                                                                                         						
-        [WebMethod(EnableSession = true)] [Admin]	            public string		TMConfigFileLocation()			{	return TMConfig.Location;  }		
-        [WebMethod(EnableSession = true)] [Admin]	            public TMConfig		TMConfigFile()
-                                                                                    {	
-                                                                                        return TMConfig.Current;  
-                                                                                    }																					        
-        [WebMethod(EnableSession = true)] [Admin]	            public bool		    SetTMConfigFile(TMConfig tmConfig)
-                                                                                    {
-                                                                                        TMConfig.Current = tmConfig;
-                                                                                        return TMConfig.Current.SaveTMConfig();
-                                                                                    }
+        [WebMethod(EnableSession = true)] [Admin]	            public string		TMConfigFileLocation()			     {	return TMConfig.Location;             }		
+        [WebMethod(EnableSession = true)] [Admin]	            public TMConfig		TMConfigFile()                       {	return TMConfig.Current;              }																					        
+        [WebMethod(EnableSession = true)] [Admin]	            public bool		    SetTMConfigFile(TMConfig tmConfig)   {   return TMConfig.setCurrent(tmConfig); }                                                                                            
+        [WebMethod(EnableSession = true)] [Admin] 	            public Firebase_ClientConfig Get_Firebase_ClientConfig() {   return userData.firebase_ClientConfig();  }
+        
+
+        // Install libraries from ZIP
         [WebMethod(EnableSession = true)] [Admin]	            public string		TMServerFileLocation()			{	return tmXmlDatabase.get_Path_TMServer_Config();  }		
         [WebMethod(EnableSession = true)] [Admin]	            public TMServer		TMServerFile()
                                                                                     {	
@@ -79,11 +82,14 @@ namespace TeamMentor.CoreLib
                                                                                     }																							
         [WebMethod(EnableSession = true)] [Admin]	            public string		Set_Libraries_Zip_Folder(string folder)
                                                                                     {
-                                                                                        var tmConfig = TMConfig.Current;
-                                                                                        tmConfig.TMSetup.LibrariesUploadedFiles = folder;
-                                                                                        //folder.createDir();
-                                                                                        if (tmConfig.SaveTMConfig())																																										
-                                                                                            return "Path set to '{0}' which currently has {1} files".format(folder.fullPath(), folder.files().size());
+                                                                                        if (folder.valid())
+                                                                                        {
+                                                                                            var tmConfig = TMConfig.Current;
+                                                                                            tmConfig.TMSetup.LibrariesUploadedFiles = folder;
+                                                                                            //folder.createDir();
+                                                                                            if (tmConfig.SaveTMConfig())																																										
+                                                                                                return "Path set to '{0}' which currently has {1} files".format(folder.fullPath(), folder.files().size());
+                                                                                        }
                                                                                         return null;
                                                                                     }
 
@@ -93,22 +99,14 @@ namespace TeamMentor.CoreLib
                                                                                         FileUpload.UploadTokens.Add(uploadToken);
                                                                                         return uploadToken;
                                                                                     }
-        [WebMethod(EnableSession = true)] [Admin]	           public string		GetLogs()        { return PublicDI.log.LogRedirectionTarget.prop("LogData").str() ; }        
-        [WebMethod(EnableSession = true)] [Admin]	           public string		ResetLogs()      { (PublicDI.log.LogRedirectionTarget.prop("LogData") as StringBuilder).Clear() ; return "done"; }                
-/*        [WebMethod(EnableSession = true)] [Admin]	           public List<KeyValue<Guid, string>>				Data_GuidanceItems_FileMappings()        
-                                                                                    {
-                                                                                        return TM_Xml_Database.Current.GuidanceItems_FileMappings.ConvertDictionary();
-                                                                                    }		
-        [WebMethod(EnableSession = true)] [Admin]	           public List<KeyValue<Guid, TeamMentor_Article>> Data_GuidanceItems_Cached_GuidanceItems()        
-                                                                                    {
-                                                                                        return TM_Xml_Database.Current.Cached_GuidanceItems.ConvertDictionary();
-                                                                                    }*/
+
+        [WebMethod(EnableSession = true)] [Admin]	           public string		GetLogs()                           { return PublicDI.log.LogRedirectionTarget.prop("LogData").str() ; }        
+        [WebMethod(EnableSession = true)] [Admin]	           public string		ResetLogs()                         { (PublicDI.log.LogRedirectionTarget.prop("LogData") as StringBuilder).Clear() ; return "done"; }                
         
-        [WebMethod(EnableSession = true)] [Admin]	           public string		REPL_ExecuteSnippet(string snippet)        
-                                                                                    {
-                                                                                        return REPL.executeSnippet(snippet);
-                                                                                    }
+        [WebMethod(EnableSession = true)] [Admin]	           public string		REPL_ExecuteSnippet(string snippet) { return REPL.executeSnippet(snippet);}
         
+
+
         //Virtual Articles
         [WebMethod(EnableSession = true)] [Admin]	            public List<VirtualArticleAction>	VirtualArticle_GetCurrentMappings()        
                                                                                     {
@@ -143,18 +141,19 @@ namespace TeamMentor.CoreLib
                                                                                         return service.createArticle_from_ExternalServiceData(serviceData);																						
                                                                                     }
         
+
         //Article Guid Mappings
         [WebMethod(EnableSession = true)]		                public Guid getGuidForMapping(string mapping)
-        {
-            return TM_Xml_Database.Current.xmlBD_resolveMappingToArticleGuid(mapping);
-        }
+                                                                            {
+                                                                                return TM_Xml_Database.Current.xmlBD_resolveMappingToArticleGuid(mapping);
+                                                                            }
         [WebMethod(EnableSession = true)]		                public bool IsGuidMappedInThisServer(Guid guid)
-                                                {
-                                                    if (GetGuidanceItemById(guid).notNull())
-                                                        return true;
-                                                    if (TM_Xml_Database.Current.get_GuidRedirect(guid).valid())
-                                                        return true;
-                                                    return false;
-                                                }
+                                                                            {
+                                                                                if (GetGuidanceItemById(guid).notNull())
+                                                                                    return true;
+                                                                                if (TM_Xml_Database.Current.get_GuidRedirect(guid).valid())
+                                                                                    return true;
+                                                                                return false;
+                                                                            }
     }	
 }

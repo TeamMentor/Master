@@ -22,6 +22,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <SkipPostSharp>False</SkipPostSharp>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -36,10 +37,6 @@
     <Reference Include="AntiXssLibrary, Version=4.2.0.0, Culture=neutral, PublicKeyToken=d127efab8a9c114f, processorArchitecture=MSIL">
       <HintPath>..\packages\AntiXSS.4.2.1\lib\net40\AntiXssLibrary.dll</HintPath>
     </Reference>
-    <Reference Include="FluentSharp.BCL, Version=5.3.0.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\FluentSharp.BCL.5.0.84\lib\net35\FluentSharp.BCL.dll</HintPath>
-    </Reference>
     <Reference Include="FluentSharp.CoreLib, Version=5.3.0.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\FluentSharp.CoreLib.5.3.121\lib\net35\FluentSharp.CoreLib.dll</HintPath>
@@ -47,6 +44,9 @@
     <Reference Include="FluentSharp.NGit, Version=5.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\FluentSharp.NGit.5.3.121\lib\net40\FluentSharp.NGit.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentSharp.WinForms">
+      <HintPath>..\packages\FluentSharp.WinForms.5.3.121\lib\net35\FluentSharp.WinForms.dll</HintPath>
     </Reference>
     <Reference Include="HtmlAgilityPack">
       <HintPath>..\packages\HtmlAgilityPack.1.4.6\lib\Net40\HtmlAgilityPack.dll</HintPath>
@@ -64,6 +64,7 @@
     <Reference Include="PostSharp, Version=3.2.9.0, Culture=neutral, PublicKeyToken=b13fd38b8f9c99d7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\PostSharp.3.2.9-alpha\lib\net20\PostSharp.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="RazorEngine, Version=3.3.0.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -92,14 +93,23 @@
   <ItemGroup>
     <Compile Include="TM_AppCode\Authentication\ExtensionMethods\RoleBaseSecurity_ExtensionMethods.cs" />
     <Compile Include="TM_AppCode\Authentication\ExtensionMethods\TeamMentorUserManagement_ExtensionMethods.cs" />
-    <Compile Include="TM_AppCode\O2_Scripts_APIs\O2_Utils.cs" />
-    <Compile Include="TM_AppCode\Schemas\TmConfig_ExtMet.cs" />
-    <Compile Include="TM_AppCode\Schemas\TMServer.cs" />
-    <Compile Include="TM_AppCode\Schemas\TMServer_ExtMet.cs" />
-    <Compile Include="TM_AppCode\Tracking\API_Firebase.cs" />
-    <Compile Include="TM_AppCode\Tracking\Logger_Firebase.cs" />
+    <Compile Include="TM_AppCode\Authentication\TokenAuthentication.cs" />
+    <Compile Include="TM_AppCode\ExtensionMethods\Extra\Extra_DateTime_ExtensionMethods.cs" />
+    <Compile Include="TM_AppCode\ExtensionMethods\Extra\Extra_Double_ExtensionMethods.cs" />
+    <Compile Include="TM_AppCode\ExtensionMethods\Extra\Extra_Headers_ExtensioMethods.cs" />
+    <Compile Include="TM_AppCode\ExtensionMethods\Extra\Extra_JSON_ExtensionMethods.cs" />
+    <Compile Include="TM_AppCode\ExtensionMethods\Extra\Extra_StringBuilder_ExtensionMethods.cs" />
+    <Compile Include="TM_AppCode\ExtensionMethods\Extra\Extra_String_ExtensionMethods.cs" />
+    <Compile Include="TM_AppCode\Schemas\TM_FirebaseConfig.cs" />
+    <Compile Include="TM_AppCode\TM_Engine.cs" />
+    <Compile Include="TM_AppCode\Tracking\Firebase\API_Firebase.cs" />
+    <Compile Include="TM_AppCode\Tracking\Firebase\Activities_Firebase.cs" />
+    <Compile Include="TM_AppCode\Tracking\Firebase\Firebase_ClientConfig.cs" />
+    <Compile Include="TM_AppCode\Tracking\Firebase\Logger_Firebase.cs" />
+    <Compile Include="TM_AppCode\Tracking\Firebase\Log_Request.cs" />
     <Compile Include="TM_AppCode\Tracking\Logger_LogItem.cs" />
-    <Compile Include="TM_AppCode\Tracking\Requests_Firebase.cs" />
+    <Compile Include="TM_AppCode\Tracking\Firebase\Requests_Firebase.cs" />
+    <Compile Include="TM_AppCode\Users\TMConfig_ExtensionMethods.cs" />
     <Compile Include="TM_AppCode\Schemas\TM_SecretData.cs" />
     <Compile Include="TM_AppCode\Users\TM_Secret_Data_ExtensionMethods.cs" />
     <Compile Include="TM_AppCode\Users\TM_UserData_Ex.cs" />
@@ -107,13 +117,12 @@
     <Compile Include="TM_AppCode\Users\TM_UserData_Ex_Scripts.cs" />
     <Compile Include="TM_AppCode\Utils\Crypto.cs" />
     <Compile Include="TM_AppCode\Schemas\Legacy\guidanceexplorer.cs" />
-    <Compile Include="TM_AppCode\XmlDatabase\TM_Xml_Database_Ex_Config.cs" />
-    <Content Include="TM_AppCode\Users\SingleSignOn.cs.txt" />
+    <Compile Include="TM_AppCode\Schemas\WhoAmI.cs" />
+    <Compile Include="TM_AppCode\XmlDatabase\TM_Xml_Database_ExtensionMethods.cs" />
     <Compile Include="TM_AppCode\Authentication\TM_Authentication.cs" />
     <Compile Include="TM_AppCode\Authentication\UserRoleBaseSecurity.cs" />
     <Compile Include="TM_AppCode\Authentication\UserRoles.cs" />
     <Compile Include="TM_AppCode\Authentication\WindowsAuthentication.cs" />
-    <Compile Include="TM_AppCode\O2_Scripts_APIs\O2_Script_Library.cs" />
     <Compile Include="TM_AppCode\Schemas\Folder_V3.cs" />
     <Compile Include="TM_AppCode\Schemas\Legacy\OnlineStorage_Library.cs" />
     <Compile Include="TM_AppCode\Schemas\Legacy\TM_Library.cs" />
@@ -125,7 +134,7 @@
     <Compile Include="TM_AppCode\Schemas\View_V3.cs" />
     <Compile Include="TM_AppCode\TMConsts.cs" />
     <Compile Include="TM_AppCode\TM_StartUp.cs" />
-    <Compile Include="TM_AppCode\Users\TM_UserData.cs" />
+    <Compile Include="TM_AppCode\Schemas\TM_UserData.cs" />
     <Compile Include="TM_AppCode\Users\TM_UserData_Ex_ActiveSessions.cs" />
     <Compile Include="TM_AppCode\Users\TM_UserData_Ex_Users.cs" />
     <Compile Include="TM_AppCode\Users\TM_UserData_Ex_Users_Persistance.cs" />
@@ -151,7 +160,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="TM_AppCode\Schemas\TM_Gui_Objects.cs" />
-    <Compile Include="TM_AppCode\O2_Scripts_APIs\_Extra_Web_ExtensionMethods.cs" />
+    <Compile Include="TM_AppCode\ExtensionMethods\Extra\Extra_Cookies_ExtensioMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TM_AppCode\Schemas\DataViewers\JsDataTable.cs" />
     <Compile Include="TM_AppCode\Schemas\DataViewers\JsTreeNode.cs" />
@@ -160,7 +169,7 @@
     <None Include="TM_AppCode\Schemas\Legacy\library.cs.txt" />
     <Compile Include="TM_AppCode\Schemas\TeamMentor_Article.cs" />
     <Compile Include="TM_AppCode\Schemas\TMUser.cs" />
-    <Compile Include="TM_AppCode\Schemas\TmConfig.cs" />
+    <Compile Include="TM_AppCode\Schemas\TMConfig.cs" />
     <Compile Include="TM_AppCode\WebServices\TM_WebServices.asmx.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -203,8 +212,7 @@
     <Compile Include="TM_AppCode\WebServices\TM_Xml_Database_JavaScriptProxy.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="TM_AppCode\O2_Scripts_APIs\_Extra_methods_Xml_Linq.cs.txt" />
-    <Compile Include="TM_AppCode\O2_Scripts_APIs\_Extra_methods_HtmlAgilityPack_ExtensionMethods.cs" />
+    <Compile Include="TM_AppCode\ExtensionMethods\Extra\Extra_HtmlAgilityPack_ExtensionMethods.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">

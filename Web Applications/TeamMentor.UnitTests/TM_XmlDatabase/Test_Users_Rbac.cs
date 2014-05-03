@@ -129,7 +129,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Assert.That(result, "user delete failed");
 
             //check that only admins can call BatchUserCreation
-            var batchUserCreation = "";			
+            var batchUserCreation = "123,qwe,asd,zxc";			
             UserGroup.Anonymous	.setThreadPrincipalWithRoles(); Assert.Throws<SecurityException>(() => userData.createTmUsers(batchUserCreation), "Anonymous: BatchUserCreation");
             UserGroup.Reader	.setThreadPrincipalWithRoles(); Assert.Throws<SecurityException>(() => userData.createTmUsers(batchUserCreation), "Reader	  : BatchUserCreation");
             UserGroup.Editor	.setThreadPrincipalWithRoles(); Assert.Throws<SecurityException>(() => userData.createTmUsers(batchUserCreation), "Editor   : BatchUserCreation");

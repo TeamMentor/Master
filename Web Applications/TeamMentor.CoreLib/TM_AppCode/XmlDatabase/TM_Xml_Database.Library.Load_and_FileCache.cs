@@ -17,13 +17,18 @@ namespace TeamMentor.CoreLib
 
             if (gitConfig.LibraryData_Git_Enabled)
             {
+                var online = MiscUtils.online();
+                if (online)
+                    "[TM_Xml_Database] [setupGitSupport] we are online, so git Pull and Pull will be attempted".info();
+                else
+                    "[TM_Xml_Database] [setupGitSupport] we are offline, so no git Pull and Pulls".info();
                 foreach (var library in tmDatabase.tmLibraries())
                 {
                     var libraryPath = tmDatabase.xmlDB_Path_Library_XmlFile(library).parentFolder();
                     if (libraryPath.isGitRepository())
                     {
                         var nGit = libraryPath.git_Open();
-                        try
+                        if (online)   
                         {
                             nGit.git_Pull_Library();
                             nGit.git_Push_Library();
@@ -35,6 +40,8 @@ namespace TeamMentor.CoreLib
                         
                         tmDatabase.NGits.Add(nGit);
                     }
+                    else
+                        "[TM_Xml_Database] [setupGitSupport]  library {0} is currently not a git repo".info(libraryPath.folderName());
                 }
                 tmDatabase.triggerGitCommit();                
             }
@@ -98,6 +105,10 @@ namespace TeamMentor.CoreLib
         {
             try
             {
+                if (MiscUtils.online())
+                    "[TM_Xml_Database] [handle_UserData_GitLibraries] online, so checking for TM UserData repos to clone".info();
+                else
+                    "[TM_Xml_Database] [handle_UserData_GitLibraries] online".info();
                 foreach (var gitLibrary in tmDatabase.UserData.SecretData.Libraries_Git_Repositories)
                 {
                     if (gitLibrary.regEx("Lib_.*.git"))
@@ -106,11 +117,12 @@ namespace TeamMentor.CoreLib
                         var targetFolder = tmDatabase.Path_XmlLibraries.pathCombine(libraryName);
                         if (targetFolder.dirExists().isFalse())
                         {
-                            gitLibrary.git_Clone(targetFolder);
+                            "[TM_Xml_Database] [handle_UserData_GitLibraries] cloning {0}".info(libraryName);
+                            tmDatabase.clone_Library(gitLibrary,targetFolder);
+                            //gitLibrary.git_Clone(targetFolder);
                         }
                         else 
-                            "[handle_UserData_GitLibraries] skipping git clone since there was already a library called: {0}".info(libraryName);
-
+                            "[TM_Xml_Database] [handle_UserData_GitLibraries] skipping git clone since there was already a library called: {0}".info(libraryName);
                     }
                     else
                         "[handle_UserData_GitLibraries] provided git library didn't fit expected format (it should be called Lib_{LibName}.git, and it was: {0}".error(gitLibrary);
@@ -123,6 +135,20 @@ namespace TeamMentor.CoreLib
             }            
             return tmDatabase;
         }
+
+        public static TM_Xml_Database   clone_Library      (this TM_Xml_Database tmDatabase, string gitLibrary, string targetFolder)
+        {
+            var start = DateTime.Now;
+            "[TM_Xml_Database] [GitClone] Start".info();
+            if (Git.CloneUsingGit(gitLibrary,targetFolder).isFalse())
+            {
+                "[TM_Xml_Database] [GitClone] Using NGit for the clone".info();    
+                gitLibrary.git_Clone(targetFolder);
+            }
+            
+            "\n\n[TM_UserData] [GitClone] in: {0}\n\n".debug(start.duration_To_Now());
+            return tmDatabase;
+        }
     }
 
     // this is a (bit) time consumining (less 1s for 8000 files), so it should only be done once (this is another good cache target)
@@ -131,7 +157,7 @@ namespace TeamMentor.CoreLib
         public static void populateGuidanceItemsFileMappings(this TM_Xml_Database tmXmlDatabase)
         {
             tmXmlDatabase.GuidanceItems_FileMappings.Clear();
-            var o2Timer = new O2Timer("populateGuidanceExplorersFileMappings").start();
+            var o2Timer = new O2Timer("[TM_Xml_Database] populateGuidanceExplorersFileMappings").start();
             foreach (var filePath in tmXmlDatabase.Path_XmlLibraries.files(true, "*.xml"))
             {
                 var fileId = filePath.fileName().remove(".xml");
@@ -141,14 +167,14 @@ namespace TeamMentor.CoreLib
                     var guid = fileId.guid();
                     if (tmXmlDatabase.GuidanceItems_FileMappings.hasKey(guid))
                     {
-                        "[populateGuidanceItemsFileMappings] duplicate GuidanceItem ID found {0}".error(guid);
+                        "[TM_Xml_Database] [populateGuidanceItemsFileMappings] duplicate GuidanceItem ID found {0}".error(guid);
                     }
                     else
                         TM_Xml_Database.Current.GuidanceItems_FileMappings.Add(guid, filePath);				
                 }
             }
             o2Timer.stop();
-            "There are {0} files mapped in GuidanceItems_FileMappings".info(TM_Xml_Database.Current.GuidanceItems_FileMappings.size());			
+            "[TM_Xml_Database] [populateGuidanceItemsFileMappings] There are {0} files mapped in GuidanceItems_FileMappings".info(TM_Xml_Database.Current.GuidanceItems_FileMappings.size());			
         }
     }
 
@@ -277,19 +303,19 @@ namespace TeamMentor.CoreLib
             var chacheFile = tmDatabase.getCacheLocation();
             if (chacheFile.fileExists().isFalse())
             {
-                "[TM_Xml_Database] in loadGuidanceItemsFromCache, cached file not found: {0}".error(chacheFile);
+                "[TM_Xml_Database] [load_GuidanceItemsFromCache] cached file not found: {0}".error(chacheFile);
                 tmDatabase.xmlDB_Load_GuidanceItems_and_Create_CacheFile();
             }
             else
             {
-                var o2Timer = new O2Timer("loadGuidanceItemsFromCache").start();
+                var o2Timer = new O2Timer("[TM_Xml_Database] [loadGuidanceItemsFromCache] loaded cache ").start();
                 var loadedGuidanceItems = chacheFile.load<List<TeamMentor_Article>>();
                 o2Timer.stop();
                 if (loadedGuidanceItems.isNull()) //if we couldn't load it , delete it
                     Files.deleteFile(chacheFile);
                 else
                 {
-                    o2Timer = new O2Timer("mapping to memory loadGuidanceItemsFromCache").start();
+                    o2Timer = new O2Timer("[TM_Xml_Database] [loadGuidanceItemsFromCache] loading files ").start();
                     foreach (var loadedGuidanceItem in loadedGuidanceItems)
                         if (loadedGuidanceItem.notNull())
                             TM_Xml_Database.Current.Cached_GuidanceItems.add(loadedGuidanceItem.Metadata.Id,

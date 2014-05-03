@@ -19,6 +19,7 @@ namespace TeamMentor.UnitTests
             1.set_DEFAULT_PBKDF2_INTERACTIONS();                    // improve performance of tests that create users            
             SendEmails.Disable_EmailEngine = true;                  // Disable Email engine by default            
 
+            // check the TM_UserData
             Assert.IsEmpty(userData.validSessions() , "There should be no sessions");
             Assert.IsEmpty(userData.TMUsers         , "There should be no users");
         }

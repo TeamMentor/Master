@@ -14,6 +14,10 @@ namespace TeamMentor.CoreLib
         {
             return googleIpAddress.HEAD();
         }
+        public static bool offline()
+        {
+            return online().isFalse();
+        }
 
         public static bool runningOnLocalHost()
         {

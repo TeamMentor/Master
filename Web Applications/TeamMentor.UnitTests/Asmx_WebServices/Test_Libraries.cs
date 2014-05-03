@@ -109,14 +109,14 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             Assert.That(html != null , "GuidanceItemHtml was null");
             Assert.That(html.size() > 0 , "GuidanceItemHtml was empty");    					
         } 		
-        [Test] public void GetAllGuidanceItems() 
+        [Test][Assert_Reader] public void GetAllGuidanceItems() 
         {   
             var allGuidanceItems = tmWebServices.GetAllGuidanceItems(); 
             Assert.That(allGuidanceItems != null , "allGuidanceItems was null");
             Assert.That(allGuidanceItems.size()> 0 , "no allGuidanceItems returned");    		
             "There where  {0} items returned".info(allGuidanceItems.size());    		
         }    	    	    	
-        [Test] public void GetGuidanceItemsInLibrary() 
+        [Test][Assert_Reader] public void GetGuidanceItemsInLibrary() 
         {   		    	
             var guidanceItemsInLibrary = tmWebServices.GetGuidanceItemsInLibrary(OWASP_LIBRARY_GUID);
             Assert.That(guidanceItemsInLibrary != null , "guidanceItemsInLibrary was null");

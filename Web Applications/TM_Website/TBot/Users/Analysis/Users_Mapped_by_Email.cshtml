@@ -1,0 +1,89 @@
+
+@using System
+@using System.Collections.Generic
+@using System.Linq
+@using TeamMentor.CoreLib
+@using FluentSharp.CoreLib
+
+@{
+    var userData = TM_Xml_Database.Current.UserData;
+    var tmUsers = userData.TMUsers;    
+}
+
+@{    
+    var usersToShow = new Dictionary<string, List<TMUser>>();
+    
+    foreach(var tmUser in tmUsers)
+    {
+        var email = tmUser.EMail;
+        if (email.notValid() && tmUser.UserName.contains("@"))
+        { 
+            email = tmUser.UserName;
+        }
+        if (email.valid() && email.contains("@"))
+        {
+            var domainName = email.split("@").second();
+            usersToShow.add(domainName,tmUser);
+        }        
+    }
+    var usersToShow_Sorted  = usersToShow.OrderByDescending((item)=>item.Value.size());    
+}
+
+
+<h4>Users mapped by Email</h4>
+
+<pre>
+TBot Analysis of the current @tmUsers.Count users, indexed by the user email
+
+Created on @DateTime.Now
+</pre>
+<h5>Mappings (ordered by totals)</h5>
+<ul>
+    
+    @foreach (var item in usersToShow_Sorted)
+    { 
+        var title = item.Key;
+        var users = item.Value;
+        <li><b>@title:</b> @users.size();</li>
+    };
+</ul>
+@foreach (var item in usersToShow_Sorted)
+{ 
+    var title = item.Key;
+    var users = item.Value;
+    
+    var count = 0;           
+    <h4>@item.Key</h4>
+    if (users.empty())
+    {
+        <span>no users</span>
+        <br /><br />
+        continue;
+    }
+    <table class="table table-striped table-condensed">
+    <tr>
+        <th>#</th>
+        <th>UserName</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Company</th>
+        <th>Expiration Date</th>
+        <th>Creation Date</th>
+        <th>Email</th>                                       
+    </tr>   
+     @foreach (var user in users)
+        {
+            <tr>
+                <td>@(++count)</td>
+                <td>@user.UserName</td>                
+                <td>@user.FirstName</td>  
+                <td>@user.LastName</td>  
+                <td>@user.Company</td>
+                <td>@("{0:dd/MMM/yy}".format(user.AccountStatus.ExpirationDate))</td>
+                <td>@("{0:dd/MMM/yy}".format(user.Stats.CreationDate))</td>                
+                <td>@user.EMail</td>
+            </tr>
+        }                              
+</table>    
+}
+

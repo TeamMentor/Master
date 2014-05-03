@@ -8,7 +8,7 @@ namespace TeamMentor.CoreLib
 {    
     public static class TeamMentorUserManagement_TMUser
     {
-        public static UserGroup userGroup(this TMUser tmUser)
+        public static UserGroup      userGroup(this TMUser tmUser)
         {
             return (UserGroup)tmUser.GroupID;
         }
@@ -16,11 +16,22 @@ namespace TeamMentor.CoreLib
         {
             return UserRolesMappings.Mappings[tmUser.userGroup()];
         }
-		public static List<String> toStringList(this List<UserRole> userRoles)
+		public static List<String>   toStringList(this List<UserRole> userRoles)
 		{
 			return (from role in userRoles
 					select role.str()).toList();
 		}		
+        public static string         userStatus(this TMUser tmUser)
+        {            
+            if(tmUser.account_Enabled().isFalse())
+                return "Disabled";
+            if(tmUser.account_Expired())
+                return "Expired";
+            if(tmUser.password_Expired())
+                return "Pwd Expired";
+            return "Enabled";
+        }
+        
     }
 
     public static class TeamMentorUserManagement_UserGroup

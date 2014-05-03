@@ -5,19 +5,19 @@ using System.IO;
 using System.Security.Principal;
 using System.Collections.Specialized;
 using System.Web;
-using FluentSharp.CoreLib;
 using Moq;
+using TeamMentor.CoreLib;
 
 
 //O2Ref:Moq.dll
 //O2Ref:System.Web.Abstractions.dll
 
-namespace O2.FluentSharp
+namespace FluentSharp.CoreLib
 {
     public class API_Moq_HttpContext 
     {        	
         public Mock<HttpContextBase>        MockContext  { get; set; }
-        public Mock<HttpRequestBase>        MockRequest  { get; set; }
+        public MockHttpRequest              MockRequest  { get; set; }
         public Mock<HttpResponseBase>       MockResponse { get; set; }
         public MockHttpSession              MockSession  { get; set; }
         public Mock<HttpServerUtilityBase>  MockServer   { get; set; }		
@@ -27,7 +27,7 @@ namespace O2.FluentSharp
         public HttpResponseBase HttpResponseBase  	{ get; set; }  
         
         public String BaseDir						{ get; set; }
-        public Uri    RequestUrl                    { get; set; }   
+        //public Uri    RequestUrl                    { get; set; }   
 
         public API_Moq_HttpContext() : this(null)
         {			
@@ -36,28 +36,28 @@ namespace O2.FluentSharp
         public API_Moq_HttpContext(string baseDir)
         {
             BaseDir = baseDir;
-            RequestUrl = "http://localhost".uri();
+            //RequestUrl = "http://localhost".uri();
             createBaseMocks();
             setupNormalRequestValues();
         }
         
         public API_Moq_HttpContext createBaseMocks()
         {
-            MockContext = new Mock<HttpContextBase>();
-            MockRequest = new Mock<HttpRequestBase>();
+            MockContext  = new Mock<HttpContextBase>();
+            MockRequest  = new MockHttpRequest(); // new Mock<HttpRequestBase>();
             MockResponse = new Mock<HttpResponseBase>();
-            MockSession = new MockHttpSession();
-            MockServer = new Mock<HttpServerUtilityBase>();
+            MockSession  = new MockHttpSession();
+            MockServer   = new Mock<HttpServerUtilityBase>();
             
     
-            MockContext.Setup(ctx => ctx.Request).Returns(MockRequest.Object);
+            MockContext.Setup(ctx => ctx.Request).Returns(MockRequest);
             MockContext.Setup(ctx => ctx.Response).Returns(MockResponse.Object);
             MockContext.Setup(ctx => ctx.Session).Returns(MockSession);
             MockContext.Setup(ctx => ctx.Server).Returns(MockServer.Object);
             
             
-            HttpContextBase = MockContext.Object; 
-            HttpRequestBase = MockRequest.Object;
+            HttpContextBase  = MockContext.Object; 
+            HttpRequestBase  = MockRequest;
             HttpResponseBase = MockResponse.Object;
                         
             return this;
@@ -78,21 +78,7 @@ namespace O2.FluentSharp
                         genericPrincipal = principal;
                     });
             MockContext.Setup(context => context.Cache).Returns(HttpRuntime.Cache);            
-            
-            //Request
-            MockRequest.Setup(request =>request.InputStream	      ).Returns(new MemoryStream()); 
-            MockRequest.Setup(request =>request.Cookies		      ).Returns(new HttpCookieCollection()); 
-            MockRequest.Setup(request =>request.Headers		      ).Returns(new NameValueCollection()); 
-            MockRequest.Setup(request =>request.QueryString	      ).Returns(new NameValueCollection()); 
-            MockRequest.Setup(request =>request.Form		      ).Returns(new NameValueCollection()); 
-            MockRequest.Setup(request =>request.ServerVariables   ).Returns(new NameValueCollection()); 
-            
-            MockRequest.Setup(request =>request.ContentType	      ).Returns(""); 
-            MockRequest.Setup(request =>request.Url	              ).Returns(()=> RequestUrl); 
-            MockRequest.Setup(request =>request.IsLocal	          ).Returns(()=> RequestUrl.Host == "localhost" || RequestUrl.Host=="127.0.0.1"); 
-            MockRequest.Setup(request =>request.IsSecureConnection).Returns(()=> RequestUrl.Scheme.lower() == "https");
-                
-            
+                 
             //Response
             var outputStream = new MemoryStream();
             var redirectTarget = "";
@@ -100,7 +86,12 @@ namespace O2.FluentSharp
             MockResponse.Setup   (response => response.Cookies      ).Returns(new HttpCookieCollection()); 	     	
             MockResponse.Setup   (response => response.Headers      ).Returns(new NameValueCollection());
             MockResponse.Setup   (response => response.OutputStream ).Returns(outputStream);
-            MockResponse.Setup   (response => response.Write        (It.IsAny<string>())                    ).Callback((string code)              => outputStream.Write(code.asciiBytes(), 0, code.size()));
+            MockResponse.Setup   (response => response.Write        (It.IsAny<string>())                    ).Callback((string code)
+                =>
+                {
+                    HttpContextBase.response_Write(code);
+                    //outputStream.Write(code.asciiBytes(), 0, code.size());
+                });
             MockResponse.Setup   (response => response.AddHeader    (It.IsAny<string>(), It.IsAny<string>())).Callback((string name,string value) => MockResponse.Object.Headers.Add(name,value));
             MockResponse.Setup   (response => response.Redirect     (It.IsAny<string>())                    ).Callback((string target)            =>{ redirectTarget = target; throw new Exception("Thread was being aborted.");});            
             
@@ -111,17 +102,56 @@ namespace O2.FluentSharp
             MockServer.Setup(server => server.MapPath (It.IsAny<string>()))                 .Returns ((string path)                      =>  BaseDir.pathCombine(path));
             MockServer.Setup(server => server.Transfer(It.IsAny<string>()))                 .Callback((string target)                    =>  { redirectTarget = target; throw new Exception("Thread was being aborted.");}  );   // use the redirectTarget to hold this value
             MockServer.Setup(server => server.Transfer(It.IsAny<string>(),It.IsAny<bool>())).Callback((string target, bool preserveForm) =>  { redirectTarget = target; throw new Exception("Thread was being aborted.");}  );   // use the redirectTarget to hold this value            
-            //var writer = new StringWriter();
-            //context.Expect(ctx => ctx.Response.Output).Returns(writer);	     		     	
             return this;
         }
+    }
+    public class MockHttpRequest : HttpRequestBase
+    {
+        private string _userHostAddress = "127.0.0.1";        
+        private string _contentType     = "";        
+        private Uri    _url             = "http://localhost".uri();
+        private Stream _inputStream     =  new MemoryStream();  
+
+        private HttpCookieCollection _cookies           = new HttpCookieCollection();
+        private NameValueCollection  _queryString       = new NameValueCollection();
+        private NameValueCollection  _form              = new NameValueCollection();
+        private NameValueCollection  _headers           = new NameValueCollection();
+        private NameValueCollection  _serverVariables   = new NameValueCollection();
+
+        public override string  ContentType         {  get {   return _contentType;                                         } }
+        public override bool    IsLocal             {  get {   return _url.Host == "localhost" || _url.Host=="127.0.0.1";   } }
+        public override bool    IsSecureConnection  {  get {   return _url.Scheme.lower() == "https";                       } }
+        public override Uri     Url                 {  get {   return _url;                                                 } }
+        public override string  UserHostAddress     {  get {   return _userHostAddress;                                     } }
+        public override string  PhysicalPath        {  get {   return null;                                                 } }
+
+        public override Stream                InputStream     {  get {   return _inputStream;       } }
+        public override HttpCookieCollection  Cookies         {  get {   return _cookies;           } }
+        public override NameValueCollection   QueryString     {  get {   return _queryString;       } }
+        public override NameValueCollection   Form            {  get {   return _form;              } }
+        public override NameValueCollection   Headers         {  get {   return _headers;           } }
+        public override NameValueCollection   ServerVariables {  get {   return _serverVariables;   } }
+
+        public override string this[string key]
+        {
+            get
+            {          
+                if (_form.Get(key).notNull())
+                    return _form.Get(key);
+                if (_queryString.Get(key).notNull())
+                    return _queryString.Get(key);
+                return null;                
+            }            
+        }             
     }
     public class MockHttpSession : HttpSessionStateBase
     {
         Dictionary<string,object> sessionData = new Dictionary<string,object> ();
+        string                    sessionId   = "".add_RandomLetters(15);
+
         public override string SessionID
         {
-            get { return "".add_RandomLetters(15); }
+            get { return sessionId; }
         }
         public override object this[string key]
         {
@@ -138,16 +168,22 @@ namespace O2.FluentSharp
     }
     public static class API_Moq_HttpContext_ExtensionMethods
     {
+        public static HttpContextBase mock(this HttpContextBase contextBase)
+        {
+            HttpContextFactory.Context = new API_Moq_HttpContext().httpContext();
+            return HttpContextFactory.Context;
+        }
         public static HttpContextBase httpContext(this API_Moq_HttpContext moqHttpContext)
         {
             return moqHttpContext.HttpContextBase;
         }
         
-        public static HttpContextBase request_Write_Clear(this API_Moq_HttpContext moqHttpContext)
+        public static HttpContextBase request_Write_Clear(this HttpContextBase httpContextBase)
         {
-            moqHttpContext.MockRequest.Setup(request =>request.InputStream).Returns(new MemoryStream()); 
-            
-            return moqHttpContext.httpContext();
+            httpContextBase.Request.field("_inputStream",new MemoryStream());             
+            return httpContextBase;
+            //moqHttpContext.MockRequest.Setup(request =>request.InputStream).Returns(new MemoryStream()); 
+            //return moqHttpContext.httpContext();
         }
         
         public static HttpContextBase request_Write(this HttpContextBase httpContextBase,string text)
@@ -183,8 +219,8 @@ namespace O2.FluentSharp
         {														
             var streamWriter = new StreamWriter(inputStream);
             
-            inputStream.Position = inputStream.property("Length").str().toInt();  
-            //inputStream.Position = (int)inputStream.Length; // the line above can also be this
+            //inputStream.Position = inputStream.property("Length").str().toInt();  
+            inputStream.Position = (int)inputStream.Length; // the line above can also be this
             streamWriter.Write(text);    
             streamWriter.Flush(); 			
             inputStream.Position = 0; 			

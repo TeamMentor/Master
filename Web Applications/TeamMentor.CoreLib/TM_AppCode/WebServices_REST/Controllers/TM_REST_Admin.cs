@@ -25,24 +25,7 @@ namespace TeamMentor.CoreLib
             "[TM_REST]: Received request to restart Application".debug();
             typeof(HttpRuntime).invokeStatic("ShutdownAppDomain", "");
             return "done";
-        }
-        public string Admin_InvokeScript(string scriptName)
-        {
-            var method = typeof (O2_Script_Library).method(scriptName);
-            if (method.isNull())
-                return "script not found";
-            try
-            {
-                var returnValue = method.invokeStatic().str().compileAndExecuteCodeSnippet();
-                return returnValue.str();
-            }
-            catch (Exception ex)
-            {
-                ex.log("[Admin_InvokeScript] for script:" + scriptName);
-                return "script failed to execute";
-            }
-            
-        }
+        }        
         public string Admin_Logs()
         {
             return TmWebServices.GetLogs();	        
@@ -56,34 +39,53 @@ namespace TeamMentor.CoreLib
         {
             return TmWebServices.SendEmail(emailMessagePost);            
         }
-        public Stream TBot_Show()
-        {
-            try
-            {
-                this.response_ContentType_Html();
-                return new TBot_Brain(this).RenderPage();
-            }
-            catch (SecurityException)
-            {
-                Redirect_Login("/tbot");
-            }	        
-            return null;
-        }
+        
         public Stream TBot_Run(string what)
         {
             try
             {
                 this.response_ContentType_Html();
-                if (what.lower().contains("git"))
-                    Admin_InvokeScript("load_NGit_Dlls");         // to solve prob with NGit dlls not being avaialble for compilation )
+                //if (what.lower().contains("git"))
+                //    Admin_InvokeScript("load_NGit_Dlls");         // to solve prob with NGit dlls not being avaialble for compilation )
+                TmWebServices.logUserActivity("Open TBot Page", what);
                 return new TBot_Brain(this).Run(what);
             }
             catch (SecurityException)
             {
+                TmWebServices.logUserActivity("Access Denied","TBot Page (Run): {0}".format(what));
                 Redirect_Login("/tbot");
             }	        
             return null;
         }
+
+        public Stream TBot_Render(string what)
+        {
+            try
+            {
+                this.response_ContentType_Html();                
+                return new TBot_Brain(this).Render(what);
+            }
+            catch (SecurityException)
+            {
+                TmWebServices.logUserActivity("Access Denied","TBot Page (Render): {0}".format(what));
+                return null;
+            }	                    
+        }
+        public Stream TBot_Json(string what)
+        {
+            try
+            {
+                this.response_ContentType_Json();                
+                return new TBot_Brain(this).Json(what);
+            }
+            catch (SecurityException)
+            {
+                TmWebServices.logUserActivity("Access Denied","TBot Page (Json): {0}".format(what));
+                return "{ 'error': 'SecurityException' }".stream_UFT8();    
+            }	                    
+        }
+
+        
         public Stream TBot_List()
         {
             try
@@ -93,6 +95,7 @@ namespace TeamMentor.CoreLib
             }
             catch (SecurityException)
             {
+                TmWebServices.logUserActivity("Access Denied","TBot List Command");
                 Redirect_Login("/tbot");           
             }
             return null;
@@ -106,8 +109,14 @@ namespace TeamMentor.CoreLib
         {
             try
             {
+                if (tmSecretData.Rijndael_IV != TM_UserData.Current.SecretData.Rijndael_IV && 
+                    tmSecretData.Rijndael_Key !=TM_UserData.Current.SecretData.Rijndael_Key)
+                {
+                    "[Set_TM_SecretData] both Rijndael_IV and Rijndael_Key are different from current value (not supported scenario and possible attack)".error();
+                    return false;
+                }
                 TM_UserData.Current.SecretData = tmSecretData;
-                TM_UserData.Current.secretData_Save();
+                TM_UserData.Current.secretData_Save();                
                 return true;
             }
             catch (Exception ex)

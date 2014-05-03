@@ -10,9 +10,9 @@ namespace TeamMentor.CoreLib
     {        
         public static bool setUserDataPath(this TM_UserData userData, string userDataPath)
         {
-            if (userDataPath.dirExists().isFalse())
+            if (userDataPath.isNull() || userDataPath.dirExists().isFalse())
             {
-                "[TM_UserData][setUserDataPath] provided userDataPath didn't exist: {0}".error("userDataPath");
+                "[TM_UserData] [setUserDataPath] provided userDataPath didn't exist: {0}".error("userDataPath");
                 return false;
             }
             try
@@ -25,7 +25,7 @@ namespace TeamMentor.CoreLib
             }
             catch (Exception ex)
             {
-                ex.log("[TM_UserData][setUserDataPath]");
+                ex.log("[TM_UserData] [setUserDataPath]");
                 return false;
             }            
         }
@@ -35,7 +35,7 @@ namespace TeamMentor.CoreLib
             userData.TMUsers = new List<TMUser>();	        
             if (userData.Path_UserData.dirExists().isFalse())
             {
-                "[TM_UserData_Ex_Users_Persistance] in loadTmUserObjects, provided userDataPath didn't exist: {0}"
+                "[TM_UserData_Ex_Users_Persistance] [loadTmUserData] provided userDataPath didn't exist: {0}"
                     .error(userData.Path_UserData);
             }
             else
@@ -46,6 +46,8 @@ namespace TeamMentor.CoreLib
                     var tmUser = file.load<TMUser>();
                     if (tmUser.notNull() && tmUser.UserID > 0)
                         userData.TMUsers.Add(tmUser);
+                    else
+                        "[TM_UserData_Ex_Users_Persistance] [loadTmUserData] error loading tmUser file (or UserId < 1): {0}".error(file);
                 }
             }            
             return userData;
@@ -67,7 +69,7 @@ namespace TeamMentor.CoreLib
                 lock (tmUser)
                 {                    
                     tmUser.saveAs(tmUser.getTmUserXmlFile());
-                    tmUser.triggerGitCommit();
+                    //tmUser.triggerGitCommit();
                 }
             }
             return tmUser;
@@ -76,40 +78,68 @@ namespace TeamMentor.CoreLib
         {    		
             if (tmUser.notNull())
             {
-                userData.TMUsers.remove(tmUser);
-                if (userData.UsingFileStorage)
+                lock(userData.TMUsers)
                 {
-                    lock (tmUser)
+                    userData.TMUsers.remove(tmUser);
+                    if (userData.UsingFileStorage)
                     {
-                        tmUser.getTmUserXmlFile().file_Delete();
-                        userData.triggerGitCommit();
-                    }
+                        lock (tmUser)
+                        {
+                            tmUser.getTmUserXmlFile().file_Delete();
+                            userData.triggerGitCommit();
+                        }
+                    }  
+                    userData.logTBotActivity("User Delete","{0} - {1}".format(tmUser.UserName, tmUser.UserID));
+                    return true;
                 }
-                return true;
             }
             return false;
         }
-        public static bool          updateTmUser     (this TMUser tmUser, TM_User userViewModel)
+        public static bool          updateTmUser     (this TMUser tmUser, string userName, string firstname, string lastname, string title, string company, 
+                                                      string email, string country, string state, DateTime accountExpiration, bool passwordExpired, 
+                                                      bool userEnabled, bool accountNeverExpires, int groupId)
         {
-            if (tmUser.isNull() || userViewModel.validation_Failed())
+            var user = new TM_User
+                {
+                    UserName            = userName,
+                    FirstName           = firstname,
+                    LastName            = lastname,
+                    Title               = title,
+                    Company             = company,
+                    Email               = email,
+                    Country             = country,
+                    State               = state,
+                    ExpirationDate      = accountExpiration,
+                    PasswordExpired     = passwordExpired,
+                    UserEnabled         = userEnabled, 
+                    AccountNeverExpires = accountNeverExpires,
+                    GroupID             = groupId
+                };
+            return tmUser.updateTmUser(user);
+        }
+        public static bool          updateTmUser     (this TMUser tmUser, TM_User user)
+        {                         
+            if (tmUser.isNull())
                 return false;
-            
-            if (tmUser.UserName == userViewModel.UserName)
+            if (tmUser.UserName == user.UserName)
             {
-                tmUser.EMail = Encoder.XmlEncode(userViewModel.Email);
-                tmUser.UserName = Encoder.XmlEncode(userViewModel.UserName);
-                tmUser.FirstName = Encoder.XmlEncode(userViewModel.FirstName);
-                tmUser.LastName = Encoder.XmlEncode(userViewModel.LastName);
-                tmUser.Title = Encoder.XmlEncode(userViewModel.Title);
-                tmUser.Company = Encoder.XmlEncode(userViewModel.Company);
-                tmUser.Country = Encoder.XmlEncode(userViewModel.Country);
-                tmUser.State = Encoder.XmlEncode(userViewModel.State);
-                tmUser.GroupID = userViewModel.GroupID > -1 ? userViewModel.GroupID : tmUser.GroupID;
-                tmUser.AccountStatus.ExpirationDate = userViewModel.ExpirationDate;
-                tmUser.AccountStatus.PasswordExpired = userViewModel.PasswordExpired;
-                tmUser.AccountStatus.UserEnabled = userViewModel.UserEnabled;
-
+                tmUser.EMail        = user.Email;     //Encoder.XmlEncode(user.Email);    // these encodings should now be enfored on TBOT (and the user does not see them)
+                tmUser.UserName     = user.UserName;  //Encoder.XmlEncode(user.UserName); // they were causing double encoding isues on the new TBOT editor
+                tmUser.FirstName    = user.FirstName; //Encoder.XmlEncode(user.FirstName);
+                tmUser.LastName     = user.LastName;  //Encoder.XmlEncode(user.LastName);
+                tmUser.Title        = user.Title;     //Encoder.XmlEncode(user.Title);
+                tmUser.Company      = user.Company;   //Encoder.XmlEncode(user.Company);
+                tmUser.Country      = user.Country;   //Encoder.XmlEncode(user.Country);
+                tmUser.State        = user.State;     //Encoder.XmlEncode(user.State);
+                tmUser.UserTags     = user.UserTags;
+                tmUser.GroupID      = user.GroupID > -1 ? user.GroupID : tmUser.GroupID;
+                tmUser.AccountStatus.ExpirationDate      = user.ExpirationDate;
+                tmUser.AccountStatus.PasswordExpired     = user.PasswordExpired;
+                tmUser.AccountStatus.UserEnabled         = user.UserEnabled;
+                tmUser.AccountStatus.AccountNeverExpires = user.AccountNeverExpires; 
                 tmUser.saveTmUser();
+                            
+                tmUser.logUserActivity("User Updated",""); // so that we don't get this log entry on new user creation
 
                 return true;
             }
@@ -124,8 +154,8 @@ namespace TeamMentor.CoreLib
             TMConfig.Location = userData.Path_UserData.pathCombine(TMConsts.TM_CONFIG_FILENAME);
             var userConfigFile = TMConfig.Location; 
             if (userConfigFile.fileExists())
-            {
-                var newConfig = userConfigFile.load<TMConfig>();
+            {                
+                var newConfig = userConfigFile.load<TMConfig>();    // to check that the new TMConfig is not corrupted
                 if (newConfig.isNull())
                     "[handleUserDataConfigActions] failed to load config file from: {0}".error(userConfigFile);
                 else

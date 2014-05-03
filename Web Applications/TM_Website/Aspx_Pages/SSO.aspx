@@ -43,7 +43,7 @@
                 "[TM SSO] Username does not exist in TeamMentor".error();
                 throw new Exception(String.Format("Username {0} not found in TeamMentor.Please verify.", userName));
             }
-            var loginGuid = tmUser.login();             // login user in TM   
+            var loginGuid = tmUser.login("SSO");             // login user in TM   
             authentication.sessionID = loginGuid;       // triggers the update of user's cookies
             if(format == "img")
             {

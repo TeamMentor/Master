@@ -1,0 +1,94 @@
+
+@using System
+@using System.Collections.Generic
+@using System.Linq
+@using TeamMentor.CoreLib
+@using FluentSharp.CoreLib
+
+@{
+    var userData = TM_Xml_Database.Current.UserData;
+    var tmUsers = userData.TMUsers;    
+}
+
+@{
+    /* Lambda methods that output Html are not working 
+     Func<List<TMUser>, object> showUsers = 
+        @<text>
+
+            test<b>@(++count)</b>
+        </text>;    */
+    //so we need to consolidate the multiple views using this dictionary
+    var usersToShow = new Dictionary<string, List<TMUser>>();
+    
+    
+    usersToShow.Add("No Expiration Date", tmUsers.where((user)=> user.AccountStatus.ExpirationDate  == default(DateTime)));
+    usersToShow.Add("Not Expired"       , tmUsers.where((user)=> user.AccountStatus.ExpirationDate  > DateTime.Now));
+    usersToShow.Add("Not Enabled"       , tmUsers.where((user)=> user.AccountStatus.UserEnabled.isFalse()));
+    usersToShow.Add("Empty Email"       , tmUsers.where((user)=> user.EMail.notValid())
+                                                 .OrderBy((user)=>user.Stats.CreationDate).toList());
+}
+
+
+<h4>Acounts Expiration</h4>
+
+<pre>
+TBot Analysis of current Expired accounts
+
+Created on @DateTime.Now
+</pre>
+<h5>Stats</h5>
+<ul>
+
+    <li><b>Total users:</b> @tmUsers.Count</li>
+    @foreach (var item in usersToShow)
+    { 
+        var title = item.Key;
+        var users = item.Value;
+        <li><b>@title:</b> @users.size();</li>
+    };
+</ul>
+@foreach (var item in usersToShow)
+{ 
+    //var title = item.Key;
+    var users = item.Value;
+    
+    var count = 0;           
+    <h4>@item.Key</h4>
+    if (users.empty())
+    {
+        <span>no users</span>
+        <br /><br />
+        continue;
+    }
+    <table class="table table-striped table-condensed">
+    <tr>
+        <th>#</th>
+        <th>UserName</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Company</th>
+        <th>Expiration Date</th>
+        <th>Creation Date</th>
+        <th>Email</th>                                       
+    </tr>   
+     @foreach (var user in users)
+        {
+            <tr>
+                <td>@(++count)</td>
+                <td>@user.UserName</td>                
+                <td>@user.FirstName</td>  
+                <td>@user.LastName</td>  
+                <td>@user.Company</td>
+                <td>@("{0:dd/MMM/yy}".format(user.AccountStatus.ExpirationDate))</td>
+                <td>@("{0:dd/MMM/yy}".format(user.Stats.CreationDate))</td>                
+                <td>@user.EMail</td>
+            </tr>
+        }                              
+</table>    
+}
+
+
+
+
+
+<!--<h4>Disabled Users</h4>-->

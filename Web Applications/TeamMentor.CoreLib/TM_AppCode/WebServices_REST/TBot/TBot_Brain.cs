@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using FluentSharp.BCL;
 using FluentSharp.CoreLib;
+using FluentSharp.WinForms;
 using RazorEngine;
 using RazorEngine.Templating;
 
@@ -19,8 +19,8 @@ namespace TeamMentor.CoreLib
         public static List<int>                 ScriptContentHashes  { get; set; }
         public static ITemplateService          TemplateService { get; set; }
 
-        public DateTime         StartTime       { get; set; }
-        public ITM_REST         TmRest          { get; set; }
+        //public DateTime         StartTime       { get; set; }
+        public TM_REST         TmRest          { get; set; }
 
         static TBot_Brain()
         {
@@ -42,40 +42,61 @@ namespace TeamMentor.CoreLib
             
         }
         
-        [Admin]
-        public TBot_Brain(ITM_REST tmRest)
+        //[Admin]
+        public TBot_Brain(TM_REST tmRest)
         {
             TmRest = tmRest;
-            StartTime = DateTime.Now;       
+            checkIfUserIsAdmin();
             
+            //StartTime = DateTime.Now;       
+            
+        }
+        public Guid user_SessionId()
+        {
+            return TmRest.TmWebServices.tmAuthentication.sessionID;
+        }
+        public  string user_CsrfToken()
+        {
+            return user_SessionId().csrfToken();
+        }
+        public void checkIfUserIsAdmin()
+        {
+            // so that we can have direct links to TBOT pages
+            // need to check it like this since the CSRT is not vailable 
+            var sessionId = user_SessionId();
+            if (sessionId.validSession())
+            {
+                var tmUser     = sessionId.session_TmUser();
+                var groupId    = sessionId.session_GroupID();                
+                if (tmUser.notNull() && groupId == (int)UserGroup.Admin)
+                    UserGroup.Admin.setThreadPrincipalWithRoles();    
+            }
+            UserRole.Admin.demand();
         }
 
         public Stream GetHtml(string content)
         {
-            return GetHtml(content, true);
+            return GetHtml(content, true,-1);
         }
-        public Stream GetHtml(string content, bool htmlEncode)
+        public Stream GetHtml(string content, bool htmlEncode, double executionTime)
         {
             var tbotMainHtmlFile = HttpContextFactory.Server.MapPath(TBOT_MAIN_HTML_PAGE);
             var tbotMainHtml = (tbotMainHtmlFile.fileExists())
                                     ? tbotMainHtmlFile.fileContents()
                                     : "[TBot] could not find file: {0}".format(tbotMainHtmlFile);            
             
-            var html = tbotMainHtml.format((htmlEncode) ? content.htmlEncode() : content);
-            var executionTime = DateTime.Now - StartTime;
-            html += "<hr>script executed in: {0}s".format(executionTime.TotalSeconds);
+            
+            var html = tbotMainHtml.replace("{{TBOT_PAGE}}", (htmlEncode) ? content.htmlEncode() : content)
+                                   .replace("{{CSRFToken}}", user_CsrfToken())
+                                   .replace("{{ExecutionTime}}", executionTime.str());            
+            
             return html.stream_UFT8();
-        }
-        public Stream RenderPage()
-        {
-            var message = "this is some message";
-            return GetHtml(message);
-        }
+        }        
 
         public string ExecuteRazorPage(string page)
         {
             try
-            {                
+            {                      
                 if (AvailableScripts.hasKey(page))
                 {                    
                     var csFile = AvailableScripts[page];
@@ -92,16 +113,32 @@ namespace TeamMentor.CoreLib
             }
             catch (Exception ex)
             {
+                ex.log("[TBot Brain] [ExecuteRazorPage] {0} : {1}".format(page, ex.Message));
                 return "Opps: Something went wrong: {0}".format(ex.Message);
             }
             return null;
         }
+        public Stream Render(string page)
+        {
+            var result = ExecuteRazorPage(page);            
+            return (result.valid())
+                    ? result.stream_UFT8()
+                    : "".stream_UFT8();            
+        }
+        public Stream Json(string page)
+        {
+            var result = ExecuteRazorPage(page);                 
 
+            return (result.valid())
+                    ? result.stream_UFT8()
+                    : "{}".stream_UFT8();            
+        }
         public Stream Run(string page)
-        {                                  
+        {           
+            var start = DateTime.Now;           
             var result = ExecuteRazorPage(page);
             return result.valid() 
-                    ? GetHtml(result.trim(), false) 
+                    ? GetHtml(result.trim(), false, (DateTime.Now - start).TotalSeconds) 
                     : GetHtml("Couldn't find requested actions");                            
         }
         public Stream List()
@@ -110,7 +147,7 @@ namespace TeamMentor.CoreLib
                                 (current, items) => current + "<li><a href='/rest/tbot/run/{0}'>{0}</a> - {1}</li>"
                                                                 .format(items.Key, items.Value.fileContents().hash()));
             filesHtml += "</ul>";
-            return GetHtml(filesHtml, false);            
+            return GetHtml(filesHtml, false,-1);            
         }
 
 

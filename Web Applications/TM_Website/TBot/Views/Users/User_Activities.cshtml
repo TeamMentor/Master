@@ -1,0 +1,74 @@
+﻿
+@using System.Linq
+@using FluentSharp.CoreLib
+@using TeamMentor.CoreLib
+@using FluentSharp
+
+@{
+    var userData       = TM_UserData.Current;    
+    var max            = HttpContextFactory.Request["max"].toInt();
+    var userNameOrId   = HttpContextFactory.Current.Request["user"];        
+    var tmUser         = userData.tmUser_by_Name_or_Id(userNameOrId);    
+
+    if (max == 0)
+    {
+        max = 50;
+    }
+    
+}
+
+<h4>User Activity: @userNameOrId</h4>
+
+<a href="Current_Users">Users list</a>
+<hr/>
+
+@if (tmUser.notNull())
+{
+    var index = tmUser.UserActivities.size();
+    
+    <a href="User_View?user=@userNameOrId" class="btn btn-info" >View User</a>
+    <a href="User_Edit?@userNameOrId" class="btn btn-info" >Edit User</a>
+    <a href="User_Activities?user=@userNameOrId" class="btn btn-info" disabled>View Activity/Logs</a>
+    <a href="User_Raw?user=@userNameOrId">Raw/Xml Data</a>
+
+    <p>
+        Showing top @max of @tmUser.UserActivities.size())
+    </p>
+
+    <ul>
+        <table class="table table-striped table-condensed">
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Details</th>
+                <th>When</th>                        
+                <th>IPAdress</th>  
+            </tr> 
+            @foreach (var userActivity in tmUser.UserActivities.OrderByDescending((activity)=> activity.When).take(max))
+            {
+                <tr>
+                    <td>@(index--)</td>
+                    <td>@userActivity.Action </td>
+                    <td>@userActivity.Detail </td>
+                    <td>@userActivity.When.fromFileTimeUtc() </td>
+                    <td>@userActivity.IPAddress </td>
+                </tr>
+            }
+        </table>
+    </ul>    
+    @*
+
+    
+    <hr/>
+    <h5>Raw Data</h5>
+    <ul>
+        <pre>@tmUser.toXml();</pre>
+    </ul>*@
+}
+else
+{
+    <p>No user found</p>
+}
+
+<hr/>
+<a href="Current_Users">back to users list</a>
