@@ -1,23 +1,33 @@
 ﻿using System;
+using FluentSharp.CoreLib.API;
 using NUnit.Framework;
-using O2.DotNetWrappers.ExtensionMethods;
+using FluentSharp.CoreLib;
 using TeamMentor.CoreLib;
 using urn.microsoft.guidanceexplorer;
 
 namespace TeamMentor.UnitTests.TM_XmlDatabase
 {
-    [TestFixture][Assert_Admin]
+    [TestFixture]//[Assert_Admin]
     public class Test_Library_SaveToDisk
     {
         public TM_Xml_Database tmDatabase;
-
-        public Test_Library_SaveToDisk()
+                
+        [SetUp][Assert_Admin]
+        public void Setup()
         {
             TMConfig.BaseFolder = "temp_BaseFolder".tempDir();  // set temp folder for UnitTests
-            tmDatabase = new TM_Xml_Database(true);          // with the useFileStorage set to true
+            tmDatabase = new TM_Xml_Database(true);          // with the useFileStorage set to true                        
         }
 
-        [Test][Ignore("False positive on TeamCity (since in there TM is running under the App_Data folder)")]
+        [TearDown]
+        public void TearDown()
+        {
+            Assert.IsTrue     (TMConfig.BaseFolder.dirExists());   
+            Files.deleteFolder(TMConfig.BaseFolder, true);
+            Assert.IsFalse    (TMConfig.BaseFolder.dirExists());              
+        }
+
+        [Test]//[Ignore("False positive on TeamCity (since in there TM is running under the App_Data folder)")]
         public void TestUseOfTempFolders()
         {
             var databaseFolder      = tmDatabase.Path_XmlDatabase;
@@ -28,6 +38,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Assert.IsFalse(databaseFolder.contains(appDomainFolder), "databaseFolder should not be inside appDomainFolder");            
         }
 
+        [Test][Assert_Editor]
         public void Test_xmlDB_LibraryPath()
         {
             var newLibraryName1 = "Test_new_Library";
@@ -54,7 +65,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         }
 
 
-        [Test]
+        [Test][Assert_Editor]
         public void CreateLibrary_OnDisk()
         {
             var newLibraryName1  = "Test_new_Library";
@@ -69,7 +80,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Assert.IsTrue(libraryPath2.fileExists());
         }
 
-        [Test]
+        [Test][Assert_Admin]
         public void CreateArticle_OnLibraryWithDiferentNameThanFolder()
         {
             var libraryId                   = Guid.NewGuid();

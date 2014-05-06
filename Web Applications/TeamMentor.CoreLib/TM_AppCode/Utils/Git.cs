@@ -1,6 +1,7 @@
 using System;
-using O2.DotNetWrappers.ExtensionMethods;
-using O2.DotNetWrappers.Windows;
+using FluentSharp.CoreLib;
+using FluentSharp.CoreLib.API;
+using FluentSharp.Git;
 
 namespace TeamMentor.CoreLib
 {
@@ -33,7 +34,8 @@ namespace TeamMentor.CoreLib
 
 		public static string executeGitCommand(string gitCommand)
 		{
-			var gitExe = @"C:\Program Files\Git\bin\git.exe";
+            return null;     // disabling this since it is not used anymore
+			/*var gitExe = @"C:\Program Files\Git\bin\git.exe";
 			if (gitExe.fileExists().isFalse())
 				gitExe = @"C:\Program Files (x86)\Git\bin\git.exe";
 			if (gitExe.fileExists().isFalse())
@@ -43,10 +45,26 @@ namespace TeamMentor.CoreLib
 			// go up to the main git folder
 
 			var cmdOutput = Processes.startAsCmdExe(gitExe, gitCommand, gitLocalProjectFolder)
-			                         .fixCRLF()
+			                         .fix_CRLF()
 			                         .replace("\t", "    ");
-			return cmdOutput;
+			return cmdOutput;*/
 		}
 
-	}
+        // this is the one used now
+        public static bool CloneUsingGit(string gitLocation, string targetFolder)
+        {
+            if ("git.exe".startProcess_getConsoleOut().valid())     // we found Git
+            {
+                "[GitUtil] Using Git.Exe for the clone".info();
+                var parameters = "clone \"{0}\" \"{1}\"".format(gitLocation.remove("\""), targetFolder.remove("\""));
+                var cloneLog   = "git.exe".startProcess_getConsoleOut(parameters);
+                "[GitUtil {0}".info(cloneLog);
+                if (targetFolder.isGitRepository())
+                    return true;
+                "[GitUtil Target folder was not a Git REPO".error(targetFolder);
+            }
+            "[GitUtil] could not find git.exe on the current server".info();
+            return false;
+        }
+    }
 }

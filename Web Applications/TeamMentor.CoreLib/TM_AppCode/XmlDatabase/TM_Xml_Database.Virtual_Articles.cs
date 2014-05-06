@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using O2.DotNetWrappers.ExtensionMethods;
+using FluentSharp.CoreLib;
 using System.Xml.Serialization;
 
 

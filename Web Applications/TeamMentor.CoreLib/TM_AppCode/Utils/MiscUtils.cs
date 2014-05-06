@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using FluentSharp;
-using O2.DotNetWrappers.ExtensionMethods;
+using FluentSharp.CoreLib;
 
 namespace TeamMentor.CoreLib
 {
@@ -13,6 +13,10 @@ namespace TeamMentor.CoreLib
         public static bool online()
         {
             return googleIpAddress.HEAD();
+        }
+        public static bool offline()
+        {
+            return online().isFalse();
         }
 
         public static bool runningOnLocalHost()

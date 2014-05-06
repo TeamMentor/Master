@@ -92,6 +92,7 @@ TM.Gui.CurrentUser =
         , 	isAdmin				: function()		{	return TM.Gui.CurrentUser.hasRole("Admin"); }	
         ,	isEditor			: function()		{	return TM.Gui.CurrentUser.hasRole("EditArticles"); }	
         ,	isViewer			: function()		{	return TM.Gui.CurrentUser.hasRole("ReadArticles"); }
+        ,	isViewer_Titles	    : function()		{	return TM.Gui.CurrentUser.hasRole("ReadArticlesTitles"); }
         ,	userName			: function()		{	return TM.Gui.CurrentUser.userData.UserName; }
         ,	loggedIn			: function()		{	return typeof(TM.Gui.CurrentUser.userName()) != "undefined"; }
         ,	isUserLoaded		: function()		{	return isDefined(TM.Gui.CurrentUser.userData.UserName); }					

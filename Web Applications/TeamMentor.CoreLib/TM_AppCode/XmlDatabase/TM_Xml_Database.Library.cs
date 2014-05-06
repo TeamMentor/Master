@@ -1,9 +1,9 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using FluentSharp.WinForms;
 using Microsoft.Security.Application;
-using O2.DotNetWrappers.ExtensionMethods;
-using O2.FluentSharp;
+using FluentSharp.CoreLib;
 
 //using urn.microsoft.guidanceexplorer.guidanceItem;
 
@@ -296,13 +296,14 @@ namespace TeamMentor.CoreLib
         }		
         public static List<View_V3>     tmViews(this TM_Xml_Database tmDatabase, Guid libraryId ,  IList<urn.microsoft.guidanceexplorer.Folder> folders)
         {
-            var tmViews = new List<View_V3>();							
-            foreach(var folder in folders)
-            {
-                foreach(var view in folder.view)				
-                    tmViews.add(view.tmView(libraryId, folder.folderId.guid()));
-                tmViews.AddRange(tmDatabase.tmViews(libraryId, folder.folder1));	
-            }
+            var tmViews = new List<View_V3>();	
+			if(folders.notNull())			
+                foreach(var folder in folders)
+                {
+                    foreach(var view in folder.view)				
+                        tmViews.add(view.tmView(libraryId, folder.folderId.guid()));
+                    tmViews.AddRange(tmDatabase.tmViews(libraryId, folder.folder1));	
+                }
             return tmViews;									
         }		
         public static View_V3           tmView(this TM_Xml_Database tmDatabase, Guid viewId)
@@ -313,11 +314,15 @@ namespace TeamMentor.CoreLib
         }		
         public static List<TeamMentor_Article>  getGuidanceItemsInViews(this TM_Xml_Database tmDatabase, List<View> views)
         {
+            if (views.isNull())
+                return new List<TeamMentor_Article>();
             var viewIds = (from view in views select view.id.guid()).toList();
             return tmDatabase.getGuidanceItemsInViews(viewIds);
         }		
         public static List<TeamMentor_Article>  getGuidanceItemsInViews(this TM_Xml_Database tmDatabase, List<Guid> viewIds)
         {
+            if (viewIds.isNull())
+                return new List<TeamMentor_Article>();
             return (from viewId in viewIds
                     from guidanceItemV3 in tmDatabase.getGuidanceItemsInView(viewId)
                     select guidanceItemV3).toList();
@@ -399,7 +404,7 @@ namespace TeamMentor.CoreLib
 
         [EditArticles] 	public static Guid                      createGuidanceItem(this TM_Xml_Database tmDatabase, GuidanceItem_V3 guidanceItemV3)
         {
-            if (guidanceItemV3.libraryId == Guid.Empty)
+            if (guidanceItemV3.isNull() || guidanceItemV3.libraryId == Guid.Empty)
             {
                 "[createGuidanceItem] no library provided for Guidance Item, stopping creation".error();
                 return Guid.Empty;

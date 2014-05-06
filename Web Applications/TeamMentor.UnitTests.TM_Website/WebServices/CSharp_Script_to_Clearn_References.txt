@@ -1,0 +1,46 @@
+﻿//var topPanel = "{name}".popupWindow(700,400);
+var file = @"E:\TeamMentor\TM_Dev Repos\TM_DEV\Web Applications\TeamMentor.UnitTests.TM_Website\Web References\WebServices\Reference.cs";
+//return file.ast();
+var astData = file.getAstData(false);
+var compilationUnit = astData.compilationUnits().first();
+var mainNamespace =  compilationUnit.namespaces().first();
+var types = compilationUnit.types(true);
+
+
+var delegatesToRemove = mainNamespace.iNodes().iNodes<DelegateDeclaration>();
+foreach(var delegateToRemove in delegatesToRemove)	
+	mainNamespace.Children.Remove(delegateToRemove);
+
+var eventsToRemove = types.iNodes().iNodes<EventDeclaration>();
+foreach(var eventToRemove in eventsToRemove)	
+	eventToRemove.Parent.Children.Remove(eventToRemove);
+
+//using ICSharpCode.NRefactory.Ast;
+var fieldsToRemove = types.iNodes().fields().where((field) => field.names().asString().contains("Completed"));
+foreach(var fieldToRemove in fieldsToRemove)	
+	fieldToRemove.Parent.Children.Remove(fieldToRemove);
+
+//return compilationUnit.types(true).iNodes().fields().size();
+var methodsToRemove = compilationUnit.methods().where((method)=> method.Name.contains("Async", "Completed"));
+foreach(var methodToRemove in methodsToRemove)	
+	methodToRemove.Parent.Children.Remove(methodToRemove);
+
+var typesToRemove = compilationUnit.types(true).where((type)=> type.Name.contains("EventArgs"));
+foreach(var typeToRemove in typesToRemove)
+	typeToRemove.Parent.Children.Remove(typeToRemove);
+	
+//return compilationUnit.methods().size();	
+//return compilationUnit.types(true).size();
+
+//return compilationUnit.methods().size();
+
+
+var codeEditor 		= panel.clear().add_SourceCodeEditor();
+var csharpCode 		= compilationUnit.csharpCode();
+
+codeEditor.set_Text(csharpCode,".cs");
+
+//FluentSharp.CSharpAST;
+//using FluentSharp.CSharpAST.Utils
+//using FluentSharp.CSharpAST
+//O2Ref:FluentSharp.REPL.exe

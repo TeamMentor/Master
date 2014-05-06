@@ -1,7 +1,7 @@
 using System;
 using System.Web;
 using FluentSharp;
-using O2.DotNetWrappers.ExtensionMethods;
+using FluentSharp.CoreLib;
 
 namespace TeamMentor.CoreLib
 {
@@ -16,20 +16,28 @@ namespace TeamMentor.CoreLib
                 if (_context.notNull())                                 // context has been set
                     return _context;
                 if (HttpContext.Current.isNull())                       // context has not been set and we are not inside ASP.NET
-                    return null;
+                    return null;                
                 return new HttpContextWrapper(HttpContext.Current);     // return current asp.net Context			    
             }
         }
-        public static HttpContextBase       Context     { 	get { return Current;           } set { _context = value; }	}
-        public static HttpRequestBase       Request		{	get { return Current.Request;   } }
-        public static HttpResponseBase      Response	{	get { return Current.Response;  } }
-        public static HttpServerUtilityBase Server      {	get { return Current.Server;    } }
-        public static HttpSessionStateBase  Session		{   get { return Current.Session;   } }
+        public static HttpContextBase       Context     { 	get { return Current;          } set { _context = value;  }	}
+        public static HttpRequestBase       Request		{	get { return Current.notNull() ? Current.Request : null;  } }
+        public static HttpResponseBase      Response	{	get { return Current.notNull() ? Current.Response: null;  } }
+        public static HttpServerUtilityBase Server      {	get { return Current.notNull() ? Current.Server  : null;  } }
+        public static HttpSessionStateBase  Session		{   get { return Current.notNull() ? Current.Session : null;  } }
+        
+        public static DateTime              LastModified_HeaderDate	{ get; set; } //used to calculate if we will send a '302 Not Modified' to the user (this could be better if the value used was the 'TM Startup Date')
+
+        static HttpContextFactory()
+        {
+            LastModified_HeaderDate = DateTime.Now;			        
+        }
     }
 
 
     public static class HttpContextFactory_ExtensionMethods
     {
+        //Context
         public static HttpContextBase addCookieFromResponseToRequest(this HttpContextBase    httpContext, string cookieName)
         {
             if (httpContext.Response.hasCookie(cookieName))
@@ -46,17 +54,107 @@ namespace TeamMentor.CoreLib
             return httpContext;
         }
 
-        public static string ipAddress(this HttpContextBase httpContext)
+        //Session
+        public static string    sessionId(this HttpSessionStateBase sessionState)
+        {
+            return sessionState.notNull() 
+                        ? sessionState.SessionID 
+                        : "";
+        }
+
+        //Request
+        public static string    ipAddress(this HttpRequestBase request)
         {            
-            try
+            return request.notNull() 
+                        ? request.UserHostAddress 
+                        : "";
+            /*try
             {
-                return HttpContextFactory.Request.UserHostAddress ?? ""; // todo:change to available method in 3.4                
+                return HttpContextFactory.Request.UserHostAddress ?? ""; 
             }
             catch (Exception ex)
             {
-                ex.log("[HttpContextBase][ipAddress]");
+                ex.log("[HttpContextBase] [ipAddress]");
                 return "";
-            }            
+            }*/            
         }
+        public static bool      isLocal  (this HttpRequestBase request)
+        {
+            return  request.isNull() || request.IsLocal;
+        }
+        public static string    referer  (this HttpRequestBase httpRequest)
+        {
+            if (httpRequest.notNull() && httpRequest.UrlReferrer.notNull())
+                return  httpRequest.UrlReferrer.str();
+            return "";
+        }
+        public static string    url      (this HttpRequestBase request)
+        {
+            if (request.notNull() && request.Url.notNull())
+                return  request.Url.str();
+            return "";
+        } 
+        
+        public static int       request_Value_Int(this string variableName, int defaultValue = -1)
+        {
+            return  HttpContextFactory.Request.value_Int(variableName, defaultValue);
+        }
+        public static int    value_Int(this HttpRequestBase request, string variableName, int defaultValue)
+        {
+            var value = request.value_String(variableName);
+            if (value.valid() && value.isInt())
+                return value.toInt();
+            return defaultValue;
+        }
+        public static string    request_Value_String(this string variableName, string defaultValue = "")
+        {
+            return  HttpContextFactory.Request.value_String(variableName, defaultValue);
+        }
+        public static string    value_String(this HttpRequestBase request, string variableName, string defaultValue = "")
+        {
+            if (request.notNull())
+                if(request[variableName].notNull())                
+                    return request[variableName];                
+            return defaultValue;
+        }
+            
+        
+        //Cache                
+        public static bool            sent304Redirect(this HttpContextBase context)
+        {
+            try
+            {
+                if (TMConfig.Current.TMSetup.Enable304Redirects && context.send304Redirect())
+			    {
+				    context.Response.StatusCode = 304;
+				    context.Response.StatusDescription = "Not Modified";
+				    return true;
+			    }
+			    context.setCacheHeaders();		    
+            }
+            catch(Exception ex)
+            {
+                ex.log("[HttpContextBase] [sent304Redirect]");
+            }
+            return false;
+        }        
+		public static bool            send304Redirect(this HttpContextBase context)
+		{            
+			var ifModifiedSinceHeader = context.Request.Headers["If-Modified-Since"];
+			if (ifModifiedSinceHeader.valid() && ifModifiedSinceHeader.isDate())
+			{
+				var ifModifiedSinceDate = DateTime.Parse(ifModifiedSinceHeader);
+				if (HttpContextFactory.LastModified_HeaderDate.str() == ifModifiedSinceDate.str())
+					return true;
+			}
+			return false;
+		}
+		public static HttpContextBase setCacheHeaders(this HttpContextBase context)
+		{	
+			context.Response.Cache.SetLastModified(HttpContextFactory.LastModified_HeaderDate);
+            return context;
+		}
+
+
     }
 }

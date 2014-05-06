@@ -1,15 +1,28 @@
 ﻿
+@using FluentSharp.CoreLib
 @using TeamMentor.CoreLib
 
 @{
-    var tmRest         = (TeamMentor.CoreLib.TM_REST) @Model;
+    var tmRest         = (TM_REST) @Model;
+    
     var activeSessions = tmRest.TmWebServices.userData.validSessions();
 }
+
+
+
 Here are the current active TM sessions:
+
 <ul>
     @foreach (var sessionId in activeSessions)
     {
         var user = sessionId.session_TmUser();
-        @: <li>@user.UserName with @sessionId</li>
+        if (user.notNull())
+        {
+            @: <li>@user.UserName with @sessionId</li>
+        }
+        else
+        {
+            @: <li><b>@sessionId : NULL User</b></li>
+        }
     }
 </ul>

@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using O2.DotNetWrappers.DotNet;
-using O2.DotNetWrappers.ExtensionMethods;
-using O2.FluentSharp;
+using FluentSharp.CoreLib;
+using FluentSharp.CoreLib.API;
+using FluentSharp.Git.APIs;
 using urn.microsoft.guidanceexplorer;
 using System.Threading;
 
@@ -12,8 +12,9 @@ namespace TeamMentor.CoreLib
     {		    
         public static TM_Xml_Database   Current               { get; set; }         
         public static bool              SkipServerOnlineCheck { get; set; }        
+        public object			        setupLock             = new object();
 
-        public bool			            UsingFileStorage	  { get; set; }         //config           
+        public bool			            UsingFileStorage	  { get; set; }         //config                   
         public bool                     ServerOnline          { get; set; }         
         public bool                     AutoGitCommit         { get; set; }                
         public TM_UserData              UserData              { get; set; }         //users and tracking             
@@ -29,28 +30,32 @@ namespace TeamMentor.CoreLib
         public Dictionary<Guid, VirtualArticleAction>   VirtualArticles			    { get; set; }
                                                             
         
-
-        [Log("TM_Xml_Database Setup")]        
+        
         public TM_Xml_Database          () : this(false)                    // defaults to creating a TM_Instance in memory    
         {
         }
         public TM_Xml_Database          (bool useFileStorage)
-        {
-            Current = this;
-            try
+        {   
+            Current = this;             
+            lock (setupLock)
             {
-                O2Thread.mtaThread(CheckIfServerIsOnline);
-                UsingFileStorage = useFileStorage;                
-                Setup();
-            
-                this.setupThread_WaitForComplete();
+                try
+                {                
+                        //   "[TM_Xml_Database] Setup".info();
+                    O2Thread.mtaThread(CheckIfServerIsOnline);
+                
+                    UsingFileStorage = useFileStorage;                
+                    Setup();
+                        
+                    this.setupThread_WaitForComplete();                        
+                }
+                catch (Exception ex)
+                {
+                    ex.logWithStackTrace("[in TM_Xml_Database.ctor]");
+                    if (TM_StartUp.Current.notNull())                       //will happen when TM_Xml_Database ctor is called by an user with no admin privs
+                        TM_StartUp.Current.TrackingApplication.saveLog();
+                }
             }
-            catch (Exception ex)
-            {
-                ex.logWithStackTrace("[in TM_Xml_Database.ctor]");
-                TM_StartUp.Current.TrackingApplication.saveLog();
-            }
-            
         }
 
         [Admin] public TM_Xml_Database ResetDatabase()
@@ -67,36 +72,47 @@ namespace TeamMentor.CoreLib
         [Admin] public TM_Xml_Database  Setup()
         {
             SetupThread = O2Thread.mtaThread(
-                ()=>{
-                        lock (this)
-                        {
-                            try
-                            {
-                                ResetDatabase();
-                                if (UsingFileStorage)
-                                {
-                                    SetPaths_UserData();                                                                                                                                    
-                                }
-                                UserData.SetUp();
-                                this.copy_FilesIntoWebRoot();
-                                if (UsingFileStorage)
-                                {                       
-                                    SetPaths_XmlDatabase();            
-                                    this.handle_UserData_GitLibraries();
-                                    loadDataIntoMemory();
-                                    //this.handleDefaultInstallActions();                                    
-                                }
-                                UserData.createDefaultAdminUser();  // make sure the admin user exists and is configured
-                            }
-                            catch (Exception ex)
-                            {
-                                "[TM_Xml_Database] Setup: {0} \n\n".error(ex.Message, ex.StackTrace);
-                            }
-                            SetupThread = null;
-                        }                        
+                ()=>{                            
+                        Setup_Thread();                            
+                        SetupThread = null;                        
                 });
             return this;
-        } 
+        }
+        public void Setup_Thread()
+        {
+           ResetDatabase();
+           try
+            {
+                if (UsingFileStorage)
+                {
+                    SetPaths_UserData();                                                                                                                                    
+                }
+                if (TMConfig.Current.TMSetup.OnlyLoadUserData)
+                {
+                    "[TM_Xml_Database] TMConfig.Current.TMSetup.OnlyLoadUserData was set".info();
+                    UserData.loadTmUserData();
+                    return;
+                }
+                UserData.SetUp();
+                Logger_Firebase.createAndHook();
+               "TM is Rebooting".info();
+                this.logTBotActivity("TM Xml Database", "TM is (re)starting and user Data is now loaded");
+                this.userData().copy_FilesIntoWebRoot();
+                if (UsingFileStorage)
+                {                       
+                    SetPaths_XmlDatabase();            
+                    this.handle_UserData_GitLibraries();
+                    loadDataIntoMemory();
+                    this.logTBotActivity("TM Xml Database", "Library Data is loaded");
+                }
+                UserData.createDefaultAdminUser();  // make sure the admin user exists and is configured
+                this.logTBotActivity("TM Xml Database", "TM started at: {0}".format(DateTime.Now));
+            }
+            catch (Exception ex)
+            {
+                "[TM_Xml_Database] Setup: {0} \n\n".error(ex.Message, ex.StackTrace);
+            } 
+        }
         [Admin] public void             CheckIfServerIsOnline()
         {
             if (SkipServerOnlineCheck)
@@ -111,7 +127,7 @@ namespace TeamMentor.CoreLib
                 var userDataPath = tmConfig.TMSetup.UserDataPath;
                 var xmlDatabasePath = tmConfig.xmlDatabasePath();
 
-                "[TM_Xml_Database][setDataFromCurrentScript] TMConfig.Current.UserDataPath: {0}".debug(userDataPath);
+                "[TM_Xml_Database] [setDataFromCurrentScript] TMConfig.Current.UserDataPath: {0}".debug(userDataPath);
 
                 if (userDataPath.dirExists().isFalse())
                 {
@@ -119,11 +135,11 @@ namespace TeamMentor.CoreLib
                     userDataPath.createDir(); // make sure it exists
                 }
                 UserData.Path_UserData      = userDataPath;   
-                UserData.Path_UserData_Base = userDataPath;   // we need to keep an copy of this since the Path_UserData might change with git usage
+                UserData.Path_UserData_Base = userDataPath;   // we need to keep an copy of this since the Path_UserData might change with git usage                
             }        
             catch(Exception ex)
             {
-                "[TM_Xml_Database][SetPaths_UserData] {0} \n\n {1}".error(ex.Message, ex.StackTrace);
+                "[TM_Xml_Database] [SetPaths_UserData] {0} \n\n {1}".error(ex.Message, ex.StackTrace);
             }
         }
 
@@ -137,8 +153,8 @@ namespace TeamMentor.CoreLib
                 
                 AutoGitCommit           = tmConfig.Git.AutoCommit_LibraryData;
                 
-                "[TM_Xml_Database][setDataFromCurrentScript] TM_Xml_Database.Path_XmlDatabase: {0}" .debug(xmlDatabasePath);
-                "[TM_Xml_Database][setDataFromCurrentScript] TMConfig.Current.XmlLibrariesPath: {0}".debug(libraryPath);
+                "[TM_Xml_Database] [setDataFromCurrentScript] TM_Xml_Database.Path_XmlDatabase: {0}" .debug(xmlDatabasePath);
+                "[TM_Xml_Database] [setDataFromCurrentScript] TMConfig.Current.XmlLibrariesPath: {0}".debug(libraryPath);
                 
                                             
                 if (libraryPath.dirExists().isFalse())						
@@ -148,11 +164,12 @@ namespace TeamMentor.CoreLib
                 }
                 
                 Path_XmlDatabase            = xmlDatabasePath;
-                Path_XmlLibraries           = libraryPath;                
+                Path_XmlLibraries           = libraryPath;          
+                "[TM_Xml_Database] Paths configured".info();
             }
             catch(Exception ex)
             {
-                "[TM_Xml_Database][SetPaths_XmlDatabase]: {0} \n\n {1}".error(ex.Message, ex.StackTrace);
+                "[TM_Xml_Database] [SetPaths_XmlDatabase]: {0} \n\n {1}".error(ex.Message, ex.StackTrace);
             }
         }        
         [Admin] public string           ReloadData()
@@ -180,26 +197,5 @@ namespace TeamMentor.CoreLib
                                     this.tmGuidanceItems().size());
             return stats;                                               // return some stats
         }        
-    }
-
-    public static class TM_Xml_Database_ExtensionMethods
-    {
-        public static TM_UserData     userData                   (this TM_Xml_Database tmDatabase)
-        {
-            return tmDatabase.notNull()
-                       ? tmDatabase.UserData
-                       : null;
-        }
-        public static bool            setupThread_Active         (this TM_Xml_Database tmDatabase)
-        {
-            return tmDatabase.SetupThread.isNull();
-        }
-        public static TM_Xml_Database setupThread_WaitForComplete(this TM_Xml_Database tmDatabase)
-        {
-            if (tmDatabase.SetupThread.notNull())
-                tmDatabase.SetupThread.Join();
-            return tmDatabase;
-        }
-        
     }
 }

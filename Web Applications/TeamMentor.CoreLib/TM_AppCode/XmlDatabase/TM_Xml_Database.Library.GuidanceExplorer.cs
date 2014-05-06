@@ -1,10 +1,10 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using O2.DotNetWrappers.ExtensionMethods;
-using O2.DotNetWrappers.Windows;
-using O2.DotNetWrappers.Network;
+using FluentSharp.CoreLib;
+using FluentSharp.CoreLib.API;
 using urn.microsoft.guidanceexplorer;
+using Items = urn.microsoft.guidanceexplorer.Items;
 
 namespace TeamMentor.CoreLib
 {
@@ -19,11 +19,18 @@ namespace TeamMentor.CoreLib
             "[isValidGuidanceExplorerName] failed validation for: {0}".info(name);
             return false;
         }		
+        
+        public static guidanceExplorer       xmlDB_NewGuidanceExplorer(this TM_Xml_Database tmDatabase, Library library)
+        {
+            if (library.notNull())
+                return tmDatabase.xmlDB_NewGuidanceExplorer(library.id.guid(), library.caption);
+            return null;
+        }
         public static guidanceExplorer       xmlDB_NewGuidanceExplorer(this TM_Xml_Database tmDatabase, Guid libraryId, string caption)
         {			
-            if (caption.isValidGuidanceExplorerName().isFalse())
+            if (caption.isNull() || caption.isValidGuidanceExplorerName().isFalse())
             {
-                "[TM_Xml_Database][xmlDB_NewGuidanceExplorer] provided caption didn't pass validation regex".error();
+                "[TM_Xml_Database] [xmlDB_NewGuidanceExplorer] provided caption didn't pass validation regex".error();
                 throw new Exception("Provided Library name didn't pass validation regex"); 				
             }
             
@@ -47,7 +54,7 @@ namespace TeamMentor.CoreLib
             
             TM_Xml_Database.Current.GuidanceExplorers_XmlFormat.add(libraryId, newGuidanceExplorer);    //add to in memory database
             newGuidanceExplorer.xmlDB_Save_GuidanceExplorer(tmDatabase);                             
-            "[TM_Xml_Database][xmlDB_NewGuidanceExplorer] Created new Library with id {0} and caption {1}".info(libraryId, caption);
+            "[TM_Xml_Database] [xmlDB_NewGuidanceExplorer] Created new Library with id {0} and caption {1}".info(libraryId, caption);
             return newGuidanceExplorer;
         }		
         public static bool                   xmlDB_DeleteGuidanceExplorer(this TM_Xml_Database tmDatabase, Guid libraryId)
@@ -63,13 +70,13 @@ namespace TeamMentor.CoreLib
                 if (pathToLibraryFolder.notValid() || pathToLibraryFolder == tmDatabase.Path_XmlDatabase ||
                     pathToLibraryFolder == tmDatabase.Path_XmlLibraries)
                 {
-                    "[xmlDB_DeleteGuidanceExplorer][Stopping delete] Something is wrong with the pathToLibrary to delete : {0}"
+                    "[xmlDB_DeleteGuidanceExplorer] [Stopping delete] Something is wrong with the pathToLibrary to delete : {0}"
                         .error(pathToLibraryFolder);
                     return false;
                 }
                 if (pathToLibraryFolder.contains(tmDatabase.Path_XmlLibraries).isFalse())
                 {
-                    "[xmlDB_DeleteGuidanceExplorer][Stopping delete] the  pathToLibrary should contain tmDatabase.Path_XmlLibraries : {0}"
+                    "[xmlDB_DeleteGuidanceExplorer] [Stopping delete] the  pathToLibrary should contain tmDatabase.Path_XmlLibraries : {0}"
                         .error(pathToLibraryFolder);
                     return false;
                 }
@@ -131,7 +138,14 @@ namespace TeamMentor.CoreLib
             foreach(var guidanceExplorer in tmDatabase.xmlDB_GuidanceExplorers())
                 guidanceExplorer.xmlDB_Save_GuidanceExplorer(tmDatabase);
             return tmDatabase;
-        }		
+        }
+		public static bool       xmlDB_UpdateGuidanceExplorer(this TM_Xml_Database tmDatabase, Library library)
+		{
+		    if (library.notNull())
+                return tmDatabase.xmlDB_UpdateGuidanceExplorer(library.id.guid(), library.caption, library.delete);
+            return false;
+		}
+        
         public static bool       xmlDB_UpdateGuidanceExplorer(this TM_Xml_Database tmDatabase, Guid libraryId, string caption, bool deleteLibrary)
         {
             //"[xmlDB_UpdateGuidanceExplorer]".info();
@@ -156,13 +170,13 @@ namespace TeamMentor.CoreLib
         {
             if (newCaption.isValidGuidanceExplorerName().isFalse())
             {
-                "[TM_Xml_Database][xmlDB_RenameGuidanceExplorer] provided caption didn't pass validation regex".error();
+                "[TM_Xml_Database] [xmlDB_RenameGuidanceExplorer] provided caption didn't pass validation regex".error();
                 //throw new Exception("Provided Library name didn't pass validation regex"); 				                
             }
             else if(guidanceExplorer.notNull())
             {                
                 guidanceExplorer.library.caption = newCaption;  // update in memory library name value
-
+                 
                 return guidanceExplorer.xmlDB_Save_GuidanceExplorer(tmDatabase);                // save it 
                
 
@@ -200,6 +214,8 @@ namespace TeamMentor.CoreLib
 
         public static string xmlDB_Path_Library_XmlFile(this TM_Xml_Database tmDatabase, TM_Library library)
         {
+            if (library.isNull())
+                return null;
             return tmDatabase.xmlDB_Path_Library_XmlFile(library.Id);
         }
         public static string xmlDB_Path_Library_XmlFile(this TM_Xml_Database tmDatabase, Guid libraryId)
@@ -307,8 +323,7 @@ namespace TeamMentor.CoreLib
                 if (zipFileToImport.isUri())
                 {
                     "[xmlDB_Libraries_ImportFromZip] provided value was an URL so, downloading it: {0}".info(zipFileToImport);
-                    zipFileToImport = new Web().downloadBinaryFile(zipFileToImport);
-                    //zipFileToImport =  zipFileToImport.uri().download(); 		
+                    zipFileToImport = new Web().downloadBinaryFile(zipFileToImport);                    	
                 }
                 "[xmlDB_Libraries_ImportFromZip] importing library from: {0}".info(zipFileToImport);
                 if (zipFileToImport.fileExists().isFalse())
@@ -322,45 +337,9 @@ namespace TeamMentor.CoreLib
                     fastZip.ExtractZip(zipFileToImport, tempDir, "");
 
                     Files.copyFolder(tempDir, currentLibraryPath, true, true,"");          // just copy all files into Library path
+                    Files.deleteFolder(tempDir,true);                                      // delete tmp folder created
                     result = true;
-                    /*
-                    var gitZipFolderName = tempDir.folders().first().folderName();				// the first folder should be the one created by gitHub's zip
-                    var xmlFile_Location1 = tempDir.pathCombine(gitZipFolderName + ".xml");
-                    var xmlFile_Location2 = tempDir.pathCombine(gitZipFolderName).pathCombine(gitZipFolderName + ".xml");
-                    if (xmlFile_Location1.fileExists() || xmlFile_Location2.fileExists())
-                        // if these exists here, just copy the unziped files directly
-                    {
-                        Files.copyFolder(tempDir, currentLibraryPath, true, true, ".git");
-                        if (xmlFile_Location1.fileExists())
-                            Files.copy(xmlFile_Location1, currentLibraryPath.pathCombine(gitZipFolderName));
-                        result = true;
-                    }
-                    else
-                    {
-                        //if (zipFileToImport.extension() == ".master")					
-                        var gitZipDir = tempDir.pathCombine(gitZipFolderName);
-                        foreach (var libraryFolder in gitZipDir.folders())
-                        {
-                            var libraryName = libraryFolder.folderName();
-                            var targetFolder = currentLibraryPath.pathCombine(libraryName);
-
-                            //default behaviour is to override the existing libraries
-                            Files.copyFolder(libraryFolder, currentLibraryPath);
-
-                            //handle the case where the xml file is located outside the library folder
-                            var libraryXmlFile = gitZipDir.pathCombine("{0}.xml".format(libraryName));
-                            if (libraryXmlFile.fileExists())
-                                Files.copy(libraryXmlFile, targetFolder);
-                                    // put it in the Library folder which is where it really should be															
-                        }
-                        var virtualMappings = gitZipDir.pathCombine("Virtual_Articles.xml");
-                        if (virtualMappings.fileExists())
-                        {
-                            Files.copy(virtualMappings, currentLibraryPath); // copy virtual mappings if it exists
-                            tmDatabase.mapVirtualArticles();
-                        }
-                        result = true;
-                    } */
+                    
                 }
             }
             catch (Exception ex)
@@ -369,8 +348,7 @@ namespace TeamMentor.CoreLib
             }
 
             if (result)
-                tmDatabase.reloadGuidanceExplorerObjects();
-                //tmDatabase.loadLibraryDataFromDisk();                
+                tmDatabase.reloadGuidanceExplorerObjects();                
 
             return result;
         }				

@@ -1,5 +1,6 @@
+using FluentSharp.WinForms;
 using NUnit.Framework;  
-using O2.DotNetWrappers.ExtensionMethods;
+using FluentSharp.CoreLib;
 
 namespace TeamMentor.UnitTests.WebSite_Content
 {		  
@@ -31,8 +32,8 @@ namespace TeamMentor.UnitTests.WebSite_Content
     		Assert.IsNotNull(xRoot, "xRoot of webConfigFile");
     	}    	
     	
-    	[Test, Ignore("Disabled while in Dev")]  
-    	public void system_web_compilation_debug_IS_NOT_TRUE()
+    	[Test][Ignore("Move to production specific QA tests")]  
+    	public void system_web_compilation_debug_IS_False()
     	{   
     		var compilation = WebConfigFile.xRoot().element("system.web").element("compilation");
     		Assert.IsNotNull(compilation, "compilation element");
@@ -40,6 +41,7 @@ namespace TeamMentor.UnitTests.WebSite_Content
     		Assert.IsNotNull(debugAttribute, "debug attribute");			
 			var debugValue = debugAttribute.value();
 			Assert.AreNotEqual(debugValue.lower() ,"true", "system.web / compilation / debug attribute value should not be true");		
+            Assert.AreEqual(debugValue.lower() ,"false");
 		}
 		
 		[Test]  

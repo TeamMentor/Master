@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Security.Principal;
 using System.Threading;
-using O2.DotNetWrappers.ExtensionMethods;
+using FluentSharp.CoreLib;
 using PostSharp.Aspects;
 
 namespace TeamMentor.CoreLib
@@ -84,6 +84,7 @@ namespace TeamMentor.CoreLib
                 if (HttpContextFactory.Request.Url != null)
                 {
                     var absolutePath = HttpContextFactory.Request.Url.AbsolutePath;
+
                     HttpContextFactory.Response.Redirect("/Login?LoginReferer=" + absolutePath);
                 }
             }							
@@ -98,45 +99,32 @@ namespace TeamMentor.CoreLib
         public static bool GlobalDisableFor_AdminAttribute { get; set; }
 
         public override void OnEntry(MethodExecutionArgs args)
-        {
-            //"[About to demand Admin] for stackTrace:\n\n {0}".debug(new StackTrace().str());  // use for extra logging
-            try
-            {
+        {            
+           // try
+           // {
               //  "[AdminAttribute] Thread id: {0}".error(Thread.CurrentThread.ManagedThreadId);
                 var userRoles = Thread.CurrentPrincipal.roles().toList().join(",");
                 if (HttpContextFactory.Session.notNull())
                 {
-                    //"[AdminAttribute] SessionId: {0}".info(HttpContextFactory.Session["sessionID"]);
-                    //"[AdminAttribute][before] Thread.CurrentPrincipal: {0} ".error(Thread.CurrentPrincipal);
-                    //"[AdminAttribute][About to demand Admin] for stackTrace:\n\n {0}".debug(new StackTrace().str());  // use for extra logging
-                    
                     if (userRoles.empty() && HttpContextFactory.Session["principal"] is IPrincipal)
                     {
                         var sessionPrincipal = HttpContextFactory.Session["principal"] as IPrincipal;
                         "[AdminAttribute] changing thread principal from {0} to {1} (last from session variable)".debug(Thread.CurrentPrincipal, sessionPrincipal);
                         Thread.CurrentPrincipal = sessionPrincipal;
-                        //"Setting Thread.CurrentPrincipal to session value".error();
-                        //Thread.CurrentPrincipal = (IPrincipal) HttpContextFactory.Session["principal"];
-                        //"[AdminAttribute][after] Thread.CurrentPrincipal: {0} ".error(Thread.CurrentPrincipal);
                     }                    
                 }
                 
-                //"[AdminAttribute] Current Principal roles: {0}".debug(userRoles);
-                //"[AdminAttribute][About to demand Admin]".debug();
                 UserRole.Admin.demand();
-                //"[AdminAttribute][About to demand Admin] OK".debug();
-            }
+         /*   }
             catch (Exception)
             {
-                //ex.log("[AdminAttribute]");
-                //var userRoles = Thread.CurrentPrincipal.roles().toList().join(",");
-                //"[AdminAttribute] Current Principal roles: {0}".debug(userRoles);
                 
                 if (GlobalDisableFor_AdminAttribute)
                     "[GlobalDisableFor_AdminAttribute] is set".error();
                  else
                     UserRole.Admin.demand();  // rigger the original exception
             }            
+          */ 
             base.OnEntry(args);
         }
     }
@@ -198,7 +186,7 @@ namespace TeamMentor.CoreLib
         }
         public override void  OnExit(MethodExecutionArgs args)
         {
-            UserGroup.Anonymous.setPrivileges();
+            UserGroup.None.setPrivileges();
  	         base.OnExit(args);
         }        
     }
@@ -213,7 +201,7 @@ namespace TeamMentor.CoreLib
         }
         public override void  OnExit(MethodExecutionArgs args)
         {
-            UserGroup.Anonymous.setPrivileges();
+            UserGroup.None.setPrivileges();
  	         base.OnExit(args);
         }        
     }
@@ -227,8 +215,8 @@ namespace TeamMentor.CoreLib
         }
         public override void  OnExit(MethodExecutionArgs args)
         {
-            UserGroup.Anonymous.setPrivileges();
- 	         base.OnExit(args);
+            UserGroup.None.setPrivileges();
+ 	        base.OnExit(args);
         }        
     }    
 }

@@ -22,8 +22,12 @@ TM.Gui.Main.Panels =
                     if(TM.Gui.showLibraryStructureToAnonymous)
                         this.openDefaultPanes();		
                     else
-                    {                        
-                        if (TM.Gui.CurrentUser.isViewer())
+                    {  
+                        // set these events to force a UI reload
+                        TM.Events.onUserDataLoaded  .add(function() { document.location = "/TeamMentor"; }); 
+                        TM.Events.onUserChange		.add(function() { document.location = "/TeamMentor"; });             
+                        
+                        if (TM.Gui.CurrentUser.isViewer_Titles())
                             this.openDefaultPanes();		
                         else
                             this.showNotAuthorizedPage();
@@ -50,7 +54,7 @@ TM.Gui.Main.Panels =
 
                     loadPage(this.div_North                 , this.panelsDir + 'Top_Banner.html');								
 
-                    loadPage('TopMenuLinks',				 this.panelsDir + 'TopRight_Links.html');
+                    loadPage('TopMenuLinks',				 this.panelsDir + 'TopRight_Links.html');            
                 }		
         ,	setHomePageViewFromUrlHash 	: function()
             {		            
@@ -187,11 +191,11 @@ TM.Gui.Main.Panels.buildGui = function()
     $('#JS_Dialog').html('');
         
         
-    if (TM.Gui.LoadLibraryData)
+    if (TM.Gui.LoadLibraryData && TM.Gui.CurrentUser.isViewer_Titles())
     {		
         TM.Events.onFolderStructureLoaded.add(function()
             {			
-                TM.Events.raiseProcessBarNextValue("Loading Library Tree")		
+                TM.Events.raiseProcessBarNextValue("Loading Library Tree");	
                     
                 $("#" + TM.Gui.Main.Panels.div_Center).show();
                 TM.HomePageLoaded = "TM: HomePage Loaded";					
@@ -256,18 +260,20 @@ TM.Gui.Main.Panels.cssFixesForHomePage = function ()
         
 //due to the way the layouts sets theses clases, we have to reset these values	
 TM.Gui.Main.Panels.onGuiResize = function()
-    {		
-        if (TM.Gui.Dialog.isThereAnDialogOpen())
+    {		    
+        if (TM.Gui.Dialog.isThereAnDialogOpen() || TM.Gui.Main.Panels.fixingEastPanel)
         {			
             return ;
         }
             
         // enforce center min-width
 
-        var diff =  $("#" + TM.Gui.Main.Panels.div_Center).width() - 300
+        var diff =  $("#" + TM.Gui.Main.Panels.div_Center).width() - 300;
         if (diff < 0)
         {
-            myLayout.sizePane("east", $("#" + TM.Gui.Main.Panels.div_East).width() + diff)		
+            TM.Gui.Main.Panels.fixingEastPanel = true;
+            myLayout.sizePane("east", $("#" + TM.Gui.Main.Panels.div_East).width() + diff);	
+            TM.Gui.Main.Panels.fixingEastPanel = false;
             return ;
         }	
             

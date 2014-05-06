@@ -1,8 +1,9 @@
 using System;
 using System.Security;
 using System.Web;
+using FluentSharp.CoreLib;
+using FluentSharp.CoreLib.API;
 using XssEncoder = Microsoft.Security.Application.Encoder;
-using O2.DotNetWrappers.ExtensionMethods;
 
 namespace TeamMentor.CoreLib
 {
@@ -42,8 +43,8 @@ namespace TeamMentor.CoreLib
 				var zipFile = "{0}.zip".format(libraryName).tempFile();
 				"Copying library files {0} into folder: {1}".info(libraryName, folderToZip);
 
-				O2.DotNetWrappers.Windows.Files.copyFolder(pathToGuidanceItemsFolder, folderToZip, true, true, ".git");
-				O2.DotNetWrappers.Windows.Files.copy(pathToLibraryXmlFile, folderToZip);
+				Files.copyFolder(pathToGuidanceItemsFolder, folderToZip, true, true, ".git");
+				Files.copy(pathToLibraryXmlFile, folderToZip);
 				
 				new ICSharpCode.SharpZipLib.Zip.FastZip().CreateZip(zipFile, targetDir, true, "");
 				context.Response.ContentType = "application/zip";

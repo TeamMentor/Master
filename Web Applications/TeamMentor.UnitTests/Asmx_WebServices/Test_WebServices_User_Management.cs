@@ -1,6 +1,6 @@
 ﻿using System;
+using FluentSharp.CoreLib;
 using NUnit.Framework;
-using O2.DotNetWrappers.ExtensionMethods;
 using TeamMentor.CoreLib;
 
 namespace TeamMentor.UnitTests.Asmx_WebServices
@@ -114,28 +114,7 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             Assert.IsNotNull(currentUser.CSRF_Token                                 , "CSRF_Token was not set");
             Assert.AreEqual (sessionId.str().hash().str(), currentUser.CSRF_Token   , "CSRF_Token didn't match");
             
-        }
-    /*    [Test] public void SingleUseLoginToken()
-        {
-            var newUser       = newTempUser();
-            var tmUser        = tmWebServices.CreateUser(newUser).tmUser();
-
-            var loginToken_BeforeSet    = tmUser.SecretData.SingleUseLoginToken;
-            var loginToken_BeforeUse    = tmUser.current_SingleUseLoginToken();
-            var loginToken              = tmUser.SecretData.SingleUseLoginToken;
-            var sessionId_UsingToken    = tmWebServices.Login_Using_LoginToken(tmUser.UserName, loginToken);
-            var loginToken_AfterUse     = tmUser.SecretData.SingleUseLoginToken;
-            var loginToken_NextRequest  = tmUser.current_SingleUseLoginToken();
-
-            Assert.AreNotEqual(Guid.Empty, loginToken_BeforeSet , "loginToken_BeforeSet");
-            Assert.AreNotEqual(Guid.Empty, loginToken_BeforeUse , "loginToken_BeforeUse");
-            Assert.AreEqual   (loginToken, loginToken_BeforeUse , "loginToken_BeforeUse");
-            Assert.AreNotEqual(Guid.Empty, sessionId_UsingToken , "sessionId_UsingToken");
-            Assert.AreEqual   (Guid.Empty, loginToken_AfterUse  , "loginToken_AfterUse");
-            Assert.AreNotEqual(Guid.Empty, loginToken_NextRequest, "loginToken_NextRequest is Empty");
-            Assert.AreNotEqual(loginToken, loginToken_NextRequest, "loginToken_NextRequest should be new");
-            
-        } */
+        }  
         [Test] public void PasswordResetToken()
         {            
             var newUser       = newTempUser();
@@ -154,6 +133,8 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             var hash_AfterUseAndSet = tmUser.SecretData.PasswordResetToken;
             var sessionId_NewPwd    = tmWebServices.Login(tmUser.UserName, newPassword);
             var sessionId_OldPwd    = tmWebServices.Login(tmUser.UserName, oldPassword);            
+            var result_EmptyToken   = tmWebServices.PasswordReset(tmUser.UserName, Guid.Empty ,newPassword);
+            var result_BadToken     = tmWebServices.PasswordReset(tmUser.UserName, Guid.NewGuid() ,newPassword);
 
             Assert.IsNull       (hash_BeforeSet                 , "New users should have a empty PasswordResetToken");
             Assert.IsNotNull    (hash_AfterSet                  , "PasswordResetToken should set (until it is used)");
@@ -167,25 +148,28 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             Assert.AreNotEqual  (Guid.Empty, token3             , "token3 was not set");
             Assert.AreNotEqual  (token2, token3                 , "token 2 and 3 should not be equal");
             Assert.AreNotEqual  (Guid.Empty, sessionId_NewPwd   , "sessionId with new password");
-            Assert.AreEqual     (Guid.Empty, sessionId_OldPwd   , "sessionId with old password");
-           
+            Assert.AreEqual     (Guid.Empty, sessionId_OldPwd   , "sessionId with old password");                       
+            Assert.IsFalse      (result_EmptyToken);
+            Assert.IsFalse      (result_BadToken);
+            
         }
-
-        [Test, Ignore("Not completed")] public void PasswordExpiry()
+        [Test] public void CreateUser_Validate()
         {
-            var newUser       = newTempUser();
-        //    var newPassword   = "123SAFsi!";
-          //  var oldPassword   = newUser.Password;
-            //var tmUser        = tmWebServices.CreateUser(newUser).tmUser();
+            //try with an empty NewUser object
+            var newUser = new NewUser();
+            var result = tmWebServices.CreateUser_Validate(newUser);
+            Assert.NotNull(result);
+            Assert.AreEqual(result.size(), 3);
+            Assert.AreEqual(result.first(), "Password:The Password field is required.");            
+            Assert.AreEqual(result.second(), "Username:The Username field is required.");            
 
-            var sessionId   = tmWebServices.Login(newUser.Username, newUser.Password);
-            HttpContextFactory.Context     .addCookieFromResponseToRequest("Session");
-            var currentUser = tmWebServices.Current_User();
-
-            Assert.AreNotEqual(Guid.Empty, sessionId , "sessionId was empty");
-            Assert.NotNull    (currentUser           ,"current user was null");
-            //passwordExpiredUrl
+            //try with an a fully populated NewUser object
+            newUser       = newTempUser();
+            result = tmWebServices.CreateUser_Validate(newUser);
+            Assert.NotNull(result);
+            Assert.AreEqual(result.size(), 0);
         }
+        
         //Helper methods
         public NewUser newTempUser()
         {

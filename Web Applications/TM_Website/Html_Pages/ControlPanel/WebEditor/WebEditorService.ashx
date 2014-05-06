@@ -5,8 +5,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Web;
 using System.Web.Script.Serialization;
-using O2.DotNetWrappers.ExtensionMethods;
-using O2.DotNetWrappers.Windows;
+using FluentSharp.CoreLib;
+using FluentSharp.CoreLib.API;
 using TeamMentor.CoreLib;
 
 public class UserRequest
@@ -29,7 +29,7 @@ public class UserRequest
 				
 		//this (below) doesn't work because the webeditor is an *.ashx and doesn't have access to the HttpContext Session object
         /*
-	    var webEditorSecretData = System.Web.HttpContext.Current.Session["webEditorSecretData"];
+	    var webEditorSecretData = HttpContextFactory.Session["webEditorSecretData"];
 		if (webEditorSecretData is Guid)
 			return securityToken == webEditorSecretData.str();		
 		return false;

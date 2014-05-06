@@ -58,10 +58,10 @@ namespace TeamMentor.CoreLib
 	
 	public static class JsTree_ExtensionMethods
 	{
-		public static string jsonString(this object _object)
+		/*public static string jsonString(this object _object)
 		{
 			return new JavaScriptSerializer().Serialize(_object);
-		}
+		}*/
 		
 		public static JsTreeNode add_Node(this JsTree jsTree, string title)
 		{
