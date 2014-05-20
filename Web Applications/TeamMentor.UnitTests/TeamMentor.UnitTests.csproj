@@ -103,6 +103,7 @@
     <Compile Include="CoreLib\ExtensionMethods\Test_Extra_Json_ExtensionMethods.cs" />
     <Compile Include="CoreLib\HandleRequest\Test_HandleRequest_UserData.cs" />
     <Compile Include="CoreLib\Schemas\Test_TMUser.cs" />
+    <Compile Include="CoreLib\Schemas\Test_TM_SecretData.cs" />
     <Compile Include="CoreLib\Schemas\Test_TM_Status.cs" />
     <Compile Include="CoreLib\Schemas\Test_WhoAmI.cs" />
     <Compile Include="CoreLib\Test_Crypto.cs" />
@@ -114,7 +115,7 @@
     <Compile Include="CoreLib\Tracking\Test_TM_Logger_Memory.cs" />
     <Compile Include="CoreLib\Messaging\Test_Email.cs" />
     <Compile Include="CoreLib\HandleRequest\Test_HandleRequest_Redirects.cs" />
-    <Compile Include="CoreLib\Test_TM_UserData.cs" />
+    <Compile Include="CoreLib\Schemas\Test_TM_UserData.cs" />
     <Compile Include="CoreLib\Test_Tracking_Application.cs" />
     <Compile Include="Asmx_WebServices\Test_WebServices_Security.cs" />
     <Compile Include="CoreLib\Tracking\Test_Tracking_Application.cs" />
