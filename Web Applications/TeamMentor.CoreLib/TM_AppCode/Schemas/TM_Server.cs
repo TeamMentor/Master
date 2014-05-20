@@ -7,20 +7,30 @@ namespace TeamMentor.CoreLib
 {
     public class TM_Server
     {
-        public string                      ActiveRepo    { get; set; }
-        public List<UserDataRepo>          UserDataRepos { get; set; }
+        public bool          Create_Default_Admin_Account    { get; set; }
+        public Config        UserData { get; set; }
+        public Config        SiteData { get; set; }
+        public List<GitRepo> UserData_Repos { get; set; }
+        public List<GitRepo> SiteData_Repos { get; set; }
 
         public TM_Server()
         {
-            UserDataRepos = new List<UserDataRepo>();
+            this.resetData();
         }
 
-        public class UserDataRepo
+
+        public class Config
+        {
+            public string   Active_Repo_Name;
+            public bool     Use_FileSystem;
+            public bool     Enable_Git_Support;
+        }         
+
+        public class GitRepo
         {
             public string Name { get; set; }
-            public string GitPath { get; set; }
-            public string Local_SHA1 { get; set; }
-            public string Remote_SHA1 { get; set; }
+            public string Local_GitPath { get; set; }
+            public string Remote_GitPath { get; set; }
         }
     }
 

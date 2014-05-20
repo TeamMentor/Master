@@ -28,7 +28,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Assert.NotNull(userData);
             Assert.IsNull(TM_Xml_Database.Current);
             Assert.IsNull(TM_Xml_Database.Current.tmServer());
-            Assert.IsNull(TM_Xml_Database.Current.tmServer().getActive_UserData_Repo_GitPath());
+            Assert.IsNull(TM_Xml_Database.Current.tmServer().getActive_UserData_Remote_Repo_GitPath());
         }
 
         [Test][Assert_Admin]

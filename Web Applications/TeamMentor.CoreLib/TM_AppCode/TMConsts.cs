@@ -25,8 +25,12 @@ namespace TeamMentor.CoreLib
         public static string EMAIL_TEST_SUBJECT               = "Test Email";
         public static string EMAIL_TEST_MESSAGE               = "From TeamMentor";
 
-        public static string TM_SERVER_FILENAME               = "TMServer.config";
+        
         public static string TM_CONFIG_FILENAME               = "TMConfig.config";
+
+        public static string TM_SERVER_FILENAME               = "TMServer.config";
+        public static string TM_SERVER_DEFAULT_NAME_USERDATA  = "User_Data";
+        public static string TM_SERVER_DEFAULT_NAME_SITEDATA  = "Site_Data";
 
         public static string NGIT_DEFAULT_AUTHOR_NAME         = "tm-bot";
         public static string NGIT_DEFAULT_AUTHOR_EMAIL        = "tm-bot@teammentor.net";
@@ -93,7 +97,7 @@ Please click on this link if you want to approve it: {8}
 If you don't want to enable this account, you can ignore this email and the account will stay in the current disabled state.
 
 If you want to see this user details (or delete it), please visit: {9}
-";
+";        
 
     }
 }

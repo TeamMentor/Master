@@ -130,6 +130,7 @@
     <Compile Include="TM_XmlDatabase\Test_TMServer.cs" />
     <Compile Include="TM_XmlDatabase\Test_TM_TestData.cs" />
     <Compile Include="TM_XmlDatabase\Test_Setup.cs" />
+    <Compile Include="TM_XmlDatabase\Test_TM_Xml_Database.Config.cs" />
     <Compile Include="TM_XmlDatabase\Test_TM_Xml_Database.cs" />
     <Compile Include="TM_XmlDatabase\Test_UserData_GitStorage.cs" />
     <Compile Include="TM_XmlDatabase\Test_Users_Creation.cs" />

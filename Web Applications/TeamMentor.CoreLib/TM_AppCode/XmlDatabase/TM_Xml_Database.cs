@@ -34,7 +34,8 @@ namespace TeamMentor.CoreLib
         public TM_Xml_Database          () : this(false)                    // defaults to creating a TM_Instance in memory    
         {
         }
-        public TM_Xml_Database          (bool useFileStorage)
+        [Admin]
+        public TM_Xml_Database(bool useFileStorage)
         {
             if (TM_Status.In_Setup_XmlDatabase)
                 throw new Exception("TM Exeption: TM_Xml_Database ctor was called twice in a row (without the first ctor sequence had ended)");
@@ -80,11 +81,16 @@ namespace TeamMentor.CoreLib
             try
             {
                 ResetDatabase();
+
+                this.set_Path_XmlDatabase();
+
+                this.load_TMServer_Config();
+
                 if (UsingFileStorage)
                 {
-                    SetPaths_UserData();
-                    this.load_TMServer_Config();
+                    SetPaths_UserData();                    
                 }
+                
                 UserData.SetUp();
                 Logger_Firebase.createAndHook();
                 "[TM_Xml_Database] TM is Starting up".info();
@@ -92,7 +98,7 @@ namespace TeamMentor.CoreLib
                 this.userData().copy_FilesIntoWebRoot();
                 if (UsingFileStorage)
                 {
-                    SetPaths_XmlDatabase();
+                    this.SetPaths_XmlDatabase();
                     this.handle_UserData_GitLibraries();
                     loadDataIntoMemory();
                     this.logTBotActivity("TM Xml Database", "Library Data is loaded");
@@ -108,13 +114,13 @@ namespace TeamMentor.CoreLib
             }
             return this;
         }
-        
+                
         [Admin] public void             SetPaths_UserData()
         {
             try
             {
-                var tmConfig = TMConfig.Current;
-                var userDataPath = tmConfig.TMSetup.UserDataPath;
+                var tmConfig        = TMConfig.Current;
+                var userDataPath    = tmConfig.TMSetup.UserDataPath;
                 var xmlDatabasePath = tmConfig.xmlDatabasePath();
 
                 "[TM_Xml_Database] [setDataFromCurrentScript] TMConfig.Current.UserDataPath: {0}".debug(userDataPath);
@@ -133,34 +139,7 @@ namespace TeamMentor.CoreLib
                 "[TM_Xml_Database] [SetPaths_UserData] {0} \n\n {1}".error(ex.Message, ex.StackTrace);
             }
         }
-
-        [Admin] public void             SetPaths_XmlDatabase()
-        {
-            try
-            {
-                var tmConfig            = TMConfig.Current;
-                var xmlDatabasePath     = tmConfig.xmlDatabasePath();
-                var libraryPath         = tmConfig.TMSetup.XmlLibrariesPath;                                
-                
-                "[TM_Xml_Database] [setDataFromCurrentScript] TM_Xml_Database.Path_XmlDatabase: {0}" .debug(xmlDatabasePath);
-                "[TM_Xml_Database] [setDataFromCurrentScript] TMConfig.Current.XmlLibrariesPath: {0}".debug(libraryPath);
-                
-                                            
-                if (libraryPath.dirExists().isFalse())						
-                {
-                    libraryPath = xmlDatabasePath.pathCombine(libraryPath);
-                    libraryPath.createDir();  // make sure it exists
-                }
-                
-                Path_XmlDatabase            = xmlDatabasePath;
-                Path_XmlLibraries           = libraryPath;          
-                "[TM_Xml_Database] Paths configured".info();
-            }
-            catch(Exception ex)
-            {
-                "[TM_Xml_Database] [SetPaths_XmlDatabase]: {0} \n\n {1}".error(ex.Message, ex.StackTrace);
-            }
-        }        
+           
         [Admin] public string           ReloadData()
         {
             return ReloadData(null);
