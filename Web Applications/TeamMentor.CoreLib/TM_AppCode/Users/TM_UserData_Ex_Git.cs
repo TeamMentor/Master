@@ -99,7 +99,7 @@ namespace TeamMentor.CoreLib
                 if (gitConfig.UserData_Git_Enabled.isFalse())
                     return userData;
 
-                var gitLocation = TM_Xml_Database.Current.TM_Server_Config.getActive_UserData_Repo_GitPath();
+                var gitLocation = TM_Xml_Database.Current.tmServer().getActive_UserData_Repo_GitPath();
                 if (gitLocation.valid())
                 {                       
                     //Adjust Path_UserData so that there is an unique folder per repo

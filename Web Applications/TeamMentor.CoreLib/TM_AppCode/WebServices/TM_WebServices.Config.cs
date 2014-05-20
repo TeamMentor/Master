@@ -19,8 +19,7 @@ namespace TeamMentor.CoreLib
         [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_GetLibraryPath()		{	return tmXmlDatabase.Path_XmlLibraries;	                            }		
         [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_GetUserDataPath()		{	return tmXmlDatabase.UserData.Path_UserData;	                    }		
         [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_ReloadData()			{	guiObjectsCacheOk = false; return  tmXmlDatabase.ReloadData(null);  }
-        [WebMethod(EnableSession = true)] [Admin]	            public bool   XmlDatabase_IsUsingFileStorage()	{	return tmXmlDatabase.UsingFileStorage;                              }
-        [WebMethod(EnableSession = true)] [Admin]	            public bool   XmlDatabase_WithoutFileStorage()	{	return tmXmlDatabase.reload_WithoutFileStorage().notNull();  }
+        [WebMethod(EnableSession = true)] [Admin]	            public bool   XmlDatabase_IsUsingFileStorage()	{	return tmXmlDatabase.UsingFileStorage;                              }        
         
         [WebMethod(EnableSession = true)] [Admin]	            public bool   XmlDatabase_ImportLibrary_fromZipFile(string pathToZipFile, string unzipPassword) { return TM_Xml_Database.Current.xmlDB_Libraries_ImportFromZip(pathToZipFile, unzipPassword); }                                                                                                                                     
         [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_SetLibraryPath(string libraryPath)	{	guiObjectsCacheOk = false; 
@@ -61,11 +60,11 @@ namespace TeamMentor.CoreLib
 
         // Install libraries from ZIP
         [WebMethod(EnableSession = true)] [Admin]	            public string		TMServerFileLocation()			{	return tmXmlDatabase.get_Path_TMServer_Config();  }		
-        [WebMethod(EnableSession = true)] [Admin]	            public TMServer		TMServerFile()
+        [WebMethod(EnableSession = true)] [Admin]	            public TM_Server		TMServerFile()
                                                                                     {	
                                                                                         return tmXmlDatabase.TM_Server_Config;  
                                                                                     }
-        [WebMethod(EnableSession = true)] [Admin]	            public bool		    SetTMServerFile(TMServer tmServer)
+        [WebMethod(EnableSession = true)] [Admin]	            public bool		    SetTMServerFile(TM_Server tmServer)
                                                                                     {
                                                                                          tmXmlDatabase.TM_Server_Config = tmServer;
                                                                                          return tmXmlDatabase.save_TMServer_Config();                                                                                        

@@ -20,7 +20,7 @@ namespace TeamMentor.CoreLib
         [DataMember][StringLength(30)]              public string	FirstName	        { get; set; }
         [DataMember][StringLength(30)]              public string	LastName	        { get; set; }
         [DataMember][StringLength(30)]              public string	State		        { get; set; }
-        [DataMember][StringLength(255)]              public string	Title		        { get; set; }
+        [DataMember][StringLength(255)]             public string	Title		        { get; set; }
         [DataMember][Required]	                    public int	    UserId		        { get; set; }
         [DataMember][Required][StringLength(30)]    public string	UserName	        { get; set; }
         

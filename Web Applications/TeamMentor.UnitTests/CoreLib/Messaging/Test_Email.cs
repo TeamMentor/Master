@@ -76,7 +76,7 @@ namespace TeamMentor.UnitTests.CoreLib
             Assert.IsFalse(sendEmails.send_TestEmail());
             var lastEmail = SendEmails.Sent_EmailMessages.last();
             Assert.AreEqual(lastEmail.Subject   , TMConsts.EMAIL_TEST_SUBJECT);
-            Assert.AreEqual(lastEmail.Message   , TMConsts.EMAIL_TEST_MESSAGE + TMConsts.EMAIL_DEFAULT_FOOTER);
+            Assert.AreEqual(lastEmail.Message   , TMConsts.EMAIL_TEST_MESSAGE.line() + TMConsts.EMAIL_DEFAULT_FOOTER);
             Assert.AreEqual(lastEmail.SentStatus, SentStatus.NoConfig);
             Assert.AreEqual(emailCount + 1      , SendEmails.Sent_EmailMessages.size());
         }

@@ -13,13 +13,13 @@ namespace TeamMentor.UnitTests.CoreLib
         {            
             var tmUser            = new TM_User();                        
             //var requiredValues    = "Company,Country,FirstName,LastName,State,Title,UserName,Email".split(",");
-             var requiredValues    = "Password,Username,Email".split(",");
+             var requiredValues    = "UserName,Email".split(",");
             var validationResults = tmUser.validate();
             var resultsMapped     = validationResults.indexed_By_MemberName();
             var validationok      = tmUser.validation_Ok();
 
-            //foreach (var result in validationResults)
-            //    "{0} - {1}".info(result.MemberNames.asString(), result.ErrorMessage);
+            foreach (var result in validationResults)
+                "{0} - {1}".info(result.MemberNames.asString(), result.ErrorMessage);
             
             Assert.IsNotEmpty(validationResults                              , "Validation results should not be empty");
             Assert.IsFalse   (validationok                                   , "Validation Ok should be false");
@@ -88,7 +88,7 @@ namespace TeamMentor.UnitTests.CoreLib
                 var validationResults = newUser.validate();
                 var resultsMapped     = validationResults.indexed_By_MemberName();
                 var seconds = (DateTime.Now - dateStart).TotalSeconds;
-                Assert.Less(seconds,1, "A email with size {0} took more than 1 sec to calculate".format(i));
+                Assert.Less(seconds,1, "A email with size {0} took more than 1 sec to calculate".format(i*10));
                 Assert.IsTrue(resultsMapped["Email"].contains("The field Email must match the regular expression '{0}'.".format(ValidationRegex.Email)), "It was {0}".format(resultsMapped["Email"].toString()));
                 if (i > expectedMaxLength)
                 {

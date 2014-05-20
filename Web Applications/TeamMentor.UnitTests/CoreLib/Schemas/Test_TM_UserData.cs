@@ -38,25 +38,17 @@ namespace TeamMentor.UnitTests.CoreLib
         }
 
         [Test]
-        public void SecretData_Ctor()
+        public void resetData()
         {
-            userData.ResetData();
-
-            var tmSecretData = userData.SecretData;
-
-            Assert.IsNotNull(tmSecretData);
-            Assert.IsNotNull(tmSecretData.Rijndael_IV);
-            Assert.IsNotNull(tmSecretData.Rijndael_Key);
-
-            Assert.IsNotNull(tmSecretData.SmtpConfig.Server         );
-            Assert.IsNotNull(tmSecretData.SmtpConfig.UserName       );
-            Assert.AreEqual (tmSecretData.SmtpConfig.Password   , "");
-            Assert.IsNotNull(tmSecretData.SmtpConfig.Default_From   );
-            Assert.IsNotNull(tmSecretData.SmtpConfig.Default_To     );
-            Assert.IsNotNull(tmSecretData.SmtpConfig.Server         );
-        
-            "TMSecretData xml: \n {0}".info(tmSecretData.toXml());
+            userData.resetData();
+            Assert.AreEqual(userData.NGit_Author_Name, TMConsts.NGIT_DEFAULT_AUTHOR_NAME);
+            Assert.AreEqual(userData.NGit_Author_Email, TMConsts.NGIT_DEFAULT_AUTHOR_EMAIL);
+            Assert.AreEqual(userData.FirstScriptToInvoke, TMConsts.USERDATA_FIRST_SCRIPT_TO_INVOKE);
+            Assert.AreEqual(userData.Path_WebRootFiles, TMConsts.USERDATA_PATH_WEB_ROOT_FILES);
+            Assert.IsEmpty(userData.TMUsers);
+            Assert.NotNull(userData.SecretData);        // see Test_TM_SecretData for the Ctor checks
         }
+        
 
         [Test]
         public void InvokeUserDataScriptFile()

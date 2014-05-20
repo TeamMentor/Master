@@ -28,8 +28,7 @@ namespace TeamMentor.CoreLib
         public HttpContextBase		Context			 { get; set; }	
         public HttpSessionStateBase Session			 { get; set; }	
         public TM_WebServices		TmWebServices	 { get; set; }	
-
-        [LogUrl("REST")]
+        
         public TM_REST()
         {           
             Context       = HttpContextFactory.Current;

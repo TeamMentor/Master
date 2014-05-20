@@ -20,7 +20,7 @@ namespace TeamMentor.UnitTests.QA_Tests
         [XmlAttribute] public int      Repo_Files    { get; set; }
     }
 
-    [TestFixture][Ignore]
+    [TestFixture][Ignore("Add to special Long running integration test suite")]
     public class Test_Loading_TM_Repos
     {
         public String GitHub_Repo_Path      { get; set; }
@@ -52,9 +52,10 @@ namespace TeamMentor.UnitTests.QA_Tests
             Skip_Online_Tests     = false;
             Delete_Temp_Repos     = true;
             Save_Git_Clone_Data   = true;
-            Open_Temp_Repo_Folder = true;
+            
+            /*Open_Temp_Repo_Folder = true;
             if (Open_Temp_Repo_Folder)
-                Temp_Cloned_Repos.startProcess();
+                Temp_Cloned_Repos.startProcess();*/
         }       
         
         [Test] public void Test_Clone_Net_2_0()

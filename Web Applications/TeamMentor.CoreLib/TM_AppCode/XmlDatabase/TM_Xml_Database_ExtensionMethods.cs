@@ -12,7 +12,7 @@ namespace TeamMentor.CoreLib
                        ? tmDatabase.UserData
                        : null;
         }
-        public static bool            setupThread_Active         (this TM_Xml_Database tmDatabase)  
+ /*       public static bool            setupThread_Active         (this TM_Xml_Database tmDatabase)  
         {
             return tmDatabase.SetupThread.isNull();
         }
@@ -27,6 +27,6 @@ namespace TeamMentor.CoreLib
             //disable for now (need to add a load_WithoutFileStorage (or the Security unit tests will leave the DB in this mode
          //   return new TM_Xml_Database();
             return null;
-        }        
+        }  */      
     }
 }

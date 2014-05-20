@@ -22,9 +22,19 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         [TearDown]
         public void TearDown()
         {
+            Assert.IsTrue     (tmDatabase.Path_XmlDatabase.dirExists());
+            Assert.IsTrue     (tmDatabase.Path_XmlLibraries.dirExists());
             Assert.IsTrue     (TMConfig.WebRoot.dirExists());   
+            
+            //delete temp WebRoot
             Files.deleteFolder(TMConfig.WebRoot, true);
-            Assert.IsFalse    (TMConfig.WebRoot.dirExists());              
+            Assert.IsFalse    (TMConfig.WebRoot.dirExists());
+
+            //delete temp Library data            
+            tmDatabase.Path_XmlDatabase.files(true).files_Attribute_ReadOnly_Remove();  // required due to locks on .git files
+            Files.deleteFolder(tmDatabase.Path_XmlDatabase,true);
+            Assert.IsFalse    (tmDatabase.Path_XmlDatabase.dirExists());
+            Assert.IsFalse    (tmDatabase.Path_XmlLibraries.dirExists());
         }
 
         [Test]//[Ignore("This fails in TeamCity, since the Temp folder is inside the Websites AppData folder")]

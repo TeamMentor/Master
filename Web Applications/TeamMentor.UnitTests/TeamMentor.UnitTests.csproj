@@ -103,6 +103,7 @@
     <Compile Include="CoreLib\ExtensionMethods\Test_Extra_Json_ExtensionMethods.cs" />
     <Compile Include="CoreLib\HandleRequest\Test_HandleRequest_UserData.cs" />
     <Compile Include="CoreLib\Schemas\Test_TMUser.cs" />
+    <Compile Include="CoreLib\Schemas\Test_TM_Status.cs" />
     <Compile Include="CoreLib\Schemas\Test_WhoAmI.cs" />
     <Compile Include="CoreLib\Test_Crypto.cs" />
     <Compile Include="CoreLib\Test_Extra_ExtensionMethods.cs" />
@@ -125,14 +126,14 @@
     <Compile Include="TM_XmlDatabase\Test_LoadLibrariesFromDisk.cs" />
     <Compile Include="TM_XmlDatabase\Test_LoadLibraries_FromExternalSource.cs" />
     <Compile Include="TM_XmlDatabase\Test_NGit_Support.cs" />
-    <Compile Include="TM_XmlDatabase\Test_TMServer_Config.cs" />
+    <Compile Include="TM_XmlDatabase\Test_TMServer.cs" />
     <Compile Include="TM_XmlDatabase\Test_TM_TestData.cs" />
     <Compile Include="TM_XmlDatabase\Test_Setup.cs" />
+    <Compile Include="TM_XmlDatabase\Test_TM_Xml_Database.cs" />
     <Compile Include="TM_XmlDatabase\Test_UserData_GitStorage.cs" />
     <Compile Include="TM_XmlDatabase\Test_Users_Creation.cs" />
     <Compile Include="TM_XmlDatabase\Test_Users_Sessions.cs" />
     <Compile Include="TM_XmlDatabase\Test_Users_UserActivities.cs" />
-    <Compile Include="CoreLib\Test_Utils_GoogleAnalytics.cs" />
     <Compile Include="_Test_ConfigAndHelpers\Tests_Config.cs" />
     <Compile Include="_Test_ConfigAndHelpers\TM_Config_InMemory.cs" />
     <Compile Include="_Test_ConfigAndHelpers\TM_Test_Utils_Extension_Methods.cs" />

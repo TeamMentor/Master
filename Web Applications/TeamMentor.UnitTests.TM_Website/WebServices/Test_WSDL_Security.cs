@@ -241,11 +241,7 @@ namespace TeamMentor.UnitTests.TM_Website.WebServices
                             .add_Admin    ("VirtualArticle_Add_Mapping_Redirect"                    , new object[2] )
                             .add_Admin    ("VirtualArticle_Add_Mapping_VirtualId"                   , new object[2] )
                             .add_Admin    ("VirtualArticle_GetCurrentMappings"                      , new object[0] )
-                            .add_Admin    ("VirtualArticle_Remove_Mapping"                          , new object[1] )
-     
-                   
-                    //       this will change the DB mode (so run in the end
-                            .add_Admin    ("XmlDatabase_WithoutFileStorage"                         , new object[0] )                             
+                            .add_Admin    ("VirtualArticle_Remove_Mapping"                          , new object[1] )                                            
                     
                              //these have to be the last ones since they reset the current session (and are available to anonymous users)
                             .add_Anonymous("Login_Using_AuthToken"                                  , new object[1] )

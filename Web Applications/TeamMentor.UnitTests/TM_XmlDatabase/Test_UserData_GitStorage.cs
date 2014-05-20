@@ -24,6 +24,11 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             nGit     = userData.NGit;     
 
             Assert.AreEqual(2, nGit.commits().size() , "there should be two commits here");
+
+            Assert.NotNull(userData);
+            Assert.IsNull(TM_Xml_Database.Current);
+            Assert.IsNull(TM_Xml_Database.Current.tmServer());
+            Assert.IsNull(TM_Xml_Database.Current.tmServer().getActive_UserData_Repo_GitPath());
         }
 
         [Test][Assert_Admin]
@@ -81,7 +86,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
 
             TMConfig.Current.Git.UserData_Git_Enabled = true;
         }*/
-        [Test][Assert_Admin] public void CheckGitRepoDoesCommits_OnNewUser()
+        [Test][Assert_Admin] public void CheckGitRepoDoesCommit_OnNewUser()
         {                        
             Assert.IsTrue       (userData.tmConfig().Git.UserData_Git_Enabled);
             
@@ -93,11 +98,12 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             userData            .newUser();
             var headAfterUser   = nGit.head();
 
-            Assert.IsFalse      (nGit.head().isNull());
-            Assert.AreNotEqual  (headBeforeUser, headAfterUser , "Git Head value should be different after a TMUser create");
-            Assert.AreNotEqual  (2, nGit.commits().size());
+            Assert.IsFalse    (nGit.head().isNull());
+            Assert.AreNotEqual(headBeforeUser, headAfterUser, "Git Head value should now be different");    
+            Assert.AreEqual   (5, nGit.commits().size());
+            Assert.IsEmpty    (nGit.status());
         }
-        [Test][Assert_Admin] public void CheckGitRepoDoesCommits_OnUserSave()
+        [Test][Assert_Admin] public void CheckGitRepo_DoesNotCommit_OnUserSave()
         {
             Assert.IsTrue       (userData.tmConfig().Git.UserData_Git_Enabled);
              
@@ -109,29 +115,37 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             
             var headAfterSave   = nGit.head();
 
-            Assert.AreNotEqual  (headBeforeSave, headAfterSave , "Git Head value should be different after a TMUser save");
+            Assert.AreEqual(headBeforeSave, headAfterSave, "Git Head value should be the same after a TMUser save");
+            Assert.IsNotEmpty(nGit.status());
+            
+            userData.triggerGitCommit();
+            var headAfterCommit = nGit.head();
+            Assert.AreNotEqual(headAfterCommit, headAfterSave, "Git Head value should be different after triggerGitCommit");
+            Assert.IsEmpty(nGit.status());
         }
-        [Test][Assert_Admin] public void CheckGitRepoDoesCommits_OnUserAddAndDelete()
-        {                        
+        [Test][Assert_Admin] public void CheckGitRepo_DoesCommits_OnUserAddAndDelete()
+        {
+            var commitsBeforeNewUser    = nGit.commits().size();         
             var tmUser                  = userData.newUser().tmUser();
             var commitsAfterNewUser     = nGit.commits().size();
             tmUser                      .deleteTmUser();
             var commitsAfterDeleteUser  = nGit.commits().size();
 
-            nGit.refLogs().toString().info();
+            //nGit.refLogs().toString().info();
 
+            Assert.AreEqual(2, commitsBeforeNewUser,    "There should be 2 commits before user create");
             Assert.AreEqual(3, commitsAfterNewUser    , "There should be 3 commits after user create");
-            Assert.AreEqual(4, commitsAfterDeleteUser , "There should be 3 commits after user delete");
-            
+            Assert.AreEqual(4, commitsAfterDeleteUser , "There should be 4 commits after user delete");                                  
             Assert.IsEmpty(nGit.status());
             
         }
-        [Test][Assert_Admin] public void CheckActivitiesLogging()
+        [Test][Assert_Admin] public void CheckGitRepo_DoesNotCommit_OnActivites()
         {
             var tmUser = userData.newUser().tmUser();            
             Assert.AreEqual(3, nGit.commits().size());
-            var sessionId = tmUser.login();
-            Assert.AreNotEqual(Guid.Empty, sessionId);
+            tmUser.logUserActivity("testAction", "testDetail");
+            Assert.IsNotEmpty(nGit.status());
+            Assert.AreEqual(3, nGit.commits().size());
         }
     }
 }

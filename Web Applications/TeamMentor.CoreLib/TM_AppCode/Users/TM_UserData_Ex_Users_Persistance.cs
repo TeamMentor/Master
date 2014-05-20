@@ -18,7 +18,7 @@ namespace TeamMentor.CoreLib
             try
             {
                 userData.Path_UserData = userDataPath;
-                userData.ResetData();                                
+                userData.resetData();                                
                 userData.SetUp();
                 userData.loadTmUserData();
                 return true;

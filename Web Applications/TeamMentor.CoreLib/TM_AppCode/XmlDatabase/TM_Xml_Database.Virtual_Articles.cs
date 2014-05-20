@@ -103,11 +103,12 @@ namespace TeamMentor.CoreLib
 		}
 		public static TM_Xml_Database mapVirtualArticles(this TM_Xml_Database tmXmlDatabase)
 		{
-			TM_Xml_Database.Current.VirtualArticles = new Dictionary<Guid, VirtualArticleAction>();
+            var virtualArticles = tmXmlDatabase.VirtualArticles;
+            virtualArticles.Clear();
 
-			var virtualArticles = tmXmlDatabase.loadVirtualArticles();
-			foreach (var virtualArticle in virtualArticles)
-				TM_Xml_Database.Current.VirtualArticles.add(virtualArticle.Id, virtualArticle);
+			var virtualArticles_ToMap = tmXmlDatabase.loadVirtualArticles();
+			foreach (var virtualArticle in virtualArticles_ToMap)
+				virtualArticles.add(virtualArticle.Id, virtualArticle);
 			return tmXmlDatabase;
 		}
 		public static Dictionary<Guid, VirtualArticleAction> getVirtualArticles(this TM_Xml_Database tmXmlDatabase)

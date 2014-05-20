@@ -11,10 +11,10 @@ namespace TeamMentor.CoreLib
         {
             return TMConfig.Current;
         }
-        public static TM_UserData ResetData             (this TM_UserData userData)          
+        public static TM_UserData resetData             (this TM_UserData userData)          
         {
-            userData.NGit_Author_Name    = "tm-bot";
-            userData.NGit_Author_Email   = "tm-bot@teammentor.net";
+            userData.NGit_Author_Name    = TMConsts.NGIT_DEFAULT_AUTHOR_NAME;
+            userData.NGit_Author_Email   = TMConsts.NGIT_DEFAULT_AUTHOR_EMAIL;
             userData.FirstScriptToInvoke = TMConsts.USERDATA_FIRST_SCRIPT_TO_INVOKE;
             userData.Path_WebRootFiles   = TMConsts.USERDATA_PATH_WEB_ROOT_FILES;
             userData.TMUsers             = new List<TMUser>();                        

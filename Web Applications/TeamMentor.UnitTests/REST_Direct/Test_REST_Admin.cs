@@ -20,7 +20,7 @@ namespace TeamMentor.UnitTests.REST
             var emailsSent_Before = SendEmails.Sent_EmailMessages.size();
             var to                = "tm@si.com";
             var subject           = "a subject";
-            var message           = "a message";
+            var message           = "a message".line();
             //var extraText         = "\r\nSent by TeamMentor. \r\n\r\n";
             var emailMessagePost  = new EmailMessage_Post 
                                         {
@@ -39,7 +39,7 @@ namespace TeamMentor.UnitTests.REST
             Assert.AreEqual   (emailsSent_Before +1, emailsSent_After);
             Assert.AreEqual   (lastMessage.To      , emailMessagePost.To);
             Assert.AreEqual   (lastMessage.Subject , emailMessagePost.Subject);
-            Assert.AreEqual   (lastMessage.Message , emailMessagePost.Message + TMConsts.EMAIL_DEFAULT_FOOTER );
+            Assert.AreEqual   (lastMessage.Message , emailMessagePost.Message.line() + TMConsts.EMAIL_DEFAULT_FOOTER );
         }
     }
 }

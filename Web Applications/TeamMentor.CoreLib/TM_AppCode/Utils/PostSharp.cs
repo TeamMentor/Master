@@ -6,44 +6,7 @@ using FluentSharp.CoreLib;
 using PostSharp.Aspects;
 
 namespace TeamMentor.CoreLib
-{
-    [Serializable]
-    public sealed class LogUrlAttribute : OnMethodBoundaryAspect
-    {
-        public string Category { get; set; }
-
-        public LogUrlAttribute(string category)
-        {
-            Category = category;
-        }
-        
-        public override void OnEntry(MethodExecutionArgs args)
-        {										
-            var url = HttpContextFactory.Request.Url;
-            var title = "[TM_Log] : {0}".format(Category);
-            title.ga_LogEntry(url.str());			
-
-            base.OnEntry(args);
-        }
-    }
-    [Serializable]
-    public sealed class LogAttribute : OnMethodBoundaryAspect
-    {
-        public string Category { get; set; }
-
-        public LogAttribute(string category)
-        {
-            Category = category;
-        }
-
-        public override void OnEntry(MethodExecutionArgs args)
-        { 			
-            "[TM_Log]".ga_LogEntry(Category);			
-
-            base.OnEntry(args);
-        }
-    }
-
+{   
 
     public static class PostSharp_ExtensionMethods
     {

@@ -32,7 +32,7 @@ namespace TeamMentor.CoreLib
         {
             Current = this;            
             UsingFileStorage = useFileStorage;
-            this.ResetData();
+            this.resetData();
         }        
     }
 }

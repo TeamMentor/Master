@@ -12,16 +12,16 @@ namespace TeamMentor.CoreLib
     {		    
         public static TM_Xml_Database   Current               { get; set; }         
         public static bool              SkipServerOnlineCheck { get; set; }        
-        public object			        setupLock             = new object();
-
+        
+        //public object			        setupLock             = new object();
         public bool			            UsingFileStorage	  { get; set; }         //config                   
         public bool                     ServerOnline          { get; set; }         
-        public TMServer                 TM_Server_Config      { get; set; }         
+        public TM_Server                TM_Server_Config      { get; set; }         
         public TM_UserData              UserData              { get; set; }         //users and tracking             
         public List<API_NGit>           NGits                 { get; set; }         // Git object, one per library that has git support
         public string 	                Path_XmlDatabase      { get; set; }					
         public string 	                Path_XmlLibraries 	  { get; set; }    
-        public Thread                   SetupThread           { get; set; } 
+//        public Thread                   SetupThread           { get; set; } 
 
         public Dictionary<Guid, guidanceExplorer>	    GuidanceExplorers_XmlFormat { get; set; }	 //Xml Library and Articles   
         public Dictionary<guidanceExplorer, string>	    GuidanceExplorers_Paths     { get; set; }	 
@@ -35,27 +35,17 @@ namespace TeamMentor.CoreLib
         {
         }
         public TM_Xml_Database          (bool useFileStorage)
-        {   
-            Current = this;             
-            lock (setupLock)
-            {
-                try
-                {                
-                        //   "[TM_Xml_Database] Setup".info();
-                    O2Thread.mtaThread(CheckIfServerIsOnline);
-                
-                    UsingFileStorage = useFileStorage;                
-                    Setup();
-                        
-                    this.setupThread_WaitForComplete();                        
-                }
-                catch (Exception ex)
-                {
-                    ex.logWithStackTrace("[in TM_Xml_Database.ctor]");
-                    if (TM_StartUp.Current.notNull())                       //will happen when TM_Xml_Database ctor is called by an user with no admin privs
-                        TM_StartUp.Current.TrackingApplication.saveLog();
-                }
-            }
+        {
+            if (TM_Status.In_Setup_XmlDatabase)
+                throw new Exception("TM Exeption: TM_Xml_Database ctor was called twice in a row (without the first ctor sequence had ended)");
+            
+            TM_Status.In_Setup_XmlDatabase = true;
+
+            Current = this;                                                       
+            UsingFileStorage = useFileStorage;                
+            Setup();
+
+            TM_Status.In_Setup_XmlDatabase = false;
         }
 
         [Admin] public TM_Xml_Database ResetDatabase()
@@ -65,12 +55,13 @@ namespace TeamMentor.CoreLib
             GuidanceItems_FileMappings  = new Dictionary<Guid, string>();
             GuidanceExplorers_XmlFormat = new Dictionary<Guid, guidanceExplorer>();
             GuidanceExplorers_Paths     = new Dictionary<guidanceExplorer, string>();
-            TM_Server_Config            = new TMServer();
-            UserData                    = new TM_UserData(UsingFileStorage);                        
+            TM_Server_Config            = new TM_Server();
+            UserData                    = new TM_UserData(UsingFileStorage); 
+            VirtualArticles             = new Dictionary<Guid, VirtualArticleAction>();
             return this;
         }
 
-        [Admin] public TM_Xml_Database  Setup()
+/*        [Admin] public TM_Xml_Database  Setup()
         {
             SetupThread = O2Thread.mtaThread(
                 ()=>{
@@ -82,30 +73,26 @@ namespace TeamMentor.CoreLib
                 });
             return this;
         }
-        public void TM_Setup_Thread()
-        {
-           ResetDatabase();
-           try
+        public void TM_Setup_Thread()*/
+        [Admin]
+        public TM_Xml_Database Setup()
+        {            
+            try
             {
+                ResetDatabase();
                 if (UsingFileStorage)
                 {
-                    SetPaths_UserData();               
-                    this.load_TMServer_Config();                                                                                                 
-                }
-                if (TMConfig.Current.TMSetup.OnlyLoadUserData)
-                {
-                    "[TM_Xml_Database] TMConfig.Current.TMSetup.OnlyLoadUserData was set".info();
-                    UserData.loadTmUserData();
-                    return;
+                    SetPaths_UserData();
+                    this.load_TMServer_Config();
                 }
                 UserData.SetUp();
                 Logger_Firebase.createAndHook();
-               "TM is Rebooting".info();
+                "[TM_Xml_Database] TM is Starting up".info();
                 this.logTBotActivity("TM Xml Database", "TM is (re)starting and user Data is now loaded");
                 this.userData().copy_FilesIntoWebRoot();
                 if (UsingFileStorage)
-                {                       
-                    SetPaths_XmlDatabase();            
+                {
+                    SetPaths_XmlDatabase();
                     this.handle_UserData_GitLibraries();
                     loadDataIntoMemory();
                     this.logTBotActivity("TM Xml Database", "Library Data is loaded");
@@ -116,14 +103,12 @@ namespace TeamMentor.CoreLib
             catch (Exception ex)
             {
                 "[TM_Xml_Database] Setup: {0} \n\n".error(ex.Message, ex.StackTrace);
-            } 
+                if (TM_StartUp.Current.notNull())                       //will happen when TM_Xml_Database ctor is called by an user with no admin privs
+                    TM_StartUp.Current.TrackingApplication.saveLog();
+            }
+            return this;
         }
-        [Admin] public void             CheckIfServerIsOnline()
-        {
-            if (SkipServerOnlineCheck)
-                return;
-            ServerOnline = MiscUtils.online();              // only check this once
-        }
+        
         [Admin] public void             SetPaths_UserData()
         {
             try
@@ -192,7 +177,7 @@ namespace TeamMentor.CoreLib
             }
                                    
             Setup();                                                    // trigger the set (which will load all data
-            this.setupThread_WaitForComplete();
+          //  this.setupThread_WaitForComplete();
 
             var stats = "In the library '{0}' there are {1} library(ies), {2} views and {3} GuidanceItems"                        
                             .format(Current.Path_XmlLibraries.directoryName(), 

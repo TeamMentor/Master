@@ -122,8 +122,8 @@ namespace TeamMentor.CoreLib
             if (TMConfig.Current.windowsAuth().isFalse())                
                 SendEmails.SendNewUserEmails("New user created: {0}".format(tmUser.UserName), tmUser);
             tmUser.logUserActivity("New User",  "");
-            tmUser.saveTmUser();            
-                    
+            tmUser.saveTmUser();
+            userData.triggerGitCommit();
             return userId;    		
         }			
 	    public static int           create                      (this NewUser newUser)

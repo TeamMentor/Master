@@ -20,7 +20,7 @@ namespace TeamMentor.UnitTests.WebSite_Content
             		
     		WebConfigFile        = tmWebsite.pathCombine("web.config");
 
-            Assert.IsTrue(WebConfigFile.fileExists());
+            Assert.IsTrue(WebConfigFile.fileExists(), "Could not find WebConfigFile: {0}".format(WebConfigFile));
 
     	} 
     	    	

@@ -32,6 +32,10 @@ namespace TeamMentor.CoreLib
             var userRoles = new [] { userRole.str() };
 			return  userRoles.setThreadPrincipalWithRoles();
 		}
+        public static IPrincipal assert(this UserGroup userGroup)
+        {
+            return userGroup.setThreadPrincipalWithRoles();
+        }
         public static IPrincipal setPrivileges(this UserGroup userGroup)
         {
             return userGroup.setThreadPrincipalWithRoles();

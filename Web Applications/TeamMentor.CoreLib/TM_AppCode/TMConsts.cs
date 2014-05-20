@@ -27,6 +27,10 @@ namespace TeamMentor.CoreLib
 
         public static string TM_SERVER_FILENAME               = "TMServer.config";
         public static string TM_CONFIG_FILENAME               = "TMConfig.config";
+
+        public static string NGIT_DEFAULT_AUTHOR_NAME         = "tm-bot";
+        public static string NGIT_DEFAULT_AUTHOR_EMAIL        = "tm-bot@teammentor.net";
+
         public static string DEFAULT_ERROR_PAGE_REDIRECT      = "/error";        
         public static string EMAIL_BODY_NEW_USER_WELCOME =
 @"Hello,
