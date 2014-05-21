@@ -6,24 +6,28 @@ using System.Text;
 namespace TeamMentor.CoreLib
 {
     public class TM_Status
-    {
-        public static bool Loading_UserData    { get; set; }
-        public static bool Loading_XmlDatabase { get; set; }
-        public static bool Loaded_UserData { get; set; }
-        public static bool Loaded_XmlDatabase { get; set; }
-        public static bool In_Setup_XmlDatabase { get; set; }
-        
+    {        
+        public static TM_Status   Current                             { get; set; }
+        public Database_Status    TM_Database_Status                  { get; set; }
+        public bool               TM_Database_In_Setup_Workflow       { get; set; }
+        public bool               TM_Database_Location_Using_AppData  { get; set; }
         static TM_Status()
         {
-            reset();
+            Current = new TM_Status();
         }
-        public static void reset()
+        public TM_Status()
         {
-            Loading_UserData        = false;
-            Loading_XmlDatabase     = false;
-            Loaded_UserData         = false;
-            Loaded_XmlDatabase      = false;
-            In_Setup_XmlDatabase    = false;
+            TM_Database_Status                 = Database_Status.Not_Initialized;
+            TM_Database_In_Setup_Workflow      = false;
+            TM_Database_Location_Using_AppData = false;
+        }        
+
+        public enum Database_Status
+        { 
+            Not_Initialized, 
+            Ready,
+            Loading_XmlDatabase, 
+            Loading_UserData
         }
     }
 }

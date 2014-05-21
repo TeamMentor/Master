@@ -11,11 +11,11 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         [Test]
         public void Copy_FilesIntoWebRoot()
         {
-            TMConfig.WebRoot            = "TM_BaseFolder".tempDir(true);                      // Temp webroot folder
-            userData.Path_UserData      = TMConfig.WebRoot.pathCombine("..//UserData");       // set temp location
+            TM_Server.WebRoot            = "TM_BaseFolder".tempDir(true);                      // Temp webroot folder
+            userData.Path_UserData      = TM_Server.WebRoot.pathCombine("..//UserData");       // set temp location
             userData.UsingFileStorage   = true;
 
-            var targetFolder = TMConfig.WebRoot;
+            var targetFolder = TM_Server.WebRoot;
             var userDataPath = userData.Path_UserData;
             var webRootFiles = userData.Path_WebRootFiles;
             var sourceFolder   = userDataPath.pathCombine(webRootFiles);
@@ -45,9 +45,9 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Assert.IsTrue(fileToCopy_InTarget.fileExists(), "fileToCopy_InTarget didn't exist");            
 
             //delete temp folders
-            Assert.IsTrue     (TMConfig.WebRoot.dirExists());
-            Assert.IsTrue     (Files.deleteFolder(TMConfig.WebRoot,true));
-            Assert.IsFalse    (TMConfig.WebRoot.dirExists());
+            Assert.IsTrue     (TM_Server.WebRoot.dirExists());
+            Assert.IsTrue     (Files.deleteFolder(TM_Server.WebRoot,true));
+            Assert.IsFalse    (TM_Server.WebRoot.dirExists());
 
             Assert.IsTrue     (userData.Path_UserData.dirExists());
             Assert.IsTrue     (Files.deleteFolder(userData.Path_UserData,true));

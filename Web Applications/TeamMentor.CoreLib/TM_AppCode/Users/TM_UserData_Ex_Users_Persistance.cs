@@ -149,23 +149,6 @@ namespace TeamMentor.CoreLib
         }
 
 
-        public static TM_UserData load_TMConfigFile(this TM_UserData userData)
-        {            
-            TMConfig.Location = userData.Path_UserData.pathCombine(TMConsts.TM_CONFIG_FILENAME);
-            var userConfigFile = TMConfig.Location; 
-            if (userConfigFile.fileExists())
-            {                
-                var newConfig = userConfigFile.load<TMConfig>();    // to check that the new TMConfig is not corrupted
-                if (newConfig.isNull())
-                    "[handleUserDataConfigActions] failed to load config file from: {0}".error(userConfigFile);
-                else
-                {
-                    TMConfig.Current = newConfig;                    
-                    return userData;
-                }
-            }
-            TMConfig.Current.SaveTMConfig(); // if the TMConfig.config doesn't exist or failed to load, save it with the current TMConfig.Current
-            return userData;
-        }
+        
     }
 }

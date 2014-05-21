@@ -37,16 +37,16 @@ namespace TeamMentor.CoreLib
         [Admin]
         public TM_Xml_Database(bool useFileStorage)
         {
-            if (TM_Status.In_Setup_XmlDatabase)
+            if (TM_Status.Current.TM_Database_In_Setup_Workflow)
                 throw new Exception("TM Exeption: TM_Xml_Database ctor was called twice in a row (without the first ctor sequence had ended)");
-            
-            TM_Status.In_Setup_XmlDatabase = true;
+
+            TM_Status.Current.TM_Database_In_Setup_Workflow = true;
 
             Current = this;                                                       
             UsingFileStorage = useFileStorage;                
             Setup();
 
-            TM_Status.In_Setup_XmlDatabase = false;
+            TM_Status.Current.TM_Database_In_Setup_Workflow = false;
         }
 
         [Admin] public TM_Xml_Database ResetDatabase()
@@ -121,7 +121,7 @@ namespace TeamMentor.CoreLib
             {
                 var tmConfig        = TMConfig.Current;
                 var userDataPath    = tmConfig.TMSetup.UserDataPath;
-                var xmlDatabasePath = tmConfig.xmlDatabasePath();
+                var xmlDatabasePath = this.Path_XmlDatabase;  // tmConfig.xmlDatabasePath();
 
                 "[TM_Xml_Database] [setDataFromCurrentScript] TMConfig.Current.UserDataPath: {0}".debug(userDataPath);
 
@@ -142,21 +142,10 @@ namespace TeamMentor.CoreLib
            
         [Admin] public string           ReloadData()
         {
-            return ReloadData(null);
-        }				    
-        [Admin] public string           ReloadData(string newLibraryPath)
-        {	
             "In Reload data".info();
-            this.clear_GuidanceItemsCache();                            // start by clearing the cache
-            if (newLibraryPath.notNull())                               // check if we are changing the library path
-            {
-                var tmConfig = TMConfig.Current;
-                tmConfig.TMSetup.XmlLibrariesPath = newLibraryPath;
-                tmConfig.SaveTMConfig();			
-            }
-                                   
-            Setup();                                                    // trigger the set (which will load all data
-          //  this.setupThread_WaitForComplete();
+            this.clear_GuidanceItemsCache();                            // start by clearing the cache                                   
+
+            Setup();                                                    // trigger the set (which will load all data)          
 
             var stats = "In the library '{0}' there are {1} library(ies), {2} views and {3} GuidanceItems"                        
                             .format(Current.Path_XmlLibraries.directoryName(), 

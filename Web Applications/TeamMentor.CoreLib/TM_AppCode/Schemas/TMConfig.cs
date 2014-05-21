@@ -4,14 +4,22 @@ using FluentSharp.CoreLib;
 namespace TeamMentor.CoreLib    
 {
     //public values 
-    public partial class TMConfig
+    public class TMConfig
     {
+        public static TMConfig Current { get; set; }
+
         public TMSetup_Config               TMSetup                     { get; set; }
         public TMSecurity_Config			TMSecurity				    { get; set; }        
         public WindowsAuthentication_Config WindowsAuthentication		{ get; set; }
         public Git_Config			        Git				            { get; set; }
         public OnInstallation_Config		OnInstallation				{ get; set; }
         public VirtualArticles_Config       VirtualArticles             { get; set; }
+
+
+        static TMConfig()
+        {
+            Current = new TMConfig();
+        }
 
         public TMConfig()
         {            
@@ -22,6 +30,10 @@ namespace TeamMentor.CoreLib
             Git                     = new Git_Config();
             VirtualArticles         = new VirtualArticles_Config();
         }
+
+        
+
+        
 
         public class TMSetup_Config
         {
@@ -135,43 +147,11 @@ namespace TeamMentor.CoreLib
                 AutoRedirectTarget         = "https://teammentor.net/article/";
             }
         }
-    }
-    
-    
-    //with static vars load and save 
-    public partial class TMConfig
-    {
-        public static TMConfig Current          { get; set; }
-        public static string   Location         { get; set; }
-        public static string   WebRoot          { get; set; }
-        public static string   AppData_Folder   { get; set; }
 
-        static TMConfig()
-        {
-            Current         = new TMConfig();
-            WebRoot         = AppDomain.CurrentDomain.BaseDirectory;
-            AppData_Folder  = WebRoot.pathCombine("App_Data");
-        }
 
-        public TMConfig      reloadConfig()
-        {
-            return Current = Location.fileExists() 
-                                ? Location.load<TMConfig>() 
-                                : new TMConfig();            
-        }
 
-        public bool SaveTMConfig()
-        {
-            return Location.valid() && this.saveAs(Location);
-        }
 
-        public static bool      setCurrent(TMConfig tmConfig)
-        {
-            if (tmConfig.isNull())
-                return false;
-            Current = tmConfig;
-            return Current.SaveTMConfig();    
-        }
+        
 
     }
 }

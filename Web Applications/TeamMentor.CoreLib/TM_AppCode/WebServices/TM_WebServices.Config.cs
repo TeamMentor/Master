@@ -18,14 +18,11 @@ namespace TeamMentor.CoreLib
         [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_GetDatabasePath()		{	return tmXmlDatabase.Path_XmlDatabase;	                            }
         [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_GetLibraryPath()		{	return tmXmlDatabase.Path_XmlLibraries;	                            }		
         [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_GetUserDataPath()		{	return tmXmlDatabase.UserData.Path_UserData;	                    }		
-        [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_ReloadData()			{	guiObjectsCacheOk = false; return  tmXmlDatabase.ReloadData(null);  }
+        [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_ReloadData()			{	guiObjectsCacheOk = false; return  tmXmlDatabase.ReloadData();  }
         [WebMethod(EnableSession = true)] [Admin]	            public bool   XmlDatabase_IsUsingFileStorage()	{	return tmXmlDatabase.UsingFileStorage;                              }        
         
         [WebMethod(EnableSession = true)] [Admin]	            public bool   XmlDatabase_ImportLibrary_fromZipFile(string pathToZipFile, string unzipPassword) { return TM_Xml_Database.Current.xmlDB_Libraries_ImportFromZip(pathToZipFile, unzipPassword); }                                                                                                                                     
-        [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_SetLibraryPath(string libraryPath)	{	guiObjectsCacheOk = false; 
-                                                                                                                                    return  tmXmlDatabase.ReloadData(libraryPath); 
-                                                                                                                                }
-        [WebMethod(EnableSession = true)] [Admin]	            public bool XmlDatabase_SetUserDataPath(string userDataPath)	{	return tmXmlDatabase.UserData.setUserDataPath(userDataPath); }
+        [WebMethod(EnableSession = true)] [Admin]	            public bool   XmlDatabase_SetUserDataPath(string userDataPath)	{	return tmXmlDatabase.UserData.setUserDataPath(userDataPath); }
 
 
         [WebMethod(EnableSession = true)] public List<Guid>     XmlDatabase_GuidanceItems_SearchTitleAndHtml(List<Guid> guidanceItemsIds, string searchText)
@@ -52,9 +49,9 @@ namespace TeamMentor.CoreLib
 //        [WebMethod(EnableSession = true)] [Admin]			    public string	SSO_GetSSOTokenForUser(string userName)          {   return new SingleSignOn().getSSOTokenForUser(userName); }
 //        [WebMethod(EnableSession = true)] [Admin]			    public TM_User	SSO_GetUserFromSSOToken(string ssoToken)         {   return new SingleSignOn().getUserFromSSOToken(ssoToken).user(); }                
                                                                                                                         						
-        [WebMethod(EnableSession = true)] [Admin]	            public string		TMConfigFileLocation()			     {	return TMConfig.Location;             }		
+        [WebMethod(EnableSession = true)] [Admin]	            public string		TMConfigFileLocation()			     {	return userData.tmConfig_Location();             }		
         [WebMethod(EnableSession = true)] [Admin]	            public TMConfig		TMConfigFile()                       {	return TMConfig.Current;              }																					        
-        [WebMethod(EnableSession = true)] [Admin]	            public bool		    SetTMConfigFile(TMConfig tmConfig)   {   return TMConfig.setCurrent(tmConfig); }                                                                                            
+        [WebMethod(EnableSession = true)] [Admin]	            public bool		    SetTMConfigFile(TMConfig tmConfig)   {   return userData.tmConfig_SetCurrent(tmConfig); }                                                                                            
         [WebMethod(EnableSession = true)] [Admin] 	            public Firebase_ClientConfig Get_Firebase_ClientConfig() {   return userData.firebase_ClientConfig();  }
         
 
@@ -86,7 +83,7 @@ namespace TeamMentor.CoreLib
                                                                                             var tmConfig = TMConfig.Current;
                                                                                             tmConfig.TMSetup.LibrariesUploadedFiles = folder;
                                                                                             //folder.createDir();
-                                                                                            if (tmConfig.SaveTMConfig())																																										
+                                                                                            if (userData.tmConfig_Save())																																										
                                                                                                 return "Path set to '{0}' which currently has {1} files".format(folder.fullPath(), folder.files().size());
                                                                                         }
                                                                                         return null;

@@ -58,18 +58,17 @@ namespace TeamMentor.CoreLib
             {            
                 var sourceFolder = userData.webRootFiles();
                 if (sourceFolder.notValid())
+                    return false;                
+                if (sourceFolder.dirExists().isFalse())                                    
                     return false;
-                var targetFolder = TMConfig.WebRoot;
+                "[TM_UserData] [copy_FilesIntoWebRoot] sourceFolder was found: {0}".debug(sourceFolder);
+                var targetFolder = TM_Server.WebRoot;
                 if (targetFolder.pathCombine("web.config").fileExists().isFalse())
                 {
                     "[TM_UserData] [copy_FilesIntoWebRoot] failed because web.config was not found on targetFolder: {0}".error(targetFolder);
                     return false;
                 }
-                if (sourceFolder.dirExists().isFalse())
-                {
-                    "[TM_UserData] [copy_FilesIntoWebRoot] skipped because targetFolder was not found: {0}".debug(targetFolder);
-                    return false;
-                }            
+                "[TM_UserData] [copy_FilesIntoWebRoot] target Folder with web.config was found: {0}".debug(targetFolder);    
                 Files.copyFolder(sourceFolder, targetFolder,true,true,"");            
                 return true;
             }

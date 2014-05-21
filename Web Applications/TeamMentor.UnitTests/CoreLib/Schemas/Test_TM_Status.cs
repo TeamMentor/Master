@@ -14,17 +14,16 @@ namespace TeamMentor.UnitTests.CoreLib.Schemas
         [SetUp]
         public void setup()
         {
-            TM_Status.reset();
+            
         }
         [Test]
         public void TM_Status_Ctor()
         {
-            Assert.IsFalse(TM_Status.Loading_UserData);
-            Assert.IsFalse(TM_Status.Loading_XmlDatabase);
-            Assert.IsFalse(TM_Status.Loaded_UserData);
-            Assert.IsFalse(TM_Status.Loaded_XmlDatabase);
-            Assert.IsFalse(TM_Status.In_Setup_XmlDatabase);
-            
+            var tmStatus = new TM_Status();
+
+            Assert.IsFalse(tmStatus.TM_Database_In_Setup_Workflow);
+            Assert.IsFalse(tmStatus.TM_Database_Location_Using_AppData);
+            Assert.AreEqual(tmStatus.TM_Database_Status, TM_Status.Database_Status.Not_Initialized);                        
         }
     }
 }

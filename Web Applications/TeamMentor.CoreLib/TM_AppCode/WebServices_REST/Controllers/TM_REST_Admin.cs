@@ -131,8 +131,8 @@ namespace TeamMentor.CoreLib
             return true;
         }
         [Admin] public bool          Reload_TMConfig()
-        {            
-            TMConfig.Current.reloadConfig();                    // load default one
+        {
+            TM_UserData.Current.tmConfig_Reload();
             return true;
         }
         [Admin] public string        Reload_Cache()

@@ -19,11 +19,11 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         {            
             Assert.IsNull (TM_Xml_Database.Current);
             Assert.IsTrue(TM_Xml_Database.SkipServerOnlineCheck);       // set on TeamMentor.UnitTests.Tests_Config.RunBeforeAllTests()
-            Assert.IsFalse(TM_Status.In_Setup_XmlDatabase); 
+            Assert.IsFalse(TM_Status.Current.TM_Database_In_Setup_Workflow); 
             
             TM_Xml_Database tmDatabase = new TM_Xml_Database();
 
-            Assert.IsFalse(TM_Status.In_Setup_XmlDatabase); 
+            Assert.IsFalse(TM_Status.Current.TM_Database_In_Setup_Workflow); 
             //check default values
             Assert.NotNull(tmDatabase);            
             Assert.False  (tmDatabase.UsingFileStorage);

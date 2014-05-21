@@ -9,8 +9,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
     [TestFixture]
     public class Test_TMServer
     {        
-        [SetUp]
-        [Assert_Admin]
+        [SetUp]        
         public void setup() 
         {
             
@@ -32,7 +31,11 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Assert.NotNull(tmServer.SiteData);
             Assert.IsEmpty(tmServer.UserData_Repos);
             Assert.IsEmpty(tmServer.SiteData_Repos);
-            Assert.IsFalse(tmServer.Create_Default_Admin_Account);
+            Assert.IsFalse(tmServer.Users_Create_Default_Admin);
+            Assert.IsFalse(tmServer.TM_Database_Use_AppData_Folder);
+
+            Assert.AreEqual(TM_Server.WebRoot      , AppDomain.CurrentDomain.BaseDirectory);
+            Assert.AreEqual(TM_Server.AppData_Folder, TM_Server.WebRoot.pathCombine("App_Data"));
         }
 
         //TM_Server Extension methods
@@ -126,16 +129,22 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         [Test]        
         public void tmServer()
         {
-            TM_Xml_Database tmXmlDatabase = new TM_Xml_Database();  
-            Assert.NotNull(tmXmlDatabase.tmServer());
+            UserGroup.Admin.assert();
+            var tmDatabase = new TM_Xml_Database();
+            var tmServer = tmDatabase.tmServer();
+            
+            Assert.NotNull (tmServer);
+            Assert.AreEqual(tmServer, tmDatabase.TM_Server_Config);                          
         }        
 
-        [Test][Assert_Admin]
+        [Test]
         public void LoadAndSave_TMServer_To_Disk()
         {
-            TM_Xml_Database tmXmlDatabase = null;
+            UserGroup.Admin.assert();
+            TM_Xml_Database tmXmlDatabase = new TM_Xml_Database(true);
 
             var tmServer      = tmXmlDatabase.TM_Server_Config;
+            tmXmlDatabase.get_Path_TMServer_Config().info();
             var tmServerPath  = tmXmlDatabase.get_Path_TMServer_Config();
 
             Assert.IsNotNull(tmServer                   , "tmServer");

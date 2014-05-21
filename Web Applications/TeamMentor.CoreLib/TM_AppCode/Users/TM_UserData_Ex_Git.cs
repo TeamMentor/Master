@@ -32,7 +32,7 @@ namespace TeamMentor.CoreLib
             if (userData.UsingFileStorage && userData.Path_UserData.notNull())
             {
                 userData.load_UserData_FromGitRepo();               // will create the custom UserData repo clone (if mapped)
-                userData.load_TMConfigFile();                       // loads the user configured TMConfig.Config file (from either the default or the custom UserData folder)
+                userData.tmConfig_Load();                       // loads the user configured TMConfig.Config file (from either the default or the custom UserData folder)
 
                 var gitEnabled = userData.tmConfig().Git.UserData_Git_Enabled;                
 

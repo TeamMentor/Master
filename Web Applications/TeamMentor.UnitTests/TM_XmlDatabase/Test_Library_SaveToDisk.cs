@@ -15,7 +15,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         [SetUp][Assert_Admin]
         public void Setup()
         {
-            TMConfig.WebRoot = "temp_BaseFolder".tempDir();  // set temp folder for UnitTests
+            TM_Server.WebRoot = "temp_BaseFolder".tempDir();  // set temp folder for UnitTests
             tmDatabase = new TM_Xml_Database(true);          // with the useFileStorage set to true                        
         }
 
@@ -24,11 +24,11 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         {
             Assert.IsTrue     (tmDatabase.Path_XmlDatabase.dirExists());
             Assert.IsTrue     (tmDatabase.Path_XmlLibraries.dirExists());
-            Assert.IsTrue     (TMConfig.WebRoot.dirExists());   
+            Assert.IsTrue     (TM_Server.WebRoot.dirExists());   
             
             //delete temp WebRoot
-            Files.deleteFolder(TMConfig.WebRoot, true);
-            Assert.IsFalse    (TMConfig.WebRoot.dirExists());
+            Files.deleteFolder(TM_Server.WebRoot, true);
+            Assert.IsFalse    (TM_Server.WebRoot.dirExists());
 
             //delete temp Library data            
             tmDatabase.Path_XmlDatabase.files(true).files_Attribute_ReadOnly_Remove();  // required due to locks on .git files

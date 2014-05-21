@@ -46,8 +46,7 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
         [Test]
         public void TestSecurityDemandsOnWebServices()
         {
-            Assert.Throws<SecurityException>(() => tmWebServices.XmlDatabase_ImportLibrary_fromZipFile(null, null));
-            Assert.Throws<SecurityException>(() => tmWebServices.XmlDatabase_SetLibraryPath(null));
+            Assert.Throws<SecurityException>(() => tmWebServices.XmlDatabase_ImportLibrary_fromZipFile(null, null));            
             Assert.Throws<SecurityException>(() => tmWebServices.XmlDatabase_ReloadData());
             Assert.Throws<SecurityException>(() => tmWebServices.XmlDatabase_GetLibraryPath());
             Assert.Throws<SecurityException>(() => tmWebServices.XmlDatabase_GetDatabasePath());                    

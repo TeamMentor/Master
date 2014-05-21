@@ -5,8 +5,13 @@
 <%@ Import Namespace="TeamMentor.CoreLib" %>
 
 <%	
+
 	var tmWebServices = new TM_WebServices();	
 	tmWebServices.tmAuthentication.mapUserRoles(true);
+
+    UserGroup.Admin.assert();
+    UserRole.Admin.demand();
+    
     //UserGroup.Admin.setThreadPrincipalWithRoles();           // Assert admin privs - only use for special debugging/deployment issues
 	if (tmWebServices.RBAC_IsAdmin().isFalse())
 	{
@@ -27,10 +32,16 @@
         <h2>TM Config values</h2>
         <hr />
         <div>                                    
-            <strong>TM_Xml_Database.Current.Path_XmlDatabase:</strong> <%=TM_Xml_Database.Current.Path_XmlDatabase %><br />
+            <strong>TM_Xml_Database.Current.Path_XmlDatabase:</strong>  <%=TM_Xml_Database.Current.Path_XmlDatabase %><br />
             <strong>TM_Xml_Database.Current.Path_XmlLibraries:</strong> <%=TM_Xml_Database.Current.Path_XmlLibraries %><br />
+            <strong>TM_Server.Location:</strong> <%=TM_Xml_Database.Current.get_Path_TMServer_Config() %><br />            
+            <strong>TM_Config.Location:</strong> <%= TM_UserData.Current.tmConfig_Location() %><br />
+            <strong>UserData.Path_UserData:</strong> <%= TM_UserData.Current.Path_UserData %><br />
+            <hr />
             <strong>AppDomain.CurrentDomain.BaseDirectory:</strong> <%=AppDomain.CurrentDomain.BaseDirectory%><br />
             <strong>O2 Temp Dir:</strong> <%= PublicDI.config.O2TempDir%><br />
+            <strong>TM_Status:</strong>
+            <pre><%= TM_Status.Current.toXml().htmlEncode()%></pre>
         </div>
         
         <br /><h2>Session Values</h2>

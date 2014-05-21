@@ -40,7 +40,7 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             Assert.NotNull    (currentUser , "Current User Not Set");
             Assert.AreEqual   (currentUser.Company      , newUser.Company);
             Assert.AreEqual   (DateTime.FromFileTimeUtc(currentUser.CreatedDate).ToLongDateString()  ,
-                               DateTime.Now                                     .ToLongDateString());
+                               DateTime.UtcNow                                  .ToLongDateString());
             Assert.AreEqual   (currentUser.Email        , newUser.Email);
             Assert.AreEqual   (currentUser.FirstName    , newUser.Firstname);
             Assert.AreEqual   (currentUser.LastName     , newUser.Lastname);

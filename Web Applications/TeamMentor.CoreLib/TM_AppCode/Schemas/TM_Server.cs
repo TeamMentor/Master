@@ -2,12 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using FluentSharp.CoreLib;
 
 namespace TeamMentor.CoreLib
 {
     public class TM_Server
     {
-        public bool          Create_Default_Admin_Account    { get; set; }
+        public static string WebRoot { get; set; }
+        public static string AppData_Folder { get; set; }
+
+        
+        public bool          Users_Create_Default_Admin     { get; set; }
+        public bool          TM_Database_Use_AppData_Folder { get; set; }
         public Config        UserData { get; set; }
         public Config        SiteData { get; set; }
         public List<GitRepo> UserData_Repos { get; set; }
@@ -15,7 +21,9 @@ namespace TeamMentor.CoreLib
 
         public TM_Server()
         {
-            this.resetData();
+            WebRoot = AppDomain.CurrentDomain.BaseDirectory;
+            AppData_Folder = WebRoot.pathCombine("App_Data");
+            this.resetData();            
         }
 
 
