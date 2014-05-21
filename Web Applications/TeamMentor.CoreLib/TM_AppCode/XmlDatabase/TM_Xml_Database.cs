@@ -30,19 +30,18 @@ namespace TeamMentor.CoreLib
         public Dictionary<Guid, VirtualArticleAction>   VirtualArticles			    { get; set; }
                                                             
         
-        
-        public TM_Xml_Database          () : this(false)                    // defaults to creating a TM_Instance in memory    
-        {
-        }
+        // defaults to creating a TM_Instance in memory
         [Admin]
-        public TM_Xml_Database(bool useFileStorage)
+        public TM_Xml_Database(bool useFileStorage = false, TM_Server tmServer = null)
         {
+            
             if (TM_Status.Current.TM_Database_In_Setup_Workflow)
                 throw new Exception("TM Exeption: TM_Xml_Database ctor was called twice in a row (without the first ctor sequence had ended)");
 
             TM_Status.Current.TM_Database_In_Setup_Workflow = true;
-
-            Current = this;                                                       
+            
+            Current = this;
+            Server  = tmServer;
             UsingFileStorage = useFileStorage;                
             Setup();
 
@@ -55,10 +54,12 @@ namespace TeamMentor.CoreLib
             Cached_GuidanceItems        = new Dictionary<Guid, TeamMentor_Article>();
             GuidanceItems_FileMappings  = new Dictionary<Guid, string>();
             GuidanceExplorers_XmlFormat = new Dictionary<Guid, guidanceExplorer>();
-            GuidanceExplorers_Paths     = new Dictionary<guidanceExplorer, string>();
-            Server            = new TM_Server();
+            GuidanceExplorers_Paths     = new Dictionary<guidanceExplorer, string>();            
             UserData                    = new TM_UserData(UsingFileStorage); 
             VirtualArticles             = new Dictionary<Guid, VirtualArticleAction>();
+            
+            //Server                      = new TM_Server();
+
             return this;
         }
 
@@ -76,7 +77,7 @@ namespace TeamMentor.CoreLib
         }
         public void TM_Setup_Thread()*/
         [Admin]
-        public TM_Xml_Database Setup()
+        public TM_Xml_Database          Setup()
         {            
             try
             {
@@ -84,7 +85,8 @@ namespace TeamMentor.CoreLib
 
                 this.set_Path_XmlDatabase();
 
-                this.load_TMServer_Config();
+                if (    Server.isNull())
+                    this.load_TMServer_Config();
 
                 if (UsingFileStorage)
                 {

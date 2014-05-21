@@ -140,6 +140,7 @@
     <Compile Include="TM_XmlDatabase\Test_Users_Creation.cs" />
     <Compile Include="TM_XmlDatabase\Test_Users_Sessions.cs" />
     <Compile Include="TM_XmlDatabase\Test_Users_UserActivities.cs" />
+    <Compile Include="_Test_ConfigAndHelpers\Misc_CoreLib_ExtensionMethods.cs" />
     <Compile Include="_Test_ConfigAndHelpers\Tests_Config.cs" />
     <Compile Include="_Test_ConfigAndHelpers\TM_Config_InMemory.cs" />
     <Compile Include="_Test_ConfigAndHelpers\TM_Test_Utils_Extension_Methods.cs" />

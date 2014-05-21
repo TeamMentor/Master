@@ -19,9 +19,14 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         {            
             Assert.IsNull (TM_Xml_Database.Current);
             Assert.IsTrue(TM_Xml_Database.SkipServerOnlineCheck);       // set on TeamMentor.UnitTests.Tests_Config.RunBeforeAllTests()
-            Assert.IsFalse(TM_Status.Current.TM_Database_In_Setup_Workflow); 
-            
-            TM_Xml_Database tmDatabase = new TM_Xml_Database();
+            Assert.IsFalse(TM_Status.Current.TM_Database_In_Setup_Workflow);
+
+            var tmServer = new TM_Server()
+                                {
+                                    Users_Create_Default_Admin = false
+                                };
+
+            TM_Xml_Database tmDatabase = new TM_Xml_Database(false, tmServer);
 
             Assert.IsFalse(TM_Status.Current.TM_Database_In_Setup_Workflow); 
             //check default values
@@ -35,7 +40,9 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Assert.NotNull(tmDatabase.GuidanceExplorers_Paths);
             Assert.NotNull(tmDatabase.GuidanceItems_FileMappings);
             Assert.NotNull(tmDatabase.Cached_GuidanceItems);
-            Assert.NotNull(tmDatabase.VirtualArticles);            
+            Assert.NotNull(tmDatabase.VirtualArticles);
+
+            Assert.IsEmpty(tmDatabase.UserData.TMUsers);        // due to Users_Create_Default_Admin no users should exist
         }
 
         [Test]
