@@ -23,7 +23,7 @@ namespace TeamMentor.CoreLib
         {
             WebRoot = AppDomain.CurrentDomain.BaseDirectory;
             AppData_Folder = WebRoot.pathCombine("App_Data");
-            this.resetData();            
+            this.setDefaultValues();            
         }
 
 

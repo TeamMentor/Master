@@ -59,11 +59,11 @@ namespace TeamMentor.CoreLib
         [WebMethod(EnableSession = true)] [Admin]	            public string		TMServerFileLocation()			{	return tmXmlDatabase.get_Path_TMServer_Config();  }		
         [WebMethod(EnableSession = true)] [Admin]	            public TM_Server		TMServerFile()
                                                                                     {	
-                                                                                        return tmXmlDatabase.TM_Server_Config;  
+                                                                                        return tmXmlDatabase.Server;  
                                                                                     }
         [WebMethod(EnableSession = true)] [Admin]	            public bool		    SetTMServerFile(TM_Server tmServer)
                                                                                     {
-                                                                                         tmXmlDatabase.TM_Server_Config = tmServer;
+                                                                                         tmXmlDatabase.Server = tmServer;
                                                                                          return tmXmlDatabase.save_TMServer_Config();                                                                                        
                                                                                     }
 

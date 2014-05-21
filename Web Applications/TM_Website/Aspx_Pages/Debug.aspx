@@ -36,7 +36,9 @@
             <strong>TM_Xml_Database.Current.Path_XmlLibraries:</strong> <%=TM_Xml_Database.Current.Path_XmlLibraries %><br />
             <strong>TM_Server.Location:</strong> <%=TM_Xml_Database.Current.get_Path_TMServer_Config() %><br />            
             <strong>TM_Config.Location:</strong> <%= TM_UserData.Current.tmConfig_Location() %><br />
+            <hr />
             <strong>UserData.Path_UserData:</strong> <%= TM_UserData.Current.Path_UserData %><br />
+            <strong># of loaded users</strong> <%= TM_UserData.Current.TMUsers.size() %></br>
             <hr />
             <strong>AppDomain.CurrentDomain.BaseDirectory:</strong> <%=AppDomain.CurrentDomain.BaseDirectory%><br />
             <strong>O2 Temp Dir:</strong> <%= PublicDI.config.O2TempDir%><br />

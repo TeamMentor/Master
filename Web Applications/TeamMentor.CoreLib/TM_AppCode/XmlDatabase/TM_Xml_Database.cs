@@ -16,7 +16,7 @@ namespace TeamMentor.CoreLib
         //public object			        setupLock             = new object();
         public bool			            UsingFileStorage	  { get; set; }         //config                   
         public bool                     ServerOnline          { get; set; }         
-        public TM_Server                TM_Server_Config      { get; set; }         
+        public TM_Server                Server                { get; set; }         
         public TM_UserData              UserData              { get; set; }         //users and tracking             
         public List<API_NGit>           NGits                 { get; set; }         // Git object, one per library that has git support
         public string 	                Path_XmlDatabase      { get; set; }					
@@ -56,7 +56,7 @@ namespace TeamMentor.CoreLib
             GuidanceItems_FileMappings  = new Dictionary<Guid, string>();
             GuidanceExplorers_XmlFormat = new Dictionary<Guid, guidanceExplorer>();
             GuidanceExplorers_Paths     = new Dictionary<guidanceExplorer, string>();
-            TM_Server_Config            = new TM_Server();
+            Server            = new TM_Server();
             UserData                    = new TM_UserData(UsingFileStorage); 
             VirtualArticles             = new Dictionary<Guid, VirtualArticleAction>();
             return this;
@@ -103,7 +103,8 @@ namespace TeamMentor.CoreLib
                     loadDataIntoMemory();
                     this.logTBotActivity("TM Xml Database", "Library Data is loaded");
                 }
-                UserData.createDefaultAdminUser();  // make sure the admin user exists and is configured
+                if (Server.Users_Create_Default_Admin)
+                    UserData.createDefaultAdminUser();  // make sure the admin user exists and is configured
                 this.logTBotActivity("TM Xml Database", "TM started at: {0}".format(DateTime.Now));
             }
             catch (Exception ex)

@@ -50,7 +50,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Assert.IsEmpty(tmDatabase.GuidanceItems_FileMappings);
             Assert.IsEmpty(tmDatabase.GuidanceExplorers_XmlFormat);
             Assert.IsEmpty(tmDatabase.GuidanceExplorers_Paths);
-            Assert.AreEqual(tmDatabase.TM_Server_Config.toXml(), new TM_Server().toXml());            
+            Assert.AreEqual(tmDatabase.Server.toXml(), new TM_Server().toXml());            
             Assert.IsEmpty(tmDatabase.VirtualArticles);
             Assert.NotNull(tmDatabase.UserData); // see Test_TM_SecretData for the Ctor checks
         }

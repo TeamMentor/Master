@@ -47,18 +47,18 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             var password = "!1234567!";
             var salt = Guid.NewGuid().str();	        
             "{0}\n{1}\n-------\n".info(password, salt);
-            for (int i = 1; i < 6; i++)
+            for (int i = 1; i < 5; i++)
             {
                 var now = DateTime.Now;
-                var interactions = i * 2500;// 5000;                
+                var interactions = i * 1000;// 5000;                
                 var passwordHash = password.hash_PBKDF2(salt, interactions,64);
                 var timeSpan = DateTime.Now - now;	            
                 "password: {0}\ninteractions: {1}  timespan: {2}\n".info(passwordHash, interactions, timeSpan);
                 
                 Assert.NotNull  (passwordHash);
                 Assert.AreEqual (64, passwordHash.base64Decode_AsByteArray().size());
-                Assert.Less     (timeSpan.Seconds,2);                 // slowest calculation should be faster than 2 seconds
-                Assert.Greater  (timeSpan.TotalMilliseconds, i * 30); // faster calculation should be bigger than i* 30 (30, 60, 90, 120,150) milliseconds
+                Assert.Less     (timeSpan.Seconds,3);                 // slowest calculation should be faster than 2 seconds
+                Assert.Greater  (timeSpan.TotalMilliseconds, i * 20); // faster calculation should be bigger than i* 20 (20, 40, 60, 80, 100) milliseconds
             }
         }
         [Test] public void PBKDF2_Default()

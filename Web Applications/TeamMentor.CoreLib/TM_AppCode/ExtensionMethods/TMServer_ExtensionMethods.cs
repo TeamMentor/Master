@@ -8,8 +8,11 @@ namespace TeamMentor.CoreLib
 {
     public static class TMServer_ExtensionMethods
     {
-        public static TM_Server resetData(this TM_Server tmServer)
+        public static TM_Server setDefaultValues(this TM_Server tmServer)
         {
+            tmServer.Users_Create_Default_Admin     = true;
+            tmServer.TM_Database_Use_AppData_Folder = false;
+
             tmServer.UserData_Repos = new List<TM_Server.GitRepo>();
             tmServer.SiteData_Repos = new List<TM_Server.GitRepo>();
 
@@ -76,14 +79,14 @@ namespace TeamMentor.CoreLib
         {
             if (tmDatabase.isNull())
                 return null;
-            return tmDatabase.TM_Server_Config.notNull()
-                    ? tmDatabase.TM_Server_Config
+            return tmDatabase.Server.notNull()
+                    ? tmDatabase.Server
                     : tmDatabase.load_TMServer_Config();
         }
        
         public static TM_Server load_TMServer_Config(this TM_Xml_Database tmDatabase)
         {
-            tmDatabase.TM_Server_Config = new TM_Server();
+            tmDatabase.Server = new TM_Server();
             if (tmDatabase.UsingFileStorage)
             {
                 var tmServerFile = tmDatabase.get_Path_TMServer_Config();
@@ -98,11 +101,11 @@ namespace TeamMentor.CoreLib
                     if (tmServer.isNull())
                         "[TM_Xml_Database][load_TMServer_Config] Failed to load tmServer file: {0}   Default values will be used".error(tmServerFile);
                     else                    
-                        tmDatabase.TM_Server_Config = tmServer;
+                        tmDatabase.Server = tmServer;
                 }
             }
                 
-            return tmDatabase.TM_Server_Config;
+            return tmDatabase.Server;
         }
         public static bool save_TMServer_Config(this TM_Xml_Database tmDatabase)
         {
@@ -112,7 +115,7 @@ namespace TeamMentor.CoreLib
                 {
                     var tmServerFile = tmDatabase.get_Path_TMServer_Config();
                     if (tmServerFile.valid())
-                        tmDatabase.TM_Server_Config.saveAs(tmServerFile);
+                        tmDatabase.Server.saveAs(tmServerFile);
                 }
                 return true;
             }

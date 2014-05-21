@@ -31,7 +31,8 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Assert.NotNull(tmServer.SiteData);
             Assert.IsEmpty(tmServer.UserData_Repos);
             Assert.IsEmpty(tmServer.SiteData_Repos);
-            Assert.IsFalse(tmServer.Users_Create_Default_Admin);
+
+            Assert.IsTrue (tmServer.Users_Create_Default_Admin);
             Assert.IsFalse(tmServer.TM_Database_Use_AppData_Folder);
 
             Assert.AreEqual(TM_Server.WebRoot      , AppDomain.CurrentDomain.BaseDirectory);
@@ -134,7 +135,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             var tmServer = tmDatabase.tmServer();
             
             Assert.NotNull (tmServer);
-            Assert.AreEqual(tmServer, tmDatabase.TM_Server_Config);                          
+            Assert.AreEqual(tmServer, tmDatabase.Server);                          
         }        
 
         [Test]
@@ -143,7 +144,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             UserGroup.Admin.assert();
             TM_Xml_Database tmXmlDatabase = new TM_Xml_Database(true);
 
-            var tmServer      = tmXmlDatabase.TM_Server_Config;
+            var tmServer      = tmXmlDatabase.Server;
             tmXmlDatabase.get_Path_TMServer_Config().info();
             var tmServerPath  = tmXmlDatabase.get_Path_TMServer_Config();
 
