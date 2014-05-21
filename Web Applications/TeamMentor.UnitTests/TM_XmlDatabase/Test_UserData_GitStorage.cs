@@ -14,7 +14,8 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         public API_NGit     nGit;
         [SetUp]
         public void setUp()
-        {            
+        {
+            TM_Xml_Database.Current = null;
             //create temp repo with no Admin user
             userData = new TM_UserData(true)
                                 {
@@ -23,7 +24,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             userData .SetUp(); 
             nGit     = userData.NGit;     
 
-            Assert.AreEqual(2, nGit.commits().size() , "there should be two commits here");
+            Assert.AreEqual(1, nGit.commits().size() , "there should be one commits here");
 
             Assert.NotNull(userData);
             Assert.IsNull(TM_Xml_Database.Current);
@@ -49,7 +50,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             var users = userData.tmUsers();
             Assert.IsNotEmpty(users, "There should be at least one user (the admin)");
             Assert.IsNotEmpty(userData.Path_UserData.files());                        
-            Assert.AreEqual  (3,userData.Path_UserData.files(true).size());
+            Assert.AreEqual  (2,userData.Path_UserData.files(true).size());
             Assert.IsFalse   (userData.Path_UserData.isGitRepository());
             
             TMConfig.Current.Git.UserData_Git_Enabled = true;
@@ -100,7 +101,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
 
             Assert.IsFalse    (nGit.head().isNull());
             Assert.AreNotEqual(headBeforeUser, headAfterUser, "Git Head value should now be different");    
-            Assert.AreEqual   (5, nGit.commits().size());
+            Assert.AreEqual   (4, nGit.commits().size());
             Assert.IsEmpty    (nGit.status());
         }
         [Test][Assert_Admin] public void CheckGitRepo_DoesNotCommit_OnUserSave()
@@ -133,19 +134,19 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
 
             //nGit.refLogs().toString().info();
 
-            Assert.AreEqual(2, commitsBeforeNewUser,    "There should be 2 commits before user create");
-            Assert.AreEqual(3, commitsAfterNewUser    , "There should be 3 commits after user create");
-            Assert.AreEqual(4, commitsAfterDeleteUser , "There should be 4 commits after user delete");                                  
+            Assert.AreEqual(1, commitsBeforeNewUser,    "There should be 1 commits before user create");
+            Assert.AreEqual(2, commitsAfterNewUser    , "There should be 2 commits after user create");
+            Assert.AreEqual(3, commitsAfterDeleteUser , "There should be 3 commits after user delete");                                  
             Assert.IsEmpty(nGit.status());
             
         }
         [Test][Assert_Admin] public void CheckGitRepo_DoesNotCommit_OnActivites()
         {
             var tmUser = userData.newUser().tmUser();            
-            Assert.AreEqual(3, nGit.commits().size());
+            Assert.AreEqual(2, nGit.commits().size());
             tmUser.logUserActivity("testAction", "testDetail");
             Assert.IsNotEmpty(nGit.status());
-            Assert.AreEqual(3, nGit.commits().size());
+            Assert.AreEqual(2, nGit.commits().size());
         }
     }
 }

@@ -15,7 +15,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         [SetUp][Assert_Admin]
         public void Setup()
         {
-            TM_Server.WebRoot = "temp_BaseFolder".tempDir();  // set temp folder for UnitTests
+            //TM_Server.WebRoot = "temp_BaseFolder".tempDir();  // set temp folder for UnitTests
             tmDatabase = new TM_Xml_Database(true);          // with the useFileStorage set to true                        
         }
 
@@ -27,8 +27,8 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Assert.IsTrue     (TM_Server.WebRoot.dirExists());   
             
             //delete temp WebRoot
-            Files.deleteFolder(TM_Server.WebRoot, true);
-            Assert.IsFalse    (TM_Server.WebRoot.dirExists());
+            //Files.deleteFolder(TM_Server.WebRoot, true);
+            //Assert.IsFalse    (TM_Server.WebRoot.dirExists());
 
             //delete temp Library data            
             tmDatabase.Path_XmlDatabase.files(true).files_Attribute_ReadOnly_Remove();  // required due to locks on .git files
@@ -43,9 +43,11 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             var databaseFolder      = tmDatabase.Path_XmlDatabase;
             var libraryFolder       = tmDatabase.Path_XmlLibraries;
             var appDomainFolder     = AppDomain.CurrentDomain.BaseDirectory;
-
-            Assert.IsFalse(libraryFolder.contains(appDomainFolder), "libraryFolder should not be inside appDomainFolder");
-            Assert.IsFalse(databaseFolder.contains(appDomainFolder), "databaseFolder should not be inside appDomainFolder");            
+            
+            Assert.IsTrue(TM_Status.Current.TM_Database_Location_Using_AppData  , "in UnitTests, should be inside App_Data folder");
+            Assert.IsTrue(libraryFolder.contains(appDomainFolder)               , "in UnitTests, libraryFolder should be inside appDomainFolder");
+            Assert.IsTrue(databaseFolder.contains(appDomainFolder)              , "in UnitTests, databaseFolder should be inside appDomainFolder");
+            
         }
 
         [Test][Assert_Editor]

@@ -48,7 +48,7 @@ namespace TeamMentor.CoreLib
                 if (appData_Path.createDir().dirExists() && appData_Path.canWriteToPath())
                 {
                     tmXmlDatabase.Path_XmlDatabase              = appData_Path;           // if can write it then make it the Path_XmlDatabase
-                    tmStatus.TM_Database_Location_Using_AppData = false;
+                    tmStatus.TM_Database_Location_Using_AppData = true;
                     "[TM_Xml_Database][set_Path_XmlDatabase] Path_XmlDatabase set to: {0}".info(appData_Path);
                     return tmXmlDatabase;       
                 }   
