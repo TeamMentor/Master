@@ -25,7 +25,7 @@ namespace TeamMentor.CoreLib
 
     public static class PBKDF2_ExtensionMethods
     {
-        public static int DEFAULT_PBKDF2_INTERACTIONS = 20000;
+        public static int DEFAULT_PBKDF2_INTERACTIONS = 5000; // 20000;
         public static int DEFAULT_PBKDF2_BYTES = 64;
 
         public static string hash_PBKDF2(this string password, Guid salt)

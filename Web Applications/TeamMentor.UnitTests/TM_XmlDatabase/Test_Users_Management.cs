@@ -50,7 +50,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             for (int i = 1; i < 6; i++)
             {
                 var now = DateTime.Now;
-                var interactions = i * 5000;                
+                var interactions = i * 2500;// 5000;                
                 var passwordHash = password.hash_PBKDF2(salt, interactions,64);
                 var timeSpan = DateTime.Now - now;	            
                 "password: {0}\ninteractions: {1}  timespan: {2}\n".info(passwordHash, interactions, timeSpan);
@@ -58,12 +58,12 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
                 Assert.NotNull  (passwordHash);
                 Assert.AreEqual (64, passwordHash.base64Decode_AsByteArray().size());
                 Assert.Less     (timeSpan.Seconds,2);                 // slowest calculation should be faster than 2 seconds
-                Assert.Greater  (timeSpan.TotalMilliseconds, i * 30); // slowest calculation should be slower than i* 30 (30, 60, 90, 120,150) milliseconds
+                Assert.Greater  (timeSpan.TotalMilliseconds, i * 30); // faster calculation should be bigger than i* 30 (30, 60, 90, 120,150) milliseconds
             }
         }
         [Test] public void PBKDF2_Default()
         {
-            20000.set_DEFAULT_PBKDF2_INTERACTIONS(); // restore this value since that is what we are testing
+            5000.set_DEFAULT_PBKDF2_INTERACTIONS(); // restore this value since that is what we are testing
             Action<string,string> checkPassword = 
                 (password, salt) =>
                     {
