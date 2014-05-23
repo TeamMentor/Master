@@ -1,5 +1,4 @@
-﻿using FluentSharp.WinForms;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using TeamMentor.CoreLib;
 
 namespace TeamMentor.UnitTests.CoreLib
@@ -22,31 +21,29 @@ namespace TeamMentor.UnitTests.CoreLib
             Assert.IsNull   (new TMUser().user_XmlFile_Location());
             Assert.IsNull   (new TMUser().user_XmlFile_Name());
 
-            var userData2 = new TM_UserData(true);
+            var userData2 = new TM_UserData_Git(true);
             
             Assert.IsNull   (userData2.Path_UserData);
             Assert.IsNull   (userData2.NGit);
             
             //set by ResetData
             Assert.IsTrue   (userData2.UsingFileStorage);
-            Assert.AreEqual (userData2.FirstScriptToInvoke, TMConsts.USERDATA_FIRST_SCRIPT_TO_INVOKE);
+            //Assert.AreEqual (userData2.FirstScriptToInvoke, TMConsts.USERDATA_FIRST_SCRIPT_TO_INVOKE);
             Assert.AreEqual (userData2.Path_WebRootFiles  , TMConsts.USERDATA_PATH_WEB_ROOT_FILES);            
             Assert.AreEqual (TM_UserData.Current, userData2);            
             Assert.IsEmpty  (userData2.TMUsers);
             Assert.IsNotNull(userData2.SecretData);                        
-        }
-    
-        [Test] public void resetData()          
-        {
-            var userData = new TM_UserData();
-            
-            userData.resetData();
-            Assert.AreEqual(userData.NGit_Author_Name, TMConsts.NGIT_DEFAULT_AUTHOR_NAME);
-            Assert.AreEqual(userData.NGit_Author_Email, TMConsts.NGIT_DEFAULT_AUTHOR_EMAIL);
-            Assert.AreEqual(userData.FirstScriptToInvoke, TMConsts.USERDATA_FIRST_SCRIPT_TO_INVOKE);
-            Assert.AreEqual(userData.Path_WebRootFiles, TMConsts.USERDATA_PATH_WEB_ROOT_FILES);
-            Assert.IsEmpty(userData.TMUsers);
-            Assert.NotNull(userData.SecretData);        // see Test_TM_SecretData for the Ctor checks
+        
+            // was in resetData()          
+        
+            var userData3 = new TM_UserData_Git();
+
+            Assert.AreEqual(userData3.NGit_Author_Name, TMConsts.NGIT_DEFAULT_AUTHOR_NAME);
+            Assert.AreEqual(userData3.NGit_Author_Email, TMConsts.NGIT_DEFAULT_AUTHOR_EMAIL);
+            //Assert.AreEqual(userData.FirstScriptToInvoke, TMConsts.USERDATA_FIRST_SCRIPT_TO_INVOKE);
+            Assert.AreEqual(userData3.Path_WebRootFiles, TMConsts.USERDATA_PATH_WEB_ROOT_FILES);
+            Assert.IsEmpty(userData3.TMUsers);
+            Assert.NotNull(userData3.SecretData);        // see Test_TM_SecretData for the Ctor checks
         }
 
         [Test] public void loadUsers()

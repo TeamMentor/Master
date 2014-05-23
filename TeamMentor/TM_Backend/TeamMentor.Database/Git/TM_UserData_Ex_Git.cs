@@ -12,7 +12,7 @@ namespace TeamMentor.CoreLib
         {
             try
             {
-                var userData    = TM_UserData.Current;
+                var userData    = (TM_UserData_Git)TM_UserData.Current;
                 var name =      userData.NGit_Author_Name.valid() ? userData.NGit_Author_Name : "tm-bot";
                 var email =      userData.NGit_Author_Email.valid() ? userData.NGit_Author_Email : "tm-bot@teammentor.net";
                 nGit.Author     = name.personIdent(email);
@@ -29,10 +29,10 @@ namespace TeamMentor.CoreLib
     {        
         public static TMUser        triggerGitCommit                  (this TMUser tmUser)
         {
-            TM_UserData.Current.triggerGitCommit();
+            (TM_UserData.Current as TM_UserData_Git).triggerGitCommit();
             return tmUser;
         }
-        public static TM_UserData   triggerGitCommit                  (this TM_UserData userData)
+        public static TM_UserData   triggerGitCommit                  (this TM_UserData_Git userData)
         {
             var tmServer = TM_Xml_Database.Current.tmServer();
             if (tmServer.notNull())
@@ -70,7 +70,7 @@ namespace TeamMentor.CoreLib
                     });
             return userData;
         }
-        public static TM_UserData syncWithGit(this TM_UserData userData)
+        public static TM_UserData syncWithGit(this TM_UserData_Git userData)
         {
             try
             {

@@ -1,7 +1,6 @@
 ﻿<%@ Page Language="C#"  Trace="true" %>
 <%@ Import Namespace="FluentSharp.CoreLib" %>
 <%@ Import Namespace="FluentSharp.CoreLib.API" %>
-<%@ Import Namespace="FluentSharp.WinForms" %>
 <%@ Import Namespace="TeamMentor.CoreLib" %>
 
 <%	

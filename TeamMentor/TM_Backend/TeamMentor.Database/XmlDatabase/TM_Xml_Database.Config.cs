@@ -172,13 +172,13 @@ namespace TeamMentor.CoreLib
             return tmXmlDatabase;
         }
     
-        public static TM_UserData       userData(this TM_Xml_Database tmDatabase)                 
+        public static TM_UserData_Git           userData(this TM_Xml_Database tmDatabase)                 
         {
             if (tmDatabase.isNull())
                 return null;
             if (tmDatabase.UserData.isNull())
                 tmDatabase.UserData = new TM_UserData(tmDatabase.UsingFileStorage);
-            return tmDatabase.UserData;
+            return (TM_UserData_Git)tmDatabase.UserData;
         }
         [Admin] public static TM_Xml_Database   loadData(this TM_Xml_Database tmDatabase)                 
         {

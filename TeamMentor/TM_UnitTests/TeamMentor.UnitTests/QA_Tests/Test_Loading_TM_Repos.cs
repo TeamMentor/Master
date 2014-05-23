@@ -4,7 +4,6 @@ using System.Xml.Serialization;
 using FluentSharp.CoreLib;
 using FluentSharp.Git;
 using FluentSharp.Git.APIs;
-using FluentSharp.WinForms;
 using NUnit.Framework;
 
 namespace TeamMentor.UnitTests.QA_Tests
@@ -104,8 +103,7 @@ namespace TeamMentor.UnitTests.QA_Tests
         }
         [Test] public void Test_Clone_Vulnerabilities()
         {
-            runCloneForNGitAndGitExe("Vulnerabilities"   , 188, 20);    
-            "continue".alert();
+            runCloneForNGitAndGitExe("Vulnerabilities"   , 188, 20);                
         }
         [Test] public void Test_Clone_PCI_DSS_Compliance()
         {

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Collections.Generic;
 using FluentSharp.CoreLib;
 using FluentSharp.CoreLib.API;
-using FluentSharp.WinForms;
 
 namespace TeamMentor.CoreLib
 {

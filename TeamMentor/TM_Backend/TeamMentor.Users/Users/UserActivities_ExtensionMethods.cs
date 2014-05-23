@@ -1,40 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
-using System.Xml.Serialization;
 using FluentSharp.CoreLib;
 
 namespace TeamMentor.CoreLib
 {
-    [DataContract] 
-    public class UserActivity
-    {
-        [DataMember] [XmlAttribute] public string	Action		{ get; set; }
-        [DataMember] [XmlAttribute]  public string	Detail		{ get; set; }
-        [DataMember] [XmlAttribute]  public string	Who		    { get; set; }
-        [DataMember] [XmlAttribute]  public string	IPAddress	{ get; set; }
-        [DataMember] [XmlAttribute]  public long    When		{ get; set; }        
-        [DataMember] [XmlAttribute]  public string  When_JS		{ get; set; }
-    }
-
-    public class UserActivities
-    {
-        public static UserActivities Current { get; set; }
-
-        public List<UserActivity> ActivitiesLog { get; set; }
-
-
-
-        static UserActivities()
-        {
-            Current = new UserActivities();
-        }
-        public UserActivities()
-        {
-            ActivitiesLog = new List<UserActivity>();
-        }
-    }
-
     public static class UserActivities_ExtensionMethods
     {
         public static UserActivity newUserActivity  (this UserActivities userActivities, string who, string action, string detail)
@@ -42,14 +10,14 @@ namespace TeamMentor.CoreLib
             if (userActivities.notNull())
             {
                 return new UserActivity
-                    {
-                        Action    = action, 
-                        Detail    = detail, 
-                        Who       = who,
-                        When      = DateTime.Now.ToFileTimeUtc(),
-                        When_JS   = DateTime.Now.jsDate(),
-                        IPAddress = HttpContextFactory.Request.ipAddress()
-                    };
+                {
+                    Action    = action, 
+                    Detail    = detail, 
+                    Who       = who,
+                    When      = DateTime.Now.ToFileTimeUtc(),
+                    When_JS   = DateTime.Now.jsDate(),
+                    IPAddress = HttpContextFactory.Request.ipAddress()
+                };
             }
             return null;
         }
@@ -69,14 +37,10 @@ namespace TeamMentor.CoreLib
                     tmUser.UserActivities.Add(userActivity);
                     tmUser.saveTmUser();
                 }                  	
-	        }
+            }
             return userActivity;
         }        
        
-        public static UserActivity logTBotActivity  (this TM_Xml_Database tmXmlDatabase, string action, string detail)
-        {            
-            return tmXmlDatabase.userData().logTBotActivity(action, detail);   
-        }
         public static UserActivity logTBotActivity  (this TM_UserData userData, string action, string detail)
         {
             var userActivities = UserActivities.Current;

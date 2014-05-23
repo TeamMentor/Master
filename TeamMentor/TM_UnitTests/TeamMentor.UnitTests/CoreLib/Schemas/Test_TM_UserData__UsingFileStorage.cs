@@ -1,6 +1,5 @@
 using FluentSharp.CoreLib;
 using FluentSharp.CoreLib.API;
-using FluentSharp.WinForms;
 using NUnit.Framework;
 using System;
 using TeamMentor.CoreLib;

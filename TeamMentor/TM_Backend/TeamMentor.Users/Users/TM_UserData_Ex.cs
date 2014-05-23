@@ -10,17 +10,7 @@ namespace TeamMentor.CoreLib
         /*public static TMConfig tmConfig(this TM_UserData userData)
         {
             return TMConfig.Current;
-        }*/
-        public static TM_UserData resetData             (this TM_UserData userData)          
-        {
-            userData.NGit_Author_Name    = TMConsts.NGIT_DEFAULT_AUTHOR_NAME;
-            userData.NGit_Author_Email   = TMConsts.NGIT_DEFAULT_AUTHOR_EMAIL;
-            userData.FirstScriptToInvoke = TMConsts.USERDATA_FIRST_SCRIPT_TO_INVOKE;
-            userData.Path_WebRootFiles   = TMConsts.USERDATA_PATH_WEB_ROOT_FILES;
-            userData.TMUsers             = new List<TMUser>();                        
-            userData.SecretData          = new TM_SecretData();                        
-            return userData;
-        }
+        }*/        
 
 /*        public static string      webRootFiles          (this TM_UserData userData)  
         {

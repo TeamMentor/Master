@@ -67,9 +67,6 @@
     <Reference Include="FluentSharp.NGit, Version=5.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\FluentSharp.NGit.5.3.121\lib\net40\FluentSharp.NGit.dll</HintPath>
     </Reference>
-    <Reference Include="FluentSharp.WinForms">
-      <HintPath>..\..\packages\FluentSharp.WinForms.5.3.121\lib\net35\FluentSharp.WinForms.dll</HintPath>
-    </Reference>
     <Reference Include="PostSharp, Version=2.1.0.0, Culture=neutral, PublicKeyToken=b13fd38b8f9c99d7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\PostSharp.3.2.9-alpha\lib\net20\PostSharp.dll</HintPath>
@@ -590,7 +587,6 @@
     <Content Include="Javascript\_mappings\HomePage_JS.txt" />
     <Content Include="Javascript\_mappings\HomePage_JS_TM.txt" />
     <Content Include="TBot\Admin\Internal\Reset_Razor_Templates.cshtml" />
-    <Content Include="TBot\Admin\Internal\UserData_FirstScript.cshtml" />
     <Content Include="TBot\Admin\LiveData\Offline_Firebase.cshtml" />
     <Content Include="TBot\Admin\Internal\CSharp_REPL.cshtml" />
     <Content Include="TBot\Admin\Restart_Server.cshtml" />
@@ -752,6 +748,10 @@
     <ProjectReference Include="..\..\TM_Backend\TeamMentor.CoreLib\TeamMentor.CoreLib.csproj">
       <Project>{87BACB04-640F-44ED-8F01-45224D52A883}</Project>
       <Name>TeamMentor.CoreLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\TM_Backend\TeamMentor.Users\TeamMentor.Users.csproj">
+      <Project>{5844d933-6fb7-4717-ae60-85d96f2efa29}</Project>
+      <Name>TeamMentor.Users</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

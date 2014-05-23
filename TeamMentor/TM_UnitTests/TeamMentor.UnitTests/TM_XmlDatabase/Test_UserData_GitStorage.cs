@@ -10,7 +10,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
     [TestFixture]//[Ignore("Git User doesn't happen on LocalRequests")]
     public class Test_UserData_GitStorage
     {
-        public TM_UserData  userData;
+        public TM_UserData_Git userData;
         public API_NGit     nGit;
 
         [SetUp]
@@ -18,7 +18,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         {
             TM_Xml_Database.Current = null;
             //create temp repo with no Admin user
-            userData = new TM_UserData(true)
+            userData = new TM_UserData_Git(true)
                                 {
                                     Path_UserData = "nonGitRepo".tempDir()
                                 };                                    

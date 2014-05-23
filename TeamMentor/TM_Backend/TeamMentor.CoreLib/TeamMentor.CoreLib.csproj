@@ -48,9 +48,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\FluentSharp.NGit.5.3.121\lib\net40\FluentSharp.NGit.dll</HintPath>
     </Reference>
-    <Reference Include="FluentSharp.WinForms">
-      <HintPath>..\..\packages\FluentSharp.WinForms.5.3.121\lib\net35\FluentSharp.WinForms.dll</HintPath>
-    </Reference>
     <Reference Include="HtmlAgilityPack">
       <HintPath>..\..\packages\HtmlAgilityPack.1.4.6\lib\Net40\HtmlAgilityPack.dll</HintPath>
     </Reference>
@@ -159,6 +156,14 @@
     <ProjectReference Include="..\TeamMentor.Database\TeamMentor.Database.csproj">
       <Project>{e08703fb-d33c-4acd-b679-c1be867d6f0c}</Project>
       <Name>TeamMentor.Database</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TeamMentor.Schemas\TeamMentor.Schemas.csproj">
+      <Project>{77E93D41-8457-45BD-82A8-37C0DEEC32AD}</Project>
+      <Name>TeamMentor.Schemas</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TeamMentor.Users\TeamMentor.Users.csproj">
+      <Project>{5844d933-6fb7-4717-ae60-85d96f2efa29}</Project>
+      <Name>TeamMentor.Users</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

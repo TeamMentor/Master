@@ -47,9 +47,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\FluentSharp.NGit.5.3.121\lib\net40\FluentSharp.NGit.dll</HintPath>
     </Reference>
-    <Reference Include="FluentSharp.WinForms">
-      <HintPath>..\..\packages\FluentSharp.WinForms.5.3.121\lib\net35\FluentSharp.WinForms.dll</HintPath>
-    </Reference>
     <Reference Include="HtmlAgilityPack, Version=1.4.6.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\HtmlAgilityPack.1.4.6\lib\Net40\HtmlAgilityPack.dll</HintPath>
     </Reference>
@@ -184,6 +181,14 @@
     <ProjectReference Include="..\..\TM_Backend\TeamMentor.CoreLib\TeamMentor.CoreLib.csproj">
       <Project>{87BACB04-640F-44ED-8F01-45224D52A883}</Project>
       <Name>TeamMentor.CoreLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\TM_Backend\TeamMentor.Schemas\TeamMentor.Schemas.csproj">
+      <Project>{77E93D41-8457-45BD-82A8-37C0DEEC32AD}</Project>
+      <Name>TeamMentor.Schemas</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\TM_Backend\TeamMentor.Users\TeamMentor.Users.csproj">
+      <Project>{5844D933-6FB7-4717-AE60-85D96F2EFA29}</Project>
+      <Name>TeamMentor.Users</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

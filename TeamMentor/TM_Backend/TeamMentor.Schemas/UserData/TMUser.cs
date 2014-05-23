@@ -42,10 +42,10 @@ namespace TeamMentor.CoreLib
             UserActivities  = new List<UserActivity>();
             AccountStatus   = new UserAccountStatus
                                     {
-                                        ExpirationDate      = TMConfig.Current.currentExpirationDate(), 
+                                        ExpirationDate      = default(DateTime), //TMConfig.Current.currentExpirationDate(), 
                                         PasswordExpired     = false,
                                         AccountNeverExpires = TMConfig.Current.TMSecurity.NewAccounts_DontExpire,
-                                        UserEnabled         = TMConfig.Current.newAccountsEnabled()                                        
+                                        UserEnabled         = TMConfig.Current.TMSecurity.NewAccounts_Enabled //TMConfig.Current.newAccountsEnabled()                                        
                                     };
             Stats           = new UserStats
                                     {

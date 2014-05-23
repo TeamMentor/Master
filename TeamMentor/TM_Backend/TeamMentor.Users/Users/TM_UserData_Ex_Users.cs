@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentSharp.CoreLib;
-using Microsoft.Security.Application;
 
 namespace TeamMentor.CoreLib
 {
@@ -105,15 +104,15 @@ namespace TeamMentor.CoreLib
                 
             var tmUser = new TMUser {
                 UserID 		 = userId,
-                UserName 	 = Encoder.XmlEncode(username),
-                FirstName 	 = Encoder.XmlEncode(firstname),
-                LastName 	 = Encoder.XmlEncode(lastname),
-                Company 	 = Encoder.XmlEncode(company),
-                Country 	 = Encoder.XmlEncode(country),
-                State 	     = Encoder.XmlEncode(state),
+                UserName 	 = username,
+                FirstName 	 = firstname,
+                LastName 	 = lastname,
+                Company 	 = (company),
+                Country 	 = country,
+                State 	     = state,
                 GroupID 	 = groupId,
-                Title 		 = Encoder.XmlEncode(title), 										
-                EMail 		 = Encoder.XmlEncode(email) ?? "",    
+                Title 		 = title, 										
+                EMail 		 = email ?? "",    
                 UserTags     = userTags 
             };
             tmUser.SecretData.PasswordHash = tmUser.createPasswordHash(password);            
@@ -123,7 +122,7 @@ namespace TeamMentor.CoreLib
                 SendEmails.SendNewUserEmails("New user created: {0}".format(tmUser.UserName), tmUser);
             tmUser.logUserActivity("New User",  "");
             tmUser.saveTmUser();
-            userData.triggerGitCommit();
+            //userData.triggerGitCommit();
             return userId;    		
         }			
 	    public static int           create                      (this NewUser newUser)

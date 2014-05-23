@@ -1,5 +1,3 @@
-using System;
-using FluentSharp.CoreLib;
 
 namespace TeamMentor.CoreLib    
 {

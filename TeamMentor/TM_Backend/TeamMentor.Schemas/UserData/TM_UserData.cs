@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
-using FluentSharp.CoreLib;
-using FluentSharp.Git.APIs;
+
 
 namespace TeamMentor.CoreLib
 {
@@ -10,18 +8,11 @@ namespace TeamMentor.CoreLib
     {
         public static TM_UserData       Current             { get; set; }
         public static Thread            GitPushThread       { get; set; }
-
         public string 	                Path_UserData 	    { get; set; }	        
         public string 	                Path_WebRootFiles   { get; set; }
-        public string                   FirstScriptToInvoke { get; set; }
         public List<TMUser>	            TMUsers			    { get; set; }
-        public TM_SecretData            SecretData          { get; set; }                        
-        
-        public bool                     UsingFileStorage    { get; set; }        
-        public API_NGit                 NGit                { get; set; }
-        public string                   NGit_Author_Name    { get; set; } 
-        public string                   NGit_Author_Email   { get; set; }
-  
+        public TM_SecretData            SecretData          { get; set; }                                
+        public bool                     UsingFileStorage    { get; set; }                
         
         public TM_UserData() : this (false)
         {
@@ -31,7 +22,10 @@ namespace TeamMentor.CoreLib
         {
             Current = this;            
             UsingFileStorage = useFileStorage;
-            this.resetData();
+            
+            Path_WebRootFiles   = TMConsts.USERDATA_PATH_WEB_ROOT_FILES;
+            TMUsers             = new List<TMUser>();                        
+            SecretData          = new TM_SecretData();                                    
         }        
     }
 }

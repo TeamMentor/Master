@@ -11,11 +11,11 @@ namespace TeamMentor.CoreLib
                         ? userData.Path_UserData.pathCombine(TMConsts.TM_CONFIG_FILENAME)
                         : null;
         } 
-        public static TM_Xml_Database tmConfig_Load(this TM_Xml_Database tmXmlDatabase)
+        /*public static TM_Xml_Database tmConfig_Load(this TM_Xml_Database tmXmlDatabase)
         {
             tmXmlDatabase.userData().tmConfig_Load();
             return tmXmlDatabase;
-        }
+        }*/
 
         public static TM_UserData tmConfig_Load(this TM_UserData userData)
         {

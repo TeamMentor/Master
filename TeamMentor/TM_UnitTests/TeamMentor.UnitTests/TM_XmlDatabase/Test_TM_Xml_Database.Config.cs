@@ -1,16 +1,8 @@
-﻿using System.IO;
-using System.Security.AccessControl;
-using FluentSharp.WinForms;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using TeamMentor.CoreLib;
-using TeamMentor.UnitTests;
 using FluentSharp.CoreLib;
 using FluentSharp.CoreLib.API;
-
 
 namespace TeamMentor.UnitTests.TM_XmlDatabase
 {
@@ -60,9 +52,9 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         [Test] public void load_TM_Config()
         {
             TMConfig.Current = null;
-            var tmXmlDatabase = new TM_Xml_Database(true)
-                .load_UserData()
-                .tmConfig_Load();
+            var tmXmlDatabase = new TM_Xml_Database(true).load_UserData();
+            
+            tmXmlDatabase.userData().tmConfig_Load();
 
             Assert.AreEqual("", tmXmlDatabase.userData().Path_UserData);
             

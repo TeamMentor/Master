@@ -1,4 +1,3 @@
-using FluentSharp.WinForms;
 using NUnit.Framework;  
 using FluentSharp.CoreLib;
 

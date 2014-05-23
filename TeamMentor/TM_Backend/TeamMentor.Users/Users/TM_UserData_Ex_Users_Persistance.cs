@@ -102,7 +102,7 @@ namespace TeamMentor.CoreLib
                         lock (tmUser)
                         {
                             tmUser.user_XmlFile_Location().file_Delete();
-                            userData.triggerGitCommit();
+                            //userData.triggerGitCommit();
                         }
                     }  
                     userData.logTBotActivity("User Delete","{0} - {1}".format(tmUser.UserName, tmUser.UserID));

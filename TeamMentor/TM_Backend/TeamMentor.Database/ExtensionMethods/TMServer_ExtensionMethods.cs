@@ -8,16 +8,6 @@ namespace TeamMentor.CoreLib
 {
     public static class TMServer_ExtensionMethods
     {
-        public static TM_Server        setDefaultValues(this TM_Server tmServer)
-        {
-            tmServer.Users_Create_Default_Admin     = true;
-            tmServer.TM_Database_Use_AppData_Folder = false;
-
-            tmServer.Git = new TM_Server.Git_Config();
-            tmServer.UserData_Configs = new List<TM_Server.Config>();
-            tmServer.SiteData_Configs = new List<TM_Server.Config>();
-            return tmServer;
-        }
         public static TM_Server        setDefaultData(this TM_Server tmServer)
         {
             var userData_Config = new TM_Server.Config

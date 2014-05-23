@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E08703FB-D33C-4ACD-B679-C1BE867D6F0C}</ProjectGuid>
+    <ProjectGuid>{5844D933-6FB7-4717-AE60-85D96F2EFA29}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TeamMentor.CoreLib</RootNamespace>
-    <AssemblyName>TeamMentor.Database</AssemblyName>
+    <AssemblyName>TeamMentor.Users</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,26 +30,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AntiXssLibrary">
-      <HintPath>..\..\packages\AntiXSS.4.2.1\lib\net40\AntiXssLibrary.dll</HintPath>
-    </Reference>
-    <Reference Include="FluentSharp.CoreLib">
+    <Reference Include="FluentSharp.CoreLib, Version=5.3.0.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\FluentSharp.CoreLib.5.3.121\lib\net35\FluentSharp.CoreLib.dll</HintPath>
     </Reference>
     <Reference Include="FluentSharp.NGit">
       <HintPath>..\..\packages\FluentSharp.NGit.5.3.121\lib\net40\FluentSharp.NGit.dll</HintPath>
     </Reference>
-    <Reference Include="HtmlAgilityPack">
-      <HintPath>..\..\packages\HtmlAgilityPack.1.4.6\lib\Net40\HtmlAgilityPack.dll</HintPath>
-    </Reference>
-    <Reference Include="HtmlSanitizationLibrary">
-      <HintPath>..\..\packages\AntiXSS.4.2.1\lib\net40\HtmlSanitizationLibrary.dll</HintPath>
-    </Reference>
     <Reference Include="NGit">
       <HintPath>..\..\TM_UnitTests\TeamMentor.UnitTests\NGit_Dlls\NGit.dll</HintPath>
-    </Reference>
-    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -58,8 +47,6 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Web.Services" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -67,45 +54,49 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExtensionMethods\Extra\Extra_Headers_ExtensioMethods.cs" />
-    <Compile Include="ExtensionMethods\Extra\Extra_HtmlAgilityPack_ExtensionMethods.cs" />
-    <Compile Include="ExtensionMethods\Extra\Extra_IO_ExtensionMethods.cs" />
-    <Compile Include="ExtensionMethods\Extra\Extra_StringBuilder_ExtensionMethods.cs" />
-    <Compile Include="ExtensionMethods\Extra\Extra_String_ExtensionMethods.cs" />
-    <Compile Include="ExtensionMethods\Extra\Extra_Xml_Linq_ExtensionMethods.cs" />
-    <Compile Include="ExtensionMethods\Extra_UserActivity_ExtensionMethods.cs" />
-    <Compile Include="ExtensionMethods\TeamMentor_Article_ExtensionMethods.cs" />
-    <Compile Include="ExtensionMethods\TMServer_ExtensionMethods.cs" />
-    <Compile Include="Git\TM_UserData_Ex_Git.cs" />
+    <Compile Include="Authentication\ExtensionMethods\RoleBaseSecurity_ExtensionMethods.cs" />
+    <Compile Include="Authentication\ExtensionMethods\TeamMentorUserManagement_ExtensionMethods.cs" />
+    <Compile Include="Authentication\SecurityAttributes.cs" />
+    <Compile Include="Authentication\UserRoles.cs" />
+    <Compile Include="ExtensionMethods\Extra_Cookies_ExtensioMethods.cs" />
+    <Compile Include="ExtensionMethods\Extra_DateTime_ExtensionMethods.cs" />
+    <Compile Include="ExtensionMethods\Extra_Double_ExtensionMethods.cs" />
+    <Compile Include="ExtensionMethods\Extra_JSON_ExtensionMethods.cs" />
+    <Compile Include="ExtensionMethods\Extra_Web_Encoding_ExtensionMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Schemas\GuidanceItem_V3.cs" />
-    <Compile Include="Schemas\Guidance_Item_Import.cs" />
-    <Compile Include="Utils\GitExe.cs" />
-    <Content Include="Utils\PostSharp.cs.txt" />
-    <Compile Include="XmlDatabase\TM_Xml_Database.Config.cs" />
-    <Compile Include="XmlDatabase\TM_Xml_Database.cs" />
-    <Compile Include="XmlDatabase\TM_Xml_Database.Library.cs" />
-    <Compile Include="XmlDatabase\TM_Xml_Database.Library.Files.cs" />
-    <Compile Include="XmlDatabase\TM_Xml_Database.Library.GuidanceExplorer.cs" />
-    <Compile Include="XmlDatabase\TM_Xml_Database.Library.GuidanceItem.cs" />
-    <Compile Include="XmlDatabase\TM_Xml_Database.Library.Load_and_FileCache.cs" />
-    <Compile Include="XmlDatabase\TM_Xml_Database.Library.Views_and_Folders.cs" />
-    <Compile Include="XmlDatabase\TM_Xml_Database.Virtual_Articles.cs" />
+    <Compile Include="Schemas\TM_UserData_Git.cs" />
+    <Compile Include="Tracking\Firebase\Activities_Firebase.cs" />
+    <Compile Include="Tracking\Firebase\API_Firebase.cs" />
+    <Compile Include="Tracking\Firebase\Firebase_ClientConfig.cs" />
+    <Compile Include="Tracking\Firebase\Logger_Firebase.cs" />
+    <Compile Include="Tracking\Firebase\Log_Request.cs" />
+    <Compile Include="Tracking\Firebase\Requests_Firebase.cs" />
+    <Compile Include="Tracking\Firebase\TM_FirebaseConfig_ExtensionMethods.cs" />
+    <Compile Include="Tracking\Logger_LogItem.cs" />
+    <Compile Include="Tracking\Tracking_Application.cs" />
+    <Compile Include="Users\TMConfig_ExtensionMethods.cs" />
+    <Compile Include="Users\TMUser_ExtensionMethods.cs" />
+    <Compile Include="Users\TM_Secret_Data_ExtensionMethods.cs" />
+    <Compile Include="Users\TM_UserData_Ex.cs" />
+    <Compile Include="Users\TM_UserData_Ex_ActiveSessions.cs" />
+    <Compile Include="Users\TM_UserData_Ex_Scripts.cs" />
+    <Compile Include="Users\TM_UserData_Ex_Users.cs" />
+    <Compile Include="Users\TM_UserData_Ex_Users_Persistance.cs" />
+    <Compile Include="Users\UserActivities_ExtensionMethods.cs" />
+    <Compile Include="Utils\Crypto.cs" />
+    <Compile Include="Utils\HttpContextFactory.cs" />
+    <Compile Include="Utils\MiscUtils.cs" />
+    <Compile Include="Utils\SendEmails.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TeamMentor.Schemas\TeamMentor.Schemas.csproj">
-      <Project>{77e93d41-8457-45bd-82a8-37c0deec32ad}</Project>
+      <Project>{77E93D41-8457-45BD-82A8-37C0DEEC32AD}</Project>
       <Name>TeamMentor.Schemas</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TeamMentor.Users\TeamMentor.Users.csproj">
-      <Project>{5844d933-6fb7-4717-ae60-85d96f2efa29}</Project>
-      <Name>TeamMentor.Users</Name>
-    </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

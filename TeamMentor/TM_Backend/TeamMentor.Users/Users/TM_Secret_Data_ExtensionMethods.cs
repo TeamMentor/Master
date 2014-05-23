@@ -52,7 +52,7 @@ namespace TeamMentor.CoreLib
             {
                 var secretDataFile = userData.secretData_Location();
                 result = userData.SecretData.saveAs(secretDataFile);
-                userData.triggerGitCommit();
+                //userData.triggerGitCommit();
             }
             userData.logTBotActivity("TM_SecretData saved","");
             return result;

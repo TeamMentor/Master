@@ -1,6 +1,5 @@
 ﻿<%@ Page Language="C#"%>
 <%@ Import Namespace ="FluentSharp.CoreLib" %>
-<%@ Import Namespace ="FluentSharp.WinForms" %>
 <%@ Import Namespace="TeamMentor.CoreLib" %>
 <link href="../Javascript/bootstrap/bootstrap.v.1.2.0.css" rel="stylesheet" type="text/css" />
 
