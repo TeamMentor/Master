@@ -48,8 +48,7 @@ namespace TeamMentor.CoreLib
                     else
                         "[TM_UserData_Ex_Users_Persistance] [loadTmUserData] error loading tmUser file (or UserId < 1): {0}".error(file);
                 }                
-            }
-            userData.createDefaultAdminUser();
+            }            
             return userData;
         }                
         public static string        users_XmlFile_Location(this TM_UserData userData)   
