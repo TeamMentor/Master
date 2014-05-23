@@ -33,26 +33,26 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="FluentSharp.CoreLib">
-      <HintPath>..\packages\FluentSharp.CoreLib.5.3.121\lib\net35\FluentSharp.CoreLib.dll</HintPath>
+      <HintPath>..\..\packages\FluentSharp.CoreLib.5.3.121\lib\net35\FluentSharp.CoreLib.dll</HintPath>
     </Reference>
     <Reference Include="FluentSharp.REPL">
-      <HintPath>..\packages\FluentSharp.REPL.5.3.121\lib\net35\FluentSharp.REPL.exe</HintPath>
+      <HintPath>..\..\packages\FluentSharp.REPL.5.3.121\lib\net35\FluentSharp.REPL.exe</HintPath>
     </Reference>
     <Reference Include="FluentSharp.SharpDevelopEditor">
-      <HintPath>..\packages\FluentSharp.SharpDevelopEditor.5.3.121\lib\net35\FluentSharp.SharpDevelopEditor.dll</HintPath>
+      <HintPath>..\..\packages\FluentSharp.SharpDevelopEditor.5.3.121\lib\net35\FluentSharp.SharpDevelopEditor.dll</HintPath>
     </Reference>
     <Reference Include="FluentSharp.WatiN, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>WatiN_Dlls\FluentSharp.WatiN.dll</HintPath>
     </Reference>
     <Reference Include="FluentSharp.WinForms">
-      <HintPath>..\packages\FluentSharp.WinForms.5.3.121\lib\net35\FluentSharp.WinForms.dll</HintPath>
+      <HintPath>..\..\packages\FluentSharp.WinForms.5.3.121\lib\net35\FluentSharp.WinForms.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.mshtml, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="nunit.framework">
-      <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
+      <HintPath>..\..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

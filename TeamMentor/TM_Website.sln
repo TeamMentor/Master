@@ -3,16 +3,22 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TM_Website", "TM_Website\TM_Website.csproj", "{898BF99D-2F6E-4900-B22A-0CB48B21EA8C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Website_3.4", "TM_WebSites\Website_3.4\Website_3.4.csproj", "{898BF99D-2F6E-4900-B22A-0CB48B21EA8C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamMentor.CoreLib", "TeamMentor.CoreLib\TeamMentor.CoreLib.csproj", "{87BACB04-640F-44ED-8F01-45224D52A883}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamMentor.CoreLib", "TM_Backend\TeamMentor.CoreLib\TeamMentor.CoreLib.csproj", "{87BACB04-640F-44ED-8F01-45224D52A883}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamMentor.UnitTests", "TeamMentor.UnitTests\TeamMentor.UnitTests.csproj", "{04B01F87-4467-454F-B9F3-305647BB4E86}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamMentor.UnitTests", "TM_UnitTests\TeamMentor.UnitTests\TeamMentor.UnitTests.csproj", "{04B01F87-4467-454F-B9F3-305647BB4E86}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamMentor.UnitTests.TM_Website", "TeamMentor.UnitTests.TM_Website\TeamMentor.UnitTests.TM_Website.csproj", "{BF942E82-1466-4384-8F87-50E1528473A0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamMentor.UnitTests.TM_Website", "TM_UnitTests\TeamMentor.UnitTests.TM_Website\TeamMentor.UnitTests.TM_Website.csproj", "{BF942E82-1466-4384-8F87-50E1528473A0}"
 	ProjectSection(ProjectDependencies) = postProject
 		{898BF99D-2F6E-4900-B22A-0CB48B21EA8C} = {898BF99D-2F6E-4900-B22A-0CB48B21EA8C}
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BackEnd", "BackEnd", "{2F2BDCAC-53AC-4BCE-8398-0A03C50A9D89}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{418A6789-51B1-4080-B004-8963C0E41D74}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebSites", "WebSites", "{5CC37760-6B32-4E22-9F0B-7690E0667C22}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -68,11 +74,14 @@ Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{898BF99D-2F6E-4900-B22A-0CB48B21EA8C} = {5CC37760-6B32-4E22-9F0B-7690E0667C22}
+		{87BACB04-640F-44ED-8F01-45224D52A883} = {2F2BDCAC-53AC-4BCE-8398-0A03C50A9D89}
+		{04B01F87-4467-454F-B9F3-305647BB4E86} = {418A6789-51B1-4080-B004-8963C0E41D74}
+		{BF942E82-1466-4384-8F87-50E1528473A0} = {418A6789-51B1-4080-B004-8963C0E41D74}
+	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35
-	EndGlobalSection
-	GlobalSection(Performance) = preSolution
-		HasPerformanceSessions = true
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = TM_Website.vsmdi
