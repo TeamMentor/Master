@@ -222,9 +222,9 @@ namespace TeamMentor.CoreLib
             }
             return false;    		
         }
-        public static bool          setCurrentUserPassword      (this TM_UserData userData, TM_Authentication tmAuthentication, string currentPassword, string newPassword)
+        public static bool          setUserPassword      (this TM_UserData userData, TMUser tmUser, string currentPassword, string newPassword)
         {
-            var tmUser = tmAuthentication.currentUser;
+            //var tmUser = tmAuthentication.currentUser;
             if (tmUser.notNull())
             {
                 if (tmUser.SecretData.PasswordHash == tmUser.createPasswordHash(currentPassword)) // check if current password matches provided value

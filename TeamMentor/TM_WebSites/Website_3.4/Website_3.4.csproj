@@ -706,7 +706,9 @@
     <Content Include="TBot\Users\Import\Import Legacy Users.cshtml" />
     <Content Include="TBot\Views\Users\New Random User.cshtml" />
     <Content Include="TBot\Admin\Config\Edit_TMConfig.cshtml" />
-    <Content Include="packages.config" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="TBot\Users\Analysis\Users_Accounts_Expiration.cshtml" />
     <Content Include="TBot\Users\Analysis\Users_Mapped_by_Email.cshtml" />
     <Content Include="TBot\Users\SSO_Token.cshtml" />
@@ -743,6 +745,10 @@
     <Folder Include="App_Code\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\TM_Backend\TeamMentor.Database\TeamMentor.Database.csproj">
+      <Project>{e08703fb-d33c-4acd-b679-c1be867d6f0c}</Project>
+      <Name>TeamMentor.Database</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\TM_Backend\TeamMentor.CoreLib\TeamMentor.CoreLib.csproj">
       <Project>{87BACB04-640F-44ED-8F01-45224D52A883}</Project>
       <Name>TeamMentor.CoreLib</Name>

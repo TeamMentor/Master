@@ -72,25 +72,7 @@ namespace TeamMentor.CoreLib
 	        }
             return userActivity;
         }        
-        public static UserActivity logUserActivity  (this TM_WebServices tmWebServices, string action, string detail)
-        {
-            if (tmWebServices.notNull())
-            {
-                var currentUser = tmWebServices.Current_User();
-                if (currentUser.notNull())
-                {
-                    return currentUser.UserName.tmUser().logUserActivity(action, detail);
-                }
-                return tmWebServices.logTBotActivity(action, detail);
-            }
-            return null;
-        }
-        public static UserActivity logTBotActivity  (this TM_WebServices tmWebServices, string action, string detail)
-        {
-            if (tmWebServices.notNull())
-                return tmWebServices.tmXmlDatabase.logTBotActivity(action,detail);
-            return null;
-        }
+       
         public static UserActivity logTBotActivity  (this TM_Xml_Database tmXmlDatabase, string action, string detail)
         {            
             return tmXmlDatabase.userData().logTBotActivity(action, detail);   

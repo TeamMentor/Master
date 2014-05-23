@@ -35,3 +35,4 @@ Web Applications/TM_Website/bin/*.xml
 *.cache
 
 /Web Applications/_NCrunch_TM_Website/StoredText
+O2ConfigLoader.cs.txt

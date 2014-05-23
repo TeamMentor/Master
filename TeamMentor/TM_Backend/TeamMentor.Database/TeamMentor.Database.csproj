@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E08703FB-D33C-4ACD-B679-C1BE867D6F0C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TeamMentor.Database</RootNamespace>
+    <AssemblyName>TeamMentor.Database</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AntiXssLibrary">
+      <HintPath>..\..\packages\AntiXSS.4.2.1\lib\net40\AntiXssLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentSharp.CoreLib">
+      <HintPath>..\..\packages\FluentSharp.CoreLib.5.3.121\lib\net35\FluentSharp.CoreLib.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentSharp.NGit">
+      <HintPath>..\..\packages\FluentSharp.NGit.5.3.121\lib\net40\FluentSharp.NGit.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentSharp.WinForms">
+      <HintPath>..\..\packages\FluentSharp.WinForms.5.3.121\lib\net35\FluentSharp.WinForms.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlAgilityPack">
+      <HintPath>..\..\packages\HtmlAgilityPack.1.4.6\lib\Net40\HtmlAgilityPack.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlSanitizationLibrary">
+      <HintPath>..\..\packages\AntiXSS.4.2.1\lib\net40\HtmlSanitizationLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="NGit">
+      <HintPath>..\..\TM_UnitTests\TeamMentor.UnitTests\NGit_Dlls\NGit.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Authentication\ExtensionMethods\RoleBaseSecurity_ExtensionMethods.cs" />
+    <Compile Include="Authentication\ExtensionMethods\TeamMentorUserManagement_ExtensionMethods.cs" />
+    <Compile Include="Authentication\UserRoles.cs" />
+    <Compile Include="ExtensionMethods\Extra\Extra_Cookies_ExtensioMethods.cs" />
+    <Compile Include="ExtensionMethods\Extra\Extra_DateTime_ExtensionMethods.cs" />
+    <Compile Include="ExtensionMethods\Extra\Extra_Double_ExtensionMethods.cs" />
+    <Compile Include="ExtensionMethods\Extra\Extra_Headers_ExtensioMethods.cs" />
+    <Compile Include="ExtensionMethods\Extra\Extra_HtmlAgilityPack_ExtensionMethods.cs" />
+    <Compile Include="ExtensionMethods\Extra\Extra_IO_ExtensionMethods.cs" />
+    <Compile Include="ExtensionMethods\Extra\Extra_JSON_ExtensionMethods.cs" />
+    <Compile Include="ExtensionMethods\Extra\Extra_StringBuilder_ExtensionMethods.cs" />
+    <Compile Include="ExtensionMethods\Extra\Extra_String_ExtensionMethods.cs" />
+    <Compile Include="ExtensionMethods\TMServer_ExtensionMethods.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Schemas\EmailMessage.cs" />
+    <Compile Include="Schemas\Folder_V3.cs" />
+    <Compile Include="Schemas\GuidanceItem_V3.cs" />
+    <Compile Include="Schemas\Legacy\guidanceexplorer.cs" />
+    <Compile Include="Schemas\Legacy\OnlineStorage_Library.cs" />
+    <Compile Include="Schemas\Legacy\TM_Library.cs" />
+    <Compile Include="Schemas\Library_V3.cs" />
+    <Compile Include="Schemas\Models\TM_Credentials.cs" />
+    <Compile Include="Schemas\Models\TM_User.cs" />
+    <Compile Include="Schemas\NewUser.cs" />
+    <Compile Include="Schemas\TeamMentor_Article.cs" />
+    <Compile Include="Schemas\TMConfig.cs" />
+    <Compile Include="Schemas\TMUser.cs" />
+    <Compile Include="Schemas\TM_Database_Events.cs" />
+    <Compile Include="Schemas\TM_FirebaseConfig.cs" />
+    <Compile Include="Schemas\TM_SecretData.cs" />
+    <Compile Include="Schemas\TM_Server.cs" />
+    <Compile Include="Schemas\TM_Status.cs" />
+    <Compile Include="Schemas\TM_UserData.cs" />
+    <Compile Include="Schemas\View_V3.cs" />
+    <Compile Include="TMConsts.cs" />
+    <Compile Include="Tracking\Firebase\Activities_Firebase.cs" />
+    <Compile Include="Tracking\Firebase\API_Firebase.cs" />
+    <Compile Include="Tracking\Firebase\Firebase_ClientConfig.cs" />
+    <Compile Include="Tracking\Firebase\Logger_Firebase.cs" />
+    <Compile Include="Tracking\Firebase\Log_Request.cs" />
+    <Compile Include="Tracking\Firebase\Requests_Firebase.cs" />
+    <Compile Include="Tracking\Logger_LogItem.cs" />
+    <Compile Include="Tracking\Tracking_Application.cs" />
+    <Compile Include="Users\TMConfig_ExtensionMethods.cs" />
+    <Compile Include="Users\TMUser_ExtensionMethods.cs" />
+    <Compile Include="Users\TM_Secret_Data_ExtensionMethods.cs" />
+    <Compile Include="Users\TM_UserData_Ex.cs" />
+    <Compile Include="Users\TM_UserData_Ex_ActiveSessions.cs" />
+    <Compile Include="Users\TM_UserData_Ex_Git.cs" />
+    <Compile Include="Users\TM_UserData_Ex_Scripts.cs" />
+    <Compile Include="Users\TM_UserData_Ex_Users.cs" />
+    <Compile Include="Users\TM_UserData_Ex_Users_Persistance.cs" />
+    <Compile Include="Users\UserActivities.cs" />
+    <Compile Include="Utils\Crypto.cs" />
+    <Compile Include="Utils\GitExe.cs" />
+    <Compile Include="Utils\HttpContextFactory.cs" />
+    <Compile Include="Utils\MiscUtils.cs" />
+    <Content Include="Utils\PostSharp.cs.txt" />
+    <Compile Include="Authentication\SecurityAttributes.cs" />
+    <Compile Include="Utils\SendEmails.cs" />
+    <Compile Include="XmlDatabase\TM_Xml_Database.Config.cs" />
+    <Compile Include="XmlDatabase\TM_Xml_Database.cs" />
+    <Compile Include="XmlDatabase\TM_Xml_Database.Library.cs" />
+    <Compile Include="XmlDatabase\TM_Xml_Database.Library.Files.cs" />
+    <Compile Include="XmlDatabase\TM_Xml_Database.Library.GuidanceExplorer.cs" />
+    <Compile Include="XmlDatabase\TM_Xml_Database.Library.GuidanceItem.cs" />
+    <Compile Include="XmlDatabase\TM_Xml_Database.Library.Load_and_FileCache.cs" />
+    <Compile Include="XmlDatabase\TM_Xml_Database.Library.Views_and_Folders.cs" />
+    <Compile Include="XmlDatabase\TM_Xml_Database.Virtual_Articles.cs" />
+    <Compile Include="XmlDatabase\TM_Xml_Database_ExtensionMethods.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

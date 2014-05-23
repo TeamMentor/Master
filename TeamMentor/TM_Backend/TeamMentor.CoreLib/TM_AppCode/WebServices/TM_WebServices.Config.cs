@@ -4,6 +4,7 @@ using System.Text;
 using System.Web.Services;
 using FluentSharp.CoreLib;
 using FluentSharp.CoreLib.API;
+using TeamMentor.CoreLib.TM_AppCode.WebServices.ExtensionMethods;
 
 namespace TeamMentor.CoreLib
 { 					

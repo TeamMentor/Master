@@ -334,6 +334,7 @@ namespace TeamMentor.CoreLib
 
                     var tempDir = @"..\_".add_RandomLetters(3).tempDir(false).fullPath(); //trying to make the unzip path as small as possible
                     var fastZip = new ICSharpCode.SharpZipLib.Zip.FastZip {Password = unzipPassword ?? ""};
+                    
                     fastZip.ExtractZip(zipFileToImport, tempDir, "");
 
                     Files.copyFolder(tempDir, currentLibraryPath, true, true,"");          // just copy all files into Library path

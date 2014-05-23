@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using FluentSharp;
 using FluentSharp.CoreLib;
 using System.Web.Services;
+using TeamMentor.CoreLib.TM_AppCode.WebServices.ExtensionMethods;
 
 namespace TeamMentor.CoreLib
 {

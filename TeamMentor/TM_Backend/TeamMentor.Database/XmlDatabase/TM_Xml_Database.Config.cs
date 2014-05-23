@@ -218,8 +218,8 @@ namespace TeamMentor.CoreLib
             catch (Exception ex)
             {
                 "[TM_Xml_Database] Setup: {0} \n\n".error(ex.Message, ex.StackTrace);
-                if (TM_StartUp.Current.notNull())                       //will happen when TM_Xml_Database ctor is called by an user with no admin privs
-                    TM_StartUp.Current.TrackingApplication.saveLog();
+                //if (TM_StartUp.Current.notNull())                       //will happen when TM_Xml_Database ctor is called by an user with no admin privs
+                //    TM_StartUp.Current.TrackingApplication.saveLog();
             }
             TM_Status.Current.TM_Database_In_Setup_Workflow = false;
             return tmDatabase;
