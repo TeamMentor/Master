@@ -9,36 +9,53 @@ namespace TeamMentor.CoreLib
     public class TM_Server
     {
         public static string WebRoot { get; set; }
-        public static string AppData_Folder { get; set; }
-
+        
         
         public bool          Users_Create_Default_Admin     { get; set; }
         public bool          TM_Database_Use_AppData_Folder { get; set; }
-        public Config        UserData { get; set; }
-        public Config        SiteData { get; set; }
-        public List<GitRepo> UserData_Repos { get; set; }
-        public List<GitRepo> SiteData_Repos { get; set; }
+        
+        public Git_Config    Git              { get; set; }
+        public List<Config>  UserData_Configs { get; set; }
+        public List<Config>  SiteData_Configs { get; set; }
 
-        public TM_Server()
+        static TM_Server()
         {
-            WebRoot = AppDomain.CurrentDomain.BaseDirectory;
-            AppData_Folder = WebRoot.pathCombine("App_Data");
+            WebRoot = AppDomain.CurrentDomain.BaseDirectory;            
+        }
+        public TM_Server()
+        {        
             this.setDefaultValues();            
         }
 
 
         public class Config
-        {
-            public string   Active_Repo_Name;
-            public bool     Use_FileSystem;
-            public bool     Enable_Git_Support;
-        }         
+        {         
+            public string   Name                    { get; set; }
+            public bool     Active                  { get; set; }
+            public bool     Use_FileSystem          { get; set; }
+            public bool     Enable_Git_Support      { get; set; }            
+            public string   Local_GitPath           { get; set; }
+            public string   Remote_GitPath          { get; set; }
+        }
 
-        public class GitRepo
+        public class Git_Config
         {
-            public string Name { get; set; }
-            public string Local_GitPath { get; set; }
-            public string Remote_GitPath { get; set; }
+            public bool UserData_Git_Enabled { get; set; }
+            public bool UserData_Auto_Pull { get; set; }
+            public bool UserData_Auto_Push { get; set; }
+            public bool LibraryData_Git_Enabled { get; set; }
+            public bool LibraryData_Auto_Pull { get; set; }
+            public bool LibraryData_Auto_Push { get; set; }
+
+            public Git_Config()
+            {
+                LibraryData_Git_Enabled = true;                 // all user and library data should be controled by Git
+                UserData_Git_Enabled = true;
+                LibraryData_Auto_Pull = true;                 // pull is automatic (or changed on TMConfig file                
+                UserData_Auto_Pull = true;
+                LibraryData_Auto_Push = false;                // push must be set on the TM config
+                UserData_Auto_Push = false;
+            }
         }
     }
 

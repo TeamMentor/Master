@@ -127,7 +127,7 @@ namespace TeamMentor.CoreLib
         }
         [Admin] public bool          Reload_UserData()
         {
-            TM_UserData.Current.ReloadData();
+            TM_Xml_Database.Current.load_UserData();            
             return true;
         }
         [Admin] public bool          Reload_TMConfig()
@@ -147,14 +147,14 @@ namespace TeamMentor.CoreLib
         {            
             return  TM_Xml_Database.Current.setGitUserConfigFile(gitUserConfig_Data);               
         }*/
-        [Admin] public string        FirstScript_FileContents()
+        /*[Admin] public string        FirstScript_FileContents()
         {
             return TM_UserData.Current.firstScript_FileLocation().fileContents();
         }
         [Admin] public string        FirstScript_Invoke()
         {
             return TM_UserData.Current.firstScript_Invoke();
-        }
+        }*/
 
     }
 

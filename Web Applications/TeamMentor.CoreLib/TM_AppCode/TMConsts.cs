@@ -14,8 +14,13 @@ namespace TeamMentor.CoreLib
 	    public static string APPLICATION_LOGS_FOLDER_NAME     = "Application_Logs";
 
         public static string USERDATA_FIRST_SCRIPT_TO_INVOKE  = "H2Scripts//FirstScriptToInvoke.h2";
+        public static string USERDATA_PATH_USER_XML_FILES     = "Users";        
         public static string USERDATA_PATH_WEB_ROOT_FILES     = "WebRoot_Files";
-
+        public static string USERDATA_FORMAT_USER_XML_FILE    = "{0}_{1}.userData.xml";
+        public static string USERDATA_DEFAULT_ADMIN_USERNAME  = "admin";
+        public static string USERDATA_DEFAULT_ADMIN_PASSWORD  = "!!tmadmin";        
+        public static string USERDATA_DEFAULT_ADMIN_EMAIL     = "TM_alerts@securityinnovation.com";
+        
         public static int    FIREBASE_SUBMIT_QUEUE_MAX_WAIT    = 60000;
         public static string FIREBASE_AREA_DEBUG_MSGS          = "debugMsgs";
         public static string FIREBASE_AREA_ACTIVITIES          = "activities";
@@ -97,7 +102,8 @@ Please click on this link if you want to approve it: {8}
 If you don't want to enable this account, you can ignore this email and the account will stay in the current disabled state.
 
 If you want to see this user details (or delete it), please visit: {9}
-";        
+";
+        
 
     }
 }

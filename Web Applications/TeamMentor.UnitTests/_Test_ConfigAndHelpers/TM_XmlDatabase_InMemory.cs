@@ -18,8 +18,10 @@ namespace TeamMentor.UnitTests
         public void SetupDatabase()
         {                        
 
-            tmXmlDatabase   = new TM_Xml_Database();
-            userData        = tmXmlDatabase.UserData;      
+            tmXmlDatabase   = new TM_Xml_Database().loadData();
+            userData        = tmXmlDatabase.UserData;
+            
+            userData.createDefaultAdminUser(); 
 
             Assert.IsNull(tmXmlDatabase.Path_XmlDatabase		    , "Path_XmlDatabase");          // null since we are running TM memory (default setting)
             Assert.IsNull(tmXmlDatabase.Path_XmlLibraries		    , "Path_XmlLibraries");         // null since we are running TM memory (default setting)

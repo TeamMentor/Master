@@ -11,9 +11,9 @@ namespace TeamMentor.CoreLib
 {
     public static class TM_Xml_Database_Git
     {
-        public static TM_Xml_Database setupGitSupport(this TM_Xml_Database tmDatabase)
+        public static TM_Xml_Database   setupGitSupport(this TM_Xml_Database tmDatabase)
         {
-            var gitConfig = tmDatabase.tmConfig().Git;
+            var gitConfig = tmDatabase.tmServer().Git;
 
             if (gitConfig.LibraryData_Git_Enabled)
             {
@@ -44,7 +44,7 @@ namespace TeamMentor.CoreLib
         }
         public static TM_Xml_Database   triggerGitCommit (this TM_Xml_Database tmDatabase)
         {
-            if (tmDatabase.tmConfig().Git.LibraryData_Git_Enabled)
+            if (tmDatabase.tmServer().Git.LibraryData_Git_Enabled)
             {
                 foreach(var nGit in tmDatabase.NGits)
                     if (nGit.status().valid())
@@ -52,36 +52,37 @@ namespace TeamMentor.CoreLib
             }
             return tmDatabase;
         }
-
-        public static API_NGit git_Push_Library(this API_NGit nGit)
+        public static API_NGit          git_Push_Library(this API_NGit nGit)
         {
-            if (TMConfig.Current.Git.LibraryData_Auto_Push)
-                try
-                {
-                    nGit.push();
-                }
-                catch (Exception ex)
-                {
-                    ex.log("git_Push_Library");
-                }
+            var tmServer = TM_Xml_Database.Current.tmServer();
+            if(tmServer.notNull())
+                if (tmServer.Git.LibraryData_Auto_Push)
+                    try
+                    {
+                        nGit.push();
+                    }
+                    catch (Exception ex)
+                    {
+                        ex.log("git_Push_Library");
+                    }
             return nGit;
         }
-
-        public static API_NGit git_Pull_Library(this API_NGit nGit)
+        public static API_NGit          git_Pull_Library(this API_NGit nGit)
         {
-            if (TMConfig.Current.Git.LibraryData_Auto_Pull)
-                try
-                {
-                    nGit.pull();
-                }
-                catch (Exception ex)
-                {
-                    ex.log("git_Pull_Library");
-                }
+            var tmServer = TM_Xml_Database.Current.tmServer();
+            if (tmServer.notNull())
+                if (tmServer.Git.LibraryData_Auto_Pull)
+                    try
+                    {
+                        nGit.pull();
+                    }
+                    catch (Exception ex)
+                    {
+                        ex.log("git_Pull_Library");
+                    }
             return nGit;
         }
-
-        public static API_NGit gitCommit_SeparateThread(this API_NGit nGit)
+        public static API_NGit          gitCommit_SeparateThread(this API_NGit nGit)
         {
             O2Thread.mtaThread(
                 ()=>{                        
@@ -95,8 +96,7 @@ namespace TeamMentor.CoreLib
             return nGit;
         }
 
-
-         public static TM_Xml_Database handle_UserData_GitLibraries(this TM_Xml_Database tmDatabase)
+        public static TM_Xml_Database   handle_UserData_GitLibraries(this TM_Xml_Database tmDatabase)
         {
             try
             {
@@ -130,7 +130,6 @@ namespace TeamMentor.CoreLib
             }            
             return tmDatabase;
         }
-
         public static TM_Xml_Database   clone_Library      (this TM_Xml_Database tmDatabase, string gitLibrary, string targetFolder)
         {
             var start = DateTime.Now;
@@ -177,6 +176,18 @@ namespace TeamMentor.CoreLib
     {
         public static Thread thread_Save_GuidanceItemsCache;
 
+        public static bool                               loadDataIntoMemory(this TM_Xml_Database tmXmlDatabase)
+        {
+            if (tmXmlDatabase.Path_XmlDatabase.dirExists().isFalse())
+            {
+                "[TM_Xml_Database] in loadDataIntoMemory, provided pathXmlDatabase didn't exist: {0}".error(tmXmlDatabase.Path_XmlDatabase);
+                return false;
+            }
+            tmXmlDatabase.loadLibraryDataFromDisk();
+            tmXmlDatabase.setupGitSupport();
+            //tmXmlDatabase.UserData.loadTmUserData();
+            return true;
+        }
         public static TM_Xml_Database                    loadLibraryDataFromDisk        (this TM_Xml_Database tmXmlDatabase)
         {
             tmXmlDatabase.GuidanceExplorers_XmlFormat = tmXmlDatabase.Path_XmlLibraries.getGuidanceExplorerObjects();

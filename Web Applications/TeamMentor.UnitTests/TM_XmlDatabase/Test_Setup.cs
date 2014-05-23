@@ -5,7 +5,7 @@ using TeamMentor.CoreLib;
 
 namespace TeamMentor.UnitTests.TM_XmlDatabase
 {
-    [TestFixture]
+/*    [TestFixture]
     public class Test_Setup : TM_XmlDatabase_InMemory
     {
         [Test]
@@ -54,4 +54,5 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Assert.IsFalse    (userData.Path_UserData.dirExists());                        
         }
     }
+ */
 }

@@ -10,9 +10,9 @@ using TeamMentor.CoreLib;
 namespace TeamMentor.UnitTests.CoreLib.ExtensionMethods
 {
     [TestFixture]
-    public class Extra_Cookies_ExtensioMethods
+    public class Test_Extra_Cookies_ExtensioMethods
     {
-        public Extra_Cookies_ExtensioMethods()
+        public Test_Extra_Cookies_ExtensioMethods()
         {
             HttpContextFactory.Context.mock();
         }

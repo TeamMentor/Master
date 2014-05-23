@@ -10,24 +10,24 @@ namespace TeamMentor.CoreLib
 
         public TMSetup_Config               TMSetup                     { get; set; }
         public TMSecurity_Config			TMSecurity				    { get; set; }        
-        public WindowsAuthentication_Config WindowsAuthentication		{ get; set; }
-        public Git_Config			        Git				            { get; set; }
+        public WindowsAuthentication_Config WindowsAuthentication		{ get; set; }       
         public OnInstallation_Config		OnInstallation				{ get; set; }
         public VirtualArticles_Config       VirtualArticles             { get; set; }
 
 
-        static TMConfig()
+        /*static TMConfig()
         {
             Current = new TMConfig();
-        }
+        }*/
 
         public TMConfig()
-        {            
+        {
+            Current                 = this;
+
             TMSetup                 = new TMSetup_Config();
             TMSecurity              = new TMSecurity_Config();
             WindowsAuthentication   = new WindowsAuthentication_Config();
-            OnInstallation          = new OnInstallation_Config();
-            Git                     = new Git_Config();
+            OnInstallation          = new OnInstallation_Config();            
             VirtualArticles         = new VirtualArticles_Config();
         }
 
@@ -81,11 +81,11 @@ namespace TeamMentor.CoreLib
                 EvalAccounts_Enabled         = true;
                 NewAccounts_Enabled          = true;
                 EvalAccounts_Days            = 15;
-                Default_AdminUserName        = "admin";
-                Default_AdminPassword        = "!!tmadmin";
-                Default_AdminEmail           = "TM_alerts@securityinnovation.com";
+                Default_AdminUserName        = TMConsts.USERDATA_DEFAULT_ADMIN_USERNAME;
+                Default_AdminPassword        = TMConsts.USERDATA_DEFAULT_ADMIN_PASSWORD;
+                Default_AdminEmail           = TMConsts.USERDATA_DEFAULT_ADMIN_EMAIL;
                 EmailAdmin_On_NewUsers       = true; 
-            }
+            }            
         }
 
         public class WindowsAuthentication_Config
@@ -104,25 +104,7 @@ namespace TeamMentor.CoreLib
             }
         }        
 
-        public class Git_Config
-        {              
-            public bool         UserData_Git_Enabled         { get; set; }
-            public bool         UserData_Auto_Pull           { get; set; }
-            public bool         UserData_Auto_Push           { get; set; }
-            public bool         LibraryData_Git_Enabled      { get; set; }
-            public bool         LibraryData_Auto_Pull        { get; set; }
-            public bool         LibraryData_Auto_Push        { get; set; }   
-
-            public Git_Config()
-            {
-                LibraryData_Git_Enabled          = true;                 // all user and library data should be controled by Git
-                UserData_Git_Enabled             = true;            
-                LibraryData_Auto_Pull            = true;                 // pull is automatic (or changed on TMConfig file                
-                UserData_Auto_Pull               = true;               
-                LibraryData_Auto_Push            = false;                // push must be set on the TM config
-                UserData_Auto_Push               = false;
-            }
-        }
+        
         public class OnInstallation_Config
         {
             public bool         ForceDefaultAdminPassword			    { get; set; }

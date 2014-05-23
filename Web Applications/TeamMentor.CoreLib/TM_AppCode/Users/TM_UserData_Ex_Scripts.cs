@@ -2,7 +2,7 @@
 
 namespace TeamMentor.CoreLib
 {
-    public static class TM_UserData_Ex_Scripts
+    /*public static class TM_UserData_Ex_Scripts
     {
         public static string firstScript_Invoke(this TM_UserData userData)
         {
@@ -27,5 +27,5 @@ namespace TeamMentor.CoreLib
         }
 
         
-    }
+    }*/
 }

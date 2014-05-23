@@ -18,48 +18,14 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         public void TM_Xml_Database_Ctor()
         {            
             Assert.IsNull (TM_Xml_Database.Current);
-            Assert.IsTrue(TM_Xml_Database.SkipServerOnlineCheck);       // set on TeamMentor.UnitTests.Tests_Config.RunBeforeAllTests()
-            Assert.IsFalse(TM_Status.Current.TM_Database_In_Setup_Workflow);
+            Assert.IsTrue (TM_Xml_Database.SkipServerOnlineCheck);       // set on TeamMentor.UnitTests.Tests_Config.RunBeforeAllTests()
 
-            var tmServer = new TM_Server()
-                                {
-                                    Users_Create_Default_Admin = false
-                                };
+            var tmDatabase = new TM_Xml_Database();                                                
 
-            TM_Xml_Database tmDatabase = new TM_Xml_Database(false, tmServer);
-
-            Assert.IsFalse(TM_Status.Current.TM_Database_In_Setup_Workflow); 
             //check default values
-            Assert.NotNull(tmDatabase);            
-            Assert.False  (tmDatabase.UsingFileStorage);
-            Assert.NotNull(tmDatabase.UserData);
-            Assert.NotNull(tmDatabase.NGits);
-            Assert.IsNull (tmDatabase.Path_XmlDatabase);
-            Assert.IsNull (tmDatabase.Path_XmlLibraries);            
-            Assert.NotNull(tmDatabase.GuidanceExplorers_XmlFormat);
-            Assert.NotNull(tmDatabase.GuidanceExplorers_Paths);
-            Assert.NotNull(tmDatabase.GuidanceItems_FileMappings);
-            Assert.NotNull(tmDatabase.Cached_GuidanceItems);
-            Assert.NotNull(tmDatabase.VirtualArticles);
-
-            Assert.IsEmpty(tmDatabase.UserData.TMUsers);        // due to Users_Create_Default_Admin no users should exist
+                   
         }
-
-        [Test]
-        public void ResetDatabase()
-        {            
-            TM_Xml_Database tmDatabase = new TM_Xml_Database();
-            var resetReturnValue = tmDatabase.ResetDatabase();
-            
-            Assert.AreEqual(tmDatabase, resetReturnValue);
-            Assert.IsEmpty(tmDatabase.NGits);
-            Assert.IsEmpty(tmDatabase.Cached_GuidanceItems);
-            Assert.IsEmpty(tmDatabase.GuidanceItems_FileMappings);
-            Assert.IsEmpty(tmDatabase.GuidanceExplorers_XmlFormat);
-            Assert.IsEmpty(tmDatabase.GuidanceExplorers_Paths);
-            Assert.AreEqual(tmDatabase.Server.toXml(), new TM_Server().toXml());            
-            Assert.IsEmpty(tmDatabase.VirtualArticles);
-            Assert.NotNull(tmDatabase.UserData); // see Test_TM_SecretData for the Ctor checks
-        }
+        //Assert.IsNull  (tmDatabase.Server.toXml(), new TM_Server().toXml());            
+        
     }
 }

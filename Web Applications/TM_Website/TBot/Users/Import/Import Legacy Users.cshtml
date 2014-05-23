@@ -8,7 +8,7 @@
 
 @{
     var userData = TM_UserData.Current;
-    var userFolder = userData.getTmUsersFolder();
+    var userFolder = userData.users_XmlFile_Location();
     var tmUsersXml = userFolder.pathCombine("..\\tmusers.xml");
     var tmPasswords = userFolder.pathCombine("..\\tmusers_passwords.xml");
     var importUsers = HttpContextFactory.Request.QueryString["ImportUsers"] == "yes";

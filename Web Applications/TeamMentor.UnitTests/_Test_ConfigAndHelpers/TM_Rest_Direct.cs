@@ -22,7 +22,8 @@ namespace TeamMentor.UnitTests.REST
         [Assert_Admin]
         public void setDatabase()
         {        
-            tmXmlDatabase = new TM_Xml_Database(false);	
+            tmXmlDatabase = new TM_Xml_Database(false);
+            tmXmlDatabase.UserData.createDefaultAdminUser();
         }
     }
 }

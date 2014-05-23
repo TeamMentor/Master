@@ -12,6 +12,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
     {
         public TM_UserData  userData;
         public API_NGit     nGit;
+
         [SetUp]
         public void setUp()
         {
@@ -21,7 +22,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
                                 {
                                     Path_UserData = "nonGitRepo".tempDir()
                                 };                                    
-            userData .SetUp(); 
+            //userData .loadData(); 
             nGit     = userData.NGit;     
 
             Assert.AreEqual(1, nGit.commits().size() , "there should be one commits here");
@@ -29,14 +30,18 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Assert.NotNull(userData);
             Assert.IsNull(TM_Xml_Database.Current);
             Assert.IsNull(TM_Xml_Database.Current.tmServer());
-            Assert.IsNull(TM_Xml_Database.Current.tmServer().getActive_UserData_Remote_Repo_GitPath());
+            //Assert.IsNull(TM_Xml_Database.Current.tmServer().userData().Remote_GitPath);
         }
 
         [Test][Assert_Admin]
         //[Ignore("Fix when Git support for libraries is fixed")]
         public void CheckNonGitRepoDoesntCommit()
         {
-            TMConfig.Current.Git.UserData_Git_Enabled = false;
+            var tmServer = TM_Xml_Database.Current.tmServer();
+
+            Assert.NotNull(tmServer);           // need a better way to expose the Git user settings to the UserData 
+
+            tmServer.Git.UserData_Git_Enabled = false;
 
             userData.Path_UserData = "nonGitRepo".tempDir();            
 
@@ -44,16 +49,16 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Assert.IsTrue   (userData.Path_UserData.dirExists());            
             Assert.IsEmpty  (userData.Path_UserData.files());
 
-            userData.SetUp()
-                    .newUser();
+            //userData.loadData()
+            //        .newUser();
 
             var users = userData.tmUsers();
             Assert.IsNotEmpty(users, "There should be at least one user (the admin)");
             Assert.IsNotEmpty(userData.Path_UserData.files());                        
             Assert.AreEqual  (2,userData.Path_UserData.files(true).size());
             Assert.IsFalse   (userData.Path_UserData.isGitRepository());
-            
-            TMConfig.Current.Git.UserData_Git_Enabled = true;
+
+            tmServer.Git.UserData_Git_Enabled = true;
         }
 /*
         [Test]
@@ -71,7 +76,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Assert.IsFalse   (head1.isNull());
             
             var tmUser      = userData.newUser().tmUser();            
-            var userXmlFile = tmUser.getTmUserXmlFile().fileName();
+            var userXmlFile = tmUser.user_XmlFile_Location().fileName();
             var untracked   = nGit.status_Untracked();            
             
             Assert.AreEqual (1,untracked.size());
@@ -88,8 +93,11 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             TMConfig.Current.Git.UserData_Git_Enabled = true;
         }*/
         [Test][Assert_Admin] public void CheckGitRepoDoesCommit_OnNewUser()
-        {                        
-            Assert.IsTrue       (userData.tmConfig().Git.UserData_Git_Enabled);
+        {
+            var tmServer = TM_Xml_Database.Current.tmServer();
+
+            Assert.NotNull(tmServer);
+            Assert.IsTrue(tmServer.Git.UserData_Git_Enabled);
             
             userData            .newUser();            // adding a user
             Assert.IsNotNull    (nGit.head());
@@ -106,7 +114,9 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         }
         [Test][Assert_Admin] public void CheckGitRepo_DoesNotCommit_OnUserSave()
         {
-            Assert.IsTrue       (userData.tmConfig().Git.UserData_Git_Enabled);
+            var tmServer = TM_Xml_Database.Current.tmServer();
+            Assert.NotNull(tmServer);
+            Assert.IsTrue(tmServer.Git.UserData_Git_Enabled);
              
             var tmUser          = userData.newUser().tmUser();
             var headBeforeSave  = nGit.head();

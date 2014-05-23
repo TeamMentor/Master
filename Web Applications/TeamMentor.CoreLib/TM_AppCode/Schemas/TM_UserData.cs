@@ -11,8 +11,7 @@ namespace TeamMentor.CoreLib
         public static TM_UserData       Current             { get; set; }
         public static Thread            GitPushThread       { get; set; }
 
-        public string 	                Path_UserData 	    { get; set; }	
-        public string 	                Path_UserData_Base 	{ get; set; }
+        public string 	                Path_UserData 	    { get; set; }	        
         public string 	                Path_WebRootFiles   { get; set; }
         public string                   FirstScriptToInvoke { get; set; }
         public List<TMUser>	            TMUsers			    { get; set; }

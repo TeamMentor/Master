@@ -1,45 +1,45 @@
-﻿using FluentSharp.CoreLib.API;
+﻿using FluentSharp.WinForms;
 using NUnit.Framework;
-using FluentSharp.CoreLib;
 using TeamMentor.CoreLib;
 
 namespace TeamMentor.UnitTests.CoreLib
 {
     [TestFixture]
-    public class Test_TM_UserData : TM_XmlDatabase_InMemory
+    public class Test_TM_UserData
     {
-        [Test]
-        public void TM_UserData_Ctor()
+        [Test] public void TM_UserData_Ctor()   
         {
+            var userData = new TM_UserData();
+
             Assert.IsFalse  (userData.UsingFileStorage);
             Assert.AreEqual (TM_UserData.Current, userData);
             Assert.IsNull   (TM_UserData.GitPushThread);
+            
+            Assert.IsNull   (userData.Path_UserData);
+            Assert.IsNull   (userData.tmConfig_Location());
+            Assert.IsNull   (userData.secretData_Location());            
+            Assert.IsNull   (userData.users_XmlFile_Location());
+            Assert.IsNull   (new TMUser().user_XmlFile_Location());
+            Assert.IsNull   (new TMUser().user_XmlFile_Name());
 
             var userData2 = new TM_UserData(true);
             
             Assert.IsNull   (userData2.Path_UserData);
-            Assert.IsNull   (userData2.Path_UserData_Base);            
-//            Assert.IsNull   (userData2.Git_UserData);
             Assert.IsNull   (userData2.NGit);
-//            Assert.IsFalse  (userData2.AutoGitCommit);            
-
+            
             //set by ResetData
             Assert.IsTrue   (userData2.UsingFileStorage);
             Assert.AreEqual (userData2.FirstScriptToInvoke, TMConsts.USERDATA_FIRST_SCRIPT_TO_INVOKE);
-            Assert.AreEqual (userData2.Path_WebRootFiles  , TMConsts.USERDATA_PATH_WEB_ROOT_FILES);
-//            Assert.AreEqual (userData2.AutoGitCommit      , TMConfig.Current.Git.AutoCommit_UserData);
+            Assert.AreEqual (userData2.Path_WebRootFiles  , TMConsts.USERDATA_PATH_WEB_ROOT_FILES);            
+            Assert.AreEqual (TM_UserData.Current, userData2);            
             Assert.IsEmpty  (userData2.TMUsers);
             Assert.IsNotNull(userData2.SecretData);                        
-            
-            userData = new TM_UserData();                   // restore userData to the version that doesn't use the FileStorage
-            Assert.IsFalse    (userData.UsingFileStorage);
-            Assert.AreEqual   (TM_UserData.Current, userData);
-            Assert.AreNotEqual(TM_UserData.Current, userData2);
         }
-
-        [Test]
-        public void resetData()
+    
+        [Test] public void resetData()          
         {
+            var userData = new TM_UserData();
+            
             userData.resetData();
             Assert.AreEqual(userData.NGit_Author_Name, TMConsts.NGIT_DEFAULT_AUTHOR_NAME);
             Assert.AreEqual(userData.NGit_Author_Email, TMConsts.NGIT_DEFAULT_AUTHOR_EMAIL);
@@ -48,9 +48,29 @@ namespace TeamMentor.UnitTests.CoreLib
             Assert.IsEmpty(userData.TMUsers);
             Assert.NotNull(userData.SecretData);        // see Test_TM_SecretData for the Ctor checks
         }
-        
 
-        [Test]
+        [Test] public void loadUsers()
+        {
+            var userData = new TM_UserData();
+            
+            userData.loadUsers();
+            Assert.IsEmpty(userData.TMUsers);
+            Assert.IsNull(userData.Path_UserData);
+
+            var userData2 = new TM_UserData(true);   // when UsingFileStorage = true
+
+            userData2.loadUsers();                   // but userData.Path_UserData =null            
+            Assert.IsEmpty(userData2.TMUsers);       // we should get no users
+        }
+        
+        
+        [Test] public void user_XmlFile_Location()
+        {
+            
+   
+        }
+        //public void InvokeUserDataScriptFile()
+        /*[Test]
         public void InvokeUserDataScriptFile()
         {
             userData.Path_UserData  = "userData".tempDir();
@@ -81,6 +101,7 @@ namespace TeamMentor.UnitTests.CoreLib
             Assert.IsTrue   (Files.deleteFolder(userData.Path_UserData,true));
             Assert.IsFalse  (userData.Path_UserData.dirExists());
         }
+        */
 
     }
 }

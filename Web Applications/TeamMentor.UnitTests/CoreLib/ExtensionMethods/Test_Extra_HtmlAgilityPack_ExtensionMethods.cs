@@ -4,12 +4,12 @@ using NUnit.Framework;
 namespace TeamMentor.UnitTests.CoreLib.ExtensionMethods
 {
     [TestFixture]
-    public class Extra_HtmlAgilityPack_ExtensionMethods
+    public class Test_Extra_HtmlAgilityPack_ExtensionMethods
     {
         public string MessyHtml      { get; set; }
         public string ExpectedResult { get; set; }
 
-        public Extra_HtmlAgilityPack_ExtensionMethods()
+        public Test_Extra_HtmlAgilityPack_ExtensionMethods()
         {
             MessyHtml      = "<html><ul><li>an item</li></ul></html>";
             ExpectedResult = "<ul>\r\n    <li>an item</li>\r\n  </ul>";

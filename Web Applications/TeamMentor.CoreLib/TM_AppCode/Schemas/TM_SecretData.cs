@@ -18,8 +18,8 @@ namespace TeamMentor.CoreLib
             Server          = "smtp.sendgrid.net";
             UserName        = "TeamMentor";
             Password        = "";
-            Default_From    = TMConfig.Current.TMSecurity.Default_AdminEmail ;
-            Default_To      = TMConfig.Current.TMSecurity.Default_AdminEmail ;
+            Default_From    = TMConsts.USERDATA_DEFAULT_ADMIN_EMAIL;
+            Default_To      = TMConsts.USERDATA_DEFAULT_ADMIN_EMAIL;
             Email_Footer    = TMConsts.EMAIL_DEFAULT_FOOTER;
         }
     }

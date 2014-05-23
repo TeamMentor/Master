@@ -14,16 +14,23 @@ namespace TeamMentor.CoreLib
             if(TM_Xml_Database.Current.isNull())   // this is a catastrofic even and TM cannot recover from it
             {
                 "[Fatal Error] TM_Xml_Database.Current was null".error();
-                HttpContextFactory.Server.Transfer(TMConsts.PATH_HTML_PAGE_UNAVAILABLE);
+                transferToPageUnavailable();                
             }
             else if(TMConfig.Current.isNull())       
             {
                 "[Fatal Error] TMConfig.Current was null".error();
-                HttpContextFactory.Server.Transfer(TMConsts.PATH_HTML_PAGE_UNAVAILABLE);
+                transferToPageUnavailable(); 
             }
             
             SendEmails.mapTMServerUrl();        // find a better place to put these one-off requests
             return this;
+        }
+
+        public void transferToPageUnavailable()
+        {
+            HttpContextFactory.Response.ContentType = "text/html";
+            HttpContextFactory.Server.Transfer(TMConsts.PATH_HTML_PAGE_UNAVAILABLE);
+            // the Server.Transfer call will break the execution (by throwing an exception)
         }
 
         public TM_Engine logRequest()

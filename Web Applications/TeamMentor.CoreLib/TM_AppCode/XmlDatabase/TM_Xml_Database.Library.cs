@@ -9,87 +9,6 @@ using FluentSharp.CoreLib;
 
 namespace TeamMentor.CoreLib
 {	
-    public partial class TM_Xml_Database 
-    {                       
-        public  bool loadDataIntoMemory()
-        {	
-            var tmXmlDatabase = Current;
-
-            if(tmXmlDatabase.Path_XmlDatabase.dirExists().isFalse())
-            {
-                "[TM_Xml_Database] in loadDataIntoMemory, provided pathXmlDatabase didn't exist: {0}".error(tmXmlDatabase.Path_XmlDatabase);
-                return false;
-            }            
-            tmXmlDatabase.loadLibraryDataFromDisk();            
-            tmXmlDatabase.setupGitSupport();
-            tmXmlDatabase.UserData.loadTmUserData();
-            return true;					
-        }        
-        
-
-        //move to  extension methods
-        [ReadArticles] 
-        public TeamMentor_Article getGuidanceItem(Guid guidanceItemId)
-        {
-            if (Cached_GuidanceItems.hasKey(guidanceItemId).isFalse())
-                return null;
-                
-            return Cached_GuidanceItems[guidanceItemId];			
-        }
-        
-        [ReadArticles] 
-        public string getGuidanceItemHtml(Guid sessionId, Guid guidanceItemId)
-        {            
-
-            if (Cached_GuidanceItems.hasKey(guidanceItemId).isFalse())
-                return null;
-
-            var article = Cached_GuidanceItems[guidanceItemId];
-            
-
-            sessionId.session_TmUser().logUserActivity("View Article Html", article.Metadata.Title); 
-            
-            var articleContent = article.Content.Data.Value;
-
-            if (articleContent.inValid())
-                return "";
-
-            switch(article.Content.DataType.lower()) 
-            {
-                case "raw":
-                    return articleContent;
-                case "html":
-                    {
-                        if (TMConfig.Current.TMSecurity.Sanitize_HtmlContent && article.Content.Sanitized.isFalse())
-                            return articleContent.sanitizeHtmlContent();
-                        
-                        return articleContent.fixXmlDoubleEncodingIssue();                            
-                    }
-                case "safehtml":
-                    {
-                        return articleContent.sanitizeHtmlContent();
-                    }
-                case "wikitext":
-                    return "<div id ='tm_datatype_wikitext'>{0}</div>".format(articleContent.htmlEncode());
-                default:
-                    return articleContent;
-            }			
-        }
-
-        [ReadArticles]
-        public List<string> getGuidanceItemsHtml(Guid sessionId, List<Guid> guidanceItemsIds)
-        {
-            var data = new List<string>();
-            if (guidanceItemsIds.notNull())
-                foreach (var guidanceItemId in guidanceItemsIds)
-                {
-                    data.add(getGuidanceItemHtml(sessionId, guidanceItemId));
-                }
-            return data;
-        }
-    }
-
-
     //******************* TM_Library
     
     public static class TM_Xml_Database_ExtensionMethods_TM_Library
@@ -538,7 +457,7 @@ namespace TeamMentor.CoreLib
                         if (tmDatabase.xmlDB_Libraries_ImportFromZip(installUrl, ""))
                         {
                             "[handleDefaultInstallActions]  library {0} installed ok".info(defaultLibrary);
-                            //tmDatabase.ReloadData();
+                            //tmDatabase.reloadData();
                         }
                         else
                             "[handleDefaultInstallActions]  failed to install default library {0}".error(defaultLibrary);

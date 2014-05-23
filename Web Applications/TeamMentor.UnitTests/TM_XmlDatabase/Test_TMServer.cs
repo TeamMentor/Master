@@ -9,114 +9,111 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
     [TestFixture]
     public class Test_TMServer
     {        
-        [SetUp]        
-        public void setup() 
+        [SetUp]    public void setup() 
         {
             
         }
-
-        [TearDown]
-        public void tearDown()
+        [TearDown] public void tearDown()
         {
           
         }
 
-
-        [Test]
-        public void TMServer_Ctor()
+        [Test] public void TMServer_Ctor()
+        {
+            // see setDefaultValues();   
+        }
+        
+        //TM_Server Extension methods
+        [Test] public void setDefaultValues()                       
         {
             var tmServer = new TM_Server();
-            Assert.NotNull(tmServer);
-            Assert.NotNull(tmServer.UserData);
-            Assert.NotNull(tmServer.SiteData);
-            Assert.IsEmpty(tmServer.UserData_Repos);
-            Assert.IsEmpty(tmServer.SiteData_Repos);
+            Assert.NotNull(tmServer);            
+            Assert.IsEmpty(tmServer.UserData_Configs);
+            Assert.IsEmpty(tmServer.SiteData_Configs);
 
-            Assert.IsTrue (tmServer.Users_Create_Default_Admin);
+            Assert.IsTrue(tmServer.Users_Create_Default_Admin);
             Assert.IsFalse(tmServer.TM_Database_Use_AppData_Folder);
 
-            Assert.AreEqual(TM_Server.WebRoot      , AppDomain.CurrentDomain.BaseDirectory);
-            Assert.AreEqual(TM_Server.AppData_Folder, TM_Server.WebRoot.pathCombine("App_Data"));
-        }
-
-        //TM_Server Extension methods
-
-        [Test]
-        public void resetData()
+            Assert.AreEqual(TM_Server.WebRoot, AppDomain.CurrentDomain.BaseDirectory);            
+        }        
+        [Test] public void setDefaultData()                              
         {
-            var tmServer = new TM_Server();
-            var userData = tmServer.UserData;
-            var sideData = tmServer.SiteData;
-            Assert.IsEmpty(tmServer.UserData_Repos);
-            Assert.IsEmpty(tmServer.SiteData_Repos);
-            Assert.NotNull(userData);
-            Assert.NotNull(sideData);
-            Assert.AreEqual(userData.Active_Repo_Name   , TMConsts.TM_SERVER_DEFAULT_NAME_USERDATA);
+            var tmServer = new TM_Server();    
+            tmServer.setDefaultData();
+            Assert.IsNotEmpty(tmServer.UserData_Configs);
+            Assert.IsNotEmpty(tmServer.SiteData_Configs);     
+            Assert.AreEqual(1, tmServer.UserData_Configs.size());
+            Assert.AreEqual(1, tmServer.SiteData_Configs.size());
+            
+            var userData = tmServer.userData_Config();
+            Assert.AreEqual(userData.Name               , TMConsts.TM_SERVER_DEFAULT_NAME_USERDATA);
+            Assert.AreEqual(userData.Active             , true);
             Assert.AreEqual(userData.Use_FileSystem     , false);
             Assert.AreEqual(userData.Enable_Git_Support , false);
-                
-            Assert.AreEqual(sideData.Active_Repo_Name   , TMConsts.TM_SERVER_DEFAULT_NAME_SITEDATA);
-            Assert.AreEqual(sideData.Use_FileSystem     , false);
-            Assert.AreEqual(sideData.Enable_Git_Support , false);
-        }
 
-        [Test]
-        public void add_UserData_Repo()
+            var siteData = tmServer.siteData_Config();
+            Assert.AreEqual(siteData.Name               , TMConsts.TM_SERVER_DEFAULT_NAME_SITEDATA);
+            Assert.AreEqual(siteData.Active             , true);
+            Assert.AreEqual(siteData.Use_FileSystem     , false);
+            Assert.AreEqual(siteData.Enable_Git_Support , false);
+        }
+        [Test] public void add_UserData_Repo()                      
         {
-            var tmServer           = new TM_Server();
-            var userData_GitRepo1a = new TM_Server.GitRepo { Name = 10.randomLetters()      };
-            var userData_GitRepo1b = new TM_Server.GitRepo { Name = userData_GitRepo1a.Name };
-            var userData_GitRepo2  = new TM_Server.GitRepo { Name = 10.randomLetters()      };
+            var tmServer          = new TM_Server();
+            var userData_Config1a = new TM_Server.Config { Name = 10.randomLetters() };
+            var userData_Config1b = new TM_Server.Config { Name = userData_Config1a.Name };
+            var userData_Config2  = new TM_Server.Config { Name = 10.randomLetters() };
 
-            Assert.IsEmpty(tmServer.UserData_Repos);          // should add userData_GitRepo1a
+            Assert.IsNotEmpty(tmServer.UserData_Configs);          // there should be at least one default UserData config
+            
+            tmServer.UserData_Configs.clear();
 
-            tmServer.add_UserData_Repo(userData_GitRepo1a);
+            tmServer.add_UserData(userData_Config1a);
 
-            Assert.AreEqual( tmServer.UserData_Repos.size()   ,1);
-            Assert.AreEqual( tmServer.UserData_Repos.first()  ,userData_GitRepo1a);
+            Assert.AreEqual( tmServer.UserData_Configs.size()   ,1);
+            Assert.AreEqual( tmServer.UserData_Configs.first()  ,userData_Config1a);
 
-            tmServer.add_UserData_Repo(userData_GitRepo2);   // should add userData_GitRepo2
+            tmServer.add_UserData(userData_Config2);            // should add userData_Config2
 
-            Assert.AreEqual( tmServer.UserData_Repos.size()   ,2);
-            Assert.AreEqual( tmServer.UserData_Repos.first()  ,userData_GitRepo1a);            
-            Assert.AreEqual( tmServer.UserData_Repos.second() ,userData_GitRepo2);
+            Assert.AreEqual( tmServer.UserData_Configs.size()   ,2);
+            Assert.AreEqual( tmServer.UserData_Configs.first()  ,userData_Config1a);            
+            Assert.AreEqual( tmServer.UserData_Configs.second() ,userData_Config2);
 
-            tmServer.add_UserData_Repo(userData_GitRepo1b);  // should reaplce userData_GitRepo1a with userData_GitRepo1b
-            Assert.AreEqual(tmServer.UserData_Repos.size()   , 2);            
-            Assert.AreEqual(tmServer.UserData_Repos.first()  , userData_GitRepo2);
-            Assert.AreEqual(tmServer.UserData_Repos.second() , userData_GitRepo1b);
+            tmServer.add_UserData(userData_Config1b);           // should reaplce userData_GitRepo1a with userData_GitRepo1b
+            Assert.AreEqual(tmServer.UserData_Configs.size()   , 2);            
+            Assert.AreEqual(tmServer.UserData_Configs.first()  , userData_Config2);
+            Assert.AreEqual(tmServer.UserData_Configs.second() , userData_Config1b);
         }
-        [Test]
-        public void getActive_UserData_Repo_Remote_GitPath()
+        [Test] public void getActive_UserData_Repo_Remote_GitPath() 
         {
             var tmServer = new TM_Server();
-            
-            Assert.IsNull(tmServer.getActive_UserData_Repo());
+                        
 
-            var userData_GitRepo = new TM_Server.GitRepo 
+            var userData_Config = new TM_Server.Config 
                 { 
                     Name           = 10.randomLetters(), 
                     Remote_GitPath = 10.randomLetters()
                 };
-            tmServer.setActive_UserData_Rep(userData_GitRepo);
+            tmServer.add_UserData(userData_Config);
+            tmServer.active_UserData(userData_Config);
             
-            var remote_GitPath = tmServer.getActive_UserData_Remote_Repo_GitPath();
-            var active_GitRepo = tmServer.getActive_UserData_Repo();
-            
-            Assert.NotNull (active_GitRepo);
-            Assert.AreEqual(userData_GitRepo, active_GitRepo);
-            Assert.AreEqual(userData_GitRepo.Remote_GitPath, remote_GitPath); ;            
-        }
+            var active_GitConfig = tmServer.userData_Config();
+            var remote_GitPath   = tmServer.userData_Config().Remote_GitPath;
 
-        [Test]
-        public void load_TMServer_Config()
+            Assert.NotNull (active_GitConfig);
+            Assert.AreEqual(userData_Config, active_GitConfig);
+            Assert.AreEqual(userData_Config.Remote_GitPath, remote_GitPath); ;            
+        }
+        [Test] public void load_TM_Server_Config()                  
         {
          //   TM_Status.In_Setup_XmlDatabase = false;
             UserGroup.Admin.assert();
 
             //first test with in memory version of TM_Xml_Database
             TM_Xml_Database tmXmlDatabase = new TM_Xml_Database();
-            var tmServer = tmXmlDatabase.load_TMServer_Config();
+            tmXmlDatabase.tmServer_Load();
+            
+            var tmServer = tmXmlDatabase.Server;
 
             Assert.NotNull (tmServer);
             Assert.AreEqual(tmServer, tmXmlDatabase.tmServer());
@@ -127,8 +124,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             tmXmlDatabase.Path_XmlDatabase = "_tmpLocation".tempDir();
             tmXmlDatabase.UsingFileStorage = true;
         }
-        [Test]        
-        public void tmServer()
+        [Test] public void tmServer()                               
         {
             UserGroup.Admin.assert();
             var tmDatabase = new TM_Xml_Database();
@@ -137,16 +133,14 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Assert.NotNull (tmServer);
             Assert.AreEqual(tmServer, tmDatabase.Server);                          
         }        
-
-        [Test]
-        public void LoadAndSave_TMServer_To_Disk()
+        [Test] public void LoadAndSave_TMServer_To_Disk()           
         {
             UserGroup.Admin.assert();
             TM_Xml_Database tmXmlDatabase = new TM_Xml_Database(true);
 
             var tmServer      = tmXmlDatabase.Server;
-            tmXmlDatabase.get_Path_TMServer_Config().info();
-            var tmServerPath  = tmXmlDatabase.get_Path_TMServer_Config();
+            tmXmlDatabase.tmServer_Location().info();
+            var tmServerPath  = tmXmlDatabase.tmServer_Location();
 
             Assert.IsNotNull(tmServer                   , "tmServer");
             Assert.IsNotNull(tmServerPath               , "tmServerPath");
@@ -165,7 +159,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Assert.IsTrue(tmXmlDatabase.Path_XmlDatabase.dirExists());
 
             var tmServer = tmXmlDatabase.TM_Server_Config;
-            var tmServerPath = tmXmlDatabase.get_Path_TMServer_Config();
+            var tmServerPath = tmXmlDatabase.tmServer_Location();
 
             Assert.IsNotNull(tmServer);
             Assert.IsNotNull(tmServerPath);

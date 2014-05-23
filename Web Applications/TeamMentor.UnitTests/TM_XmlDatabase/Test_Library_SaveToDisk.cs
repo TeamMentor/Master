@@ -16,7 +16,8 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         public void Setup()
         {
             //TM_Server.WebRoot = "temp_BaseFolder".tempDir();  // set temp folder for UnitTests
-            tmDatabase = new TM_Xml_Database(true);          // with the useFileStorage set to true                        
+            tmDatabase = new TM_Xml_Database(true)              // with the useFileStorage set to true                        
+                                   .loadData();                 // with data loaded
         }
 
         [TearDown]

@@ -7,10 +7,10 @@ namespace TeamMentor.CoreLib
 {
     public static class TM_UserData_Ex
     {
-        public static TMConfig tmConfig(this TM_UserData userData)
+        /*public static TMConfig tmConfig(this TM_UserData userData)
         {
             return TMConfig.Current;
-        }
+        }*/
         public static TM_UserData resetData             (this TM_UserData userData)          
         {
             userData.NGit_Author_Name    = TMConsts.NGIT_DEFAULT_AUTHOR_NAME;
@@ -21,28 +21,8 @@ namespace TeamMentor.CoreLib
             userData.SecretData          = new TM_SecretData();                        
             return userData;
         }
-        public static TM_UserData SetUp                 (this TM_UserData userData)  
-        {
-            try
-            {
-                userData.setupGitSupportAndLoadTMConfigFile();                
-                userData.firstScript_Invoke();                
-                userData.SecretData = userData.secretData_Load();
-            }
-            catch (Exception ex)
-            {
-                ex.log("[TM_UserData] [SetUp]");
-            }            
-            return userData;
-        }
-        public static TM_UserData ReloadData            (this TM_UserData userData)  
-        {
-            userData.SetUp();
-            userData.loadTmUserData();
-            userData.createDefaultAdminUser();  // make sure the admin user exists and is configured
-            return userData;
-        }
-        public static string      webRootFiles          (this TM_UserData userData)  
+
+/*        public static string      webRootFiles          (this TM_UserData userData)  
         {
             if (userData.notNull() && 
                 userData.Path_UserData.valid() && 
@@ -71,6 +51,6 @@ namespace TeamMentor.CoreLib
                 "[TM_UserData] [copy_FilesIntoWebRoot] target Folder with web.config was found: {0}".debug(targetFolder);    
                 Files.copyFolder(sourceFolder, targetFolder,true,true,"");            
                 return true;
-            }
+            }*/
     }
 }

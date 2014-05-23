@@ -1,14 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using Microsoft.Security.Application;
 using FluentSharp.CoreLib;
 
 namespace TeamMentor.CoreLib
 {
     public static class TM_UserData_Ex_Users_Persistance
     {        
-        public static bool setUserDataPath(this TM_UserData userData, string userDataPath)
+      /*  public static bool setUserDataPath(this TM_UserData userData, string userDataPath)
         {
             if (userDataPath.isNull() || userDataPath.dirExists().isFalse())
             {
@@ -19,7 +17,7 @@ namespace TeamMentor.CoreLib
             {
                 userData.Path_UserData = userDataPath;
                 userData.resetData();                                
-                userData.SetUp();
+                userData.setUp();
                 userData.loadTmUserData();
                 return true;
             }
@@ -28,19 +26,20 @@ namespace TeamMentor.CoreLib
                 ex.log("[TM_UserData] [setUserDataPath]");
                 return false;
             }            
-        }
+        }*/
 
-        public static TM_UserData   loadTmUserData   (this TM_UserData userData)
+        public static TM_UserData   loadUsers   (this TM_UserData userData)             
         {
-            userData.TMUsers = new List<TMUser>();	        
-            if (userData.Path_UserData.dirExists().isFalse())
+            userData.TMUsers = new List<TMUser>();
+            if (userData.UsingFileStorage)
             {
-                "[TM_UserData_Ex_Users_Persistance] [loadTmUserData] provided userDataPath didn't exist: {0}"
-                    .error(userData.Path_UserData);
-            }
-            else
-            {
-                var usersFolder = userData.getTmUsersFolder();
+                var usersFolder = userData.users_XmlFile_Location();
+                if (usersFolder.isNull())
+                {
+                    "[TM_UserData] [loadUsers] could not load users because users_XmlFile_Location() returned null".error();
+                    return userData;
+                }
+                                  
                 foreach (var file in usersFolder.files("*.userData.xml"))
                 {
                     var tmUser = file.load<TMUser>();
@@ -48,31 +47,49 @@ namespace TeamMentor.CoreLib
                         userData.TMUsers.Add(tmUser);
                     else
                         "[TM_UserData_Ex_Users_Persistance] [loadTmUserData] error loading tmUser file (or UserId < 1): {0}".error(file);
-                }
-            }            
+                }                
+            }
+            userData.createDefaultAdminUser();
             return userData;
         }                
-        public static string        getTmUsersFolder(this TM_UserData userData)
+        public static string        users_XmlFile_Location(this TM_UserData userData)   
         {
-            return userData.Path_UserData.pathCombine("Users").createDir();
+            if (userData.UsingFileStorage)
+                if (userData.Path_UserData.notNull())
+                    return userData.Path_UserData
+                                   .pathCombine(TMConsts.USERDATA_PATH_USER_XML_FILES)
+                                   .createDir();
+            return null;
         }
-        public static string        getTmUserXmlFile (this TMUser tmUser)
+        public static string        user_XmlFile_Location (this TMUser tmUser)          
         {
-            var userNameSubstring = tmUser.UserName.subString(0, 10).safeFileName();
-            return TM_UserData.Current.getTmUsersFolder()
-                                     .pathCombine("{0}_{1}.userData.xml".format(userNameSubstring, tmUser.ID));
+            var fileName =  tmUser.user_XmlFile_Name();
+
+            return fileName.valid()
+                        ? TM_UserData.Current.users_XmlFile_Location().pathCombine(fileName)
+                        : null;
         }
-        public static TMUser        saveTmUser       (this TMUser tmUser)
+        public static string        user_XmlFile_Name     (this TMUser tmUser)          
+        {
+            if (tmUser.notNull() && tmUser.UserName.valid() && tmUser.ID != Guid.Empty)
+            {
+                var userNameSubstring = tmUser.UserName.subString(0, 10).safeFileName();
+                var fileName = TMConsts.USERDATA_FORMAT_USER_XML_FILE.format(userNameSubstring, tmUser.ID);
+                return fileName;
+            }
+            return null;
+        }
+        
+        public static bool          saveTmUser       (this TMUser tmUser)               
         {
             if (TM_UserData.Current.UsingFileStorage)
             {                
                 lock (tmUser)
                 {                    
-                    tmUser.saveAs(tmUser.getTmUserXmlFile());
-                    //tmUser.triggerGitCommit();
+                    return tmUser.saveAs(tmUser.user_XmlFile_Location());
                 }
             }
-            return tmUser;
+            return false;
         }
         public static bool          deleteTmUser     (this TM_UserData userData, TMUser tmUser)
         {    		
@@ -85,7 +102,7 @@ namespace TeamMentor.CoreLib
                     {
                         lock (tmUser)
                         {
-                            tmUser.getTmUserXmlFile().file_Delete();
+                            tmUser.user_XmlFile_Location().file_Delete();
                             userData.triggerGitCommit();
                         }
                     }  

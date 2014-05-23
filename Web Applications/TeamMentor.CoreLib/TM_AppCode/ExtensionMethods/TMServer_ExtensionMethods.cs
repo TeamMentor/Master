@@ -8,122 +8,136 @@ namespace TeamMentor.CoreLib
 {
     public static class TMServer_ExtensionMethods
     {
-        public static TM_Server setDefaultValues(this TM_Server tmServer)
+        public static TM_Server        setDefaultValues(this TM_Server tmServer)
         {
             tmServer.Users_Create_Default_Admin     = true;
             tmServer.TM_Database_Use_AppData_Folder = false;
 
-            tmServer.UserData_Repos = new List<TM_Server.GitRepo>();
-            tmServer.SiteData_Repos = new List<TM_Server.GitRepo>();
-
-            tmServer.UserData = new TM_Server.Config
-                                        {
-                                            Active_Repo_Name    = TMConsts.TM_SERVER_DEFAULT_NAME_USERDATA,
-                                            Use_FileSystem      = false,
-                                            Enable_Git_Support  = false
-                                        };
-            tmServer.SiteData = new TM_Server.Config
-                                        {
-                                            Active_Repo_Name    = TMConsts.TM_SERVER_DEFAULT_NAME_SITEDATA,
-                                            Use_FileSystem      = false,
-                                            Enable_Git_Support  = false
-                                        };
-
+            tmServer.Git = new TM_Server.Git_Config();
+            tmServer.UserData_Configs = new List<TM_Server.Config>();
+            tmServer.SiteData_Configs = new List<TM_Server.Config>();
             return tmServer;
-            //Active_Repo_Name = ;
+        }
+        public static TM_Server        setDefaultData(this TM_Server tmServer)
+        {
+            var userData_Config = new TM_Server.Config
+            {
+                Name = TMConsts.TM_SERVER_DEFAULT_NAME_USERDATA,
+                Active = true,
+                Use_FileSystem = false,
+                Enable_Git_Support = false
+            };
+            var siteData_Config = new TM_Server.Config
+            {
+                Name = TMConsts.TM_SERVER_DEFAULT_NAME_SITEDATA,
+                Active = true,
+                Use_FileSystem = false,
+                Enable_Git_Support = false
+            };            
+            tmServer.add_UserData(userData_Config);
+            tmServer.add_SiteData(siteData_Config);
+            return tmServer;
         }
 
-        //TM_Server
-        public static TM_Server add_UserData_Repo(this TM_Server tmServer, TM_Server.GitRepo userData_GitRepo)
+        //user data
+
+        public static TM_Server        add_UserData(this TM_Server tmServer, TM_Server.Config config)
         {
-            if (tmServer.notNull() && userData_GitRepo.notNull())
-            {
-                var existingGitRepo = tmServer.find_UserData_Repo(userData_GitRepo.Name);
-                if (existingGitRepo.notNull())                                    // if it already exists, remove it (before adding)
-                    tmServer.UserData_Repos.remove(existingGitRepo);
-                tmServer.UserData_Repos.add(userData_GitRepo);
-            }
+            if (tmServer.notNull() && config.notNull())
+                tmServer.UserData_Configs.add_Config(config);
+            return tmServer;
+        }                
+        public static TM_Server.Config userData_Config(this TM_Server tmServer)
+        {
+            return (tmServer.notNull())
+                        ? tmServer.UserData_Configs.where(config => config.Active).first()
+                        : null;
+        }
+        public static TM_Server.Config userData_Config(this TM_Server tmServer, string name)
+        {
+            return (tmServer.notNull())
+                        ? tmServer.UserData_Configs.config(name)
+                        : null;
+        }
+               
+        public static TM_Server         active_UserData(this TM_Server tmServer, string name)
+        {
+            return tmServer.active_UserData(tmServer.userData_Config(name));
+        }
+        public static TM_Server         active_UserData(this TM_Server tmServer, TM_Server.Config config)
+        {
+            if (tmServer.isNull() || config.isNull())
+                return null;
+            tmServer.UserData_Configs.active_Config(config);
             return tmServer;
         }
         
-        public static string getActive_UserData_Remote_Repo_GitPath(this TM_Server tmServer)
+
+        //site data
+        public static TM_Server         add_SiteData(this TM_Server tmServer, TM_Server.Config config)
         {
-            if (tmServer.isNull())
+            if (tmServer.notNull() && config.notNull())
+                tmServer.SiteData_Configs.add_Config(config);
+            return tmServer;
+        }
+        public static TM_Server.Config  siteData_Config(this TM_Server tmServer)
+        {
+            return (tmServer.notNull())
+                        ? tmServer.SiteData_Configs.where(config => config.Active).first()
+                        : null;
+        }
+        public static TM_Server.Config  siteData_Config(this TM_Server tmServer, string name)
+        {
+            return (tmServer.notNull())
+                        ? tmServer.SiteData_Configs.config(name)
+                        : null;
+        }
+        public static TM_Server         active_SiteData(this TM_Server tmServer, string name)
+        {
+            return tmServer.active_SiteData(tmServer.userData_Config(name));
+        }
+        public static TM_Server         active_SiteData(this TM_Server tmServer, TM_Server.Config config)
+        {
+            if (tmServer.isNull() || config.isNull())
                 return null;
-            var activeRepo = tmServer.getActive_UserData_Repo();
-            if (activeRepo.notNull())
-                return activeRepo.Remote_GitPath;
-            return null;
-        }
-
-        public static TM_Server.GitRepo getActive_UserData_Repo(this TM_Server tmServer)
-        {
-            return tmServer.find_UserData_Repo(tmServer.UserData.Active_Repo_Name);
-        }
-        public static TM_Server.GitRepo find_UserData_Repo(this TM_Server tmServer, string name)
-        {
-            return tmServer.UserData_Repos.where(repo => repo.Name == name).first();
-        }
-
-        public static TM_Server setActive_UserData_Rep(this TM_Server tmServer, TM_Server.GitRepo gitRepo)
-        {
-            if (tmServer.UserData_Repos.contains(gitRepo).isFalse())
-                tmServer.UserData_Repos.add(gitRepo);
-            tmServer.UserData.Active_Repo_Name = gitRepo.Name;
+            tmServer.SiteData_Configs.active_Config(config);
             return tmServer;
         }
 
-   
+        //config
+        public static TM_Server.Config       config(this List<TM_Server.Config> configs, string name)
+        {
+            return configs.where(config => config.Name == name).first();
+        }
+        public static List<TM_Server.Config> add_Config(this List<TM_Server.Config> configs, TM_Server.Config config)
+        {
+            if (configs.notNull() && config.notNull())
+            {
+                var existingConfig = configs.config(config.Name);
+                if (existingConfig.notNull())                                    // if it already exists, remove it (before adding)
+                    configs.remove(existingConfig);
+                configs.add(config);
+            }
+            return configs;
+        }
+        public static List<TM_Server.Config> active_Config(this List<TM_Server.Config> configs, TM_Server.Config config)
+        {
+            if (configs.notNull() && config.notNull())
+            {
+                configs.ForEach(_config => _config.Active = false);
+                config.Active = true;
+            }
+            return configs;
+        }
+
         // for TM_Xml_Database
         public static TM_Server tmServer(this TM_Xml_Database tmDatabase)
         {
             if (tmDatabase.isNull())
                 return null;
-            return tmDatabase.Server.notNull()
-                    ? tmDatabase.Server
-                    : tmDatabase.load_TMServer_Config();
-        }
-       
-        public static TM_Server load_TMServer_Config(this TM_Xml_Database tmDatabase)
-        {
-            tmDatabase.Server = new TM_Server();
-            if (tmDatabase.UsingFileStorage)
-            {
-                var tmServerFile = tmDatabase.get_Path_TMServer_Config();
-                if (tmServerFile.valid())
-                {
-                    if (tmServerFile.fileExists().isFalse())
-                    {
-                        "[TM_Xml_Database][load_TMServer_Config] expected TM_Server file didn't exist, so creating it: {0}".info(tmServerFile);
-                        new TM_Server().saveAs(tmServerFile);
-                    }
-                    var tmServer = tmServerFile.load<TM_Server>();
-                    if (tmServer.isNull())
-                        "[TM_Xml_Database][load_TMServer_Config] Failed to load tmServer file: {0}   Default values will be used".error(tmServerFile);
-                    else                    
-                        tmDatabase.Server = tmServer;
-                }
-            }
-                
+            if(tmDatabase.Server.isNull())
+                tmDatabase.tmServer_Load();
             return tmDatabase.Server;
-        }
-        public static bool save_TMServer_Config(this TM_Xml_Database tmDatabase)
-        {
-            try
-            {
-                if (tmDatabase.UsingFileStorage)
-                {
-                    var tmServerFile = tmDatabase.get_Path_TMServer_Config();
-                    if (tmServerFile.valid())
-                        tmDatabase.Server.saveAs(tmServerFile);
-                }
-                return true;
-            }
-            catch (Exception ex)
-            {
-                ex.log("in save_TMServer_Config");
-                return false;
-            }            
         }
     }
 }
