@@ -126,7 +126,7 @@ namespace TeamMentor.CoreLib
                     
                     libraryPath.parentFolder().createDir();         // ensure library folder exists
                     guidanceExplorer.SaveLibraryTo(libraryPath);
-                    tmDatabase.triggerGitCommit();
+                    //tmDatabase.triggerGitCommit();                //TODO:add saveToLibraryEvent (to allow TeamMentor.Git to trigger the git commit)
                 }
                 else
                     return false;                

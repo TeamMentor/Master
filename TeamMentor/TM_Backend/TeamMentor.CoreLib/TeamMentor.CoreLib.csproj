@@ -44,10 +44,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\FluentSharp.CoreLib.5.3.121\lib\net35\FluentSharp.CoreLib.dll</HintPath>
     </Reference>
-    <Reference Include="FluentSharp.NGit, Version=5.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\FluentSharp.NGit.5.3.121\lib\net40\FluentSharp.NGit.dll</HintPath>
-    </Reference>
     <Reference Include="HtmlAgilityPack">
       <HintPath>..\..\packages\HtmlAgilityPack.1.4.6\lib\Net40\HtmlAgilityPack.dll</HintPath>
     </Reference>
@@ -61,10 +57,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\TeamMentor.UnitTests\NGit_Dlls\NGit.dll</HintPath>
     </Reference>
-    <Reference Include="RazorEngine, Version=3.3.0.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\RazorEngine.3.3.0\lib\net40\RazorEngine.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -76,73 +68,14 @@
     <Reference Include="System.ServiceModel.Web" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\..\packages\Microsoft.AspNet.Razor.2.0.30506.0\lib\net40\System.Web.Razor.dll</HintPath>
-    </Reference>
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TM_AppCode\Authentication\TokenAuthentication.cs" />
-    <Compile Include="TM_AppCode\TM_Engine.cs" />
-    <Compile Include="TM_AppCode\Schemas\WhoAmI.cs" />
-    <Compile Include="TM_AppCode\Authentication\TM_Authentication.cs" />
-    <Compile Include="TM_AppCode\Authentication\UserRoleBaseSecurity.cs" />
-    <Compile Include="TM_AppCode\Authentication\WindowsAuthentication.cs" />
-    <Compile Include="TM_AppCode\ExtensionMethods\TM_Xml_Database_ExtensionMethods_GuiHelpers.cs" />
-    <Compile Include="TM_AppCode\Global.asax.cs" />
-    <Compile Include="TM_AppCode\TM_StartUp.cs" />
-    <Compile Include="TM_AppCode\Utils\GZip.cs" />
-    <Compile Include="TM_AppCode\Schemas\KeyValue.cs" />
-    <Compile Include="TM_AppCode\Utils\REPL.cs" />
-    <Compile Include="TM_AppCode\Utils\ResponseHeaders.cs" />
-    <Compile Include="TM_AppCode\HttpHandlers\FileUpload\LibraryDownload.ashx.cs" />
-    <Compile Include="TM_AppCode\HttpHandlers\FileUpload\FileUpload.ashx.cs" />
-    <Compile Include="TM_AppCode\HttpHandlers\ScriptCombiner\JavaScriptMinifier.cs" />
-    <Compile Include="TM_AppCode\HttpHandlers\ScriptCombiner\ScriptCombiner.ashx.cs" />
-    <Compile Include="TM_AppCode\HttpHandlers\UrlRewrite\HandleUrlRequest.cs" />
-    <Compile Include="TM_AppCode\HttpHandlers\UrlRewrite\UrlRewriter.ashx.cs" />
-    <Compile Include="TM_AppCode\WebServices\ExtensionMethods\TM_WebServices_Logging.cs" />
-    <Compile Include="TM_AppCode\WebServices\TM_WebServices.Libraries.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="TM_AppCode\Schemas\TM_Gui_Objects.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TM_AppCode\Schemas\DataViewers\JsDataTable.cs" />
-    <Compile Include="TM_AppCode\Schemas\DataViewers\JsTreeNode.cs" />
     <None Include="app.config" />
-    <Compile Include="TM_AppCode\WebServices\TM_WebServices.asmx.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="TM_AppCode\WebServices\TM_WebServices.Config.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="TM_AppCode\WebServices\TM_WebServices.DataViewers.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="TM_AppCode\WebServices\TM_WebServices.GuiHelpers.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="TM_AppCode\ExtensionMethods\IREST_ExtensionMethods.cs" />
-    <Compile Include="TM_AppCode\WebServices\TM_WebServices.Session.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="TM_AppCode\WebServices\TM_WebServices.Users.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="TM_AppCode\WebServices_REST\Controllers\TM_REST_Sessions.cs" />
-    <Compile Include="TM_AppCode\WebServices_REST\TBot\TBot_Brain.cs" />
-    <Compile Include="TM_AppCode\WebServices_REST\TBot\TBot_WorkerThread.cs" />
-    <Compile Include="TM_AppCode\WebServices_REST\TM_REST.cs" />
-    <Compile Include="TM_AppCode\WebServices_REST\Controllers\TM_REST_Libraries.cs" />
-    <Compile Include="TM_AppCode\WebServices_REST\Controllers\TM_REST_Admin.cs" />
-    <Compile Include="TM_AppCode\WebServices_REST\ITM_REST.cs" />
-    <Compile Include="TM_AppCode\WebServices_REST\Tests_RnD\REST_Tests.cs" />
-    <Compile Include="TM_AppCode\WebServices_REST\Controllers\TM_REST_Users.cs" />
-    <Compile Include="TM_AppCode\WebServices\TM_Xml_Database_JavaScriptProxy.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">
@@ -153,9 +86,17 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TeamMentor.Asmx\TeamMentor.Asmx.csproj">
+      <Project>{AF783625-F52F-4558-B64C-AC982324A072}</Project>
+      <Name>TeamMentor.Asmx</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TeamMentor.Database\TeamMentor.Database.csproj">
       <Project>{e08703fb-d33c-4acd-b679-c1be867d6f0c}</Project>
       <Name>TeamMentor.Database</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TeamMentor.Git\TeamMentor.Git.csproj">
+      <Project>{6F12D85C-EC73-4C85-8F96-B6D97604E2EF}</Project>
+      <Name>TeamMentor.Git</Name>
     </ProjectReference>
     <ProjectReference Include="..\TeamMentor.Schemas\TeamMentor.Schemas.csproj">
       <Project>{77E93D41-8457-45BD-82A8-37C0DEEC32AD}</Project>
@@ -165,6 +106,9 @@
       <Project>{5844d933-6fb7-4717-ae60-85d96f2efa29}</Project>
       <Name>TeamMentor.Users</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="TM_AppCode\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

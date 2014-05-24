@@ -9,8 +9,8 @@ namespace TeamMentor.UnitTests.CoreLib.Schemas
     {
         [Test] public void Test_WhoAmI_Ctor()
         {
-            var newUser = userData.createUser();            
-            var whoAmI  = new WhoAmI(newUser);
+            var newUser = userData.createUser();
+            var whoAmI   = newUser.whoAmI();
             Check_WhoAmIObject_for_Reader(newUser, whoAmI);
         }
 

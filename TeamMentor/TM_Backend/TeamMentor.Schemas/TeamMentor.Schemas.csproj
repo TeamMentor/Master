@@ -48,17 +48,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Content\DataViewers\JsDataTable.cs" />
+    <Compile Include="Content\DataViewers\JsTreeNode.cs" />
     <Compile Include="Content\Folder_V3.cs" />
     <Compile Include="Content\Legacy\guidanceexplorer.cs" />
     <Compile Include="Content\Legacy\OnlineStorage_Library.cs" />
     <Compile Include="Content\Legacy\TM_Library.cs" />
     <Compile Include="Content\Library_V3.cs" />
+    <Compile Include="Content\VirtualArticleAction.cs" />
     <Compile Include="Misc\EmailMessage.cs" />
     <Compile Include="Content\TeamMentor_Article.cs" />
+    <Compile Include="Misc\KeyValue.cs" />
+    <Compile Include="Misc\SecurityAttributes.cs" />
     <Compile Include="Misc\TM_Database_Events.cs" />
     <Compile Include="Config\TM_Server.cs" />
     <Compile Include="Config\TM_Status.cs" />
+    <Compile Include="Content\TM_Gui_Objects.cs" />
+    <Compile Include="Misc\WhoAmI.cs" />
     <Compile Include="TMConsts.cs" />
+    <Compile Include="TM_Xml_Database.cs" />
     <Compile Include="UserData\TMUser.cs" />
     <Compile Include="UserData\TM_Credentials.cs" />
     <Compile Include="UserData\TM_User.cs" />
@@ -70,9 +78,14 @@
     <Compile Include="UserData\TM_UserData.cs" />
     <Compile Include="Content\View_V3.cs" />
     <Compile Include="UserData\UserActivities.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="O2_Kernel\CodeUtils\O2ConfigLoader.cs.txt" />
+    <Compile Include="_SharedUtils\Crypto.cs" />
+    <Compile Include="_SharedUtils\ExtensionMethods\Extra_Cookies_ExtensioMethods.cs" />
+    <Compile Include="_SharedUtils\ExtensionMethods\Extra_DateTime_ExtensionMethods.cs" />
+    <Compile Include="_SharedUtils\ExtensionMethods\Extra_Double_ExtensionMethods.cs" />
+    <Compile Include="_SharedUtils\ExtensionMethods\Extra_JSON_ExtensionMethods.cs" />
+    <Compile Include="_SharedUtils\ExtensionMethods\Extra_Web_Encoding_ExtensionMethods.cs" />
+    <Compile Include="_SharedUtils\HttpContextFactory.cs" />
+    <Compile Include="_SharedUtils\MiscUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

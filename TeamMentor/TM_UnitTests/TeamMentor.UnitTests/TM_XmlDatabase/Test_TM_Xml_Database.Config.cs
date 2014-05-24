@@ -324,8 +324,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
 
             Assert.NotNull  (tmDatabase);
             Assert.False    (tmDatabase.UsingFileStorage);                        
-
-            Assert.IsEmpty  (tmDatabase.NGits);            
+            
             Assert.IsEmpty  (tmDatabase.Cached_GuidanceItems);
             Assert.IsEmpty  (tmDatabase.GuidanceItems_FileMappings);
             Assert.IsEmpty  (tmDatabase.GuidanceExplorers_XmlFormat);            

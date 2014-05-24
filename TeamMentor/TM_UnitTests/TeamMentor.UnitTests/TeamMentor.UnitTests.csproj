@@ -174,13 +174,25 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\TM_Backend\TeamMentor.Asmx\TeamMentor.Asmx.csproj">
+      <Project>{AF783625-F52F-4558-B64C-AC982324A072}</Project>
+      <Name>TeamMentor.Asmx</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\TM_Backend\TeamMentor.AspNet\TeamMentor.AspNet.csproj">
+      <Project>{5B02BD8E-BF90-4182-80A6-41842494399D}</Project>
+      <Name>TeamMentor.AspNet</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\TM_Backend\TeamMentor.Database\TeamMentor.Database.csproj">
       <Project>{e08703fb-d33c-4acd-b679-c1be867d6f0c}</Project>
       <Name>TeamMentor.Database</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\TM_Backend\TeamMentor.CoreLib\TeamMentor.CoreLib.csproj">
-      <Project>{87BACB04-640F-44ED-8F01-45224D52A883}</Project>
-      <Name>TeamMentor.CoreLib</Name>
+    <ProjectReference Include="..\..\TM_Backend\TeamMentor.Git\TeamMentor.Git.csproj">
+      <Project>{6F12D85C-EC73-4C85-8F96-B6D97604E2EF}</Project>
+      <Name>TeamMentor.Git</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\TM_Backend\TeamMentor.Rest\TeamMentor.Rest.csproj">
+      <Project>{5A89734A-4BA1-4076-A5BA-584223C05F56}</Project>
+      <Name>TeamMentor.Rest</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\TM_Backend\TeamMentor.Schemas\TeamMentor.Schemas.csproj">
       <Project>{77E93D41-8457-45BD-82A8-37C0DEEC32AD}</Project>

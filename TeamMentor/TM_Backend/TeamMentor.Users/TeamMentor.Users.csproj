@@ -34,12 +34,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\FluentSharp.CoreLib.5.3.121\lib\net35\FluentSharp.CoreLib.dll</HintPath>
     </Reference>
-    <Reference Include="FluentSharp.NGit">
-      <HintPath>..\..\packages\FluentSharp.NGit.5.3.121\lib\net40\FluentSharp.NGit.dll</HintPath>
-    </Reference>
-    <Reference Include="NGit">
-      <HintPath>..\..\TM_UnitTests\TeamMentor.UnitTests\NGit_Dlls\NGit.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -56,15 +50,8 @@
   <ItemGroup>
     <Compile Include="Authentication\ExtensionMethods\RoleBaseSecurity_ExtensionMethods.cs" />
     <Compile Include="Authentication\ExtensionMethods\TeamMentorUserManagement_ExtensionMethods.cs" />
-    <Compile Include="Authentication\SecurityAttributes.cs" />
     <Compile Include="Authentication\UserRoles.cs" />
-    <Compile Include="ExtensionMethods\Extra_Cookies_ExtensioMethods.cs" />
-    <Compile Include="ExtensionMethods\Extra_DateTime_ExtensionMethods.cs" />
-    <Compile Include="ExtensionMethods\Extra_Double_ExtensionMethods.cs" />
-    <Compile Include="ExtensionMethods\Extra_JSON_ExtensionMethods.cs" />
-    <Compile Include="ExtensionMethods\Extra_Web_Encoding_ExtensionMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Schemas\TM_UserData_Git.cs" />
     <Compile Include="Tracking\Firebase\Activities_Firebase.cs" />
     <Compile Include="Tracking\Firebase\API_Firebase.cs" />
     <Compile Include="Tracking\Firebase\Firebase_ClientConfig.cs" />
@@ -74,6 +61,7 @@
     <Compile Include="Tracking\Firebase\TM_FirebaseConfig_ExtensionMethods.cs" />
     <Compile Include="Tracking\Logger_LogItem.cs" />
     <Compile Include="Tracking\Tracking_Application.cs" />
+    <Compile Include="Users\DataContracts_ExtensionMethods.cs" />
     <Compile Include="Users\TMConfig_ExtensionMethods.cs" />
     <Compile Include="Users\TMUser_ExtensionMethods.cs" />
     <Compile Include="Users\TM_Secret_Data_ExtensionMethods.cs" />
@@ -83,9 +71,6 @@
     <Compile Include="Users\TM_UserData_Ex_Users.cs" />
     <Compile Include="Users\TM_UserData_Ex_Users_Persistance.cs" />
     <Compile Include="Users\UserActivities_ExtensionMethods.cs" />
-    <Compile Include="Utils\Crypto.cs" />
-    <Compile Include="Utils\HttpContextFactory.cs" />
-    <Compile Include="Utils\MiscUtils.cs" />
     <Compile Include="Utils\SendEmails.cs" />
   </ItemGroup>
   <ItemGroup>

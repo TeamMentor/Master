@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using FluentSharp.CoreLib;
-using FluentSharp.Git.APIs;
 using urn.microsoft.guidanceexplorer;
 
 namespace TeamMentor.CoreLib
@@ -11,8 +10,7 @@ namespace TeamMentor.CoreLib
     public static class TM_Xml_Database_Config
     {
         [Admin] public static TM_Xml_Database   setDefaultValues(this TM_Xml_Database tmXmlDatabase)         
-        {
-            tmXmlDatabase.NGits                       = new List<API_NGit>();
+        {            
             tmXmlDatabase.Cached_GuidanceItems        = new Dictionary<Guid, TeamMentor_Article>();
             tmXmlDatabase.GuidanceItems_FileMappings  = new Dictionary<Guid, string>();
             tmXmlDatabase.GuidanceExplorers_XmlFormat = new Dictionary<Guid, guidanceExplorer>();
@@ -157,7 +155,7 @@ namespace TeamMentor.CoreLib
             tmXmlDatabase.set_Path_UserData();
             
             tmXmlDatabase.userData()                // returns a TM_UserData object
-                            .syncWithGit()
+                            //.syncWithGit()        // TODO: add userData setup event to allow GIT to support for UserData repos
                             .tmConfig_Load()                            
                             .secretData_Load()
                             .loadUsers();                         
@@ -172,13 +170,13 @@ namespace TeamMentor.CoreLib
             return tmXmlDatabase;
         }
     
-        public static TM_UserData_Git           userData(this TM_Xml_Database tmDatabase)                 
+        public static TM_UserData           userData(this TM_Xml_Database tmDatabase)                 
         {
             if (tmDatabase.isNull())
                 return null;
             if (tmDatabase.UserData.isNull())
                 tmDatabase.UserData = new TM_UserData(tmDatabase.UsingFileStorage);
-            return (TM_UserData_Git)tmDatabase.UserData;
+            return tmDatabase.UserData;
         }
         [Admin] public static TM_Xml_Database   loadData(this TM_Xml_Database tmDatabase)                 
         {
@@ -189,6 +187,10 @@ namespace TeamMentor.CoreLib
 
             try
             {
+                tmDatabase.setDefaultValues()
+                          .set_Path_XmlDatabase()
+                          .tmServer_Load();
+
                 tmDatabase.load_UserData()                          
                           .load_SiteData()
                           .load_Libraries();
