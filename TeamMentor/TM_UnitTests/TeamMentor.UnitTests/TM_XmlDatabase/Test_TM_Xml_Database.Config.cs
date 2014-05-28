@@ -260,19 +260,21 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             var tmXmlDatabase = new TM_Xml_Database(true);            
             
             tmXmlDatabase.set_Path_XmlDatabase();
+
+            Assert.IsTrue  (tmXmlDatabase.Path_XmlDatabase.dirExists(), "db ctor should create a library folder");   
+
             var usingAppDataFolder = TM_Status.Current.TM_Database_Location_Using_AppData;
+            
+            "*** DB path: {0}".info(tmXmlDatabase.Path_XmlDatabase);
+            "*** Lib path: {0}".info(tmXmlDatabase.Path_XmlLibraries);
             "*** Current WebRoot: {0}".debug(TM_Server.WebRoot);
             "*** Current WebRoot exists: {0}".debug(TM_Server.WebRoot.dirExists());
             "*** TM_Status.Current.TM_Database_Location_Using_AppData: {0}".debug(TM_Status.Current.TM_Database_Location_Using_AppData);
-            Assert.AreEqual(usingAppDataFolder, TM_Server.WebRoot.dirExists()       , "db ctor should not create a Web Root (if it doesn't exist)");
-            Assert.AreEqual(usingAppDataFolder, tmXmlDatabase.Path_XmlDatabase.contains("App_Data"));
-            Assert.IsTrue  (tmXmlDatabase.Path_XmlDatabase.dirExists(), "db ctor should create a library folder");
-            Assert.IsFalse(tmXmlDatabase.Path_XmlDatabase.contains(TM_Server.WebRoot));
-            Assert.IsFalse(tmXmlDatabase.Path_XmlDatabase.contains (PublicDI.config.O2TempDir));
-            
 
-            "DB path: {0}".info(tmXmlDatabase.Path_XmlDatabase);
-            "Lib path: {0}".info(tmXmlDatabase.Path_XmlLibraries);
+            Assert.AreEqual(usingAppDataFolder, TM_Server.WebRoot.dirExists()       , "db ctor should not create a Web Root (if it doesn't exist)");
+            Assert.AreEqual(usingAppDataFolder, tmXmlDatabase.Path_XmlDatabase.contains ("App_Data"));
+            Assert.AreEqual(usingAppDataFolder, tmXmlDatabase.Path_XmlDatabase.contains (TM_Server.WebRoot));
+            Assert.AreEqual(usingAppDataFolder, tmXmlDatabase.Path_XmlDatabase.contains (PublicDI.config.O2TempDir));
 
             tmXmlDatabase.delete_Database();
 
