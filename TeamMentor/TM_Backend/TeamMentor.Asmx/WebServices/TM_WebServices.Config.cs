@@ -15,11 +15,11 @@ namespace TeamMentor.CoreLib
         [WebMethod(EnableSession = true)]                       public string Ping(string message)  			{   return "received ping: {0}".format(message);                        }        
         
         //Xml Database Specific
-        [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_GetDatabasePath()		{	return tmXmlDatabase.Path_XmlDatabase;	                            }
-        [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_GetLibraryPath()		{	return tmXmlDatabase.Path_XmlLibraries;	                            }		
-        [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_GetUserDataPath()		{	return tmXmlDatabase.UserData.Path_UserData;	                    }		
-        [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_ReloadData()			{	guiObjectsCacheOk = false; return  tmXmlDatabase.reloadData();  }
-        [WebMethod(EnableSession = true)] [Admin]	            public bool   XmlDatabase_IsUsingFileStorage()	{	return tmXmlDatabase.UsingFileStorage;                              }        
+        [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_GetDatabasePath()		{	UserGroup.Admin.demand(); return tmXmlDatabase.Path_XmlDatabase;	                            }
+        [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_GetLibraryPath()		{	UserGroup.Admin.demand(); return tmXmlDatabase.Path_XmlLibraries;	                            }		
+        [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_GetUserDataPath()		{	UserGroup.Admin.demand(); return tmXmlDatabase.UserData.Path_UserData;	                    }		
+        [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_ReloadData()			{	UserGroup.Admin.demand(); guiObjectsCacheOk = false; return  tmXmlDatabase.reloadData();  }
+        [WebMethod(EnableSession = true)] [Admin]	            public bool   XmlDatabase_IsUsingFileStorage()	{	UserGroup.Admin.demand(); return tmXmlDatabase.UsingFileStorage;                              }        
         
         [WebMethod(EnableSession = true)] [Admin]	            public bool   XmlDatabase_ImportLibrary_fromZipFile(string pathToZipFile, string unzipPassword) { return TM_Xml_Database.Current.xmlDB_Libraries_ImportFromZip(pathToZipFile, unzipPassword); }                                                                                                                                     
         //[WebMethod(EnableSession = true)] [Admin]	            public bool   XmlDatabase_SetUserDataPath(string userDataPath)	{	return tmXmlDatabase.UserData.setUserDataPath(userDataPath); }
@@ -40,10 +40,10 @@ namespace TeamMentor.CoreLib
         [WebMethod(EnableSession = true)] public bool           RBAC_HasRole(string role)					            {	return RBAC_CurrentPrincipal_Roles().contains(role); }
         [WebMethod(EnableSession = true)] public bool           RBAC_IsAdmin()											{	return RBAC_CurrentPrincipal_Roles().contains("Admin"); }        
         
-        [WebMethod(EnableSession = true)] [Admin]	            public bool      RBAC_Demand_Admin()						{	return true; }        
-        [WebMethod(EnableSession = true)] [EditArticles]	    public bool      RBAC_Demand_EditArticles()					{	return true; }
-        [WebMethod(EnableSession = true)] [ReadArticles]	    public bool      RBAC_Demand_ReadArticles()					{	return true; }
-        [WebMethod(EnableSession = true)] [ManageUsers]	        public bool      RBAC_Demand_ManageUsers()					{	return true; }
+        [WebMethod(EnableSession = true)] [Admin]	            public bool      RBAC_Demand_Admin()						{	UserGroup.Admin.demand() ; return true; }        
+        [WebMethod(EnableSession = true)] [EditArticles]	    public bool      RBAC_Demand_EditArticles()					{	UserGroup.Editor.demand(); return true; }
+        [WebMethod(EnableSession = true)] [ReadArticles]	    public bool      RBAC_Demand_ReadArticles()					{	UserGroup.Reader.demand(); return true; }
+        [WebMethod(EnableSession = true)] [ManageUsers]	        public bool      RBAC_Demand_ManageUsers()					{	UserGroup.Admin.demand() ; return true; }
 
 //        [WebMethod(EnableSession = true)]		                public Guid		SSO_AuthenticateUser(string ssoToken)            {   return new SingleSignOn().authenticateUserBasedOn_SSOToken(ssoToken); }
 //        [WebMethod(EnableSession = true)] [Admin]			    public string	SSO_GetSSOTokenForUser(string userName)          {   return new SingleSignOn().getSSOTokenForUser(userName); }
@@ -106,34 +106,42 @@ namespace TeamMentor.CoreLib
         //Virtual Articles
         [WebMethod(EnableSession = true)] [Admin]	            public List<VirtualArticleAction>	VirtualArticle_GetCurrentMappings()        
                                                                                     {
+                                                                                        UserGroup.Admin.demand();
                                                                                         return TM_Xml_Database.Current.getVirtualArticles().Values.toList();
                                                                                     }				
         [WebMethod(EnableSession = true)] [Admin]	            public VirtualArticleAction			VirtualArticle_Add_Mapping_VirtualId( Guid id, Guid virtualId)
                                                                                     {
+                                                                                        UserGroup.Admin.demand();
                                                                                         return TM_Xml_Database.Current.add_Mapping_VirtualId(id, virtualId);																						
                                                                                     }
         [WebMethod(EnableSession = true)] [Admin]	            public VirtualArticleAction			VirtualArticle_Add_Mapping_Redirect (Guid id, string redirectUri)
                                                                                     {
+                                                                                        UserGroup.Admin.demand();
                                                                                         return TM_Xml_Database.Current.add_Mapping_Redirect(id, redirectUri.uri());																						
                                                                                     }
         [WebMethod(EnableSession = true)] [Admin]	            public VirtualArticleAction			VirtualArticle_Add_Mapping_ExternalArticle(Guid id, string tmServer, Guid externalId)
                                                                                     {
+                                                                                        UserGroup.Admin.demand();
                                                                                         return TM_Xml_Database.Current.add_Mapping_ExternalArticle(id, tmServer, externalId);																						
                                                                                     }			
         [WebMethod(EnableSession = true)] [Admin]	            public VirtualArticleAction			VirtualArticle_Add_Mapping_ExternalService(Guid id, string service, string data)
                                                                                     {
+                                                                                        UserGroup.Admin.demand();
                                                                                         return TM_Xml_Database.Current.add_Mapping_ExternalService(id, service, data);																						
                                                                                     }			
-        [WebMethod(EnableSession = true)] [Admin]	            public bool							VirtualArticle_Remove_Mapping( Guid id)
+        [WebMethod(EnableSession = true)] [Admin]	            public bool		                    VirtualArticle_Remove_Mapping( Guid id)
                                                                                     {
+                                                                                        UserGroup.Admin.demand();
                                                                                         return TM_Xml_Database.Current.remove_Mapping_VirtualId(id);																						
                                                                                     }
         [WebMethod(EnableSession = true)] [ReadArticles]        public string					    VirtualArticle_Get_GuidRedirect(Guid id)
                                                                                     {
+                                                                                        UserGroup.Reader.demand();
                                                                                         return TM_Xml_Database.Current.get_GuidRedirect(id);																						
                                                                                     }				
         [WebMethod(EnableSession = true)] [ReadArticles]        public TeamMentor_Article		    VirtualArticle_CreateArticle_from_ExternalServiceData(string service, string serviceData)
                                                                                     {
+                                                                                        UserGroup.Reader.demand();
                                                                                         return service.createArticle_from_ExternalServiceData(serviceData);																						
                                                                                     }
         

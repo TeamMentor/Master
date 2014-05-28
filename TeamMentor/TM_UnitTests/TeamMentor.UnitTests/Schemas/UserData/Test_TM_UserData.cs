@@ -12,6 +12,10 @@ namespace TeamMentor.UnitTests.CoreLib
 
             Assert.IsFalse  (userData.UsingFileStorage);
             Assert.AreEqual (TM_UserData.Current, userData);
+            Assert.AreEqual (userData.Path_WebRootFiles, TMConsts.USERDATA_PATH_WEB_ROOT_FILES);
+            Assert.IsEmpty  (userData.TMUsers);
+            Assert.NotNull  (userData.SecretData);        
+            Assert.NotNull  (userData.Events);
             Assert.IsNull   (TM_UserData.GitPushThread);
             
             Assert.IsNull   (userData.Path_UserData);
@@ -21,42 +25,43 @@ namespace TeamMentor.UnitTests.CoreLib
             Assert.IsNull   (new TMUser().user_XmlFile_Location());
             Assert.IsNull   (new TMUser().user_XmlFile_Name());
 
-            var userData2 = new TM_UserData_Git(true);
+
+            var userData2   = new TM_UserData(true);
+            var userDataGit = new TM_UserData_Git(userData2);
             
-            Assert.IsNull   (userData2.Path_UserData);
-            Assert.IsNull   (userData2.NGit);
+            Assert.NotNull  (userDataGit.userData());
+            Assert.NotNull  (userDataGit.UserData);
+            Assert.IsNull   (userDataGit.UserData.Path_UserData);
+            Assert.IsNull   (userDataGit.NGit);
             
             //set by ResetData
-            Assert.IsTrue   (userData2.UsingFileStorage);
+            Assert.IsTrue   (userDataGit.UserData.UsingFileStorage);
             //Assert.AreEqual (userData2.FirstScriptToInvoke, TMConsts.USERDATA_FIRST_SCRIPT_TO_INVOKE);
             Assert.AreEqual (userData2.Path_WebRootFiles  , TMConsts.USERDATA_PATH_WEB_ROOT_FILES);            
             Assert.AreEqual (TM_UserData.Current, userData2);            
             Assert.IsEmpty  (userData2.TMUsers);
             Assert.IsNotNull(userData2.SecretData);                        
         
-            // was in resetData()          
+            
+            // test TM_UserData_Git NGit Default values
         
-            var userData3 = new TM_UserData_Git();
+            var userData3 = new TM_UserData_Git(null);
 
-            Assert.AreEqual(userData3.NGit_Author_Name, TMConsts.NGIT_DEFAULT_AUTHOR_NAME);
-            Assert.AreEqual(userData3.NGit_Author_Email, TMConsts.NGIT_DEFAULT_AUTHOR_EMAIL);
-            //Assert.AreEqual(userData.FirstScriptToInvoke, TMConsts.USERDATA_FIRST_SCRIPT_TO_INVOKE);
-            Assert.AreEqual(userData3.Path_WebRootFiles, TMConsts.USERDATA_PATH_WEB_ROOT_FILES);
-            Assert.IsEmpty(userData3.TMUsers);
-            Assert.NotNull(userData3.SecretData);        // see Test_TM_SecretData for the Ctor checks
+            Assert.AreEqual(userData3.NGit_Author_Name , TMConsts.NGIT_DEFAULT_AUTHOR_NAME);
+            Assert.AreEqual(userData3.NGit_Author_Email, TMConsts.NGIT_DEFAULT_AUTHOR_EMAIL);            
         }
 
         [Test] public void loadUsers()
         {
             var userData = new TM_UserData();
             
-            userData.loadUsers();
+            userData.users_Load();
             Assert.IsEmpty(userData.TMUsers);
             Assert.IsNull(userData.Path_UserData);
 
             var userData2 = new TM_UserData(true);   // when UsingFileStorage = true
 
-            userData2.loadUsers();                   // but userData.Path_UserData =null            
+            userData2.users_Load();                   // but userData.Path_UserData =null            
             Assert.IsEmpty(userData2.TMUsers);       // we should get no users
         }
         

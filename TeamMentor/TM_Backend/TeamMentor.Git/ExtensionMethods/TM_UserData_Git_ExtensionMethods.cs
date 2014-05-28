@@ -6,47 +6,46 @@ using FluentSharp.Git.APIs;
 
 namespace TeamMentor.CoreLib
 {
-    public static class TM_NGit_Ex
-    {
-        public static TMUser setGitUser(this TMUser currentUser)             
-        {
-            if(currentUser.notNull())
-            {
-                if (TM_UserData.Current is TM_UserData_Git)
-                {
-                    (TM_UserData.Current as TM_UserData_Git).NGit_Author_Name = currentUser.UserName;
-                    (TM_UserData.Current as TM_UserData_Git).NGit_Author_Email = currentUser.EMail;
-                }
-            }
-            return currentUser;
-        }
-        public static API_NGit setDefaultAuthor(this API_NGit nGit)
-        {
-            try
-            {
-                var userData    = (TM_UserData_Git)TM_UserData.Current;
-                var name =      userData.NGit_Author_Name.valid() ? userData.NGit_Author_Name : "tm-bot";
-                var email =      userData.NGit_Author_Email.valid() ? userData.NGit_Author_Email : "tm-bot@teammentor.net";
-                nGit.Author     = name.personIdent(email);
-                nGit.Committer  = "tm-bot ".personIdent("tm-bot@teammentor.net");
-            }
-            catch(Exception ex)
-            {
-                ex.log();
-            }
-            return nGit;
-        }
-    }
-    public static class TM_UserData_Ex_Git
+    public static class TM_UserData_Git_ExtensionMethods
     {        
-        public static TMUser        triggerGitCommit                  (this TMUser tmUser)
+        public static TM_Xml_Database   setup_UserData_Git_Support(this TM_Xml_Database tmXmlDatabase)
         {
-            (TM_UserData.Current as TM_UserData_Git).triggerGitCommit();
+            if(tmXmlDatabase.notNull())
+            {
+                tmXmlDatabase.Events.After_UserData_Ctor.add_Action((xmlDatabase)=>
+                    {
+                        var userData = xmlDatabase.userData();
+                        userData.create_TM_UserData_Git();
+                    });
+            }
+            return tmXmlDatabase;
+        }
+
+        public static TM_UserData_Git   create_TM_UserData_Git(this TM_UserData userData)
+        {
+            if(userData.notNull())
+            {
+                var userDataGit =  new TM_UserData_Git(userData);
+                userDataGit.syncWithGit();
+                return userDataGit;
+            }
+            return null;
+        }
+
+        public static TM_UserData       userData            (this TM_UserData_Git userDataGit)
+        {
+            if (userDataGit.notNull())
+                return userDataGit.UserData;
+            return null;
+        }
+        public static TMUser            triggerGitCommit    (this TMUser tmUser)                            
+        {
+            TM_UserData_Git.Current.triggerGitCommit();
             return tmUser;
         }
-        public static TM_UserData   triggerGitCommit                  (this TM_UserData_Git userData)
+        public static TM_UserData_Git   triggerGitCommit    (this TM_UserData_Git userData)                 
         {
-            var tmServer = TM_Xml_Database.Current.tmServer();
+            var tmServer = userData.UserData.TM_Server;
             if (tmServer.notNull())
                 if (tmServer.Git.UserData_Git_Enabled && userData.NGit.notNull())
                     if (userData.NGit.status().valid())
@@ -58,7 +57,7 @@ namespace TeamMentor.CoreLib
                     }
             return userData;
         }
-        public static TM_UserData   pushUserRepository                (this TM_UserData userData, API_NGit nGit)
+        public static TM_UserData_Git   pushUserRepository  (this TM_UserData_Git userData, API_NGit nGit)  
         {
             var tmServer = TM_Xml_Database.Current.tmServer();
 
@@ -82,19 +81,24 @@ namespace TeamMentor.CoreLib
                     });
             return userData;
         }
-        public static TM_UserData syncWithGit(this TM_UserData_Git userData)
+        public static TM_UserData_Git   syncWithGit         (this TM_UserData_Git userDataGit)                 
         {
             try
             {
-                
+                if (userDataGit.userData().isNull())
+                    return userDataGit;
+
+                var userData = userDataGit.userData();
              //   var gitConfig = userData.tmConfig().Git;
                // if (gitConfig.UserData_Git_Enabled.isFalse())
                //     return userData;
 
-                var userData_Config = TM_Xml_Database.Current.tmServer().userData_Config();
+                var userData_Config = userDataGit.UserData.TM_Server.userData_Config();
+
                 var gitLocation = userData_Config.Remote_GitPath;
                 if (gitLocation.valid())
-                {                       
+                {             
+                    
                     //Adjust Path_UserData so that there is an unique folder per repo
                     var extraFolderName = "_Git_";
                     
@@ -106,7 +110,7 @@ namespace TeamMentor.CoreLib
                     "[TM_UserData] [handleExternalGitPull] userData.Path_UserData set to: {0}".debug(userData.Path_UserData);
              
                     if (MiscUtils.online().isFalse() && gitLocation.dirExists().isFalse())
-                        return userData;
+                        return userDataGit;
 
                     if (userData.Path_UserData.isGitRepository())
                     {
@@ -117,11 +121,11 @@ namespace TeamMentor.CoreLib
                         var nGit = userData.Path_UserData.git_Open();
                         nGit.pull();
                         //var nGit = userData.Path_UserData.git_Pull();
-                        userData.pushUserRepository(nGit);
+                        userDataGit.pushUserRepository(nGit);
                     }
                     else
                     {
-                        userData.clone_UserDataRepo(gitLocation, userData.Path_UserData);
+                        userDataGit.clone_UserDataRepo(gitLocation, userData.Path_UserData);
                     }
                 }
                 if (userData.UsingFileStorage && userData.Path_UserData.notNull())
@@ -135,15 +139,15 @@ namespace TeamMentor.CoreLib
                     {
                         //"[TM_UserData] [setupGitSupport] open repository: {0}".info(userData.Path_UserData);
                         "[TM_UserData] [GitOpen]".info();
-                        userData.NGit = userData.Path_UserData.git_Open();
+                        userDataGit.NGit = userData.Path_UserData.git_Open();
                     }
                     else
                     {
                         //"[TM_UserData] [setupGitSupport] initializing repository at: {0}".info(userData.Path_UserData);
                         "[TM_UserData] [GitInit]".info();
-                        userData.NGit = userData.Path_UserData.git_Init();
+                        userDataGit.NGit = userData.Path_UserData.git_Init();
                     }
-                    userData.triggerGitCommit();        // in case there are any files that need to be commited                
+                    userDataGit.triggerGitCommit();        // in case there are any files that need to be commited                
                     //                }                
                 }
             }
@@ -151,10 +155,10 @@ namespace TeamMentor.CoreLib
             {
                 ex.log("[TM_UserData]  [handleExternalGitPull]");
             }
-            return userData;
+            return userDataGit;
         }
     
-        public static TM_UserData   clone_UserDataRepo      (this TM_UserData userData, string gitLocation, string targetFolder)
+        public static TM_UserData_Git   clone_UserDataRepo  (this TM_UserData_Git userData, string gitLocation, string targetFolder)
         {
             var start = DateTime.Now;
             "[TM_UserData] [GitClone] Start".info();

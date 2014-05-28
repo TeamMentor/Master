@@ -48,22 +48,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Content\DataViewers\JsDataTable.cs" />
-    <Compile Include="Content\DataViewers\JsTreeNode.cs" />
-    <Compile Include="Content\Folder_V3.cs" />
-    <Compile Include="Content\Legacy\guidanceexplorer.cs" />
-    <Compile Include="Content\Legacy\OnlineStorage_Library.cs" />
-    <Compile Include="Content\Legacy\TM_Library.cs" />
-    <Compile Include="Content\Library_V3.cs" />
-    <Compile Include="Content\VirtualArticleAction.cs" />
+    <Compile Include="Events\Events_TM_UserData.cs" />
+    <Compile Include="Events\TM_Event.cs" />
+    <Compile Include="Events\TM_Event_ExtensionMethods.cs" />
+    <Compile Include="XmlDatabase\DataViewers\JsDataTable.cs" />
+    <Compile Include="XmlDatabase\DataViewers\JsTreeNode.cs" />
+    <Compile Include="XmlDatabase\Folder_V3.cs" />
+    <Compile Include="XmlDatabase\Legacy\guidanceexplorer.cs" />
+    <Compile Include="XmlDatabase\Legacy\OnlineStorage_Library.cs" />
+    <Compile Include="XmlDatabase\Legacy\TM_Library.cs" />
+    <Compile Include="XmlDatabase\Library_V3.cs" />
+    <Compile Include="XmlDatabase\VirtualArticleAction.cs" />
     <Compile Include="Misc\EmailMessage.cs" />
-    <Compile Include="Content\TeamMentor_Article.cs" />
+    <Compile Include="XmlDatabase\TeamMentor_Article.cs" />
     <Compile Include="Misc\KeyValue.cs" />
     <Compile Include="Misc\SecurityAttributes.cs" />
-    <Compile Include="Misc\TM_Database_Events.cs" />
+    <Compile Include="Events\Events_TM_Xml_Database.cs" />
     <Compile Include="Config\TM_Server.cs" />
     <Compile Include="Config\TM_Status.cs" />
-    <Compile Include="Content\TM_Gui_Objects.cs" />
+    <Compile Include="XmlDatabase\TM_Gui_Objects.cs" />
     <Compile Include="Misc\WhoAmI.cs" />
     <Compile Include="TMConsts.cs" />
     <Compile Include="TM_Xml_Database.cs" />
@@ -76,7 +79,7 @@
     <Compile Include="Logging\TM_FirebaseConfig.cs" />
     <Compile Include="UserData\TM_SecretData.cs" />
     <Compile Include="UserData\TM_UserData.cs" />
-    <Compile Include="Content\View_V3.cs" />
+    <Compile Include="XmlDatabase\View_V3.cs" />
     <Compile Include="UserData\UserActivities.cs" />
     <Compile Include="_SharedUtils\Crypto.cs" />
     <Compile Include="_SharedUtils\ExtensionMethods\Extra_Cookies_ExtensioMethods.cs" />

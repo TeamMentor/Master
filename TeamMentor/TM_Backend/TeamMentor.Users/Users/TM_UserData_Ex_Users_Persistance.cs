@@ -28,28 +28,35 @@ namespace TeamMentor.CoreLib
             }            
         }*/
 
-        public static TM_UserData   loadUsers   (this TM_UserData userData)             
+        public static TM_UserData   users_Load   (this TM_UserData userData)             
         {
-            userData.TMUsers = new List<TMUser>();
-            if (userData.UsingFileStorage)
-            {
-                var usersFolder = userData.users_XmlFile_Location();
-                if (usersFolder.isNull())
+            try
+            { 
+                userData.TMUsers = new List<TMUser>();
+                if (userData.UsingFileStorage)
                 {
-                    "[TM_UserData] [loadUsers] could not load users because users_XmlFile_Location() returned null".error();
-                    return userData;
-                }
+                    var usersFolder = userData.users_XmlFile_Location();
+                    if (usersFolder.isNull())
+                    {
+                        "[TM_UserData] [users_Load] could not load users because users_XmlFile_Location() returned null".error();
+                        return userData;
+                    }
                                   
-                foreach (var file in usersFolder.files("*.userData.xml"))
-                {
-                    var tmUser = file.load<TMUser>();
-                    if (tmUser.notNull() && tmUser.UserID > 0)
-                        userData.TMUsers.Add(tmUser);
-                    else
-                        "[TM_UserData_Ex_Users_Persistance] [loadTmUserData] error loading tmUser file (or UserId < 1): {0}".error(file);
-                }                
-            }            
-            return userData;
+                    foreach (var file in usersFolder.files("*.userData.xml"))
+                    {
+                        var tmUser = file.load<TMUser>();
+                        if (tmUser.notNull() && tmUser.UserID > 0)
+                            userData.TMUsers.Add(tmUser);
+                        else
+                            "[TM_UserData_Ex_Users_Persistance] [users_Load] error loading tmUser file (or UserId < 1): {0}".error(file);
+                    }                
+                }            
+                return userData;
+            }
+            finally
+            {
+                userData.Events.After_Users_Load.raise();
+            }
         }                
         public static string        users_XmlFile_Location(this TM_UserData userData)   
         {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 using FluentSharp.CoreLib;
 using urn.microsoft.guidanceexplorer;
 
@@ -9,18 +10,20 @@ namespace TeamMentor.CoreLib
 {
     public static class TM_Xml_Database_Config
     {
-        [Admin] public static TM_Xml_Database   setDefaultValues(this TM_Xml_Database tmXmlDatabase)         
+        [Admin] public static TM_Xml_Database   set_Default_Values(this TM_Xml_Database tmXmlDatabase)         
         {            
             tmXmlDatabase.Cached_GuidanceItems        = new Dictionary<Guid, TeamMentor_Article>();
             tmXmlDatabase.GuidanceItems_FileMappings  = new Dictionary<Guid, string>();
             tmXmlDatabase.GuidanceExplorers_XmlFormat = new Dictionary<Guid, guidanceExplorer>();
             tmXmlDatabase.GuidanceExplorers_Paths     = new Dictionary<guidanceExplorer, string>();            
             tmXmlDatabase.VirtualArticles             = new Dictionary<Guid, VirtualArticleAction>();
-            tmXmlDatabase.Events                      = new TM_Database_Events();            
+            //tmXmlDatabase.Events                      = new Events_TM_Xml_Database(tmXmlDatabase);            
             tmXmlDatabase.Path_XmlDatabase            = null;
             tmXmlDatabase.Path_XmlLibraries           = null;
             tmXmlDatabase.UserData                    = null;
             tmXmlDatabase.Server                      = null;
+
+            tmXmlDatabase.Events.After_Set_Default_Values.raise();
 
             return tmXmlDatabase;
         }
@@ -29,59 +32,65 @@ namespace TeamMentor.CoreLib
         /// </summary>
         /// <param name="tmXmlDatabase">this</param>
         /// <returns></returns>
-        [Admin] public static TM_Xml_Database   set_Path_XmlDatabase(this TM_Xml_Database tmXmlDatabase)  
+        [Admin] public static TM_Xml_Database       set_Path_XmlDatabase(this TM_Xml_Database tmXmlDatabase)  
         {
-            tmXmlDatabase.Path_XmlDatabase = null;
-            tmXmlDatabase.Path_XmlLibraries = null;
-
-            if (tmXmlDatabase.UsingFileStorage.isFalse())
-                return tmXmlDatabase;
-                
-            // try to find a local folder to hold the TM Database data
+                try { 
             
-            var webRoot  = TM_Server.WebRoot;
-            var tmStatus = TM_Status.Current;
+                tmXmlDatabase.Path_XmlDatabase = null;
+                tmXmlDatabase.Path_XmlLibraries = null;
+
+                if (tmXmlDatabase.UsingFileStorage.isFalse())
+                    return tmXmlDatabase;
+                
+                // try to find a local folder to hold the TM Database data
+            
+                var webRoot  = TM_Server.WebRoot;
+                var tmStatus = TM_Status.Current;
 
                 
-            var usingAppData = webRoot.contains(@"TeamMentor.UnitTests\bin") ||             // when running UnitTests under NCrunch
-                                webRoot.contains(@"site\wwwroot");                           // when running from Azure (or directly on IIS)
-            if (usingAppData.isFalse())
-            {
-                //calculate location and see if we can write to it
+                var usingAppData = webRoot.contains(@"TeamMentor.UnitTests\bin") ||             // when running UnitTests under NCrunch
+                                    webRoot.contains(@"site\wwwroot");                           // when running from Azure (or directly on IIS)
+                if (usingAppData.isFalse())
+                {
+                    //calculate location and see if we can write to it
                 
-                var xmlDatabasePath = TM_Server.WebRoot.pathCombine(TMConsts.VIRTUAL_PATH_MAPPING)
-                                                       .pathCombine(TMConsts.XML_DATABASE_VIRTUAL_PATH_LEGACY)   //use by default the 'Library_Data\\XmlDatabase" value due to legacy support (pre 3.3)
-                                                       .fullPath();
+                    var xmlDatabasePath = TM_Server.WebRoot.pathCombine(TMConsts.VIRTUAL_PATH_MAPPING)
+                                                           .pathCombine(TMConsts.XML_DATABASE_VIRTUAL_PATH_LEGACY)   //use by default the 'Library_Data\\XmlDatabase" value due to legacy support (pre 3.3)
+                                                           .fullPath();
                     
-                if (xmlDatabasePath.createDir().dirExists() && xmlDatabasePath.canWriteToPath())
-                {                        
-                    tmXmlDatabase.Path_XmlDatabase              = xmlDatabasePath;           // if can write it then make it the Path_XmlDatabase
-                    tmStatus.TM_Database_Location_Using_AppData = false;
-                    "[TM_Xml_Database][set_Path_XmlDatabase] Path_XmlDatabase set to: {0}".info(xmlDatabasePath);
-                    return tmXmlDatabase;
+                    if (xmlDatabasePath.createDir().dirExists() && xmlDatabasePath.canWriteToPath())
+                    {                        
+                        tmXmlDatabase.Path_XmlDatabase              = xmlDatabasePath;           // if can write it then make it the Path_XmlDatabase
+                        tmStatus.TM_Database_Location_Using_AppData = false;
+                        "[TM_Xml_Database][set_Path_XmlDatabase] Path_XmlDatabase set to: {0}".info(xmlDatabasePath);
+                        return tmXmlDatabase;
+                    }
+                    "[TM_Xml_Database][set_Path_XmlDatabase] It was not possible to write to mapped folder: {0}".error(xmlDatabasePath);
                 }
-                "[TM_Xml_Database][set_Path_XmlDatabase] It was not possible to write to mapped folder: {0}".error(xmlDatabasePath);
-            }
                 
-            var appData_Path = TM_Server.WebRoot.pathCombine("App_Data")
-                                                .pathCombine(TMConsts.XML_DATABASE_VIRTUAL_PATH)        // inside App_Data we can use the folder value 'TeamMentor' 
-                                                .fullPath();   
-            if (appData_Path.createDir().dirExists() && appData_Path.canWriteToPath())
-            {
-                tmXmlDatabase.Path_XmlDatabase              = appData_Path;           // if can write it then make it the Path_XmlDatabase
-                tmStatus.TM_Database_Location_Using_AppData = true;
-                "[TM_Xml_Database][set_Path_XmlDatabase] Path_XmlDatabase set to: {0}".info(appData_Path);
-                return tmXmlDatabase;       
-            }   
+                var appData_Path = TM_Server.WebRoot.pathCombine("App_Data")
+                                                    .pathCombine(TMConsts.XML_DATABASE_VIRTUAL_PATH)        // inside App_Data we can use the folder value 'TeamMentor' 
+                                                    .fullPath();   
+                if (appData_Path.createDir().dirExists() && appData_Path.canWriteToPath())
+                {
+                    tmXmlDatabase.Path_XmlDatabase              = appData_Path;           // if can write it then make it the Path_XmlDatabase
+                    tmStatus.TM_Database_Location_Using_AppData = true;
+                    "[TM_Xml_Database][set_Path_XmlDatabase] Path_XmlDatabase set to: {0}".info(appData_Path);
+                    return tmXmlDatabase;       
+                }   
                            
-            "[TM_Xml_Database][set_Path_XmlDatabase] It was not possible to write to App_Data folder: {0}".error(appData_Path);                
-            "[TM_Xml_Database][set_Path_XmlDatabase] Disabled use of UsingFileStorage".debug();
-            tmXmlDatabase.UsingFileStorage = false;                 
-            return tmXmlDatabase;
+                "[TM_Xml_Database][set_Path_XmlDatabase] It was not possible to write to App_Data folder: {0}".error(appData_Path);                
+                "[TM_Xml_Database][set_Path_XmlDatabase] Disabled use of UsingFileStorage".debug();
+                tmXmlDatabase.UsingFileStorage = false;                 
+                return tmXmlDatabase;
+            }
+            finally
+            {
+                tmXmlDatabase.Events.After_Set_Path_XmlDatabase.raise();        
+            }
         }        
-/*TODO*/[Admin] public static TM_Xml_Database   set_Path_XmlLibraries(this TM_Xml_Database tmXmlDatabase) 
+[Admin] public static TM_Xml_Database   set_Path_XmlLibraries(this TM_Xml_Database tmXmlDatabase) 
         {
-            return tmXmlDatabase;
             try
             {
                 var tmConfig        = TMConfig.Current;
@@ -100,6 +109,7 @@ namespace TeamMentor.CoreLib
 
                 tmXmlDatabase.Path_XmlDatabase = xmlDatabasePath;
                 tmXmlDatabase.Path_XmlLibraries = libraryPath;
+                "[TM_Xml_Database] [SetPaths_XmlDatabase] tmXmlDatabase.Path_XmlLibraries = {0}".info(libraryPath);
                 "[TM_Xml_Database] Paths configured".info();
             }
             catch (Exception ex)
@@ -158,15 +168,23 @@ namespace TeamMentor.CoreLib
                             //.syncWithGit()        // TODO: add userData setup event to allow GIT to support for UserData repos
                             .tmConfig_Load()                            
                             .secretData_Load()
-                            .loadUsers();                         
+                            .users_Load();       
+            
+            tmXmlDatabase.Events.After_Load_UserData.raise();                      
             return tmXmlDatabase;
         }
 /*TODO*/[Admin] public static TM_Xml_Database   load_Libraries(this TM_Xml_Database tmXmlDatabase)        
         {
+            tmXmlDatabase.set_Path_XmlLibraries();
+            tmXmlDatabase.loadDataIntoMemory();
+
+            tmXmlDatabase.Events.After_Load_Libraries.raise();
             return tmXmlDatabase;
         }
 /*TODO*/[Admin] public static TM_Xml_Database   load_SiteData(this TM_Xml_Database tmXmlDatabase)         
         {
+            
+            tmXmlDatabase.Events.After_Load_SiteData.raise();
             return tmXmlDatabase;
         }
     
@@ -175,10 +193,13 @@ namespace TeamMentor.CoreLib
             if (tmDatabase.isNull())
                 return null;
             if (tmDatabase.UserData.isNull())
-                tmDatabase.UserData = new TM_UserData(tmDatabase.UsingFileStorage);
+            { 
+                tmDatabase.UserData = new TM_UserData(tmDatabase.tmServer());                
+                tmDatabase.Events.After_UserData_Ctor.raise();
+            }
             return tmDatabase.UserData;
         }
-        [Admin] public static TM_Xml_Database   loadData(this TM_Xml_Database tmDatabase)                 
+        [Admin] public static TM_Xml_Database   setup(this TM_Xml_Database tmDatabase)                 
         {
             if (TM_Status.Current.TM_Database_In_Setup_Workflow)
                 throw new Exception("TM Exeption: TM_Xml_Database Setup was called twice in a row (without the first Setup sequence had ended)");
@@ -187,7 +208,9 @@ namespace TeamMentor.CoreLib
 
             try
             {
-                tmDatabase.setDefaultValues()
+                tmDatabase.Events.Before_Setup.raise();
+
+                tmDatabase.set_Default_Values()
                           .set_Path_XmlDatabase()
                           .tmServer_Load();
 
@@ -195,6 +218,9 @@ namespace TeamMentor.CoreLib
                           .load_SiteData()
                           .load_Libraries();
 
+
+               tmDatabase.Events.After_Setup.raise(); 
+                
                 //.set_Path_XmlLibraries();
 
 
@@ -228,9 +254,10 @@ namespace TeamMentor.CoreLib
         }
         [Admin] public static string            reloadData(this TM_Xml_Database tmDatabase)               
         {
+            UserGroup.Admin.demand();
             "In Reload data".info();
             tmDatabase.clear_GuidanceItemsCache()                            // start by clearing the cache                                   
-                      .loadData();                                                                            
+                      .setup();                                                                            
 
             var stats = "In the library '{0}' there are {1} library(ies), {2} views and {3} GuidanceItems"
                             .format(tmDatabase.Path_XmlLibraries.directoryName(),
@@ -247,7 +274,7 @@ namespace TeamMentor.CoreLib
         }
         [Admin] public static TM_Xml_Database   tmServer_Load(this TM_Xml_Database tmDatabase)    
         {
-            tmDatabase.Server = new TM_Server().setDefaultData();
+            tmDatabase.Server = new TM_Server(tmDatabase.UsingFileStorage).setDefaultData();
             if (tmDatabase.UsingFileStorage)
             {
                 var tmServerFile = tmDatabase.tmServer_Location();
@@ -265,6 +292,7 @@ namespace TeamMentor.CoreLib
                         tmDatabase.Server = tmServer;
                 }
             }
+            tmDatabase.Events.After_TmServer_Load.raise();        
             return tmDatabase;
         }
         [Admin] public static bool              tmServer_Save(this TM_Xml_Database tmDatabase)     

@@ -50,7 +50,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             for (int i = 1; i < 5; i++)
             {
                 var now = DateTime.Now;
-                var interactions = i * 1000;// 5000;                
+                var interactions = i * 2000;// 5000;                
                 var passwordHash = password.hash_PBKDF2(salt, interactions,64);
                 var timeSpan = DateTime.Now - now;	            
                 "password: {0}\ninteractions: {1}  timespan: {2}\n".info(passwordHash, interactions, timeSpan);
@@ -58,7 +58,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
                 Assert.NotNull  (passwordHash);
                 Assert.AreEqual (64, passwordHash.base64Decode_AsByteArray().size());
                 Assert.Less     (timeSpan.Seconds,3);                 // slowest calculation should be faster than 2 seconds
-                Assert.Greater  (timeSpan.TotalMilliseconds, i * 20); // faster calculation should be bigger than i* 20 (20, 40, 60, 80, 100) milliseconds
+                Assert.Greater  (timeSpan.TotalMilliseconds, i * 10); // faster calculation should be bigger than i* 10 (10, 20, 30, 40, 50) milliseconds
             }
         }
         [Test] public void PBKDF2_Default()
@@ -74,7 +74,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
                         Assert.NotNull  (passwordHash);
                         Assert.AreEqual (64, passwordHash.base64Decode_AsByteArray().size());
                         Assert.Greater  (2,timeSpan.Seconds, "Calculation took more than 2 sec");
-                        Assert.Less     (100, timeSpan.TotalMilliseconds); // slowest calculation should be slower than 500 milliseconds                        
+                        Assert.Less     (40, timeSpan.TotalMilliseconds); // slowest calculation should be slower than 40 milliseconds                        
                         "ok: {0} : {1}".info(timeSpan.Milliseconds,passwordHash);
                     };
             checkPassword("!1234567!", Guid.NewGuid().str()); // normal values

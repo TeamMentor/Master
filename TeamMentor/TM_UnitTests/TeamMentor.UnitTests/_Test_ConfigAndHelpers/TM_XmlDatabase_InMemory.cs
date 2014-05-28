@@ -17,8 +17,9 @@ namespace TeamMentor.UnitTests
         [Assert_Admin]
         public void SetupDatabase()
         {                        
+            UserGroup.Admin.assert();
 
-            tmXmlDatabase   = new TM_Xml_Database().loadData();
+            tmXmlDatabase   = new TM_Xml_Database().setup();
             userData        = tmXmlDatabase.UserData;
             
             userData.createDefaultAdminUser(); 
@@ -29,6 +30,7 @@ namespace TeamMentor.UnitTests
             Assert.IsEmpty(tmXmlDatabase.UserData.validSessions()   , "ActiveSessions");
             Assert.AreEqual(tmXmlDatabase.UserData.TMUsers.size(),1 , "TMUsers");	                 // there should be admin            
             
+            UserGroup.None.assert();
         }
 
         [TestFixtureSetUp]		
@@ -73,28 +75,36 @@ namespace TeamMentor.UnitTests
         [Assert_Admin]
         public void Install_LibraryFromZip(string pathToGitHubZipBall, string libraryName)
         {
-            tmXmlDatabase.UsingFileStorage = true;      // temp set this so that we can load the files and create the cache
-            tmXmlDatabase.Path_XmlLibraries = "_TempXmlLibraries".tempDir(false);
+            UserGroup.Admin.assert();
+            try
+            {                            
+                tmXmlDatabase.UsingFileStorage = true;      // temp set this so that we can load the files and create the cache
+                tmXmlDatabase.Path_XmlLibraries = "_TempXmlLibraries".tempDir(false);
 
-            if (tmXmlDatabase.tmLibrary(libraryName).notNull())
-            {
-                "[Install_LibraryFromZip] Skyping library {0} because it already existed".debug(libraryName);
-                return;
+                if (tmXmlDatabase.tmLibrary(libraryName).notNull())
+                {
+                    "[Install_LibraryFromZip] Skyping library {0} because it already existed".debug(libraryName);
+                    return;
+                }
+                var tmLibraries_Before = tmXmlDatabase.tmLibraries();            
+
+                var result = tmXmlDatabase.xmlDB_Libraries_ImportFromZip(pathToGitHubZipBall, "");
+                //tmXmlDatabase.xmlDB_Load_GuidanceItems();  // extra step required to reload the guidance items
+            
+                var tmLibraries_After = tmXmlDatabase.tmLibraries();
+                var installedLibrary  = tmXmlDatabase.tmLibrary(libraryName);
+            
+                Assert.IsTrue     (result                                             , "xmlDB_Libraries_ImportFromZip");                        
+                Assert.IsNotEmpty (tmLibraries_After                                  , "Libraries should be there after install");
+                Assert.AreNotEqual(tmLibraries_After.size(), tmLibraries_Before.size(), "Libraries size should be different before and after");
+                Assert.IsNotNull  (installedLibrary                                   , "Could not find installed library: {0}".format(libraryName));
+                Assert.AreEqual   (installedLibrary.Caption, libraryName              , "After install library names didn't match");
+                tmXmlDatabase.UsingFileStorage = false;
             }
-            var tmLibraries_Before = tmXmlDatabase.tmLibraries();            
-
-            var result = tmXmlDatabase.xmlDB_Libraries_ImportFromZip(pathToGitHubZipBall, "");
-            //tmXmlDatabase.xmlDB_Load_GuidanceItems();  // extra step required to reload the guidance items
-            
-            var tmLibraries_After = tmXmlDatabase.tmLibraries();
-            var installedLibrary  = tmXmlDatabase.tmLibrary(libraryName);
-            
-            Assert.IsTrue     (result                                             , "xmlDB_Libraries_ImportFromZip");                        
-            Assert.IsNotEmpty (tmLibraries_After                                  , "Libraries should be there after install");
-            Assert.AreNotEqual(tmLibraries_After.size(), tmLibraries_Before.size(), "Libraries size should be different before and after");
-            Assert.IsNotNull  (installedLibrary                                   , "Could not find installed library: {0}".format(libraryName));
-            Assert.AreEqual   (installedLibrary.Caption, libraryName              , "After install library names didn't match");
-            tmXmlDatabase.UsingFileStorage = false;
+            finally
+            {
+                UserGroup.None.assert();
+            }
         }
     }
 }

@@ -22,7 +22,10 @@ namespace TeamMentor.CoreLib
 			httpContext.User = newPrincipal;
             return newPrincipal;			
         }				
-		
+		public static IPrincipal assert(this UserRole userRole)
+		{
+		    return userRole.setPrivilege();
+		}
         public static IPrincipal setPrivilege(this UserRole userRole)
         {
             return userRole.setThreadPrincipalWithRoles();

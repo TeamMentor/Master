@@ -29,18 +29,18 @@ namespace TeamMentor.UnitTests.CoreLib
         }
         [Test] public void loadUsers__UsingFileStorage()
         {            
-            userData.loadUsers();                   // when no user files exist
+            userData.users_Load();                   // when no user files exist
             Assert.IsEmpty(userData.TMUsers);       // we should get no users
             
             var tmUser1 = new TMUser { UserName = 10.randomLetters() };                           // without an ID this one will fail to load
-            var tmUser2 = new TMUser { UserName = 10.randomLetters() , UserID = 10.randomNumber() };
-            var tmUser3 = new TMUser { UserName = 10.randomLetters() , UserID = 10.randomNumber() };
+            var tmUser2 = new TMUser { UserName = 10.randomLetters() , UserID = 1000.randomNumber() + 1 };
+            var tmUser3 = new TMUser { UserName = 10.randomLetters() , UserID = 1000.randomNumber()+ 1 };
             
             Assert.IsTrue(tmUser1.saveTmUser());            
             Assert.IsTrue(tmUser2.saveTmUser());
             Assert.IsTrue(tmUser3.saveTmUser());
             
-            userData.loadUsers();                         // now
+            userData.users_Load();                         // now
             Assert.IsNotEmpty(userData.TMUsers);          // we should get two users
             Assert.AreEqual(userData.TMUsers.size(), 2);  // which are the ones with a valid UserID 
             

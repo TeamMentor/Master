@@ -10,7 +10,7 @@ namespace TeamMentor.CoreLib
     {
         public static string WebRoot { get; set; }
         
-        
+        public bool          UseFileStorage                 { get; set; }
         public bool          Users_Create_Default_Admin     { get; set; }
         public bool          TM_Database_Use_AppData_Folder { get; set; }
         
@@ -22,10 +22,15 @@ namespace TeamMentor.CoreLib
         {
             WebRoot = AppDomain.CurrentDomain.BaseDirectory;            
         }
-        public TM_Server()
+        public TM_Server() : this(false)
         {
-            Users_Create_Default_Admin = true;
-            TM_Database_Use_AppData_Folder = false;
+            
+        }
+        public TM_Server(bool useFileStorage)
+        {
+            UseFileStorage                  = useFileStorage;            
+            Users_Create_Default_Admin      = true;
+            TM_Database_Use_AppData_Folder  = false;
 
             Git = new Git_Config();
             UserData_Configs = new List<Config>();

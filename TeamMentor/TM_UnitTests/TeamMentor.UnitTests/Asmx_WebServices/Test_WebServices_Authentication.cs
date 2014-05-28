@@ -19,6 +19,8 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
         [Assert_Admin]
         public Test_WebServices_Authentication()
         {
+            UserGroup.Admin.assert();
+
             user_admin   = TMConfig.Current.TMSecurity.Default_AdminUserName;
             default_Pwd  = TMConfig.Current.TMSecurity.Default_AdminPassword;
             user_editor  = "editor";
@@ -32,6 +34,8 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             Assert.Greater(id_Editor, 0, "id_Editor");
             Assert.Greater(id_Reader, 0, "id_Reader");
             Assert.Greater(id_Test  , 0, "id_Test");
+
+            UserGroup.None.assert();
         }
 
         [SetUp]public void SetUp()
@@ -209,6 +213,7 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
 
         [Assert_Admin][Test] public void AuthToken_CreateUser_AuthToken()
         {
+            UserGroup.Admin.assert();
             var tmUser = tmWebServices.CreateUser_Random();
             Assert.IsNotNull  (tmUser);
             Assert.IsNotNull  (tmWebServices.GetUser_byID(tmUser.UserId));

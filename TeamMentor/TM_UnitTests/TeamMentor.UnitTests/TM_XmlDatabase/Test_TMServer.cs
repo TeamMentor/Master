@@ -59,7 +59,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         }
         [Test] public void add_UserData_Repo()                      
         {
-            var tmServer          = new TM_Server();
+            var tmServer          = new TM_Server().setDefaultData();
             var userData_Config1a = new TM_Server.Config { Name = 10.randomLetters() };
             var userData_Config1b = new TM_Server.Config { Name = userData_Config1a.Name };
             var userData_Config2  = new TM_Server.Config { Name = 10.randomLetters() };
@@ -136,7 +136,8 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         [Test] public void LoadAndSave_TMServer_To_Disk()           
         {
             UserGroup.Admin.assert();
-            TM_Xml_Database tmXmlDatabase = new TM_Xml_Database(true);
+            TM_Xml_Database tmXmlDatabase = new TM_Xml_Database(true).set_Path_XmlDatabase()
+                                                                     .tmServer_Load();
 
             var tmServer      = tmXmlDatabase.Server;
             tmXmlDatabase.tmServer_Location().info();

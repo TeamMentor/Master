@@ -37,7 +37,7 @@ namespace TeamMentor.UnitTests
         public static TM_Xml_Database loadData_No_Admin_User(this TM_Xml_Database tmDatabase)
         {
             tmDatabase.Server.Users_Create_Default_Admin = false;
-            return tmDatabase.loadData();
+            return tmDatabase.setup();
         }
     }
 }

@@ -18,7 +18,7 @@ namespace TeamMentor.CoreLib
         public string 	                Path_XmlLibraries 	  { get; set; }    
 //        public Thread                   SetupThread           { get; set; } 
 
-        public TM_Database_Events       Events                { get; set; }    
+        public Events_TM_Xml_Database                   Events                      { get; set; }    
         public Dictionary<Guid, guidanceExplorer>	    GuidanceExplorers_XmlFormat { get; set; }	 //Xml Library and Articles   
         public Dictionary<guidanceExplorer, string>	    GuidanceExplorers_Paths     { get; set; }	 
         public Dictionary<Guid, string>				    GuidanceItems_FileMappings	{ get; set; }			
@@ -35,7 +35,7 @@ namespace TeamMentor.CoreLib
             Current = this;
             
             UsingFileStorage = useFileStorage;
-
+            Events           = new Events_TM_Xml_Database(this);
         }                     
     }
 }

@@ -73,6 +73,7 @@ namespace TeamMentor.CoreLib
         }
         [Admin] public static Guid createUserAuthToken(this TM_UserData userData , int userId)
         {
+            UserGroup.Admin.demand();
             var tmUser = userId.tmUser();
             if(tmUser.notNull())
                 return tmUser.add_AuthToken().Token;

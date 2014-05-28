@@ -15,7 +15,7 @@ namespace TeamMentor.CoreLib
                 var defaultAdminUser_Name  = tmConfig.TMSecurity.Default_AdminUserName;
                 var defaultAdminUser_Pwd   = tmConfig.TMSecurity.Default_AdminPassword;                
                 var defaultAdminUser_Email = tmConfig.TMSecurity.Default_AdminEmail;                
-                var adminUser            = userData.tmUser(defaultAdminUser_Name);
+                var adminUser              = userData.tmUser(defaultAdminUser_Name);
                 
                 if (adminUser.notNull())
                 {
@@ -115,6 +115,11 @@ namespace TeamMentor.CoreLib
                 EMail 		 = email ?? "",    
                 UserTags     = userTags 
             };
+            
+            var tmConfig = TMConfig.Current;
+            tmUser.AccountStatus.UserEnabled    = tmConfig.newAccountsEnabled();
+            tmUser.AccountStatus.ExpirationDate = tmConfig.currentExpirationDate();
+
             tmUser.SecretData.PasswordHash = tmUser.createPasswordHash(password);            
             userData.TMUsers.Add(tmUser);            
         
@@ -332,34 +337,41 @@ namespace TeamMentor.CoreLib
 
         [ManageUsers]   public static List<int>     createTmUsers       (this TM_UserData userData, List<NewUser> newUsers)
         {
+            UserGroup.Admin.demand();
             if(newUsers.isNull())
                 return new List<int>();
             return newUsers.Select(newUser => userData.createTmUser(newUser)).toList();
         }
         [ManageUsers]   public static List<bool>    deleteTmUsers       (this TM_UserData userData, List<int> userIds)
         {
+            UserGroup.Admin.demand();
             if(userIds.isNull())
                 return new List<bool>();
             return userIds.Select(userId => userData.deleteTmUser(userId)).toList();
         }
         [ManageUsers]   public static bool          deleteTmUser        (this TM_UserData userData, int userId)
         {
+            UserGroup.Admin.demand();
             return userData.deleteTmUser(userId.tmUser());
         }
         [ManageUsers]   public static bool          updateTmUser        (this TM_UserData userData, TM_User user)
         {
+            UserGroup.Admin.demand();
             return userData.tmUser(user.UserId).updateTmUser(user);
         }
         [ManageUsers]   public static bool          updateTmUser        (this TM_UserData userData, int userId, string userName, string firstname, string lastname, string title, string company, string email, string country, string state, DateTime accountExpiration, bool passwordExpired, bool userEnabled, bool accountNeverExpires, int groupId)
         {
+            UserGroup.Admin.demand();
             return userData.tmUser(userId).updateTmUser(userName, firstname, lastname,  title, company, email,country, state, accountExpiration, passwordExpired,userEnabled, accountNeverExpires,groupId);
         }	
 	    [ManageUsers]  public static List<TMUser>   users               (this TM_UserData userData)
-	    {            
+	    {     
+            UserGroup.Admin.demand();
 	        return userData.tmUsers();            
 	    }              
         [ManageUsers]   public static List<string>  getUserRoles        (this TM_UserData userData, int userId)
         {
+            UserGroup.Admin.demand();
             var tmUser = userData.tmUser(userId);
             if (tmUser.notNull()) 
                 return tmUser.userGroup().userRoles().toStringList();
@@ -367,6 +379,7 @@ namespace TeamMentor.CoreLib
         }        
         [ManageUsers]   public static bool          setUserGroupId      (this TM_UserData userData, int userId, int groupId)
         {			
+            UserGroup.Admin.demand();
             var tmUser = userData.tmUser(userId);
             if (tmUser.notNull()) 
             {

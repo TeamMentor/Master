@@ -246,6 +246,10 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
 
         [Test] public void UserAccount_EvalAccounts_Behaviour()
         {
+            tmConfig = TMConfig.Current = new TMConfig();
+
+            Assert.AreEqual    (TMConfig.Current, tmConfig);
+
             tmConfig.TMSecurity.EvalAccounts_Enabled  = true;
             var tmUser1                               = userData.newUser().tmUser();
             var expirationDate_NewUser_Eval_Enabled   = tmUser1.AccountStatus.ExpirationDate;
@@ -255,6 +259,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
 
             Assert.IsNotNull(tmUser2, "tmUser1");
             Assert.IsNotNull(tmUser2, "tmUser2");
+            
             Assert.AreNotEqual(expirationDate_NewUser_Eval_Enabled , default(DateTime) , "ExpirationDate should be set when EvalAccounts_Enabled is true");
             Assert.AreEqual   (expirationDate_NewUser_Eval_Disabled, default(DateTime) , "ExpirationDate should NOT be set when EvalAccounts_Enabled is false");
 

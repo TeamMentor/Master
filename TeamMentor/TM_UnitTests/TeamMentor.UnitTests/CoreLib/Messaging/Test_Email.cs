@@ -20,7 +20,7 @@ namespace TeamMentor.UnitTests.CoreLib
             
             sendEmails = new SendEmails();
             Assert.IsNotNull(sendEmails);
-            Assert.AreEqual (sendEmails.Smtp_Password, "" , "In UnitTests SendEmails SMTP password should not be set");
+            Assert.IsEmpty  (sendEmails.Smtp_Password           , "In UnitTests SendEmails SMTP password should not be set");
             Assert.IsTrue   (sendEmails.serverNotConfigured()   , "In UnitTests serverNotConfigured should be in offline mode");            
         }
         [TearDown]

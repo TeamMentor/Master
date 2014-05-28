@@ -14,6 +14,7 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
         [Test][Assert_Admin]
         public void XmlDatabase_UsingFileStorage()
         {
+            UserGroup.Admin.assert();
             Assert.IsNotNull(tmWebServices);
             Assert.IsNotNull(tmWebServices.tmXmlDatabase);            
             Assert.IsFalse  (tmWebServices.XmlDatabase_IsUsingFileStorage());

@@ -17,7 +17,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         {
             //TM_Server.WebRoot = "temp_BaseFolder".tempDir();  // set temp folder for UnitTests
             tmDatabase = new TM_Xml_Database(true)              // with the useFileStorage set to true                        
-                                   .loadData();                 // with data loaded
+                                   .setup();                 // with data loaded
         }
 
         [TearDown]
@@ -54,6 +54,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         [Test][Assert_Editor]
         public void Test_xmlDB_LibraryPath()
         {
+            UserGroup.Editor.assert();
             var newLibraryName1 = "Test_new_Library";
             var testLibrary1    = tmDatabase.new_TmLibrary(newLibraryName1);
 
@@ -81,6 +82,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         [Test][Assert_Editor]
         public void CreateLibrary_OnDisk()
         {
+            UserGroup.Editor.assert();
             var newLibraryName1  = "Test_new_Library";
             var newLibraryName2  = "C++";
 

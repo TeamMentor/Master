@@ -314,6 +314,7 @@ namespace TeamMentor.CoreLib
         [Admin]	                    
         public static bool xmlDB_Libraries_ImportFromZip(this TM_Xml_Database tmDatabase, string zipFileToImport, string unzipPassword)
         {
+            UserGroup.Admin.demand();
             var result = false;
             try
             {    

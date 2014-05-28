@@ -69,10 +69,12 @@ namespace TeamMentor.CoreLib
 
         [EditArticles]  public static TM_Library        new_TmLibrary   (this TM_Xml_Database tmDatabase)
         {
+            UserGroup.Editor.demand();
             return tmDatabase.new_TmLibrary("Default_Library_{0}".format(6.randomNumbers()));
         }		
         [EditArticles]  public static TM_Library        new_TmLibrary   (this TM_Xml_Database tmDatabase, string libraryCaption )
         {
+            UserGroup.Editor.demand();
             var existingLibrary = tmDatabase.tmLibrary(libraryCaption);
             if (existingLibrary.notNull())
             {
@@ -84,6 +86,7 @@ namespace TeamMentor.CoreLib
         }		
         [EditArticles]  public static TM_Xml_Database   delete_Library  (this TM_Xml_Database tmDatabase, TM_Library library)
         {
+            UserGroup.Editor.demand();
             tmDatabase.xmlDB_DeleteGuidanceExplorer(library.Id);
             return tmDatabase;
         }
@@ -280,6 +283,7 @@ namespace TeamMentor.CoreLib
         //[ReadArticlesTitles]  // this was allowing anonynimous viewing of TM articles
         [ReadArticles]          public static TeamMentor_Article        tmGuidanceItem (this TM_Xml_Database tmDatabase, Guid id)
         {
+            UserGroup.Reader.demand();
             if (TM_Xml_Database.Current.Cached_GuidanceItems.hasKey(id))
             {
                 var article = TM_Xml_Database.Current.Cached_GuidanceItems[id];

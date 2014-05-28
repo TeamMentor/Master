@@ -11,8 +11,8 @@ namespace TeamMentor.UnitTests
             var assembly        = objectInUnitTestDll.type().Assembly;
             var dllLocation     = assembly.CodeBase.subString(8);
             var webApplications = dllLocation.parentFolder()
-                                             .pathCombine(@"\..\..\..");
-            var tmWebsite       = webApplications.pathCombine("TM_Website");
+                                             .pathCombine(@"\..\..\..\..");
+            var tmWebsite       = webApplications.pathCombine(@"TM_Websites\Website_3.4");
 
             Assert.That(tmWebsite.dirExists()       , "tmWebsite dir not found: {0}".format(tmWebsite));
             Assert.That(dllLocation.fileExists()    , "dllLocation file not found: {0}".format(dllLocation));

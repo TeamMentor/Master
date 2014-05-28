@@ -59,7 +59,7 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
                 Assert.That(libraryWithId.notNull(), "libraryWithId was null for library with Id: {0}".format(library));
             }       		    
         }            
-        [Test] [Assert_Editor] public void UpdateView() 
+        [Test] public void UpdateView() 
         {  
             var tempView = createTempView();   	    		
             tempView.caption += "_{0}".format(6.randomLetters());
@@ -71,6 +71,7 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
         }         
         [Test] [Assert_Editor] public void CreateGuidanceItem()
         {  
+            UserGroup.Editor.assert();
             var libraryId = createTempLibrary();    		    	 	
             var tempGuidanceItemId = createTempGuidanceItem(libraryId);    		    		
             Assert.That(tempGuidanceItemId != Guid.Empty , "tempGuidanceItem was an EmptyGuid");
@@ -91,7 +92,8 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             tmWebServices.DeleteLibrary(libraryId);    		  
         }           
         [Test] [Assert_Editor] public void UpdateGuidanceItem()    
-        {      		     		
+        {      	
+	     	UserGroup.Editor.assert();	
             var libraryId = createTempLibrary();  			
             "temp library created:{0}".info(libraryId); 
             var tempGuidanceItemId = createTempGuidanceItem(libraryId);
@@ -115,6 +117,7 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
         } 
         [Test] [Assert_Editor] public void IJavascriptProxy_LiveWS_DeleteGuidanceItem()
         {
+            UserGroup.Editor.assert();
             var libraryId = createTempLibrary(); 
             var tempGuidanceItemId = createTempGuidanceItem(libraryId);    		
             var newGuidanceItem = tmWebServices.GetGuidanceItemById(tempGuidanceItemId);    		            
@@ -124,7 +127,7 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             Assert.IsNull(deletedGuidanceItem, "deletedGuidanceItem should be null");    		
             tmWebServices.DeleteLibrary(libraryId);    		    		
         }           
-        [Test] [Assert_Editor] public void AddGuidanceItemsToView_and_RemoveGuidanceItemsFromView()
+        [Test] public void AddGuidanceItemsToView_and_RemoveGuidanceItemsFromView()
         { 
             var createdView = createTempView();  
             var viewId = createdView.id.remove("view:").guid();

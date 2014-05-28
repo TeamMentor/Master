@@ -15,7 +15,9 @@ namespace TeamMentor.CoreLib
                 return null;
             userData.SecretData = null;
 
-            if (userData.UsingFileStorage)
+            if (userData.UsingFileStorage.isFalse())
+                 userData.SecretData = new TM_SecretData();
+            else
             {                    
                 var secretDataFile = userData.secretData_Location();
                 if (secretDataFile.notValid())
@@ -42,7 +44,9 @@ namespace TeamMentor.CoreLib
                     userData.SecretData.saveAs(secretDataFile);
                     "[TM_UserData][TM_UserData] SecretData file didn't exist, so creating one at: {0}".debug(secretDataFile);                     
                 }
-            }               
+            }          
+     
+            userData.Events.After_TM_SecretData_Load.raise();
             return userData;
         }
         public static bool            secretData_Save(this TM_UserData userData)

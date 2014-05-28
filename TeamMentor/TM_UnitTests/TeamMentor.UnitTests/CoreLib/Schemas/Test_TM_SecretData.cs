@@ -21,11 +21,12 @@ namespace TeamMentor.UnitTests.CoreLib
             Assert.IsNotNull(tmSecretData.Rijndael_Key);
 
             Assert.IsNotNull(tmSecretData.SmtpConfig.Server);
-            Assert.IsNotNull(tmSecretData.SmtpConfig.UserName);
+            Assert.IsNotNull (tmSecretData.SmtpConfig.UserName);
             Assert.AreEqual(tmSecretData.SmtpConfig.Password, "");
             Assert.IsNotNull(tmSecretData.SmtpConfig.Default_From);
             Assert.IsNotNull(tmSecretData.SmtpConfig.Default_To);
             Assert.IsNotNull(tmSecretData.SmtpConfig.Server);
+            
         }
         [Test]
         public void secretData_Load__InMemory()         
@@ -47,7 +48,7 @@ namespace TeamMentor.UnitTests.CoreLib
         [Test]
         public void secretData_Load__UsingFileStorage() 
         {
-            var userData = new TM_UserData(true);       // UsingFileStorage to true
+            var userData = new TM_UserData(new TM_Server() { UseFileStorage = true});       // UsingFileStorage to true
             var secretData = userData.SecretData;
 
             Assert.NotNull(secretData);                   // the ctor above will set this value

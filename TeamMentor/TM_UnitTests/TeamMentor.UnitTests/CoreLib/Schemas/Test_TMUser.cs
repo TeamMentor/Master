@@ -31,7 +31,7 @@ namespace TeamMentor.UnitTests.CoreLib.Schemas
             Assert.IsEmpty    (tmUser.UserActivities);
             //AccountStatus
             Assert.IsNotNull  (tmUser.AccountStatus);
-            Assert.AreEqual   (tmUser.AccountStatus.ExpirationDate.ToLongDateString(), TMConfig.Current.currentExpirationDate().ToLongDateString());
+            Assert.AreEqual   (tmUser.AccountStatus.ExpirationDate.ToLongDateString(), default(DateTime).ToLongDateString());
             Assert.IsFalse    (tmUser.AccountStatus.PasswordExpired);
             Assert.IsTrue     (tmUser.AccountStatus.UserEnabled);
             //Stats

@@ -10,19 +10,23 @@ namespace TeamMentor.UnitTests.REST_Direct
 {
     [TestFixture]
     public class Test_TBot  : TM_Rest_Direct
-    {        
+    {                   
         public Test_TBot()
         {
             var assembly		    = this.type().Assembly;
             var dllLocation		    = assembly.CodeBase.subString(8);
-            var webApplications     = dllLocation.parentFolder().pathCombine(@"\..\..\..");
-            var tmWebsite 		    = webApplications.pathCombine("TM_Website");
+            var webApplications     = dllLocation.parentFolder().pathCombine(@"\..\..\..\..");
+            var tmWebsite 		    = webApplications.pathCombine(@"TM_Websites\Website_3.4");
             var webConfig            = tmWebsite.pathCombine("Web.config");
             moq_HttpContext.BaseDir = tmWebsite;
-            Assert.IsTrue(webConfig.fileExists(), "couldn't find webConfig file at: {0}".format(webConfig));
+            Assert.IsTrue(webConfig.fileExists(), "couldn't find webConfig file at: {0}".format(webConfig));            
         }
 
-        [Test][Assert_Admin] public void TBot_Run()
+        [SetUp] public void setup()
+        {
+            UserGroup.Admin.assert();
+        }
+        [Test] public void TBot_Run()
         {
             var commandsHtml     = TmRest.TBot_Run("commands").cast<MemoryStream>().ascii();            
             Assert.NotNull(commandsHtml);
@@ -65,9 +69,9 @@ namespace TeamMentor.UnitTests.REST_Direct
             Assert.AreEqual   ("{}", nullJson  , "nullJson");
         }*/ 
 
-        [Test]
-        public void RedirectToLoginOnNoAdmin()
+        [Test] public void RedirectToLoginOnNoAdmin()
         {
+            UserGroup.None.assert();
             var response = HttpContextFactory.Response;
             Assert.IsFalse  (response.IsRequestBeingRedirected);
             Assert.AreEqual ("", response.RedirectLocation);            
@@ -76,8 +80,7 @@ namespace TeamMentor.UnitTests.REST_Direct
             Assert.AreEqual ("/Login?LoginReferer=/tbot", response.RedirectLocation);            
         }
 
-        [Test][Assert_Admin]
-        public void TbotMainPage()
+        [Test] public void TbotMainPage()
         {
             var showTbotHtml     = TmRest.TBot_Run("commands").cast<MemoryStream>().ascii();            
             var tbotMainHtmlFile = HttpContextFactory.Server.MapPath(TBot_Brain.TBOT_MAIN_HTML_PAGE);
@@ -87,8 +90,7 @@ namespace TeamMentor.UnitTests.REST_Direct
             Assert.IsTrue   (showTbotHtml.contains("bootstrap.min.css"), "Couldn't find bootstrap.min.css");            
         }
 
-        [Test][Assert_Admin]        
-        public void Script_ViewEmailsSent()
+        [Test] public void Script_ViewEmailsSent()
         {
             //tests one script to make sure core engine is working
             // (run CheckThatAllTBotPagesLoad to test all scripts)
@@ -96,8 +98,7 @@ namespace TeamMentor.UnitTests.REST_Direct
             var html = tbotBrain.ExecuteRazorPage("View_Emails_Sent");    
             Assert.IsNotNull(html, "html was null");
         }
-        [Test][Assert_Admin]       
-        public void Script_GitStatus()
+        [Test] public void Script_GitStatus()
         {
             SetUpNGit();            
             var responseStream = (MemoryStream)TmRest.TBot_Run("GitStatus");// trigger unpack of NGit and Sharpen dlls            
@@ -107,8 +108,7 @@ namespace TeamMentor.UnitTests.REST_Direct
             Assert.IsFalse(html.contains("Unable to compile template"), "Compilation error");
             Assert.IsFalse(html.contains("<hr /><b>Exception:</b> "), "Execution Exception");
         }        
-        [Test]
-        [Assert_Admin]
+        [Test]        
         [Ignore("trigger manually since it takes a while to compile all Tbot scripts")]
         public void Script_Run_AllScripts()
         {            

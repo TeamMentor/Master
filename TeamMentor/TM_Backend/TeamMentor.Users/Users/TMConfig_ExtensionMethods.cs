@@ -21,25 +21,33 @@ namespace TeamMentor.CoreLib
         {
             if (userData.isNull())
                 return null;
-            var userConfigFile = userData.tmConfig_Location();
-            if (userConfigFile.fileExists())
-            {
-                var newConfig = userConfigFile.load<TMConfig>();    // to check that the new TMConfig is not corrupted
-                if (newConfig.isNull())
+            try
+            { 
+                userData.Events.Before_TM_Config_Load.raise();
+                var userConfigFile = userData.tmConfig_Location();
+                if (userConfigFile.fileExists())
                 {
-                    "[handleUserDataConfigActions] failed to load config file from: {0}".error(userConfigFile);
-                    return null;
-                }
+                    var newConfig = userConfigFile.load<TMConfig>();    // to check that the new TMConfig is not corrupted
+                    if (newConfig.isNull())
+                    {
+                        "[handleUserDataConfigActions] failed to load config file from: {0}".error(userConfigFile);
+                        return null;
+                    }
                
-                TMConfig.Current = newConfig;
-                return userData;            
-            }
+                    TMConfig.Current = newConfig;
+                    return userData;            
+                }
 
-            // if userConfigFile doesn't exist, create one and save it 
-            TMConfig.Current = new TMConfig();
-            userData.tmConfig_Save();     
+                // if userConfigFile doesn't exist, create one and save it 
+                TMConfig.Current = new TMConfig();
+                userData.tmConfig_Save();     
                         
-            return userData;
+                return userData;
+            }
+            finally
+            {
+                userData.Events.After_TM_Config_Load.raise();
+            }
         }
         public static TMConfig tmConfig_Reload(this TM_UserData userData)
         {
