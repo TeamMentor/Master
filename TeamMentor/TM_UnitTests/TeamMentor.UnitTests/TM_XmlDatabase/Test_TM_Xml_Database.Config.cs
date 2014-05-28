@@ -263,6 +263,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             var usingAppDataFolder = TM_Status.Current.TM_Database_Location_Using_AppData;
             "*** Current WebRoot: {0}".debug(TM_Server.WebRoot);
             "*** Current WebRoot exists: {0}".debug(TM_Server.WebRoot.dirExists());
+            "*** TM_Status.Current.TM_Database_Location_Using_AppData: {0}".debug(TM_Status.Current.TM_Database_Location_Using_AppData);
             Assert.AreEqual(TM_Server.WebRoot.dirExists(), usingAppDataFolder , "db ctor should not create a Web Root (if it doesn't exist)");
             Assert.IsTrue  (tmXmlDatabase.Path_XmlDatabase.dirExists(), "db ctor should create a library folder");
 

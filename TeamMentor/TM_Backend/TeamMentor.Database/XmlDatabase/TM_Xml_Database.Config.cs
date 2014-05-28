@@ -34,7 +34,10 @@ namespace TeamMentor.CoreLib
         /// <returns></returns>
         [Admin] public static TM_Xml_Database       set_Path_XmlDatabase(this TM_Xml_Database tmXmlDatabase)  
         {
-                try { 
+            var webRoot  = TM_Server.WebRoot;
+            var tmStatus = TM_Status.Current;
+            try
+            { 
             
                 tmXmlDatabase.Path_XmlDatabase = null;
                 tmXmlDatabase.Path_XmlLibraries = null;
@@ -44,8 +47,7 @@ namespace TeamMentor.CoreLib
                 
                 // try to find a local folder to hold the TM Database data
             
-                var webRoot  = TM_Server.WebRoot;
-                var tmStatus = TM_Status.Current;
+                
 
                 
                 var usingAppData = webRoot.contains(@"TeamMentor.UnitTests\bin") ||             // when running UnitTests under NCrunch
@@ -61,8 +63,7 @@ namespace TeamMentor.CoreLib
                     if (xmlDatabasePath.createDir().dirExists() && xmlDatabasePath.canWriteToPath())
                     {                        
                         tmXmlDatabase.Path_XmlDatabase              = xmlDatabasePath;           // if can write it then make it the Path_XmlDatabase
-                        tmStatus.TM_Database_Location_Using_AppData = false;
-                        "[TM_Xml_Database][set_Path_XmlDatabase] Path_XmlDatabase set to: {0}".info(xmlDatabasePath);
+                        tmStatus.TM_Database_Location_Using_AppData = false;                                                
                         return tmXmlDatabase;
                     }
                     "[TM_Xml_Database][set_Path_XmlDatabase] It was not possible to write to mapped folder: {0}".error(xmlDatabasePath);
@@ -74,8 +75,7 @@ namespace TeamMentor.CoreLib
                 if (appData_Path.createDir().dirExists() && appData_Path.canWriteToPath())
                 {
                     tmXmlDatabase.Path_XmlDatabase              = appData_Path;           // if can write it then make it the Path_XmlDatabase
-                    tmStatus.TM_Database_Location_Using_AppData = true;
-                    "[TM_Xml_Database][set_Path_XmlDatabase] Path_XmlDatabase set to: {0}".info(appData_Path);
+                    tmStatus.TM_Database_Location_Using_AppData = true;                    
                     return tmXmlDatabase;       
                 }   
                            
@@ -86,6 +86,8 @@ namespace TeamMentor.CoreLib
             }
             finally
             {
+                "[TM_Xml_Database][set_Path_XmlDatabase] Path_XmlDatabase set to: {0}".info(tmXmlDatabase.Path_XmlDatabase);
+                "[TM_Xml_Database][set_Path_XmlDatabase] tmStatus.TM_Database_Location_Using_AppData:{0}".info(tmStatus.TM_Database_Location_Using_AppData);
                 tmXmlDatabase.Events.After_Set_Path_XmlDatabase.raise();        
             }
         }        
