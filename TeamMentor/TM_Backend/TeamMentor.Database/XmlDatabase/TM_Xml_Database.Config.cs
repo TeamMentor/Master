@@ -292,6 +292,7 @@ namespace TeamMentor.CoreLib
                         tmDatabase.Server = tmServer;
                 }
             }
+            tmDatabase.Server.UseFileStorage = tmDatabase.UsingFileStorage;
             tmDatabase.Events.After_TmServer_Load.raise();        
             return tmDatabase;
         }

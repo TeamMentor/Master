@@ -44,7 +44,7 @@ namespace TeamMentor.CoreLib
             TmXmlDatabase           = new  TM_Xml_Database(true).setup();                                   // Create FileSystem Based database            
             TrackingApplication     = new Tracking_Application(TmXmlDatabase.Path_XmlDatabase);    // Enabled Application Tracking
 
-            //TM_REST.SetRouteTable();	// Set REST routes            // TODO add Application_Start event
+            TM_REST.SetRouteTable();	// Set REST routes            // TODO add Application_Start event
 
             TrackingApplication.saveLog();
         } 
