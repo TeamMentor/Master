@@ -193,7 +193,7 @@ namespace TeamMentor.UnitTests.CoreLib
             Assert.AreEqual(firebase.offlineQueue().next(), submitData1);
             Assert.AreEqual(firebase.offlineQueue().size(), 0);
         }
-        [Test] public void Test_BlockingCollection_Behaviour()  
+        [Ignore("No stable on TeamCity (rewrite using Task)")][Test] public void Test_BlockingCollection_Behaviour()  
         {
             var submitQueue = new BlockingCollection<API_Firebase.SubmitData>();
             Assert.AreEqual(0, submitQueue.size());
