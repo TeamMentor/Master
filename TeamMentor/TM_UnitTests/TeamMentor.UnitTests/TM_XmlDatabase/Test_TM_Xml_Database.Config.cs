@@ -278,8 +278,8 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
 
             tmXmlDatabase.delete_Database();
 
-            Assert.IsFalse(TM_Server.WebRoot.dirExists()             , "still shouldn't exist");
-            Assert.IsFalse(tmXmlDatabase.Path_XmlDatabase.dirExists(), "should had been deleted");            
+            Assert.AreEqual(usingAppDataFolder, TM_Server.WebRoot.dirExists()  , "if not usingAppDataFolder the TM_Server.WebRoot shouldn't exist");
+            Assert.IsFalse(tmXmlDatabase.Path_XmlDatabase.dirExists()          , "should had been deleted");            
         }
         [Test] public void set_Path_XmlDatabase__UsingFileStorage_On_Custom_WebRoot_without_Read_Privs()
         {
