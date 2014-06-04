@@ -1,0 +1,53 @@
+		
+	
+<script>
+				
+		TM.ControlPanel.SetLibraryPath = 	
+					{
+                            defaultLibraryPath          : "TM_Libraries"
+//							uploadToken					: null
+	//					,	uploader					: {} 
+	//					,	defaultAction				: '/aspx_pages/File_Upload.ashx'
+						,	buildGui					: function()
+															{			
+        						                                $("input:[type=text]").addClass("ui-widget-content ui-corner-all")
+											                                  .width(300);
+											  
+						                                        $("#set").button()
+									                                        .css('font-size',12)
+									                                        .click(this.setLibraryPath);
+
+                                                                            
+                                                                $("#libraryPath").val(this.defaultLibraryPath);
+                                                            }
+                        ,   setLibraryPath              : function()
+                                                            {
+                                                                $("#invokeMessage").html("... invoking webservice...");
+                                                                var method  = "XmlDatabase_SetLibraryPath";
+                                                                var params = { libraryPath : $("#libraryPath").val() };  
+                                                                var that = TM.ControlPanel.SetLibraryPath;                                                              
+                                                                TM.WebServices.Helper.invoke_TM_WebService(method, params, that.showResult, that.showResult);
+                                                            }
+                    	,   showResult                  : function (result)
+		                                                    {		                                    
+		                                                        var formatedResult = JSON.stringify(result);
+		                                                        $("#invokeMessage").html(formatedResult);		                                                        
+		                                                    }
+                    };
+			
+		$(function()
+		{														
+			TM.ControlPanel.SetLibraryPath.buildGui();		
+		});
+</script>
+	
+<h3>Set Library path</h3>
+<br/>
+    <form id="installForm">
+	<p>
+		<b><label for="newLibraryPath">New Library Path:</label></b>
+		<input type="text" id="libraryPath"> <input type="button" id="set" value="Set Path"/>
+		<br/><br/>
+		<span id="invokeMessage"> </div>
+	</p>
+</form>

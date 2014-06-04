@@ -1,0 +1,46 @@
+<script src="/javascript/jQuery/jquery-1.6.2.min.js" 	type="text/javascript"></script>
+<script src="/javascript/TM/GlobalVariables.js" 		type="text/javascript"></script>
+<script src="/javascript/TM/WebServices.js" 			type="text/javascript"></script>
+<script src="/javascript/json/json2.js" 				type="text/javascript"></script>	
+<script src="/javascript/TM/GuiObjects.js" 				type="text/javascript"></script>
+
+<script>
+		
+	function clearTable()
+	{
+		$('#testDiv').html("....");
+	}	
+	function showTable() 
+		{						
+				var uniqueStrings = TM.WebServices.Data.GuiObjects.UniqueStrings;
+				$('#testDiv').html('<h3>loaded : ' + uniqueStrings.length + " unique strings</h3>" ); 
+				
+				var giTable = "<table border=1>" ; 
+
+				$.each(uniqueStrings, function(index, uniqueString)
+						  {							  
+							  giTable += "<tr>";							  
+							  giTable += "<td>" + index+ "</td>";
+							  giTable += "<td>" + uniqueString+ "</td>";							  
+							  giTable += "</td>";
+							  giTable += "</tr>";
+						  });
+
+				giTable += "</table>" ; 				
+				$('#testDiv').append(giTable);				
+				
+				UnitTest_Helper_Loaded = true;					
+			};
+	
+	$(function()
+		{			
+			$('#testDiv').html('fetching gui objects');			
+			TM.Events.onGuiObjectsLoaded(showTable);
+		});
+</script>
+
+<a href="javascript:document.location='/Html_Pages/_UnitTest_Helpers/GuiObjects/GuiObjects_CreateMappingsTable.html?time='+new Date().getTime();"/>reload</a> - 
+<a href="javascript:clearTable()"/>clear table</a>
+<a href="javascript:showTable()"/>show table</a>
+
+<div id='testDiv' />

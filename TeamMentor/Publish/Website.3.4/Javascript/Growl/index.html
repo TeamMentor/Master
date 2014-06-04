@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>Simplebox demo</title>
+		
+		<link rel="stylesheet" href="growl.css" /> 
+		<script src="/javascript/jQuery/jquery-1.6.2.min.js" 				type="text/javascript"></script>		
+		
+		<script type="text/javascript" src="growl.js"></script>
+		<script type="text/javascript">
+			jQuery(function($) {
+                
+              $("#btnExSimple").bind("click",function(){
+                $.Growl.show("That was easy!!");
+              });
+              
+              $("#btnExIcon").bind("click",function(){
+                $.Growl.show("That was easy too!!", {
+                  'title'  : "Icon Example",
+                  'icon'   : "parachute",
+                  'timeout': false
+                });
+              });
+              
+              $("#btnExLove").bind("click",function(){
+                $.Growl.show($("#donate").html(), {
+                  'title'  : "Show some love...",
+                  'icon'   : "heart",
+                  'timeout': false
+                });
+              });
+				
+			});	
+		</script>
+	</head>
+	<body>
+		<div class="wrapper">
+            <h1>Growl <span>- a product by <a href="http://d-xp.com">d-xp.com</a></span></h1>
+            
+            <p>
+                ... a notification plugin.
+            </p>
+            
+            <p>
+                <button id="btnExSimple" type="button">simple example</button> 
+                <button id="btnExIcon" type="button">sticky icon example</button> 
+                ...you like it? 
+                <button id="btnExLove" type="button">show some...</button>
+            </p>
+			
+			<h2>Usage</h2>
+			<p class="test">
+<pre>
+$.Growl.show(content, <span style="color:#999;">{
+    //settings
+    "icon": false,
+    "title": false,
+    "cls": "",
+    "speed": 500,
+    "timeout": 3000
+}</span>);
+</pre>
+			</p>
+			
+        
+        <h2>Code</h2>
+        <p><a href="https://github.com/aheinze/Growl">Fork me on github</a></p>
+            
+        </div>
+        
+        <div id="donate" style="display:none;">
+
+            and help me to buy a beer (or two) :-)
+            <br /><br />
+
+            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
+              <input type="hidden" name="cmd" value="_xclick">
+              <input type="hidden" name="business" value="artur@d-xp.com">
+              <input type="hidden" name="no_note" value="1">
+
+              <input type="hidden" name="currency_code" value="EUR">
+              <input type="hidden" name="tax" value="0">
+              <input type="hidden" name="bn" value="PP-DonationsBF">
+              <input type="submit" value="Donate!">
+            </form>
+        </div>
+
+	</body>
+</html>

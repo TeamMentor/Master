@@ -1,0 +1,39 @@
+<h2>Page: <b>Invoke Web Services for : Libraries</b></h2>
+
+<script type="text/javascript">
+		
+		var data = {
+						url: TM.tmWebServices + 'GetTime',
+						params: '{}',
+						table: 
+						[						
+							{ name: 'GetLibraries'						, url: TM.tmWebServices + 'GetLibraries' 				, params: '{}'},
+							{ name: 'GetFolders'						, url: TM.tmWebServices + 'GetFolders' 				, params: '{ libraryId : "ea854894-8e16-46c8-9c61-737ef46d7e82"}'},
+							{ name: 'GetGuidanceItemsInView'			, url: TM.tmWebServices + 'GetGuidanceItemsInView' 	, params: '{ viewId : "48057cf0-ac88-482b-948c-03f37a1c94fc" }'},
+							{ name: 'GetGuidanceItemsInViews'			, url: TM.tmWebServices + 'GetGuidanceItemsInViews' 	, params: '{ viewIds : [ "48057cf0-ac88-482b-948c-03f37a1c94fc", "3e08cc5c-313f-4fe5-a158-078f4555f7fc" ] }'},							
+							{ name: 'GetGuidanceItemHtml'				, url: TM.tmWebServices + 'GetGuidanceItemHtml' 		, params: '{ guidanceItemId : "e386affa-5ed2-4fcb-909e-423ecf6b185d"}'},							
+							{ name: 'GetAllGuidanceItems [~1Mb]'		, url: TM.tmWebServices + 'GetAllGuidanceItems' 		, params: '{}'},							
+							{ name: 'GetGuidanceItemsInLibrary [~1Mb]'	, url: TM.tmWebServices + 'GetGuidanceItemsInLibrary' 	, params: '{ libraryId : "ea854894-8e16-46c8-9c61-737ef46d7e82"}'},							
+							{ name: '* JsTree with Folders'				, url: TM.tmWebServices + 'JsTreeWithFolders' 							, params: '{}'},
+							{ name: '* JsTable With Views'				, url: TM.tmWebServices + 'JsDataTableWithGuidanceItemsInViews' 		, params: '{ viewIds : [ "48057cf0-ac88-482b-948c-03f37a1c94fc", "3e08cc5c-313f-4fe5-a158-078f4555f7fc" ] }'},
+							{ name: '* JsTable With All Views'			, url: TM.tmWebServices + 'JsDataTableWithAllGuidanceItemsInViews' 	, params: '{}'},							
+							{ name: 'guidanceItems_Search Html'			, url: TM.tmWebServices + 'XmlDatabase_GuidanceItem_Search_Html' 		, params: '{searchText : "OWASP"}'},
+  							{ name: 'guidanceItems_Search Title'		, url: TM.tmWebServices + 'XmlDatabase_GuidanceItem_Search_Title' 		, params: '{searchText : "cross"}'},
+  							{ name: 'GetGuidanceItemById'				, url: TM.tmWebServices + 'GetGuidanceItemById' 						, params: '{ guidanceItemId: "d64765a5-8649-47a1-bbc4-17eeece413c7"}' },
+							{ name: 'RenameGuidanceItemTitle'			, url: TM.tmWebServices + 'RenameGuidanceItemTitle' 					, params: '{ guidanceItemId: "d64765a5-8649-47a1-bbc4-17eeece413c7" , title: "renamed title"}' },							
+							{ name: 'GetGuidanceXmlById'				, url: TM.tmWebServices + 'XmlDatabase_GetGuidanceItemXml' 			, params: '{ guidanceItemId: "d64765a5-8649-47a1-bbc4-17eeece413c7"}' }
+							
+  
+
+							
+// here is the jQuery to fetch allGuidanceItems and filter them (in seconds :) )
+//invokeWebService('Aspx_Pages/WebServices/TM_WebServices.asmx/GetAllGuidanceItems','{}', function(data)  { allData = data.d; alert(data.d.length) ;} ) 
+//var titles =[];  jQuery.each(allData, function () { titles.push(this.Title.toString())  } ); return titles;							 
+						]
+					};
+
+		jQuery('#local_JS_Page').load(TM.ControlPanel.WebServices.configDir + 'Invoke_WebServices.html?time=' + new Date().getTime());
+</script>		
+
+<div id="local_JS_Page"> </div>
+

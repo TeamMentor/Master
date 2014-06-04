@@ -1,0 +1,110 @@
+﻿<!DOCTYPE html>
+ 
+<html xmlns="http://www.w3.org/1999/xhtml"> 
+ 
+<head> 
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8" /> 
+	<title>TeamMentor | Login</title> 
+	
+	<link rel="stylesheet" href="/css/ThemeForest_ReadyMade/css/reset.css"      type="text/css" media="screen" title="no title" />
+	<link rel="stylesheet" href="/css/ThemeForest_ReadyMade/css/text.css"       type="text/css" media="screen" title="no title" />
+	<link rel="stylesheet" href="/css/ThemeForest_ReadyMade/css/buttons.css"    type="text/css" media="screen" title="no title" />
+	<link rel="stylesheet" href="/css/ThemeForest_ReadyMade/css/login.css"      type="text/css" media="screen" title="no title" />
+	<link rel="stylesheet" href="/css/ThemeForest_ReadyMade/css/forms.css"      type="text/css" media="screen" title="no title" />
+	
+	<script src="/aspx_Pages/scriptCombiner.ashx?s=WebServices_JS" type="text/javascript"></script>
+
+	<script type="text/javascript">
+	
+		function loginResponse(loginId)
+		{									
+			if(loginId =='00000000-0000-0000-0000-000000000000')
+			{		
+				$("#loginFailed").fadeIn();
+				$("#loginButton").html('Login');
+			}
+			else
+			{	
+                if (document.referrer != "" &&                                      // it's valid
+                    document.referrer != document.location &&                       // not the current page
+                    document.referrer.split("/").indexOf("passwordReset") == -1)    // not back into the password Reset page
+                {
+                    document.location = document.referrer;
+                }
+                else			
+				    document.location = "/Login_OK" + document.location.search;
+			}
+		}
+
+		var onSubmit = function()
+		    {
+		        $("#loginFailed").fadeOut();
+				var username = $("#username").attr('value');
+				var password = $("#password").attr('value');
+				if(username != "" && password != "")
+				{
+				   $("#loginButton").html('Logging in');
+				   //console.log("login in with: " + username + " : " + password);
+				   TM.WebServices.WS_Users.login(username, password, loginResponse);				
+                   $("#passwordForgotLink").relative().top(7)
+		                                   .css("","");
+				    return false; 
+				} else 
+				{
+				  $("#loginFailed").fadeIn();
+				  return false;
+				}
+			};
+
+		$(function()
+			{
+			    $("#username").focus();
+				//css fixes
+				$("#loginFailed").hide()
+								 .absolute()
+								 .left(90)
+								 .top(67);
+		        $("h1").css('background-image', '/Images/HeaderImage.jpg');
+				$("#SI_Logo").width(250);
+		        $(".form").height(209);
+		        $("#passwordForgotLink").relative().top(7);
+
+				//set the click event for the login button 
+				$("#loginButton").click(onSubmit);	
+
+			});
+	</script>
+</head> 
+ 
+<body> 
+
+<div id="login">	
+	<div id="login_panel">		
+	<img src='/Images/HeaderImage.jpg' id='SI_Logo'/>	
+		<form class="form">					
+			<div class="login_fields">
+				<div class="field">
+					<label for="email">Username</label>					
+					<input type="text" name="username" value="" id="username" tabindex="1" placeholder="tmUser" />		
+					<div class="error" id="loginFailed"><span>Login Failed</span></div>
+				</div>
+				
+				
+				<div class="field">
+					<label for="password">Password</label>
+					<input type="password" name="password" value="" id="password" tabindex="2" placeholder="******" />			
+				</div>
+			</div> <!-- .login_fields -->
+			
+			<div class="login_actions">				
+			    <button id="loginButton" class="btn primary" tabindex="3">Login</button>
+                &nbsp;&nbsp;<a href="/passwordForgot" id="passwordForgotLink" style="float:right">Forgot your password?</a>
+			</div>
+			
+		</form>
+	</div> <!-- #login_panel -->		
+</div> <!-- #login -->
+
+</body> 
+ 
+</html>

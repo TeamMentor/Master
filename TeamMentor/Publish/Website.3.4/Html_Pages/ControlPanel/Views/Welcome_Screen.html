@@ -1,0 +1,19 @@
+
+<script>
+	$(function()
+		{
+			if (TM.Gui.CurrentUser.loggedIn())
+			{
+				$("#WelcomeText").html("You are:<ul>" + 
+											"<li><b>Logged in as: </b>" + TM.Gui.CurrentUser.userName() + "</li>" + 
+											"<li><b>Have the roles: </b>" + TM.Gui.CurrentUser.roles().join(" , ") + "</li>" );
+				
+			}
+			else
+				$("#WelcomeText").html("You are not logged in.");
+		});
+</script>
+
+<h3>Welcome to TeamMentor Control Panel</h3>
+<br/>
+<div id="WelcomeText"></div>

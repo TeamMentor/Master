@@ -1,0 +1,27 @@
+/javascript/jQuery/jquery-1.7.1.min.js
+#/javascript/jQuery/jquery-1.8.1.min.js // throwing an error with event registration
+
+/javascript/jQueryUI/jquery-ui-1.8.14.custom.min.js
+/javascript/json/json2.js
+/javascript/webtoolkit.SHA256.js
+/javascript/jLinq/jLinq.js
+
+/javascript/jQuery.jsTree/jquery.jstree.js
+/javascript/jQuery.jsTree/jquery.cookie.js
+/javascript/jQuery.jsTree/jquery.hotkeys.js
+
+/javascript/jQuery.layout/jquery.layout.min.js
+/javascript/jQuery/jquery.validate.min.js
+/javascript/jQuery.simplymodal/jquery.simplemodal.js
+
+/javascript/jQuery.DataTable/jquery.dataTables.min.js
+/javascript/jQuery.DataTable/DataTable.PlugIns.js
+
+/javascript/jQuery/jquery-jtemplates.js
+/javascript/jQueryUI/plugin.jqueryui.framedialog.js
+
+/javascript/Growl/growl.js
+
+/Javascript/jscreole/creole.min.js
+
+/Javascript/jsPrettify/prettify.js

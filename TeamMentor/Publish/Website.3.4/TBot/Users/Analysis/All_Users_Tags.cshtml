@@ -1,0 +1,208 @@
+﻿
+<style>
+    .alert-small 
+        {
+            padding: 8px 8px 8px 15px;
+            width  : 620px;
+        }    
+    .input-short
+        {
+            width:120px !important;  
+        }
+    .pointer 
+        {
+            cursor : pointer
+        }
+</style>
+
+<script  type="text/javascript">    
+            
+    var tbot = angular.module("tbot");
+    
+    tbot.controller("TMStats", function($scope, $http, $timeout, $filter)
+        {  
+            _scope = $scope;
+            
+
+            $scope.orderByFields      = ["UserName","Email","Key","Value"];                         
+            $scope.keyFilter          = "";
+            $scope.valueFilter        = "";
+            $scope.filteredUserTags   = [];
+            $scope.orderBy            = "UserName";
+            $scope.orderByReverse     = false;
+            $scope.uniqueKeys         = [];
+            $scope.uniqueValues       = [];
+
+            $scope.loadData = function()
+                {                    
+                    var url = '/rest/tbot/json/Json_UserTags'
+                    $http.get(url).success(function(userTags)
+                        {                                        
+                            $scope.userTags = userTags;
+                            $scope.showUniqueKeyAndValues();
+                            $scope.applyFilter();
+                        });                
+                };    
+            
+            $scope.showUniqueKeyAndValues = function()
+                {
+                    angular.forEach($scope.userTags,function(userTag)
+                        {
+                            var key = userTag.Key;                            
+                            if( $scope.uniqueKeys.indexOf(key) === -1)                                
+                                $scope.uniqueKeys.push(key);    
+                            var value = userTag.Value;                            
+                            if( $scope.uniqueValues.indexOf(value) === -1)                                
+                                $scope.uniqueValues.push(value);    
+                        });
+                };
+
+            $scope.showKey = function(key)
+                {
+                    $scope.keyFilter = key;
+                };
+            $scope.showValue = function(value)
+                {
+                    $scope.valueFilter = value;
+                };
+            $scope.setOrderBy = function(value)
+                {
+                    if ($scope.orderBy === value)
+                        $scope.orderByReverse = !$scope.orderByReverse;
+                    else
+                        $scope.orderBy = value;                    
+                };
+
+            $scope.applyFilter = function() 
+                {       
+                    if ($scope.showSearchingIcon)        //don't apply the filter if we are currently searching
+                        return;
+                    $scope.showSearchingIcon  = true;
+                    $timeout(function() 
+                        {
+                            $scope.filteredUserTags = $filter('filter')($scope.userTags, {Key: $scope.keyFilter , Value: $scope.valueFilter});                        
+                            $scope.filteredUserTags = $filter('orderBy')($scope.filteredUserTags, $scope.orderBy, $scope.orderByReverse);
+                            $scope.showSearchingIcon  = false;
+                        },150);
+                };
+            
+            $scope.cssForUserGroup = function(userGroup)
+                {   
+                    var baseCss = "text-";
+                    switch (userGroup.toLowerCase())
+                    {
+                         case "admin":
+                            return baseCss + "danger";
+                        case "editor":
+                            return baseCss + "warning";
+                     //   case "reader":
+                            return baseCss + "primary";
+                     //   default:
+                     //       return baseCss + "info";        
+                    }                    
+                };
+             $scope.cssForUserStatus = function(userStatus)
+                {  
+                    var baseCss = "text-";
+                    switch (userStatus.toLowerCase())
+                    {
+                         case "account expired":
+                            return baseCss + "info";
+                        case "disabled":
+                            return baseCss + "danger";
+                      //  case "enabled":
+                      //      return baseCss + "success";
+                      //  default:
+                      //      return baseCss + "default";        
+                    }                    
+                }; 
+                                                            
+            $scope.$watch('keyFilter'       ,$scope.applyFilter);            
+            $scope.$watch('valueFilter'     ,$scope.applyFilter);            
+            $scope.$watch('orderBy'         ,$scope.applyFilter);            
+            $scope.$watch('orderByReverse'  ,$scope.applyFilter);                        
+            
+            $scope.loadData();
+        });
+    
+</script>
+
+<div ng-controller="TMStats">
+    
+    <h2>All User's Tags</h2>   
+
+    <p>
+        This view shows a mapping of the User's Tags (which are Key-Value pairs that can be added to each user)
+    </p>
+    
+    <b>Chose Action to view:</b>
+    <p>At the moment there are the following unique keys and values on this server:<br />
+        <ul>
+            <b>Keys</b>:
+            <span ng-repeat="key in uniqueKeys">
+                <a  href="" ng-click="showKey(key)">{{key}}</a>     ,
+            </span>
+            <br />
+            <b>Values</b>:
+            <span ng-repeat="value in uniqueValues">
+                <a  href="" ng-click="showValue(value)">{{value}}</a>     ,
+            </span>
+        </ul>
+     </p>
+    <b>Filter data (locally):</b>
+    <div class="alert alert-success alert-block alert-small">    
+        <form class="form-inline" ng-submit="loadData()">            
+            <div class="form-group">
+                Key:
+                <input type="text" class="form-control input-sm input-short" placeholder="filter" ng-model="keyFilter">
+            </div>
+            <div class="form-group">
+                Value:
+                <input type="text" class="form-control input-sm input-short" placeholder="filter" ng-model="valueFilter">
+            </div>                                
+            <div class="form-group">
+                Order By:
+                <select     class="form-control input-sm"     ng-model  = "orderBy"        name="orderBy">                                           
+                    <option value="{{orderByField}}" ng-repeat = "orderByField in orderByFields">
+                        {{orderByField}}
+                    </option>
+                </select>              
+            </div>  
+            <div class="form-group">
+                <div class="checkbox">                    
+                    <input type="checkbox" ng-model="orderByReverse"/> Reverse                    
+                </div>                
+            </div>
+        </form>
+
+    </div>
+
+        <p>
+        <b>Showing {{filteredActivities.length}} out of {{activities.length}}</b>        
+        <span class="glyphicon glyphicon-search" ng-show="showSearchingIcon"></span>        
+        
+    </p>
+
+    <table class="table table-striped table-condensed">
+        <tr>
+            <th>#</th>             
+            <th class="col-sm-2 pointer" ng-click="setOrderBy('UserName')" >UserName</th>
+            <th class="col-sm-1 pointer" ng-click="setOrderBy('Email'   )" >Email</th>
+            <th class="col-sm-1 pointer" ng-click="setOrderBy('Email'   )" >Status</th>
+            <th class="col-sm-1 pointer" ng-click="setOrderBy('Email'   )" >Group</th>
+            <th class="col-sm-2 pointer" ng-click="setOrderBy('Key'     )" >Key</th>   
+            <th class="col-sm-4 pointer" ng-click="setOrderBy('Value'   )" >Value</th>                        
+        </tr> 
+        <tr ng-repeat="userTag in filteredUserTags">
+            <td>{{$index+1}}</td>            
+            <td><a href="User_Edit?{{userTag.UserName}}" target="_blank">{{userTag.UserName}}</a></td>            
+            <td>{{userTag.Email}}</td>                        
+            <td><p ng-class="cssForUserStatus(userTag.Status)">{{userTag.Status}}</p></td>                          
+            <td><span ng-class="cssForUserGroup(userTag.Group)">{{userTag.Group}}</span></td>            
+            <td>{{userTag.Key}}</td>            
+            <td>{{userTag.Value}}</td>
+        </tr>
+    </table>        
+</div>
+
+

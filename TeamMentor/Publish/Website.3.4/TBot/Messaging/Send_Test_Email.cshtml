@@ -1,0 +1,86 @@
+﻿
+@using TeamMentor.CoreLib
+
+<script>
+    
+    function Controller($scope, $timeout, $http) 
+    {
+        scope = $scope;
+        $scope.master= {};
+        
+        $scope.email = 
+            { 
+                from    :  '@TMConfig.Current.TMSecurity.Default_AdminEmail',
+                to	 	:  '',
+                subject :  'Email from TM',
+                message :  'Hello there'
+            }
+        
+        $scope.update = function(email) 
+        {
+            $scope.result = "Sending email...";
+            
+            $http.put('/rest/sendEmail/', 
+                            {
+                                "To"     : email.to,
+                                "Subject": email.subject,
+                                "Message": email.message
+                            })
+                .success(function(data, status) { $scope.result = 'success: ' + data})
+                .error(function(data, status)   { $scope.result = 'error: ' + data});                
+        };		  	
+        
+    }
+
+</script>
+<h4>Send Test Email Message:</h4>
+
+<p>You can use this form to test TeamMentor's email sending capabilities</p>
+<br/>
+
+
+<div ng-controller="Controller">	    
+    <form name="myForm" class="form-horizontal" ng-submit="update(email)">    		
+        <div class="form-group">
+            <label class="col-sm-2 control-label">From: </label>
+            <div class="col-sm-8">
+                <input class= "form-control" type="text" ng-model="email.from" disabled/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">To: </label>
+            <div class="col-sm-8">
+                <input class= "form-control" type="email" ng-model="email.to" required/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Subject: </label>
+            <div class="col-sm-8">
+                <input class= "form-control"  type="text" ng-model="email.subject" required/>          
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label" ng-model="email.message" required>Message: </label>
+            <div class="col-sm-8">
+                <textarea class= "form-control" rows="10" ng-model="email.message" required></textarea>                			
+            </div>      		
+        </div>      	 
+        <div class="form-group">            
+            <div class="col-sm-offset-2 col-sm-10">      			
+                <button class="btn btn-primary">Send</button><br/>      			      			
+            </div>
+        </div>   
+  </form>        	
+    <pre ng-model="result">
+        {{result}}	</pre>	
+</div>
+        
+<style type="text/css">
+  .css-form input.ng-invalid.ng-dirty {
+    background-color: #FA787E;
+  }
+
+  .css-form input.ng-valid.ng-dirty {
+    background-color: #78FA89;
+  }
+    </style>

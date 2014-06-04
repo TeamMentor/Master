@@ -1,0 +1,15 @@
+﻿
+@using System.Linq
+@using FluentSharp.CoreLib
+@using TeamMentor.CoreLib
+
+@{
+    var userData = TM_UserData.Current;    
+    //var max      = "max".request_Value_Int(500);
+    //var action   = "action".request_Value_String();
+    var users = (from tmUser in userData.tmUsers()                      
+      //                where action.notValid() || activity.Action.regEx(action)
+                      select tmUser.user()).toList();
+}
+
+@Raw(users.javascript_Serialize())

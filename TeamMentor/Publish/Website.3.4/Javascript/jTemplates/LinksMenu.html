@@ -1,0 +1,5 @@
+<h1><strong>{$T.title}</strong> </h1><br/>   
+{#foreach $T.table as record}														
+	<a href="#" onclick="javascript: jQuery('#JS_WS_Page').load('{$T.record.url}?time='+ new Date().getTime());return false;">{$T.record.name}</a>  - 
+{#/for}
+   

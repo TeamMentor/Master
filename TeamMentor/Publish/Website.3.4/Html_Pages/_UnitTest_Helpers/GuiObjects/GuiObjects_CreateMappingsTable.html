@@ -1,0 +1,53 @@
+<script src="/javascript/jQuery/jquery-1.6.2.min.js" 	type="text/javascript"></script>
+<script src="/javascript/TM/GlobalVariables.js" 		type="text/javascript"></script>
+<script src="/javascript/TM/WebServices.js" 			type="text/javascript"></script>
+<script src="/javascript/json/json2.js" 				type="text/javascript"></script>	
+<script src="/javascript/TM/GuiObjects.js" 				type="text/javascript"></script>
+
+<script>
+		
+	function clearTable()
+	{
+		$('#testDiv').html("....");
+	}	
+	function showTable() 
+		{								
+				var giTable = "<table border=1>" ; 
+
+				$.each(TM.WebServices.Data.GuidanceItemsIDs, function()
+						  {
+							  var giData = $.data[this];
+							  giTable += "<tr>";
+							  //giTable += "<td>" + giData.guidanceItemId + "</td>";
+							  //giTable += "<td>" + giData.libraryId+ "</td>";
+							  giTable += "<td>" + giData.title+ "</td>";
+							  giTable += "<td>" + giData.technology+ "</td>";
+							  giTable += "<td>" + giData.phase+ "</td>";
+							  giTable += "<td>" + giData.type+ "</td>";
+							  giTable += "<td>" + giData.category+ "</td>";
+							  giTable += "</td>";
+							  giTable += "</tr>";
+						  });
+
+				giTable += "</table>" ; 				
+				$('#testDiv').html(giTable);				
+				
+				UnitTest_Helper_Loaded = true;					
+			};
+	
+	$(function()
+		{			
+			$('#testDiv').html('fetching gui objects');
+			TM.WebServices.Data.extractGuiObjects(function() 
+				{ 
+					$('#testDiv').html('mapped: ' + TM.WebServices.Data.GuidanceItemsIDs.length); 
+					showTable();
+				} )
+		});
+</script>
+
+<a href="javascript:document.location='/Html_Pages/_UnitTest_Helpers/GuiObjects/GuiObjects_CreateMappingsTable.html?time='+new Date().getTime();"/>reload</a> - 
+<a href="javascript:clearTable()"/>clear table</a>
+<a href="javascript:showTable()"/>show table</a>
+
+<div id='testDiv' />

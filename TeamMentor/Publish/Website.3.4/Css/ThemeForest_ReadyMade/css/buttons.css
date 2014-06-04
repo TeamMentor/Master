@@ -1,0 +1,190 @@
+/* =Btn
+----------------------------------------------- */
+.btn
+, .btn:visited {
+	background-repeat: repeat-x;
+	background-position: 0 0;
+	
+	font-weight: bold;
+	text-align: center;
+	text-decoration: none;
+	line-height: normal;	
+	color: #FFF;
+	
+	display: inline-block;
+	margin: 0;
+	*overflow: visible; 
+	
+	position: relative;	
+	
+	border: none;
+	border-width: 1px;
+	border-style: solid;
+	
+	cursor: pointer;
+	
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;	
+	
+	text-shadow: 1px 1px 1px rgba(0,0,0,.25);
+	
+	-moz-box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+	-webkit-box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+	
+}
+
+	.btn:hover { text-decoration: none; }
+
+/* =Massage IE7 A Little Bit
+----------------------------------------------- */
+*+html button.btn { border-color: none; border: 1px solid transparent; }
+
+
+
+/* =Colors
+----------------------------------------------- */
+.btn
+, .btn:visited  { background-color: #066ECD; border-color: #0561B4; }
+.btn:hover{ background-color: #0561B4; text-decoration: none; }
+
+/* Colors */	
+.pink,
+.pink:visited { background-color: #FF0066; border-color: #DA0C59; }
+.pink:hover { background-color: #DA0C59; }
+
+.blue,
+.blue:visited { background-color: #066ECD; border-color: #0561B4; }
+.blue:hover { background-color: #0561B4; }
+
+.red,
+.red:visited { background-color: #E40001; border-color: #CC0000; }
+.red:hover { background-color: #CC0000; }
+
+.green,
+.green:visited { background-color: #77B32F; border-color: #689C29; }
+.green:hover { background-color: #689C29; }
+
+.black,
+.black:visited { background-color: #111; border-color: #000; }
+.black:hover { background-color: #000; }
+
+.purple,
+.purple:visited { background-color: #7B0F75; border-color: #6A0D66; }
+.purple:hover { background-color: #6A0D66; }
+
+.maroon,
+.maroon:visited { background-color: #750000; border-color: #530000; }
+.maroon:hover { background-color: #530000; }
+
+.yellow,
+.yellow:visited { background-color: #FFCC00; border-color: #DFB300; }
+.yellow:hover { background-color: #DFB300; }
+
+.teal,
+.teal:visited { background-color: #39A7B6; border-color: #2E8794; }
+.teal:hover { background-color: #2E8794; }
+
+.orange,
+.orange:visited { background-color: #F90; border-color: #D58000; color: #FFF; }
+.orange:hover{ background-color: #D58000; color: #FFF; }
+
+.grey,
+.grey:visited  { background-color: #999; border-color: #888; color: #FFF; }
+.grey:hover{ background-color: #888; color: #FFF; }
+
+.light-grey,
+.light-grey:visited  { background-color: #CCC; border-color: #bbb; color: #444; text-shadow: 1px 1px 1px rgba(255,255,255,.8); }
+.light-grey:hover{ background-color: #bbb; color: #444; }
+
+
+
+/* =Gradients
+----------------------------------------------- */
+.btn
+, .blue
+, .teal
+, .maroon
+, .purple
+, .black { background-image: url(../images/btn-35.png); background-position: 0 0; }
+
+.orange
+, .grey 
+, .green
+, .red
+, .pink { background-image: url(../images/btn-50.png); background-position: 0 0; }
+
+.yellow { background-image: url(../images/btn-60.png); background-position: 0 0; }
+
+.light-grey { background-image: url(../images/btn-100.png); background-position: 0 0; }
+
+
+
+/* =Active State
+----------------------------------------------- */
+.btn:active { background-position: left bottom !important; top: 1px; text-decoration: none; }
+
+
+
+/* =Sizes
+----------------------------------------------- */
+.btn { font-size: 13px; padding: 8px 12px; }
+.btn.small { font-size: 11px; padding: 5px 8px; }
+.btn.large { font-size: 16px; padding: 12px 18px; }
+.btn.xlarge { font-size: 24px; padding: 12px 18px; }
+
+
+
+/* =Toolbar
+----------------------------------------------- */
+ 
+.btn-toolbar { margin-bottom: 3em; float: left; }
+
+.btn-toolbar .btn {
+	display: block;
+	margin: 0 0 0 -1px;
+	float: left;
+			
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0;
+	
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
+
+.btn-toolbar .btn:first-child {
+	-webkit-border-top-left-radius: 4px;
+	-webkit-border-bottom-left-radius: 4px;
+	-moz-border-radius-topleft: 4px;
+	-moz-border-radius-bottomleft: 4px;
+	border-top-left-radius: 4px;
+	border-bottom-left-radius: 4px;
+}
+
+.btn-toolbar .btn:last-child {
+	-webkit-border-top-right-radius: 4px;
+	-webkit-border-bottom-right-radius: 4px;
+	-moz-border-radius-topright: 4px;
+	-moz-border-radius-bottomright: 4px;
+	border-top-right-radius: 4px;
+	border-bottom-right-radius: 4px;
+}
+
+/* For modern browsers */
+.btn-toolbar:before,
+.btn-toolbar:after {
+    content:"";
+    display:table;
+}
+
+.btn-toolbar:after {
+    clear:both;
+}
+
+/* For IE 6/7 (trigger hasLayout) */
+.btn-toolbar {
+    zoom:1;
+}

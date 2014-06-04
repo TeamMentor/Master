@@ -1,0 +1,63 @@
+﻿@using System
+@using System.Collections.Generic
+@using TeamMentor.CoreLib;
+@using FluentSharp.CoreLib;
+
+@{
+    var tmDatabase = TM_Xml_Database.Current;
+    var articles = tmDatabase.Cached_GuidanceItems;
+    var index = 0;
+    var guidRexEx = @"([a-z0-9]{8}[-][a-z0-9]{4}[-][a-z0-9]{4}[-][a-z0-9]{4}[-][a-z0-9]{12})";
+    //var GUIDs = articleContent.matches(guidRexEx).select((match)=> match.Value);
+    
+    Func<String, List<string>> contentGuids =
+        (articleContent) =>
+            {
+                var guids = articleContent.matches(guidRexEx).select((match)=> match.Value);
+                return guids;                
+            };
+    Func<string, string> getGuidType =
+        (id) =>
+            {
+                if (tmDatabase.tmGuidanceItem(id.guid()).notNull())
+                    return "label-success";
+                if (tmDatabase.VirtualArticles.hasKey(id.guid()))
+                    return "label-info";
+                //return "label-important"; 
+                return "";
+            };
+
+}
+
+<h4>Article Links</h4>
+<table class="table table-striped table-condensed">
+    <tr>
+        <th>#</th>            
+        <th>Title (Guid)</th>                   
+        <th>Technology</th>   
+        <th>Phase</th>   
+        <th>Type</th>   
+        <th>Category</th>   
+        <th>External Links</th>         
+    </tr>
+    @foreach (var article in articles)
+    {
+        <tr>
+            <td>@(index++)</td>
+                    <td><a href="/article/@article.Key" target="_blank">@article.Value.Metadata.Title</a></td>                    
+                    <td>@article.Value.Metadata.Technology</td>
+                    <td>@article.Value.Metadata.Phase</td>
+                    <td>@article.Value.Metadata.Type</td>
+            <td>@article.Value.Metadata.Category</td>
+            <td><ul>
+                    @foreach(var guid in contentGuids(article.Value.Content.Data_Json))
+                    {
+                        <li><a href="/article/@guid"  target="_blank">
+                                <span class="label @getGuidType(@guid)">@guid</span>
+                            </a></li>
+                    }
+                </ul>
+            </td>
+        </tr>
+    }
+</table>

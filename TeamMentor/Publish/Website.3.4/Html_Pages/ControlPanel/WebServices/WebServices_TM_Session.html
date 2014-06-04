@@ -1,0 +1,32 @@
+<h2>Page: <b>Invoke Web Services for : User Management</b></h2>
+
+<script type="text/javascript">
+        
+        var data = {
+                        url: TM.tmWebServices + 'GetTime',
+                        params: '{}',
+                        table: [	
+                            { name: 'Login'					, url: TM.tmWebServices + 'Login' 			            , params: '{username: "a" , password:"123"}' },
+                            { name: 'LoginToWindows'		, url: TM.tmWebServices + 'LoginToWindows' 	            , params: '{username: "admin" , password:"b"}' },
+                            
+                            { name: 'Current_SessionID'		, url: TM.tmWebServices + 'Current_SessionID' 	        , params: '{}' },
+                            { name: 'Current_User'		, url: TM.tmWebServices + 'Current_User' 			        , params: '{}' },
+                            { name: 'GetCurrentUserRoles'	, url: TM.tmWebServices + 'GetCurrentUserRoles'	        , params: '{}' },
+                            { name: 'GetActiveSessions'		, url: TM.tmWebServices + 'GetActiveSessions'	        , params: '{}' },
+                            { name: 'GetActiveSession'		, url: TM.tmWebServices + 'GetActiveSession'	        , params: '{sessionID: ""}' },
+                            { name: 'RBAC_UserName'			, url: TM.tmWebServices + 'RBAC_CurrentIdentity_Name'				, params: '{}' },
+                            { name: 'RBAC_IsAuthenticated'	, url: TM.tmWebServices + 'RBAC_CurrentIdentity_IsAuthenticated'	, params: '{}' },
+                            { name: 'RBAC_Roles'			, url: TM.tmWebServices + 'RBAC_CurrentPrincipal_Roles'			, params: '{}' },
+                            { name: 'RBAC_HasRole'			, url: TM.tmWebServices + 'RBAC_HasRole'							, params: '{role : "EditArticles" }' },                            
+                            
+                            
+                            
+                             
+                        ]
+                    };
+
+        jQuery('#local_JS_Page').load(TM.ControlPanel.WebServices.configDir + 'Invoke_WebServices.html?time=' + new Date().getTime());
+</script>		
+
+<div id="local_JS_Page"> </div>
+

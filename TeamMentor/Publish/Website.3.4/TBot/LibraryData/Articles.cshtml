@@ -1,0 +1,50 @@
+﻿
+@using TeamMentor.CoreLib;
+@using FluentSharp.CoreLib;
+
+@{
+    var tmDatabase = TM_Xml_Database.Current;
+    var articles = tmDatabase.Cached_GuidanceItems;
+    var articlePaths = tmDatabase.GuidanceItems_FileMappings;
+    var index = 1;
+    var libraryPath = tmDatabase.Path_XmlLibraries;
+}
+<h4>Library Data: Articles</h4>
+<p>
+    Here are all the <b>@articles.size()</b> articles currently loaded: <br/>
+    Paths are virtual to the library folder: <b>@libraryPath</b>
+</p>
+    <table class="table table-striped table-condensed">
+        <tr>
+            <th>#</th>            
+            <th>Guid</th>
+            <th>Title</th>            
+            <th>Technology</th>   
+            <th>Phase</th>   
+            <th>Type</th>   
+            <th>Categoty</th>   
+            <th>path</th>         
+        </tr>   
+    @foreach(var article in articles)
+    {        
+        <tr>
+            <td>@(index++)</td>
+            <td><pre>@article.Key</pre></td>
+            <td><pre>@article.Value.Metadata.Title</pre></td>
+            <td>@article.Value.Metadata.Technology</td>
+            <td>@article.Value.Metadata.Phase</td>
+            <td>@article.Value.Metadata.Type</td>
+            <td>@article.Value.Metadata.Category</td>
+            @if(articlePaths.hasKey(article.Key))
+            {
+                <td><pre>@articlePaths[article.Key].remove(libraryPath)</pre></td>
+            }
+            else
+            {
+                <td><p class="text-error">ERROR: Article File Mappping NOT FOUND</p></td>
+            }
+            </tr>                        
+  
+    }
+    </table>
+

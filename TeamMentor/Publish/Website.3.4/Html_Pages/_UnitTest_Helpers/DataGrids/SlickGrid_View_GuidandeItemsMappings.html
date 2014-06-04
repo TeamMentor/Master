@@ -1,0 +1,154 @@
+<!DOCTYPE HTML>
+<html>
+	<head>				
+		<link rel="stylesheet" href="/javascript/slickGrid/slick.grid.css" type="text/css" media="screen" charset="utf-8" />        
+		<link rel="stylesheet" href="/javascript/slickGrid/examples.css" type="text/css" media="screen" charset="utf-8" />
+			
+		<script src="/javascript/jQuery/jquery-1.7.1.min.js"></script>
+		<script src="/javascript/jQuery.event.drag/jquery.event.drag-2.0.min.js"></script>
+		
+		<script src="/javascript/slickGrid/slick.core.js"></script>
+		<script src="/javascript/slickGrid/slick.grid.js"></script>
+
+		<script src="/javascript/TM/GlobalVariables.js" type="text/javascript"></script>		
+		<script src="/javascript/TM/WebServices.js" type="text/javascript"></script>
+		<script src="/javascript/json/json2.js" 				type="text/javascript"></script>	
+		<script src="/javascript/TM/GuiObjects.js" type="text/javascript"></script>
+
+		
+	</head>
+	
+	<body>
+			
+		<script>			
+			var showSlickGrid = function(element, options, columns, data)
+			{
+				var grid = new Slick.Grid(element, data, columns, options);
+				$(element).show();				
+				return grid
+			}
+			
+			var add_Column = function(columns, id, width, title)
+			{
+				if (typeof(title) == "undefined")
+					title = id;
+				columns.push({id:id, name: title, field:id, width: width})
+			}
+		
+			var setUpGrid = function() 
+			{				
+				//var grid;
+				var columns = []	
+				add_Column(columns, "Id",20);
+				add_Column(columns, "MappingIndexes",80,"Mapping Indexes");
+				add_Column(columns, "Guid");
+				add_Column(columns, "LibraryId");
+				add_Column(columns, "Title");
+				add_Column(columns, "Technology");
+				add_Column(columns, "Phase");
+				add_Column(columns, "Type");
+				add_Column(columns, "Category");				
+				
+				
+					
+				var options = { enableCellNavigation: false, enableColumnReorder: false};										
+				$("#myGrid").css({ position:'absolute', top:100, left:0, right:0, bottom:0});
+							
+				var myGrid=showSlickGrid("#myGrid", options, columns, []);
+				
+				myGrid.autosizeColumns();
+				
+				TM.testGrid = myGrid
+				UnitTest_Helper_SlickGridLoaded = true;		
+				//myGrid.setData(data,true);myGrid.render()				}
+				$("#subTitle").html("table is ready for data load");
+			
+			};				
+			
+			var loadDataUsingUniqueStrings = function()
+			{
+				var data = [] ; 				
+				var uniqueStrings = TM.WebServices.Data.GuiObjects.UniqueStrings
+				$.each(TM.WebServices.Data.GuiObjects.GuidanceItemsMappings, 
+					function(index,value) 
+					{ 
+						var splitIndexes = value.split(",");
+						data.push({
+									Id				: index,								
+									MappingIndexes	: value,
+									Guid			: uniqueStrings[splitIndexes[0]],
+									LibraryId		: uniqueStrings[splitIndexes[1]],
+									Title			: uniqueStrings[splitIndexes[2]],
+									Technology		: uniqueStrings[splitIndexes[3]],
+									Phase			: uniqueStrings[splitIndexes[4]],
+									Type			: uniqueStrings[splitIndexes[5]],
+									Category		: uniqueStrings[splitIndexes[6]]
+								  }) ; 
+					});
+				TM.testGrid.setData(data);
+				TM.testGrid.render();
+				TM.testGrid.autosizeColumns();
+				$("#subTitle").html("loaded table using GuidanceItemsMappings & UniqueStrings");
+			}
+			
+			var clearTable = function(callback)
+			{
+				TM.testGrid.setData([]);
+				TM.testGrid.render();				
+			}
+			
+			var loadDataUsingMappedData = function()
+			{
+				var data = [] ; 								
+				$.each(TM.WebServices.Data.GuidanceItemsIDs.sort(), 
+					function(index,value) 
+					{ 						
+						var guidandeItem = $.data[value];
+						data.push({
+									Id				: index,
+									MappingIndexes	: "....",
+									Guid			: guidandeItem.guidanceItemId, //value variable has the same value
+									LibraryId		: guidandeItem.libraryId,
+									Title			: guidandeItem.title,
+									Technology		: guidandeItem.technology,
+									Phase			: guidandeItem.phase,
+									Type			: guidandeItem.type,
+									Category		: guidandeItem.category
+								  }) ; 
+					});
+				TM.testGrid.setData(data);
+				TM.testGrid.render();
+				TM.testGrid.autosizeColumns();
+				$("#subTitle").html("loaded table using GuidanceItemsIDs and premapped $.data values");
+			}
+			
+			//$(setUpGrid);
+			
+			var loadGui = function()
+			{				
+				$("#links")	.append($("<a>").append("loadDataUsingUniqueStrings")
+											.click(loadDataUsingUniqueStrings)
+											.attr("href","#"))
+							.append(" -  ")
+							.append($("<a>").append("loadDataUsingMappedData")
+											.click(loadDataUsingMappedData)
+											.attr("href","#"))			   
+							
+							
+				setUpGrid();
+				//loadDataUsingMappedData();
+			}
+			
+			TM.Events.onGuiObjectsLoaded(loadGui)
+						
+			
+		</script>
+		
+		<h2>SlickGrid - View GuidanceItems Mappings</h2>
+		<h1 id="subTitle" >...</h1>
+		<div id="links"></div>
+		<div id="myGrid"></div>
+			
+		</table>		
+	</body>
+</html>

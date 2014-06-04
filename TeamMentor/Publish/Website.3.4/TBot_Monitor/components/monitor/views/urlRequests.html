@@ -1,0 +1,28 @@
+<div class="alert alert-success">
+    <strong>URL Requests</strong>
+</div>
+
+<p>
+    Starting with the most recent 50 entries
+</p>
+
+<table class="table table-condensed small">
+    <thead class="warning">
+    <tr>
+        <th>#</th>
+        <th>When</th>
+        <th>User_IP</th>
+        <th>Url</th>
+        <th>Referer</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="url in urls">
+        <td>{{url.Index}}</td>
+        <td>{{url.When | date:'H:mm:ss'}}</td>
+        <td>{{url.IP}}</td>
+        <td>{{url.Url    .replace('https://tm-34-qa.azurewebsites.net', '') }}</td>
+        <td>{{url.Referer.replace('https://tm-34-qa.azurewebsites.net', '') }}</td>
+    </tr>
+    </tbody>
+</table>

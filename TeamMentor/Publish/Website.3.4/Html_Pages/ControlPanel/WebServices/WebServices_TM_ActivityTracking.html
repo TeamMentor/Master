@@ -1,0 +1,28 @@
+<h2>Page: <b>Invoke Web Services for : Activity Tracking</b></h2>
+
+<script type="text/javascript">
+		
+		var data = {
+						url: TM.tmWebServices + 'GetTime',
+						params: '{}',
+						table: [							
+							{ name: 'GetPostData'			, url: TM.tmWebServices + 'GetPostData' 			, params: '{ }' },
+  							{ name: 'GetRequestData'		, url: TM.tmWebServices + 'GetRequestData' 		, params: '{ }' },
+							{ name: 'GetLastRequest'		, url: TM.tmWebServices + 'GetLastRequest' 		, params: '{ }' },  
+							{ name: 'GetPastRequests'		, url: TM.tmWebServices + 'GetPastRequests' 		, params: '{ }' },
+  							{ name: 'JsDataTableWithPastRequests'	, url: TM.tmWebServices + 'JsDataTableWithPastRequests' 	, params: '{ }' },
+    						{ name: 'GetPagesHistory'		, url: TM.tmWebServices + 'GetPagesHistory' 		, params: '{ }' },
+    						{ name: 'getPagesHistory_by_PageId'	, url: TM.tmWebServices + 'getPagesHistory_by_PageId' 	, params: '{ guidanceItemId: "" }' },
+      						{ name: 'logPageUserComment'		, url: TM.tmWebServices + 'logPageUserComment' 		, params: '{ guidanceItemId: "" , userComment : ""}' },
+							{ name: 'logPageUserActivity'		, url: TM.tmWebServices + 'logPageUserActivity' 		, params: '{ guidanceItemId: "" , userActivity : ""}' }
+
+
+							 
+						]
+					};
+		
+		jQuery('#local_JS_Page').load(TM.ControlPanel.WebServices.configDir + 'Invoke_WebServices.html?time=' + new Date().getTime());
+</script>		
+
+<div id="local_JS_Page"> </div>
+
