@@ -51,7 +51,7 @@ namespace TeamMentor.CoreLib
             { 
                 tmUser.SecretData.PasswordHash       = passwordHash;
                 tmUser.AccountStatus.PasswordExpired = false;
-                tmUser.saveTmUser();                
+                tmUser.event_TmUser_Changed();  //tmUser.saveTmUser();                
                 return true;
             }
             return false;    		
@@ -83,7 +83,7 @@ namespace TeamMentor.CoreLib
                     tmUser.SecretData.PasswordHash       = tmUser.createPasswordHash(newPassword);
                     tmUser.AccountStatus.PasswordExpired = false;
                     tmUser.SecretData.PasswordResetToken = null;
-                    tmUser.saveTmUser();       
+                    tmUser.event_TmUser_Changed();  //tmUser.saveTmUser();       
                     tmUser.logUserActivity("Password Change", "Using Password Reset: {0}".format(token));
                     return true;
                 }            
@@ -208,18 +208,18 @@ namespace TeamMentor.CoreLib
             if (tmUser.notNull()) 
             {
                 tmUser.GroupID = groupId;
-                tmUser.saveTmUser();                
+                tmUser.event_TmUser_Changed();  //tmUser.saveTmUser();                
                 return true;
             }
             return false;
         }        									        
 
-        [Admin]         public static TMUser        set_PostLoginView   (this TMUser tmUser, string postLoginView)
+/*        [Admin]         public static TMUser        set_PostLoginView   (this TMUser tmUser, string postLoginView)
         {
             if (tmUser.notNull())
             {
                 tmUser.SecretData.PostLoginView = postLoginView;
-                tmUser.saveTmUser();                
+                tmUser.event_TmUser_Changed();  //tmUser.saveTmUser();                
             }
             return tmUser;
         }
@@ -228,9 +228,10 @@ namespace TeamMentor.CoreLib
             if (tmUser.notNull())
             {
                 tmUser.SecretData.PostLoginScript = postLoginScript;
-                tmUser.saveTmUser();                
+              tmUser.event_TmUser_Changed();  //  tmUser.saveTmUser();                
             }
             return tmUser;
         }
+ */ 
     }
 }

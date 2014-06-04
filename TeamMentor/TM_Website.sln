@@ -32,6 +32,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamMentor.Asmx", "TM_Backe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamMentor.AspNet", "TM_Backend\TeamMentor.AspNet\TeamMentor.AspNet.csproj", "{5B02BD8E-BF90-4182-80A6-41842494399D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamMentor.FileStorage", "TM_Backend\TeamMentor.FileStorage\TeamMentor.FileStorage.csproj", "{F5ACC621-5930-45E8-9595-39E1758CA7A9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -142,6 +144,16 @@ Global
 		{5B02BD8E-BF90-4182-80A6-41842494399D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{5B02BD8E-BF90-4182-80A6-41842494399D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{5B02BD8E-BF90-4182-80A6-41842494399D}.Release|x86.ActiveCfg = Release|Any CPU
+		{F5ACC621-5930-45E8-9595-39E1758CA7A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5ACC621-5930-45E8-9595-39E1758CA7A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5ACC621-5930-45E8-9595-39E1758CA7A9}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{F5ACC621-5930-45E8-9595-39E1758CA7A9}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{F5ACC621-5930-45E8-9595-39E1758CA7A9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F5ACC621-5930-45E8-9595-39E1758CA7A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5ACC621-5930-45E8-9595-39E1758CA7A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5ACC621-5930-45E8-9595-39E1758CA7A9}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{F5ACC621-5930-45E8-9595-39E1758CA7A9}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{F5ACC621-5930-45E8-9595-39E1758CA7A9}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -157,6 +169,7 @@ Global
 		{5A89734A-4BA1-4076-A5BA-584223C05F56} = {2F2BDCAC-53AC-4BCE-8398-0A03C50A9D89}
 		{AF783625-F52F-4558-B64C-AC982324A072} = {2F2BDCAC-53AC-4BCE-8398-0A03C50A9D89}
 		{5B02BD8E-BF90-4182-80A6-41842494399D} = {2F2BDCAC-53AC-4BCE-8398-0A03C50A9D89}
+		{F5ACC621-5930-45E8-9595-39E1758CA7A9} = {2F2BDCAC-53AC-4BCE-8398-0A03C50A9D89}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35

@@ -35,7 +35,8 @@ namespace TeamMentor.CoreLib
                 if (tmUser.notNull() && tmUser.ID != Guid.Empty)
                 {                
                     tmUser.UserActivities.Add(userActivity);
-                    tmUser.saveTmUser();
+                    
+                    tmUser.event_TmUser_Changed(); //tmUser.saveTmUser();
                 }                  	
             }
             return userActivity;

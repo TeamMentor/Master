@@ -11,7 +11,7 @@ namespace TeamMentor.CoreLib
     {        
         public const string Email = @"^[\w-+\.]{1,}\@([\w-]{1,}\.){1,}[a-zA-Z]{2,4}$";
     }
-
+    // This is the TMUser VIEW Object (only to be used for data transfer)
     [DataContract]
     public class TM_User
     {   

@@ -4,87 +4,7 @@ using FluentSharp.CoreLib;
 namespace TeamMentor.CoreLib
 {
     public static class TM_Server_Utils
-    {
-        //load and save
-        [Admin] public static TM_Server     set_Path_XmlDatabase(this TM_Server tmServer)  
-        {
-            var webRoot  = TM_Server.WebRoot;
-            var tmStatus = TM_Status.Current;
-            try
-            { 
-                if (tmServer.isNull())
-                    return null;
-
-                TM_Server.Path_XmlDatabase = null;                
-
-                if (TM_Server.UseFileStorage.isFalse())
-                    return tmServer;
-                
-                // try to find a local folder to hold the TM Database data
-            
-                
-
-                
-                var usingAppData = webRoot.contains(@"TeamMentor.UnitTests\bin") ||             // when running UnitTests under NCrunch
-                                    webRoot.contains(@"site\wwwroot");                           // when running from Azure (or directly on IIS)
-                if (usingAppData.isFalse())
-                {
-                    //calculate location and see if we can write to it
-                
-                    var xmlDatabasePath = TM_Server.WebRoot.pathCombine(TMConsts.VIRTUAL_PATH_MAPPING)
-                                                           .pathCombine(TMConsts.XML_DATABASE_VIRTUAL_PATH_LEGACY)   //use by default the 'Library_Data\\XmlDatabase" value due to legacy support (pre 3.3)
-                                                           .fullPath();
-                    
-                    if (xmlDatabasePath.createDir().dirExists() && xmlDatabasePath.canWriteToPath())
-                    {                        
-                        TM_Server.Path_XmlDatabase              = xmlDatabasePath;           // if can write it then make it the Path_XmlDatabase
-                        tmStatus.TM_Database_Location_Using_AppData = false;                                                
-                        return tmServer;
-                    }
-                    "[TM_Server][set_Path_XmlDatabase] It was not possible to write to mapped folder: {0}".error(xmlDatabasePath);
-                }
-                
-                var appData_Path = TM_Server.WebRoot.pathCombine("App_Data")
-                                                    .pathCombine(TMConsts.XML_DATABASE_VIRTUAL_PATH)        // inside App_Data we can use the folder value 'TeamMentor' 
-                                                    .fullPath();   
-                if (appData_Path.createDir().dirExists() && appData_Path.canWriteToPath())
-                {
-                    TM_Server.Path_XmlDatabase                     = appData_Path;           // if can write it then make it the Path_XmlDatabase
-                    tmStatus.TM_Database_Location_Using_AppData = true;                    
-                    return tmServer;       
-                }   
-                           
-                "[TM_Server][set_Path_XmlDatabase] It was not possible to write to App_Data folder: {0}".error(appData_Path);                
-                "[TM_Server][set_Path_XmlDatabase] Disabled use of UsingFileStorage".debug();
-                TM_Server.UseFileStorage = false;                 
-                return tmServer;
-            }
-            finally
-            {
-                "[TM_Server][set_Path_XmlDatabase] Path_XmlDatabase set to: {0}".info(TM_Server.Path_XmlDatabase);
-                "[TM_Server][set_Path_XmlDatabase] tmStatus.TM_Database_Location_Using_AppData:{0}".info(tmStatus.TM_Database_Location_Using_AppData);                
-            }
-        } 
-        [Admin] public static string        tmServer_Location(this TM_Server tmServer)          
-        {
-            return (tmServer.notNull() && TM_Server.UseFileStorage)
-                        ? TM_Server.Path_XmlDatabase.pathCombine(TMConsts.TM_SERVER_FILENAME)
-                        : null;
-        }
-       /* [Admin] public static TM_Server     tmServer_Load(this TM_Server tmServer)    
-        {
-            
-        }*/
-        [Admin] public static bool          tmServer_Save(this TM_Server tmServer)     
-        {                                   
-            if (tmServer.notNull() && TM_Server.UseFileStorage)
-            {
-                var tmServerFile = tmServer.tmServer_Location();
-                if (tmServerFile.valid())
-                    return tmServer.saveAs(tmServerFile);
-            }                            
-            return false;
-        }
+    {        
         public static TM_Server             setDefaultData(this TM_Server tmServer)
         {
             var userData_Config = new TM_Server.Config
@@ -196,14 +116,6 @@ namespace TeamMentor.CoreLib
             }
             return configs;
         }
-
-
-        //Xml Database 
-        public static TM_Server tmServer(this TM_Xml_Database tmDatabase)
-        {
-            if (tmDatabase.notNull())
-                return tmDatabase.Server;
-            return null;
-        }
+        
     }
 }

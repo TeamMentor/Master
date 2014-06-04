@@ -111,7 +111,7 @@ namespace TeamMentor.CoreLib
             {
                 var newToken = Guid.NewGuid();
                 tmUser.SecretData.PasswordResetToken = tmUser.passwordResetToken_getHash(newToken);
-                tmUser.saveTmUser();
+                tmUser.event_TmUser_Changed();  //tmUser.saveTmUser();
                 return newToken;
             }
             return Guid.Empty;

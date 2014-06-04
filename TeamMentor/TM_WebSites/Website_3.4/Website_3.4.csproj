@@ -729,7 +729,7 @@
     <None Include="TBot_Monitor\lib\bootstrap\fonts\glyphicons-halflings-regular.eot" />
     <None Include="TBot_Monitor\lib\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
     <None Include="TBot_Monitor\lib\bootstrap\fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="TBot\Admin\Config\TMServer_Config.cshtml" />
+    <Content Include="TBot\Admin\Config\Edit_TM_Server.cshtml" />
     <Content Include="TBot\NGit\GitDiff_UserData_Commit.cshtml" />
     <Content Include="TBot\NGit\GitDiff_UserData_File.cshtml" />
     <Content Include="TBot\VirtualArticles\Article_Links.cshtml" />

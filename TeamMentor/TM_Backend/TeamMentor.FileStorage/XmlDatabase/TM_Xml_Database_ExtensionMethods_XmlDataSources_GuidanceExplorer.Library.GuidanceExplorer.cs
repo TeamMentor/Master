@@ -3,7 +3,6 @@ using System.Linq;
 using System.Collections.Generic;
 using FluentSharp.CoreLib;
 using FluentSharp.CoreLib.API;
-using TeamMentor.Database;
 using urn.microsoft.guidanceexplorer;
 using Items = urn.microsoft.guidanceexplorer.Items;
 
@@ -224,17 +223,7 @@ namespace TeamMentor.CoreLib
             var guidanceExplorer = tmDatabase.xmlDB_GuidanceExplorer(libraryId);
             return tmDatabase.xmlDB_Path_Library_XmlFile(guidanceExplorer);
         }
-        public static string xmlDB_Path_Library_XmlFile(this TM_Xml_Database tmDatabase, guidanceExplorer guidanceExplorer)
-        {
-            if (tmDatabase.usingFileStorage())
-            {
-                return tmDatabase.GuidanceExplorers_Paths.value(guidanceExplorer);
-                /*if (guidanceExplorer.notNull())
-                    if (tmDatabase.GuidanceExplorers_Paths.hasKey(guidanceExplorer))
-                        return tmDatabase.GuidanceExplorers_Paths[guidanceExplorer];*/
-            }
-            return null;
-        }
+
 
         public static string xmlDB_Path_Library_RootFolder(this TM_Xml_Database tmDatabase, TM_Library tmLibrary)
         {

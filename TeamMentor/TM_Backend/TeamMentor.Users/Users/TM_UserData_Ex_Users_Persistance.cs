@@ -29,75 +29,7 @@ namespace TeamMentor.CoreLib
             }            
         }*/
 
-        public static TM_UserData   users_Load   (this TM_UserData userData)             
-        {
-            try
-            { 
-                userData.TMUsers = new List<TMUser>();
-                if (userData.usingFileStorage())
-                {
-                    var usersFolder = userData.users_XmlFile_Location();
-                    if (usersFolder.isNull())
-                    {
-                        "[TM_UserData] [users_Load] could not load users because users_XmlFile_Location() returned null".error();
-                        return userData;
-                    }
-                                  
-                    foreach (var file in usersFolder.files("*.userData.xml"))
-                    {
-                        var tmUser = file.load<TMUser>();
-                        if (tmUser.notNull() && tmUser.UserID > 0)
-                            userData.TMUsers.Add(tmUser);
-                        else
-                            "[TM_UserData_Ex_Users_Persistance] [users_Load] error loading tmUser file (or UserId < 1): {0}".error(file);
-                    }                
-                }            
-                return userData;
-            }
-            finally
-            {
-                userData.Events.After_Users_Load.raise();
-            }
-        }                
-        public static string        users_XmlFile_Location(this TM_UserData userData)   
-        {
-            if (userData.usingFileStorage())
-                if (userData.Path_UserData.notNull())
-                    return userData.Path_UserData
-                                   .pathCombine(TMConsts.USERDATA_PATH_USER_XML_FILES)
-                                   .createDir();
-            return null;
-        }
-        public static string        user_XmlFile_Location (this TMUser tmUser)          
-        {
-            var fileName =  tmUser.user_XmlFile_Name();
-
-            return fileName.valid()
-                        ? TM_UserData.Current.users_XmlFile_Location().pathCombine(fileName)
-                        : null;
-        }
-        public static string        user_XmlFile_Name     (this TMUser tmUser)          
-        {
-            if (tmUser.notNull() && tmUser.UserName.valid() && tmUser.ID != Guid.Empty)
-            {
-                var userNameSubstring = tmUser.UserName.subString(0, 10).safeFileName();
-                var fileName = TMConsts.USERDATA_FORMAT_USER_XML_FILE.format(userNameSubstring, tmUser.ID);
-                return fileName;
-            }
-            return null;
-        }
         
-        public static bool          saveTmUser       (this TMUser tmUser)               
-        {
-            if (TM_UserData.Current.usingFileStorage())
-            {                
-                lock (tmUser)
-                {                    
-                    return tmUser.saveAs(tmUser.user_XmlFile_Location());
-                }
-            }
-            return false;
-        }
         public static bool          deleteTmUser     (this TM_UserData userData, TMUser tmUser)
         {    		
             if (tmUser.notNull())
@@ -105,14 +37,9 @@ namespace TeamMentor.CoreLib
                 lock(userData.TMUsers)
                 {
                     userData.TMUsers.remove(tmUser);
-                    if (userData.usingFileStorage())
-                    {
-                        lock (tmUser)
-                        {
-                            tmUser.user_XmlFile_Location().file_Delete();
-                            //userData.triggerGitCommit();
-                        }
-                    }  
+                    
+                    tmUser.event_TmUser_Deleted();
+
                     userData.logTBotActivity("User Delete","{0} - {1}".format(tmUser.UserName, tmUser.UserID));
                     return true;
                 }
@@ -161,7 +88,8 @@ namespace TeamMentor.CoreLib
                 tmUser.AccountStatus.PasswordExpired     = user.PasswordExpired;
                 tmUser.AccountStatus.UserEnabled         = user.UserEnabled;
                 tmUser.AccountStatus.AccountNeverExpires = user.AccountNeverExpires; 
-                tmUser.saveTmUser();
+                
+                tmUser.event_TmUser_Changed();      //tmUser.saveTmUser();                
                             
                 tmUser.logUserActivity("User Updated",""); // so that we don't get this log entry on new user creation
 

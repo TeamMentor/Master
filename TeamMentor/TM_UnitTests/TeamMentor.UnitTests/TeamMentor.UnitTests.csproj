@@ -212,7 +212,9 @@
   <ItemGroup>
     <Compile Include="Asmx_WebServices\Test_WebServices_Authentication.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="TeamMentor.FileStorage\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="NGit_Dlls\ICSharpCode.SharpZipLib.dll" />
     <Content Include="NGit_Dlls\Mono.Posix.dll" />

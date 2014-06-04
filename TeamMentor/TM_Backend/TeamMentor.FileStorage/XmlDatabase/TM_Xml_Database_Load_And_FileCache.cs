@@ -1,41 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using FluentSharp.CoreLib;
 using FluentSharp.CoreLib.API;
-using TeamMentor.Database;
+using TeamMentor.FileStorage;
 using urn.microsoft.guidanceexplorer;
-using System.Threading;
 
 namespace TeamMentor.CoreLib
 {
-    // this is a (bit) time consumining (less 1s for 8000 files), so it should only be done once (this is another good cache target)
-    public static class TM_Xml_Database_Load_And_FileCache_Utils
-    {		
-        public static void populateGuidanceItemsFileMappings(this TM_Xml_Database tmXmlDatabase)
-        {
-            tmXmlDatabase.GuidanceItems_FileMappings.Clear();
-            var o2Timer = new O2Timer("[TM_Xml_Database] populateGuidanceExplorersFileMappings").start();
-            foreach (var filePath in tmXmlDatabase.Path_XmlLibraries.files(true, "*.xml"))
-            {
-                var fileId = filePath.fileName().remove(".xml");
-                if (fileId.isGuid())
-                {
-                    //"[populateGuidanceItemsFileMappings] loading GuidanceItem ID {0}".info(fileId);
-                    var guid = fileId.guid();
-                    if (tmXmlDatabase.GuidanceItems_FileMappings.hasKey(guid))
-                    {
-                        "[TM_Xml_Database] [populateGuidanceItemsFileMappings] duplicate GuidanceItem ID found {0}".error(guid);
-                    }
-                    else
-                        TM_Xml_Database.Current.GuidanceItems_FileMappings.Add(guid, filePath);				
-                }
-            }
-            o2Timer.stop();
-            "[TM_Xml_Database] [populateGuidanceItemsFileMappings] There are {0} files mapped in GuidanceItems_FileMappings".info(TM_Xml_Database.Current.GuidanceItems_FileMappings.size());			
-        }
-    }
-
-    public static class TM_Xml_Database_ExtensionMethods_Load_And_FileCache
+    public static class TM_Xml_Database_Load_And_FileCache
     {
         public static Thread thread_Save_GuidanceItemsCache;
 
@@ -148,8 +121,8 @@ namespace TeamMentor.CoreLib
         {            
                         
             var guidanceExplorerXmlFiles = pathXmlLibraries.folders()
-                                                           .files("*.xml")                                                             
-                                                           .where(isGuidanceExplorerFile);
+                .files("*.xml")                                                             
+                .where(isGuidanceExplorerFile);
             return guidanceExplorerXmlFiles;
         }
         public static Dictionary<Guid, guidanceExplorer> getGuidanceExplorerObjects     (this string pathXmlLibraries)
@@ -189,7 +162,7 @@ namespace TeamMentor.CoreLib
                     foreach (var loadedGuidanceItem in loadedGuidanceItems)
                         if (loadedGuidanceItem.notNull())
                             TM_Xml_Database.Current.Cached_GuidanceItems.add(loadedGuidanceItem.Metadata.Id,
-                                                                             loadedGuidanceItem);
+                                loadedGuidanceItem);
                     o2Timer.stop();
                 }
                 tmDatabase.populateGuidanceItemsFileMappings();
@@ -226,7 +199,7 @@ namespace TeamMentor.CoreLib
                                 tmDatabase.sleep(1000,false);
                                 tmDatabase.save_GuidanceItemsToCache();
                                 thread_Save_GuidanceItemsCache = null;
-                            });
+                        });
             
                 }			
             }
@@ -254,7 +227,7 @@ namespace TeamMentor.CoreLib
         }		
         public static TeamMentor_Article                 update_Cache_GuidanceItems     (this TeamMentor_Article guidanceItem,  TM_Xml_Database tmDatabase)
         {
-            guidanceItem.htmlEncode(); // ensure MetaData is encoded
+            //guidanceItem.htmlEncode(); // ensure MetaData is encoded
 
             var guidanceItemGuid = guidanceItem.Metadata.Id;
             if (TM_Xml_Database.Current.Cached_GuidanceItems.hasKey(guidanceItemGuid))
@@ -308,7 +281,7 @@ namespace TeamMentor.CoreLib
             var libraryPath = tmDatabase.xmlDB_Path_Library_RootFolder(tmLibrary);
             var newArticleFolder = libraryPath.pathCombine(TMConsts.DEFAULT_ARTICLE_FOLDER_NAME);
             var xmlPath = newArticleFolder.createDir()                                         
-                                         .pathCombine("{0}.xml".format(guidanceItemId));
+                .pathCombine("{0}.xml".format(guidanceItemId));
 
             "in getXmlFilePathForGuidanceId, no previous mapping found so adding new GuidanceItems_FileMappings for :{0}".info(xmlPath);
 
@@ -316,6 +289,29 @@ namespace TeamMentor.CoreLib
             return xmlPath;
             
         }
+
+          // this is a (bit) time consumining (less 1s for 8000 files), so it should only be done once (this is another good cache target)
+        public static void populateGuidanceItemsFileMappings(this TM_Xml_Database tmXmlDatabase)
+        {
+            tmXmlDatabase.GuidanceItems_FileMappings.Clear();
+            var o2Timer = new O2Timer("[TM_Xml_Database] populateGuidanceExplorersFileMappings").start();
+            foreach (var filePath in tmXmlDatabase.Path_XmlLibraries.files(true, "*.xml"))
+            {
+                var fileId = filePath.fileName().remove(".xml");
+                if (fileId.isGuid())
+                {
+                    //"[populateGuidanceItemsFileMappings] loading GuidanceItem ID {0}".info(fileId);
+                    var guid = fileId.guid();
+                    if (tmXmlDatabase.GuidanceItems_FileMappings.hasKey(guid))
+                    {
+                        "[TM_Xml_Database] [populateGuidanceItemsFileMappings] duplicate GuidanceItem ID found {0}".error(guid);
+                    }
+                    else
+                        TM_Xml_Database.Current.GuidanceItems_FileMappings.Add(guid, filePath);				
+                }
+            }
+            o2Timer.stop();
+            "[TM_Xml_Database] [populateGuidanceItemsFileMappings] There are {0} files mapped in GuidanceItems_FileMappings".info(TM_Xml_Database.Current.GuidanceItems_FileMappings.size());			
+        }
     }
-    
 }

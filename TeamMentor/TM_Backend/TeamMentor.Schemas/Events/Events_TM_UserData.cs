@@ -13,17 +13,18 @@ namespace TeamMentor.CoreLib
         public TM_Event<TM_UserData> Before_TM_Config_Load      { get; set;}
 
         public TM_Event<TM_UserData> After_TM_Config_Load       { get; set;}
+        public TM_Event<TM_UserData> After_TM_Config_Changed    { get; set;}        
         public TM_Event<TM_UserData> After_TM_SecretData_Load   { get; set;}
-        public TM_Event<TM_UserData> After_Users_Load           { get; set;}
-        
+        public TM_Event<TM_UserData> After_Users_Load           { get; set;}                
 
         public Events_TM_UserData(TM_UserData tmUserData)
         {
             this.Target                     = tmUserData;
             this.Before_TM_Config_Load      = new TM_Event<TM_UserData>(tmUserData); 
             this.After_TM_Config_Load       = new TM_Event<TM_UserData>(tmUserData); 
+            this.After_TM_Config_Changed    = new TM_Event<TM_UserData>(tmUserData);            
             this.After_TM_SecretData_Load   = new TM_Event<TM_UserData>(tmUserData); 
             this.After_Users_Load           = new TM_Event<TM_UserData>(tmUserData); 
-        }
+        }       
     }
 }
