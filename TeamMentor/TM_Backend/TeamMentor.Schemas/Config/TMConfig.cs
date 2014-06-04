@@ -1,7 +1,12 @@
 
+using System;
+using System.Xml.Serialization;
+
 namespace TeamMentor.CoreLib    
 {
     //public values 
+    [Serializable]
+    [XmlRoot(ElementName="TMConfig")]
     public class TMConfig
     {
         public static TMConfig Current { get; set; }

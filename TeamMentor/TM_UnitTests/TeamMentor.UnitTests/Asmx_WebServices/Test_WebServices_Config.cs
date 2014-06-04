@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using TeamMentor.CoreLib;
+using TeamMentor.Database;
 
 namespace TeamMentor.UnitTests.Asmx_WebServices
 {
@@ -9,7 +10,7 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
         [SetUp]
         public void setup()
         {
-            tmWebServices.tmXmlDatabase.UsingFileStorage = false;
+            tmWebServices.tmXmlDatabase.useFileStorage(false);
         }
         [Test][Assert_Admin]
         public void XmlDatabase_UsingFileStorage()
@@ -18,9 +19,9 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             Assert.IsNotNull(tmWebServices);
             Assert.IsNotNull(tmWebServices.tmXmlDatabase);            
             Assert.IsFalse  (tmWebServices.XmlDatabase_IsUsingFileStorage());
-            tmWebServices.tmXmlDatabase.UsingFileStorage = true;
+            tmWebServices.tmXmlDatabase.useFileStorage(true);
             Assert.IsTrue   (tmWebServices.XmlDatabase_IsUsingFileStorage());
-            tmWebServices.tmXmlDatabase.UsingFileStorage = false;
+            tmWebServices.tmXmlDatabase.useFileStorage(false);
             Assert.IsFalse  (tmWebServices.XmlDatabase_IsUsingFileStorage());
         }
     }

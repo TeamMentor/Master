@@ -3,11 +3,12 @@ using NUnit.Framework;
 using FluentSharp.CoreLib;
 using TeamMentor.CoreLib;
 using FluentSharp.CoreLib.API;
+using TeamMentor.Database;
 
-namespace TeamMentor.UnitTests.TM_XmlDatabase
+namespace TeamMentor.UnitTests.Schemas
 {    
     [TestFixture]
-    public class Test_TMServer
+    public class Test_TM_Server_Utils
     {        
         [SetUp]    public void setup() 
         {
@@ -110,19 +111,16 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             UserGroup.Admin.assert();
 
             //first test with in memory version of TM_Xml_Database
-            TM_Xml_Database tmXmlDatabase = new TM_Xml_Database();
-            tmXmlDatabase.tmServer_Load();
+            var tmServer = TM_Server.Load();            
             
-            var tmServer = tmXmlDatabase.Server;
-
             Assert.NotNull (tmServer);
-            Assert.AreEqual(tmServer, tmXmlDatabase.tmServer());
+            Assert.AreEqual(tmServer, new TM_Xml_Database(tmServer).tmServer());
 
             //now test with filebase
-            tmXmlDatabase = new TM_Xml_Database();
+            //tmXmlDatabase = new TM_Xml_Database();
 
-            tmXmlDatabase.Path_XmlDatabase = "_tmpLocation".tempDir();
-            tmXmlDatabase.UsingFileStorage = true;
+            //tmXmlDatabase.Path_XmlDatabase = "_tmpLocation".tempDir();
+            //tmXmlDatabase.useFileStorage(true);
         }
         [Test] public void tmServer()                               
         {
@@ -133,20 +131,19 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Assert.NotNull (tmServer);
             Assert.AreEqual(tmServer, tmDatabase.Server);                          
         }        
-        [Test] public void LoadAndSave_TMServer_To_Disk()           
+/*        [Test] public void LoadAndSave_TMServer_To_Disk()           
         {
             UserGroup.Admin.assert();
-            TM_Xml_Database tmXmlDatabase = new TM_Xml_Database(true).set_Path_XmlDatabase()
-                                                                     .tmServer_Load();
-
-            var tmServer      = tmXmlDatabase.Server;
-            tmXmlDatabase.tmServer_Location().info();
-            var tmServerPath  = tmXmlDatabase.tmServer_Location();
+            var tmServer = TM_Server.Load();
+            
+            
+            tmServer.tmServer_Location().info();
+            var tmServerPath  = tmServer.tmServer_Location();
 
             Assert.IsNotNull(tmServer                   , "tmServer");
             Assert.IsNotNull(tmServerPath               , "tmServerPath");
-            Assert.AreEqual (tmServerPath.parentFolder(), tmXmlDatabase.Path_XmlDatabase , "tmServerPath.folderName()");
-        }
+            Assert.AreEqual (tmServerPath.parentFolder(), tmServer.Path_XmlDatabase , "tmServerPath.folderName()");
+        }*/
 
         //Utils
         /*
@@ -155,7 +152,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             tmXmlDatabase = new TM_Xml_Database();
 
             tmXmlDatabase.Path_XmlDatabase = "_tmpLocation".tempDir();
-            tmXmlDatabase.UsingFileStorage = true;
+            tmXmlDatabase.useFileStorage(true);
 
             Assert.IsTrue(tmXmlDatabase.Path_XmlDatabase.dirExists());
 

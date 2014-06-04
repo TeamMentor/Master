@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using TeamMentor.CoreLib;
+using TeamMentor.Database;
 
 namespace TeamMentor.UnitTests.Schemas
 {
@@ -11,10 +12,11 @@ namespace TeamMentor.UnitTests.Schemas
         [SetUp]
         public void setup()
         {
-            tmDatabase = new TM_Xml_Database();                                    
+            UserGroup.Admin.assert();
+            tmDatabase = new TM_Xml_Database();                                  
             Assert.NotNull (tmDatabase);            
             Assert.NotNull (tmDatabase.Events);                        
-            Assert.AreEqual(tmDatabase.UsingFileStorage, false);
+            Assert.IsFalse (tmDatabase.usingFileStorage());
         }
         [Test]
         public void TM_Events_TM_Xml_Database_Ctor()
@@ -25,8 +27,7 @@ namespace TeamMentor.UnitTests.Schemas
             Assert.NotNull (tmEvents.Before_Setup);     
             Assert.NotNull (tmEvents.After_Setup);     
             Assert.NotNull (tmEvents.After_Set_Default_Values);   
-            Assert.NotNull (tmEvents.After_Set_Path_XmlDatabase);   
-            Assert.NotNull (tmEvents.After_TmServer_Load);   
+            Assert.NotNull (tmEvents.After_Set_Path_XmlLibraries);   
             Assert.NotNull (tmEvents.After_Load_UserData);   
             Assert.NotNull (tmEvents.After_Load_SiteData);   
             Assert.NotNull (tmEvents.After_Load_Libraries);   
@@ -62,8 +63,7 @@ namespace TeamMentor.UnitTests.Schemas
             Assert.AreEqual(tmEventsDb.Before_Setup                 .Total_Invocations, 1);
             Assert.AreEqual(tmEventsDb.After_Setup                  .Total_Invocations, 1);
             Assert.AreEqual(tmEventsDb.After_Set_Default_Values     .Total_Invocations, 1);
-            Assert.AreEqual(tmEventsDb.After_Set_Path_XmlDatabase   .Total_Invocations, 1);
-            Assert.AreEqual(tmEventsDb.After_TmServer_Load          .Total_Invocations, 1);
+            Assert.AreEqual(tmEventsDb.After_Set_Path_XmlLibraries  .Total_Invocations, 1);            
             Assert.AreEqual(tmEventsDb.After_Load_UserData          .Total_Invocations, 1);
             Assert.AreEqual(tmEventsDb.After_Load_SiteData          .Total_Invocations, 1);
             Assert.AreEqual(tmEventsDb.After_Load_Libraries         .Total_Invocations, 1);
@@ -83,14 +83,9 @@ namespace TeamMentor.UnitTests.Schemas
             Assert.AreEqual(tmDatabase.Events.After_Set_Default_Values.Total_Invocations,1);
 
             //After_Set_Path_XmlDatabase
-            Assert.AreEqual(tmDatabase.Events.After_Set_Path_XmlDatabase.Total_Invocations,0);
-            tmDatabase.set_Path_XmlDatabase();
-            Assert.AreEqual(tmDatabase.Events.After_Set_Path_XmlDatabase.Total_Invocations,1);
-
-            //After_TmServer_Load
-            Assert.AreEqual(tmDatabase.Events.After_TmServer_Load.Total_Invocations,0);
-            tmDatabase.tmServer_Load();
-            Assert.AreEqual(tmDatabase.Events.After_TmServer_Load.Total_Invocations,1);
+            Assert.AreEqual(tmDatabase.Events.After_Set_Path_XmlLibraries.Total_Invocations,0);
+            tmDatabase.set_Path_XmlLibraries();
+            Assert.AreEqual(tmDatabase.Events.After_Set_Path_XmlLibraries.Total_Invocations,1);
 
             //After_Load_UserData
             Assert.AreEqual(tmDatabase.Events.After_Load_UserData.Total_Invocations,0);

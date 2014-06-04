@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using TeamMentor.CoreLib;
 using FluentSharp.CoreLib;
 using FluentSharp.CoreLib.API;
+using TeamMentor.Database;
 
 namespace TeamMentor.UnitTests.CoreLib
 {
@@ -30,8 +31,8 @@ namespace TeamMentor.UnitTests.CoreLib
         public void tmConfig_Location()
         {
             UserGroup.Admin.assert();
-            var tmXmlDatabase     = new TM_Xml_Database(true).setup();
-            var userData          = tmXmlDatabase.userData();
+            var tmXmlDatabase     = new TM_Xml_Database().useFileStorage().setup();
+            var userData          = tmXmlDatabase.UserData;
             var userData_Path     = userData.Path_UserData;
             var expected_Location = userData_Path.pathCombine(TMConsts.TM_CONFIG_FILENAME);
 

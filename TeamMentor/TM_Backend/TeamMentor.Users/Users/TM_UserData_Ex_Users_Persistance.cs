@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using FluentSharp.CoreLib;
+using TeamMentor.UserData;
 
 namespace TeamMentor.CoreLib
 {
@@ -33,7 +34,7 @@ namespace TeamMentor.CoreLib
             try
             { 
                 userData.TMUsers = new List<TMUser>();
-                if (userData.UsingFileStorage)
+                if (userData.usingFileStorage())
                 {
                     var usersFolder = userData.users_XmlFile_Location();
                     if (usersFolder.isNull())
@@ -60,7 +61,7 @@ namespace TeamMentor.CoreLib
         }                
         public static string        users_XmlFile_Location(this TM_UserData userData)   
         {
-            if (userData.UsingFileStorage)
+            if (userData.usingFileStorage())
                 if (userData.Path_UserData.notNull())
                     return userData.Path_UserData
                                    .pathCombine(TMConsts.USERDATA_PATH_USER_XML_FILES)
@@ -88,7 +89,7 @@ namespace TeamMentor.CoreLib
         
         public static bool          saveTmUser       (this TMUser tmUser)               
         {
-            if (TM_UserData.Current.UsingFileStorage)
+            if (TM_UserData.Current.usingFileStorage())
             {                
                 lock (tmUser)
                 {                    
@@ -104,7 +105,7 @@ namespace TeamMentor.CoreLib
                 lock(userData.TMUsers)
                 {
                     userData.TMUsers.remove(tmUser);
-                    if (userData.UsingFileStorage)
+                    if (userData.usingFileStorage())
                     {
                         lock (tmUser)
                         {

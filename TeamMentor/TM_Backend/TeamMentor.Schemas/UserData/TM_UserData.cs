@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
+using FluentSharp.CoreLib;
 
 
 namespace TeamMentor.CoreLib
@@ -12,20 +13,19 @@ namespace TeamMentor.CoreLib
         public string 	                Path_WebRootFiles   { get; set; }
         public List<TMUser>	            TMUsers			    { get; set; }
         public TM_SecretData            SecretData          { get; set; }                                
-        public bool                     UsingFileStorage    { get; set; }
+       
         public Events_TM_UserData       Events              { get; set; }        
-        public TM_Server                TM_Server           { get; set; }
+        public TM_Server                Server           { get; set; }
 
-        public TM_UserData() : this (new TM_Server())
-        { }
-        public TM_UserData(bool usingFileStorage) : this (new TM_Server() { UseFileStorage = usingFileStorage})
-        { }
+        public TM_UserData() : this (null)
+        { }        
         public TM_UserData(TM_Server tmServer)
         {
+            if(tmServer.isNull())
+                tmServer = new TM_Server();
             Current             = this;     
   
-            TM_Server           = tmServer;
-            UsingFileStorage    = tmServer.UseFileStorage;
+            Server              = tmServer;            
             
             Path_WebRootFiles   = TMConsts.USERDATA_PATH_WEB_ROOT_FILES;
             TMUsers             = new List<TMUser>();                        

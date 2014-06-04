@@ -100,7 +100,7 @@ namespace TeamMentor.UnitTests.CoreLib
             firebase = null;
             Assert.IsNull(firebase.submitQueue());
         }
-        [Test] public void submitThread_Start() 
+        [Ignore("Rewrite with aync")][Test] public void submitThread_Start() 
         {                               
             Assert.IsNull     (firebase.SubmitThread);
             firebase.submitThread_Start();              // will start a new thread
@@ -130,6 +130,7 @@ namespace TeamMentor.UnitTests.CoreLib
         }
         
         // API_Firebase workflows
+        [Ignore("Rewrite using .Net 4.5 Async")]
         [Test] public void Test_SubmitThread_Behaviour()        
         {
             Assert.AreEqual(firebase.submitQueue_Size(), 0);

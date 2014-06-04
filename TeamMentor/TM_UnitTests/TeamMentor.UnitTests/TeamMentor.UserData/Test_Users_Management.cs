@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using FluentSharp.CoreLib;
 using TeamMentor.CoreLib;
+using TeamMentor.UserData;
 
 namespace TeamMentor.UnitTests.TM_XmlDatabase
 {

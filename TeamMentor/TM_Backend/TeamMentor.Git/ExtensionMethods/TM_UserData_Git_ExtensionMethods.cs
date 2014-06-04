@@ -3,6 +3,7 @@ using FluentSharp.CoreLib.API;
 using FluentSharp.Git;
 using FluentSharp.CoreLib;
 using FluentSharp.Git.APIs;
+using TeamMentor.UserData;
 
 namespace TeamMentor.CoreLib
 {
@@ -45,7 +46,7 @@ namespace TeamMentor.CoreLib
         }
         public static TM_UserData_Git   triggerGitCommit    (this TM_UserData_Git userData)                 
         {
-            var tmServer = userData.UserData.TM_Server;
+            var tmServer = userData.UserData.Server;
             if (tmServer.notNull())
                 if (tmServer.Git.UserData_Git_Enabled && userData.NGit.notNull())
                     if (userData.NGit.status().valid())
@@ -93,7 +94,7 @@ namespace TeamMentor.CoreLib
                // if (gitConfig.UserData_Git_Enabled.isFalse())
                //     return userData;
 
-                var userData_Config = userDataGit.UserData.TM_Server.userData_Config();
+                var userData_Config = userDataGit.UserData.Server.userData_Config();
 
                 var gitLocation = userData_Config.Remote_GitPath;
                 if (gitLocation.valid())
@@ -128,7 +129,7 @@ namespace TeamMentor.CoreLib
                         userDataGit.clone_UserDataRepo(gitLocation, userData.Path_UserData);
                     }
                 }
-                if (userData.UsingFileStorage && userData.Path_UserData.notNull())
+                if (userData.usingFileStorage() && userData.Path_UserData.notNull())
                 {                    
 
                     //var gitEnabled = userData.tmConfig().Git.UserData_Git_Enabled;                

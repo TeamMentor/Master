@@ -4,6 +4,7 @@ using System.Security;
 using NUnit.Framework; 
 using FluentSharp.CoreLib;
 using TeamMentor.CoreLib;
+using TeamMentor.UserData;
 
 namespace TeamMentor.UnitTests.Asmx_WebServices
 {		  

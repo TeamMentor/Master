@@ -31,13 +31,13 @@
         <h2>TM Config values</h2>
         <hr />
         <div>                                    
-            <strong>TM_Xml_Database.Current.Path_XmlDatabase:</strong>  <%=TM_Xml_Database.Current.Path_XmlDatabase %><br />
+            <strong>TM_Xml_Database.Current.path_XmlDatabase():</strong>  <%=TM_Xml_Database.Current.path_XmlDatabase() %><br />
             <strong>TM_Xml_Database.Current.Path_XmlLibraries:</strong> <%=TM_Xml_Database.Current.Path_XmlLibraries %><br />
-            <strong>TM_Server.Location:</strong> <%=TM_Xml_Database.Current.tmServer_Location() %><br />            
+            <strong>TM_Server.Location:</strong> <%=TM_Xml_Database.Current.Server.tmServer_Location() %><br />            
             <strong>TM_Config.Location:</strong> <%= TM_UserData.Current.tmConfig_Location() %><br />
             <hr />
             <strong>UserData.Path_UserData:</strong> <%= TM_UserData.Current.Path_UserData %><br />
-            <strong># of loaded users</strong> <%= TM_UserData.Current.TMUsers.size() %></br>
+            <strong># of loaded users</strong> <%= TM_UserData.Current.TMUsers.size() %><br/>
             <hr />
             <strong>AppDomain.CurrentDomain.BaseDirectory:</strong> <%=AppDomain.CurrentDomain.BaseDirectory%><br />
             <strong>O2 Temp Dir:</strong> <%= PublicDI.config.O2TempDir%><br />

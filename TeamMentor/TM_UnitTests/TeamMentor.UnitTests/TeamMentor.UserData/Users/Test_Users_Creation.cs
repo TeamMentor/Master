@@ -3,6 +3,7 @@ using System.Security;
 using FluentSharp.CoreLib;
 using NUnit.Framework;
 using TeamMentor.CoreLib;
+using TeamMentor.UserData;
 
 namespace TeamMentor.UnitTests.TM_XmlDatabase
 {
@@ -52,6 +53,9 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             userData.createDefaultAdminUser();
             Assert.IsTrue (tmUser.isAdmin());
             Assert.IsFalse(tmUser.isEditor());
+
+            //Handle nulls
+            Assert.AreEqual((null as TM_UserData).createDefaultAdminUser() , -1);
         }
         [Test] public void createUser()             
         {

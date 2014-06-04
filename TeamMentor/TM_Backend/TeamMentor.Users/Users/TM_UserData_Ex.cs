@@ -18,7 +18,7 @@ namespace TeamMentor.CoreLib
                 userData.Path_UserData.valid() && 
                 userData.Path_UserData.dirExists() && 
                 userData.Path_WebRootFiles.valid() &&
-                userData.UsingFileStorage)
+                userData.usingFileStorage())
             {
                 return userData.Path_UserData.pathCombine(userData.Path_WebRootFiles);
             }

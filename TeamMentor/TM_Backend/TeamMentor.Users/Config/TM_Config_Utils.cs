@@ -3,7 +3,7 @@ using FluentSharp.CoreLib;
 
 namespace TeamMentor.CoreLib
 {
-    public static class TMConfig_ExtensionMethods
+    public static class TM_Config_Utils
     {
         public static string tmConfig_Location(this TM_UserData userData)
         {

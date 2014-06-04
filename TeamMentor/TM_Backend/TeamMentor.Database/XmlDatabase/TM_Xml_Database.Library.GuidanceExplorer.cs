@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using FluentSharp.CoreLib;
 using FluentSharp.CoreLib.API;
+using TeamMentor.Database;
 using urn.microsoft.guidanceexplorer;
 using Items = urn.microsoft.guidanceexplorer.Items;
 
@@ -62,12 +63,12 @@ namespace TeamMentor.CoreLib
             var tmLibrary = tmDatabase.tmLibrary(libraryId);
             if (tmLibrary.isNull())
                 return false;
-            if (tmDatabase.UsingFileStorage)
+            if (tmDatabase.usingFileStorage())
             {
                 "[xmlDB_DeleteGuidanceExplorer] deleting library with caption: {0}".info(tmLibrary.Caption);
                 var pathToLibraryFolder = tmDatabase.xmlDB_Path_Library_RootFolder(tmLibrary);
                     // this is also the Library Root
-                if (pathToLibraryFolder.notValid() || pathToLibraryFolder == tmDatabase.Path_XmlDatabase ||
+                if (pathToLibraryFolder.notValid() || pathToLibraryFolder == tmDatabase.path_XmlDatabase() ||
                     pathToLibraryFolder == tmDatabase.Path_XmlLibraries)
                 {
                     "[xmlDB_DeleteGuidanceExplorer] [Stopping delete] Something is wrong with the pathToLibrary to delete : {0}"
@@ -109,7 +110,7 @@ namespace TeamMentor.CoreLib
         }		        
         public static bool       xmlDB_Save_GuidanceExplorer(this guidanceExplorer guidanceExplorer, TM_Xml_Database tmDatabase)
         {
-            if (tmDatabase.UsingFileStorage)
+            if (tmDatabase.usingFileStorage())
             {
                 var libraryName = guidanceExplorer.library.caption;
                 if (tmDatabase.GuidanceExplorers_Paths.hasKey(guidanceExplorer).isFalse())
@@ -180,7 +181,7 @@ namespace TeamMentor.CoreLib
                 return guidanceExplorer.xmlDB_Save_GuidanceExplorer(tmDatabase);                // save it 
                
 
-                /*if (tmDatabase.UsingFileStorage)                // soft try to rename the library (disabled for now)
+                /*if (tmDatabase.usingFileStorage())                // soft try to rename the library (disabled for now)
                 {
                     try
                     {
@@ -225,7 +226,7 @@ namespace TeamMentor.CoreLib
         }
         public static string xmlDB_Path_Library_XmlFile(this TM_Xml_Database tmDatabase, guidanceExplorer guidanceExplorer)
         {
-            if (tmDatabase.UsingFileStorage)
+            if (tmDatabase.usingFileStorage())
             {
                 return tmDatabase.GuidanceExplorers_Paths.value(guidanceExplorer);
                 /*if (guidanceExplorer.notNull())

@@ -8,9 +8,10 @@ namespace TeamMentor.CoreLib
 {
     public class TM_Server
     {
-        public static string WebRoot { get; set; }
+        public static string WebRoot                        { get; set; }
         
-        public bool          UseFileStorage                 { get; set; }
+        public static string Path_XmlDatabase               { get; set; }
+        public static bool   UseFileStorage                 { get; set; }
         public bool          Users_Create_Default_Admin     { get; set; }
         public bool          TM_Database_Use_AppData_Folder { get; set; }
         
@@ -36,6 +37,45 @@ namespace TeamMentor.CoreLib
             UserData_Configs = new List<Config>();
             SiteData_Configs = new List<Config>();        
         }
+
+        public static TM_Server New()
+        {
+            return new TM_Server().setDefaultData();
+        }
+
+    
+        public static TM_Server Load()
+        {
+            return Load(false); 
+        }
+        public static TM_Server Load(bool useFileStorage)
+        {
+            var tmServer = new TM_Server(useFileStorage);
+            tmServer.setDefaultData()
+                    .set_Path_XmlDatabase();
+            if (TM_Server.UseFileStorage)
+            {
+                var tmServerFile = tmServer.tmServer_Location();
+                if (tmServerFile.valid())
+                {
+                    if (tmServerFile.fileExists().isFalse())
+                    {
+                        "[TM_Xml_Database][load_TMServer_Config] expected TM_Server file didn't exist, so creating it: {0}".info(tmServerFile);
+                        tmServer.saveAs(tmServerFile);
+                    }
+                    tmServer = tmServerFile.load<TM_Server>();
+                    if (tmServer.isNull())
+                        "[TM_Xml_Database][load_TMServer_Config] Failed to load tmServer file: {0}   Default values will be used".error(tmServerFile);
+                    
+                    TM_Server.UseFileStorage = useFileStorage;
+                    //else
+                    //    tmDatabase.Server = tmServer;
+                }
+            }            
+            //tmDatabase.Events.After_TmServer_Load.raise();        
+            return tmServer;
+        }
+
 
 
         public class Config

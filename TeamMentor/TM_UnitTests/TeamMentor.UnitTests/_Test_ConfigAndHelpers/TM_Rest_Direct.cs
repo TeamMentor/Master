@@ -1,5 +1,6 @@
 ﻿using FluentSharp.CoreLib;
 using TeamMentor.CoreLib;
+using TeamMentor.UserData;
 
 namespace TeamMentor.UnitTests.REST
 
@@ -24,7 +25,7 @@ namespace TeamMentor.UnitTests.REST
         {       
             UserGroup.Admin.assert();
 
-            tmXmlDatabase = new TM_Xml_Database(false);
+            tmXmlDatabase = new TM_Xml_Database();
             tmXmlDatabase.setup();
             tmXmlDatabase.UserData.createDefaultAdminUser();
         }

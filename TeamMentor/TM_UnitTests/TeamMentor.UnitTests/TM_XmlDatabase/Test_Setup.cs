@@ -13,7 +13,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         {
             TM_Server.WebRoot            = "TM_BaseFolder".tempDir(true);                      // Temp webroot folder
             userData.Path_UserData      = TM_Server.WebRoot.pathCombine("..//UserData");       // set temp location
-            userData.UsingFileStorage   = true;
+            userData.useFileStorage(true);
 
             var targetFolder = TM_Server.WebRoot;
             var userDataPath = userData.Path_UserData;

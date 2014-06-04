@@ -15,22 +15,22 @@ namespace TeamMentor.UnitTests
         public static TM_Xml_Database delete_Database(this TM_Xml_Database tmDatabase)
         {
             Assert.NotNull    (tmDatabase);
-            Assert.NotNull    (tmDatabase.Path_XmlDatabase);
-            Assert.AreNotEqual(tmDatabase.Path_XmlDatabase, TM_Server.WebRoot);
-            //Assert.IsTrue     (tmDatabase.Path_XmlDatabase.dirExists());
+            Assert.NotNull    (tmDatabase.path_XmlDatabase());
+            Assert.AreNotEqual(tmDatabase.path_XmlDatabase(), TM_Server.WebRoot);
+            //Assert.IsTrue     (tmDatabase.path_XmlDatabase().dirExists());
 
-            if (tmDatabase.Path_XmlDatabase.dirExists())                                            // check if the folder exists      
+            if (tmDatabase.path_XmlDatabase().dirExists())                                            // check if the folder exists      
             {
-                //Assert.IsNotEmpty(tmDatabase.Path_XmlDatabase.files());
+                //Assert.IsNotEmpty(tmDatabase.path_XmlDatabase().files());
 
-                tmDatabase.Path_XmlDatabase.files(true).files_Attribute_ReadOnly_Remove();          // make all files writable
+                tmDatabase.path_XmlDatabase().files(true).files_Attribute_ReadOnly_Remove();          // make all files writable
 
-                Files.deleteFolder(tmDatabase.Path_XmlDatabase, true);                              // delete all files recusively
+                Files.deleteFolder(tmDatabase.path_XmlDatabase(), true);                              // delete all files recusively
 
-                Assert.IsFalse(tmDatabase.Path_XmlDatabase.dirExists());                            // ensure the deletion happened
-                Assert.IsEmpty(tmDatabase.Path_XmlDatabase.files());
+                Assert.IsFalse(tmDatabase.path_XmlDatabase().dirExists());                            // ensure the deletion happened
+                Assert.IsEmpty(tmDatabase.path_XmlDatabase().files());
 
-                "[Test][TM_Xml_Database][delete_Database]TM database files were deleted from: {0}".info(tmDatabase.Path_XmlDatabase);
+                "[Test][TM_Xml_Database][delete_Database]TM database files were deleted from: {0}".info(tmDatabase.path_XmlDatabase());
             }
             return tmDatabase;
         }        

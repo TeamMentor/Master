@@ -2,6 +2,7 @@
 using System;
 using TeamMentor.CoreLib;
 using FluentSharp.CoreLib;
+using TeamMentor.Database;
 
 namespace TeamMentor.UnitTests.TM_XmlDatabase
 {
@@ -23,7 +24,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             var tmDatabase = new TM_Xml_Database();                                                
 
             Assert.IsNotNull(TM_Xml_Database.Current);
-            Assert.False    (tmDatabase.UsingFileStorage);          // new TM_Xml_Database() defaults to UsingFileStorage = false              
+            Assert.False    (tmDatabase.usingFileStorage());          // new TM_Xml_Database() defaults to UsingFileStorage = false              
             Assert.IsNotNull(tmDatabase.Events);                    // this is the only list that should be set on the Ctor            
             Assert.IsNull   (tmDatabase.Cached_GuidanceItems);
             Assert.IsNull   (tmDatabase.GuidanceItems_FileMappings);
@@ -31,16 +32,16 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Assert.IsNull   (tmDatabase.GuidanceExplorers_Paths);           
             Assert.IsNull   (tmDatabase.VirtualArticles);                        
 
-            Assert.IsNull   (tmDatabase.Path_XmlDatabase);
+            Assert.IsNull   (tmDatabase.path_XmlDatabase());
             Assert.IsNull   (tmDatabase.Path_XmlLibraries);
             Assert.IsNull   (tmDatabase.UserData);
-            Assert.IsNull   (tmDatabase.Server);
+            Assert.IsNotNull(tmDatabase.Server);
 
             
             //check using ctor that sets UsingFileStorage
-            tmDatabase = new TM_Xml_Database(true);                                                
+            tmDatabase = new TM_Xml_Database().useFileStorage();                                                
 
-            Assert.IsTrue   (tmDatabase.UsingFileStorage);          
+            Assert.IsTrue   (tmDatabase.usingFileStorage());          
                    
         }
         

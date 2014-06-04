@@ -3,6 +3,7 @@ using FluentSharp.CoreLib.API;
 using NUnit.Framework;
 using FluentSharp.CoreLib;
 using TeamMentor.CoreLib;
+using TeamMentor.Database;
 using urn.microsoft.guidanceexplorer;
 
 namespace TeamMentor.UnitTests.TM_XmlDatabase
@@ -15,15 +16,17 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         [SetUp][Assert_Admin]
         public void Setup()
         {
+            UserGroup.Admin.assert();
             //TM_Server.WebRoot = "temp_BaseFolder".tempDir();  // set temp folder for UnitTests
-            tmDatabase = new TM_Xml_Database(true)              // with the useFileStorage set to true                        
-                                   .setup();                 // with data loaded
+            tmDatabase = new TM_Xml_Database().useFileStorage()              // with the useFileStorage set to true                        
+                                              .setup();                 // with data loaded
+            UserGroup.None.assert();
         }
 
         [TearDown]
         public void TearDown()
         {
-            Assert.IsTrue     (tmDatabase.Path_XmlDatabase.dirExists());
+            Assert.IsTrue     (tmDatabase.path_XmlDatabase().dirExists());
             Assert.IsTrue     (tmDatabase.Path_XmlLibraries.dirExists());
             Assert.IsTrue     (TM_Server.WebRoot.dirExists());   
             
@@ -32,16 +35,16 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             //Assert.IsFalse    (TM_Server.WebRoot.dirExists());
 
             //delete temp Library data            
-            tmDatabase.Path_XmlDatabase.files(true).files_Attribute_ReadOnly_Remove();  // required due to locks on .git files
-            Files.deleteFolder(tmDatabase.Path_XmlDatabase,true);
-            Assert.IsFalse    (tmDatabase.Path_XmlDatabase.dirExists());
+            tmDatabase.path_XmlDatabase().files(true).files_Attribute_ReadOnly_Remove();  // required due to locks on .git files
+            Files.deleteFolder(tmDatabase.path_XmlDatabase(),true);
+            Assert.IsFalse    (tmDatabase.path_XmlDatabase().dirExists());
             Assert.IsFalse    (tmDatabase.Path_XmlLibraries.dirExists());
         }
 
         [Test]//[Ignore("This fails in TeamCity, since the Temp folder is inside the Websites AppData folder")]
         public void TestUseOfTempFolders()
         {
-            var databaseFolder      = tmDatabase.Path_XmlDatabase;
+            var databaseFolder      = tmDatabase.path_XmlDatabase();
             var libraryFolder       = tmDatabase.Path_XmlLibraries;
             var appDomainFolder     = AppDomain.CurrentDomain.BaseDirectory;
             
@@ -98,6 +101,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         [Test][Assert_Admin]
         public void CreateArticle_OnLibraryWithDiferentNameThanFolder()
         {
+            UserGroup.Admin.assert();
             var libraryId                   = Guid.NewGuid();
             var libraryName                 = "library_Name".add_RandomLetters(4);
             var libraryFolderAndXmlFile     = "FolderXml_Name".add_RandomLetters(4);

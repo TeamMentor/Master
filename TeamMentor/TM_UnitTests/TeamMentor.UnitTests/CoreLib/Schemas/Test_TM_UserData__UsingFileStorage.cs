@@ -3,6 +3,7 @@ using FluentSharp.CoreLib.API;
 using NUnit.Framework;
 using System;
 using TeamMentor.CoreLib;
+using TeamMentor.UserData;
 
 namespace TeamMentor.UnitTests.CoreLib
 {
@@ -12,7 +13,7 @@ namespace TeamMentor.UnitTests.CoreLib
         TM_UserData userData;
         [SetUp]    public void setup()
         {
-            userData = new TM_UserData(true);
+            userData = new TM_UserData().useFileStorage();
             userData.Path_UserData = "tempUser_Data".tempDir();
             Assert.IsNotNull(userData.Path_UserData);
             Assert.IsNotNull(userData.tmConfig_Location());

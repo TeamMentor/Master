@@ -725,6 +725,7 @@
     <Content Include="TBot\Views\Json\Json_UserTags.cshtml" />
     <Content Include="TBot\Users\Analysis\All_Users_Tags.cshtml" />
     <Content Include="TBot\NGit\GitStatus.cshtml" />
+    <None Include="Properties\PublishProfiles\3.4 Publish.pubxml" />
     <None Include="TBot_Monitor\lib\bootstrap\fonts\glyphicons-halflings-regular.eot" />
     <None Include="TBot_Monitor\lib\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
     <None Include="TBot_Monitor\lib\bootstrap\fonts\glyphicons-halflings-regular.woff" />
@@ -737,11 +738,21 @@
     <Content Include="TBot\Views\GitUserData\FileContents.cshtml" />
     <Content Include="TBot\Views\GitUserData\FileDiff.cshtml" />
     <Content Include="TBot\Views\GitUserData\Repository.cshtml" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\TM_Backend\TeamMentor.Asmx\TeamMentor.Asmx.csproj">
+      <Project>{af783625-f52f-4558-b64c-ac982324a072}</Project>
+      <Name>TeamMentor.Asmx</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\TM_Backend\TeamMentor.AspNet\TeamMentor.AspNet.csproj">
       <Project>{5b02bd8e-bf90-4182-80a6-41842494399d}</Project>
       <Name>TeamMentor.AspNet</Name>

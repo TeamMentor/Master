@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Services;
 using FluentSharp.CoreLib.API;
+using TeamMentor.UserData;
 
 namespace TeamMentor.CoreLib
 {

@@ -2,6 +2,8 @@
 using NUnit.Framework;
 using FluentSharp.CoreLib;
 using TeamMentor.CoreLib;
+using TeamMentor.Database;
+using TeamMentor.UserData;
 
 namespace TeamMentor.UnitTests
 {    
@@ -24,7 +26,7 @@ namespace TeamMentor.UnitTests
             
             userData.createDefaultAdminUser(); 
 
-            Assert.IsNull(tmXmlDatabase.Path_XmlDatabase		    , "Path_XmlDatabase");          // null since we are running TM memory (default setting)
+            Assert.IsNull(tmXmlDatabase.path_XmlDatabase()		    , "path_XmlDatabase()");          // null since we are running TM memory (default setting)
             Assert.IsNull(tmXmlDatabase.Path_XmlLibraries		    , "Path_XmlLibraries");         // null since we are running TM memory (default setting)
             Assert.IsEmpty(tmXmlDatabase.Cached_GuidanceItems	    , "Cached_GuidanceItems");
             Assert.IsEmpty(tmXmlDatabase.UserData.validSessions()   , "ActiveSessions");
@@ -78,7 +80,7 @@ namespace TeamMentor.UnitTests
             UserGroup.Admin.assert();
             try
             {                            
-                tmXmlDatabase.UsingFileStorage = true;      // temp set this so that we can load the files and create the cache
+                tmXmlDatabase.useFileStorage(true);      // temp set this so that we can load the files and create the cache
                 tmXmlDatabase.Path_XmlLibraries = "_TempXmlLibraries".tempDir(false);
 
                 if (tmXmlDatabase.tmLibrary(libraryName).notNull())
@@ -99,7 +101,7 @@ namespace TeamMentor.UnitTests
                 Assert.AreNotEqual(tmLibraries_After.size(), tmLibraries_Before.size(), "Libraries size should be different before and after");
                 Assert.IsNotNull  (installedLibrary                                   , "Could not find installed library: {0}".format(libraryName));
                 Assert.AreEqual   (installedLibrary.Caption, libraryName              , "After install library names didn't match");
-                tmXmlDatabase.UsingFileStorage = false;
+                tmXmlDatabase.useFileStorage(false);
             }
             finally
             {

@@ -2,13 +2,14 @@
 using System.Security;
 using System.Web;
 using FluentSharp.CoreLib;
+using TeamMentor.Database;
 
 namespace TeamMentor.CoreLib
 {
     public class TM_StartUp
     {
         public static TM_StartUp        Current               { get; set; }
-        public static TM_Engine         TMEngine              { get; set; }
+        public static TM_Engine         TMEngine              { get; set; }        
         public Tracking_Application     TrackingApplication   { get; set; }
         public TM_Xml_Database          TmXmlDatabase         { get; set; }
 
@@ -40,13 +41,17 @@ namespace TeamMentor.CoreLib
         [Assert_Admin]                      // impersonate an admin to load the database
         public void Application_Start()
         {
-            "[TM_StartUp] Application Start".info();                        
-            TmXmlDatabase           = new  TM_Xml_Database(true).setup();                                   // Create FileSystem Based database            
-            TrackingApplication     = new Tracking_Application(TmXmlDatabase.Path_XmlDatabase);    // Enabled Application Tracking
+            UserGroup.Admin.assert();
+            "[TM_StartUp] Application Start".info();   
+            var tmServer            = TM_Server.Load(true);        
+            TmXmlDatabase           = new  TM_Xml_Database(tmServer).setup();                                   // Create FileSystem Based database            
+            TrackingApplication     = new Tracking_Application(TmXmlDatabase.path_XmlDatabase());    // Enabled Application Tracking
 
             TM_REST.SetRouteTable();	// Set REST routes            // TODO add Application_Start event
 
             TrackingApplication.saveLog();
+             
+            UserGroup.None.assert();
         } 
         public void Application_End()
         {

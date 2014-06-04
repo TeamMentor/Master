@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using FluentSharp.CoreLib;
 using FluentSharp.CoreLib.API;
+using TeamMentor.Database;
 using urn.microsoft.guidanceexplorer;
 using System.Threading;
 
@@ -38,11 +39,12 @@ namespace TeamMentor.CoreLib
     {
         public static Thread thread_Save_GuidanceItemsCache;
 
+        
         public static bool                               loadDataIntoMemory(this TM_Xml_Database tmXmlDatabase)
         {
-            if (tmXmlDatabase.Path_XmlDatabase.dirExists().isFalse())
+            if (tmXmlDatabase.path_XmlDatabase().dirExists().isFalse())
             {
-                "[TM_Xml_Database] in loadDataIntoMemory, provided pathXmlDatabase didn't exist: {0}".error(tmXmlDatabase.Path_XmlDatabase);
+                "[TM_Xml_Database] in loadDataIntoMemory, provided pathXmlDatabase didn't exist: {0}".error(tmXmlDatabase.path_XmlDatabase());
                 return false;
             }
             tmXmlDatabase.loadLibraryDataFromDisk();
@@ -162,7 +164,7 @@ namespace TeamMentor.CoreLib
         }		
         public static string                             getCacheLocation               (this TM_Xml_Database tmDatabase) //, TM_Library library)
         {
-            var pathXmlDatabase = tmDatabase.Path_XmlDatabase;
+            var pathXmlDatabase = tmDatabase.path_XmlDatabase();
             return pathXmlDatabase.pathCombine("Cache_guidanceItems.cacheXml");//.format(library.Caption));
         }		
         public static TM_Xml_Database                    load_GuidanceItemsFromCache     (this TM_Xml_Database tmDatabase)
@@ -196,7 +198,7 @@ namespace TeamMentor.CoreLib
         }		
         public static TM_Xml_Database                    save_GuidanceItemsToCache       (this TM_Xml_Database tmDatabase)
         {
-            if (tmDatabase.UsingFileStorage)
+            if (tmDatabase.usingFileStorage())
             {
                 var cacheFile = tmDatabase.getCacheLocation();
                 if (cacheFile.notNull())
@@ -214,7 +216,7 @@ namespace TeamMentor.CoreLib
         }					        	
         public static TM_Xml_Database                    queue_Save_GuidanceItemsCache  (this TM_Xml_Database tmDatabase)
         {
-            if (tmDatabase.UsingFileStorage)
+            if (tmDatabase.usingFileStorage())
             { 
                 // do this on a separate thread so that we don't hang the current request			
                 if (thread_Save_GuidanceItemsCache.isNull())
@@ -233,7 +235,7 @@ namespace TeamMentor.CoreLib
         public static TM_Xml_Database                    clear_GuidanceItemsCache       (this TM_Xml_Database tmDatabase)
         {
             "[TM_Xml_Database] clear_GuidanceItemsCache".info();
-            if (tmDatabase.UsingFileStorage)
+            if (tmDatabase.usingFileStorage())
             {
                 var cacheFile = tmDatabase.getCacheLocation();
                 if (cacheFile.notNull() && cacheFile.fileExists())

@@ -69,7 +69,7 @@
     <Compile Include="ExtensionMethods\Extra\Extra_Xml_Linq_ExtensionMethods.cs" />
     <Compile Include="ExtensionMethods\Extra_UserActivity_ExtensionMethods.cs" />
     <Compile Include="ExtensionMethods\TeamMentor_Article_ExtensionMethods.cs" />
-    <Compile Include="ExtensionMethods\TMServer_ExtensionMethods.cs" />
+    <Compile Include="FileStorage\FileStorage_Utils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Schemas\GuidanceItem_V3.cs" />
     <Compile Include="Schemas\Guidance_Item_Import.cs" />

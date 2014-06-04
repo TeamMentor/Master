@@ -4,6 +4,7 @@ using System.Web;
 using FluentSharp.CoreLib;
 using NUnit.Framework;
 using TeamMentor.CoreLib;
+using TeamMentor.UserData;
 
 namespace TeamMentor.UnitTests.CoreLib
 {

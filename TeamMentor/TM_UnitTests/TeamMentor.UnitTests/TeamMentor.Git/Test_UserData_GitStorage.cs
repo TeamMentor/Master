@@ -4,6 +4,7 @@ using FluentSharp.Git.APIs;
 using NUnit.Framework;
 using FluentSharp.CoreLib;
 using TeamMentor.CoreLib;
+using TeamMentor.UserData;
 
 namespace TeamMentor.UnitTests.TM_XmlDatabase
 {
@@ -20,14 +21,15 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         {
             TM_Xml_Database.Current = null;
             //create temp repo with no Admin user
-            userData = new TM_UserData(true)
+            userData = new TM_UserData()
                                 {
                                     Path_UserData = "nonGitRepo".tempDir()
                                 };                                     
+            userData.useFileStorage();
             userDataGit= new TM_UserData_Git(userData);  
-            userData.TM_Server.setDefaultData();
+            userData.Server.setDefaultData();
 
-            Assert.NotNull(userDataGit.UserData.TM_Server.userData_Config());
+            Assert.NotNull(userDataGit.UserData.Server.userData_Config());
 
             userDataGit.syncWithGit() ;                     
 
@@ -51,7 +53,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         //[Ignore("Fix when Git support for libraries is fixed")]
         public void CheckNonGitRepoDoesntCommit()
         {
-            var tmServer = userData.TM_Server;
+            var tmServer = userData.Server;
 
             Assert.NotNull(tmServer);           // need a better way to expose the Git user settings to the UserData 
 
@@ -59,7 +61,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
 
             userData.Path_UserData = "nonGitRepo".tempDir();            
 
-            Assert.IsTrue   (userData.UsingFileStorage);
+            Assert.IsTrue   (userData.usingFileStorage());
             Assert.IsTrue   (userData.Path_UserData.dirExists());            
             Assert.IsEmpty  (userData.Path_UserData.files());
 

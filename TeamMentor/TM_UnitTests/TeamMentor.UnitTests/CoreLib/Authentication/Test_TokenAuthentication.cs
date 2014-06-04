@@ -3,6 +3,7 @@ using System.Security;
 using FluentSharp.CoreLib;
 using NUnit.Framework;
 using TeamMentor.CoreLib;
+using TeamMentor.UserData;
 
 namespace TeamMentor.UnitTests.Authentication
 {

@@ -4,6 +4,7 @@ using System.Linq;
 using FluentSharp.CoreLib;
 using NUnit.Framework;
 using TeamMentor.CoreLib;
+using TeamMentor.Database;
 
 namespace TeamMentor.UnitTests.Asmx_WebServices
 {		 
@@ -20,8 +21,8 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
         [SetUp]
         public void SetUp()
         {
-            tmXmlDatabase.UsingFileStorage = false;
-            Assert.IsFalse(tmXmlDatabase.UsingFileStorage, "UsingFileStorage");
+            tmXmlDatabase.useFileStorage(false);
+            Assert.IsFalse(tmXmlDatabase.usingFileStorage(), "UsingFileStorage");
         }
         [Test] public void GetLibraries() 
         {        	
@@ -138,14 +139,14 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
         }    	
         [Test] [Assert_Editor] public void Create_Rename_Delete_Libraries()
         {
-            tmXmlDatabase.UsingFileStorage      = true;                                  // need this since we are checking the file paths
+            tmXmlDatabase.useFileStorage(true);                                  // need this since we are checking the file paths
             //tmConfig.Git.AutoCommit_LibraryData = false;
                         
             var testOwaspViewId                 = "fc1c5b9c-becb-44a2-9812-40090d9bd135".guid();
             var originalName                    = "createAndDelete";  
             var newName 	                    = "_" + originalName + "_new";
             
-            Assert.IsNull   (tmXmlDatabase.Path_XmlDatabase, null);
+            Assert.IsNotNull(tmXmlDatabase.path_XmlDatabase(), null);
             Assert.IsNotNull(tmXmlDatabase.Path_XmlLibraries, null);
             Assert.IsTrue   (tmXmlDatabase.Path_XmlLibraries.dirExists());
             Assert.IsNull   (tmXmlDatabase.tmLibrary(originalName), "Library {0} should not exist".format(originalName));
@@ -213,7 +214,7 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
         }
         [Test] [Assert_Editor] public void Create_Delete_Libraries_with_a_GuidanceItem()
         {
-            tmXmlDatabase.UsingFileStorage = true;                                  // need this since we are checking the file paths
+            tmXmlDatabase.useFileStorage(true);                                  // need this since we are checking the file paths
             var originalName = "temp_lib".add_RandomLetters(3);    
              
             //Create Library 
@@ -244,7 +245,7 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             Assert.IsFalse(libraryPath_OriginalName.fileExists() , "libraryPath_originalName should not exist at the end");
             
             Assert.IsFalse(libraryPath_GuidanceItemsFolder.dirExists()  , "libraryPath_GuidanceItemsFolder should not exist after delete");
-            //tmXmlDatabase.UsingFileStorage = false;
+            //tmXmlDatabase.useFileStorage(false);
         }    	
         [Test] public void Search_TitleAndHtml()
         {

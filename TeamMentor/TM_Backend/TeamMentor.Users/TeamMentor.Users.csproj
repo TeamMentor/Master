@@ -51,6 +51,8 @@
     <Compile Include="Authentication\ExtensionMethods\RoleBaseSecurity_ExtensionMethods.cs" />
     <Compile Include="Authentication\ExtensionMethods\TeamMentorUserManagement_ExtensionMethods.cs" />
     <Compile Include="Authentication\UserRoles.cs" />
+    <Compile Include="Config\TM_Server_Utils.cs" />
+    <Compile Include="FileStorage\FileStorage_Utils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tracking\Firebase\Activities_Firebase.cs" />
     <Compile Include="Tracking\Firebase\API_Firebase.cs" />
@@ -62,7 +64,7 @@
     <Compile Include="Tracking\Logger_LogItem.cs" />
     <Compile Include="Tracking\Tracking_Application.cs" />
     <Compile Include="Users\DataContracts_ExtensionMethods.cs" />
-    <Compile Include="Users\TMConfig_ExtensionMethods.cs" />
+    <Compile Include="Config\TM_Config_Utils.cs" />
     <Compile Include="Users\TMUser_ExtensionMethods.cs" />
     <Compile Include="Users\TM_Secret_Data_ExtensionMethods.cs" />
     <Compile Include="Users\TM_UserData_Ex.cs" />
@@ -71,6 +73,7 @@
     <Compile Include="Users\TM_UserData_Ex_Users.cs" />
     <Compile Include="Users\TM_UserData_Ex_Users_Persistance.cs" />
     <Compile Include="Users\UserActivities_ExtensionMethods.cs" />
+    <Compile Include="Users\Users_Creation.cs" />
     <Compile Include="Utils\SendEmails.cs" />
   </ItemGroup>
   <ItemGroup>

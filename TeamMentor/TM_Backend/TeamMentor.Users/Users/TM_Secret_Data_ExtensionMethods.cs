@@ -1,5 +1,6 @@
 ﻿using System;
 using FluentSharp.CoreLib;
+using TeamMentor.UserData;
 
 namespace TeamMentor.CoreLib
 {
@@ -15,7 +16,7 @@ namespace TeamMentor.CoreLib
                 return null;
             userData.SecretData = null;
 
-            if (userData.UsingFileStorage.isFalse())
+            if (userData.usingFileStorage().isFalse())
                  userData.SecretData = new TM_SecretData();
             else
             {                    
@@ -52,7 +53,7 @@ namespace TeamMentor.CoreLib
         public static bool            secretData_Save(this TM_UserData userData)
         {
             var result = true;
-            if (userData.UsingFileStorage)
+            if (userData.usingFileStorage())
             {
                 var secretDataFile = userData.secretData_Location();
                 result = userData.SecretData.saveAs(secretDataFile);

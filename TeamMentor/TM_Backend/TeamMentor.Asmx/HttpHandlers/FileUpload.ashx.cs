@@ -37,7 +37,7 @@ namespace TeamMentor.CoreLib
             //calculate target folder
             var librariesZipsFolder = TMConfig.Current.TMSetup.LibrariesUploadedFiles;            
 
-            var targetFolder = TM_Xml_Database.Current.Path_XmlDatabase.fullPath().pathCombine(librariesZipsFolder).fullPath();
+            var targetFolder = TM_Xml_Database.Current.path_XmlDatabase().fullPath().pathCombine(librariesZipsFolder).fullPath();
             
             if (targetFolder.valid())
             {

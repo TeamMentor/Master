@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TeamMentor.CoreLib;
+using TeamMentor.UserData;
 
 namespace TeamMentor.UnitTests.CoreLib
 {
@@ -38,7 +39,7 @@ namespace TeamMentor.UnitTests.CoreLib
 
             userData.secretData_Load();
             Assert.NotNull(userData.SecretData);
-            Assert.IsFalse(userData.UsingFileStorage);
+            Assert.IsFalse(userData.usingFileStorage());
 
             //test nulls
             userData = null;
@@ -48,7 +49,7 @@ namespace TeamMentor.UnitTests.CoreLib
         [Test]
         public void secretData_Load__UsingFileStorage() 
         {
-            var userData = new TM_UserData(new TM_Server() { UseFileStorage = true});       // UsingFileStorage to true
+            var userData = new TM_UserData(new TM_Server(true));       // UsingFileStorage to true
             var secretData = userData.SecretData;
 
             Assert.NotNull(secretData);                   // the ctor above will set this value

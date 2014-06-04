@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using FluentSharp.CoreLib;
 using urn.microsoft.guidanceexplorer;
 
 namespace TeamMentor.CoreLib
@@ -7,14 +8,10 @@ namespace TeamMentor.CoreLib
     public class TM_Xml_Database 
     {		    
         public static TM_Xml_Database   Current               { get; set; }         
-        public static bool              SkipServerOnlineCheck { get; set; }        
-        
-        //public object			        setupLock             = new object();
-        public bool			            UsingFileStorage	  { get; set; }         //config                   
+        public static bool              SkipServerOnlineCheck { get; set; }                       
         public bool                     ServerOnline          { get; set; }         
         public TM_Server                Server                { get; set; }         
-        public TM_UserData              UserData              { get; set; }         //users and tracking                     
-        public string 	                Path_XmlDatabase      { get; set; }					
+        public TM_UserData              UserData              { get; set; }         //users and tracking                            
         public string 	                Path_XmlLibraries 	  { get; set; }    
 //        public Thread                   SetupThread           { get; set; } 
 
@@ -25,17 +22,18 @@ namespace TeamMentor.CoreLib
         public Dictionary<Guid, TeamMentor_Article>	    Cached_GuidanceItems		{ get; set; }
         public Dictionary<Guid, VirtualArticleAction>   VirtualArticles			    { get; set; }
                                                            
-        public TM_Xml_Database() : this (false)
+        public TM_Xml_Database() : this (null)
         {
-            
         }
         
-        public TM_Xml_Database(bool useFileStorage) 
+        public TM_Xml_Database(TM_Server tmServer) 
         {
-            Current = this;
+            if (tmServer.isNull())
+                tmServer = new TM_Server();
             
-            UsingFileStorage = useFileStorage;
-            Events           = new Events_TM_Xml_Database(this);
+            Current = this;            
+            Server  = tmServer;
+            Events  = new Events_TM_Xml_Database(this);
         }                     
     }
 }

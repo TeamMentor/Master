@@ -64,12 +64,12 @@
     <Compile Include="Misc\KeyValue.cs" />
     <Compile Include="Misc\SecurityAttributes.cs" />
     <Compile Include="Events\Events_TM_Xml_Database.cs" />
-    <Compile Include="Config\TM_Server.cs" />
+    <Compile Include="TM_Server\TM_Server.cs" />
     <Compile Include="Config\TM_Status.cs" />
     <Compile Include="XmlDatabase\TM_Gui_Objects.cs" />
     <Compile Include="Misc\WhoAmI.cs" />
-    <Compile Include="TMConsts.cs" />
-    <Compile Include="TM_Xml_Database.cs" />
+    <Compile Include="Config\TMConsts.cs" />
+    <Compile Include="XmlDatabase\TM_Xml_Database.cs" />
     <Compile Include="UserData\TMUser.cs" />
     <Compile Include="UserData\TM_Credentials.cs" />
     <Compile Include="UserData\TM_User.cs" />
@@ -89,6 +89,7 @@
     <Compile Include="_SharedUtils\ExtensionMethods\Extra_Web_Encoding_ExtensionMethods.cs" />
     <Compile Include="_SharedUtils\HttpContextFactory.cs" />
     <Compile Include="_SharedUtils\MiscUtils.cs" />
+    <Compile Include="TM_Server\TM_Server_Utils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

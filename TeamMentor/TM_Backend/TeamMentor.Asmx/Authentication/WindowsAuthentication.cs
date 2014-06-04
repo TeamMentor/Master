@@ -1,6 +1,7 @@
 using System;
 using System.Security.Principal;
 using FluentSharp.CoreLib;
+using TeamMentor.UserData;
 
 namespace TeamMentor.CoreLib
 {	

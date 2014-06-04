@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using TeamMentor.CoreLib;
+using TeamMentor.UserData;
 
 namespace TeamMentor.UnitTests.CoreLib
 {
@@ -10,7 +11,7 @@ namespace TeamMentor.UnitTests.CoreLib
         {
             var userData = new TM_UserData();
 
-            Assert.IsFalse  (userData.UsingFileStorage);
+            Assert.IsFalse  (userData.usingFileStorage());
             Assert.AreEqual (TM_UserData.Current, userData);
             Assert.AreEqual (userData.Path_WebRootFiles, TMConsts.USERDATA_PATH_WEB_ROOT_FILES);
             Assert.IsEmpty  (userData.TMUsers);
@@ -26,7 +27,7 @@ namespace TeamMentor.UnitTests.CoreLib
             Assert.IsNull   (new TMUser().user_XmlFile_Name());
 
 
-            var userData2   = new TM_UserData(true);
+            var userData2   = new TM_UserData().useFileStorage();
             var userDataGit = new TM_UserData_Git(userData2);
             
             Assert.NotNull  (userDataGit.userData());
@@ -35,7 +36,7 @@ namespace TeamMentor.UnitTests.CoreLib
             Assert.IsNull   (userDataGit.NGit);
             
             //set by ResetData
-            Assert.IsTrue   (userDataGit.UserData.UsingFileStorage);
+            Assert.IsTrue   (userDataGit.UserData.usingFileStorage());
             //Assert.AreEqual (userData2.FirstScriptToInvoke, TMConsts.USERDATA_FIRST_SCRIPT_TO_INVOKE);
             Assert.AreEqual (userData2.Path_WebRootFiles  , TMConsts.USERDATA_PATH_WEB_ROOT_FILES);            
             Assert.AreEqual (TM_UserData.Current, userData2);            
@@ -59,7 +60,7 @@ namespace TeamMentor.UnitTests.CoreLib
             Assert.IsEmpty(userData.TMUsers);
             Assert.IsNull(userData.Path_UserData);
 
-            var userData2 = new TM_UserData(true);   // when UsingFileStorage = true
+            var userData2 = new TM_UserData().useFileStorage();   // when UsingFileStorage = true
 
             userData2.users_Load();                   // but userData.Path_UserData =null            
             Assert.IsEmpty(userData2.TMUsers);       // we should get no users

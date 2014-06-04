@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using TeamMentor.CoreLib;
+using TeamMentor.UserData;
 
 namespace TeamMentor.UnitTests.Schemas.Events
 {
@@ -19,7 +20,7 @@ namespace TeamMentor.UnitTests.Schemas.Events
             tmUserData = new TM_UserData();                                    
             Assert.NotNull (tmUserData);            
             Assert.NotNull (tmUserData.Events);                        
-            Assert.AreEqual(tmUserData.UsingFileStorage, false);
+            Assert.IsFalse(tmUserData.usingFileStorage());
         }
 
         [Test] public void TM_Events_TM_UserData_Ctor()

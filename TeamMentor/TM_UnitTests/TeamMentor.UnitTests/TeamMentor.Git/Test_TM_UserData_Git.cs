@@ -35,7 +35,7 @@ namespace TeamMentor.UnitTests.TeamMentor.Git
             Assert.NotNull  (TM_UserData_Git.Current);            
             Assert.IsNotNull(TM_UserData_Git.Current.UserData);
             Assert.IsNull   (TM_UserData_Git.Current.UserData.Path_UserData);                        
-            Assert.IsNull   (tmXmlDatabase.Path_XmlDatabase);
+            Assert.IsNull   (tmXmlDatabase.path_XmlDatabase());
             Assert.AreEqual (TM_UserData_Git.Current.UserData, tmXmlDatabase.UserData);
         }
     }

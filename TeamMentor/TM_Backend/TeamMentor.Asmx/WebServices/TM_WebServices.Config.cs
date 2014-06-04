@@ -4,6 +4,7 @@ using System.Text;
 using System.Web.Services;
 using FluentSharp.CoreLib;
 using FluentSharp.CoreLib.API;
+using TeamMentor.Database;
 
 namespace TeamMentor.CoreLib
 { 					
@@ -15,11 +16,11 @@ namespace TeamMentor.CoreLib
         [WebMethod(EnableSession = true)]                       public string Ping(string message)  			{   return "received ping: {0}".format(message);                        }        
         
         //Xml Database Specific
-        [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_GetDatabasePath()		{	UserGroup.Admin.demand(); return tmXmlDatabase.Path_XmlDatabase;	                            }
+        [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_GetDatabasePath()		{	UserGroup.Admin.demand(); return tmXmlDatabase.path_XmlDatabase();	                            }
         [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_GetLibraryPath()		{	UserGroup.Admin.demand(); return tmXmlDatabase.Path_XmlLibraries;	                            }		
         [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_GetUserDataPath()		{	UserGroup.Admin.demand(); return tmXmlDatabase.UserData.Path_UserData;	                    }		
         [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_ReloadData()			{	UserGroup.Admin.demand(); guiObjectsCacheOk = false; return  tmXmlDatabase.reloadData();  }
-        [WebMethod(EnableSession = true)] [Admin]	            public bool   XmlDatabase_IsUsingFileStorage()	{	UserGroup.Admin.demand(); return tmXmlDatabase.UsingFileStorage;                              }        
+        [WebMethod(EnableSession = true)] [Admin]	            public bool   XmlDatabase_IsUsingFileStorage()	{	UserGroup.Admin.demand(); return tmXmlDatabase.usingFileStorage();                              }        
         
         [WebMethod(EnableSession = true)] [Admin]	            public bool   XmlDatabase_ImportLibrary_fromZipFile(string pathToZipFile, string unzipPassword) { return TM_Xml_Database.Current.xmlDB_Libraries_ImportFromZip(pathToZipFile, unzipPassword); }                                                                                                                                     
         //[WebMethod(EnableSession = true)] [Admin]	            public bool   XmlDatabase_SetUserDataPath(string userDataPath)	{	return tmXmlDatabase.UserData.setUserDataPath(userDataPath); }
@@ -56,7 +57,7 @@ namespace TeamMentor.CoreLib
         
 
         // Install libraries from ZIP
-        [WebMethod(EnableSession = true)] [Admin]	            public string		TMServerFileLocation()			{	return tmXmlDatabase.tmServer_Location();  }		
+        [WebMethod(EnableSession = true)] [Admin]	            public string		TMServerFileLocation()			{	return tmXmlDatabase.Server.tmServer_Location();  }		
         [WebMethod(EnableSession = true)] [Admin]	            public TM_Server		TMServerFile()
                                                                                     {	
                                                                                         return tmXmlDatabase.Server;  
@@ -64,13 +65,14 @@ namespace TeamMentor.CoreLib
         [WebMethod(EnableSession = true)] [Admin]	            public bool		    SetTMServerFile(TM_Server tmServer)
                                                                                     {
                                                                                          tmXmlDatabase.Server = tmServer;
-                                                                                         return tmXmlDatabase.tmServer_Save();                                                                                        
+                                                                                         tmXmlDatabase.UserData.Server = tmServer;
+                                                                                         return tmServer.tmServer_Save();                                                                                        
                                                                                     }
 
         [WebMethod(EnableSession = true)] [Admin]	            public string		Get_Libraries_Zip_Folder()
                                                                                     {
                                                                                         var librariesZipsFolder = TMConfig.Current.TMSetup.LibrariesUploadedFiles;
-                                                                                        return TM_Xml_Database.Current.Path_XmlDatabase.fullPath().pathCombine(librariesZipsFolder).fullPath();
+                                                                                        return TM_Xml_Database.Current.path_XmlDatabase().fullPath().pathCombine(librariesZipsFolder).fullPath();
                                                                                     }		
         [WebMethod(EnableSession = true)] [Admin]	            public List<string> Get_Libraries_Zip_Folder_Files()
                                                                                     {

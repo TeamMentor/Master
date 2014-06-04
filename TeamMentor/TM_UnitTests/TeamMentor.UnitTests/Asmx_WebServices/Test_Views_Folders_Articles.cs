@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using FluentSharp.CoreLib;
 using NUnit.Framework;
 using TeamMentor.CoreLib;
+using TeamMentor.UserData;
 
 
 namespace TeamMentor.UnitTests.Asmx_WebServices

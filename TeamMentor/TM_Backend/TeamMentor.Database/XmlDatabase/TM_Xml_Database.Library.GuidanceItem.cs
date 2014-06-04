@@ -4,6 +4,7 @@ using System.Linq;
 using System.Collections.Generic;
 using FluentSharp.CoreLib;
 using FluentSharp.CoreLib.API;
+using TeamMentor.Database;
 
 namespace TeamMentor.CoreLib
 {
@@ -186,7 +187,7 @@ namespace TeamMentor.CoreLib
     {				
         public static TM_Xml_Database           xmlDB_Load_GuidanceItems_and_Create_CacheFile(this TM_Xml_Database tmDatabase)
         {
-            if (tmDatabase.UsingFileStorage)
+            if (tmDatabase.usingFileStorage())
             { 
                 var pathXmlLibraries = TM_Xml_Database.Current.Path_XmlLibraries;            
                 if (pathXmlLibraries.notNull() && pathXmlLibraries.notNull())
@@ -423,7 +424,7 @@ namespace TeamMentor.CoreLib
             
             article.update_Cache_GuidanceItems(tmDatabase);                             // add it to in Memory cache                
             
-            if(tmDatabase.UsingFileStorage)                                             // save to disk
+            if(tmDatabase.usingFileStorage())                                             // save to disk
             {
                 var guidanceXmlPath = tmDatabase.getXmlFilePathForGuidanceId(article.Metadata.Id, libraryId);
                 if (guidanceXmlPath.valid())
