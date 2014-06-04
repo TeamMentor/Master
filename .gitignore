@@ -1,5 +1,6 @@
 #Dev specific
-bin
+Source_Code/**/bin
+
 
 #TM specific
 /Library_Data/XmlDatabase
