@@ -2,44 +2,26 @@ using System;
 using System.Collections.Generic;
 using FluentSharp.CoreLib;
 using FluentSharp.CoreLib.API;
+using TeamMentor.FileStorage;
 
 namespace TeamMentor.CoreLib
 {
     public static class TM_Xml_Database_ExtensionMethods_XmlDataSources_GuidanceItems_Load
     {				
-        public static TM_Xml_Database           xmlDB_Load_GuidanceItems_and_Create_CacheFile(this TM_Xml_Database tmDatabase)
-        {
-            
-            var pathXmlLibraries = TM_Xml_Database.Current.Path_XmlLibraries;            
-            if (pathXmlLibraries.notNull() && pathXmlLibraries.notNull())
-                lock (pathXmlLibraries)
-                {
-                    //if (tmDatabase.getCacheLocation().fileExists().isFalse())
-                    //{
-                    "[TM_Xml_Database] in xmlDB_Load_GuidanceItems, creating cache file".debug();
-                    var o2Timer = new O2Timer("loaded GuidanceItems from disk").start();
-                    //Load GuidanceItem from the disk				
-                    foreach (var item in tmDatabase.GuidanceExplorers_Paths)
-                    {
-                        var guidanceExplorer = item.Key;
-                        var pathToLibraryGuidanceItems = item.Value.parentFolder();
-                        var libraryId = guidanceExplorer.library.name.guid();                                
-                        "libraryId: {0} : {1}".info(libraryId, pathToLibraryGuidanceItems);                                
-                        var filesToLoad = pathToLibraryGuidanceItems.files(true, "*.xml");
-                        tmDatabase.xmlDB_Load_GuidanceItemsV3(libraryId, filesToLoad);
-                    }
+        public static TeamMentor_Article teamMentor_Article(this string pathToXmlFile)
+        { 
+            var article = pathToXmlFile.load<TeamMentor_Article>();//.htmlEncode(); 
+            return article;
+        }
 
-                    //save it to the local cache file (reduces load time from 8s to 0.5s)
-                    tmDatabase.save_GuidanceItemsToCache();
-                            
+        public static TeamMentor_Article setHashes(this TeamMentor_Article article)
+        { 
+            article.Metadata_Hash = article.Metadata.serialize(false).hash();
+            article.Content_Hash  = article.Content.serialize(false).hash();
+            return article;
+        }
 
-                    tmDatabase.ensureFoldersAndViewsIdsAreUnique();
-                    tmDatabase.removeMissingGuidanceItemsIdsFromViews();
-                    o2Timer.stop();
-                    //}
-                }            
-            return tmDatabase;
-        }        
+               
         public static List<TeamMentor_Article>  xmlDB_Load_GuidanceItemsV3(this TM_Xml_Database tmDatabase, Guid libraryId, List<string> guidanceItemsFullPaths)
         {
             var o2Timer = new O2Timer("xmlDB_GuidanceItems").start();
@@ -85,12 +67,13 @@ namespace TeamMentor.CoreLib
         //[EditArticles]
         public static TeamMentor_Article        xmlDB_GuidanceItem(this TM_Xml_Database tmDatabase, Guid guidanceItemId, string fullPath)
         {
+            var tmFileStorage = TM_FileStorage.Current;
             try
             {
                 if (TM_Xml_Database.Current.Cached_GuidanceItems.hasKey(guidanceItemId))
                 {
                     //"found match for id: {0} in {1}".info(guidanceItemId, fullPath);
-                    if (TM_Xml_Database.Current.GuidanceItems_FileMappings[guidanceItemId] != fullPath)
+                    if (tmFileStorage.GuidanceItems_FileMappings[guidanceItemId] != fullPath)
                     {						
                         //"[xmlDB_GuidanceItem] GuidanceItem ID conflict, the Id '{0}' was already mapped. \nExisting path: \t{1} \nNew path:  \t{2}".error(
                         //	guidanceItemId, TM_Xml_Database.GuidanceItems_FileMappings[guidanceItemId] , fullPath);
@@ -131,7 +114,7 @@ namespace TeamMentor.CoreLib
                             //var _guidanceItemV3 = _guidanceItem.tmGuidanceItemV3();
                             
                             TM_Xml_Database.Current.Cached_GuidanceItems.Add(guidanceItemId, article);
-                            TM_Xml_Database.Current.GuidanceItems_FileMappings.add(guidanceItemId, fullPath);
+                            tmFileStorage.GuidanceItems_FileMappings.add(guidanceItemId, fullPath);
                             
                             
                             return article;

@@ -100,8 +100,10 @@ namespace TeamMentor.CoreLib
                 return verification;
             }
             var users = payload.split("\n");
-            var xmlDatabase = TM_Xml_Database.Current;
-            var userData = xmlDatabase.UserData;
+            
+            var tmFileStorage = TmWebServices.tmFileStorage;            
+            var userData      = tmFileStorage.UserData;           
+           // var userData = xmlDatabase.UserData;
             var errorMessage = string.Empty;
 
             var emailAdmin_On_NewUsers_originalValue = TMConfig.Current.TMSecurity.EmailAdmin_On_NewUsers;
@@ -155,9 +157,8 @@ namespace TeamMentor.CoreLib
         [Admin]public string VerifyUserData(string payload)
         {
             UserGroup.Admin.demand();
-            var users = payload.split("\n");
-            var xmlDatabase = TM_Xml_Database.Current;
-            var userData = xmlDatabase.UserData;
+            var users = payload.split("\n");            
+            var userData      = TM_UserData.Current;   
             var errorMessage = string.Empty;
             var emails = new HashSet<string>();
             var usernames = new HashSet<string>();

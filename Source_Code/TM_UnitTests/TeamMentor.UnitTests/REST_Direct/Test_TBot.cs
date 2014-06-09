@@ -4,6 +4,7 @@ using FluentSharp.Git.APIs;
 using NUnit.Framework;
 using FluentSharp.CoreLib;
 using TeamMentor.CoreLib;
+using TeamMentor.FileStorage;
 using TeamMentor.UnitTests.REST;
 
 namespace TeamMentor.UnitTests.REST_Direct
@@ -13,6 +14,7 @@ namespace TeamMentor.UnitTests.REST_Direct
     {                   
         public Test_TBot()
         {
+            
             var assembly		    = this.type().Assembly;
             var dllLocation		    = assembly.CodeBase.subString(8);
             var webApplications     = dllLocation.parentFolder().pathCombine(@"\..\..\..\..");
@@ -91,11 +93,12 @@ namespace TeamMentor.UnitTests.REST_Direct
         }
 
         [Test] public void Script_ViewEmailsSent()
-        {
+        {            
+            TBot_Brain.AvailableScripts = TBot_Brain.GetAvailableScripts();
             //tests one script to make sure core engine is working
             // (run CheckThatAllTBotPagesLoad to test all scripts)
             var tbotBrain = new TBot_Brain(TmRest);
-            var html = tbotBrain.ExecuteRazorPage("View_Emails_Sent");    
+            var html = tbotBrain.ExecuteRazorPage("Current_Users");    
             Assert.IsNotNull(html, "html was null");
         }
         [Test] public void Script_GitStatus()
@@ -104,7 +107,7 @@ namespace TeamMentor.UnitTests.REST_Direct
             var responseStream = (MemoryStream)TmRest.TBot_Run("GitStatus");// trigger unpack of NGit and Sharpen dlls            
             var html = responseStream.ascii();
             Assert.NotNull(html);
-            //html.info();
+            html.info();
             Assert.IsFalse(html.contains("Unable to compile template"), "Compilation error");
             Assert.IsFalse(html.contains("<hr /><b>Exception:</b> "), "Execution Exception");
         }        

@@ -15,15 +15,10 @@ namespace TeamMentor.CoreLib
 
         [Admin] public static TM_Xml_Database   set_Default_Values(this TM_Xml_Database tmXmlDatabase)
         {                        
-            tmXmlDatabase.Cached_GuidanceItems        = new Dictionary<Guid, TeamMentor_Article>();
-            tmXmlDatabase.GuidanceItems_FileMappings  = new Dictionary<Guid, string>();
-            tmXmlDatabase.GuidanceExplorers_XmlFormat = new Dictionary<Guid, guidanceExplorer>();
-            tmXmlDatabase.GuidanceExplorers_Paths     = new Dictionary<guidanceExplorer, string>();            
+            tmXmlDatabase.Cached_GuidanceItems        = new Dictionary<Guid, TeamMentor_Article>();            
+            tmXmlDatabase.GuidanceExplorers_XmlFormat = new Dictionary<Guid, guidanceExplorer>();            
             tmXmlDatabase.VirtualArticles             = new Dictionary<Guid, VirtualArticleAction>();
-            //tmXmlDatabase.Events                      = new Events_TM_Xml_Database(tmXmlDatabase);                        
-            tmXmlDatabase.Path_XmlLibraries           = null;
-            tmXmlDatabase.UserData                    = null;
-;
+            //tmXmlDatabase.Events                      = new Events_TM_Xml_Database(tmXmlDatabase);                                                
 
             tmXmlDatabase.Events.After_Set_Default_Values.raise();
 
@@ -44,20 +39,6 @@ namespace TeamMentor.CoreLib
             tmXmlDatabase.Events.After_Load_SiteData.raise();
             return tmXmlDatabase;
         }
-    
-        public static TM_UserData               userData(this TM_Xml_Database tmDatabase)                 
-        {
-            if (tmDatabase.isNull())
-                return null;
-            if (tmDatabase.UserData.isNull())
-            { 
-                tmDatabase.UserData = new TM_UserData();
-                tmDatabase.Events.After_UserData_Ctor.raise();
-            }
-            return tmDatabase.UserData;
-        }        
-        
-
        
     }
 }

@@ -3,23 +3,24 @@ using FluentSharp.CoreLib.API;
 using FluentSharp.Git;
 using FluentSharp.CoreLib;
 using FluentSharp.Git.APIs;
+using TeamMentor.FileStorage;
 using TeamMentor.UserData;
 
 namespace TeamMentor.CoreLib
 {
     public static class TM_UserData_Git_ExtensionMethods
     {        
-        public static TM_Xml_Database   setup_UserData_Git_Support(this TM_Xml_Database tmXmlDatabase)
+        public static TM_FileStorage   setup_UserData_Git_Support(this TM_FileStorage tmFileStorage)
         {
-            if(tmXmlDatabase.notNull())
+            if(tmFileStorage.notNull())
             {
-                tmXmlDatabase.Events.After_UserData_Ctor.add_Action((xmlDatabase)=>
-                    {
-                        var userData = xmlDatabase.userData();
+               // tmXmlDatabase.Events.After_UserData_Ctor.add_Action((xmlDatabase)=>
+               //     {
+                        var userData = tmFileStorage.userData();
                         userData.create_TM_UserData_Git();
-                    });
+              //      });
             }
-            return tmXmlDatabase;
+            return tmFileStorage;
         }
 
         public static TM_UserData_Git   create_TM_UserData_Git(this TM_UserData userData)
@@ -46,7 +47,8 @@ namespace TeamMentor.CoreLib
         }
         public static TM_UserData_Git   triggerGitCommit    (this TM_UserData_Git userData)                 
         {
-            var tmServer = userData.UserData.Server;
+            var tmFileStorage = TM_FileStorage.Current;
+            var tmServer = tmFileStorage.Server;
             if (tmServer.notNull())
                 if (tmServer.Git.UserData_Git_Enabled && userData.NGit.notNull())
                     if (userData.NGit.status().valid())
@@ -60,7 +62,7 @@ namespace TeamMentor.CoreLib
         }
         public static TM_UserData_Git   pushUserRepository  (this TM_UserData_Git userData, API_NGit nGit)  
         {
-            var tmServer = TM_Xml_Database.Current.tmServer();
+            var tmServer = TM_FileStorage.Current.tmServer();
 
             if (tmServer.isNull())
                 return userData;
@@ -86,6 +88,8 @@ namespace TeamMentor.CoreLib
         {
             try
             {
+                var tmFileStorage = TM_FileStorage.Current;
+
                 if (userDataGit.userData().isNull())
                     return userDataGit;
 
@@ -94,7 +98,7 @@ namespace TeamMentor.CoreLib
                // if (gitConfig.UserData_Git_Enabled.isFalse())
                //     return userData;
 
-                var userData_Config = userDataGit.UserData.Server.userData_Config();
+                var userData_Config = tmFileStorage.Server.userData_Config();
 
                 var gitLocation = userData_Config.Remote_GitPath;
                 if (gitLocation.valid())
@@ -108,45 +112,45 @@ namespace TeamMentor.CoreLib
 
                     //userData.Path_UserData = userData.Path_UserData_Base + extraFolderName;
                     //userData.Path_UserData.createDir();
-                    "[TM_UserData] [handleExternalGitPull] userData.Path_UserData set to: {0}".debug(userData.Path_UserData);
+                    "[TM_UserData] [handleExternalGitPull] userData.Path_UserData set to: {0}".debug(tmFileStorage.Path_UserData);
              
                     if (MiscUtils.online().isFalse() && gitLocation.dirExists().isFalse())
                         return userDataGit;
 
-                    if (userData.Path_UserData.isGitRepository())
+                    if (tmFileStorage.Path_UserData.isGitRepository())
                     {
                      //   if (gitConfig.UserData_Auto_Pull.isFalse())     //skip if this is set     
                      //       return userData;
 
                         "[TM_UserData] [GitPull]".info();
-                        var nGit = userData.Path_UserData.git_Open();
+                        var nGit = tmFileStorage.Path_UserData.git_Open();
                         nGit.pull();
                         //var nGit = userData.Path_UserData.git_Pull();
                         userDataGit.pushUserRepository(nGit);
                     }
                     else
                     {
-                        userDataGit.clone_UserDataRepo(gitLocation, userData.Path_UserData);
+                        userDataGit.clone_UserDataRepo(gitLocation, tmFileStorage.Path_UserData);
                     }
                 }
-                if (userData.usingFileStorage() && userData.Path_UserData.notNull())
+                if (tmFileStorage.Path_UserData.notNull())
                 {                    
 
                     //var gitEnabled = userData.tmConfig().Git.UserData_Git_Enabled;                
 
                     //                if (gitEnabled)
                     //               {                                                         
-                    if (userData.Path_UserData.isGitRepository())
+                    if (tmFileStorage.Path_UserData.isGitRepository())
                     {
                         //"[TM_UserData] [setupGitSupport] open repository: {0}".info(userData.Path_UserData);
                         "[TM_UserData] [GitOpen]".info();
-                        userDataGit.NGit = userData.Path_UserData.git_Open();
+                        userDataGit.NGit = tmFileStorage.Path_UserData.git_Open();
                     }
                     else
                     {
                         //"[TM_UserData] [setupGitSupport] initializing repository at: {0}".info(userData.Path_UserData);
                         "[TM_UserData] [GitInit]".info();
-                        userDataGit.NGit = userData.Path_UserData.git_Init();
+                        userDataGit.NGit = tmFileStorage.Path_UserData.git_Init();
                     }
                     userDataGit.triggerGitCommit();        // in case there are any files that need to be commited                
                     //                }                

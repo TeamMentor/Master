@@ -4,6 +4,7 @@ using System.IO;
 using System.Security;
 using System.Collections.Generic;
 using FluentSharp.CoreLib;
+using TeamMentor.FileStorage;
 using XssEncoder = Microsoft.Security.Application.Encoder;
 
 namespace TeamMentor.CoreLib

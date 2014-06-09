@@ -5,7 +5,7 @@ using TeamMentor.CoreLib;
 namespace TeamMentor.UnitTests.TM_XmlDatabase
 {
     [TestFixture]
-    public class Test_LoadLibraries_FromExternalSource : TM_XmlDatabase_InMemory
+    public class Test_LoadLibraries_FromExternalSource : TM_XmlDatabase_FileStorage
     {        
         public Test_LoadLibraries_FromExternalSource()
         {

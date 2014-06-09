@@ -81,6 +81,10 @@
       <Project>{e08703fb-d33c-4acd-b679-c1be867d6f0c}</Project>
       <Name>TeamMentor.Database</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TeamMentor.FileStorage\TeamMentor.FileStorage.csproj">
+      <Project>{f5acc621-5930-45e8-9595-39e1758ca7a9}</Project>
+      <Name>TeamMentor.FileStorage</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TeamMentor.Rest\TeamMentor.Rest.csproj">
       <Project>{5A89734A-4BA1-4076-A5BA-584223C05F56}</Project>
       <Name>TeamMentor.Rest</Name>

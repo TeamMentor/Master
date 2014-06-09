@@ -34,13 +34,13 @@ namespace TeamMentor.UserData
                     {
                         "[createDefaultAdminUser] reseting password since passwordHash was not valid and ForceDefaultAdminPassword was set".error();
                         adminUser.SecretData.PasswordHash = adminUser.createPasswordHash(defaultAdminUser_Pwd);                                                
-                        adminUser.event_TmUser_Changed();  //adminUser.saveTmUser();                      
+                        adminUser.event_User_Updated(); //adminUser.saveTmUser();                                              
                     }
                     if (adminUser.GroupID != (int) UserGroup.Admin)
                     {
                         "[createDefaultAdminUser] admin user was not admin (changed to admin)".error();
                         adminUser.GroupID = (int) UserGroup.Admin;
-                        adminUser.event_TmUser_Changed();  //adminUser.saveTmUser();
+                        adminUser.event_User_Updated(); //adminUser.saveTmUser();
                     }                    
                     return adminUser.UserID;
                 }				
@@ -48,7 +48,7 @@ namespace TeamMentor.UserData
                 var userId = userData.newUser(defaultAdminUser_Name, defaultAdminUser_Pwd,defaultAdminUser_Email,1);
                 adminUser = userId.tmUser();
                 adminUser.AccountStatus.ExpirationDate = DateTime.Now.AddYears(10);        // default to setting the expiry value to 10 years in the future
-                adminUser.event_TmUser_Changed();  //adminUser.saveTmUser();
+                adminUser.event_User_Updated();  //adminUser.saveTmUser();
                 return userId;
             }            
         }        
@@ -87,6 +87,9 @@ namespace TeamMentor.UserData
         }        
         public static int           newUser                     (this TM_UserData userData, string  username, string password, string email, string firstname, string lastname, string note , string title, string company, string country, string state, List<UserTag> userTags , int groupId)
         {			
+            if (userData.isNull())
+                return -1;
+
             var userId = Math.Abs(Guid.NewGuid().hash()); 
             
             "Creating new user: {0} with id {1}".debug(username, userId);
@@ -120,9 +123,9 @@ namespace TeamMentor.UserData
             if (TMConfig.Current.windowsAuth().isFalse())                
                 SendEmails.SendNewUserEmails("New user created: {0}".format(tmUser.UserName), tmUser);
             
-            tmUser.logUserActivity("New User",  "");
-
-            tmUser.event_TmUser_Changed();  //tmUser.saveTmUser();
+            tmUser.logUserActivity("New User",  "");    // this will trigger tmUser.event_User_Updated();
+                        
+            //tmUser.event_User_Updated(); //tmUser.saveTmUser();
             //userData.triggerGitCommit();
             return userId;    		
         }			

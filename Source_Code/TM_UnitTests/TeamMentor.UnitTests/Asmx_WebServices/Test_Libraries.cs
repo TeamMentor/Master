@@ -4,12 +4,12 @@ using System.Linq;
 using FluentSharp.CoreLib;
 using NUnit.Framework;
 using TeamMentor.CoreLib;
-using TeamMentor.Database;
+using TeamMentor.FileStorage;
 
 namespace TeamMentor.UnitTests.Asmx_WebServices
 {		 
     [TestFixture]
-    public class Test_Libraries : TM_WebServices_InMemory
+    public class Test_Libraries : TM_WebServices_FileStorage
     {	    
         public Guid OWASP_LIBRARY_GUID = "4738d445-bc9b-456c-8b35-a35057596c16".guid();
 
@@ -19,10 +19,14 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
         }
 
         [SetUp]
-        public void SetUp()
-        {
-            tmXmlDatabase.useFileStorage(false);
-            Assert.IsFalse(tmXmlDatabase.usingFileStorage(), "UsingFileStorage");
+        public void setUp()
+        {      
+            
+        }
+        [TestFixtureTearDown]
+        public void tearDown()
+        {    
+            tmXmlDatabase.delete_Database();
         }
         [Test] public void GetLibraries() 
         {        	
@@ -76,18 +80,18 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             Assert.That    (articles != null          , "articles was null");
             Assert.AreEqual (articles.size()       , 40, "There should be 40 articles in this view");    	 	
             Assert.AreEqual(searchForArticle.size(), 1 , "searchForArticle size()");
+
+            UserGroup.Reader.assert();
             
-            if(tmWebServices.Current_User().notNull())  // only works if the current user is an editor (the code below should be moved into a new test that logs in and Editor user)
-            {
-                var article_Direct  = tmWebServices.GetGuidanceItemById(expectedArticle_Id);
-                var article_ViaView = searchForArticle.first();
-                Assert.AreEqual(article_Direct.Metadata.Id        , expectedArticle_Id        , "expected Id didn't match");
-                Assert.AreEqual(article_Direct.Metadata.Title     , expectedArticle_Title     , "expected Title didn't match");
-                Assert.AreEqual(article_Direct.Metadata.Category  , expectedArticle_Category  , "expected expectedCategory didn't match");
+            var article_Direct  = tmWebServices.GetGuidanceItemById(expectedArticle_Id);
+            var article_ViaView = searchForArticle.first();
+            Assert.AreEqual(article_Direct.Metadata.Id        , expectedArticle_Id        , "expected Id didn't match");
+            Assert.AreEqual(article_Direct.Metadata.Title     , expectedArticle_Title     , "expected Title didn't match");
+            Assert.AreEqual(article_Direct.Metadata.Category  , expectedArticle_Category  , "expected expectedCategory didn't match");
             
-                Assert.AreEqual(article_Direct.Metadata.Id, article_ViaView.Metadata.Id , "Comparing article's Metadata.Id");
-                Assert.AreEqual(article_Direct.toXml()    , article_ViaView.toXml()     , "Comparing article's toXml");
-            }
+            Assert.AreEqual(article_Direct.Metadata.Id, article_ViaView.Metadata.Id , "Comparing article's Metadata.Id");
+            Assert.AreEqual(article_Direct.toXml()    , article_ViaView.toXml()     , "Comparing article's toXml");
+            
         }    	 
         [Test] public void GetGuidanceItemsInViews() 
         { 
@@ -137,9 +141,38 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
                 Assert.That(guidanceItemsIds.contains(guidanceItem.Metadata.Id), "couldn't find guidanceItem by id");
 
         }    	
-        [Test] [Assert_Editor] public void Create_Rename_Delete_Libraries()
+           	
+        [Test] public void Search_TitleAndHtml()
         {
-            tmXmlDatabase.useFileStorage(true);                                  // need this since we are checking the file paths
+                        
+            var viewId = "fc1c5b9c-becb-44a2-9812-40090d9bd135".guid(); //A02: Cross-Site Scripting (XSS)
+            var searchFor = "XSS";	
+            var guidanceItemsIds = new List<Guid>();
+            
+            Func<string, List<Guid>> searchTitleAndHtml =
+                (searchText) => tmWebServices.XmlDatabase_GuidanceItems_SearchTitleAndHtml(guidanceItemsIds, searchText);
+            
+            
+            //test searching on all content			
+            var matchedIds = searchTitleAndHtml(searchFor);
+            Assert.That(matchedIds.size() > 0, "no results when searching all GIs"); 
+            
+            //test search on view's guidanceItems
+            var view = tmWebServices.GetViewById(viewId);  
+            guidanceItemsIds = view.guidanceItems;   
+            //var guidanceItems = tmXmlDatabase.xmlDB_GuidanceItems(guidanceItemsIds);			 				
+            
+            matchedIds = searchTitleAndHtml(searchFor);
+            Assert.That(matchedIds.size() > 0, "no results");
+            var resultGuidanceItems = tmXmlDatabase.xmlDB_GuidanceItems(matchedIds);
+            
+            foreach(var resultGuidanceItem  in resultGuidanceItems)
+                Assert.That(resultGuidanceItem.Metadata.Title.contains(searchFor) || resultGuidanceItem.Content.Data.Value.contains(searchFor), "couldn't find search term in GI");
+
+        }    	
+
+        [Test] [Assert_Editor] public void Create_Rename_Delete_Libraries()
+        {            
             //tmConfig.Git.AutoCommit_LibraryData = false;
                         
             var testOwaspViewId                 = "fc1c5b9c-becb-44a2-9812-40090d9bd135".guid();
@@ -147,8 +180,8 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             var newName 	                    = "_" + originalName + "_new";
             
             Assert.IsNotNull(tmXmlDatabase.path_XmlDatabase(), null);
-            Assert.IsNotNull(tmXmlDatabase.Path_XmlLibraries, null);
-            Assert.IsTrue   (tmXmlDatabase.Path_XmlLibraries.dirExists());
+            Assert.IsNotNull(tmXmlDatabase.path_XmlLibraries(), null);
+            Assert.IsTrue   (tmXmlDatabase.path_XmlLibraries().dirExists());
             Assert.IsNull   (tmXmlDatabase.tmLibrary(originalName), "Library {0} should not exist".format(originalName));
 
             var newLibrary                       = tmWebServices.CreateLibrary(new Library { caption = originalName }); //Create Library
@@ -213,8 +246,7 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             Assert.AreEqual(testOwaspview2.guidanceItems.size() , 21, "There should still be 21 views in the test OWASP A2 view");
         }
         [Test] [Assert_Editor] public void Create_Delete_Libraries_with_a_GuidanceItem()
-        {
-            tmXmlDatabase.useFileStorage(true);                                  // need this since we are checking the file paths
+        {            
             var originalName = "temp_lib".add_RandomLetters(3);    
              
             //Create Library 
@@ -246,35 +278,7 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             
             Assert.IsFalse(libraryPath_GuidanceItemsFolder.dirExists()  , "libraryPath_GuidanceItemsFolder should not exist after delete");
             //tmXmlDatabase.useFileStorage(false);
-        }    	
-        [Test] public void Search_TitleAndHtml()
-        {
-                        
-            var viewId = "fc1c5b9c-becb-44a2-9812-40090d9bd135".guid(); //A02: Cross-Site Scripting (XSS)
-            var searchFor = "XSS";	
-            var guidanceItemsIds = new List<Guid>();
-            
-            Func<string, List<Guid>> searchTitleAndHtml =
-                (searchText) => tmWebServices.XmlDatabase_GuidanceItems_SearchTitleAndHtml(guidanceItemsIds, searchText);
-            
-            
-            //test searching on all content			
-            var matchedIds = searchTitleAndHtml(searchFor);
-            Assert.That(matchedIds.size() > 0, "no results when searching all GIs"); 
-            
-            //test search on view's guidanceItems
-            var view = tmWebServices.GetViewById(viewId);  
-            guidanceItemsIds = view.guidanceItems;   
-            //var guidanceItems = tmXmlDatabase.xmlDB_GuidanceItems(guidanceItemsIds);			 				
-            
-            matchedIds = searchTitleAndHtml(searchFor);
-            Assert.That(matchedIds.size() > 0, "no results");
-            var resultGuidanceItems = tmXmlDatabase.xmlDB_GuidanceItems(matchedIds);
-            
-            foreach(var resultGuidanceItem  in resultGuidanceItems)
-                Assert.That(resultGuidanceItem.Metadata.Title.contains(searchFor) || resultGuidanceItem.Content.Data.Value.contains(searchFor), "couldn't find search term in GI");
-
-        }    	
+        } 
     } 
 }    
     

@@ -1,8 +1,6 @@
 ﻿using NUnit.Framework;
-using System;
 using TeamMentor.CoreLib;
-using FluentSharp.CoreLib;
-using TeamMentor.Database;
+using TeamMentor.FileStorage;
 
 namespace TeamMentor.UnitTests.TM_XmlDatabase
 {
@@ -14,6 +12,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         {
             UserGroup.Admin.assert();               // all these tests need TM Admin priv
             TM_Xml_Database.Current = null;         // ensure there are TM_Xml_Database set 
+            TM_FileStorage.Current  = null;
         }
         [Test]    
         public void TM_Xml_Database_Ctor()
@@ -26,23 +25,12 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Assert.IsNotNull(TM_Xml_Database.Current);
             Assert.False    (tmDatabase.usingFileStorage());          // new TM_Xml_Database() defaults to UsingFileStorage = false              
             Assert.IsNotNull(tmDatabase.Events);                    // this is the only list that should be set on the Ctor            
-            Assert.IsNull   (tmDatabase.Cached_GuidanceItems);
-            Assert.IsNull   (tmDatabase.GuidanceItems_FileMappings);
-            Assert.IsNull   (tmDatabase.GuidanceExplorers_XmlFormat);            
-            Assert.IsNull   (tmDatabase.GuidanceExplorers_Paths);           
-            Assert.IsNull   (tmDatabase.VirtualArticles);                        
+            Assert.IsNotNull(tmDatabase.Cached_GuidanceItems);            
+            Assert.IsNotNull(tmDatabase.GuidanceExplorers_XmlFormat);                        
+            Assert.IsNotNull(tmDatabase.VirtualArticles);                        
 
             Assert.IsNull   (tmDatabase.path_XmlDatabase());
-            Assert.IsNull   (tmDatabase.Path_XmlLibraries);
-            Assert.IsNull   (tmDatabase.UserData);
-            Assert.IsNotNull(tmDatabase.Server);
-
-            
-            //check using ctor that sets UsingFileStorage
-            tmDatabase = new TM_Xml_Database().useFileStorage();                                                
-
-            Assert.IsTrue   (tmDatabase.usingFileStorage());          
-                   
+            Assert.IsNull   (tmDatabase.path_XmlLibraries());
         }
         
     }

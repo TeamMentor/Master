@@ -9,7 +9,7 @@ namespace TeamMentor.CoreLib
     [XmlRoot(ElementName="TMConfig")]
     public class TMConfig
     {
-        public static TMConfig Current { get; set; }
+        public static TMConfig              Current                     { get; set; }
 
         public TMSetup_Config               TMSetup                     { get; set; }
         public TMSecurity_Config			TMSecurity				    { get; set; }        

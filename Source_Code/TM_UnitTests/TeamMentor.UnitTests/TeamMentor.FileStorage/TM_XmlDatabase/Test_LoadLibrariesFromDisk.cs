@@ -4,11 +4,12 @@ using FluentSharp.CoreLib;
 using FluentSharp.CoreLib.API;
 using NUnit.Framework;
 using TeamMentor.CoreLib;
+using TeamMentor.FileStorage;
 
 namespace TeamMentor.UnitTests.TM_XmlDatabase
 {
     [TestFixture]
-    public class Test_LoadLibrariesFromDisk  : TM_XmlDatabase_InMemory
+    public class Test_LoadLibrariesFromDisk  : TM_XmlDatabase_FileStorage
     {                        
         public Test_LoadLibrariesFromDisk()
         {
@@ -23,7 +24,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         
         [Test] public void GetGuidanceExplorerFilesInPath()
         {
-            var xmlFiles = tmXmlDatabase.Path_XmlLibraries.getGuidanceExplorerFilesInPath();
+            var xmlFiles = tmXmlDatabase.path_XmlLibraries().getGuidanceExplorerFilesInPath();
             Assert.IsNotEmpty(xmlFiles);
             foreach (var xmlFile in xmlFiles)
             {
@@ -34,7 +35,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         }
         [Test] public void LoadGuidanceExplorerFilesDirectly()
         {
-            foreach (var xmlFile in tmXmlDatabase.Path_XmlLibraries.getGuidanceExplorerFilesInPath())
+            foreach (var xmlFile in tmXmlDatabase.path_XmlLibraries().getGuidanceExplorerFilesInPath())
             {
                 "Loading libraryXmlFile: {0}".info(xmlFile.fileName());                
                 var guidanceExplorer = xmlFile.getGuidanceExplorerObject();
@@ -44,13 +45,13 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         [Test] public void LoadGuidanceExplorerFiles()
         {            
             //tmXmlDatabase.setGuidanceExplorerObjects();
-            var xmlFiles    = tmXmlDatabase.Path_XmlLibraries.getGuidanceExplorerFilesInPath();
+            var xmlFiles    = tmXmlDatabase.path_XmlLibraries().getGuidanceExplorerFilesInPath();
             var tmLibraries = tmXmlDatabase.tmLibraries();
             Assert.AreEqual(xmlFiles.size(), tmLibraries.size());
         }
         [Test] public void Test_getGuidanceExplorerObjects()
         {
-            var guidanceExplorers = tmXmlDatabase.Path_XmlLibraries.getGuidanceExplorerObjects();			
+            var guidanceExplorers = tmXmlDatabase.path_XmlLibraries().getGuidanceExplorerObjects();			
             Assert.IsNotNull(guidanceExplorers, "guidanceExplorers");
             Assert.That(guidanceExplorers.size()>0 , "guidanceExplorers was empty");			
             Assert.That(tmXmlDatabase.GuidanceExplorers_XmlFormat.size() > 0, "GuidanceExplorers_XmlFormat was empty");    		

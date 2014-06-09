@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using TeamMentor.CoreLib;
+using TeamMentor.FileStorage;
 using TeamMentor.UserData;
 
 namespace TeamMentor.UnitTests.Schemas.Events
@@ -17,6 +18,8 @@ namespace TeamMentor.UnitTests.Schemas.Events
         [SetUp]
         public void setup()
         {
+            TM_FileStorage.Current = null;
+
             tmUserData = new TM_UserData();                                    
             Assert.NotNull (tmUserData);            
             Assert.NotNull (tmUserData.Events);                        
@@ -33,7 +36,7 @@ namespace TeamMentor.UnitTests.Schemas.Events
             Assert.NotNull (tmEvents.After_TM_SecretData_Load);       
             Assert.NotNull (tmEvents.After_Users_Load);                   
         }
-        [Test] public void Events_inside_tmConfig_Load()
+/*        [Test] public void Events_inside_tmConfig_Load()
         {
             var tmEvents = tmUserData.Events;
             Assert.AreEqual(tmEvents.Before_TM_Config_Load.Total_Invocations, 0);
@@ -55,6 +58,6 @@ namespace TeamMentor.UnitTests.Schemas.Events
             Assert.AreEqual(tmEvents.After_Users_Load .Total_Invocations, 0);
             tmUserData.users_Load();
             Assert.AreEqual(tmEvents.After_Users_Load.Total_Invocations , 1);            
-        }
+        }*/
     }
 }

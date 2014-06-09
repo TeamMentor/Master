@@ -34,9 +34,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\FluentSharp.CoreLib.5.3.121\lib\net35\FluentSharp.CoreLib.dll</HintPath>
     </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -47,15 +51,13 @@
     <Compile Include="FileStorage\TM_Config_FileStorage.cs" />
     <Compile Include="FileStorage\TM_UserData_FileStorage.cs" />
     <Compile Include="FileStorage\TM_User_FileStorage.cs" />
-    <Compile Include="XmlDatabase\TM_Xml_Database_ExtensionMethods_XmlDataSources_Folder.Library.Views_and_Folders.cs" />
-    <Compile Include="XmlDatabase\TM_Xml_Database_ExtensionMethods_XmlDataSources_GuidanceExplorer.Library.GuidanceExplorer.cs" />
-    <Compile Include="XmlDatabase\TM_Xml_Database_ExtensionMethods_XmlDataSources_GuidanceItem.cs" />
+    <Compile Include="Schemas\Guidance_Item_Import.cs" />
+    <Compile Include="VirtualArticles\FileStorage_VirtualArticles.cs" />
+    <Compile Include="XmlDatabase\FileStorage_Articles.cs" />
+    <Compile Include="XmlDatabase\FileStorage_Libraries.cs" />
+    <Compile Include="XmlDatabase\FileStorage_TM_Xml_Database.cs" />
+    <Compile Include="XmlDatabase\TM_Xml_Database.Library.Files.cs" />
     <Compile Include="XmlDatabase\TM_Xml_Database_ExtensionMethods_XmlDataSources_GuidanceItems_Load.cs" />
-    <Compile Include="XmlDatabase\TM_Xml_Database_ExtensionMethods_XmlDataSources_GuidanceItems_Search.cs" />
-    <Compile Include="XmlDatabase\TM_Xml_Database_ExtensionMethods_XmlDataSources_View.cs" />
-    <Compile Include="XmlDatabase\TM_Xml_Database_ExtensionMethods_XmlDataSources_Views_and_Folders_Guid_Fixes.cs" />
-    <Compile Include="XmlDatabase\TM_Xml_Database_ExtensionMethods_XML_DataSources_TM_Library.cs" />
-    <Compile Include="XmlDatabase\TM_Xml_Database_FileStorage_Library.cs" />
     <Compile Include="XmlDatabase\TM_Xml_Database_Load_And_FileCache.cs" />
     <Compile Include="XmlDatabase\TM_Xml_Database_FileStorage.cs" />
     <Compile Include="TM_FileStorage.cs" />
@@ -65,6 +67,10 @@
     <Compile Include="FileStorage\TM_Server_FileStorage.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TeamMentor.Database\TeamMentor.Database.csproj">
+      <Project>{e08703fb-d33c-4acd-b679-c1be867d6f0c}</Project>
+      <Name>TeamMentor.Database</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TeamMentor.Schemas\TeamMentor.Schemas.csproj">
       <Project>{77E93D41-8457-45BD-82A8-37C0DEEC32AD}</Project>
       <Name>TeamMentor.Schemas</Name>
@@ -76,6 +82,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

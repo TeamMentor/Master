@@ -1,4 +1,5 @@
 ﻿using FluentSharp.CoreLib;
+using TeamMentor.FileStorage;
 
 namespace TeamMentor.CoreLib
 {
@@ -19,9 +20,21 @@ namespace TeamMentor.CoreLib
         }
 
         public static UserActivity logTBotActivity(this TM_WebServices tmWebServices, string action, string detail)
-        {
+        {            
             if (tmWebServices.notNull())
-                return tmWebServices.tmXmlDatabase.logTBotActivity(action, detail);
+                return tmWebServices.tmFileStorage.logTBotActivity(action, detail);                
+            return null;
+        }
+        public static UserActivity logTBotActivity(this TM_FileStorage tmFileStorage, string action, string detail)
+        {
+            if (tmFileStorage.notNull() )
+                return tmFileStorage.UserData.logTBotActivity(action, detail);
+            return null;
+        }
+        public static UserActivity logTBotActivity(this TM_Xml_Database tmXmlDatabase, string action, string detail)
+        {
+            if (tmXmlDatabase.notNull() && TM_FileStorage.Current.notNull())
+                return TM_FileStorage.Current.logTBotActivity(action, detail);
             return null;
         }
     }

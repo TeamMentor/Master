@@ -2,8 +2,6 @@
 using NUnit.Framework;
 using FluentSharp.CoreLib;
 using TeamMentor.CoreLib;
-using FluentSharp.CoreLib.API;
-using TeamMentor.Database;
 
 namespace TeamMentor.UnitTests.Schemas
 {    
@@ -33,9 +31,7 @@ namespace TeamMentor.UnitTests.Schemas
             Assert.IsEmpty(tmServer.SiteData_Configs);
 
             Assert.IsTrue(tmServer.Users_Create_Default_Admin);
-            Assert.IsFalse(tmServer.TM_Database_Use_AppData_Folder);
-
-            Assert.AreEqual(TM_Server.WebRoot, AppDomain.CurrentDomain.BaseDirectory);            
+            Assert.IsFalse(tmServer.TM_Database_Use_AppData_Folder);            
         }        
         [Test] public void setDefaultData()                              
         {
@@ -105,45 +101,8 @@ namespace TeamMentor.UnitTests.Schemas
             Assert.AreEqual(userData_Config, active_GitConfig);
             Assert.AreEqual(userData_Config.Remote_GitPath, remote_GitPath); ;            
         }
-        [Test] public void load_TM_Server_Config()                  
-        {
-         //   TM_Status.In_Setup_XmlDatabase = false;
-            UserGroup.Admin.assert();
-
-            //first test with in memory version of TM_Xml_Database
-            var tmServer = TM_Server.Load();            
-            
-            Assert.NotNull (tmServer);
-            Assert.AreEqual(tmServer, new TM_Xml_Database(tmServer).tmServer());
-
-            //now test with filebase
-            //tmXmlDatabase = new TM_Xml_Database();
-
-            //tmXmlDatabase.Path_XmlDatabase = "_tmpLocation".tempDir();
-            //tmXmlDatabase.useFileStorage(true);
-        }
-        [Test] public void tmServer()                               
-        {
-            UserGroup.Admin.assert();
-            var tmDatabase = new TM_Xml_Database();
-            var tmServer = tmDatabase.tmServer();
-            
-            Assert.NotNull (tmServer);
-            Assert.AreEqual(tmServer, tmDatabase.Server);                          
-        }        
-/*        [Test] public void LoadAndSave_TMServer_To_Disk()           
-        {
-            UserGroup.Admin.assert();
-            var tmServer = TM_Server.Load();
-            
-            
-            tmServer.tmServer_Location().info();
-            var tmServerPath  = tmServer.tmServer_Location();
-
-            Assert.IsNotNull(tmServer                   , "tmServer");
-            Assert.IsNotNull(tmServerPath               , "tmServerPath");
-            Assert.AreEqual (tmServerPath.parentFolder(), tmServer.Path_XmlDatabase , "tmServerPath.folderName()");
-        }*/
+              
+        
 
         //Utils
         /*

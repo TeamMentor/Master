@@ -36,7 +36,7 @@ namespace TeamMentor.CoreLib
                 {                
                     tmUser.UserActivities.Add(userActivity);
                     
-                    tmUser.event_TmUser_Changed(); //tmUser.saveTmUser();
+                    tmUser.event_User_Updated(); //tmUser.saveTmUser();
                 }                  	
             }
             return userActivity;

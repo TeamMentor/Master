@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using FluentSharp.CoreLib;
 using TeamMentor.CoreLib;
 
@@ -16,7 +12,7 @@ namespace TeamMentor.FileStorage
                         ? tmFileStorage.UserData
                         : null;
         }
-        public static string            path_userData(this TM_FileStorage tmFileStorage)
+        public static string            path_UserData(this TM_FileStorage tmFileStorage)
         {
             if (tmFileStorage.notNull())
                 return tmFileStorage.Path_UserData;
@@ -46,8 +42,8 @@ namespace TeamMentor.FileStorage
         }                
         public static string            users_XmlFile_Location(this TM_FileStorage tmFileStorage)   
         {            
-            if (tmFileStorage.path_userData().notNull())
-                return tmFileStorage.path_userData()
+            if (tmFileStorage.path_UserData().notNull())
+                return tmFileStorage.path_UserData()
                                     .pathCombine(TMConsts.USERDATA_PATH_USER_XML_FILES)
                                     .createDir();
             return null;
@@ -56,14 +52,11 @@ namespace TeamMentor.FileStorage
         [Admin] public static TM_FileStorage   set_Path_UserData    (this TM_FileStorage tmFileStorage)
         {           
             var tmXmlDatabase = tmFileStorage.tmXmlDatabase();
-            var userData = tmFileStorage.userData();
+            //var userData = tmFileStorage.userData();
 
             if (tmXmlDatabase.isNull())
                 return tmFileStorage;
-
-            tmXmlDatabase.UserData = null;              // to ensure that a new object is created
-         
-
+          
             var userData_Config = tmFileStorage.tmServer().userData_Config();
 
             if (userData_Config.isNull() || userData_Config.Name.notValid())
@@ -75,7 +68,7 @@ namespace TeamMentor.FileStorage
                                     };
             }
 
-            var xmlDatabasePath = tmXmlDatabase.path_XmlDatabase();                    // all files are relative to this path
+            var xmlDatabasePath = tmFileStorage.path_XmlDatabase();                    // all files are relative to this path
                                 
             var userDataPath    = xmlDatabasePath.pathCombine(userData_Config.Name); // use the userData_Config.Name as the name of the folder to put UserData files
                 
@@ -93,17 +86,40 @@ namespace TeamMentor.FileStorage
             
             return tmFileStorage;
         }
-
         [Admin] public static TM_FileStorage   load_UserData       (this TM_FileStorage tmFileStorage)         
         {
                         
-            var userData = tmFileStorage.UserData;
+            //var userData = tmFileStorage.UserData;
 
             tmFileStorage.tmConfig_Load()                            
                          .secretData_Load()
                          .users_Load();                         
                         
             return tmFileStorage;
+        }
+    
+        //TM_UserData helpers
+        public static string path_UserData(this TM_UserData userData)
+        {
+            return userData.usingFileStorage() 
+                    ? TM_FileStorage.Current.path_UserData()
+                    : null;
+        }
+        public static string tmConfig_Location(this TM_UserData userData)
+        {
+            return userData.usingFileStorage() 
+                    ? TM_FileStorage.Current.tmConfig_Location()
+                    : null;
+        }
+        public static string secretData_Location(this TM_UserData userData)
+        {
+            return userData.usingFileStorage() 
+                    ? TM_FileStorage.Current.secretData_Location() 
+                    : null;
+        }
+        public static bool   usingFileStorage   (this TM_UserData userData)
+        {
+            return userData.notNull() && TM_FileStorage.Current.notNull();
         }
     }
 }

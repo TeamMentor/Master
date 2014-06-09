@@ -6,9 +6,18 @@ namespace TeamMentor.FileStorage
 {
     public static class TM_User_FileStorage
     {
-        public static string        user_XmlFile_Location (this TMUser tmUser)          
+        [Admin] public static TM_FileStorage                hook_Events_TM_UserData(this TM_FileStorage tmFileStorage)
         {
-            var tmFileStorage = TM_FileStorage.Current;
+            var tmUserData = tmFileStorage.UserData;
+
+            tmUserData.Events.User_Updated.add((userData,tmUser) => tmFileStorage.saveTmUser(tmUser));
+            tmUserData.Events.User_Deleted.add((userData,tmUser) => tmFileStorage.tmUser_Delete(tmUser));
+            
+            return tmFileStorage;
+        }
+        
+        public static string        user_XmlFile_Location (this TM_FileStorage tmFileStorage, TMUser tmUser)          
+        {            
             if (tmFileStorage.isNull())
                 return null;
 
@@ -29,22 +38,21 @@ namespace TeamMentor.FileStorage
             return null;
         }
         
-        public static bool          saveTmUser            (this TMUser tmUser)               
+        public static bool          saveTmUser            (this TM_FileStorage tmFileStorage, TMUser tmUser)               
         {                        
             lock (tmUser)
             {
-                var location = tmUser.user_XmlFile_Location(); 
+                var location = tmFileStorage.user_XmlFile_Location(tmUser); 
                 return location.valid() && tmUser.saveAs(location);
             }            
-        }
-    
-        public static bool          deleteTmUser          (this TMUser tmUser)
+        }    
+        public static bool          tmUser_Delete        (this TM_FileStorage tmFileStorage, TMUser tmUser)
         {    		
             if (tmUser.notNull())
             {             
                 lock (tmUser)
-                {
-                    tmUser.user_XmlFile_Location().file_Delete();
+                {                    
+                    tmFileStorage.user_XmlFile_Location(tmUser).file_Delete();
                     //userData.triggerGitCommit();
                 }
                 return true;

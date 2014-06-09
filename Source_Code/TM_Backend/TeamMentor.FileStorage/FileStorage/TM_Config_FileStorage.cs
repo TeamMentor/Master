@@ -13,7 +13,7 @@ namespace TeamMentor.FileStorage
         
         public static string tmConfig_Location(this TM_FileStorage tmFileStorage)
         {
-            return tmFileStorage.path_userData().pathCombine(TMConsts.TM_CONFIG_FILENAME);                        
+            return tmFileStorage.path_UserData().pathCombine(TMConsts.TM_CONFIG_FILENAME);                        
         }         
 
         public static TM_FileStorage tmConfig_Load(this TM_FileStorage tmFileStorage)

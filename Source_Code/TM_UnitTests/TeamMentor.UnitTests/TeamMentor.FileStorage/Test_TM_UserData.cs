@@ -4,54 +4,52 @@ using NUnit.Framework;
 using System;
 using TeamMentor.CoreLib;
 using TeamMentor.UserData;
+using TeamMentor.FileStorage;
 
-namespace TeamMentor.UnitTests.CoreLib
+namespace TeamMentor.UnitTests.FileStorage
 {
     [TestFixture]
-    public class Test_TM_UserData__UsingFileStorage
-    {
-        TM_UserData userData;
+    public class Test_TM_UserData :  TM_XmlDatabase_FileStorage
+    {        
         [SetUp]    public void setup()
-        {
-            userData = new TM_UserData().useFileStorage();
-            userData.Path_UserData = "tempUser_Data".tempDir();
-            Assert.IsNotNull(userData.Path_UserData);
+        {            
+            Assert.IsNotNull(userData.path_UserData()); 
             Assert.IsNotNull(userData.tmConfig_Location());
             Assert.IsNotNull(userData.secretData_Location());
         }
         [TearDown] public void teardown()
         {
-            Assert.IsTrue (Files.deleteFolder(userData.Path_UserData, true));
-            Assert.IsFalse(userData.Path_UserData.dirExists());
+            Assert.IsTrue (Files.deleteFolder(userData.path_UserData(), true));
+            Assert.IsFalse(userData.path_UserData().dirExists());
         }
         [Test] public void load()
         {
             
-        }
+        }     
         [Test] public void loadUsers__UsingFileStorage()
         {            
-            userData.users_Load();                   // when no user files exist
+            tmFileStorage.users_Load();                   // when no user files exist
             Assert.IsEmpty(userData.TMUsers);       // we should get no users
             
             var tmUser1 = new TMUser { UserName = 10.randomLetters() };                           // without an ID this one will fail to load
             var tmUser2 = new TMUser { UserName = 10.randomLetters() , UserID = 1000.randomNumber() + 1 };
             var tmUser3 = new TMUser { UserName = 10.randomLetters() , UserID = 1000.randomNumber()+ 1 };
             
-            Assert.IsTrue(tmUser1.saveTmUser());            
-            Assert.IsTrue(tmUser2.saveTmUser());
-            Assert.IsTrue(tmUser3.saveTmUser());
+            Assert.IsTrue(tmFileStorage.saveTmUser(tmUser1));            
+            Assert.IsTrue(tmFileStorage.saveTmUser(tmUser2));
+            Assert.IsTrue(tmFileStorage.saveTmUser(tmUser3));
             
-            userData.users_Load();                         // now
+            tmFileStorage.users_Load();                         // now
             Assert.IsNotEmpty(userData.TMUsers);          // we should get two users
             Assert.AreEqual(userData.TMUsers.size(), 2);  // which are the ones with a valid UserID 
             
         }
         [Test] public void users_XmlFile_Location()     
         {
-            var location = userData.users_XmlFile_Location();
-            var expectedLocation = userData.Path_UserData.pathCombine(TMConsts.USERDATA_PATH_USER_XML_FILES);
+            var location = tmFileStorage.users_XmlFile_Location();
+            var expectedLocation = tmFileStorage.Path_UserData.pathCombine(TMConsts.USERDATA_PATH_USER_XML_FILES);
 
-            Assert.NotNull (userData.Path_UserData);
+            Assert.NotNull (tmFileStorage.Path_UserData);
             Assert.NotNull (location);
             Assert.AreEqual(location, expectedLocation);
             Assert.IsTrue  (location.dirExists());
@@ -61,11 +59,11 @@ namespace TeamMentor.UnitTests.CoreLib
             var userName = 10.randomLetters();
             var id = Guid.NewGuid();
             var tmUser = new TMUser { UserName = userName, ID = id };
-            var expectedLocation = userData.Path_UserData
-                                           .pathCombine(TMConsts.USERDATA_PATH_USER_XML_FILES)
-                                           .pathCombine(TMConsts.USERDATA_FORMAT_USER_XML_FILE.format(userName, id));
-            var location1        = tmUser.user_XmlFile_Location();          // calling it twice should produce the same value
-            var location2        = tmUser.user_XmlFile_Location();
+            var expectedLocation = tmFileStorage.Path_UserData
+                                                .pathCombine(TMConsts.USERDATA_PATH_USER_XML_FILES)
+                                                .pathCombine(TMConsts.USERDATA_FORMAT_USER_XML_FILE.format(userName, id));
+            var location1        = tmFileStorage.user_XmlFile_Location(tmUser);          // calling it twice should produce the same value
+            var location2        = tmFileStorage.user_XmlFile_Location(tmUser);
 
             Assert.AreEqual(location1, location2);
             Assert.AreEqual(location1, expectedLocation);

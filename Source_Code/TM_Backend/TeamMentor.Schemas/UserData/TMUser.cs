@@ -27,8 +27,7 @@ namespace TeamMentor.CoreLib
         [XmlElement]   public UserAccountStatus     AccountStatus	{ get; set; }
         [XmlElement]   public UserStats             Stats	        { get; set; }
         [XmlElement]   public List<UserActivity>    UserActivities  { get; set; }
-
-        [NonSerialized] public Events_TMUser        Events;          
+          
 
         public TMUser()
         {
@@ -52,8 +51,7 @@ namespace TeamMentor.CoreLib
             Stats           = new UserStats
                                     {
                                         CreationDate = DateTime.Now                                       
-                                    };    
-            Events          = new Events_TMUser(this);
+                                    };                
         }
     }
     public class UserTag

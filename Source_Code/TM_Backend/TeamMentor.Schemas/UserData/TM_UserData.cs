@@ -10,8 +10,7 @@ namespace TeamMentor.CoreLib
         public static TM_UserData       Current             { get; set; }
         public static Thread            GitPushThread       { get; set; }
         public List<TMUser>	            TMUsers			    { get; set; }
-        public TM_SecretData            SecretData          { get; set; }                                
-       
+        public TM_SecretData            SecretData          { get; set; }                                       
         public Events_TM_UserData       Events              { get; set; }                
 
         public TM_UserData()

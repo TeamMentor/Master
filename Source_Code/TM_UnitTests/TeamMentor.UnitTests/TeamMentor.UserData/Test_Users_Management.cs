@@ -24,7 +24,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             //create user
             var userCount = userData.TMUsers.size();
             var userId = userData.newUser(testUserName, password);			
-            Assert.AreEqual(userCount+1, tmXmlDatabase.UserData.TMUsers.size() , "TMUsers,size() after create");
+            Assert.AreEqual(userCount+1, userData.TMUsers.size() , "TMUsers,size() after create");
             var tmUser = userData.tmUser(userId);
             Assert.NotNull(tmUser, "tmUser was null after create");
             Assert.AreEqual(tmUser.UserID, userId, "UserID");

@@ -3,6 +3,7 @@ using System.IO;
 using System.Security;
 using System.Web;
 using FluentSharp.CoreLib;
+using TeamMentor.FileStorage;
 
 namespace TeamMentor.CoreLib
 {	
@@ -115,7 +116,7 @@ namespace TeamMentor.CoreLib
                     return false;
                 }
                 TM_UserData.Current.SecretData = tmSecretData;
-                TM_UserData.Current.secretData_Save();                
+                TM_FileStorage.Current.secretData_Save();       //TM_UserData.Current.secretData_Save();                
                 return true;
             }
             catch (Exception ex)
@@ -126,12 +127,12 @@ namespace TeamMentor.CoreLib
         }
         [Admin] public bool          Reload_UserData()
         {
-            TM_Xml_Database.Current.load_UserData();            
+            TM_FileStorage.Current.load_UserData();            
             return true;
         }
         [Admin] public bool          Reload_TMConfig()
         {
-            TM_UserData.Current.tmConfig_Reload();
+            TM_FileStorage.Current.tmConfig_Reload();
             return true;
         }
         [Admin] public string        Reload_Cache()

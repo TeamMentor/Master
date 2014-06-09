@@ -7,20 +7,26 @@ namespace TeamMentor.FileStorage
     {
         [Admin] public static string            tmServer_Location(this TM_FileStorage tmFileStorage)          
         {
-            return  tmFileStorage.path_Xml_Database()
+            return  tmFileStorage.path_XmlDatabase()
                                  .pathCombine(TMConsts.TM_SERVER_FILENAME);                       
         }
+        [Admin] public static bool              tmServer_Save(this TM_FileStorage tmFileStorage)
+        {
+            return tmFileStorage.tmServer_Save(tmFileStorage.Server);
+        }
         [Admin] public static bool              tmServer_Save(this TM_FileStorage tmFileStorage, TM_Server tmServer)     
-        {                                               
+        {             
+            if (tmFileStorage.isNull() || tmServer.isNull())                      
+                return false;
             var location = tmFileStorage.tmServer_Location();
             return (location.valid()) && 
                     tmServer.saveAs(location);
         }
         
-        [Admin] public static TM_FileStorage    load_TMServer(this TM_FileStorage tmFileStorage)
+        /*[Admin] public static TM_FileStorage    load_TMServer(this TM_FileStorage tmFileStorage)
         {        
             return tmFileStorage.tmServer_Load();
-        }
+        }*/
         [Admin] public static TM_FileStorage    tmServer_Load(this TM_FileStorage tmFileStorage)
         {
             if (tmFileStorage.isNull())

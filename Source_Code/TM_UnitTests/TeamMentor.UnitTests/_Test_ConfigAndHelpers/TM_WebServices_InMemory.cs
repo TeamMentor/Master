@@ -1,4 +1,5 @@
 ﻿using FluentSharp.CoreLib;
+using NUnit.Framework;
 using TeamMentor.CoreLib;
 
 namespace TeamMentor.UnitTests
@@ -11,6 +12,12 @@ namespace TeamMentor.UnitTests
         {
             HttpContextFactory.Context = new API_Moq_HttpContext().httpContext();            
             tmWebServices = new TM_WebServices();
+
+            Assert.NotNull(tmWebServices);
+            Assert.IsNull (tmWebServices.tmFileStorage);
+            Assert.NotNull(tmWebServices.tmAuthentication);            
+            Assert.NotNull(tmWebServices.tmXmlDatabase);
+            Assert.NotNull(tmWebServices.userData);
         }
     }
 }

@@ -110,8 +110,8 @@ namespace TeamMentor.CoreLib
             if (tmUser.notNull())
             {
                 var newToken = Guid.NewGuid();
-                tmUser.SecretData.PasswordResetToken = tmUser.passwordResetToken_getHash(newToken);
-                tmUser.event_TmUser_Changed();  //tmUser.saveTmUser();
+                tmUser.SecretData.PasswordResetToken = tmUser.passwordResetToken_getHash(newToken);                
+                tmUser.event_User_Updated();  //tmUser.saveTmUser();
                 return newToken;
             }
             return Guid.Empty;

@@ -24,28 +24,15 @@ namespace TeamMentor.CoreLib
             }
             return true;
         }        
-    }
-    public static class TM_Users_Events
+    }         
+    public static class TM_User_Events
     {
-        public static Events_TMUser    events(this TMUser tmUser)
+        public static TMUser event_User_Updated(this TMUser tmUser)
         {
-            return (tmUser.notNull())
-                ? tmUser.Events
-                : null;            ;
-        }    
-        public static TMUser event_TmUser_Changed(this TMUser tmUser)
-        {
-            if (tmUser.events().notNull())
-                    tmUser.events().After_User_Changed.raise();
+            var tmUserData = TM_UserData.Current;
+            if (tmUserData.notNull())
+                tmUserData.Events.User_Updated.raise(tmUser);
             return tmUser;
         }
-
-        public static TMUser event_TmUser_Deleted(this TMUser tmUser)
-        {
-            if (tmUser.events().notNull())
-                    tmUser.events().After_User_Deleted.raise();
-            return tmUser;
-        }
-        
     }
 }

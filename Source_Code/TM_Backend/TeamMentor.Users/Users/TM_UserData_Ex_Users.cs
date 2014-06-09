@@ -51,7 +51,7 @@ namespace TeamMentor.CoreLib
             { 
                 tmUser.SecretData.PasswordHash       = passwordHash;
                 tmUser.AccountStatus.PasswordExpired = false;
-                tmUser.event_TmUser_Changed();  //tmUser.saveTmUser();                
+                tmUser.event_User_Updated(); //tmUser.saveTmUser();                
                 return true;
             }
             return false;    		
@@ -83,7 +83,7 @@ namespace TeamMentor.CoreLib
                     tmUser.SecretData.PasswordHash       = tmUser.createPasswordHash(newPassword);
                     tmUser.AccountStatus.PasswordExpired = false;
                     tmUser.SecretData.PasswordResetToken = null;
-                    tmUser.event_TmUser_Changed();  //tmUser.saveTmUser();       
+                    tmUser.event_User_Updated();  //tmUser.saveTmUser();       
                     tmUser.logUserActivity("Password Change", "Using Password Reset: {0}".format(token));
                     return true;
                 }            
@@ -119,7 +119,9 @@ namespace TeamMentor.CoreLib
             return tmUser;
         }
         public static TMUser        tmUser              (this TM_UserData userData, string userName)
-        {        
+        {     
+            if (userData.isNull())
+                return null;
             lock( userData.TMUsers)
             {
                 return userData.TMUsers.Where((tmUser) => tmUser.UserName == userName).first() ;
@@ -127,6 +129,8 @@ namespace TeamMentor.CoreLib
         }
         public static TMUser        tmUser              (this TM_UserData userData, int userId)
         {
+            if (userData.isNull())
+                return null;
             lock( userData.TMUsers)
             {
                 return userData.TMUsers.Where((tmUser) => tmUser.UserID == userId).first() ;
@@ -134,7 +138,7 @@ namespace TeamMentor.CoreLib
         }        
         public static TMUser        tmUser_FromEmail    (this TM_UserData userData, string eMail)
         {
-            if (eMail.isNull())
+            if (userData.isNull() || eMail.isNull())
                 return null;
             lock( userData.TMUsers)
             {
@@ -208,7 +212,7 @@ namespace TeamMentor.CoreLib
             if (tmUser.notNull()) 
             {
                 tmUser.GroupID = groupId;
-                tmUser.event_TmUser_Changed();  //tmUser.saveTmUser();                
+                tmUser.event_User_Updated(); //tmUser.saveTmUser();                
                 return true;
             }
             return false;
@@ -219,7 +223,7 @@ namespace TeamMentor.CoreLib
             if (tmUser.notNull())
             {
                 tmUser.SecretData.PostLoginView = postLoginView;
-                tmUser.event_TmUser_Changed();  //tmUser.saveTmUser();                
+                tmUser.event_User_Updated()  //tmUser.saveTmUser();                
             }
             return tmUser;
         }
@@ -228,7 +232,7 @@ namespace TeamMentor.CoreLib
             if (tmUser.notNull())
             {
                 tmUser.SecretData.PostLoginScript = postLoginScript;
-              tmUser.event_TmUser_Changed();  //  tmUser.saveTmUser();                
+              tmUser.event_User_Updated();  //  tmUser.saveTmUser();                
             }
             return tmUser;
         }

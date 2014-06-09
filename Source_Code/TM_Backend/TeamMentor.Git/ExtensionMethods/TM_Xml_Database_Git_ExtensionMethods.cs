@@ -3,6 +3,7 @@ using FluentSharp.CoreLib;
 using FluentSharp.CoreLib.API;
 using FluentSharp.Git;
 using FluentSharp.Git.APIs;
+using TeamMentor.FileStorage;
 
 namespace TeamMentor.CoreLib
 {
@@ -10,7 +11,8 @@ namespace TeamMentor.CoreLib
     {
         public static TM_Xml_Database   setupGitSupport(this TM_Xml_Database_Git tmDatabase)
         {
-            var gitConfig = tmDatabase.tmServer().Git;
+            var tmFileStorage = TM_FileStorage.Current;
+            var gitConfig = tmFileStorage.tmServer().Git;
 
             if (gitConfig.LibraryData_Git_Enabled)
             {
@@ -41,7 +43,8 @@ namespace TeamMentor.CoreLib
         }
         public static TM_Xml_Database   triggerGitCommit (this TM_Xml_Database_Git tmDatabase)
         {
-            if (tmDatabase.tmServer().Git.LibraryData_Git_Enabled)
+            var tmFileStorage = TM_FileStorage.Current;
+            if (tmFileStorage.tmServer().Git.LibraryData_Git_Enabled)
             {
                 foreach(var nGit in tmDatabase.NGits)
                     if (nGit.status().valid())
@@ -51,7 +54,8 @@ namespace TeamMentor.CoreLib
         }
         public static API_NGit          git_Push_Library(this API_NGit nGit)
         {
-            var tmServer = TM_Xml_Database.Current.tmServer();
+            var tmFileStorage = TM_FileStorage.Current;
+            var tmServer      = tmFileStorage.tmServer();
             if(tmServer.notNull())
                 if (tmServer.Git.LibraryData_Auto_Push)
                     try
@@ -66,7 +70,8 @@ namespace TeamMentor.CoreLib
         }
         public static API_NGit          git_Pull_Library(this API_NGit nGit)
         {
-            var tmServer = TM_Xml_Database.Current.tmServer();
+            var tmFileStorage = TM_FileStorage.Current;
+            var tmServer = tmFileStorage.tmServer();
             if (tmServer.notNull())
                 if (tmServer.Git.LibraryData_Auto_Pull)
                     try
@@ -97,16 +102,17 @@ namespace TeamMentor.CoreLib
         {
             try
             {
+                var tmFileStorage = TM_FileStorage.Current;
                 if (MiscUtils.online())
                     "[TM_Xml_Database] [handle_UserData_GitLibraries] online, so checking for TM UserData repos to clone".info();
                 else
                     "[TM_Xml_Database] [handle_UserData_GitLibraries] online".info();
-                foreach (var gitLibrary in tmDatabase.UserData.SecretData.Libraries_Git_Repositories)
+                foreach (var gitLibrary in tmFileStorage.UserData.SecretData.Libraries_Git_Repositories)
                 {
                     if (gitLibrary.regEx("Lib_.*.git"))
                     {
                         var libraryName = gitLibrary.split("Lib_").last().remove(".git").replace("_" , " ");
-                        var targetFolder = tmDatabase.Path_XmlLibraries.pathCombine(libraryName);
+                        var targetFolder = tmFileStorage.Path_XmlLibraries.pathCombine(libraryName);
                         if (targetFolder.dirExists().isFalse())
                         {
                             "[TM_Xml_Database] [handle_UserData_GitLibraries] cloning {0}".info(libraryName);

@@ -101,6 +101,10 @@
       <Project>{e08703fb-d33c-4acd-b679-c1be867d6f0c}</Project>
       <Name>TeamMentor.Database</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TeamMentor.FileStorage\TeamMentor.FileStorage.csproj">
+      <Project>{F5ACC621-5930-45E8-9595-39E1758CA7A9}</Project>
+      <Name>TeamMentor.FileStorage</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TeamMentor.Schemas\TeamMentor.Schemas.csproj">
       <Project>{77E93D41-8457-45BD-82A8-37C0DEEC32AD}</Project>
       <Name>TeamMentor.Schemas</Name>

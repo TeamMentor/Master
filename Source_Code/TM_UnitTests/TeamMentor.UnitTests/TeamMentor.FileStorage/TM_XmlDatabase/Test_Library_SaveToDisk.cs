@@ -3,49 +3,39 @@ using FluentSharp.CoreLib.API;
 using NUnit.Framework;
 using FluentSharp.CoreLib;
 using TeamMentor.CoreLib;
-using TeamMentor.Database;
+using TeamMentor.FileStorage;
+using TeamMentor.FileStorage.XmlDatabase;
 using urn.microsoft.guidanceexplorer;
 
 namespace TeamMentor.UnitTests.TM_XmlDatabase
 {
     [TestFixture]//[Assert_Admin]
-    public class Test_Library_SaveToDisk
-    {
-        public TM_Xml_Database tmDatabase;
+    public class Test_Library_SaveToDisk : TM_XmlDatabase_FileStorage
+    {        
                 
-        [SetUp][Assert_Admin]
-        public void Setup()
-        {
-            UserGroup.Admin.assert();
-            //TM_Server.WebRoot = "temp_BaseFolder".tempDir();  // set temp folder for UnitTests
-            tmDatabase = new TM_Xml_Database().useFileStorage()              // with the useFileStorage set to true                        
-                                              .setup();                 // with data loaded
-            UserGroup.None.assert();
-        }
-
         [TearDown]
         public void TearDown()
         {
-            Assert.IsTrue     (tmDatabase.path_XmlDatabase().dirExists());
-            Assert.IsTrue     (tmDatabase.Path_XmlLibraries.dirExists());
-            Assert.IsTrue     (TM_Server.WebRoot.dirExists());   
+            Assert.IsTrue     (tmFileStorage.path_XmlDatabase().dirExists());
+            Assert.IsTrue     (tmFileStorage.path_XmlLibraries().dirExists());
+            Assert.IsTrue     (tmFileStorage.WebRoot.dirExists());   
             
             //delete temp WebRoot
             //Files.deleteFolder(TM_Server.WebRoot, true);
             //Assert.IsFalse    (TM_Server.WebRoot.dirExists());
 
             //delete temp Library data            
-            tmDatabase.path_XmlDatabase().files(true).files_Attribute_ReadOnly_Remove();  // required due to locks on .git files
-            Files.deleteFolder(tmDatabase.path_XmlDatabase(),true);
-            Assert.IsFalse    (tmDatabase.path_XmlDatabase().dirExists());
-            Assert.IsFalse    (tmDatabase.Path_XmlLibraries.dirExists());
+            tmFileStorage.path_XmlDatabase().files(true).files_Attribute_ReadOnly_Remove();  // required due to locks on .git files
+            Files.deleteFolder(tmFileStorage.path_XmlDatabase(),true);
+            Assert.IsFalse    (tmFileStorage.path_XmlDatabase().dirExists());
+            Assert.IsFalse    (tmFileStorage.path_XmlLibraries().dirExists());
         }
 
         [Test]//[Ignore("This fails in TeamCity, since the Temp folder is inside the Websites AppData folder")]
         public void TestUseOfTempFolders()
         {
-            var databaseFolder      = tmDatabase.path_XmlDatabase();
-            var libraryFolder       = tmDatabase.Path_XmlLibraries;
+            var databaseFolder      = tmFileStorage.path_XmlDatabase();
+            var libraryFolder       = tmFileStorage.path_XmlLibraries();
             var appDomainFolder     = AppDomain.CurrentDomain.BaseDirectory;
             
             Assert.IsTrue(TM_Status.Current.TM_Database_Location_Using_AppData  , "in UnitTests, should be inside App_Data folder");
@@ -59,14 +49,14 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         {
             UserGroup.Editor.assert();
             var newLibraryName1 = "Test_new_Library";
-            var testLibrary1    = tmDatabase.new_TmLibrary(newLibraryName1);
+            var testLibrary1    = tmXmlDatabase.new_TmLibrary(newLibraryName1);
 
-            var libraryPath_Null_GuidanceExplorer = tmDatabase.xmlDB_Path_Library_XmlFile(null as guidanceExplorer);
-            var libraryPath_Null_TM_Library       = tmDatabase.xmlDB_Path_Library_XmlFile(null as TM_Library);
-            var libraryPath_Null_EmptyGuid        = tmDatabase.xmlDB_Path_Library_XmlFile(Guid.Empty);
-            var libraryPath_TM_Library            = tmDatabase.xmlDB_Path_Library_XmlFile(testLibrary1);
-            var libraryPath_Library_Id            = tmDatabase.xmlDB_Path_Library_XmlFile(testLibrary1.Id);
-            var libraryPath_GuidanceExplorer      = tmDatabase.xmlDB_Path_Library_XmlFile(testLibrary1.guidanceExplorer(tmDatabase));            
+            var libraryPath_Null_GuidanceExplorer = tmXmlDatabase.xmlDB_Path_Library_XmlFile(null as guidanceExplorer);
+            var libraryPath_Null_TM_Library       = tmXmlDatabase.xmlDB_Path_Library_XmlFile(null as TM_Library);
+            var libraryPath_Null_EmptyGuid        = tmXmlDatabase.xmlDB_Path_Library_XmlFile(Guid.Empty);
+            var libraryPath_TM_Library            = tmXmlDatabase.xmlDB_Path_Library_XmlFile(testLibrary1);
+            var libraryPath_Library_Id            = tmXmlDatabase.xmlDB_Path_Library_XmlFile(testLibrary1.Id);
+            var libraryPath_GuidanceExplorer      = tmXmlDatabase.xmlDB_Path_Library_XmlFile(testLibrary1.guidanceExplorer(tmXmlDatabase));            
 
             Assert.IsNull(libraryPath_Null_GuidanceExplorer , "libraryPath_NullValue");
             Assert.IsNull(libraryPath_Null_TM_Library       , "libraryPath_NullValue");
@@ -89,10 +79,10 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             var newLibraryName1  = "Test_new_Library";
             var newLibraryName2  = "C++";
 
-            var testLibrary1      = tmDatabase.new_TmLibrary     (newLibraryName1);
-            var libraryPath1      = tmDatabase.xmlDB_Path_Library_XmlFile (testLibrary1);
-            var testLibrary2      = tmDatabase.new_TmLibrary     (newLibraryName2);
-            var libraryPath2      = tmDatabase.xmlDB_Path_Library_XmlFile (testLibrary2);
+            var testLibrary1      = tmXmlDatabase.new_TmLibrary     (newLibraryName1);
+            var libraryPath1      = tmXmlDatabase.xmlDB_Path_Library_XmlFile (testLibrary1);
+            var testLibrary2      = tmXmlDatabase.new_TmLibrary     (newLibraryName2);
+            var libraryPath2      = tmXmlDatabase.xmlDB_Path_Library_XmlFile (testLibrary2);
 
             Assert.IsTrue(libraryPath1.fileExists());
             Assert.IsTrue(libraryPath2.fileExists());
@@ -106,18 +96,18 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             var libraryName                 = "library_Name".add_RandomLetters(4);
             var libraryFolderAndXmlFile     = "FolderXml_Name".add_RandomLetters(4);
             var newGuidanceExplorer         = new guidanceExplorer { library = { name = libraryId.str(), caption = libraryName } };
-            var newGuidanceExplorerXmlFile  = tmDatabase.Path_XmlLibraries.pathCombine(@"{0}\{0}.xml".format(libraryFolderAndXmlFile));
+            var newGuidanceExplorerXmlFile  = tmXmlDatabase.path_XmlLibraries().pathCombine(@"{0}\{0}.xml".format(libraryFolderAndXmlFile));
 
             //manually add the new newGuidanceExplorer to the database
-            tmDatabase.GuidanceExplorers_XmlFormat.add(libraryId, newGuidanceExplorer);
+            tmXmlDatabase.GuidanceExplorers_XmlFormat.add(libraryId, newGuidanceExplorer);
             //manually add the new guidanceExplorer Path
-            tmDatabase.GuidanceExplorers_Paths.add(newGuidanceExplorer, newGuidanceExplorerXmlFile);
+            tmXmlDatabase.guidanceExplorers_Paths().add(newGuidanceExplorer, newGuidanceExplorerXmlFile);
             //save guidanceExplorer (which should save in the new path)
-            tmDatabase.xmlDB_Save_GuidanceExplorer(libraryId);
+            tmXmlDatabase.xmlDB_Save_GuidanceExplorer(libraryId);
 
             //get new values
-            var libraryXmlFile = tmDatabase.xmlDB_Path_Library_XmlFile      (libraryId);
-            var libraryRootFolder = tmDatabase.xmlDB_Path_Library_RootFolder(newGuidanceExplorer);
+            var libraryXmlFile = tmXmlDatabase.xmlDB_Path_Library_XmlFile      (libraryId);
+            var libraryRootFolder = tmXmlDatabase.xmlDB_Path_Library_RootFolder(newGuidanceExplorer);
 
             Assert.IsTrue     (newGuidanceExplorerXmlFile.fileExists(), "newGuidanceExplorerXmlFile.fileExists()");
             Assert.IsTrue     (libraryRootFolder.dirExists()          , "libraryRootFolder.dirExists()");
@@ -126,9 +116,9 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
 
             //Now that we have confirmed that the library Name is different from the folder name, we can add an article
             //which was not working ok in 3.3. ( https://github.com/TeamMentor/Master/issues/482 )
-            var newArticle         = tmDatabase.xmlDB_RandomGuidanceItem(libraryId);            
-            var articlesInLibrary  = tmDatabase.getGuidanceItems_from_LibraryFolderOrView(libraryId);
-            var articlePath        = tmDatabase.xmlDB_guidanceItemPath(newArticle.Metadata.Id);
+            var newArticle         = tmXmlDatabase.xmlDB_RandomGuidanceItem(libraryId);            
+            var articlesInLibrary  = tmXmlDatabase.getGuidanceItems_from_LibraryFolderOrView(libraryId);
+            var articlePath        = tmXmlDatabase.xmlDB_guidanceItemPath(newArticle.Metadata.Id);
             var articlePath_Manual = libraryRootFolder.pathCombine(TMConsts.DEFAULT_ARTICLE_FOLDER_NAME).pathCombine("{0}.xml".format(newArticle.Metadata.Id));
 
             Assert.NotNull  (newArticle                  , "newArticle was null");
@@ -149,18 +139,18 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             var newGuidanceExplorer = new guidanceExplorer {library = {name = libraryId.str(), caption = libraryName}};
             
             //manually add the new newGuidanceExplorer to the database
-            tmDatabase.GuidanceExplorers_XmlFormat.add(libraryId, newGuidanceExplorer);
-            newGuidanceExplorer.xmlDB_Save_GuidanceExplorer(tmDatabase);
+            tmXmlDatabase.GuidanceExplorers_XmlFormat.add(libraryId, newGuidanceExplorer);
+            newGuidanceExplorer.xmlDB_Save_GuidanceExplorer(tmXmlDatabase);
 
-            var tmLibrary = tmDatabase.tmLibrary(libraryId);
+            var tmLibrary = tmXmlDatabase.tmLibrary(libraryId);
 
             Assert.IsNotNull(tmLibrary, "tmLibrary was null for libraryId: {0}".format(libraryId));
             Assert.AreEqual(tmLibrary.Id, libraryId, "tmLibrary.Id");
             Assert.AreEqual(tmLibrary.Caption, libraryName, "tmLibrary.Caption");
 
-            var libraryXml_Via_LibraryId        = tmDatabase.xmlDB_Path_Library_XmlFile(libraryId);
-            var libraryXml_Via_GuidanceExplorer = tmDatabase.xmlDB_Path_Library_XmlFile(newGuidanceExplorer);
-            var libraryRootFolder               = tmDatabase.xmlDB_Path_Library_RootFolder(newGuidanceExplorer);
+            var libraryXml_Via_LibraryId        = tmXmlDatabase.xmlDB_Path_Library_XmlFile(libraryId);
+            var libraryXml_Via_GuidanceExplorer = tmXmlDatabase.xmlDB_Path_Library_XmlFile(newGuidanceExplorer);
+            var libraryRootFolder               = tmXmlDatabase.xmlDB_Path_Library_RootFolder(newGuidanceExplorer);
 
             Assert.IsTrue(libraryXml_Via_LibraryId.valid(), "libraryXml_Via_LibraryId");
             Assert.AreEqual(libraryXml_Via_LibraryId, libraryXml_Via_GuidanceExplorer, "libraryXml_Via_LibraryId and libraryXml_Via_GuidanceExplorer");

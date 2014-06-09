@@ -5,6 +5,7 @@ using System.Text;
 using FluentSharp.CoreLib;
 using NUnit.Framework;
 using TeamMentor.CoreLib;
+using TeamMentor.FileStorage;
 
 namespace TeamMentor.UnitTests
 {
@@ -13,7 +14,7 @@ namespace TeamMentor.UnitTests
         public TM_UserData      userData;
 
         public TM_UserData_InMemory()
-        {
+        {            
             userData = new TM_UserData();
 
             1.set_DEFAULT_PBKDF2_INTERACTIONS();                    // improve performance of tests that create users            

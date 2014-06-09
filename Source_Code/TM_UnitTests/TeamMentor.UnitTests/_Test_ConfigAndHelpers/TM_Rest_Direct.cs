@@ -1,5 +1,6 @@
 ﻿using FluentSharp.CoreLib;
 using TeamMentor.CoreLib;
+using TeamMentor.FileStorage;
 using TeamMentor.UserData;
 
 namespace TeamMentor.UnitTests.REST
@@ -8,6 +9,8 @@ namespace TeamMentor.UnitTests.REST
     public class TM_Rest_Direct
     {
         public TM_Xml_Database      tmXmlDatabase;
+        public TM_UserData          tmUserData;
+
         public API_Moq_HttpContext  moq_HttpContext;
         public TM_REST              TmRest				{ get; set; }
                 
@@ -27,7 +30,10 @@ namespace TeamMentor.UnitTests.REST
 
             tmXmlDatabase = new TM_Xml_Database();
             tmXmlDatabase.setup();
-            tmXmlDatabase.UserData.createDefaultAdminUser();
+
+            tmUserData = new TM_UserData();
+            tmUserData.createDefaultAdminUser();
+
         }
     }
 }

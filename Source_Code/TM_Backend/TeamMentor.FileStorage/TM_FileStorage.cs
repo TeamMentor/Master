@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TeamMentor.CoreLib;
+using urn.microsoft.guidanceexplorer;
 
 namespace TeamMentor.FileStorage
 {
@@ -15,21 +16,39 @@ namespace TeamMentor.FileStorage
         public TM_Xml_Database       TMXmlDatabase  { get;set;}
         public string WebRoot                       { get; set; }        
         public string Path_XmlDatabase              { get; set; }
-        public string Path_UserData 	            { get; set; }	                
+        public string Path_UserData 	            { get; set; }	                        
+        public string Path_XmlLibraries 	        { get; set; }   
+        public Dictionary<guidanceExplorer, string>	    GuidanceExplorers_Paths     { get; set; }	 
+        public Dictionary<Guid, string>				    GuidanceItems_FileMappings	{ get; set; }			
 
         //public bool   UseFileStorage                 { get; set; }
 
-        public TM_FileStorage()
+        public TM_FileStorage() : this(true)
         {
-            Current = this.set_WebRoot()
-                          .set_Path_XmlDatabase()
-                          .set_Path_UserData()
-                          .set_Path_XmlLibraries()
-                          .tmServer_Load()
-                          
-                          .load_UserData()
-                          .load_Libraries();
             
+        }
+        public TM_FileStorage(bool loadData)
+        {
+            Server                      = new TM_Server();
+            TMXmlDatabase               = new TM_Xml_Database();
+            UserData                    = new TM_UserData();
+            GuidanceExplorers_Paths     = new Dictionary<guidanceExplorer,string>();
+            GuidanceItems_FileMappings  = new Dictionary<Guid,string>();
+            if (loadData)
+            {  
+                Current = this;
+                
+                this.set_WebRoot();                
+                    this.set_Path_XmlDatabase();                
+                    this.set_Path_UserData();
+                    this.set_Path_XmlLibraries();                
+                    this.tmServer_Load();                         
+                    this.load_UserData();                
+                    this.load_Libraries();
+
+                this.hook_Events_TM_UserData();
+                this.hook_Events_TM_Xml_Database();
+            }            
         }
     }
 }

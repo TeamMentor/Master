@@ -63,7 +63,7 @@ namespace TeamMentor.CoreLib
             };
 
             teamMentor_Article.setHashes();
-            teamMentor_Article.htmlEncode();            //encode contents
+            //teamMentor_Article.htmlEncode();            //encode contents
             return teamMentor_Article;
         }
     }

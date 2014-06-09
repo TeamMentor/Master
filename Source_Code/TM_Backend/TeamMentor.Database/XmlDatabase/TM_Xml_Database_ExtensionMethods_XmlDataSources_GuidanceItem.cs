@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentSharp.CoreLib;
 using FluentSharp.CoreLib.API;
+using TeamMentor.XmlDatabase;
 
 namespace TeamMentor.CoreLib
 {
@@ -96,19 +97,11 @@ namespace TeamMentor.CoreLib
                 return false;
             
             article.update_Cache_GuidanceItems(tmDatabase);                             // add it to in Memory cache                
-            
-            if(tmDatabase.usingFileStorage())                                             // save to disk
-            {
-                var guidanceXmlPath = tmDatabase.getXmlFilePathForGuidanceId(article.Metadata.Id, libraryId);
-                if (guidanceXmlPath.valid())
-                {
-                    "Saving GuidanceItem {0} to {1}".info(article.Metadata.Id, guidanceXmlPath);
-                    article.saveAs(guidanceXmlPath);
-                    return guidanceXmlPath.fileExists();
-                }
-            }
+
+            tmDatabase.Events.Article_Saved.raise(article);                             // TODO find way to identify save issues (like the return value of the save action)
+
             return true;
-        }        
+        }                
         [EditArticles]  public static bool xmlDB_Delete_GuidanceItems(this TM_Xml_Database tmDatabase, List<Guid> guidanceItemIds)
         {
             if (guidanceItemIds.isNull())
@@ -119,37 +112,17 @@ namespace TeamMentor.CoreLib
                     result = false;            
             return result;
         }
-        [EditArticles]  public static bool xmlDB_Delete_GuidanceItem(this TM_Xml_Database tmDatabase, Guid guidanceItemId)
-        {
-            if (guidanceItemId ==  Guid.Empty)
-                return false;
-            var guidanceItemXmlPath = tmDatabase.removeGuidanceItemFileMapping(guidanceItemId);
-            "removing GuidanceItem with Id:{0} located at {1}".info(guidanceItemId, guidanceItemXmlPath);
-            if (guidanceItemXmlPath.valid())				
-                Files.deleteFile(guidanceItemXmlPath);
-            if (TM_Xml_Database.Current.Cached_GuidanceItems.hasKey(guidanceItemId))
-                TM_Xml_Database.Current.Cached_GuidanceItems.Remove(guidanceItemId);
-
-            tmDatabase.queue_Save_GuidanceItemsCache();
-
-            //TM_Xml_Database.mapGuidanceItemsViews();
-            return true;
-        }                
-        [ReadArticles]  public static string xmlDB_guidanceItemXml(this TM_Xml_Database tmDatabase, Guid guidanceItemId)
-        {
-            if (guidanceItemId ==  Guid.Empty)
-                return null;
-            var guidanceXmlPath = tmDatabase.getXmlFilePathForGuidanceId(guidanceItemId);
-            return guidanceXmlPath.fileContents();//.xmlFormat();
-        }
-
-        [Admin]	        public static string xmlDB_guidanceItemPath(this TM_Xml_Database tmDatabase, Guid guidanceItemId)
-        {
-            if (guidanceItemId !=  Guid.Empty)                
-                if (TM_Xml_Database.Current.GuidanceItems_FileMappings.hasKey(guidanceItemId))                            
-                    return TM_Xml_Database.Current.GuidanceItems_FileMappings[guidanceItemId];            
-            return null;
-        }
+        [EditArticles]  public static bool xmlDB_Delete_GuidanceItem(this TM_Xml_Database tmDatabase, Guid articleId)
+        {            
+            if (articleId !=  Guid.Empty && tmDatabase.Cached_GuidanceItems.hasKey(articleId))
+            {                                                 
+                var tmArticle = tmDatabase.Cached_GuidanceItems[articleId];         // get article object from Cache
+                tmDatabase.Cached_GuidanceItems.Remove(articleId);                  // remove article from cache
+                tmDatabase.Events.Article_Deleted.raise(tmArticle);                 // raise event
+                return true;
+            }
+            return false;
+        }                        
 
         public static Guid xmlBD_resolveDirectMapping(this TM_Xml_Database tmDatabase, string mapping)
         {

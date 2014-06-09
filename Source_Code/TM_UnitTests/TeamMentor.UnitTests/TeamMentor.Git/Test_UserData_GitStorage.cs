@@ -4,15 +4,15 @@ using FluentSharp.Git.APIs;
 using NUnit.Framework;
 using FluentSharp.CoreLib;
 using TeamMentor.CoreLib;
+using TeamMentor.FileStorage;
 using TeamMentor.UserData;
 
 namespace TeamMentor.UnitTests.TM_XmlDatabase
 {
     [Ignore("TO FIX (Refactor Side Effect")]
     [TestFixture]//[Ignore("Git User doesn't happen on LocalRequests")]
-    public class Test_UserData_GitStorage
-    {   
-        public TM_UserData     userData;
+    public class Test_UserData_GitStorage : TM_XmlDatabase_FileStorage
+    {           
         public TM_UserData_Git userDataGit;
         public API_NGit     nGit;
 
@@ -21,21 +21,17 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         {
             TM_Xml_Database.Current = null;
             //create temp repo with no Admin user
-            userData = new TM_UserData()
-                                {
-                                    Path_UserData = "nonGitRepo".tempDir()
-                                };                                     
-            userData.useFileStorage();
+            
             userDataGit= new TM_UserData_Git(userData);  
-            userData.Server.setDefaultData();
+            //userData.Server.setDefaultData();
 
-            Assert.NotNull(userDataGit.UserData.Server.userData_Config());
+            Assert.NotNull(tmFileStorage.Server.userData_Config());
 
             userDataGit.syncWithGit() ;                     
 
             UserGroup.Admin.assert();
             userData .createDefaultAdminUser();
-            userData.users_Load();
+            //userData.users_Load();
             UserGroup.None.assert();
             userDataGit.triggerGitCommit();
 
@@ -45,25 +41,24 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
 
             Assert.NotNull(userData);
             Assert.IsNull(TM_Xml_Database.Current);
-            Assert.IsNull(TM_Xml_Database.Current.tmServer());
+            Assert.IsNull(tmFileStorage.tmServer());
             //Assert.IsNull(TM_Xml_Database.Current.tmServer().userData().Remote_GitPath);
         }
 
         [Test][Assert_Admin]
         //[Ignore("Fix when Git support for libraries is fixed")]
         public void CheckNonGitRepoDoesntCommit()
-        {
-            var tmServer = userData.Server;
+        {            
 
             Assert.NotNull(tmServer);           // need a better way to expose the Git user settings to the UserData 
 
             tmServer.Git.UserData_Git_Enabled = false;
 
-            userData.Path_UserData = "nonGitRepo".tempDir();            
+            tmFileStorage.Path_UserData = "nonGitRepo".tempDir();            
 
             Assert.IsTrue   (userData.usingFileStorage());
-            Assert.IsTrue   (userData.Path_UserData.dirExists());            
-            Assert.IsEmpty  (userData.Path_UserData.files());
+            Assert.IsTrue   (userData.path_UserData().dirExists());            
+            Assert.IsEmpty  (userData.path_UserData().files());
 
             //userData.loadData()
             //        .newUser();
@@ -71,9 +66,9 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
 
             var users = userData.tmUsers();
             Assert.IsNotEmpty(users, "There should be at least one user (the admin)");
-            Assert.IsNotEmpty(userData.Path_UserData.files());                        
-            Assert.AreEqual  (2,userData.Path_UserData.files(true).size());
-            Assert.IsFalse   (userData.Path_UserData.isGitRepository());
+            Assert.IsNotEmpty(userData.path_UserData().files());                        
+            Assert.AreEqual  (2,userData.path_UserData().files(true).size());
+            Assert.IsFalse   (userData.path_UserData().isGitRepository());
 
             tmServer.Git.UserData_Git_Enabled = true;
         }
@@ -111,8 +106,6 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         }*/
         [Test][Assert_Admin] public void CheckGitRepoDoesCommit_OnNewUser()
         {
-            var tmServer = TM_Xml_Database.Current.tmServer();
-
             Assert.NotNull(tmServer);
             Assert.IsTrue(tmServer.Git.UserData_Git_Enabled);
             
@@ -130,8 +123,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Assert.IsEmpty    (nGit.status());
         }
         [Test][Assert_Admin] public void CheckGitRepo_DoesNotCommit_OnUserSave()
-        {
-            var tmServer = TM_Xml_Database.Current.tmServer();
+        {            
             Assert.NotNull(tmServer);
             Assert.IsTrue(tmServer.Git.UserData_Git_Enabled);
              
@@ -139,7 +131,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             var headBeforeSave  = nGit.head();
             
             tmUser.FirstName    = "New Name";
-            tmUser.saveTmUser   ();
+            tmFileStorage.saveTmUser   (tmUser);
             
             var headAfterSave   = nGit.head();
 

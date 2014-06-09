@@ -9,7 +9,7 @@ namespace TeamMentor.FileStorage
     {        
         public static string          secretData_Location(this TM_FileStorage tmFileStorage)
         {
-            return tmFileStorage.path_userData()
+            return tmFileStorage.path_UserData()
                                 .pathCombine("TMSecretData.config");
         }        
         public static TM_FileStorage     secretData_Load(this TM_FileStorage tmFileStorage)
@@ -28,7 +28,7 @@ namespace TeamMentor.FileStorage
             {
                 userData.SecretData = null;
                 "[TM_UserData][TM_UserData] UsingFileStorage was set, but could not map secretData_Location".error();
-                return userData;
+                return tmFileStorage;
             }
 
             if (secretDataFile.fileExists())

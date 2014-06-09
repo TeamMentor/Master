@@ -38,7 +38,7 @@ namespace TeamMentor.CoreLib
                 {
                     userData.TMUsers.remove(tmUser);
                     
-                    tmUser.event_TmUser_Deleted();
+                    userData.Events.User_Deleted.raise(tmUser);                    
 
                     userData.logTBotActivity("User Delete","{0} - {1}".format(tmUser.UserName, tmUser.UserID));
                     return true;
@@ -89,7 +89,7 @@ namespace TeamMentor.CoreLib
                 tmUser.AccountStatus.UserEnabled         = user.UserEnabled;
                 tmUser.AccountStatus.AccountNeverExpires = user.AccountNeverExpires; 
                 
-                tmUser.event_TmUser_Changed();      //tmUser.saveTmUser();                
+                tmUser.event_User_Updated();      //tmUser.saveTmUser();                
                             
                 tmUser.logUserActivity("User Updated",""); // so that we don't get this log entry on new user creation
 

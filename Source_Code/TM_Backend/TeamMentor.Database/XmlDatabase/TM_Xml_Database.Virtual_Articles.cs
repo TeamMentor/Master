@@ -7,11 +7,7 @@ namespace TeamMentor.CoreLib
 {
     public static class TM_Xml_Database_VirtualArticle_ExtensionMethods
 	{
-		public static string getVirtualArticlesFile(this TM_Xml_Database tmXmlDatabase)
-		{
-			//return TM_Xml_Database.Path_XmlDatabase.pathCombine("Virtual_Articles.xml");
-			return TM_Xml_Database.Current.Path_XmlLibraries.pathCombine("Virtual_Articles.xml");
-		}
+		
 		public static VirtualArticleAction add_Mapping_VirtualId(this TM_Xml_Database tmXmlDatabase, Guid id, Guid virtualId)
 		{
 			var virtualAction = new VirtualArticleAction
@@ -73,35 +69,18 @@ namespace TeamMentor.CoreLib
 			}
 			return false;
 		}
-		public static List<VirtualArticleAction> loadVirtualArticles(this TM_Xml_Database tmXmlDatabase)
-		{
-			var virtualArticlesFile = tmXmlDatabase.getVirtualArticlesFile();
-			if (virtualArticlesFile.fileExists())
-				return virtualArticlesFile.load<List<VirtualArticleAction>>();
-			return new List<VirtualArticleAction>();
-		}
+		
 		public static TM_Xml_Database saveVirtualArticles(this TM_Xml_Database tmXmlDatabase)
 		{
-			var virtualArticlesFile = tmXmlDatabase.getVirtualArticlesFile();
-
-			var virtualArticles = tmXmlDatabase.getVirtualArticles().Values.toList();
-			virtualArticles.saveAs(virtualArticlesFile);
+            tmXmlDatabase.Events.VirtualArticles_Saved.raise();
+			
 			return tmXmlDatabase;
 		}
-		public static TM_Xml_Database mapVirtualArticles(this TM_Xml_Database tmXmlDatabase)
-		{
-            var virtualArticles = tmXmlDatabase.VirtualArticles;
-            virtualArticles.Clear();
-
-			var virtualArticles_ToMap = tmXmlDatabase.loadVirtualArticles();
-			foreach (var virtualArticle in virtualArticles_ToMap)
-				virtualArticles.add(virtualArticle.Id, virtualArticle);
-			return tmXmlDatabase;
-		}
+		
 		public static Dictionary<Guid, VirtualArticleAction> getVirtualArticles(this TM_Xml_Database tmXmlDatabase)
 		{
 			if (TM_Xml_Database.Current.VirtualArticles.isNull())
-				tmXmlDatabase.mapVirtualArticles();
+                tmXmlDatabase.Events.VirtualArticles_Loaded.raise();				
 			return TM_Xml_Database.Current.VirtualArticles;
 
 		}

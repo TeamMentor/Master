@@ -28,9 +28,9 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             user_reader  = "reader";
             user_test    = "test";
 
-            var id_Editor = tmXmlDatabase.UserData.newUser(user_editor, default_Pwd, "", (int) UserGroup.Editor);
-            var id_Reader = tmXmlDatabase.UserData.newUser(user_reader, default_Pwd, "", (int) UserGroup.Reader);
-            var id_Test   = tmXmlDatabase.UserData.newUser(user_test, default_Pwd );
+            var id_Editor = userData.newUser(user_editor, default_Pwd, "", (int) UserGroup.Editor);
+            var id_Reader = userData.newUser(user_reader, default_Pwd, "", (int) UserGroup.Reader);
+            var id_Test   = userData.newUser(user_test, default_Pwd );
 
             Assert.Greater(id_Editor, 0, "id_Editor");
             Assert.Greater(id_Reader, 0, "id_Reader");
@@ -59,7 +59,7 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             //create test user
             var user = "test_user_aaa";
             var pwd = "bb";						
-            var newUser = tmXmlDatabase.UserData.newUser(user, pwd);
+            var newUser = userData.newUser(user, pwd);
             
 
             //test on tmWebServices
