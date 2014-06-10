@@ -235,6 +235,37 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
 
 
         }
+
+         [Test] public void set_Path_SiteData()
+        {
+            var tmFileStorage = new TM_FileStorage();  
+            var tmXmlDatabase = tmFileStorage.TMXmlDatabase;
+
+            var expectedPath  = tmXmlDatabase.path_XmlDatabase().pathCombine(TMConsts.TM_SERVER_DEFAULT_NAME_SITEDATA);
+            
+            tmFileStorage.set_Path_SiteData();            
+            
+            Assert.AreEqual(tmFileStorage.Path_SiteData, expectedPath);
+            Assert.True    (tmFileStorage.Path_SiteData.dirExists());
+
+           
+            // try with a different Name value
+            var tempName = 10.randomLetters(); 
+            tmFileStorage.Server.siteData_Config().Name = tempName;
+            tmFileStorage.set_Path_SiteData();            
+            Assert.IsTrue(tmFileStorage.Path_SiteData.contains(tempName));            
+            
+            //check bad data handling
+            tmFileStorage.Server.siteData_Config().Name = null;
+            tmFileStorage.set_Path_SiteData();                  
+            Assert.IsTrue(tmFileStorage.Path_SiteData.contains(TMConsts.TM_SERVER_DEFAULT_NAME_SITEDATA));
+            
+
+            tmFileStorage.Server.siteData_Config().Name = "aaa:bbb"; // will fail to create the SiteData folder and force memory mode
+            tmFileStorage.set_Path_SiteData();                              
+            Assert.IsNull    (tmFileStorage.Path_SiteData);
+            
+        }
         [Test] public void set_Path_XmlDatabase__In_Memory()
         {
             var tmFileStorage = new TM_FileStorage(false);  

@@ -18,6 +18,12 @@ namespace TeamMentor.FileStorage
                 return tmFileStorage.Path_UserData;
             return null;
         }
+        public static string            path_SiteData(this TM_FileStorage tmFileStorage)
+        {
+            if (tmFileStorage.notNull())
+                return tmFileStorage.Path_SiteData;
+            return null;
+        }
         public static TM_FileStorage    users_Load   (this TM_FileStorage tmFileStorage)
         {            
             var userData = tmFileStorage.UserData;
@@ -86,6 +92,39 @@ namespace TeamMentor.FileStorage
             
             return tmFileStorage;
         }
+        [Admin] public static TM_FileStorage   set_Path_SiteData    (this TM_FileStorage tmFileStorage)
+        {           
+            
+            var siteData_Config = tmFileStorage.tmServer().siteData_Config();
+
+            if (siteData_Config.isNull() || siteData_Config.Name.notValid())
+            { 
+                "[TM_FileStorage][set_Path_SiteData] set_Path_SiteData or its name was null or empty, so going to to use the default value of: {0}".error(TMConsts.TM_SERVER_DEFAULT_NAME_USERDATA);
+                siteData_Config = new TM_Server.Config()
+                                    {
+                                        Name = TMConsts.TM_SERVER_DEFAULT_NAME_SITEDATA
+                                    };
+            }
+
+            var xmlDatabasePath = tmFileStorage.path_XmlDatabase();                    // all files are relative to this path
+                                
+            var siteDataPath    = xmlDatabasePath.pathCombine(siteData_Config.Name); // use the userData_Config.Name as the name of the folder to put UserData files
+                
+            siteDataPath.createDir();                                                // create if needed
+            if (siteDataPath.dirExists())
+            {
+                tmFileStorage.Path_SiteData = siteDataPath.createDir();
+                "[TM_FileStorage] [set_Path_SiteData] TMConfig.Current.UserDataPath: {0}".debug(siteDataPath);
+            }
+            else
+            {
+                tmFileStorage.Path_SiteData = null;
+                "[TM_FileStorage] [set_Path_SiteData] failed to create the folder: {0}".error(siteDataPath);                
+            }                                                
+            
+            return tmFileStorage;
+        }
+       
         [Admin] public static TM_FileStorage   load_UserData       (this TM_FileStorage tmFileStorage)         
         {
                         

@@ -16,7 +16,8 @@ namespace TeamMentor.FileStorage
         public TM_Xml_Database       TMXmlDatabase  { get;set;}
         public string WebRoot                       { get; set; }        
         public string Path_XmlDatabase              { get; set; }
-        public string Path_UserData 	            { get; set; }	                        
+        public string Path_UserData 	            { get; set; }	   
+        public string Path_SiteData 	            { get; set; }	                        
         public string Path_XmlLibraries 	        { get; set; }   
         public Dictionary<guidanceExplorer, string>	    GuidanceExplorers_Paths     { get; set; }	 
         public Dictionary<Guid, string>				    GuidanceItems_FileMappings	{ get; set; }			
@@ -41,7 +42,8 @@ namespace TeamMentor.FileStorage
                 this.set_WebRoot()              // defines where the web root will exist               
                     .set_Path_XmlDatabase()     // the WebRoot is used to calculate the root of the XML Database         
                     .tmServer_Load()            // the TM_Server is loaded from the root of the Path_XmlDatabase
-                    .set_Path_UserData()        // the Path_XmlDatabase is set based on info from TM_Server and Path_XmlDatabase
+                    .set_Path_UserData()        // the Path_UserData are Path_SiteData are both
+                    .set_Path_SiteData()        //     set based on info from TM_Server and Path_XmlDatabase
                     .tmConfig_Load()            // tm TM_Config is loaded from the root of the UserData
                     .set_Path_XmlLibraries()    // the Path_XmlLibraries is set based on info from TM_Config and Path_XmlDatabase                                          
                     .load_UserData()            // after all is configured we can load the users

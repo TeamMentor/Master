@@ -82,6 +82,15 @@ namespace FluentSharp.CoreLib
             //Response
             var outputStream = new MemoryStream();
             var redirectTarget = "";
+            var contentType = "";
+            MockResponse.SetupGet(response => response.ContentType  ).Returns(()=>
+            {
+                return contentType;
+            });
+            MockResponse.SetupSet(response => response.ContentType  ).Callback((string value)=>
+            {
+                contentType = value;
+            });
             MockResponse.SetupGet(response => response.Cache        ).Returns(new Mock<HttpCachePolicyBase>().Object);
             MockResponse.Setup   (response => response.Cookies      ).Returns(new HttpCookieCollection()); 	     	
             MockResponse.Setup   (response => response.Headers      ).Returns(new NameValueCollection());
@@ -107,23 +116,24 @@ namespace FluentSharp.CoreLib
     }
     public class MockHttpRequest : HttpRequestBase
     {
-        private string _userHostAddress = "127.0.0.1";        
-        private string _contentType     = "";        
-        private Uri    _url             = "http://localhost".uri();
-        private Stream _inputStream     =  new MemoryStream();  
+        public string _userHostAddress = "127.0.0.1";        
+        public string _contentType     = "";        
+        public Uri    _url             = "http://localhost".uri();
+        public Stream _inputStream     =  new MemoryStream();  
+        public string _physicalPath    = null;
 
-        private HttpCookieCollection _cookies           = new HttpCookieCollection();
-        private NameValueCollection  _queryString       = new NameValueCollection();
-        private NameValueCollection  _form              = new NameValueCollection();
-        private NameValueCollection  _headers           = new NameValueCollection();
-        private NameValueCollection  _serverVariables   = new NameValueCollection();
+        public HttpCookieCollection _cookies           = new HttpCookieCollection();
+        public NameValueCollection  _queryString       = new NameValueCollection();
+        public NameValueCollection  _form              = new NameValueCollection();
+        public NameValueCollection  _headers           = new NameValueCollection();
+        public NameValueCollection  _serverVariables   = new NameValueCollection();
 
-        public override string  ContentType         {  get {   return _contentType;                                         } }
+        public override string  ContentType         {  get {   return _contentType;           } set { _contentType = value; } }
         public override bool    IsLocal             {  get {   return _url.Host == "localhost" || _url.Host=="127.0.0.1";   } }
         public override bool    IsSecureConnection  {  get {   return _url.Scheme.lower() == "https";                       } }
         public override Uri     Url                 {  get {   return _url;                                                 } }
         public override string  UserHostAddress     {  get {   return _userHostAddress;                                     } }
-        public override string  PhysicalPath        {  get {   return null;                                                 } }
+        public override string  PhysicalPath        {  get {   return _physicalPath;                                                 } }
 
         public override Stream                InputStream     {  get {   return _inputStream;       } }
         public override HttpCookieCollection  Cookies         {  get {   return _cookies;           } }

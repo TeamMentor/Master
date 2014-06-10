@@ -34,6 +34,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamMentor.AspNet", "TM_Bac
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamMentor.FileStorage", "TM_Backend\TeamMentor.FileStorage\TeamMentor.FileStorage.csproj", "{F5ACC621-5930-45E8-9595-39E1758CA7A9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamMentor.Markdown", "TM_Backend\TeamMentor.Markdown\TeamMentor.Markdown.csproj", "{24B43F80-C6F2-4EC9-985A-28DDA363AA2C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamMentor.Mcv", "TM_Backend\TeamMentor.Mcv\TeamMentor.Mcv.csproj", "{E2AD0169-D8C2-4289-8814-5B0AC507B267}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamMentor.SiteData", "TM_Backend\TeamMentor.SiteData\TeamMentor.SiteData.csproj", "{3D6CFD55-9A23-4210-B004-705EACD96EB5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -154,6 +160,36 @@ Global
 		{F5ACC621-5930-45E8-9595-39E1758CA7A9}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{F5ACC621-5930-45E8-9595-39E1758CA7A9}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{F5ACC621-5930-45E8-9595-39E1758CA7A9}.Release|x86.ActiveCfg = Release|Any CPU
+		{24B43F80-C6F2-4EC9-985A-28DDA363AA2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24B43F80-C6F2-4EC9-985A-28DDA363AA2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24B43F80-C6F2-4EC9-985A-28DDA363AA2C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{24B43F80-C6F2-4EC9-985A-28DDA363AA2C}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{24B43F80-C6F2-4EC9-985A-28DDA363AA2C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{24B43F80-C6F2-4EC9-985A-28DDA363AA2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24B43F80-C6F2-4EC9-985A-28DDA363AA2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24B43F80-C6F2-4EC9-985A-28DDA363AA2C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{24B43F80-C6F2-4EC9-985A-28DDA363AA2C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{24B43F80-C6F2-4EC9-985A-28DDA363AA2C}.Release|x86.ActiveCfg = Release|Any CPU
+		{E2AD0169-D8C2-4289-8814-5B0AC507B267}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2AD0169-D8C2-4289-8814-5B0AC507B267}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2AD0169-D8C2-4289-8814-5B0AC507B267}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{E2AD0169-D8C2-4289-8814-5B0AC507B267}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{E2AD0169-D8C2-4289-8814-5B0AC507B267}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E2AD0169-D8C2-4289-8814-5B0AC507B267}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2AD0169-D8C2-4289-8814-5B0AC507B267}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2AD0169-D8C2-4289-8814-5B0AC507B267}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{E2AD0169-D8C2-4289-8814-5B0AC507B267}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{E2AD0169-D8C2-4289-8814-5B0AC507B267}.Release|x86.ActiveCfg = Release|Any CPU
+		{3D6CFD55-9A23-4210-B004-705EACD96EB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D6CFD55-9A23-4210-B004-705EACD96EB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D6CFD55-9A23-4210-B004-705EACD96EB5}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{3D6CFD55-9A23-4210-B004-705EACD96EB5}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{3D6CFD55-9A23-4210-B004-705EACD96EB5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3D6CFD55-9A23-4210-B004-705EACD96EB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D6CFD55-9A23-4210-B004-705EACD96EB5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D6CFD55-9A23-4210-B004-705EACD96EB5}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{3D6CFD55-9A23-4210-B004-705EACD96EB5}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{3D6CFD55-9A23-4210-B004-705EACD96EB5}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -170,6 +206,9 @@ Global
 		{AF783625-F52F-4558-B64C-AC982324A072} = {2F2BDCAC-53AC-4BCE-8398-0A03C50A9D89}
 		{5B02BD8E-BF90-4182-80A6-41842494399D} = {2F2BDCAC-53AC-4BCE-8398-0A03C50A9D89}
 		{F5ACC621-5930-45E8-9595-39E1758CA7A9} = {2F2BDCAC-53AC-4BCE-8398-0A03C50A9D89}
+		{24B43F80-C6F2-4EC9-985A-28DDA363AA2C} = {2F2BDCAC-53AC-4BCE-8398-0A03C50A9D89}
+		{E2AD0169-D8C2-4289-8814-5B0AC507B267} = {2F2BDCAC-53AC-4BCE-8398-0A03C50A9D89}
+		{3D6CFD55-9A23-4210-B004-705EACD96EB5} = {2F2BDCAC-53AC-4BCE-8398-0A03C50A9D89}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35

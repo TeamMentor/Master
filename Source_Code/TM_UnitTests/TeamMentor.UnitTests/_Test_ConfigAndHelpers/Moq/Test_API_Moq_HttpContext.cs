@@ -121,6 +121,16 @@ namespace TeamMentor.UnitTests
             context.request_Write_Clear();
 
         }
+        [Test] public void HttpResponse_Variables()
+        {            
+            
+            // check ContentType
+            Assert.IsEmpty(response.ContentType);
+            var contentType = 10.randomLetters();
+            response.ContentType = contentType;
+            Assert.AreEqual(response.ContentType, contentType);
+        }
+        
         [Test] public void HttpResponse_InputStream()
         {
             var testWrite1 = 10.randomString();

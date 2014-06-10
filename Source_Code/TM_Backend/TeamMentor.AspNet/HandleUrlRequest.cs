@@ -5,6 +5,7 @@ using FluentSharp.CoreLib;
 using Microsoft.Security.Application;
 using System.IO;
 using System.Security;
+using TeamMentor.SiteData;
 
 namespace TeamMentor.CoreLib
 {
@@ -132,40 +133,52 @@ namespace TeamMentor.CoreLib
             return false;
         }
 
-        public void handleUrlRewrite(Uri uri)
+        public bool handleUrlRewrite(Uri uri)
         {
             try
-            {
-                if (shouldSkipCurrentRequest() || request.Url == null)
-                    return;                
-                var absolutePath = uri.notNull() ? uri.AbsolutePath : request.Url.AbsolutePath;
-                
-                //if (absolutePath.starts("/html_pages/Gui/")) //deal with the cases where there is an relative link inside the html_pages/Gui viewer page
-                //    absolutePath = absolutePath.replace("/html_pages/Gui/", "/article/");   
+            {                       
+                var absolutePath = uri.notNull() ? uri.AbsolutePath 
+                                                 : request.Url.notNull() 
+                                                    ? request.Url.AbsolutePath
+                                                    : null;
 
-                handleUrlRewrite(absolutePath);
+                if (absolutePath.isNull())
+                    return false;
+                if (absolutePath.siteData_Handle_VirtualPath())
+                    return true;
+                if (shouldSkipCurrentRequest())
+                    return true;                
+                               
+
+                return handleUrlRewrite(absolutePath);
             }
             catch (Exception ex)
             {
-                if (ex.Message != "Thread was being aborted.")                    
+                if (ex.Message != "Thread was being aborted.")
+                { 
                     ex.logWithStackTrace("[at handleUrlRewrite]");
+                    return true;
+                }
+                return false;
             }
         }
-        public void handleUrlRewrite(string path)
+
+        
+        public bool handleUrlRewrite(string path)
         {
+            if (path.isNull())
+                return false;
             if(path.starts("/"))
                 path = path.removeFirstChar();
             var splitedPath = path.split("/");
             if (splitedPath.size() > 0)
             { 
-                var action = splitedPath.shift();   // extract first element               
-                //var data = splitedPath.join("/");   // rejoin the rest
+                var action = splitedPath.shift();   // extract first element                               
                 var data = String.Join(",", splitedPath.ToArray());
-                if (action.valid())
-                    handleRequest(action, data);
-                //if (action.valid() && handleRequest(action, data))    //if we did process it , end the request here
-                //    endResponse();                    
-            }                        
+                if (action.valid())                
+                    return handleRequest(action, data);                
+            }     
+            return false;       
         }
         public bool shouldSkipCurrentRequest()
         {
@@ -200,14 +213,12 @@ namespace TeamMentor.CoreLib
         }
 
         //All mappings are here
-        public void handleRequest(string action , string data)
+        public bool handleRequest(string action , string data)
         {            
             try
             {
                 tmWebServices = new TM_WebServices(true);       // enable webservices access (and security checks with CSRF disabled)
-                
-                //tmWebServices.tmXmlDatabase.logTBotActivity("Handle Request","/{0}/{1}".format(action,data.replace(",","/")));
-
+                                
                 action = Encoder.HtmlEncode(action);
                 data = Encoder.HtmlEncode(data).replace("%20"," ");                                
 
@@ -328,8 +339,11 @@ namespace TeamMentor.CoreLib
                     redirect_Login_AccessDenied(originalUrl);              
                 }
                 if (ex.Message != "Thread was being aborted.")                
-                    ex.logWithStackTrace("at handleRequest");                                    
-            }                                                		
+                    ex.logWithStackTrace("at handleRequest");    
+                else
+                    return true;                                                                  
+            }   
+            return false;                                 		
         }
                 
         //Virtual Articles
