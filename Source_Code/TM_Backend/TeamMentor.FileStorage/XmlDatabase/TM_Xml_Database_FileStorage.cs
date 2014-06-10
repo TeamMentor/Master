@@ -37,11 +37,11 @@ namespace TeamMentor.FileStorage
         [Admin] public static TM_FileStorage    set_Path_XmlLibraries(this TM_FileStorage tmFileStorage)
         {
             var tmXmlDatabase = tmFileStorage.tmXmlDatabase();
-            if (tmXmlDatabase.isNull())
+            var tmConfig        = TMConfig.Current;                
+            if (tmXmlDatabase.isNull() || tmConfig.isNull())
                 return tmFileStorage;
             try
-            {
-                var tmConfig        = TMConfig.Current;
+            {                
                 var xmlDatabasePath = tmFileStorage.path_XmlDatabase();  // tmConfig.xmlDatabasePath();
                 var libraryPath     = tmConfig.TMSetup.XmlLibrariesPath;
 

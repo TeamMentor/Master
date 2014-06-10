@@ -13,7 +13,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
     public class Test_Library_SaveToDisk : TM_XmlDatabase_FileStorage
     {        
                 
-        [TearDown]
+        [TestFixtureTearDown]
         public void TearDown()
         {
             Assert.IsTrue     (tmFileStorage.path_XmlDatabase().dirExists());

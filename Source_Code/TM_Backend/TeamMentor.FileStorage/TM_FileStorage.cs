@@ -38,16 +38,17 @@ namespace TeamMentor.FileStorage
             {  
                 Current = this;
                 
-                this.set_WebRoot();                
-                    this.set_Path_XmlDatabase();                
-                    this.set_Path_UserData();
-                    this.set_Path_XmlLibraries();                
-                    this.tmServer_Load();                         
-                    this.load_UserData();                
-                    this.load_Libraries();
+                this.set_WebRoot()              // defines where the web root will exist               
+                    .set_Path_XmlDatabase()     // the WebRoot is used to calculate the root of the XML Database         
+                    .tmServer_Load()            // the TM_Server is loaded from the root of the Path_XmlDatabase
+                    .set_Path_UserData()        // the Path_XmlDatabase is set based on info from TM_Server and Path_XmlDatabase
+                    .tmConfig_Load()            // tm TM_Config is loaded from the root of the UserData
+                    .set_Path_XmlLibraries()    // the Path_XmlLibraries is set based on info from TM_Config and Path_XmlDatabase                                          
+                    .load_UserData()            // after all is configured we can load the users
+                    .load_Libraries();          // and libraries
 
-                this.hook_Events_TM_UserData();
-                this.hook_Events_TM_Xml_Database();
+                this.hook_Events_TM_UserData()          // hook events to FileStorage handlers  so that actions on TeamMentor.Database 
+                    .hook_Events_TM_Xml_Database();     // and TeamMentor.UserData are saved or deleted from disk
             }            
         }
     }

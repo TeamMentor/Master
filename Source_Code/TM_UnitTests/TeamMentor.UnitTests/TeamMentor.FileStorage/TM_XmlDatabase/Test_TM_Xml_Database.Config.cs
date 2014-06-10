@@ -364,19 +364,35 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         [Test] public void set_Path_XmlLibraries()
         {
             var tmFileStorage = new TM_FileStorage(false);  
-            var tmXmlDatabase = tmFileStorage.TMXmlDatabase;
             
-            tmFileStorage.set_WebRoot()
-                         .set_Path_XmlDatabase()
-                         .set_Path_UserData()
+            TMConfig.Current = null;
+
+            //this is the sequence that needs to be loaded in order to have a Path for Xml Libraries
+            tmFileStorage.set_WebRoot()                 
+                         .set_Path_XmlDatabase()        
+                         .tmServer_Load()               
+                         .set_Path_UserData()           //  
+                         .tmConfig_Load()               // 
                          .set_Path_XmlLibraries();
 
             Assert.NotNull(tmFileStorage.path_XmlDatabase());
             Assert.NotNull(tmFileStorage.path_XmlLibraries());
             Assert.IsTrue (tmFileStorage.path_XmlDatabase().dirExists());
             Assert.IsTrue (tmFileStorage.path_XmlLibraries().dirExists());
+            Assert.NotNull(TMConfig.Current);
 
+            //test nulls
+            tmFileStorage.Path_XmlLibraries =null;  
+
+            //in the scenarios below the tmFileStorage.Path_XmlLibraries should not be set
+            TMConfig.Current.TMSetup = null;           
+            tmFileStorage.set_Path_XmlLibraries();
+            TMConfig.Current = null;
+            tmFileStorage.set_Path_XmlLibraries();
+            Assert.IsNull(tmFileStorage.Path_XmlLibraries);
+            
             //tmXmlDatabase.delete_Database();
+            //TMConfig.Current = new TMConfig();
             
         }
         [Test]
