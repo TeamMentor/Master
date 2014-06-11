@@ -4,11 +4,13 @@
 @using FluentSharp.CoreLib
 @using FluentSharp.CoreLib.API
 @using TeamMentor.CoreLib
+@using TeamMentor.FileStorage
 
 @{
     var tmRest    = (TM_REST) @Model;
     var session   = HttpContextFactory.Session;
     var log_Lines = tmRest.Admin_Logs().trim().fix_CRLF().lines().removeEmpty().reverse(); 
+    var tmFileStorage = TM_FileStorage.Current;
 }
 
 <h4>Debug Info</h4>
@@ -17,9 +19,9 @@ Firebase Offline Logs: <a href="Firebase_Offline_Activities">Activites</a>, <a h
 <h5>TM Config values</h5>        
     <ul>
         <pre>
-<strong>TM_Xml_Database.Current.path_XmlDatabase()</strong>          : @TM_Xml_Database.Current.path_XmlDatabase()
-<strong>TM_Xml_Database.Current.Path_XmlLibraries</strong>         : @TM_Xml_Database.Current.Path_XmlLibraries
-<strong>TM_UserData.Current.Path_UserData</strong>                 : @TM_UserData.Current.Path_UserData
+<strong>TM_Xml_Database.Current.path_XmlDatabase()</strong>        : @tmFileStorage.path_XmlDatabase()
+<strong>TM_Xml_Database.Current.Path_XmlLibraries</strong>         : @tmFileStorage.Path_XmlLibraries
+<strong>TM_UserData.Current.Path_UserData</strong>                 : @tmFileStorage.Path_UserData
 <strong>AppDomain.CurrentDomain.BaseDirectory</strong>             : @AppDomain.CurrentDomain.BaseDirectory
 <strong>O2 Temp Dir</strong>                                       : @PublicDI.config.O2TempDir<br /></pre>
     </ul>        

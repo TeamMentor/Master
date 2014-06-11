@@ -9,10 +9,12 @@
 @using NGit.Revwalk
 @using NGit.Treewalk;
 @using NGit.Treewalk.Filter
+@using TeamMentor.FileStorage
 
 @{
     
     int max;
+    TM_FileStorage tmFileStorage;
     TM_UserData userData;
     string userDataLocation;
     string userStatus;
@@ -21,15 +23,16 @@
     try
     {
         max = 5;
+        tmFileStorage = TM_FileStorage.Current;
         userData = TM_UserData.Current;
-        if (userData.isNull())
+        if (userData.isNull() || tmFileStorage.isNull())
         {
             @:UserData object not available, stopping execution
             return;
         }
-        userDataLocation = userData.Path_UserData;
-        userStatus  = userDataLocation.isGitRepository() ? userDataLocation.git_Open().status()  : "(folder is not a repository)";        
-        xmlLibraryLocation = TM_Xml_Database.Current.Path_XmlLibraries;
+        userDataLocation = tmFileStorage.Path_UserData;
+        userStatus  = userDataLocation.isGitRepository() ? userDataLocation.git_Open().status()  : "(folder is not a repository)";
+        xmlLibraryLocation = tmFileStorage.Path_XmlLibraries;
         libraryStatus = xmlLibraryLocation.isGitRepository() ? xmlLibraryLocation.git_Open().status() : "(folder is not a repository)";
 
     }
