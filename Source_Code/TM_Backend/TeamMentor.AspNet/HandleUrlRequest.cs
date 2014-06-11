@@ -77,7 +77,9 @@ namespace TeamMentor.CoreLib
             {
                 var fixedPath = request.Url.AbsolutePath.replace("/html_pages/Gui/", "/article/");
                     //deal with the cases where there is an relative link inside the html_pages/Gui viewer page
-                handleUrlRewrite(fixedPath);
+
+                 if (fixedPath.siteData_Handle_VirtualPath().isFalse())
+                    handleUrlRewrite(fixedPath);
             }
         }
         public void routeRequestUrl()

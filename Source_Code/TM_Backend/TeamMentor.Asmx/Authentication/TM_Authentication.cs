@@ -67,9 +67,12 @@ namespace TeamMentor.CoreLib
         {
             get
             {
-                var authValue =  HttpContextFactory.Request.QueryString[TMConsts.AUTH_TOKEN_REQUEST_VAR_NAME];
-                if (authValue.notNull() && authValue.isGuid())
-                    return authValue.guid();
+                if (HttpContextFactory.Request.notNull())
+                { 
+                    var authValue =  HttpContextFactory.Request.QueryString[TMConsts.AUTH_TOKEN_REQUEST_VAR_NAME];
+                    if (authValue.notNull() && authValue.isGuid())
+                        return authValue.guid();
+                }
                 return Guid.Empty;
             }   
         }
@@ -118,7 +121,7 @@ namespace TeamMentor.CoreLib
                 if (sessionID != Guid.Empty)
                     Disable_Csrf_Check = true;
             }            
-            else if (TMConfig.Current.WindowsAuthentication.Enabled)
+            else if (TMConfig.Current.windowsAuthentication_Enabled())
                 if (sessionID == Guid.Empty || sessionID.validSession() == false)
                 {                
             
@@ -137,10 +140,10 @@ namespace TeamMentor.CoreLib
             }            
             if (userGroup == UserGroup.None)
             {
-                if (TMConfig.Current.TMSecurity.Show_ContentToAnonymousUsers)
+                if (TMConfig.Current.show_ContentToAnonymousUsers())
                     UserGroup.Reader.setThreadPrincipalWithRoles();
                 else 
-                    if (TMConfig.Current.TMSecurity.Show_LibraryToAnonymousUsers)
+                    if (TMConfig.Current.show_LibraryToAnonymousUsers())
                         UserGroup.Anonymous.setThreadPrincipalWithRoles();
                     else 
                         UserGroup.None.setThreadPrincipalWithRoles();

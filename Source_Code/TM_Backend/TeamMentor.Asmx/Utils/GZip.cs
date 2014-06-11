@@ -9,18 +9,20 @@ namespace TeamMentor.CoreLib
 {
     public class GZip
     {
-        public static void setGZipCompression_forAjaxRequests()
+        public static bool setGZipCompression_forAjaxRequests()
         {
-            setGZipCompression_forAjaxRequests(HttpContextFactory.Request, HttpContextFactory.Response);
+            return setGZipCompression_forAjaxRequests(HttpContextFactory.Request, HttpContextFactory.Response);
         }
 
-        public static void setGZipCompression_forAjaxRequests(HttpRequestBase request, HttpResponseBase response)			
+        public static bool setGZipCompression_forAjaxRequests(HttpRequestBase request, HttpResponseBase response)			
         {
+            if (request.isNull() || response.isNull())
+                return false;
             //based on code from http://geekswithblogs.net/rashid/archive/2007/09/15/Compress-Asp.net-Ajax-Web-Service-Response---Save-Bandwidth.aspx
-            if (TMConfig.Current.TMSetup.EnableGZipForWebServices.isFalse())
-                return;
+            if (TMConfig.Current.enableGZipForWebServices().isFalse())
+                return false;
             if (request.Url.isNull() || request.Url.AbsolutePath.starts("/rest")) //disabled it for rest requests
-                return;
+                return false;
             try
             {
                 if (request.ContentType.lower().starts(new List<string> {"text/xml", "application/json"}))
@@ -35,12 +37,14 @@ namespace TeamMentor.CoreLib
                         {
                             response.Filter = new GZipStream(response.Filter, CompressionMode.Compress);
                             response.AddHeader("Content-encoding", "gzip");
+                            return true;
                         }
-                        else if (acceptEncoding.Contains("deflate"))
+                        if (acceptEncoding.Contains("deflate"))
                         {
                             response.Filter = new DeflateStream(response.Filter, CompressionMode.Compress);
                             response.AddHeader("Content-encoding", "deflate");
-                        }
+                            return true;
+                        }                        
                     }
                 }
 
@@ -49,6 +53,7 @@ namespace TeamMentor.CoreLib
             {
                 ex.log("in enableGZipCompression_forAjaxRequests");
             }
+            return false;
         }
 
     }

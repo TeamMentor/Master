@@ -120,7 +120,7 @@ namespace TeamMentor.UserData
             tmUser.SecretData.PasswordHash = tmUser.createPasswordHash(password);            
             userData.TMUsers.Add(tmUser);            
         
-            if (TMConfig.Current.windowsAuth().isFalse())                
+            if (TMConfig.Current.windowsAuthentication_Enabled().isFalse())                
                 SendEmails.SendNewUserEmails("New user created: {0}".format(tmUser.UserName), tmUser);
             
             tmUser.logUserActivity("New User",  "");    // this will trigger tmUser.event_User_Updated();

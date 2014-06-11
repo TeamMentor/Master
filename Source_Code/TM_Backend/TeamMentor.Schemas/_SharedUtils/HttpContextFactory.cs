@@ -7,7 +7,7 @@ namespace TeamMentor.CoreLib
 {
     public class HttpContextFactory
     {
-        private static HttpContextBase _context; 		
+        public static HttpContextBase _context; 		
 
         public static HttpContextBase       Current
         {

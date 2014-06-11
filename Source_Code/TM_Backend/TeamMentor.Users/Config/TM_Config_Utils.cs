@@ -31,12 +31,32 @@ namespace TeamMentor.CoreLib
                 return tmConfig.TMSecurity.EmailAdmin_On_NewUsers;
             return false;
         }
-        public static bool  windowsAuth(this TMConfig tmConfig)
+        public static bool  windowsAuthentication_Enabled(this TMConfig tmConfig)
         {
-            if (tmConfig.notNull() && tmConfig.TMSecurity.notNull())
-                return tmConfig.WindowsAuthentication.Enabled;
+            if (tmConfig.notNull() && tmConfig.WindowsAuthentication.notNull())
+                return tmConfig.WindowsAuthentication.Enabled;                               
             return false;
         }
+
+        public static bool  show_ContentToAnonymousUsers(this TMConfig tmConfig)
+        {
+            if (tmConfig.notNull() && tmConfig.TMSecurity.notNull())
+                return tmConfig.TMSecurity.Show_ContentToAnonymousUsers;                               
+            return false;
+        }
+        public static bool  show_LibraryToAnonymousUsers(this TMConfig tmConfig)
+        {
+            if (tmConfig.notNull() && tmConfig.TMSecurity.notNull())
+                return tmConfig.TMSecurity.Show_LibraryToAnonymousUsers;                               
+            return false;
+        }
+        public static bool  enableGZipForWebServices(this TMConfig tmConfig)
+        {
+            if (tmConfig.notNull() && tmConfig.TMSetup.notNull())
+                return tmConfig.TMSetup.EnableGZipForWebServices;                               
+            return false;
+        }        
+        //
         
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System;
+using System.Web;
 using FluentSharp.CoreLib;
 using TeamMentor.CoreLib;
 using TeamMentor.FileStorage;
@@ -13,8 +14,10 @@ namespace TeamMentor.SiteData
         }
         public static bool siteData_Handle_VirtualPath(this TM_FileStorage tmFileStorage, string virtualPath)
         {
-            if (tmFileStorage.isNull())
+            if (tmFileStorage.isNull() || virtualPath.isNull())
                 return false;
+
+            temp_SwapSiteDataUtil(virtualPath.removeFirstChar());
 
             var pathSiteData  = tmFileStorage.path_SiteData();
             if (pathSiteData.isNull())
@@ -33,6 +36,35 @@ namespace TeamMentor.SiteData
             if (virtualPath == "siteData")
                 return true;
             return false;            
+        }
+
+        //temp method to help debugging (move to REST API)
+        private static void temp_SwapSiteDataUtil(string virtualPath)
+        {
+            try
+            {
+                var tmFileStorage = TM_FileStorage.Current;
+                var tmServer      = tmFileStorage.tmServer();
+                var siteConfig    = tmServer.siteData_Config(virtualPath);
+
+                var pathSiteData_before = tmFileStorage.path_SiteData();
+
+                if (siteConfig.isNull())
+                    return;
+                tmServer.active_SiteData(siteConfig);
+
+                var pathSiteData_after = tmFileStorage.path_SiteData();
+                if (pathSiteData_before == pathSiteData_after)
+                    tmFileStorage.set_Path_SiteData();
+
+                var pathSiteData_after2 = tmFileStorage.path_SiteData();
+
+                HttpContextFactory.Response.Redirect("/");
+            }
+            catch(Exception ex)
+            {
+                ex.log();
+            }
         }
 
         public static bool siteData_WriteFileToResponseStream(this string fullPath)

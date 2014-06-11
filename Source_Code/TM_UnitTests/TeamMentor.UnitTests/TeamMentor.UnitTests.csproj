@@ -88,7 +88,8 @@
   <ItemGroup>
     <Compile Include="CoreLib\Authentication\Test_RoleBaseSecurity.cs" />
     <Compile Include="CoreLib\Authentication\Test_TeamMentorUserManagement_TMUser.cs" />
-    <Compile Include="CoreLib\Authentication\Test_TM_Authentication.cs" />
+    <Compile Include="TeamMentor.Aspx\Test_GZip.cs" />
+    <Compile Include="TeamMentor.Aspx\Test_TM_Authentication.cs" />
     <Compile Include="CoreLib\Authentication\Test_TokenAuthentication.cs" />
     <Compile Include="CoreLib\Authentication\Test_UserRoleBaseSecurity.cs" />
     <Compile Include="CoreLib\Authentication\Test_WindowsAuthentication.cs" />
@@ -101,6 +102,7 @@
     <Compile Include="CoreLib\Schemas\Test_TM_Config.cs" />
     <Compile Include="CoreLib\Schemas\Test_TM_SecretData.cs" />
     <Compile Include="CoreLib\Schemas\Test_TM_Status.cs" />
+    <Compile Include="TeamMentor.Aspx\Test_TM_Authentication__with_No_State.cs" />
     <Compile Include="TeamMentor.FileStorage\Test_TM_FileStorage.cs" />
     <Compile Include="TeamMentor.FileStorage\Test_TM_Server_FileStorage.cs" />
     <Compile Include="TeamMentor.FileStorage\Test_TM_UserData.cs" />
