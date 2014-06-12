@@ -32,9 +32,19 @@
                                                         {								
                                                             jQuery("#selectedGuidanceItemTitle").html(title + "<hr/>");							    
                                                             //var code = "<h1 id='article_title'>{0}</h1><hr/><br/>{1}".format(title, html.d);
-                                                            var code = html.d;
-                                                            jQuery("#selectedGuidanceItem").html(code);	
-                                                            TM.Gui.GuidanceItemViewer.handleMediaWikiText();																
+                                                           var code = html.d;
+														   if(code!=null)
+														   {
+                                                              if (code .indexOf("<div id ='tm_datatype_wikitext'>") > -1)
+                                                             {
+                                                                wikiText = code .substring(32, code.length-6);
+                                                                TM.Gui.GuidanceItemViewer.handleMediaWikiText(wikiText );	
+                                                             }
+                                                               else
+                                                            	 jQuery("#selectedGuidanceItem").html(code);	
+                                                            }else 		
+                                                                  jQuery("#selectedGuidanceItem").html(code);	
+													 
                                                             fixGuidanceItemLinks();
                                                             $("#selectedGuidanceItemBorder").animate({ scrollTop: 0 }, 'fast');
                                                                 
@@ -76,23 +86,18 @@
                                                             }
                                                           })
                                                 }
-            ,   handleMediaWikiText         : function()
-                                                {        
-                                                    var dataType = "html";
-                                                    var wikiTextDiv = $("#selectedGuidanceItem #tm_datatype_wikitext")
-                                                    
-                                                    if (wikiTextDiv.length ===1)              
-                                                      {
-                                                            var wikiText = wikiTextDiv.html();
-                                                            wikiText = wikiText.replace(/&lt;/g, "<")
-                                                                               .replace(/&gt;/g, ">")
-                                                                               .replace(/&amp;/g, "&");  // deal with double encoding WikiText issue
-                                                            var targetDiv = document.createElement('div');        
-                                                            new creole().parse(targetDiv,wikiText )   
-                                                            var html = targetDiv.innerHTML ;
+            ,   handleMediaWikiText         : function(wikiText)
+                                                {     var wikiTextDiv = $("#selectedGuidanceItem")
+                                                      wikiText = wikiText.replace(/&lt;/g, "<")
+                                                                         .replace(/&gt;/g, ">")
+                                                                         .replace(/&amp;/g, "&")  // deal with double encoding WikiText issue
+																		 .replace(/&quot;/g,'"')
+																		 .replace(/&#39;/g,"'");
+                                                      var targetDiv = document.createElement('div');        
+                                                      new creole().parse(targetDiv,wikiText )   
+                                                      var html = targetDiv.innerHTML ;
               
-                                                            wikiTextDiv.html(html);      
-                                                     }
+                                                      wikiTextDiv.html(html);  
                                                 }
             ,	addLink_OpenGIInNewWindow	: function()
                                                 {						
