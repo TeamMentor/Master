@@ -55,6 +55,7 @@ namespace TeamMentor.CoreLib
 
             TM_REST.SetRouteTable();	// Set REST routes            // TODO add Application_Start event
 
+            MVC5.MapDefaultRoutes();    // Map MVC 5 routes
             TrackingApplication.saveLog();
              
             UserGroup.None.assert();
@@ -90,7 +91,8 @@ namespace TeamMentor.CoreLib
             "[TM][Application_Error]: {0}".error(lastError);
             TrackingApplication.saveLog();
             if (TMConfig.Current.TMSetup.ShowDotNetDebugErrors.isFalse())
-                 HttpContextFactory.Response.Redirect(TMConsts.DEFAULT_ERROR_PAGE_REDIRECT);            
+                 HttpContextFactory.Server.Transfer(TMConsts.DEFAULT_ERROR_PAGE_REDIRECT);            
+     //            HttpContextFactory.Response.Redirect(TMConsts.DEFAULT_ERROR_PAGE_REDIRECT);            
         }           
         public void Application_BeginRequest()
         {            

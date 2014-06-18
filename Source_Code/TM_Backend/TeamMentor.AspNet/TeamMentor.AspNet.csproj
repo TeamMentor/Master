@@ -82,6 +82,14 @@
       <Project>{f5acc621-5930-45e8-9595-39e1758ca7a9}</Project>
       <Name>TeamMentor.FileStorage</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TeamMentor.Markdown\TeamMentor.Markdown.csproj">
+      <Project>{24b43f80-c6f2-4ec9-985a-28dda363aa2c}</Project>
+      <Name>TeamMentor.Markdown</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TeamMentor.Mcv\TeamMentor.Mcv.csproj">
+      <Project>{E2AD0169-D8C2-4289-8814-5B0AC507B267}</Project>
+      <Name>TeamMentor.Mcv</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TeamMentor.Rest\TeamMentor.Rest.csproj">
       <Project>{5A89734A-4BA1-4076-A5BA-584223C05F56}</Project>
       <Name>TeamMentor.Rest</Name>

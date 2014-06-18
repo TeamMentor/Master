@@ -67,6 +67,13 @@
     <Reference Include="FluentSharp.NGit, Version=5.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\FluentSharp.NGit.5.3.121\lib\net40\FluentSharp.NGit.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="NGit">
+      <HintPath>..\..\TM_Backend\TeamMentor.Git\NGit_Dlls\NGit.dll</HintPath>
+    </Reference>
     <Reference Include="PostSharp, Version=2.1.0.0, Culture=neutral, PublicKeyToken=b13fd38b8f9c99d7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\PostSharp.3.2.9-alpha\lib\net20\PostSharp.dll</HintPath>
@@ -75,6 +82,9 @@
     <Reference Include="RazorEngine, Version=3.4.1.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\RazorEngine.3.4.1\lib\net45\RazorEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="Sharpen">
+      <HintPath>..\..\TM_Backend\TeamMentor.Git\NGit_Dlls\Sharpen.dll</HintPath>
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -88,12 +98,32 @@
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.1.2\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.Mvc.5.1.2\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Microsoft.AspNet.Razor.3.1.2\lib\net45\System.Web.Razor.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.Services" />
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.1.2\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.1.2\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.1.2\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
@@ -276,6 +306,16 @@
     <Content Include="Javascript\jQuery\jquery.textarea.js" />
     <Content Include="Javascript\jQuery\jquery-1.8.1.min.js" />
     <Content Include="Javascript\jsCreole\creole.min.js" />
+    <Content Include="Javascript\MarkdownDeep\MarkdownDeep License.txt" />
+    <Content Include="Javascript\MarkdownDeep\MarkdownDeep Quick Reference.txt" />
+    <Content Include="Javascript\MarkdownDeep\MarkdownDeep.css" />
+    <Content Include="Javascript\MarkdownDeep\MarkdownDeepLib.min.js" />
+    <Content Include="Javascript\MarkdownDeep\mdd_ajax_loader.gif" />
+    <Content Include="Javascript\MarkdownDeep\mdd_gripper.png" />
+    <Content Include="Javascript\MarkdownDeep\mdd_help.htm" />
+    <Content Include="Javascript\MarkdownDeep\mdd_modal_background.png" />
+    <Content Include="Javascript\MarkdownDeep\mdd_styles.css" />
+    <Content Include="Javascript\MarkdownDeep\mdd_toolbar.png" />
     <Content Include="Javascript\TBot\tbot.js" />
     <Content Include="Javascript\TM.ControlPanel\TM.ControlPanel.AdminTasks.js" />
     <Content Include="Javascript\TM.Gui\AppliedFIlters.DataManipulation.js" />
@@ -725,6 +765,10 @@
     <Content Include="TBot\Views\Json\Json_UserTags.cshtml" />
     <Content Include="TBot\Users\Analysis\All_Users_Tags.cshtml" />
     <Content Include="TBot\NGit\GitStatus.cshtml" />
+    <Content Include="MVC\Views\Loggin_Needed.cshtml" />
+    <Content Include="MVC\Views\Markdown_Editor.cshtml" />
+    <Content Include="MVC\Views\MarkDown_Viewer.cshtml" />
+    <Content Include="MVC\Views\_Layout.cshtml" />
     <None Include="Properties\PublishProfiles\3.4 Publish.pubxml" />
     <None Include="TBot_Monitor\lib\bootstrap\fonts\glyphicons-halflings-regular.eot" />
     <None Include="TBot_Monitor\lib\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
@@ -738,6 +782,14 @@
     <Content Include="TBot\Views\GitUserData\FileContents.cshtml" />
     <Content Include="TBot\Views\GitUserData\FileDiff.cshtml" />
     <Content Include="TBot\Views\GitUserData\Repository.cshtml" />
+    <Content Include="Views\GitUserData\File.cshtml" />
+    <Content Include="Views\GitUserData\FileContents.cshtml" />
+    <Content Include="Views\GitUserData\FileDiff.cshtml" />
+    <Content Include="Views\GitUserData\Repository.cshtml" />
+    <Content Include="Views\Info\Index.cshtml" />
+    <Content Include="Views\_Layouts\Layout_AngularJS.cshtml" />
+    <Content Include="Views\_Layouts\Layout_Repositories.cshtml" />
+    <Content Include="Views\Web.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -761,12 +813,31 @@
       <Project>{e08703fb-d33c-4acd-b679-c1be867d6f0c}</Project>
       <Name>TeamMentor.Database</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\TM_Backend\TeamMentor.FileStorage\TeamMentor.FileStorage.csproj">
+      <Project>{F5ACC621-5930-45E8-9595-39E1758CA7A9}</Project>
+      <Name>TeamMentor.FileStorage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\TM_Backend\TeamMentor.Git\TeamMentor.Git.csproj">
+      <Project>{6F12D85C-EC73-4C85-8F96-B6D97604E2EF}</Project>
+      <Name>TeamMentor.Git</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\TM_Backend\TeamMentor.Markdown\TeamMentor.Markdown.csproj">
+      <Project>{24b43f80-c6f2-4ec9-985a-28dda363aa2c}</Project>
+      <Name>TeamMentor.Markdown</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\TM_Backend\TeamMentor.Schemas\TeamMentor.Schemas.csproj">
+      <Project>{77E93D41-8457-45BD-82A8-37C0DEEC32AD}</Project>
+      <Name>TeamMentor.Schemas</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\TM_Backend\TeamMentor.Users\TeamMentor.Users.csproj">
       <Project>{5844d933-6fb7-4717-ae60-85d96f2efa29}</Project>
       <Name>TeamMentor.Users</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MVC\Controllers\GitLibraryController.cs" />
+    <Compile Include="MVC\Controllers\GitUserDataController.cs" />
+    <Compile Include="MVC\Controllers\MarkdownController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <PropertyGroup>

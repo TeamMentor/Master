@@ -110,6 +110,11 @@ TM.WebServices.WS_Utils.getTime = function (callback)
         TM.WebServices.Helper.invoke_TM_WebService('GetTime', {}, callback);
     }
 
+TM.WebServices.WS_Utils.markdownTransform = function (markdownText, callback)
+    {
+        var params = { markdownText: markdownText };
+        TM.WebServices.Helper.invoke_TM_WebService("MarkdownTransform", params, callback);
+    };
 
 //**********************	
 //TM.WebServices.WS_Data

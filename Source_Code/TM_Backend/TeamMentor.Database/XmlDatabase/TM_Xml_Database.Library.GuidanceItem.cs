@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using FluentSharp.CoreLib;
+using TeamMentor.Markdown;
 
 namespace TeamMentor.CoreLib
 {
@@ -49,7 +50,10 @@ namespace TeamMentor.CoreLib
                         return articleContent.sanitizeHtmlContent();
                     }
                 case "wikitext":
-                    return "<div id ='tm_datatype_wikitext'>{0}</div>".format(articleContent.htmlEncode());
+                    return articleContent.wikiText_Transform();
+                    //return "<div id ='tm_datatype_wikitext'>{0}</div>".format(articleContent.htmlEncode());
+                case "markdown":
+                    return articleContent.markdown_Transform();
                 default:
                     return articleContent;
             }

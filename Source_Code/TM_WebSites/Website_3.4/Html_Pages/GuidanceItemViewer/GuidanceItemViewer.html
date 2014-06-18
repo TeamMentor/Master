@@ -89,15 +89,22 @@
                             "TechnologyLabel"   .$().html(loadedGuidanceItem.Metadata.Technology);
                             "GuidanceTypeLabel" .$().html(loadedGuidanceItem.Metadata.Type);
                         }
-                        if (loadedGuidanceItem.Content.DataType.toLowerCase() === "wikitext")
+                        if (loadedGuidanceItem.Content.DataType.toLowerCase() === "markdown") {
+                            showGuidanceItemMarkdown(loadedGuidanceItem.Content.Data_Json);
+                            $("#Edit_WYSIWYG").hide();
+                            $("#Edit_Source").hide();
+                        }
+                        else if (loadedGuidanceItem.Content.DataType.toLowerCase() === "wikitext")
                             {
                                 showGuidanceItemWikiText(loadedGuidanceItem.Content.Data_Json);
-                                $("#Edit_WYSIWYG").html("Edit WikiText")
+                                $("#Edit_WYSIWYG").hide();
+                                $("#Edit_Source").html("Edit WikiText").show();                                
                             }
                             else
                             {
                                 showGuidanceItemHtml(loadedGuidanceItem.Content.Data_Json);
-                                $("#Edit_WYSIWYG").html("Edit WYSIWYG")						    
+                                $("#Edit_WYSIWYG").html("Edit WYSIWYG").show();
+                                $("#Edit_Source").html("Edit HTML").show();
                             }
                         if (TM.Gui.CurrentUser.isEditor())
                         {					        
@@ -145,10 +152,15 @@
                 
                 };
     
+                showGuidanceItemMarkdown = function (markdownText)
+                {
+                    TM.WebServices.WS_Utils.markdownTransform(markdownText, showGuidanceItemHtml);
+                };
+
                 showGuidanceItemWikiText = function(wikiText)
                 {
                     var targetDiv = document.createElement('div');        
-                    new creole().parse(targetDiv,wikiText )   
+                    new creole().parse(targetDiv, wikiText);
                     var html = targetDiv.innerHTML ;
                     showGuidanceItemHtml(html);
                 }
@@ -210,7 +222,10 @@
                                     getPagesHistory_by_PageId(guidanceId, showSlider);
                                 }
 
-        
+                var openGuidanceItemMarkdown = function ()
+                {
+                    document.location = "/Markdown/Editor?articleId=" + guidanceId;
+                }
                   
                 var openGuidanceItemEditor = function()
                 {
@@ -360,8 +375,9 @@
         </div>
         <div class="EditButtons">      
             <div id="links">
+                <a href="javascript:openGuidanceItemMarkdown()" class="IVButton" id="Edit_Markdown">MarkDown Editor</a>
                 <a href="javascript:openGuidanceItemEditor()" class="IVButton" id="Edit_WYSIWYG">Edit WYSIWYG</a>
-                <a href="javascript:openGuidanceItemNotepad()" class="IVButton">Edit Source</a>
+                <a href="javascript:openGuidanceItemNotepad()" class="IVButton" id="Edit_Source">Edit Source</a>
             </div>					
         </div>		
         <div class="ItemContent" id="itemContent">			 	

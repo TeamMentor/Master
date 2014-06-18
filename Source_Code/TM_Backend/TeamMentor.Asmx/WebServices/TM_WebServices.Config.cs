@@ -20,7 +20,7 @@ namespace TeamMentor.CoreLib
         [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_GetDatabasePath()		{	UserGroup.Admin.demand(); return tmXmlDatabase.path_XmlDatabase();	                            }
         [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_GetLibraryPath()		{	UserGroup.Admin.demand(); return tmXmlDatabase.path_XmlLibraries();	                            }		
         [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_GetUserDataPath()		{	UserGroup.Admin.demand(); return tmFileStorage.Path_UserData;	                                }		
-        [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_ReloadData()			{	UserGroup.Admin.demand(); guiObjectsCacheOk = false; return  tmXmlDatabase.reloadData();        }
+        [WebMethod(EnableSession = true)] [Admin]	            public string XmlDatabase_ReloadData()			{	UserGroup.Admin.demand(); guiObjectsCacheOk = false; return  tmFileStorage.reloadData();        }
         [WebMethod(EnableSession = true)] [Admin]	            public bool   XmlDatabase_IsUsingFileStorage()	{	UserGroup.Admin.demand(); return tmFileStorage != null;                                         }       
         
         [WebMethod(EnableSession = true)] [Admin]	            public bool   XmlDatabase_ImportLibrary_fromZipFile(string pathToZipFile, string unzipPassword) { return TM_Xml_Database.Current.xmlDB_Libraries_ImportFromZip(pathToZipFile, unzipPassword); }                                                                                                                                     

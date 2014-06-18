@@ -9,9 +9,11 @@ namespace TeamMentor.CoreLib
 {
     public static class TM_Xml_Database_Git_ExtensionMethods
     {
-        public static TM_Xml_Database   setupGitSupport(this TM_Xml_Database_Git tmDatabase)
+        public static TM_Xml_Database   setupGitSupport(this TM_Xml_Database_Git tmDatabaseGit)
         {
             var tmFileStorage = TM_FileStorage.Current;
+            var tmDatabase = tmFileStorage.TMXmlDatabase;
+
             var gitConfig = tmFileStorage.tmServer().Git;
 
             if (gitConfig.LibraryData_Git_Enabled)
@@ -32,16 +34,16 @@ namespace TeamMentor.CoreLib
                             nGit.git_Pull_Library();
                             nGit.git_Push_Library();
                         }                                                
-                        tmDatabase.NGits.Add(nGit);
+                        tmDatabaseGit.NGits.Add(nGit);
                     }
                     else
                         "[TM_Xml_Database] [setupGitSupport]  library {0} is currently not a git repo".info(libraryPath.folderName());
                 }
-                tmDatabase.triggerGitCommit();                
+                tmDatabaseGit.triggerGitCommit();                
             }
             return tmDatabase;        
         }
-        public static TM_Xml_Database   triggerGitCommit (this TM_Xml_Database_Git tmDatabase)
+        public static TM_Xml_Database_Git   triggerGitCommit (this TM_Xml_Database_Git tmDatabase)
         {
             var tmFileStorage = TM_FileStorage.Current;
             if (tmFileStorage.tmServer().Git.LibraryData_Git_Enabled)

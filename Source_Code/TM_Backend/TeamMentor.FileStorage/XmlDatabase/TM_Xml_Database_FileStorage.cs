@@ -88,12 +88,14 @@ namespace TeamMentor.FileStorage
                                     tmDatabase.tmGuidanceItems().size());
             return stats;                                                
         }
-        [Admin] public static string            reloadData(this TM_Xml_Database tmDatabase)               
+        [Admin] public static string            reloadData(this TM_FileStorage tmFileStorage)               
         {
             UserGroup.Admin.demand();
+            var tmDatabase = tmFileStorage.TMXmlDatabase;
             "In Reload data".info();
             tmDatabase.clear_GuidanceItemsCache()                            // start by clearing the cache                                   
-                      .setup();                                                                            
+                      .setup();
+            tmFileStorage.load_Libraries();                                                                            
             return tmDatabase.stats();
                // return some stats
         }

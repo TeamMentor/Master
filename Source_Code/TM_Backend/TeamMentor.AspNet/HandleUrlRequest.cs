@@ -595,13 +595,13 @@ namespace TeamMentor.CoreLib
                 var article = tmWebServices.GetGuidanceItemById(guid);
                 if (article.notNull())
                 { 
-                    var htmlTemplateFile = (article.Content.DataType.lower() == "wikitext") 
-                                                ? @"\Html_Pages\Gui\Pages\article_wikiText.html" 
-                                                : @"\Html_Pages\Gui\Pages\article_Html.html";
+                    var articleHtml = tmWebServices.GetGuidanceItemHtml(guid);
+                
+                    var htmlTemplateFile = @"\Html_Pages\Gui\Pages\article_Html.html";
                     var htmlTemplate = context.Server.MapPath(htmlTemplateFile).fileContents();
                     
                     var htmlContent = htmlTemplate.replace("#ARTICLE_TITLE", article.Metadata.Title)
-                                                  .replace("#ARTICLE_HTML", article.Content.Data.Value);
+                                                  .replace("#ARTICLE_HTML", articleHtml);
                     context.Response.Write(htmlContent);      
                 
                     tmWebServices.logUserActivity("View Article (HTML)", "{0} ({1})".info(article.Metadata.Title, data));
