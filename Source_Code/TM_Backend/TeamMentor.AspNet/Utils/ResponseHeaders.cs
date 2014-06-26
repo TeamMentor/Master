@@ -12,7 +12,7 @@ namespace TeamMentor.CoreLib
 			HttpContextFactory.Response.AddHeader("X-XSS-Protection", "1; mode=block");
 			
 			//add HSTS protection (HTTP Strict Transport Security)
-			HttpContextFactory.Response.AddHeader("Strict-Transport-Security", "max-age=60000");
+			HttpContextFactory.Response.AddHeader("Strict-Transport-Security", "max-age=31536000");
 
 			//Allow Cross Domain Requests
 			if (TMConfig.Current.TMSecurity.REST_AllowCrossDomainAccess)
