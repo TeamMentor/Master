@@ -30,10 +30,10 @@
     </UpgradeBackupLocation>
     <TargetFrameworkProfile />
     <UseIISExpress>false</UseIISExpress>
-    <IISExpressSSLPort />
-    <IISExpressAnonymousAuthentication />
-    <IISExpressWindowsAuthentication />
-    <IISExpressUseClassicPipelineMode />
+    <IISExpressSSLPort>44300</IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -61,11 +61,20 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FluentSharp.CoreLib, Version=5.3.0.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\FluentSharp.CoreLib.5.3.121\lib\net35\FluentSharp.CoreLib.dll</HintPath>
+    <Reference Include="FluentSharp.CoreLib, Version=5.5.0.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\FluentSharp.CoreLib.5.5.156\lib\net35\FluentSharp.CoreLib.dll</HintPath>
     </Reference>
-    <Reference Include="FluentSharp.NGit, Version=5.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\FluentSharp.NGit.5.3.121\lib\net40\FluentSharp.NGit.dll</HintPath>
+    <Reference Include="FluentSharp.NGit">
+      <HintPath>..\..\packages\FluentSharp.NGit.5.5.156\lib\net40\FluentSharp.NGit.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentSharp.Web_3_5, Version=5.5.0.0, Culture=neutral, PublicKeyToken=1439893e489faed4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\FluentSharp.Web_3_5.5.5.156\lib\net35\FluentSharp.Web_3_5.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentSharp.Web_4_5, Version=5.5.0.0, Culture=neutral, PublicKeyToken=0188572cb8cf4bdd, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\FluentSharp.Web_4_5.5.5.156\lib\net45\FluentSharp.Web_4_5.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
@@ -99,30 +108,27 @@
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.1.2\lib\net45\System.Web.Helpers.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.0\lib\net45\System.Web.Helpers.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Mvc, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="System.Web.Mvc, Version=5.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Microsoft.AspNet.Mvc.5.1.2\lib\net45\System.Web.Mvc.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNet.Mvc.5.2.0\lib\net45\System.Web.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Microsoft.AspNet.Razor.3.1.2\lib\net45\System.Web.Razor.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.Razor.3.2.0\lib\net45\System.Web.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.1.2\lib\net45\System.Web.WebPages.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.0\lib\net45\System.Web.WebPages.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.1.2\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.0\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.1.2\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.0\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -211,6 +217,19 @@
     <Content Include="Html_Pages\ControlPanel\CSharp_REPL\O2_REPL.js" />
     <Content Include="Html_Pages\ControlPanel\CSharp_REPL\Repl.html" />
     <Content Include="Html_Pages\ControlPanel\Views\Set_UserData_Path.html" />
+    <Content Include="Html_Pages\ControlPanel\WebEditor\codeMirror\baboon.png" />
+    <Content Include="Html_Pages\ControlPanel\WebEditor\codeMirror\baboon_vector.svg" />
+    <Content Include="Html_Pages\ControlPanel\WebEditor\codeMirror\clike.css" />
+    <Content Include="Html_Pages\ControlPanel\WebEditor\codeMirror\clike.js" />
+    <Content Include="Html_Pages\ControlPanel\WebEditor\codeMirror\codemirror.css" />
+    <Content Include="Html_Pages\ControlPanel\WebEditor\codeMirror\codemirror.js" />
+    <Content Include="Html_Pages\ControlPanel\WebEditor\codeMirror\cSharp_Editor.html" />
+    <Content Include="Html_Pages\ControlPanel\WebEditor\codeMirror\default.css" />
+    <Content Include="Html_Pages\ControlPanel\WebEditor\codeMirror\docs.css" />
+    <Content Include="Html_Pages\ControlPanel\WebEditor\codeMirror\javascript.js" />
+    <Content Include="Html_Pages\ControlPanel\WebEditor\codeMirror\javascript_Editor.html" />
+    <Content Include="Html_Pages\ControlPanel\WebEditor\codeMirror\overlay.js" />
+    <Content Include="Html_Pages\ControlPanel\WebEditor\codeMirror\runmode.js" />
     <Content Include="Html_Pages\Gui\Dialogs\Change_Password.html" />
     <Content Include="Html_Pages\Gui\Pages\article_wikiText.html" />
     <Content Include="Html_Pages\ControlPanel\Views\Set_Library_Path.html" />

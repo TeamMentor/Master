@@ -1,11 +1,13 @@
 ﻿<%@ Page Language="C#"%>
 <%@ Import Namespace ="FluentSharp.CoreLib" %>
+<%@ Import Namespace="FluentSharp.Web" %>
+<%@ Import Namespace="FluentSharp.Web35" %>
 <%@ Import Namespace="TeamMentor.CoreLib" %>
 <link href="../Javascript/bootstrap/bootstrap.v.1.2.0.css" rel="stylesheet" type="text/css" />
 
 <%
     var xmlDatabase     = TM_Xml_Database.Current;
-    var userData        = xmlDatabase.UserData;
+    var userData        = TM_UserData.Current;
     var authentication  = new TM_Authentication(null);
     var request         = HttpContextFactory.Request;
     var response        = HttpContextFactory.Response;
