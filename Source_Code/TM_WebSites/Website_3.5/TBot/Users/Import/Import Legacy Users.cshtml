@@ -2,16 +2,19 @@
 @using System
 @using System.Xml.Linq
 @using FluentSharp.CoreLib.API
+@using FluentSharp.Web
 @using TeamMentor.CoreLib
 @using FluentSharp.CoreLib
+@using TeamMentor.FileStorage
 
 @{
-    var userData = TM_UserData.Current;
-    var userFolder = userData.users_XmlFile_Location();
-    var tmUsersXml = userFolder.pathCombine("..\\tmusers.xml");
-    var tmPasswords = userFolder.pathCombine("..\\tmusers_passwords.xml");
-    var importUsers = HttpContextFactory.Request.QueryString["ImportUsers"] == "yes";
-    var creationDate = DateTime.Parse("03/21/2013");
+    var tmFileStorage = TM_FileStorage.Current;
+    var userData      = TM_UserData.Current;
+    var userFolder    = tmFileStorage.users_XmlFile_Location();
+    var tmUsersXml    = userFolder.pathCombine("..\\tmusers.xml");
+    var tmPasswords   = userFolder.pathCombine("..\\tmusers_passwords.xml");
+    var importUsers   = HttpContextFactory.Request.QueryString["ImportUsers"] == "yes";
+    var creationDate  = DateTime.Parse("03/21/2013");
     
     Func<TMUser, bool> userExists =
         (tmUser) =>
@@ -31,14 +34,14 @@
     Func<XElement, TMUser> getUserFromXElement =
         (user) =>
             {
-                var userID = user.element("{https://TeamMentor.securityinnovation.com:13415/}UserID").Value;
-                var userName = user.element("{https://TeamMentor.securityinnovation.com:13415/}UserName").Value;
+                var userID    = user.element("{https://TeamMentor.securityinnovation.com:13415/}UserID").Value;
+                var userName  = user.element("{https://TeamMentor.securityinnovation.com:13415/}UserName").Value;
                 var firstName = user.element("{https://TeamMentor.securityinnovation.com:13415/}FirstName").Value;
-                var lastName = user.element("{https://TeamMentor.securityinnovation.com:13415/}LastName").Value;
-                var title = user.element("{https://TeamMentor.securityinnovation.com:13415/}Title").Value;
-                var company = user.element("{https://TeamMentor.securityinnovation.com:13415/}Company").Value;
-                var eMail = user.element("{https://TeamMentor.securityinnovation.com:13415/}EMail").Value;
-                var groupID = user.element("{https://TeamMentor.securityinnovation.com:13415/}GroupID").Value;
+                var lastName  = user.element("{https://TeamMentor.securityinnovation.com:13415/}LastName").Value;
+                var title     = user.element("{https://TeamMentor.securityinnovation.com:13415/}Title").Value;
+                var company   = user.element("{https://TeamMentor.securityinnovation.com:13415/}Company").Value;
+                var eMail     = user.element("{https://TeamMentor.securityinnovation.com:13415/}EMail").Value;
+                var groupID   = user.element("{https://TeamMentor.securityinnovation.com:13415/}GroupID").Value;
 
                 var tmUser = new TMUser
                     {
@@ -123,7 +126,7 @@
             if (existInTM.isFalse() && importUsers)
             {
                 userData.TMUsers.add(tmUser);
-                tmUser.saveTmUser(); 
+                tmUser.event_User_Updated(); //tmUser.saveTmUser(); 
                 if (userExists(tmUser))
                 {
                     imported = true;
@@ -152,7 +155,7 @@
                     passwordSet = true;
                     var passwordHash = sha256Hash.hash_PBKDF2(tmUser.ID);
                     tmUser.SecretData.PasswordHash = passwordHash;
-                    tmUser.saveTmUser();
+                    tmUser.event_User_Updated(); //tmUser.saveTmUser();
                 }
             }
                         

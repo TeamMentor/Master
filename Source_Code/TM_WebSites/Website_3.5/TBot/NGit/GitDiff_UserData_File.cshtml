@@ -9,11 +9,12 @@
 @using NGit.Revwalk
 @using NGit.Diff
 @using NGit
+@using TeamMentor.FileStorage
 
 @{
 
     var userData = TM_UserData.Current;
-    var userDataLocation = userData.Path_UserData;
+    var userDataLocation = userData.path_UserData();
 
 
     var file = System.Web.HttpContext.Current.Request["file"];

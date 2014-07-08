@@ -1,6 +1,6 @@
-﻿@using System
-@using FluentSharp.CoreLib
+﻿@using FluentSharp.CoreLib
 @using FluentSharp.Git
+@using FluentSharp.Web
 @using TeamMentor.CoreLib
 @using Sharpen
 @using NGit.Treewalk.Filter
@@ -8,11 +8,12 @@
 @using NGit.Revwalk
 @using NGit.Diff
 @using NGit
+@using TeamMentor.FileStorage
 
 @{
 
-    var userData = TM_UserData.Current;
-    var userDataLocation = userData.Path_UserData;
+    var userData         = TM_UserData.Current;
+    var userDataLocation = userData.path_UserData();
 
 
     var file = HttpContextFactory.Request["file"];

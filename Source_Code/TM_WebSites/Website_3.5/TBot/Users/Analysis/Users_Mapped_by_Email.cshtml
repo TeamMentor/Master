@@ -1,12 +1,10 @@
 
-@using System
-@using System.Collections.Generic
 @using System.Linq
 @using TeamMentor.CoreLib
 @using FluentSharp.CoreLib
 
 @{
-    var userData = TM_Xml_Database.Current.UserData;
+    var userData = TM_UserData.Current;
     var tmUsers = userData.TMUsers;    
 }
 

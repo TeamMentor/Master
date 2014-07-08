@@ -6,6 +6,7 @@
 @using Sharpen
 @using NGit.Diff
 @using NGit
+@using TeamMentor.FileStorage
 
 
 <h4>Git Diff (Commit)</h4>
@@ -13,7 +14,7 @@
 @{
     
     var userData = TM_UserData.Current;
-    var userDataLocation = userData.Path_UserData;
+    var userDataLocation = userData.path_UserData();
     
     
     var fromId = System.Web.HttpContext.Current.Request["fromId"];

@@ -1,6 +1,8 @@
 // Tshis file is part of the OWASP O2 Platform (http://www.owasp.org/index.php/OWASP_O2_Platform) and is released under the Apache 2.0 License (http://www.apache.org/licenses/LICENSE-2.0)
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 using FluentSharp.CoreLib;
@@ -106,5 +108,33 @@ namespace TeamMentor.CoreLib
 	        return xmlReader.ReadInnerXml();
         }
 
+        //from FluentSharp.WinForms code base
+         public static XElement element(this XElement xElement, string elementName)
+        {
+            if (xElement != null)
+                return xElement.elements().FirstOrDefault(childElement => childElement.name() == elementName);
+            return null;
+        }
+        public static List<XElement> elements(this XElement xElement)
+        {
+            return xElement.elements(false);
+        }
+        public static List<XElement> elements(this XElement xElement, bool includeSelf)
+        {
+            return xElement.elements("", includeSelf);
+        }
+        public static List<XElement> elements(this XElement xElement, string elementName, bool includeSelf)
+        {
+            var xElements = (elementName.valid())
+                                ? xElement.Elements(elementName).ToList()
+                                : xElement.Elements().ToList();
+            if (includeSelf)
+                xElements.Add(xElement);
+            return xElements;
+        }
+        public static string name(this XElement xElement)
+        {
+            return xElement.Name.str();
+        }
     }
 }    	

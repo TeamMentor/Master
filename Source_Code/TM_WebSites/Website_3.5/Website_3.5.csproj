@@ -742,8 +742,6 @@
     <Content Include="TBot\Users\Current_Users.cshtml" />
     <Content Include="TBot\Admin\LiveData\ActiveSessions.cshtml" />
     <Content Include="TBot\Messaging\View_Emails_Sent.cshtml" />
-    <Content Include="TBot\Admin\Config\View_TMConfig.cshtml.txt" />
-    <Content Include="TBot\Admin\Config\View_SecretData.cshtml.txt" />
     <Content Include="TBot\Admin\LiveData\DebugInfo.cshtml" />
     <Content Include="TBot\Views\Admin\IISSessions.cshtml" />
     <Content Include="TBot\Views\Users\User_Activities.cshtml" />

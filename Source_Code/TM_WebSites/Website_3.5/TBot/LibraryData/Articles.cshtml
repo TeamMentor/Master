@@ -1,13 +1,15 @@
 ﻿
 @using TeamMentor.CoreLib;
 @using FluentSharp.CoreLib;
+@using TeamMentor.FileStorage
 
 @{
-    var tmDatabase = TM_Xml_Database.Current;
+    var tmDatabase    = TM_Xml_Database.Current;
+    var tmFileStorage = TM_FileStorage.Current;
     var articles = tmDatabase.Cached_GuidanceItems;
-    var articlePaths = tmDatabase.GuidanceItems_FileMappings;
+    var articlePaths = tmFileStorage.GuidanceItems_FileMappings;
     var index = 1;
-    var libraryPath = tmDatabase.Path_XmlLibraries;
+    var libraryPath = tmFileStorage.Path_XmlLibraries;
 }
 <h4>Library Data: Articles</h4>
 <p>
