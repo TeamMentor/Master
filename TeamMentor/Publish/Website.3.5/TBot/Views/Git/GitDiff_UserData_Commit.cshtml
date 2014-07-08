@@ -1,18 +1,17 @@
-﻿@using System
-@using FluentSharp.CoreLib
+﻿@using FluentSharp.CoreLib
 @using FluentSharp.Git
-@using TeamMentor.CoreLib
+@using FluentSharp.Web
 @using Sharpen
 @using NGit.Diff
 @using NGit
+@using TeamMentor.FileStorage
 
 
 <h4>Git Diff (Commit)</h4>
 
 @{
-    
-    var userData = TM_UserData.Current;
-    var userDataLocation = userData.Path_UserData;
+    var tmFileStorage    = TM_FileStorage.Current;    
+    var userDataLocation = tmFileStorage.Path_UserData;
     
     
     var fromId = HttpContextFactory.Request["fromId"];

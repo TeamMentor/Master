@@ -1,9 +1,10 @@
 ﻿
 @using TeamMentor.CoreLib;
 @using FluentSharp.CoreLib;
+@using TeamMentor.FileStorage
 
 @{
-    var tmDatabase = TM_Xml_Database.Current;
+    var tmDatabase = TM_Xml_Database.Current;    
     var guidanceExplorers = tmDatabase.GuidanceExplorers_XmlFormat.Values;
 }
 <h4>Library Data: Libraries Xml</h4>
