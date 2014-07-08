@@ -3,6 +3,7 @@ using FluentSharp.CoreLib;
 using FluentSharp.CoreLib.API;
 using FluentSharp.Git;
 using FluentSharp.Git.APIs;
+using FluentSharp.Web;
 using TeamMentor.FileStorage;
 
 namespace TeamMentor.CoreLib
@@ -18,7 +19,7 @@ namespace TeamMentor.CoreLib
 
             if (gitConfig.LibraryData_Git_Enabled)
             {
-                var online = MiscUtils.online();
+                var online = WebUtils.online();
                 if (online)
                     "[TM_Xml_Database] [setupGitSupport] we are online, so git Pull and Pull will be attempted".info();
                 else
@@ -105,7 +106,7 @@ namespace TeamMentor.CoreLib
             try
             {
                 var tmFileStorage = TM_FileStorage.Current;
-                if (MiscUtils.online())
+                if (WebUtils.online())
                     "[TM_Xml_Database] [handle_UserData_GitLibraries] online, so checking for TM UserData repos to clone".info();
                 else
                     "[TM_Xml_Database] [handle_UserData_GitLibraries] online".info();

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Web.Services;
 using FluentSharp.CoreLib;
+using FluentSharp.Web;
 
 namespace TeamMentor.CoreLib
 { 					

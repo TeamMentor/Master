@@ -6,6 +6,8 @@ using System.Threading;
 using FluentSharp.CoreLib;
 using FluentSharp.CoreLib.API;
 //using FluentSharp.WinForms;
+using FluentSharp.Web;
+using FluentSharp.Web35;
 
 namespace TeamMentor.CoreLib
 {    

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 using FluentSharp.CoreLib;
+using FluentSharp.Web;
 
 namespace TeamMentor.CoreLib
 {

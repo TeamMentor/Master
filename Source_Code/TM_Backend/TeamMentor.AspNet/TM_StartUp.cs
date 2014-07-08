@@ -2,6 +2,7 @@
 using System.Security;
 using System.Web;
 using FluentSharp.CoreLib;
+using FluentSharp.Web;
 using TeamMentor.FileStorage;
 
 
@@ -58,6 +59,8 @@ namespace TeamMentor.CoreLib
             MVC5.MapDefaultRoutes();    // Map MVC 5 routes
             TrackingApplication.saveLog();
              
+            SendEmails.mapTMServerUrl();        
+
             UserGroup.None.assert();
         } 
         public void Application_End()

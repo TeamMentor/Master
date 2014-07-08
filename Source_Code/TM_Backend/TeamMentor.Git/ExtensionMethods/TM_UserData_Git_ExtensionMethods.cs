@@ -3,8 +3,8 @@ using FluentSharp.CoreLib.API;
 using FluentSharp.Git;
 using FluentSharp.CoreLib;
 using FluentSharp.Git.APIs;
+using FluentSharp.Web;
 using TeamMentor.FileStorage;
-using TeamMentor.UserData;
 
 namespace TeamMentor.CoreLib
 {
@@ -70,7 +70,7 @@ namespace TeamMentor.CoreLib
             if (tmServer.Git.UserData_Auto_Push.isFalse())           //skip if this is set
                 return userData;
 
-            if (MiscUtils.runningOnLocalHost())  //don't push local changes in order to prevent git merge conflicts            
+            if (WebUtils.runningOnLocalHost())  //don't push local changes in order to prevent git merge conflicts            
             {
                 "[TM_UserData] [triggerGitCommit] skipping because it is a local request and getGitUserConfigFile is set".info();
                 return userData;
@@ -114,7 +114,7 @@ namespace TeamMentor.CoreLib
                     //userData.Path_UserData.createDir();
                     "[TM_UserData] [handleExternalGitPull] userData.Path_UserData set to: {0}".debug(tmFileStorage.Path_UserData);
              
-                    if (MiscUtils.online().isFalse() && gitLocation.dirExists().isFalse())
+                    if (WebUtils.online().isFalse() && gitLocation.dirExists().isFalse())
                         return userDataGit;
 
                     if (tmFileStorage.Path_UserData.isGitRepository())

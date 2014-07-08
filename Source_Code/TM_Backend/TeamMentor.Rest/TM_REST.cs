@@ -9,6 +9,7 @@ using System.ServiceModel.Web;
 using System.Web;
 using System.Web.Routing;
     using FluentSharp.CoreLib;
+    using FluentSharp.Web;
 
 namespace TeamMentor.CoreLib  
 {
@@ -35,7 +36,7 @@ namespace TeamMentor.CoreLib
             Session       = HttpContextFactory.Session;
 			check_CSRF_Header();						
             //TmWebServices = new TM_WebServices(true);	//Disabling CSRF            
-            TmWebServices = new TM_WebServices(false);	//Disabling CSRF            
+            TmWebServices = new TM_WebServices(disable_Csrf_Check : false);	//Disabling CSRF            
         }
 
         public void check_CSRF_Header()

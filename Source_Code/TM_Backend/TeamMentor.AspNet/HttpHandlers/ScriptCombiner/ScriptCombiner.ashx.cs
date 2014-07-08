@@ -5,119 +5,75 @@ using System.IO;
 using System.Text;
 using System.Web;
 using FluentSharp.CoreLib;
+using FluentSharp.Web;
 using XssEncoder = Microsoft.Security.Application.Encoder;
 
 namespace TeamMentor.CoreLib
 {
+    
 	public class ScriptCombiner : IHttpHandler
 	{    
-		public static string   MappingsLocation			 {get;set;}
-		
-	
-		public string setName 				{ get; set;}
-		public string version 				{ get; set;}
-		public string contentType 			{ get; set;}
-	
-		public string[] 	 filesProcessed	{ get; set;}
-		public StringBuilder allScripts		{ get; set;}
-		public string 		 minifiedCode	{ get; set;}
-		public bool 		 minifyCode		{ get; set;}
-		public bool 		 ignoreCache	{ get; set; }
-	
+			
 		public HttpContextBase context;
-		
-		public ScriptCombiner()
-		{
-			MappingsLocation = "../javascript/_mappings/{0}.txt";				
-		}
-	
+	    public API_ScriptCombiner apiScriptCombiner;
+
+        public ScriptCombiner()
+        { 
+           apiScriptCombiner = new API_ScriptCombiner();            
+        }
 		public void ProcessRequest(HttpContext httpContext)
 		{				
 			context = HttpContextFactory.Current;		
+            apiScriptCombiner.baseFolder = context.Server.MapPath("/");
 			var request = context.Request;        
 			var response = context.Response;		
 			response.Clear();
-
-            if (context.sent304Redirect())			
+            
+            if (TMConfig.Current.enable304Redirects() && context.sent304Redirect())			
                 return;
 			try
 			{
-				minifyCode = true;
-				ignoreCache = true;
+                
+
+				apiScriptCombiner.minifyCode = true;
+				apiScriptCombiner.ignoreCache = true;
 				if (request.QueryString["Hello"]=="TM")
 				{
 					response.Write("Good Morning");
 					return;
 				}
-
+                
 				// Read setName, version from query string
-				setName = XssEncoder.UrlEncode(request.QueryString["s"]) ?? string.Empty;
-				version = XssEncoder.UrlEncode(request.QueryString["v"]) ?? string.Empty;
+				apiScriptCombiner.setName = XssEncoder.UrlEncode(request.QueryString["s"]) ?? string.Empty;
+				apiScriptCombiner.version = XssEncoder.UrlEncode(request.QueryString["v"]) ?? string.Empty;
 						
-				if (setName ==string.Empty)
+				if (apiScriptCombiner.setName ==string.Empty)
 				{
 					response.Write("//nothing to do");
 					return;
 				}			
 			
 				if (request.QueryString["dontMinify"] == "true")
-					minifyCode = false;
+					apiScriptCombiner.minifyCode = false;
 
 				switch(request.QueryString["ct"])
 				{
 					case "css": 
-						contentType = "text/css";
-						minifyCode = false;
+						apiScriptCombiner.contentType = "text/css";
+						apiScriptCombiner.minifyCode = false;
 						break;
 					default:
-						contentType = "application/x-javascript";
+						apiScriptCombiner.contentType = "application/x-javascript";
 						break;
 				}
 				// Decide if browser supports compressed response
-				bool isCompressed = CanGZip(context.Request);
-
-				using (var memoryStream = new MemoryStream(8092))
-				{
-					// Decide regular stream or gzip stream based on whether the response can be compressed or not
-					//using (Stream writer = isCompressed ?  (Stream)(new GZipStream(memoryStream, CompressionMode.Compress)) : memoryStream)
-					using (Stream writer = isCompressed ? (Stream)(new ICSharpCode.SharpZipLib.GZip.GZipOutputStream(memoryStream)) : memoryStream)
-					{
-						// Read the files into one big string
-						allScripts = new StringBuilder();
-						filesProcessed = GetScriptFileNames(setName);
-						foreach (string fileName in filesProcessed)
-						{
-							var fullPath = context.Server.MapPath(fileName.trim());
-
-							if (fullPath.fileExists())
-							{
-								allScripts.AppendLine("\n\n/********************************** ");
-								allScripts.AppendLine(" *****    " + fileName);
-								allScripts.AppendLine(" **********************************/\n\n");
-								allScripts.AppendLine(File.ReadAllText(fullPath));
-							}
-						}
-
-						var codeToSend = allScripts.ToString();
-
-						if (minifyCode)
-						{
-							// Minify the combined script files and remove comments and white spaces
-							var minifier = new JavaScriptMinifier();
-							minifiedCode = minifier.Minify(codeToSend);
-							codeToSend = minifiedCode;
-						}
-
-						// Send minfied string to output stream
-						byte[] bts = Encoding.UTF8.GetBytes(codeToSend);
-						writer.Write(bts, 0, bts.Length);
-					}				
-
-					// Generate the response
-					var responseBytes = memoryStream.ToArray();
-					WriteBytes(responseBytes, isCompressed);
-
-				}
+				apiScriptCombiner.isCompressed = CanGZip(context.Request);
+                
+                apiScriptCombiner.CombineFiles();
+				var responseBytes = apiScriptCombiner.CombinedBytes;
+                var isCompressed  = apiScriptCombiner.isCompressed;
+                var contentType   = apiScriptCombiner.contentType;
+			    WriteBytes(responseBytes, isCompressed,contentType);                
 			}
 			catch(Exception ex)
 			{
@@ -127,7 +83,7 @@ namespace TeamMentor.CoreLib
 			}		
 		}	
 
-		public void WriteBytes(byte[] bytes, bool isCompressed)
+		public void WriteBytes(byte[] bytes, bool isCompressed, string contentType)
 		{
 			var response = context.Response;
 
@@ -157,26 +113,6 @@ namespace TeamMentor.CoreLib
 		}
 
 		// private helper method that return an array of file names inside the text file stored in App_Data folder
-		private static string[] GetScriptFileNames(string setName)
-		{	
-			var httpContext = HttpContextFactory.Current;	//HttpContext.Current
 		
-			var scripts = new System.Collections.Generic.List<string>();		
-			var resolvedFile = MappingsLocation.format(setName);		
-		
-			string setPath = httpContext.Server.MapPath(resolvedFile);		
-		
-			if (setPath.fileExists())		
-				using (var setDefinition = File.OpenText(setPath))
-				{					
-					while (setDefinition.Peek() >= 0)
-					{
-						var fileName = setDefinition.ReadLine();
-						if (fileName.valid() && fileName.starts("#").isFalse())
-							scripts.Add(fileName);					
-					}
-				}	
-			return scripts.ToArray();
-		}
 	}
 }

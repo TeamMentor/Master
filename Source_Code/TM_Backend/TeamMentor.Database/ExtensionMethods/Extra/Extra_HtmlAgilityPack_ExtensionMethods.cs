@@ -1,7 +1,11 @@
 // Tshis file is part of the OWASP O2 Platform (http://www.owasp.org/index.php/OWASP_O2_Platform) and is released under the Apache 2.0 License (http://www.apache.org/licenses/LICENSE-2.0)
 using System;
+using System.IO;
+using System.Xml;
+using System.Xml.Linq;
+using FluentSharp.CoreLib;
 
-namespace FluentSharp.CoreLib
+namespace TeamMentor.CoreLib
 {	
 	public static class Extra_HtmlAgilityPack_ExtensionMethods
 	{	
@@ -48,5 +52,59 @@ namespace FluentSharp.CoreLib
         		return null;
         	}
 		}
-	}	
+	}
+	
+    // the methods below are used in tidyHtml and are included in FluentSharp.WinForms 
+    // (and It didn't make sense to add a reference to that assembly just for these methods)  
+    // code created by ILSPY    
+    public static class Extra_Xml_Linq_ExtensionMethods
+    {
+        public static XElement xRoot(this string xml)
+        {
+	        if (xml.valid())
+	        {
+		        XDocument xDocument = xml.xDocument();
+		        if (xDocument != null)
+		        {
+			        return xDocument.Root;
+		        }
+	        }
+	        return null;
+        }
+        public static XDocument xDocument(this string xml)
+        {
+	        string text = xml.fileExists() ? xml.fileContents() : xml;
+	        if (text.valid())
+	        {
+		        if (text.starts("\n"))
+		        {
+			        text = text.trim();
+		        }
+		        XmlReaderSettings settings = new XmlReaderSettings
+		        {
+			        XmlResolver = null,
+			        ProhibitDtd = false
+		        };
+		        using (StringReader stringReader = new StringReader(text))
+		        {
+			        using (XmlReader xmlReader = XmlReader.Create(stringReader, settings))
+			        {
+				        return XDocument.Load(xmlReader);
+			        }
+		        }
+	        }
+	        return null;
+        }
+        public static string innerXml(this XElement xElement)
+        {
+	        if (xElement == null)
+	        {
+		        return "";
+	        }
+	        XmlReader xmlReader = xElement.CreateReader();
+	        xmlReader.MoveToContent();
+	        return xmlReader.ReadInnerXml();
+        }
+
+    }
 }    	

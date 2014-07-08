@@ -1,6 +1,9 @@
 ﻿using System;
+using System.IO;
 using System.Web;
+using System.Web.Hosting;
 using FluentSharp.CoreLib;
+using FluentSharp.Web;
 using TeamMentor.CoreLib;
 using TeamMentor.FileStorage;
 
@@ -72,16 +75,31 @@ namespace TeamMentor.SiteData
             if (fullPath.fileExists().isFalse())
                 return false;
             var response = HttpContextFactory.Response;
+
             if (response.isNull())            
                 return false;
+
+            response.handleAspxPage(fullPath);
+
             fullPath.siteData_SetContentType_For_File(response);
-            if (response.ContentType.contains("image"))
-            //response.WriteFile(fullPath);
+            if (response.ContentType.contains("image"))            
                 response.WriteFile(fullPath);
             else
                 response.Write(fullPath.fileContents());
             response.End();
-            return true;
+            
+            return true;  //we will never reach here
+        }
+        public static bool handleAspxPage(this HttpResponseBase response, string fullPath)
+        {
+            if (fullPath.extension(".aspx"))
+            {
+                var compiledPage =System.Web.UI.PageParser.GetCompiledPageInstance(fullPath.fileName(), fullPath, HttpContext.Current);
+                compiledPage.ProcessRequest(HttpContext.Current);
+                HttpContextFactory.Response.End();    
+                //we will never reach here
+            }    
+            return false;
         }
         public static string siteData_SetContentType_For_File(this string fullPath, HttpResponseBase response)
         {

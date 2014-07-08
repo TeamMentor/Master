@@ -30,8 +30,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FluentSharp.CoreLib">
-      <HintPath>..\..\packages\FluentSharp.CoreLib.5.3.121\lib\net35\FluentSharp.CoreLib.dll</HintPath>
+    <Reference Include="FluentSharp.CoreLib, Version=5.5.0.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\FluentSharp.CoreLib.5.5.156\lib\net35\FluentSharp.CoreLib.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentSharp.Web_3_5">
+      <HintPath>..\..\packages\FluentSharp.Web_3_5.5.5.156\lib\net35\FluentSharp.Web_3_5.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentSharp.Web_4_5">
+      <HintPath>..\..\packages\FluentSharp.Web_4_5.5.5.156\lib\net45\FluentSharp.Web_4_5.dll</HintPath>
     </Reference>
     <Reference Include="RazorEngine">
       <HintPath>..\..\packages\RazorEngine.3.4.1\lib\net45\RazorEngine.dll</HintPath>
@@ -46,7 +53,7 @@
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Microsoft.AspNet.Razor.3.1.2\lib\net45\System.Web.Razor.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNet.Razor.3.2.0\lib\net45\System.Web.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
@@ -69,6 +76,7 @@
     <Compile Include="TM_REST.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

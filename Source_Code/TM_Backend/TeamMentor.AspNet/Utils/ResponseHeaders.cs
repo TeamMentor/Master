@@ -1,4 +1,6 @@
 
+using FluentSharp.Web;
+
 namespace TeamMentor.CoreLib
 {
 	public class ResponseHeaders 

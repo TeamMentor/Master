@@ -30,15 +30,23 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AntiXssLibrary, Version=4.2.0.0, Culture=neutral, PublicKeyToken=d127efab8a9c114f, processorArchitecture=MSIL">
+    <Reference Include="AntiXssLibrary, Version=4.3.0.0, Culture=neutral, PublicKeyToken=d127efab8a9c114f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\AntiXSS.4.2.1\lib\net40\AntiXssLibrary.dll</HintPath>
+      <HintPath>..\..\packages\AntiXSS.4.3.0\lib\net40\AntiXssLibrary.dll</HintPath>
     </Reference>
-    <Reference Include="FluentSharp.CoreLib">
-      <HintPath>..\..\packages\FluentSharp.CoreLib.5.3.121\lib\net35\FluentSharp.CoreLib.dll</HintPath>
+    <Reference Include="FluentSharp.CoreLib, Version=5.5.0.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\FluentSharp.CoreLib.5.5.156\lib\net35\FluentSharp.CoreLib.dll</HintPath>
     </Reference>
-    <Reference Include="HtmlSanitizationLibrary">
-      <HintPath>..\..\packages\AntiXSS.4.2.1\lib\net40\HtmlSanitizationLibrary.dll</HintPath>
+    <Reference Include="FluentSharp.Web_3_5">
+      <HintPath>..\..\packages\FluentSharp.Web_3_5.5.5.156\lib\net35\FluentSharp.Web_3_5.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentSharp.Web_4_5">
+      <HintPath>..\..\packages\FluentSharp.Web_4_5.5.5.156\lib\net45\FluentSharp.Web_4_5.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlSanitizationLibrary, Version=4.3.0.0, Culture=neutral, PublicKeyToken=d127efab8a9c114f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\AntiXSS.4.3.0\lib\net40\HtmlSanitizationLibrary.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -57,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Global.asax.cs" />
+    <Compile Include="Utils\API_ScriptCombiner.cs" />
     <Compile Include="Utils\JavaScriptMinifier.cs" />
     <Compile Include="HttpHandlers\ScriptCombiner\ScriptCombiner.ashx.cs" />
     <Compile Include="HandleUrlRequest.cs" />
@@ -67,6 +76,7 @@
     <Compile Include="Utils\ResponseHeaders.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

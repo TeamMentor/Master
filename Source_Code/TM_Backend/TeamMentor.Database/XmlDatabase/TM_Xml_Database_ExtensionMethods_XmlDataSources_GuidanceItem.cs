@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentSharp.CoreLib;
 using FluentSharp.CoreLib.API;
+using FluentSharp.Web35;
 using TeamMentor.XmlDatabase;
 
 namespace TeamMentor.CoreLib

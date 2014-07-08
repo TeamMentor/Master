@@ -30,8 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FluentSharp.CoreLib">
-      <HintPath>..\..\packages\FluentSharp.CoreLib.5.3.121\lib\net35\FluentSharp.CoreLib.dll</HintPath>
+    <Reference Include="FluentSharp.CoreLib, Version=5.5.0.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\FluentSharp.CoreLib.5.5.156\lib\net35\FluentSharp.CoreLib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -82,14 +83,6 @@
     <Compile Include="UserData\TM_UserData.cs" />
     <Compile Include="XmlDatabase\View_V3.cs" />
     <Compile Include="UserData\UserActivities.cs" />
-    <Compile Include="_SharedUtils\Crypto.cs" />
-    <Compile Include="_SharedUtils\ExtensionMethods\Extra_Cookies_ExtensioMethods.cs" />
-    <Compile Include="_SharedUtils\ExtensionMethods\Extra_DateTime_ExtensionMethods.cs" />
-    <Compile Include="_SharedUtils\ExtensionMethods\Extra_Double_ExtensionMethods.cs" />
-    <Compile Include="_SharedUtils\ExtensionMethods\Extra_JSON_ExtensionMethods.cs" />
-    <Compile Include="_SharedUtils\ExtensionMethods\Extra_Web_Encoding_ExtensionMethods.cs" />
-    <Compile Include="_SharedUtils\HttpContextFactory.cs" />
-    <Compile Include="_SharedUtils\MiscUtils.cs" />
     <Compile Include="TM_Server\TM_Server_Utils.cs" />
   </ItemGroup>
   <ItemGroup>

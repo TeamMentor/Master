@@ -5,6 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using FluentSharp.CoreLib;
+using FluentSharp.Web;
+using FluentSharp.Web35;
 using RazorEngine;
 using RazorEngine.Templating;
 using TeamMentor.FileStorage;
@@ -162,7 +164,7 @@ namespace TeamMentor.CoreLib
             var files = TBotScriptsFolder().files(true, "*.cshtml");            
             if (TM_UserData.Current.notNull())
             {
-                var userDataFolder = TM_FileStorage.Current.path_UserData().pathCombine("TBot");
+                var userDataFolder = TM_FileStorage.Current.path_SiteData().pathCombine("TBot");
                 if (userDataFolder.dirExists())
                     files.add(userDataFolder.files(true, "*.cshtml"));
             }

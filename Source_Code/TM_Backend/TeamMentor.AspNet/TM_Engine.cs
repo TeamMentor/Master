@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using FluentSharp.CoreLib;
+using FluentSharp.Web;
 
 namespace TeamMentor.CoreLib
 {
@@ -20,9 +21,7 @@ namespace TeamMentor.CoreLib
             {
                 "[Fatal Error] TMConfig.Current was null".error();
                 transferToPageUnavailable(); 
-            }
-            
-            SendEmails.mapTMServerUrl();        // find a better place to put these one-off requests
+            }                        
             return this;
         }
 

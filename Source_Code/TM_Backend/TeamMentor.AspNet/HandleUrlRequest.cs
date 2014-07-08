@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Web;
 using FluentSharp.CoreLib;
+using FluentSharp.Web;
+using FluentSharp.Web35;
 using Microsoft.Security.Application;
 using System.IO;
 using System.Security;
@@ -47,7 +49,7 @@ namespace TeamMentor.CoreLib
                 
         }
         public void transfer_Request(string action)
-        {            
+        {          
             action = action.lower();
             if (Server_Transfers.hasKey(action))
             {        
@@ -207,7 +209,7 @@ namespace TeamMentor.CoreLib
             if (absolutePath.lower().contains("/images/","/javascript/","/html_pages","/css/") || 
                 extension.contains(".ico"))
             {
-                if(context.sent304Redirect())
+                if(TMConfig.Current.enable304Redirects() && context.sent304Redirect())
                     context.Response.End();
                 return true;    
             }
@@ -658,8 +660,7 @@ namespace TeamMentor.CoreLib
             if (tmWebServices.notNull() && tmWebServices.tmAuthentication.notNull())
             {
                 var currentUser = tmWebServices.tmAuthentication.currentUser;
-                context.Response.ContentType = "application/json";
-                var json = currentUser.whoAmI().json();                
+                context.Response.ContentType = "application/json";                
                 context.Response.Write(currentUser.whoAmI().json());
                 endResponse();             
             }

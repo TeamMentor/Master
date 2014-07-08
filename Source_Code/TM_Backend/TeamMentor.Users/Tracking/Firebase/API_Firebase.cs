@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Net;
 using System.Threading;
-using System.Web.Script.Serialization;
 using FluentSharp.CoreLib;
 using FluentSharp.CoreLib.API;
+using FluentSharp.Web;
+using FluentSharp.Web35;
+using FluentSharp.Web35.API;
 
 namespace TeamMentor.CoreLib
 {	
-    public partial class API_Firebase
+    public class API_Firebase
     {
 	    ///public static  API_Firebase Current       { get; set; }
         
@@ -36,7 +37,7 @@ namespace TeamMentor.CoreLib
             OfflineQueue = new BlockingCollection<SubmitData>();            		    
 		    MessageFormat = "{{\"text\": {0}}}";            
             QueueMaxWait = TMConsts.FIREBASE_SUBMIT_QUEUE_MAX_WAIT;
-            Offline      = MiscUtils.offline();
+            Offline      = WebUtils.offline();
             if (this.firebase_DisableSslCertCheck())
                 Web.Https.ignoreServerSslErrors();
 	    }
