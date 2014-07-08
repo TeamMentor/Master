@@ -1,0 +1,41 @@
+</script>
+    <script src="/3_0_WebSite/Javascript/codeMirror/codemirror.js"></script>
+    <script src="/3_0_WebSite/Javascript/codeMirror/javascript.js"></script>
+	<script src="/3_0_WebSite/Javascript/codeMirror/clike.js"></script>
+	<link   href="/3_0_WebSite/Javascript/codeMirror/codemirror.css" rel="stylesheet">
+    <link   href="/3_0_WebSite/Javascript/codeMirror/default.css" rel="stylesheet" >  
+	<link   href="/3_0_WebSite/Javascript/codeMirror/clike.css" rel="stylesheet" >  
+	<style> 
+		.CodeMirror {
+						border-top: 1px solid black;
+						border-bottom: 1px solid black;
+						font-size:12px
+						}
+	</style>
+    <h1>CodeMirror 2: C#-like mode...</h1>
+
+<form><textarea id="code" name="code">
+/* C# demo code */
+
+
+using System.Web;
+namespace test
+{
+	public class aClass
+	{
+		public void aMethod()
+		{
+			Console.WriteLine("a string");
+		}
+	}
+}
+</textarea>
+  </form>
+
+    <script>
+      var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+        lineNumbers: true,
+        matchBrackets: true,
+        mode: "text/x-java"
+      });
+    </script>

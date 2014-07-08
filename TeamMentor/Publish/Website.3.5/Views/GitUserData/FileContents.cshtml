@@ -1,0 +1,17 @@
+﻿@model TeamMentor.Website.App_Code.TempControllers.View_GitFileContents
+@using FluentSharp.CoreLib
+
+@{
+    ViewBag.Title = "title";
+    Layout = "~/Views/_Layouts/Layout_AngularJS.cshtml";
+}
+
+
+<h2>Viewing file contents</h2>
+
+<b> File:</b> @Model.FilePath<br />
+<b> Sha1:</b> @Model.Sha1<br />
+<b>File Contents:</b><br /> 
+<pre>
+    @Model.Contents
+</pre>

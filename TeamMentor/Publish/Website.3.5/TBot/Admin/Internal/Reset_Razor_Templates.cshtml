@@ -1,0 +1,23 @@
+﻿
+@using FluentSharp.CoreLib
+@using TeamMentor.CoreLib
+@using TeamMentor.FileStorage
+@{
+    var webRoot = TM_FileStorage.Current.WebRoot;
+    TBot_Brain.AvailableScripts = TBot_Brain.GetAvailableScripts();
+}
+<h2>Current Razor Templates</h2>
+
+<pre>
+@foreach (var item in TBot_Brain.AvailableScripts)
+{
+    var hasTemplate = TBot_Brain.TemplateService.HasTemplate(item.Value); 
+    @: [@hasTemplate] @item.Key : @item.Value.remove(webRoot)     
+    {if (hasTemplate) 
+     { 
+        TBot_Brain.TemplateService.RemoveTemplate(item.Value);
+     }}
+}
+</pre>
+
+

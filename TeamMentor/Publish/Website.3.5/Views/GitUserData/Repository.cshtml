@@ -1,0 +1,35 @@
+﻿@using System.Web.Mvc
+@using System.Web.Mvc.Html
+@using FluentSharp.CoreLib
+@model TeamMentor.Website.App_Code.TempControllers.View_GitRepo
+
+@{
+    ViewBag.Title = "title";
+    Layout = "~/Views/_Layouts/Layout_AngularJS.cshtml";
+}
+
+<h2>
+    @Model.Name Repository
+</h2>
+<b>Name: @Model.Name</b>     <br />
+<b>Path: @Model.Path</b>     <br />
+<b>Status: @Model.Status</b> <br />
+<br />
+
+There are @Model.GitData.Commits.size() commits <br/>
+There are @Model.GitData.Files.size() files
+
+<ul>
+    @{foreach(var file in @Model.GitData.Files)
+      {
+          <li>
+              <b><a href="File?path=@file.FilePath">@file.FilePath</a></b> (with  - @file.Commits.size() Commits )
+          </li>
+      }         
+    }
+</ul>
+
+<pre>
+@*@Model.toXml().size()*@
+</pre>
+
