@@ -2,6 +2,9 @@
 using System.Linq;
 using FluentSharp.CoreLib;
 using FluentSharp.CoreLib.API;
+using FluentSharp.Moq;
+using FluentSharp.Web;
+using FluentSharp.Web35;
 using NUnit.Framework;
 using TeamMentor.CoreLib;
 using TeamMentor.FileStorage;

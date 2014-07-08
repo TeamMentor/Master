@@ -2,6 +2,8 @@
 using System.Web;
 using FluentSharp.CoreLib;
 using FluentSharp.CoreLib.API;
+using FluentSharp.Moq;
+using FluentSharp.Web;
 using NUnit.Framework;
 using TeamMentor.CoreLib;
 using TeamMentor.FileStorage;

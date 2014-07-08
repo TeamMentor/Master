@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using FluentSharp.CoreLib;
 using FluentSharp.CoreLib.API;
+using FluentSharp.Web;
 using NUnit.Framework;
 using TeamMentor.CoreLib;
 

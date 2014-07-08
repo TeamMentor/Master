@@ -1,5 +1,6 @@
 using NUnit.Framework;  
 using FluentSharp.CoreLib;
+using FluentSharp.WinForms;
 
 namespace TeamMentor.UnitTests.WebSite_Content
 {		  

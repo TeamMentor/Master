@@ -1,5 +1,7 @@
 ﻿using System;
 using FluentSharp.CoreLib;
+using FluentSharp.Moq;
+using FluentSharp.Web;
 using NUnit.Framework;
 using TeamMentor.CoreLib;
 using TeamMentor.UserData;

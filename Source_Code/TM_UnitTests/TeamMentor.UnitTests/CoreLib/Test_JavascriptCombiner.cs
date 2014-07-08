@@ -1,5 +1,7 @@
 using System.Web;
 using FluentSharp.CoreLib.API;
+using FluentSharp.Moq;
+using FluentSharp.Web;
 using NUnit.Framework; 
 using FluentSharp.CoreLib;
 using TeamMentor.CoreLib;
@@ -47,9 +49,9 @@ namespace TeamMentor.UnitTests.CoreLib
 			var scriptCombiner = new ScriptCombiner(); 						
 			scriptCombiner.ProcessRequest(null); 
 			
-			Assert.AreEqual	(scriptCombiner.setName,string.Empty , "[empty request] setName");
-			Assert.AreEqual	(scriptCombiner.version,string.Empty , "[empty request] version");
-			Assert.IsNotNull(ScriptCombiner.MappingsLocation	 , "[empty request] mappingsLocation");
+			Assert.AreEqual	(scriptCombiner.apiScriptCombiner.setName,string.Empty , "[empty request] setName");
+			Assert.AreEqual	(scriptCombiner.apiScriptCombiner.version,string.Empty , "[empty request] version");
+			Assert.IsNotNull(scriptCombiner.apiScriptCombiner.MappingsLocation	 , "[empty request] mappingsLocation");
 			
 			var responseHtml = context.response_Read_All();
 			Assert.AreEqual(EMPTY_RESPONSE,responseHtml, "[empty request] responseHtml should be empty");
@@ -57,8 +59,8 @@ namespace TeamMentor.UnitTests.CoreLib
 			request.QueryString["s"] = "setName";
 			request.QueryString["v"] = "version";
 			scriptCombiner.ProcessRequest(null); 
-			Assert.AreEqual(scriptCombiner.setName,"setName", "setName value"); 
-			Assert.AreEqual(scriptCombiner.version,"version", "setName value");			
+			Assert.AreEqual(scriptCombiner.apiScriptCombiner.setName,"setName", "setName value"); 
+			Assert.AreEqual(scriptCombiner.apiScriptCombiner.version,"version", "setName value");			
 			responseHtml = context.response_Read_All();
 			Assert.AreEqual(responseHtml, "othing to do"); 
 			//test test handshake			
@@ -72,17 +74,19 @@ namespace TeamMentor.UnitTests.CoreLib
 			var scriptCombiner = new ScriptCombiner(); 						
 			
 			scriptCombiner.ProcessRequest(null); 
-			Assert.IsTrue(scriptCombiner.minifyCode, "minifyCode should be true");			 
+			Assert.IsTrue(scriptCombiner.apiScriptCombiner.minifyCode, "minifyCode should be true");			 
 			
 			request.QueryString["s"] = "someValue";
 			request.QueryString["dontMinify"] = "true";
 			scriptCombiner.ProcessRequest(null); 
-			Assert.IsFalse(scriptCombiner.minifyCode, "minifyCode should be false");
+			Assert.IsFalse(scriptCombiner.apiScriptCombiner.minifyCode, "minifyCode should be false");
 		}		
 		[Test] public void serverCode_makeRequestFor_one_JavascriptFile()   
 		{
-			var scriptCombiner = new ScriptCombiner {ignoreCache = true};
-		    ScriptCombiner.MappingsLocation = "{0}.txt";
+			var scriptCombiner = new ScriptCombiner();
+            scriptCombiner.apiScriptCombiner.ignoreCache= true;
+
+		    scriptCombiner.apiScriptCombiner.MappingsLocation = "{0}.txt";
 			
 			var fileContents = "var a=1; // a test js file";
 			var expectedResult = "\nvar a=1;";
@@ -100,7 +104,7 @@ namespace TeamMentor.UnitTests.CoreLib
 			
 			var responseText = context.response_Read_All();
 			Assert.AreEqual(expectedResult					, responseText	, "responseText != expectedResult");								
-			Assert.AreEqual(scriptCombiner.filesProcessed[0], file1			, "scriptCombiner.filesProcessed[0]");
+			Assert.AreEqual(scriptCombiner.apiScriptCombiner.filesProcessed[0], file1			, "scriptCombiner.filesProcessed[0]");
 			
 			// these two fails due to weird encoding bug (the text is the same (in ascii))
 			//Assert.AreEqual(scriptCombiner.minifiedCode		, expectedResult, "minifiedCode");	
@@ -109,8 +113,8 @@ namespace TeamMentor.UnitTests.CoreLib
 		[Test] public void serverCode_makeRequestFor_two_JavascriptFile()   
 		{
 			var scriptCombiner = new ScriptCombiner();  
-			scriptCombiner.ignoreCache = true;
-			ScriptCombiner.MappingsLocation = "{0}.txt";
+			scriptCombiner.apiScriptCombiner.ignoreCache = true;
+			scriptCombiner.apiScriptCombiner.MappingsLocation = "{0}.txt";
 			
 			var fileContents1 = "var a=1; // a test js file";
 			var fileContents2 = "var b=1; // a test js file";

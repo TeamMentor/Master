@@ -1,8 +1,8 @@
 ﻿using FluentSharp.CoreLib;
 using FluentSharp.CoreLib.API;
+using FluentSharp.Web;
 using NUnit.Framework;
 using TeamMentor.CoreLib;
-using MiscUtils = TeamMentor.CoreLib.MiscUtils;
 
 namespace TeamMentor.UnitTests
 {
@@ -26,7 +26,7 @@ namespace TeamMentor.UnitTests
 
     public class Tests_Consts
     {        
-        public static bool      offline                     = MiscUtils.online().isFalse();        
+        public static bool      offline                     = WebUtils.online().isFalse();        
         public static string    TM_REST_Service_Protocol    = "http";
         public static int       TM_REST_Service_Port        =  8732;
         public static string    TM_REST_Service_IP          = "localhost";
@@ -55,7 +55,7 @@ namespace TeamMentor.UnitTests
         [Test]
         public void Tests_Consts_Static_Value()
         {
-            Assert.AreEqual(Tests_Consts.offline , MiscUtils.online().isFalse());
+            Assert.AreEqual(Tests_Consts.offline , WebUtils.online().isFalse());
         }
     }
 }

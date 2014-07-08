@@ -27,7 +27,7 @@ namespace TeamMentor.UnitTests.CoreLib
         {
             UserGroup.Admin.assert();
             
-            var userData_Path     = tmFileStorage.Path_UserData;
+            var userData_Path     = tmFileStorage.Path_UserData.createDir();
             var expected_Location = userData_Path.pathCombine(TMConsts.TM_CONFIG_FILENAME);
 
             Assert.NotNull (tmXmlDatabase);

@@ -10,6 +10,7 @@ namespace TeamMentor.UnitTests.CoreLib
     {
         [Test] public void TM_UserData_Ctor()   
         {
+            TM_FileStorage.Current = null;
             var userData = new TM_UserData();
 
             Assert.IsFalse  (userData.usingFileStorage());

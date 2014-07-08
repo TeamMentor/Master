@@ -19,7 +19,8 @@ namespace TeamMentor.UnitTests.FileStorage
         }
         [TearDown] public void teardown()
         {
-            Assert.IsTrue (Files.deleteFolder(userData.path_UserData(), true));
+            if(userData.path_UserData().folder_Exists())
+                Assert.IsTrue (Files.deleteFolder(userData.path_UserData(), true));
             Assert.IsFalse(userData.path_UserData().dirExists());
         }
         [Test] public void load()

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using FluentSharp.Git.APIs;
+using FluentSharp.Web;
 using NUnit.Framework;
 using FluentSharp.CoreLib;
 using TeamMentor.CoreLib;

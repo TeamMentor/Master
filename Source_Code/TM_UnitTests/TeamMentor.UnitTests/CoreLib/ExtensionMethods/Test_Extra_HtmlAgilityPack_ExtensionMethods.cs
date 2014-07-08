@@ -1,5 +1,6 @@
 ﻿using FluentSharp.CoreLib;
 using NUnit.Framework;
+using TeamMentor.CoreLib;
 
 namespace TeamMentor.UnitTests.CoreLib.ExtensionMethods
 {
