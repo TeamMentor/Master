@@ -16,7 +16,7 @@ namespace TeamMentor.UnitTests.WebSite_Content
             var dllLocation		 = assembly.CodeBase.subString(8);
             var webApplications  = dllLocation.parentFolder()
                                               .pathCombine(@"\..\..\..\..");
-            var tmWebsite 		 = webApplications.pathCombine(@"TM_Websites\Website_3.4");
+            var tmWebsite 		 = webApplications.pathCombine(@"TM_Websites\Website_3.5");
             		
     		WebConfigFile        = tmWebsite.pathCombine("web.config");
 

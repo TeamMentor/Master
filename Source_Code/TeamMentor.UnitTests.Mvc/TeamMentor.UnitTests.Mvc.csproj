@@ -97,9 +97,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TM_Backend\TeamMentor.Mcv\TeamMentor.Mcv.csproj">
-      <Project>{E2AD0169-D8C2-4289-8814-5B0AC507B267}</Project>
-      <Name>TeamMentor.Mcv</Name>
+    <ProjectReference Include="..\TM_Backend\TeamMentor.Mvc\TeamMentor.Mvc.csproj">
+      <Project>{898b48b8-38e9-4045-b0a7-9fe459f4a342}</Project>
+      <Name>TeamMentor.Mvc</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

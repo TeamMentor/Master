@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E2AD0169-D8C2-4289-8814-5B0AC507B267}</ProjectGuid>
+    <ProjectGuid>{898B48B8-38E9-4045-B0A7-9FE459F4A342}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TeamMentor.Mcv</RootNamespace>

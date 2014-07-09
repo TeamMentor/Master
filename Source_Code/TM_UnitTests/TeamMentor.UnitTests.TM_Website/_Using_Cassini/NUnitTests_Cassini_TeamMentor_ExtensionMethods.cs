@@ -12,7 +12,7 @@ namespace TeamMentor.UnitTests.TM_Website
             var assembly        = nUnitTests_Cassini.type().Assembly;
             var dllLocation     = assembly.CodeBase.subString(8);
             var webApplications = dllLocation.parentFolder().pathCombine(@"\..\..\..\..");
-            var tmWebsite       = webApplications.pathCombine(@"TM_Websites\Website_3.4");
+            var tmWebsite       = webApplications.pathCombine(@"TM_Websites\Website_3.5");
 
             Assert.That(tmWebsite.dirExists()       , "tmWebsite dir not found: {0}".format(tmWebsite));
             Assert.That(dllLocation.fileExists()    , "dllLocation file not found: {0}".format(dllLocation));

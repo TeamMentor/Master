@@ -31,13 +31,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamMentor.FileStorage", "T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamMentor.Markdown", "TM_Backend\TeamMentor.Markdown\TeamMentor.Markdown.csproj", "{24B43F80-C6F2-4EC9-985A-28DDA363AA2C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamMentor.Mcv", "TM_Backend\TeamMentor.Mcv\TeamMentor.Mcv.csproj", "{E2AD0169-D8C2-4289-8814-5B0AC507B267}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamMentor.SiteData", "TM_Backend\TeamMentor.SiteData\TeamMentor.SiteData.csproj", "{3D6CFD55-9A23-4210-B004-705EACD96EB5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamMentor.UnitTests.Mvc", "TeamMentor.UnitTests.Mvc\TeamMentor.UnitTests.Mvc.csproj", "{5D167A9E-D6C3-4CFA-A054-EFCF49F8BC90}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Website_3.5", "TM_WebSites\Website_3.5\Website_3.5.csproj", "{747EDF82-E130-4F5E-B46B-FCAA6C354628}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamMentor.Mvc", "TM_Backend\TeamMentor.Mvc\TeamMentor.Mvc.csproj", "{898B48B8-38E9-4045-B0A7-9FE459F4A342}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -159,16 +159,6 @@ Global
 		{24B43F80-C6F2-4EC9-985A-28DDA363AA2C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{24B43F80-C6F2-4EC9-985A-28DDA363AA2C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{24B43F80-C6F2-4EC9-985A-28DDA363AA2C}.Release|x86.ActiveCfg = Release|Any CPU
-		{E2AD0169-D8C2-4289-8814-5B0AC507B267}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E2AD0169-D8C2-4289-8814-5B0AC507B267}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E2AD0169-D8C2-4289-8814-5B0AC507B267}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{E2AD0169-D8C2-4289-8814-5B0AC507B267}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{E2AD0169-D8C2-4289-8814-5B0AC507B267}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{E2AD0169-D8C2-4289-8814-5B0AC507B267}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E2AD0169-D8C2-4289-8814-5B0AC507B267}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E2AD0169-D8C2-4289-8814-5B0AC507B267}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{E2AD0169-D8C2-4289-8814-5B0AC507B267}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{E2AD0169-D8C2-4289-8814-5B0AC507B267}.Release|x86.ActiveCfg = Release|Any CPU
 		{3D6CFD55-9A23-4210-B004-705EACD96EB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3D6CFD55-9A23-4210-B004-705EACD96EB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D6CFD55-9A23-4210-B004-705EACD96EB5}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -199,6 +189,16 @@ Global
 		{747EDF82-E130-4F5E-B46B-FCAA6C354628}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{747EDF82-E130-4F5E-B46B-FCAA6C354628}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{747EDF82-E130-4F5E-B46B-FCAA6C354628}.Release|x86.ActiveCfg = Release|Any CPU
+		{898B48B8-38E9-4045-B0A7-9FE459F4A342}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{898B48B8-38E9-4045-B0A7-9FE459F4A342}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{898B48B8-38E9-4045-B0A7-9FE459F4A342}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{898B48B8-38E9-4045-B0A7-9FE459F4A342}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{898B48B8-38E9-4045-B0A7-9FE459F4A342}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{898B48B8-38E9-4045-B0A7-9FE459F4A342}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{898B48B8-38E9-4045-B0A7-9FE459F4A342}.Release|Any CPU.Build.0 = Release|Any CPU
+		{898B48B8-38E9-4045-B0A7-9FE459F4A342}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{898B48B8-38E9-4045-B0A7-9FE459F4A342}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{898B48B8-38E9-4045-B0A7-9FE459F4A342}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -215,10 +215,10 @@ Global
 		{5B02BD8E-BF90-4182-80A6-41842494399D} = {2F2BDCAC-53AC-4BCE-8398-0A03C50A9D89}
 		{F5ACC621-5930-45E8-9595-39E1758CA7A9} = {2F2BDCAC-53AC-4BCE-8398-0A03C50A9D89}
 		{24B43F80-C6F2-4EC9-985A-28DDA363AA2C} = {2F2BDCAC-53AC-4BCE-8398-0A03C50A9D89}
-		{E2AD0169-D8C2-4289-8814-5B0AC507B267} = {2F2BDCAC-53AC-4BCE-8398-0A03C50A9D89}
 		{3D6CFD55-9A23-4210-B004-705EACD96EB5} = {2F2BDCAC-53AC-4BCE-8398-0A03C50A9D89}
 		{5D167A9E-D6C3-4CFA-A054-EFCF49F8BC90} = {418A6789-51B1-4080-B004-8963C0E41D74}
 		{747EDF82-E130-4F5E-B46B-FCAA6C354628} = {5CC37760-6B32-4E22-9F0B-7690E0667C22}
+		{898B48B8-38E9-4045-B0A7-9FE459F4A342} = {2F2BDCAC-53AC-4BCE-8398-0A03C50A9D89}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35
