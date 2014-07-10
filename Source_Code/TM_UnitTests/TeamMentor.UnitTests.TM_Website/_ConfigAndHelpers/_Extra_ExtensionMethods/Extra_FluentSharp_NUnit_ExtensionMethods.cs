@@ -8,6 +8,12 @@ namespace FluentSharp.NUnit
 {
     public static class Extra_FluentSharp_NUnit_ExtensionMethods
     {
+        public static string         assert_Not_Contains(this string target, params string[] values)
+        {
+            foreach(var value in values)
+                Assert.False(target.contains(value), "value '{0}' was not expected to exist in string: \n\n {1}".format(value,target));
+            return target;
+        }
         public static T              assert_Is<T>(this T source, T target)
         {
             return source.assert_Is_Equal_To(target);

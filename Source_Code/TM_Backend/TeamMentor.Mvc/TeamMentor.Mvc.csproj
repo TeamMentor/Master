@@ -7,8 +7,8 @@
     <ProjectGuid>{898B48B8-38E9-4045-B0A7-9FE459F4A342}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TeamMentor.Mcv</RootNamespace>
-    <AssemblyName>TeamMentor.Mcv</AssemblyName>
+    <RootNamespace>TeamMentor.Mvc</RootNamespace>
+    <AssemblyName>TeamMentor.Mvc</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
