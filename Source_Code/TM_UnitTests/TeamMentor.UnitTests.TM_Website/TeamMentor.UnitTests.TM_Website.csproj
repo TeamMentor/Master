@@ -128,6 +128,7 @@
     <Compile Include="_ConfigAndHelpers\_Extra_ExtensionMethods\Extra_FluentSharp_NUnit_ExtensionMethods.cs" />
     <Compile Include="_ConfigAndHelpers\_Extra_ExtensionMethods\Test_Extra_FluentSharp_NUnit_ExtensionMethods.cs" />
     <Compile Include="_ConfigAndHelpers\CassiniDev\Test_Cassini_Create_Pages.cs" />
+    <Compile Include="_ConfigAndHelpers\_Extra_ExtensionMethods\Test_Extra_Watin_ExtensionMethods.cs" />
     <Compile Include="_Using_Cassini\Content_Static\Test_TeamMentor_Static_Content.cs" />
     <Compile Include="_Using_Cassini\NUnitTests_Cassini.cs" />
     <Compile Include="_Using_Cassini\NUnitTests_Cassini_TeamMentor.cs" />
@@ -136,6 +137,7 @@
     <Compile Include="_ConfigAndHelpers\_Extra_ExtensionMethods\Test_Extra_API_Cassini_ExtensionMethods.cs" />
     <Compile Include="_Using_Cassini\Test_NUnitTests_Cassini.cs" />
     <Compile Include="_Using_Cassini\Test_NUnitTests_Cassini_TeamMentor.cs" />
+    <Compile Include="_Using_Cassini\TM_Admin_Workflows\Test_Cassini_Library_Management.cs" />
     <Content Include="WebServices\CSharp_Script_to_Clearn_References.txt" />
     <Compile Include="WebServices\Test_WSDL_Security.cs" />
     <Compile Include="WebServices\Test_TestFixture_WebServices.cs" />

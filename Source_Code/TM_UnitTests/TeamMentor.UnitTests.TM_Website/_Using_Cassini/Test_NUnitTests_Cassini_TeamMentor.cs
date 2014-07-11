@@ -1,6 +1,7 @@
 using FluentSharp.CassiniDev;
 using FluentSharp.CoreLib;
 using FluentSharp.NUnit;
+using FluentSharp.Watin;
 using FluentSharp.Web35;
 using FluentSharp.WinForms;
 using NUnit.Framework;
@@ -21,12 +22,14 @@ namespace TeamMentor.UnitTests.TM_Website
 
         [Test] public void start()         
         {
-            // stop() is also tests here
-
             var nUnitTests_TeamMentor = new NUnitTests_Cassini_TeamMentor();            
-
+            
             nUnitTests_TeamMentor.start();
 
+            /*var ie = "test".add_IE_PopupWindow();
+            ie.open(nUnitTests_TeamMentor.apiCassini.url());
+            ie.script_IE().waitForClose();
+            */
             nUnitTests_TeamMentor.port      .tcpClient().assert_Not_Null();
             var homePage_Html= nUnitTests_TeamMentor.apiCassini.url().GET();
             homePage_Html.assert_Contains("<html>","<head>","</head>","</html>")

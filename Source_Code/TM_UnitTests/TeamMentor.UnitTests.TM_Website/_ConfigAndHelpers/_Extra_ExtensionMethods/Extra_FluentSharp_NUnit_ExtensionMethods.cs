@@ -8,6 +8,20 @@ namespace FluentSharp.NUnit
 {
     public static class Extra_FluentSharp_NUnit_ExtensionMethods
     {
+        public static string         assert_File_Contains(this string file, params string[] values)
+        {
+            var fileContents = file.assert_File_Exists().fileContents()
+                                                        .assert_Not_Empty();
+            fileContents.assert_Contains(values);
+            return file;
+        }
+        public static string         assert_File_Not_Contains(this string file, params string[] values)
+        {
+            var fileContents = file.assert_File_Exists().fileContents()
+                                                        .assert_Not_Empty();
+            fileContents.assert_Not_Contains(values);
+            return file;
+        }
         public static string         assert_Not_Contains(this string target, params string[] values)
         {
             foreach(var value in values)

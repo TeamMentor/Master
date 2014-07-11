@@ -18,13 +18,17 @@ namespace TeamMentor.UnitTests.TM_Website._Using_Cassini.Content_Static
         //WorkFlows
         [Test] public void Check_That_Site_Is_Up()
         {            
-           // apiCassini.url().uri()                            .HEAD().assert_False();
-            apiCassini.url().uri().append("default.htm")      .HEAD().assert_True ();
-            apiCassini.url().uri().append("default.htm").str().HEAD_StatusCode().assert_Http_OK();
-    
+            var url = apiCassini.url();
+            
             apiCassini.url().GET().assert_Not_Null()
                                   .assert_Not_Contains("TeamMentor is current unavailable") 
                                   .assert_Contains("<html>","<body>","</body>","</html>");
+
+            apiCassini.url().uri()                            .HEAD().assert_True();
+            apiCassini.url().uri().append("default.htm")      .HEAD().assert_True();
+            apiCassini.url().uri().append("default.htm").str().HEAD_StatusCode().assert_Http_OK();
+    
+            
         }
 
         [Test] public void Expected_Pages_Html()

@@ -9,7 +9,7 @@ using FluentSharp.CoreLib;
 namespace FluentSharp.CassiniDev
 {
     public static class Extra_API_Cassini_ExtensionMethods
-    {
+    {        
         /// <summary>
         /// Creates a file inside the current web root
         /// 
