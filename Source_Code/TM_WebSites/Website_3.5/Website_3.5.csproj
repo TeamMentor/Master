@@ -80,6 +80,9 @@
       <Private>True</Private>
       <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\packages\Newtonsoft.Json.6.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="NGit">
       <HintPath>..\..\TM_Backend\TeamMentor.Git\NGit_Dlls\NGit.dll</HintPath>
     </Reference>
@@ -786,7 +789,7 @@
     <Content Include="MVC\Views\Markdown_Editor.cshtml" />
     <Content Include="MVC\Views\MarkDown_Viewer.cshtml" />
     <Content Include="MVC\Views\_Layout.cshtml" />
-    <None Include="Properties\PublishProfiles\3.4 Publish.pubxml" />
+    <None Include="Properties\PublishProfiles\3.5 Publish.pubxml" />
     <None Include="TBot_Monitor\lib\bootstrap\fonts\glyphicons-halflings-regular.eot" />
     <None Include="TBot_Monitor\lib\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
     <None Include="TBot_Monitor\lib\bootstrap\fonts\glyphicons-halflings-regular.woff" />
