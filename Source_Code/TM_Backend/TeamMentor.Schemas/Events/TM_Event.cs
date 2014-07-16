@@ -23,8 +23,8 @@ namespace TeamMentor.CoreLib
         public TM_Event_GuidanceExplorer    (TM_Xml_Database tmXmlDatabase) : base(tmXmlDatabase) {}
     }
     
-    
-    public class TM_Event<T> : List<Action<T>>  
+    [Serializable]
+    public class TM_Event<T> : List<Action<T>> 
     {
         public T            Target              { get; set; }
         public Exception    Last_Exception      { get; set; }
@@ -38,6 +38,7 @@ namespace TeamMentor.CoreLib
         }        
     }
 
+    [Serializable]
     public class TM_Event<T,P> : List<Action<T,P>>  
     {
         public T            Target              { get; set; }

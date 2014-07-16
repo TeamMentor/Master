@@ -3,11 +3,10 @@ using System;
 using System.Xml.Serialization;
 
 namespace TeamMentor.CoreLib    
-{
-    //public values 
+{    
     [Serializable]
     [XmlRoot(ElementName="TMConfig")]
-    public class TMConfig
+    public class TMConfig : MarshalByRefObject
     {
         public static TMConfig              Current                     { get; set; }
 
@@ -17,11 +16,6 @@ namespace TeamMentor.CoreLib
         public OnInstallation_Config		OnInstallation				{ get; set; }
         public VirtualArticles_Config       VirtualArticles             { get; set; }
 
-
-        /*static TMConfig()
-        {
-            Current = new TMConfig();
-        }*/
 
         public TMConfig()
         {
@@ -37,8 +31,8 @@ namespace TeamMentor.CoreLib
         
 
         
-
-        public class TMSetup_Config
+        [Serializable]
+        public class TMSetup_Config : MarshalByRefObject
         {
             public bool			UseAppDataFolder			{ get; set; }           
             public string       TMLibraryDataVirtualPath    { get; set; }
@@ -60,7 +54,8 @@ namespace TeamMentor.CoreLib
                 ShowDotNetDebugErrors       = false;
             }
         }
-        public class TMSecurity_Config
+        [Serializable]
+        public class TMSecurity_Config : MarshalByRefObject
         {
             public bool 		Show_ContentToAnonymousUsers { get; set; }
             public bool 		Show_LibraryToAnonymousUsers { get; set; }
@@ -90,8 +85,8 @@ namespace TeamMentor.CoreLib
                 EmailAdmin_On_NewUsers       = true; 
             }            
         }
-
-        public class WindowsAuthentication_Config
+        [Serializable]
+        public class WindowsAuthentication_Config : MarshalByRefObject
         {				
             public bool		    Enabled		                { get; set; }
             public string	    ReaderGroup                 { get; set; }
@@ -107,8 +102,8 @@ namespace TeamMentor.CoreLib
             }
         }        
 
-        
-        public class OnInstallation_Config
+        [Serializable]
+        public class OnInstallation_Config : MarshalByRefObject
         {
             public bool         ForceDefaultAdminPassword			    { get; set; }
             public string       DefaultLibraryToInstall_Name		{ get; set; }
@@ -121,7 +116,8 @@ namespace TeamMentor.CoreLib
                 DefaultLibraryToInstall_Location = "";
             }
         }  
-        public class VirtualArticles_Config
+        [Serializable]
+        public class VirtualArticles_Config : MarshalByRefObject
         { 
             public bool         AutoRedirectIfGuidNotFound          { get; set; }
             public string       AutoRedirectTarget                  { get; set; }
@@ -132,11 +128,5 @@ namespace TeamMentor.CoreLib
                 AutoRedirectTarget         = "https://teammentor.net/article/";
             }
         }
-
-
-
-
-        
-
     }
 }

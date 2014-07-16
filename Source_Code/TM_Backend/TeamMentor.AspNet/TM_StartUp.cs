@@ -9,17 +9,29 @@ using TeamMentor.UserData;
 
 namespace TeamMentor.CoreLib
 {
-    public class TM_StartUp
+    [Serializable]
+    public class TM_StartUp : MarshalByRefObject
     {
         public static TM_StartUp        Current                 { get; set; }
-        public static TM_Engine         TMEngine                { get; set; }        
+        public TM_Engine                TMEngine                { get; set; }        
         public Tracking_Application     TrackingApplication     { get; set; }
         public TM_FileStorage           TmFileStorage           { get; set; }        
-
+        public string                   Version
+        {
+            get
+            {
+                return this.type().assembly().version();
+            } 
+            set
+            {
+                
+            }
+        }
         public TM_StartUp()
         {
             Current  = this;
             TMEngine = new TM_Engine();
+            Version  = this.type().assembly().version(); 
         }
 
         public void SetupEvents()
@@ -43,7 +55,7 @@ namespace TeamMentor.CoreLib
         
         [Assert_Admin]                      // impersonate an admin to load the database
         public void Application_Start()
-        {
+        {            
             UserGroup.Admin.assert();                                   // impersonate Admin user
 
             "[TM_StartUp] Application Start".info();   

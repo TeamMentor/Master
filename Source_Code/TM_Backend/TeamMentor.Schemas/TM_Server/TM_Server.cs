@@ -6,7 +6,8 @@ using FluentSharp.CoreLib;
 
 namespace TeamMentor.CoreLib
 {
-    public class TM_Server
+    [Serializable]
+    public class TM_Server : MarshalByRefObject
     {
         public bool          Users_Create_Default_Admin     { get; set; }
         public bool          TM_Database_Use_AppData_Folder { get; set; }

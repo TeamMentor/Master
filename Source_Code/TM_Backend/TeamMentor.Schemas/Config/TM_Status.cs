@@ -5,7 +5,8 @@ using System.Text;
 
 namespace TeamMentor.CoreLib
 {
-    public class TM_Status
+    [Serializable]
+    public class TM_Status : MarshalByRefObject
     {        
         public static TM_Status   Current                             { get; set; }
         public Database_Status    TM_Database_Status                  { get; set; }

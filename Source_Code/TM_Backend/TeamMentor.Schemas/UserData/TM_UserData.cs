@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using FluentSharp.CoreLib;
 
 
 namespace TeamMentor.CoreLib
 {
-    public class TM_UserData
+    [Serializable]
+    public class TM_UserData : MarshalByRefObject
     {        
         public static TM_UserData       Current             { get; set; }
         public static Thread            GitPushThread       { get; set; }

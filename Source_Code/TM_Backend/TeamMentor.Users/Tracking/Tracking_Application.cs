@@ -6,7 +6,8 @@ using FluentSharp.CoreLib.API;
 namespace TeamMentor.CoreLib
 {
     //used to track and save application specific data
-    public class Tracking_Application
+    [Serializable]
+    public class Tracking_Application : MarshalByRefObject
     {
         public string Name              { get; set; }
         public string LogFilesLocation  { get; set; }

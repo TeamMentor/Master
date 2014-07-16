@@ -8,7 +8,8 @@ using urn.microsoft.guidanceexplorer;
 
 namespace TeamMentor.FileStorage
 {
-    public class TM_FileStorage
+    [Serializable]
+    public class TM_FileStorage : MarshalByRefObject
     {
         public static TM_FileStorage Current        { get;set;}        
         public TM_Server             Server         { get;set;}

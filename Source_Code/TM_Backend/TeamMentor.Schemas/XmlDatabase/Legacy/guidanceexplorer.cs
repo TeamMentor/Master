@@ -27,6 +27,7 @@ namespace urn.microsoft.guidanceexplorer
             this.saveAs(xmlFile);
         }
     }
+    [Serializable]
     public class Library
     {
         [XmlAttribute] public string           name                { get; set; }
@@ -40,6 +41,7 @@ namespace urn.microsoft.guidanceexplorer
         }
     }
 
+    [Serializable]
     public class LibraryStructure
     {
         [XmlElement  ] public List<View>       view                 { get; set; }
@@ -51,7 +53,7 @@ namespace urn.microsoft.guidanceexplorer
             folder  = new List<Folder>();
         }
     }
-
+    [Serializable]
     public class Folder
     {
         [XmlAttribute] public string           folderId            { get; set; }
@@ -65,6 +67,7 @@ namespace urn.microsoft.guidanceexplorer
             folder1  = new List<Folder>();            
         }
     }
+    [Serializable]
     public class View
     {   
         [XmlAttribute] public string           id                  { get; set; }
@@ -78,6 +81,7 @@ namespace urn.microsoft.guidanceexplorer
             items    = new Items();                        
         }
     }
+    [Serializable]
     public class Items 
     {
         [XmlElement(ElementName = "item")] public List<string>     item  { get; set; }

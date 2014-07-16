@@ -6,7 +6,7 @@ using System.Xml.Serialization;
 namespace TeamMentor.CoreLib
 {    
     [Serializable]            
-    public class TMUser
+    public class TMUser : MarshalByRefObject
     {
         [XmlAttribute] public Guid		ID          { get; set; }
         [XmlAttribute] public int		UserID      { get; set; }
@@ -54,12 +54,16 @@ namespace TeamMentor.CoreLib
                                     };                
         }
     }
-    public class UserTag
+
+    [Serializable]    
+    public class UserTag : MarshalByRefObject
     {
         [XmlAttribute]	public string   Key		            { get; set; }
         [XmlAttribute]	public string   Value		        { get; set; }        
     }
-    public class UserSecretData
+
+    [Serializable]    
+    public class UserSecretData : MarshalByRefObject
     {
         [XmlAttribute]	public string   PasswordHash		{ get; set; }        
         [XmlAttribute]	public string   PasswordResetToken	{ get; set; }
@@ -69,19 +73,22 @@ namespace TeamMentor.CoreLib
         [XmlAttribute]  public string   PostLoginScript     { get; set; }
         [XmlAttribute]	public Guid     EnableUserToken		{ get; set; }
     }
-    public class UserSession
+    [Serializable]    
+    public class UserSession : MarshalByRefObject
     {
         [XmlAttribute]	public Guid     SessionID		    { get; set; }
         [XmlAttribute]	public DateTime CreationDate		{ get; set; }
         [XmlAttribute]	public string   IpAddress		    { get; set; }
         [XmlAttribute]	public string   LoginMethod		    { get; set; }
     }
-    public class AuthToken
+    [Serializable]    
+    public class AuthToken : MarshalByRefObject
     {
         [XmlAttribute]	public Guid      Token		        { get; set; }
         [XmlAttribute]	public DateTime  CreationDate		{ get; set; }        
     }
-    public class UserAccountStatus
+    [Serializable]    
+    public class UserAccountStatus : MarshalByRefObject
     {
         [XmlAttribute]	public bool     AccountNeverExpires	{ get; set; }
         [XmlAttribute]	public DateTime ExpirationDate		{ get; set; }
@@ -89,7 +96,8 @@ namespace TeamMentor.CoreLib
         [XmlAttribute]	public bool     UserEnabled		    { get; set; }        
         
     }
-    public class UserStats
+    [Serializable]    
+    public class UserStats : MarshalByRefObject
     {
         [XmlAttribute]	public DateTime CreationDate		{ get; set; }		        
     }
