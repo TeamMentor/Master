@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B182AC40-5296-433C-A248-9BB9E1E6BF56}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TeamMentor.UnitTests.Cassini</RootNamespace>
+    <AssemblyName>TeamMentor.UnitTests.Cassini</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FluentSharp.AST">
+      <HintPath>..\..\packages\FluentSharp.Ast.5.5.166\lib\net35\FluentSharp.AST.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentSharp.CassiniDev">
+      <HintPath>..\..\packages\FluentSharp.CassiniDev.5.5.166\lib\net35\FluentSharp.CassiniDev.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentSharp.CassiniDev.NUnit">
+      <HintPath>..\..\packages\FluentSharp.CassiniDev.NUnit.5.5.166\lib\net45\FluentSharp.CassiniDev.NUnit.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentSharp.CoreLib">
+      <HintPath>..\..\packages\FluentSharp.CoreLib.5.5.166\lib\net35\FluentSharp.CoreLib.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentSharp.NUnit">
+      <HintPath>..\..\packages\FluentSharp.NUnit.5.5.166\lib\net35\FluentSharp.NUnit.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentSharp.REPL">
+      <HintPath>..\..\packages\FluentSharp.REPL.5.5.166\lib\net35\FluentSharp.REPL.exe</HintPath>
+    </Reference>
+    <Reference Include="FluentSharp.SharpDevelopEditor">
+      <HintPath>..\..\packages\FluentSharp.SharpDevelopEditor.5.5.166\lib\net35\FluentSharp.SharpDevelopEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentSharp.WatiN">
+      <HintPath>..\..\packages\FluentSharp.WatiN.5.5.166\lib\net40\FluentSharp.WatiN.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentSharp.WatiN.NUnit">
+      <HintPath>..\..\packages\FluentSharp.WatiN.NUnit.5.5.166\lib\net40\FluentSharp.WatiN.NUnit.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentSharp.Web_3_5">
+      <HintPath>..\..\packages\FluentSharp.Web_3_5.5.5.166\lib\net35\FluentSharp.Web_3_5.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentSharp.WinForms, Version=5.5.0.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\FluentSharp.WinForms.5.5.166\lib\net35\FluentSharp.WinForms.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentSharp.Xml">
+      <HintPath>..\..\packages\FluentSharp.Xml.5.5.166\lib\net35\FluentSharp.Xml.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentSharp.Zip">
+      <HintPath>..\..\packages\FluentSharp.Zip.5.5.166\lib\net35\FluentSharp.Zip.dll</HintPath>
+    </Reference>
+    <Reference Include="Interop.SHDocVw">
+      <HintPath>..\..\packages\WatiN.2.1.0\lib\net40\Interop.SHDocVw.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Ionic.Zip">
+      <HintPath>..\..\packages\DotNetZip.1.9.3\lib\net20\Ionic.Zip.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.mshtml, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+      <Private>True</Private>
+      <HintPath>..\..\packages\WatiN.2.1.0\lib\net40\Microsoft.mshtml.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>..\..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WatiN.Core">
+      <HintPath>..\..\packages\WatiN.2.1.0\lib\net40\WatiN.Core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="_Config_And_Helpers\Classes\NUnitTests_Cassini_TeamMentor.cs" />
+    <Compile Include="_Config_And_Helpers\ExtensionMethods\NUnitTests_Cassini_TeamMentor_ExtensionMethods.cs" />
+    <Compile Include="_Config_And_Helpers\Test_Config_And_Helpers\Test_Cassini_Access_TM_Variables.cs" />
+    <Compile Include="_Config_And_Helpers\Test_Config_And_Helpers\Test_NUnitTests_Cassini_TeamMentor.cs" />
+    <Compile Include="_Using_Cassini\Content_Static\Test_TeamMentor_Static_Content.cs" />
+    <Compile Include="_Using_Cassini\SiteData\Test_Cassini_SiteData.cs" />
+    <Compile Include="_Using_Cassini\TM_Admin_Workflows\Test_Cassini_Library_Management.cs" />
+    <Compile Include="__Extra_FluentSharp\Extra_FluentSharp_NUnit_ExtensionMethods.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\TM_Backend\TeamMentor.AspNet\TeamMentor.AspNet.csproj">
+      <Project>{5B02BD8E-BF90-4182-80A6-41842494399D}</Project>
+      <Name>TeamMentor.AspNet</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\TM_Backend\TeamMentor.FileStorage\TeamMentor.FileStorage.csproj">
+      <Project>{F5ACC621-5930-45E8-9595-39E1758CA7A9}</Project>
+      <Name>TeamMentor.FileStorage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\TM_Backend\TeamMentor.Schemas\TeamMentor.Schemas.csproj">
+      <Project>{77E93D41-8457-45BD-82A8-37C0DEEC32AD}</Project>
+      <Name>TeamMentor.Schemas</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\TM_Backend\TeamMentor.Users\TeamMentor.Users.csproj">
+      <Project>{5844D933-6FB7-4717-AE60-85D96F2EFA29}</Project>
+      <Name>TeamMentor.Users</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

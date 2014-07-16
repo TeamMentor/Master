@@ -1,25 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FluentSharp.CassiniDev;
+﻿using FluentSharp.CassiniDev;
 using FluentSharp.CoreLib;
 using FluentSharp.NUnit;
 using FluentSharp.Web35;
-using FluentSharp.WinForms;
 using NUnit.Framework;
 
-namespace TeamMentor.UnitTests.TM_Website._Using_Cassini.Content_Static
+namespace TeamMentor.UnitTests.Cassini
 {
     [TestFixture]
     public class Test_TeamMentor_Static_Content : NUnitTests_Cassini_TeamMentor
     {
         //WorkFlows
         [Test] public void Check_That_Site_Is_Up()
-        {            
-            var url = apiCassini.url();
-            
+        {                        
             apiCassini.url().GET().assert_Not_Null()
                                   .assert_Not_Contains("TeamMentor is current unavailable") 
                                   .assert_Contains("<html>","<body>","</body>","</html>");

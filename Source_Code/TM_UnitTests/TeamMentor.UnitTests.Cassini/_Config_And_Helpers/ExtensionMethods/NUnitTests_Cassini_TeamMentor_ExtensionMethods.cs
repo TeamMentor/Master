@@ -1,7 +1,8 @@
 using FluentSharp.CoreLib;
+using FluentSharp.NUnit;
 using NUnit.Framework;
 
-namespace TeamMentor.UnitTests.TM_Website
+namespace TeamMentor.UnitTests.Cassini
 {
     public static class NUnitTests_Cassini_TeamMentor_ExtensionMethods
     {
@@ -14,7 +15,7 @@ namespace TeamMentor.UnitTests.TM_Website
             var webApplications = dllLocation.parentFolder().pathCombine(@"\..\..\..\..");
             var tmWebsite       = webApplications.pathCombine(@"TM_Websites\Website_3.5");
 
-            Assert.That(tmWebsite.dirExists()       , "tmWebsite dir not found: {0}".format(tmWebsite));
+            tmWebsite.assert_Folder_Exists("tmWebsite dir not found: {0}".format(tmWebsite));
             Assert.That(dllLocation.fileExists()    , "dllLocation file not found: {0}".format(dllLocation));
             Assert.That(webApplications.dirExists() , "webApplications dir not found: {0}".format(webApplications));
 

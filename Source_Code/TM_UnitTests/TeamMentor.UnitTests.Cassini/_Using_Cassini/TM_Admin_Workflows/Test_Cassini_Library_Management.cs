@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FluentSharp.CassiniDev;
 using FluentSharp.CoreLib;
 using FluentSharp.NUnit;
 using FluentSharp.Watin;
+using FluentSharp.WatiN.NUnit;
 using FluentSharp.WinForms;
 using NUnit.Framework;
 
-namespace TeamMentor.UnitTests.TM_Website._Using_Cassini.TM_Admin_Workflows
+namespace TeamMentor.UnitTests.Cassini
 {
     [TestFixture]
     public class Test_Cassini_User_Management : NUnitTests_Cassini_TeamMentor
@@ -26,16 +23,13 @@ namespace TeamMentor.UnitTests.TM_Website._Using_Cassini.TM_Admin_Workflows
             
             admin_Name = "admin";
             admin_Pwd  = "!!tmadmin";
-            
+            //ie.script_IE().waitForClose();
         }
        
         [Test]
         public void Login_As_Admin()
         {
             server 	   = apiCassini.url();
-            //ie.downloadAndExecJavascriptFile
-            //var whoAmI = ie.open_and_HandleFileDownload(server.append("WhoAmI")).html();
-            //whoAmI.assert_Equal_To("123");
             ie.open(server.append("login").info());
 			ie.field("username").value(admin_Name);
 			ie.field("password").value(admin_Pwd);

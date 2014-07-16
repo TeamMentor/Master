@@ -3,7 +3,7 @@ using FluentSharp.NUnit;
 using FluentSharp.Web35;
 using NUnit.Framework;
 
-namespace TeamMentor.UnitTests.TM_Website
+namespace TeamMentor.UnitTests.Cassini
 {
     public class NUnitTests_Cassini_TeamMentor : NUnitTests
     {

@@ -41,26 +41,30 @@
   <ItemGroup>
     <Reference Include="FluentSharp.CoreLib, Version=5.5.0.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\FluentSharp.CoreLib.5.5.156\lib\net35\FluentSharp.CoreLib.dll</HintPath>
+      <HintPath>..\..\packages\FluentSharp.CoreLib.5.5.166\lib\net35\FluentSharp.CoreLib.dll</HintPath>
     </Reference>
-    <Reference Include="FluentSharp.Moq">
-      <HintPath>..\..\packages\FluentSharp.Moq.5.5.156\lib\net45\FluentSharp.Moq.dll</HintPath>
-    </Reference>
-    <Reference Include="FluentSharp.NGit, Version=5.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="FluentSharp.Moq, Version=5.5.0.0, Culture=neutral, PublicKeyToken=cb5cfe5e99ebc2b4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\FluentSharp.NGit.5.5.156\lib\net40\FluentSharp.NGit.dll</HintPath>
+      <HintPath>..\..\packages\FluentSharp.Moq.5.5.166\lib\net45\FluentSharp.Moq.dll</HintPath>
     </Reference>
-    <Reference Include="FluentSharp.Web_3_5">
-      <HintPath>..\..\packages\FluentSharp.Web_3_5.5.5.156\lib\net35\FluentSharp.Web_3_5.dll</HintPath>
+    <Reference Include="FluentSharp.NGit">
+      <HintPath>..\..\packages\FluentSharp.NGit.5.5.166\lib\net40\FluentSharp.NGit.dll</HintPath>
     </Reference>
-    <Reference Include="FluentSharp.Web_4_5">
-      <HintPath>..\..\packages\FluentSharp.Web_4_5.5.5.156\lib\net45\FluentSharp.Web_4_5.dll</HintPath>
+    <Reference Include="FluentSharp.Web_3_5, Version=5.5.0.0, Culture=neutral, PublicKeyToken=1439893e489faed4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\FluentSharp.Web_3_5.5.5.166\lib\net35\FluentSharp.Web_3_5.dll</HintPath>
     </Reference>
-    <Reference Include="FluentSharp.WinForms">
-      <HintPath>..\..\packages\FluentSharp.WinForms.5.5.156\lib\net35\FluentSharp.WinForms.dll</HintPath>
+    <Reference Include="FluentSharp.Web_4_5, Version=5.5.0.0, Culture=neutral, PublicKeyToken=0188572cb8cf4bdd, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\FluentSharp.Web_4_5.5.5.166\lib\net45\FluentSharp.Web_4_5.dll</HintPath>
     </Reference>
-    <Reference Include="HtmlAgilityPack, Version=1.4.6.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\HtmlAgilityPack.1.4.6\lib\Net40\HtmlAgilityPack.dll</HintPath>
+    <Reference Include="FluentSharp.WinForms, Version=5.5.0.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\FluentSharp.WinForms.5.5.166\lib\net35\FluentSharp.WinForms.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentSharp.Xml, Version=1.0.0.0, Culture=neutral, PublicKeyToken=e20c9643c6d4ac0b, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\FluentSharp.Xml.5.5.166\lib\net35\FluentSharp.Xml.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
@@ -105,7 +109,6 @@
     <Compile Include="CoreLib\Authentication\Test_TokenAuthentication.cs" />
     <Compile Include="CoreLib\Authentication\Test_UserRoleBaseSecurity.cs" />
     <Compile Include="CoreLib\Authentication\Test_WindowsAuthentication.cs" />
-    <Compile Include="CoreLib\ExtensionMethods\Test_Extra_HtmlAgilityPack_ExtensionMethods.cs" />
     <Compile Include="CoreLib\HandleRequest\Test_HandleRequest_UserData.cs" />
     <Compile Include="CoreLib\Schemas\Test_TMUser.cs" />
     <Compile Include="CoreLib\Schemas\Test_TM_Config.cs" />

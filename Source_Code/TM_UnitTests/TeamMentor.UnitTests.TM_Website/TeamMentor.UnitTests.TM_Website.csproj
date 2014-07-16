@@ -35,40 +35,49 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FluenSharp.CassiniDev">
-      <HintPath>..\..\packages\FluentSharp.CassiniDev.5.5.156\lib\net35\FluenSharp.CassiniDev.dll</HintPath>
+    <Reference Include="FluentSharp.AST, Version=1.0.0.0, Culture=neutral, PublicKeyToken=087dfa3428b0a339, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\FluentSharp.AST.5.5.166\lib\net35\FluentSharp.AST.dll</HintPath>
     </Reference>
-    <Reference Include="FluentSharp.AST">
-      <HintPath>..\..\packages\FluentSharp.AST.5.5.156\lib\net35\FluentSharp.AST.dll</HintPath>
+    <Reference Include="FluentSharp.CassiniDev, Version=1.0.0.0, Culture=neutral, PublicKeyToken=95ca6567003a39c3, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\FluentSharp.CassiniDev.5.5.166\lib\net35\FluentSharp.CassiniDev.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentSharp.CassiniDev.NUnit, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\FluentSharp.CassiniDev.NUnit.5.5.166\lib\net45\FluentSharp.CassiniDev.NUnit.dll</HintPath>
     </Reference>
     <Reference Include="FluentSharp.CoreLib, Version=5.5.0.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\FluentSharp.CoreLib.5.5.156\lib\net35\FluentSharp.CoreLib.dll</HintPath>
+      <HintPath>..\..\packages\FluentSharp.CoreLib.5.5.166\lib\net35\FluentSharp.CoreLib.dll</HintPath>
     </Reference>
-    <Reference Include="FluentSharp.NUnit">
-      <HintPath>..\..\packages\FluentSharp.NUnit.5.5.156\lib\net35\FluentSharp.NUnit.dll</HintPath>
+    <Reference Include="FluentSharp.NUnit, Version=5.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\FluentSharp.NUnit.5.5.166\lib\net35\FluentSharp.NUnit.dll</HintPath>
     </Reference>
     <Reference Include="FluentSharp.REPL, Version=5.5.0.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\FluentSharp.REPL.5.5.156\lib\net35\FluentSharp.REPL.exe</HintPath>
+      <HintPath>..\..\packages\FluentSharp.REPL.5.5.166\lib\net35\FluentSharp.REPL.exe</HintPath>
     </Reference>
-    <Reference Include="FluentSharp.SharpDevelopEditor, Version=5.5.0.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
+    <Reference Include="FluentSharp.SharpDevelopEditor">
+      <HintPath>..\..\packages\FluentSharp.SharpDevelopEditor.5.5.166\lib\net35\FluentSharp.SharpDevelopEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentSharp.WatiN">
+      <HintPath>..\..\packages\FluentSharp.WatiN.5.5.166\lib\net40\FluentSharp.WatiN.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentSharp.Web_3_5, Version=5.5.0.0, Culture=neutral, PublicKeyToken=1439893e489faed4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\FluentSharp.SharpDevelopEditor.5.5.156\lib\net35\FluentSharp.SharpDevelopEditor.dll</HintPath>
-    </Reference>
-    <Reference Include="FluentSharp.WatiN, Version=5.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\FluentSharp.WatiN.5.5.156\lib\net40\FluentSharp.WatiN.dll</HintPath>
-    </Reference>
-    <Reference Include="FluentSharp.Web_3_5">
-      <HintPath>..\..\packages\FluentSharp.Web_3_5.5.5.156\lib\net35\FluentSharp.Web_3_5.dll</HintPath>
+      <HintPath>..\..\packages\FluentSharp.Web_3_5.5.5.166\lib\net35\FluentSharp.Web_3_5.dll</HintPath>
     </Reference>
     <Reference Include="FluentSharp.WinForms, Version=5.5.0.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\FluentSharp.WinForms.5.5.156\lib\net35\FluentSharp.WinForms.dll</HintPath>
+      <HintPath>..\..\packages\FluentSharp.WinForms.5.5.166\lib\net35\FluentSharp.WinForms.dll</HintPath>
     </Reference>
-    <Reference Include="FluentSharp.Zip">
-      <HintPath>..\..\packages\FluentSharp.Zip.5.5.156\lib\net35\FluentSharp.Zip.dll</HintPath>
+    <Reference Include="FluentSharp.Xml">
+      <HintPath>..\..\packages\FluentSharp.Xml.5.5.166\lib\net35\FluentSharp.Xml.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentSharp.Zip, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\FluentSharp.Zip.5.5.166\lib\net35\FluentSharp.Zip.dll</HintPath>
     </Reference>
     <Reference Include="Interop.SHDocVw">
       <HintPath>..\..\packages\WatiN.2.1.0\lib\net40\Interop.SHDocVw.dll</HintPath>
@@ -127,17 +136,8 @@
     <Compile Include="_ConfigAndHelpers\_Extra_ExtensionMethods\Extra_FluentSharp_CoreLib_ExtensionMethods.cs" />
     <Compile Include="_ConfigAndHelpers\_Extra_ExtensionMethods\Extra_FluentSharp_NUnit_ExtensionMethods.cs" />
     <Compile Include="_ConfigAndHelpers\_Extra_ExtensionMethods\Test_Extra_FluentSharp_NUnit_ExtensionMethods.cs" />
-    <Compile Include="_ConfigAndHelpers\CassiniDev\Test_Cassini_Create_Pages.cs" />
     <Compile Include="_ConfigAndHelpers\_Extra_ExtensionMethods\Test_Extra_Watin_ExtensionMethods.cs" />
-    <Compile Include="_Using_Cassini\Content_Static\Test_TeamMentor_Static_Content.cs" />
-    <Compile Include="_Using_Cassini\NUnitTests_Cassini.cs" />
-    <Compile Include="_Using_Cassini\NUnitTests_Cassini_TeamMentor.cs" />
-    <Compile Include="_Using_Cassini\NUnitTests_Cassini_TeamMentor_ExtensionMethods.cs" />
-    <Compile Include="_Using_Cassini\SiteData\Test_Cassini_SiteData.cs" />
     <Compile Include="_ConfigAndHelpers\_Extra_ExtensionMethods\Test_Extra_API_Cassini_ExtensionMethods.cs" />
-    <Compile Include="_Using_Cassini\Test_NUnitTests_Cassini.cs" />
-    <Compile Include="_Using_Cassini\Test_NUnitTests_Cassini_TeamMentor.cs" />
-    <Compile Include="_Using_Cassini\TM_Admin_Workflows\Test_Cassini_Library_Management.cs" />
     <Content Include="WebServices\CSharp_Script_to_Clearn_References.txt" />
     <Compile Include="WebServices\Test_WSDL_Security.cs" />
     <Compile Include="WebServices\Test_TestFixture_WebServices.cs" />
@@ -149,9 +149,8 @@
     <Compile Include="WebSite\Rest_GET_API.cs" />
     <Compile Include="WebSite\Test_REST_Security.cs" />
     <Compile Include="WebSite\Test_Website_HandleRequest.cs" />
-    <Compile Include="_ConfigAndHelpers\CassiniDev\Test_CassiniDev.cs" />
     <Compile Include="_ConfigAndHelpers\_Extra_ExtensionMethods\Extra_Watin_ExtensionMethods.cs" />
-    <Compile Include="_ConfigAndHelpers\IE_Automation\API_IE_TBot.cs" />
+    <Compile Include="_ConfigAndHelpers\IE_TBot_Automation\API_IE_TBot.cs" />
     <Compile Include="_ConfigAndHelpers\TestFixture_TBot.cs" />
     <Compile Include="_ConfigAndHelpers\WebServices\TM_WebServices_Users_ExtensionMethods.cs" />
     <Content Include="_ConfigAndHelpers\WebServices\_to_do\API_TM_WebServices.cs.txt" />

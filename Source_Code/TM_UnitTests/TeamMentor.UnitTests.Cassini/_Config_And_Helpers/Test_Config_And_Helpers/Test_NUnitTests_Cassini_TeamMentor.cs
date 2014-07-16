@@ -1,12 +1,10 @@
 using FluentSharp.CassiniDev;
 using FluentSharp.CoreLib;
 using FluentSharp.NUnit;
-using FluentSharp.Watin;
 using FluentSharp.Web35;
-using FluentSharp.WinForms;
 using NUnit.Framework;
 
-namespace TeamMentor.UnitTests.TM_Website
+namespace TeamMentor.UnitTests.Cassini
 {
     [TestFixture]
     public class Test_NUnitTests_Cassini_TeamMentor
@@ -25,15 +23,13 @@ namespace TeamMentor.UnitTests.TM_Website
             var nUnitTests_TeamMentor = new NUnitTests_Cassini_TeamMentor();            
             
             nUnitTests_TeamMentor.start();
-
-            /*var ie = "test".add_IE_PopupWindow();
-            ie.open(nUnitTests_TeamMentor.apiCassini.url());
-            ie.script_IE().waitForClose();
-            */
+            
             nUnitTests_TeamMentor.port      .tcpClient().assert_Not_Null();
             var homePage_Html= nUnitTests_TeamMentor.apiCassini.url().GET();
             homePage_Html.assert_Contains("<html>","<head>","</head>","</html>")
                          .assert_Equal_To(nUnitTests_TeamMentor.webRoot.pathCombine("default.htm").fileContents());
+
+//            nUnitTests_TeamMentor.script_Me().waitForClose();
 
             nUnitTests_TeamMentor.stop();
             nUnitTests_TeamMentor.port      .tcpClient().assert_Null();  
@@ -52,5 +48,7 @@ namespace TeamMentor.UnitTests.TM_Website
                     "javascript/TM/settings.js" ,
                     "javascript/gAnalytics/ga.js");
         }
+
+        
     }
 }

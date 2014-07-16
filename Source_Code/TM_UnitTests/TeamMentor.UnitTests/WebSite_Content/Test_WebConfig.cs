@@ -1,3 +1,4 @@
+using FluentSharp.Xml;
 using NUnit.Framework;  
 using FluentSharp.CoreLib;
 using FluentSharp.WinForms;

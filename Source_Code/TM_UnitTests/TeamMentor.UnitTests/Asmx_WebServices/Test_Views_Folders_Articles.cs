@@ -4,6 +4,7 @@ using System.Xml;
 using System.Linq;
 using System.Collections.Generic;
 using FluentSharp.CoreLib;
+using FluentSharp.Xml;
 using NUnit.Framework;
 using TeamMentor.CoreLib;
 using TeamMentor.UserData;
