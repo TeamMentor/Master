@@ -57,7 +57,7 @@ namespace TeamMentor.CoreLib
              
                 if (value == Guid.Empty)
                 {
-                    UserGroup.Anonymous.setThreadPrincipalWithRoles();          // ensure that from now on the current user as no more privileges
+                    UserGroup.Viewer.setThreadPrincipalWithRoles();             // ensure that from now on the current user as no more privileges
                     previousSessionId.logout();				                    // and that the previous session IS is logged out
                 }		
                 else    
@@ -144,15 +144,15 @@ namespace TeamMentor.CoreLib
                 if (TMConfig.Current.show_ContentToAnonymousUsers())
                     UserGroup.Reader.setThreadPrincipalWithRoles();
                 else 
-                    if (TMConfig.Current.show_LibraryToAnonymousUsers())
-                        UserGroup.Anonymous.setThreadPrincipalWithRoles();
+                    if (TMConfig.Current.show_LibraryToAnonymousUsers())        // when show_LibraryToAnonymousUsers is set, make the default user a Viewer
+                        UserGroup.Viewer.setThreadPrincipalWithRoles();
                     else 
                         UserGroup.None.setThreadPrincipalWithRoles();
-            }            
-            //var userRoles = Thread.CurrentPrincipal.roles().toList().join(",");            
+            }                        
+
             if (HttpContextFactory.Session.notNull())
-            {                
-                HttpContextFactory.Session["principal"] = Thread.CurrentPrincipal;
+            { 
+                HttpContextFactory.Session["principal"] = Thread.CurrentPrincipal;            
             }
             return this;
         }       

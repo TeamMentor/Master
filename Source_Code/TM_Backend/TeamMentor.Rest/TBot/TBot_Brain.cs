@@ -31,11 +31,6 @@ namespace TeamMentor.CoreLib
                 ScriptContentHashes = new List<int>();
                 TemplateService  = (ITemplateService) typeof (Razor).prop("TemplateService");
                 AvailableScripts = GetAvailableScripts();
-
-                //fix for missing "System.Windows.Forms" reference that sometimes appeared
-                var windowsForms = "System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089".assembly();
-                var assemblies =  (ConcurrentBag<Assembly>)TemplateService.field("_assemblies");
-                assemblies.Add(windowsForms);
             }
             catch (Exception ex)
             {
@@ -115,10 +110,13 @@ namespace TeamMentor.CoreLib
             }
             catch (Exception ex)
             {
+                if (ex.Message =="Thread was being aborted.")
+                    return "";
+
                 ex.log("[TBot Brain] [ExecuteRazorPage] {0} : {1}".format(page, ex.Message));
                 return "Opps: Something went wrong: {0}".format(ex.Message);
             }
-            return null;
+            return "";
         }
         public Stream Render(string page)
         {

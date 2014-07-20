@@ -4,84 +4,119 @@ using System.Xml.Serialization;
 
 namespace TeamMentor.CoreLib
 {
-	public class GuidanceItemIndex
+    /*[Serializable]
+	public class GuidanceItemIndex : MarshalByRefObject
 	{		
 		[XmlAttribute]		public string id { get; set; }
 		[XmlAttribute]		public DateTime lastUpdate { get; set; }
 		[XmlAttribute]		public bool deleted { get; set; }
 	}
 
-	public class LibraryIndex
+    [Serializable]
+	public class LibraryIndex : MarshalByRefObject
 	{
 		[XmlArrayItem("GuidanceItem", IsNullable = false)]	public GuidanceItemIndex[] GuidanceItems { get; set; }
 		[XmlAttribute]										public string id { get; set; }
 	}
 
-	public class Field
+    [Serializable]
+	public class Field : MarshalByRefObject
 	{
-		[XmlAttribute]		public string id { get; set; }
-		[XmlAttribute]		public string name { get; set; }
+		[XmlAttribute]		public string    id { get; set; }
+		[XmlAttribute]		public string    name { get; set; }
 		[XmlAttribute]		public FieldType type { get; set; }
-		[XmlAttribute]		public bool distinct { get; set; }
+		[XmlAttribute]		public bool      distinct { get; set; }
 	}
 	
+    [Serializable]
 	public enum FieldType
 	{
 		Text,
 		Combo,
 	}
 
-	public class Schema
+    [Serializable]
+	public class Schema : MarshalByRefObject
 	{
 		[XmlArrayItem(IsNullable = false)]	public Field[] Fields { get; set; }
 		[XmlAttribute]						public string id { get; set; }
 	}
 
-	public class GuidanceType
+    [Serializable]
+	public class GuidanceType : MarshalByRefObject
 	{
-		[XmlAttribute]		public string id { get; set; }
-		[XmlAttribute]		public string name { get; set; }
-		[XmlAttribute]		public string caption { get; set; }
-		[XmlAttribute]		public string listCaption { get; set; }
-		[XmlAttribute]		public string newCaption { get; set; }
-		[XmlAttribute]		public string schemaId { get; set; }
-		[XmlAttribute]		public string exampleContent { get; set; }
-		[XmlAttribute]		public string templateSchemaContent { get; set; }
-		[XmlAttribute]		public string templateContent { get; set; }
+		[XmlAttribute]		public string   id { get; set; }
+		[XmlAttribute]		public string   name { get; set; }
+		[XmlAttribute]		public string   caption { get; set; }
+		[XmlAttribute]		public string   listCaption { get; set; }
+		[XmlAttribute]		public string   newCaption { get; set; }
+		[XmlAttribute]		public string   schemaId { get; set; }
+		[XmlAttribute]		public string   exampleContent { get; set; }
+		[XmlAttribute]		public string   templateSchemaContent { get; set; }
+		[XmlAttribute]		public string   templateContent { get; set; }
 		[XmlAttribute]		public DateTime lastUpdate { get; set; }
-		[XmlIgnore]			public bool lastUpdateSpecified { get; set; }
-		[XmlAttribute]		public bool delete { get; set; }
-		[XmlIgnore]			public bool deleteSpecified { get; set; }
+		[XmlIgnore]			public bool     lastUpdateSpecified { get; set; }
+		[XmlAttribute]		public bool     delete { get; set; }
+		[XmlIgnore]			public bool     deleteSpecified { get; set; }
 	}
-
 	
-	public class Identifiable
+    [Serializable]
+	public class UserViews : FolderStructure            { }
+	
+    [Serializable]
+	public class NavigationTree : Identifiable
 	{
-		[XmlAttribute]
-		public string id { get; set; }
-		[XmlAttribute]
-		public bool delete { get; set; }
+		public UserViews UserViews { get; set; }
+		public Libraries Libraries { get; set; }
 	}
 
+    [Serializable]
+	public class Credentials : System.Web.Services.Protocols.SoapHeader
+	{
+		public string			User { get; set; }
+		public string			Password { get; set; }
+		public Guid				AdminSessionID { get; set; }
+		[XmlAnyAttribute]	
+		public XmlAttribute[]	AnyAttr { get; set; }
+	}
+
+    [Serializable]
+	public class Content : MarshalByRefObject
+	{
+		[XmlElement("GuidanceItem")]	public GuidanceItem[] GuidanceItem { get; set; }
+		[XmlAttribute]					public int @from { get; set; }
+		[XmlAttribute]					public int count { get; set; }
+	}
+	*/
+
+    [Serializable]
+	public class Identifiable : MarshalByRefObject
+	{
+		[XmlAttribute]      public string id                    { get; set; }
+		[XmlAttribute]      public bool delete                  { get; set; }
+	}
+
+    [Serializable]
 	public class Libraries : Identifiable
 	{
-		[XmlElement("Library")]
-		public Library[] Library { get; set; }
+		[XmlElement("Library")] public Library[] Library        { get; set; }
 	}
 
+    [Serializable]
 	public class Library : FolderStructure
 	{
-		[XmlAttribute]
-		public bool readProtection { get; set; }
+		[XmlAttribute]      public bool readProtection { get; set; }
 	}
 	
+    [Serializable]
 	public class FolderStructure : Identifiable
 	{
 		[XmlArrayItem(IsNullable = false)]	public View[] Views { get; set; }
 		[XmlArrayItem(IsNullable = false)]	public Folder[] Folders { get; set; }
 		[XmlAttribute]						public string caption { get; set; }
 	}
-	
+
+	[Serializable]
 	public class View : Identifiable
 	{
 		[XmlAttribute]	public string caption { get; set; }
@@ -93,37 +128,8 @@ namespace TeamMentor.CoreLib
 		[XmlAttribute]	public DateTime lastUpdate { get; set; }
 		[XmlIgnore]		public bool lastUpdateSpecified { get; set; }
 	}
-	
-	public class Folder : FolderStructure
-	{
-	}
 
-	public class UserViews : FolderStructure
-	{
-	}
-	
-	public class NavigationTree : Identifiable
-	{
-		public UserViews UserViews { get; set; }
-		public Libraries Libraries { get; set; }
-	}
-
-	public class Credentials : System.Web.Services.Protocols.SoapHeader
-	{
-		public string			User { get; set; }
-		public string			Password { get; set; }
-		public Guid				AdminSessionID { get; set; }
-		[XmlAnyAttribute]	
-		public XmlAttribute[]	AnyAttr { get; set; }
-	}
-
-	public class Content
-	{
-		[XmlElement("GuidanceItem")]	public GuidanceItem[] GuidanceItem { get; set; }
-		[XmlAttribute]					public int @from { get; set; }
-		[XmlAttribute]					public int count { get; set; }
-	}
-	
+    [Serializable]
 	public class GuidanceItem
 	{
 		[XmlAttribute]		public string id_original { get; set; }
@@ -140,7 +146,9 @@ namespace TeamMentor.CoreLib
 		[XmlAttribute]		public string images { get; set; }
 		[XmlAnyAttribute]	public XmlAttribute[] AnyAttr { get; set; }
 	}
-	
+    [Serializable]
+	public class Folder : FolderStructure               { }
+	/*
 	public class ListView
 	{
 		[XmlArrayItem(IsNullable = false)]	public ColumnDefinition[] ColumnDefinitions { get; set; }
@@ -165,5 +173,5 @@ namespace TeamMentor.CoreLib
 		None,
 		Ascending,
 		Descending,
-	}
+	}*/
 }

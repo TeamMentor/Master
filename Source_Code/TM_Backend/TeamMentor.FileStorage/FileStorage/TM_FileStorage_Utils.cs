@@ -10,30 +10,50 @@ namespace TeamMentor.FileStorage
 {
     public static class TM_FileStorage_Utils
     {
+        [Admin] public static string   webRoot(this TM_FileStorage tmFileStorage)
+        {
+            UserRole.Admin.demand();
+            if(tmFileStorage.notNull())
+                return tmFileStorage.WebRoot;
+            return null;
+        }
         [Admin] public static TM_FileStorage   set_WebRoot(this TM_FileStorage tmFileStorage)
         {
-            tmFileStorage.WebRoot = AppDomain.CurrentDomain.BaseDirectory;                        
+            UserRole.Admin.demand();
+            if(tmFileStorage.notNull())
+            {
+                if (TM_FileStorage.Custom_WebRoot.folderExists())
+                    tmFileStorage.WebRoot = TM_FileStorage.Custom_WebRoot;
+                else
+                    tmFileStorage.WebRoot = AppDomain.CurrentDomain.BaseDirectory;
+            }
             return tmFileStorage;
         }
+        [Admin] public static TM_FileStorage   set_Path_XmlDatabase(this TM_FileStorage tmFileStorage, string path_XmlDatabase)
+        {
+            if(tmFileStorage.notNull())
+                tmFileStorage.Path_XmlDatabase = path_XmlDatabase;
+            return tmFileStorage;
+        }
+        
         [Admin] public static TM_FileStorage   set_Path_XmlDatabase(this TM_FileStorage tmFileStorage)  
         {            
+            UserRole.Admin.demand();
             var tmStatus = TM_Status.Current;
             try
             { 
                 if (tmFileStorage.isNull())
                     return null;
                 
-                var webRoot            = tmFileStorage.WebRoot;     //TODO add detection for case when TM is running from the publish folder
-                
+                var webRoot            = tmFileStorage.WebRoot;    
+
                 tmFileStorage.Path_XmlDatabase = null;                
 
-                //if (tmFileStorage.UseFileStorage.isFalse())
-                //    return tmFileStorage;
-                
-                // try to find a local folder to hold the TM Database data
-
                 var usingAppData = webRoot.contains(@"TeamMentor.UnitTests\bin") ||             // when running UnitTests under NCrunch
-                                    webRoot.contains(@"site\wwwroot");                          // when running from Azure (or directly on IIS)
+                                   webRoot.contains(@"site\wwwroot")             ||             // when running from Azure (or directly on IIS)
+                                   tmFileStorage.using_Custom_WebRoot();                        // when the TM_FileStorage.Custom_WebRoot has been set        
+                
+
                 if (usingAppData.isFalse())
                 {
                     //calculate location and see if we can write to it
@@ -70,7 +90,14 @@ namespace TeamMentor.FileStorage
                 "[TM_Server][set_Path_XmlDatabase] Path_XmlDatabase set to: {0}"                   .info(tmFileStorage.Path_XmlDatabase);
                 "[TM_Server][set_Path_XmlDatabase] tmStatus.TM_Database_Location_Using_AppData:{0}".info(tmStatus.TM_Database_Location_Using_AppData);                
             }
-        }                 
+        }    
+        public static bool using_Custom_WebRoot(this TM_FileStorage tmFileStorage)
+        {
+            return tmFileStorage.notNull() && 
+                   TM_FileStorage.Custom_WebRoot.notNull() &&
+                   TM_FileStorage.Custom_WebRoot == tmFileStorage.webRoot();
+
+        }
 
 
 

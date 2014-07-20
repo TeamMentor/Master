@@ -11,6 +11,7 @@ namespace TeamMentor.CoreLib
         [ReadArticles]
         public static TeamMentor_Article getGuidanceItem(this TM_Xml_Database tmDatabase, Guid guidanceItemId)
         {
+            UserRole.ReadArticles.demand();
             if (tmDatabase.Cached_GuidanceItems.hasKey(guidanceItemId).isFalse())
                 return null;
 
@@ -20,7 +21,7 @@ namespace TeamMentor.CoreLib
         [ReadArticles]
         public static string getGuidanceItemHtml(this TM_Xml_Database tmDatabase, Guid sessionId, Guid guidanceItemId)
         {
-
+            UserRole.ReadArticles.demand();
             if (tmDatabase.Cached_GuidanceItems.hasKey(guidanceItemId).isFalse())
                 return null;
 
@@ -62,6 +63,7 @@ namespace TeamMentor.CoreLib
         [ReadArticles]
         public static List<string> getGuidanceItemsHtml(this TM_Xml_Database tmDatabase, Guid sessionId, List<Guid> guidanceItemsIds)
         {
+            UserRole.ReadArticles.demand();
             var data = new List<string>();
             if (guidanceItemsIds.notNull())
                 foreach (var guidanceItemId in guidanceItemsIds)

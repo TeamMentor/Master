@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using FluentSharp.CoreLib;
 
 namespace TeamMentor.CoreLib
 {	
-	public class TM_GUI_Objects
+    [Serializable]
+	public class TM_GUI_Objects : MarshalByRefObject
 	{		
 		public List<string> GuidanceItemsMappings 	{ get; set;}
 		public List<string> UniqueStrings			{ get; set;}

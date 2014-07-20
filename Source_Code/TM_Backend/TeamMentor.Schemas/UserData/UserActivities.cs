@@ -8,7 +8,7 @@ namespace TeamMentor.CoreLib
     [Serializable]
     [DataContract] 
     public class UserActivity : MarshalByRefObject
-    {
+    {        
         [DataMember] [XmlAttribute] public string	Action		{ get; set; }
         [DataMember] [XmlAttribute]  public string	Detail		{ get; set; }
         [DataMember] [XmlAttribute]  public string	Who		    { get; set; }

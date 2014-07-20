@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FluentSharp.CoreLib;
 using FluentSharp.CoreLib.API;
 using FluentSharp.Web35.API;
@@ -16,24 +13,23 @@ namespace TeamMentor.FileStorage
     {        
         [Admin] public static TM_FileStorage                hook_Events_TM_Xml_Database(this TM_FileStorage tmFileStorage)
         {
+            UserRole.Admin.demand();
             var tmXmlDatabase = tmFileStorage.TMXmlDatabase;
 
-            tmXmlDatabase.Events.Articles_Cache_Updated .add((tmArticle)=> tmXmlDatabase.queue_Save_GuidanceItemsCache());
-            tmXmlDatabase.Events.Article_Saved          .add((tmDatabase, tmArticle) => tmXmlDatabase.article_Save(tmArticle));           
+            tmXmlDatabase.Events.Articles_Cache_Updated .add((tmArticle)=> tmFileStorage.queue_Save_GuidanceItemsCache());
+            tmXmlDatabase.Events.Article_Saved          .add((tmDatabase, tmArticle) => tmFileStorage.article_Save(tmArticle));           
             tmXmlDatabase.Events.Library_Deleted        .add((tmDatabase, tmLibrary) => tmFileStorage.library_Deleted(tmLibrary));                       
-            tmXmlDatabase.Events.GuidanceExplorer_Save  .add((tmDatabase, guidanceExplorer) => guidanceExplorer.guidanceExplorer_Save(tmDatabase));           
+            tmXmlDatabase.Events.GuidanceExplorer_Save  .add((tmDatabase, guidanceExplorer) => guidanceExplorer.guidanceExplorer_Save(tmFileStorage));           
             return tmFileStorage;
         }
 
 
         public static bool library_Deleted(this TM_FileStorage tmFileStorage, TM_Library tmLibrary)
-        {            
-            var tmDatabase = tmFileStorage.TMXmlDatabase;
-
+        {                        
             "[xmlDB_DeleteGuidanceExplorer] deleting library with caption: {0}".info(tmLibrary.Caption);
-            var pathToLibraryFolder = tmDatabase.xmlDB_Path_Library_RootFolder(tmLibrary);
+            var pathToLibraryFolder = tmFileStorage.xmlDB_Path_Library_RootFolder(tmLibrary);
                 // this is also the Library Root
-            if (pathToLibraryFolder.notValid() || pathToLibraryFolder == tmDatabase.path_XmlDatabase() ||
+            if (pathToLibraryFolder.notValid() || pathToLibraryFolder == tmFileStorage.path_XmlDatabase() ||
                 pathToLibraryFolder == tmFileStorage.Path_XmlLibraries)
             {
                 "[xmlDB_DeleteGuidanceExplorer] [Stopping delete] Something is wrong with the pathToLibrary to delete : {0}"
@@ -55,14 +51,13 @@ namespace TeamMentor.FileStorage
             }
 
             "[xmlDB_DeleteGuidanceExplorer] Library folder deleted OK: {0}".info(pathToLibraryFolder);
-            tmDatabase.reloadGuidanceExplorerObjects(); //reset these
+            tmFileStorage.reloadGuidanceExplorerObjects(); //reset these
 
             return true;    
         }
 
-        public static bool                                  guidanceExplorer_Save(this guidanceExplorer guidanceExplorer, TM_Xml_Database tmDatabase)
-        {
-            var tmFileStorage = TM_FileStorage.Current;
+        public static bool                                  guidanceExplorer_Save(this guidanceExplorer guidanceExplorer, TM_FileStorage tmFileStorage)
+        {            
             var guidanceExplorersPaths= tmFileStorage.GuidanceExplorers_Paths;
 
             var libraryName = guidanceExplorer.library.caption;
@@ -86,48 +81,47 @@ namespace TeamMentor.FileStorage
                 return false;                            
             return true;            
         }	
-        public static Dictionary<guidanceExplorer, string>  guidanceExplorers_Paths(this TM_Xml_Database tmDatabase)
+        public static Dictionary<guidanceExplorer, string>  guidanceExplorers_Paths(this TM_FileStorage tmFileStorage)
         {
-            return TM_FileStorage.Current.GuidanceExplorers_Paths;
+            return tmFileStorage.GuidanceExplorers_Paths;
         }
-        public static string                                xmlDB_Path_Library_XmlFile(this TM_Xml_Database tmDatabase, guidanceExplorer guidanceExplorer)
+        public static string                                xmlDB_Path_Library_XmlFile(this TM_FileStorage tmFileStorage, guidanceExplorer guidanceExplorer)
         {
-            if (tmDatabase.notNull())
+            if (tmFileStorage.notNull())
             {
-                return tmDatabase.guidanceExplorers_Paths().value(guidanceExplorer);                
+                return tmFileStorage.guidanceExplorers_Paths().value(guidanceExplorer);                
             }
             return null;
         }
-        public static string xmlDB_Path_Library_XmlFile(this TM_Xml_Database tmDatabase, TM_Library library)
+        public static string xmlDB_Path_Library_XmlFile(this TM_FileStorage tmFileStorage, TM_Library library)
         {
             if (library.isNull())
                 return null;
-            return tmDatabase.xmlDB_Path_Library_XmlFile(library.Id);
+            return tmFileStorage.xmlDB_Path_Library_XmlFile(library.Id);
         }
-        public static string xmlDB_Path_Library_XmlFile(this TM_Xml_Database tmDatabase, Guid libraryId)
+        public static string xmlDB_Path_Library_XmlFile(this TM_FileStorage tmFileStorage, Guid libraryId)
         {
-            var guidanceExplorer = tmDatabase.xmlDB_GuidanceExplorer(libraryId);
-            return tmDatabase.xmlDB_Path_Library_XmlFile(guidanceExplorer);
+            var guidanceExplorer = tmFileStorage.tmXmlDatabase().xmlDB_GuidanceExplorer(libraryId);
+            return tmFileStorage.xmlDB_Path_Library_XmlFile(guidanceExplorer);
         }
-        public static TM_Xml_Database        updateGuidanceItems_FileMappings_withNewPath(this TM_Xml_Database tmDatabase, string oldPath, string newPath)
-        {
-            var tmFileStorage = TM_FileStorage.Current;
+        public static TM_FileStorage        updateGuidanceItems_FileMappings_withNewPath(this TM_FileStorage tmFileStorage, string oldPath, string newPath)
+        {            
             foreach(var key in tmFileStorage.GuidanceItems_FileMappings.Keys.toList())
             {
                 var value = tmFileStorage.GuidanceItems_FileMappings[key];
                 if(value.contains(oldPath))
                     tmFileStorage.GuidanceItems_FileMappings[key] = value.replace(oldPath, newPath);
             }
-            return tmDatabase;
+            return tmFileStorage;
         }
-        public static string xmlDB_Path_Library_RootFolder(this TM_Xml_Database tmDatabase, TM_Library tmLibrary)
+        public static string xmlDB_Path_Library_RootFolder(this TM_FileStorage tmFileStorage, TM_Library tmLibrary)
         {
-            var guidanceExplorer = tmLibrary.guidanceExplorer(tmDatabase);
-            return tmDatabase.xmlDB_Path_Library_RootFolder(guidanceExplorer);
+            var guidanceExplorer = tmLibrary.guidanceExplorer(tmFileStorage.tmXmlDatabase());
+            return tmFileStorage.xmlDB_Path_Library_RootFolder(guidanceExplorer);
         }
-        public static string xmlDB_Path_Library_RootFolder(this TM_Xml_Database tmDatabase, guidanceExplorer guidanceExplorer)
+        public static string xmlDB_Path_Library_RootFolder(this TM_FileStorage tmFileStorage, guidanceExplorer guidanceExplorer)
         {
-            var libraryPath = tmDatabase.xmlDB_Path_Library_XmlFile(guidanceExplorer);
+            var libraryPath = tmFileStorage.xmlDB_Path_Library_XmlFile(guidanceExplorer);
             if (libraryPath.notNull())
             {
                 return libraryPath.directoryName(); // from 3.3 the library path is the parent folder of the Library's Xml file
@@ -137,11 +131,10 @@ namespace TeamMentor.FileStorage
 
 
 
-             [Admin]	                    
-        public static bool xmlDB_Libraries_ImportFromZip(this TM_Xml_Database tmDatabase, string zipFileToImport, string unzipPassword)
+        [Admin]	                    
+        public static bool xmlDB_Libraries_ImportFromZip(this TM_FileStorage tmFileStorage, string zipFileToImport, string unzipPassword)
         {
-            UserGroup.Admin.demand();
-            var tmFileStorage = TM_FileStorage.Current;
+            UserRole.Admin.demand();
 
             var result = false;
             try
@@ -178,7 +171,7 @@ namespace TeamMentor.FileStorage
             }
 
             if (result)
-                tmDatabase.reloadGuidanceExplorerObjects();                
+                tmFileStorage.reloadGuidanceExplorerObjects();                
 
             return result;
         }				

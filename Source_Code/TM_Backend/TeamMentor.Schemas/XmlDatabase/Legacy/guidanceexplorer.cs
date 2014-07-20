@@ -6,8 +6,7 @@ using FluentSharp.CoreLib;
 namespace urn.microsoft.guidanceexplorer 
 {
     [Serializable]
-    //[XmlRoot(Namespace="urn:microsoft:guidanceexplorer")]
-    public class guidanceExplorer
+    public class guidanceExplorer : MarshalByRefObject
     {
         [XmlAttribute] public string           name                { get; set; }
         [XmlElement]   public Library          library             { get; set; }
@@ -28,7 +27,7 @@ namespace urn.microsoft.guidanceexplorer
         }
     }
     [Serializable]
-    public class Library
+    public class Library : MarshalByRefObject
     {
         [XmlAttribute] public string           name                { get; set; }
         [XmlAttribute] public string           caption             { get; set; }        
@@ -42,7 +41,7 @@ namespace urn.microsoft.guidanceexplorer
     }
 
     [Serializable]
-    public class LibraryStructure
+    public class LibraryStructure : MarshalByRefObject
     {
         [XmlElement  ] public List<View>       view                 { get; set; }
         [XmlElement  ] public List<Folder>     folder               { get; set; }
@@ -54,7 +53,7 @@ namespace urn.microsoft.guidanceexplorer
         }
     }
     [Serializable]
-    public class Folder
+    public class Folder : MarshalByRefObject
     {
         [XmlAttribute] public string           folderId            { get; set; }
         [XmlAttribute] public string           caption             { get; set; }
@@ -68,7 +67,7 @@ namespace urn.microsoft.guidanceexplorer
         }
     }
     [Serializable]
-    public class View
+    public class View : MarshalByRefObject
     {   
         [XmlAttribute] public string           id                  { get; set; }
         [XmlAttribute] public string           caption             { get; set; }
@@ -82,10 +81,9 @@ namespace urn.microsoft.guidanceexplorer
         }
     }
     [Serializable]
-    public class Items 
+    public class Items : MarshalByRefObject
     {
         [XmlElement(ElementName = "item")] public List<string>     item  { get; set; }
-
         public Items()
         {
             item = new List<string>();

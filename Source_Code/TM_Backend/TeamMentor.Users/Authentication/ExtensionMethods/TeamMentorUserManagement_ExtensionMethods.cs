@@ -55,12 +55,8 @@ namespace TeamMentor.CoreLib
         }		
 		public static void demand(this UserRole userRole)
         {
-			userRole.str().demand();             
-        }		
-		public static void demand(this string userRole)
-        {
-             new PrincipalPermission(null, userRole).Demand();
-        }		
+			new PrincipalPermission(null, userRole.str()).Demand();         
+        }			
 		public static void demand(this UserGroup userGroup)
 		{
 			foreach(var userRole in userGroup.userRoles())
@@ -69,11 +65,7 @@ namespace TeamMentor.CoreLib
 		}		
 		public static bool currentUserHasRole(this UserRole userRole)
 		{
-			return userRole.str().currentUserHasRole();
-		}		
-		public static bool currentUserHasRole(this string userRole)
-		{
-			try
+            try
 			{
 				userRole.demand();
 				return true;
@@ -81,10 +73,8 @@ namespace TeamMentor.CoreLib
 			catch//(Exception ex)
 			{
 				return false;
-			}
-		}
-				
-		
+			}			
+		}		
     }
 
     

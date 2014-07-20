@@ -1,11 +1,67 @@
-﻿using System.Security.Principal;
+﻿using System;
+using System.Security.Principal;
 using System.Threading;
 using System.Web;
 using FluentSharp.CoreLib;
 
 namespace TeamMentor.CoreLib
 {
-    public static class RoleBaseSecurity
+    //Note: I'm not sure how to create a generic version of these classes, while keeping the current 
+    //      easy to use calling convension. There are two probs to solve: 1) UserRole is an Enum , 2) need to use static methods for the assert and demand methods
+    //
+    //     best I could do is to format the code so that it is easy to read
+    public class admin 
+    {
+        const UserRole Role = UserRole.Admin;
+        public static void      assert()                                { Role.assert();                          }
+        public static Action    assert(Action executeWithAssert)        { return Role.assert(executeWithAssert);  }
+        public static T         assert<T>(Func<T> executeWithAssert)    { return Role.assert(executeWithAssert);  }
+        public static void      demand()                                { Role.demand();                          }        
+    }
+
+    public class manageUsers
+    {
+        const UserRole Role = UserRole.ManageUsers;
+        public static void      assert()                                { Role.assert();                          }
+        public static Action    assert(Action executeWithAssert)        { return Role.assert(executeWithAssert);  }
+        public static T         assert<T>(Func<T> executeWithAssert)    { return Role.assert(executeWithAssert);  }
+        public static void      demand()                                { Role.demand();                          }        
+    }
+
+    public class editArticles 
+    {
+        const UserRole Role = UserRole.EditArticles;       
+        public static void      assert()                                { Role.assert();                          }
+        public static Action    assert(Action executeWithAssert)        { return Role.assert(executeWithAssert);  }
+        public static T         assert<T>(Func<T> executeWithAssert)    { return Role.assert(executeWithAssert);  }
+
+        public static void      demand()                                { Role.demand();                          }        
+    }
+    public class readArticles 
+    {
+        const UserRole Role = UserRole.ReadArticles;       
+        public static void      demand()                                { Role.demand();                          }        
+    }
+    public class readArticlesTitles 
+    {
+        const UserRole Role = UserRole.ReadArticlesTitles;       
+        public static void      demand()                                { Role.demand();                          }        
+    }    
+    public class viewLibrary 
+    {
+        const UserRole Role = UserRole.ViewLibrary;       
+        public static void      demand()                                { Role.demand();                          }        
+    }
+    public class none 
+    {
+        const UserRole Role = UserRole.None;
+        public static void      assert()                                { Role.assert();                          }
+        public static Action    assert(Action executeWithAssert)        { return Role.assert(executeWithAssert);  }
+        public static T         assert<T>(Func<T> executeWithAssert)    { return Role.assert(executeWithAssert);  }
+        public static void      demand()                                { Role.demand();                          }        
+    }
+
+    public static class RoleBaseSecurity_ExtensionMethods
     {
         public static string[] getCurrentUserRoles(this HttpContextBase httpContext)
         {
@@ -25,6 +81,31 @@ namespace TeamMentor.CoreLib
 		public static IPrincipal assert(this UserRole userRole)
 		{
 		    return userRole.setPrivilege();
+		}
+        public static Action assert(this UserRole userRole, Action executeWithAssert)
+		{
+            try
+            {
+                userRole.assert();
+                executeWithAssert();
+            }
+            finally
+            {
+                UserRole.None.assert();
+            }		    
+            return executeWithAssert;
+		}
+        public static T assert<T>(this UserRole userRole, Func<T> executeWithAssert)
+		{
+            try
+            {
+                userRole.assert();
+                return executeWithAssert();
+            }
+            finally
+            {
+                UserRole.None.assert();
+            }		                
 		}
         public static IPrincipal setPrivilege(this UserRole userRole)
         {

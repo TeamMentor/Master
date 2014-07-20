@@ -30,14 +30,11 @@ namespace TeamMentor.FileStorage
                     "[handleUserDataConfigActions] failed to load config file from: {0}".error(userConfigFile);
                     return null;
                 }
-                else
-                { 
-                    TMConfig.Current = newConfig;
-                }                    
+                TMConfig.Current = newConfig;                   
             }
             else
             { 
-            // if userConfigFile doesn't exist, create one and save it 
+                // if userConfigFile doesn't exist, create one and save it 
                 TMConfig.Current = new TMConfig();
                 tmFileStorage.tmConfig_Save();     
             }    

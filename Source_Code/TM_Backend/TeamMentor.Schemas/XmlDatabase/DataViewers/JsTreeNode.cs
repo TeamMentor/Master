@@ -1,10 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Script.Serialization;
 
 namespace TeamMentor.CoreLib
 {
-	public class JsTree
+    [Serializable]
+	public class JsTree : MarshalByRefObject
 	{
 		public List<JsTreeNode> data;
 		
@@ -14,11 +15,12 @@ namespace TeamMentor.CoreLib
 		}
 	}
 	
-	public class JsTreeNode
+    [Serializable]
+	public class JsTreeNode : MarshalByRefObject
 	{
-		public Attributes attr { get; set; }       
-	    public Data data  { get; set; }           
-	    public string state { get; set; }       	    
+		public Attributes       attr { get; set; }       
+	    public Data             data  { get; set; }           
+	    public string           state { get; set; }       	    
 	    public List<JsTreeNode> children { get; set; }           
 	    
 	    public JsTreeNode()
@@ -43,26 +45,23 @@ namespace TeamMentor.CoreLib
 			return data.title;
 		}
 	}
-	public class Attributes
+    [Serializable]
+	public class Attributes : MarshalByRefObject
 	{
-	    public string id { get; set; }   
-	    public string rel { get; set; }           
+	    public string id    { get; set; }   
+	    public string rel   { get; set; }           
 	    public string mdata { get; set; }       
 	}
 	
-	public class Data
+    [Serializable]
+	public class Data : MarshalByRefObject
 	{
 	    public string title { get; set; }       
-	    public string icon { get; set; }       
+	    public string icon  { get; set; }       
 	}
 	
 	public static class JsTree_ExtensionMethods
-	{
-		/*public static string jsonString(this object _object)
-		{
-			return new JavaScriptSerializer().Serialize(_object);
-		}*/
-		
+	{				
 		public static JsTreeNode add_Node(this JsTree jsTree, string title)
 		{
 			return jsTree.add_Node(title, "");
@@ -77,7 +76,7 @@ namespace TeamMentor.CoreLib
 		
 		public static List<JsTreeNode> add_Nodes(this JsTree jsTree, params string[] titles)
 		{
-		    return titles.Select(title => jsTree.add_Node(title)).ToList();
+		    return titles.Select(jsTree.add_Node).ToList();
 		}
 
 	    public static JsTreeNode add_Node(this JsTreeNode jsTreeNode, string title)
@@ -94,7 +93,7 @@ namespace TeamMentor.CoreLib
 		
 		public static List<JsTreeNode> add_Nodes(this JsTreeNode jsTreeNode, params string[] titles)
 		{
-		    return titles.Select(title => jsTreeNode.add_Node(title)).ToList();
+		    return titles.Select(jsTreeNode.add_Node).ToList();
 		}
 	}
 }

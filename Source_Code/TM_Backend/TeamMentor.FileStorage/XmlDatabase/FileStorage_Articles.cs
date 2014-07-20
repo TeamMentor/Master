@@ -11,11 +11,13 @@ namespace TeamMentor.FileStorage.XmlDatabase
 {
     public static class FileStorage_Articles
     {
-        public static bool article_Save(this TM_Xml_Database tmXmlDatabase, TeamMentor_Article article)
-        {
+        [EditArticles]
+        public static bool article_Save(this TM_FileStorage tmFileStorage, TeamMentor_Article article)
+        {            
+            editArticles.demand();
             var libraryId = article.Metadata.Library_Id;
                         
-            var guidanceXmlPath = tmXmlDatabase.getXmlFilePathForGuidanceId(article.Metadata.Id, libraryId);
+            var guidanceXmlPath = tmFileStorage.getXmlFilePathForGuidanceId(article.Metadata.Id, libraryId);
             if (guidanceXmlPath.valid())
             {
                 "Saving GuidanceItem {0} to {1}".info(article.Metadata.Id, guidanceXmlPath);
@@ -24,44 +26,48 @@ namespace TeamMentor.FileStorage.XmlDatabase
             }            
             return true;
         }
-
-        public static bool article_Delete(this TM_Xml_Database tmDatabase,  TeamMentor_Article article)
+        [EditArticles]
+        public static bool article_Delete(this TM_FileStorage tmFileStorage,  TeamMentor_Article article)
         {
+            editArticles.demand();
             var guidanceItemId = article.Metadata.Id;
 
-             var guidanceItemXmlPath = tmDatabase.removeGuidanceItemFileMapping(guidanceItemId);
+             var guidanceItemXmlPath = tmFileStorage.removeGuidanceItemFileMapping(guidanceItemId);
             "removing GuidanceItem with Id:{0} located at {1}".info(guidanceItemId, guidanceItemXmlPath);
             if (guidanceItemXmlPath.valid())				
                 Files.deleteFile(guidanceItemXmlPath);
             
-            tmDatabase.Events.Articles_Cache_Updated.raise(); //tmDatabase.queue_Save_GuidanceItemsCache();
+            tmFileStorage.tmXmlDatabase().Events.Articles_Cache_Updated.raise(); //tmDatabase.queue_Save_GuidanceItemsCache();
 
             //TM_Xml_Database.mapGuidanceItemsViews();
             return true;
         }
 
 
-        [ReadArticles]  public static string xmlDB_guidanceItemXml(this TM_Xml_Database tmDatabase, Guid guidanceItemId)
+        [ReadArticles]  public static string xmlDB_guidanceItemXml(this TM_FileStorage tmFileStorage, Guid guidanceItemId)
         {
+            UserRole.ReadArticles.demand();
             if (guidanceItemId ==  Guid.Empty)
                 return null;
-            var guidanceXmlPath = tmDatabase.getXmlFilePathForGuidanceId(guidanceItemId);
+            var guidanceXmlPath = tmFileStorage.getXmlFilePathForGuidanceId(guidanceItemId);
             return guidanceXmlPath.fileContents();//.xmlFormat();
         }
 
-        [Admin]	        public static string xmlDB_guidanceItemPath(this TM_Xml_Database tmDatabase, Guid guidanceItemId)
+        [Admin]	        public static string xmlDB_guidanceItemPath(this TM_FileStorage tmFileStorage, Guid guidanceItemId)
         {
+            UserRole.Admin.demand();
             if (guidanceItemId !=  Guid.Empty)                
-                if (TM_Xml_Database.Current.guidanceItems_FileMappings().hasKey(guidanceItemId))                            
-                    return TM_Xml_Database.Current.guidanceItems_FileMappings()[guidanceItemId];            
+                if (tmFileStorage.guidanceItems_FileMappings().hasKey(guidanceItemId))                            
+                    return tmFileStorage.guidanceItems_FileMappings()[guidanceItemId];            
             return null;
         }
 
 
-        public static Dictionary<Guid, string> guidanceItems_FileMappings(this TM_Xml_Database tmDatabase)
+        public static Dictionary<Guid, string> guidanceItems_FileMappings(this TM_FileStorage tmFileStorage)
         {
-            var tmFileStorage = TM_FileStorage.Current;
-            return tmFileStorage.GuidanceItems_FileMappings;
+            return tmFileStorage.notNull()
+                        ? tmFileStorage.GuidanceItems_FileMappings
+                        : new Dictionary<Guid, string>();            
         }
     }
 }

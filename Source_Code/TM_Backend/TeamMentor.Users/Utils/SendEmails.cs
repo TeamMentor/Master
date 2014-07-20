@@ -28,7 +28,7 @@ namespace TeamMentor.CoreLib
 
         static SendEmails()
         {
-            Sent_EmailMessages = new List<EmailMessage>();                     
+            Sent_EmailMessages  = new List<EmailMessage>();                                 
         }
 
 
@@ -180,14 +180,15 @@ namespace TeamMentor.CoreLib
         //sendEmail Helpers
         public static void SendNewUserEmails(string subject, TMUser tmUser)
         {
+            if (Disable_EmailEngine)
+                return;
+
             if(TMConfig.Current.newAccountsEnabled().isFalse())
             {
                 SendNewUserEmails_UserDisabled__Workflow(subject, tmUser);
                 return;
             }
-
-            if (Disable_EmailEngine)
-                return;
+            
             var tmMessage = TMConsts.EMAIL_BODY_ADMIN_EMAIL_ON_NEW_USER.format(tmUser.UserID, 
                                                                                tmUser.UserName,
                                                                                tmUser.Company,
@@ -241,6 +242,7 @@ namespace TeamMentor.CoreLib
         [Assert_Admin]
         public static bool SendPasswordReminderToUser(TMUser tmUser, Guid passwordResetToken)
         {
+            UserGroup.Admin.assert(); 
             try
             {                 
 var userMessage =
@@ -261,6 +263,7 @@ If you didn't make this request, please let us know at support@teammentor.net.
             {
                 ex.log();
             }
+            UserGroup.None.assert(); 
             return false;
 
         }

@@ -12,6 +12,7 @@ namespace TeamMentor.FileStorage.XmlDatabase
     {
         [Admin] public static TM_FileStorage            set_TM_XmlDatabase_defaultValues(this TM_FileStorage tmFileStorage)
         {
+            UserRole.Admin.demand();
             //var tmXmlDatabase = tmFileStorage.TMXmlDatabase;
             tmFileStorage.GuidanceItems_FileMappings  = new Dictionary<Guid, string>();
             tmFileStorage.GuidanceExplorers_Paths     = new Dictionary<guidanceExplorer, string>();            

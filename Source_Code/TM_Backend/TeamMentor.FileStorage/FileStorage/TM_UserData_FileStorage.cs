@@ -57,6 +57,7 @@ namespace TeamMentor.FileStorage
 
         [Admin] public static TM_FileStorage   set_Path_UserData    (this TM_FileStorage tmFileStorage)
         {           
+            UserRole.Admin.demand();
             var tmXmlDatabase = tmFileStorage.tmXmlDatabase();
             //var userData = tmFileStorage.userData();
 
@@ -94,7 +95,7 @@ namespace TeamMentor.FileStorage
         }
         [Admin] public static TM_FileStorage   set_Path_SiteData    (this TM_FileStorage tmFileStorage)
         {           
-            
+            UserRole.Admin.demand();
             var siteData_Config = tmFileStorage.tmServer().siteData_Config();
 
             if (siteData_Config.isNull() || siteData_Config.Name.notValid())
@@ -127,8 +128,7 @@ namespace TeamMentor.FileStorage
        
         [Admin] public static TM_FileStorage   load_UserData       (this TM_FileStorage tmFileStorage)         
         {
-                        
-            //var userData = tmFileStorage.UserData;
+            UserRole.Admin.demand();                    
 
             tmFileStorage.tmConfig_Load()                            
                          .secretData_Load()
@@ -138,7 +138,7 @@ namespace TeamMentor.FileStorage
         }
     
         //TM_UserData helpers
-        public static string path_UserData(this TM_UserData userData)
+        /*public static string path_UserData(this TM_UserData userData)
         {
             return userData.usingFileStorage() 
                     ? TM_FileStorage.Current.path_UserData()
@@ -159,6 +159,6 @@ namespace TeamMentor.FileStorage
         public static bool   usingFileStorage   (this TM_UserData userData)
         {
             return userData.notNull() && TM_FileStorage.Current.notNull();
-        }
+        }*/
     }
 }

@@ -9,6 +9,7 @@ namespace TeamMentor.FileStorage
     {        
         [Admin] public static TM_FileStorage                hook_Events_TM_UserData(this TM_FileStorage tmFileStorage)
         {
+            UserRole.Admin.demand();
             var tmUserData = tmFileStorage.UserData;
             
             tmUserData.Events.User_Updated.add((userData,tmUser) => tmFileStorage.saveTmUser(tmUser));
@@ -53,10 +54,11 @@ namespace TeamMentor.FileStorage
             {             
                 lock (tmUser)
                 {                    
-                    tmFileStorage.user_XmlFile_Location(tmUser).file_Delete();
-                    //userData.triggerGitCommit();
-                }
-                return true;
+                    var userXmlFile = tmFileStorage.user_XmlFile_Location(tmUser);                    
+                    if (userXmlFile.file_Delete())
+                        return userXmlFile.fileExists();
+                    //userData.triggerGitCommit();                    
+                }                
             }
             
             return false;

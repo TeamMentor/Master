@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using FluentSharp.CoreLib;
 using FluentSharp.Web;
 
@@ -6,6 +7,18 @@ namespace TeamMentor.CoreLib
 {
     public static class UserActivities_ExtensionMethods
     {
+        public static List<UserActivity> add_Activity(this List<UserActivity> userActivities, UserActivity userActivity)
+        {
+            try
+            {
+                userActivities.Add(userActivity);
+            }
+            catch(Exception ex)
+            {
+                ex.log("[List<UserActivity>][add_UserActivity]");
+            }
+            return userActivities;
+        }
         public static UserActivity newUserActivity  (this UserActivities userActivities, string who, string action, string detail)
         {             
             if (userActivities.notNull())
@@ -29,16 +42,21 @@ namespace TeamMentor.CoreLib
         } */       
         public static UserActivity logUserActivity  (this UserActivities userActivities, UserActivity userActivity, TMUser tmUser)
         {
+           
             if (userActivities.notNull() && userActivity.notNull())
-            {
-                userActivities.ActivitiesLog.Add(userActivity);	
-                userActivity.firebase_Log();
-                if (tmUser.notNull() && tmUser.ID != Guid.Empty)
-                {                
-                    tmUser.UserActivities.Add(userActivity);
+            {     
+                if(userActivities.logging_Enabled())
+                    { 
+                    userActivities.ActivitiesLog.add_Activity(userActivity);	
+                
+                    userActivity.firebase_Log();
+                    if (tmUser.notNull() && tmUser.ID != Guid.Empty)
+                    {                
+                        tmUser.UserActivities.add_Activity(userActivity);
                     
-                    tmUser.event_User_Updated(); //tmUser.saveTmUser();
-                }                  	
+                        tmUser.event_User_Updated(); //tmUser.saveTmUser();
+                    } 
+                }
             }
             return userActivity;
         }        
@@ -76,6 +94,15 @@ namespace TeamMentor.CoreLib
         {
             userActivites.ActivitiesLog.clear();
             return userActivites;
+        }
+
+        public static bool logging_Disabled(this UserActivities userActivities)
+        {
+            return TM_Server.Current.userActivities_Disable_Logging();
+        }
+        public static bool logging_Enabled(this UserActivities userActivities)
+        {
+            return userActivities.logging_Disabled().isFalse();
         }
     }
 }

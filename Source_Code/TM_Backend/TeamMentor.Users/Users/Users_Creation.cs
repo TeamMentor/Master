@@ -198,7 +198,7 @@ namespace TeamMentor.UserData
         [ManageUsers]   
         public static List<int>     createTmUsers               (this TM_UserData userData, List<NewUser> newUsers)
         {
-            UserGroup.Admin.demand();
+            UserRole.ManageUsers.demand();
             if(newUsers.isNull())
                 return new List<int>();
             return newUsers.Select(newUser => userData.createTmUser(newUser)).toList();

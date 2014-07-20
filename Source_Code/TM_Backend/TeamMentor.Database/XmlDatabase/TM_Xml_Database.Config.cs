@@ -15,6 +15,7 @@ namespace TeamMentor.CoreLib
 
         [Admin] public static TM_Xml_Database   set_Default_Values(this TM_Xml_Database tmXmlDatabase)
         {                        
+            UserRole.Admin.demand();
             tmXmlDatabase.Cached_GuidanceItems        = new Dictionary<Guid, TeamMentor_Article>();            
             tmXmlDatabase.GuidanceExplorers_XmlFormat = new Dictionary<Guid, guidanceExplorer>();            
             tmXmlDatabase.VirtualArticles             = new Dictionary<Guid, VirtualArticleAction>();
@@ -33,9 +34,9 @@ namespace TeamMentor.CoreLib
 
 
 
-/*TODO*/[Admin] public static TM_Xml_Database   load_SiteData(this TM_Xml_Database tmXmlDatabase)         
+        [Admin] public static TM_Xml_Database   load_SiteData(this TM_Xml_Database tmXmlDatabase)         
         {
-            
+            UserRole.Admin.demand();
             tmXmlDatabase.Events.After_Load_SiteData.raise();
             return tmXmlDatabase;
         }

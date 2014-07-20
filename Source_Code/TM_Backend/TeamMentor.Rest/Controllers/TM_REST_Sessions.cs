@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using FluentSharp.CoreLib;
 using FluentSharp.Web;
 
@@ -29,49 +30,28 @@ namespace TeamMentor.CoreLib
         {
             return TmWebServices.Current_User().notNull();
         }
-        public void     Redirect_Login(string referer)
+        public Stream     Redirect_Login(string referer)
         {
-            HttpContextFactory.Response.Redirect("/Login?LoginReferer={0}".format(referer));
+            var target = "/Login?LoginReferer={0}".format(referer);
+            this.redirect_To_Page(target);            
+            return "Redirecting to Login Page...\n\n".stream_UFT8();            
         }
-/*        [Admin] public Guid     GetLoginToken(string username)
+       
+        [Admin] public Stream      Redirect_PasswordResetPage(string userId)
         {
-            return TmWebServices.GetLoginToken(username);
-        }        
-        [Admin] public bool     SendLoginTokenForUser(string userName)
-        {
-            var tmUser = userName.tmUser();
-            if(tmUser.notNull())
-                return SendEmails.SendLoginTokenToUser(tmUser);
-            return true;
-        }*/
-        
-        /*public void     Redirect_ToPasswordReset(string email)
-        {
-            var redirectUrl = "/PasswordReset/{0}".format(SetPasswordResetToken(email));
-            HttpContextFactory.Response.Redirect(redirectUrl);
-        }*/
-/*        [Admin] public void     Redirect_After_Login_Using_Token(string username, string loginToken)
-        {
-            var sessionId = TmWebServices.Login_Using_LoginToken(username, loginToken.guid());
-            if (sessionId != Guid.Empty)
-                HttpContextFactory.Response.Redirect("/");
-            else            
-                HttpContextFactory.Response.Redirect("/error");            
-        }*/        
-        [Admin] public void      Redirect_PasswordResetPage(string userId)
-        {
+            UserRole.Admin.demand();
             var tmUser = userId.toInt().tmUser();
             if (tmUser.notNull())
             {
                 var token = TmWebServices.NewPasswordResetToken(tmUser.EMail);
                 var url = "/passwordReset/{0}/{1}".format(tmUser.UserName, token);
-                HttpContextFactory.Response.Redirect(url);
+                this.redirect_To_Page(url);                            
+                return "Redirecting to Password Rest Page...\n\n".stream_UFT8();            
             }
-            else
-            {
-                "[Redirect_PasswordResetPage] could not find user with user ID: {0}".error(userId);
-                HttpContextFactory.Response.Redirect("/error");
-            }
+            
+            this.redirect_To_Page("/error");                    
+            "[Redirect_PasswordResetPage] could not find user with user ID: {0}".error(userId);                
+            return "Redirecting to Error Page...\n\n".stream_UFT8();                        
         }               
     }
 }

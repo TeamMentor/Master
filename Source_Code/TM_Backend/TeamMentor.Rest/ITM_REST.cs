@@ -98,7 +98,7 @@ namespace TeamMentor.CoreLib
         //html page redirects
 //        [OperationContract][WebGet   (UriTemplate = "/redirect/afterLoginToken/{username}/{loginToken}" )]	void Redirect_After_Login_Using_Token(string username, string loginToken);
         //[OperationContract][WebGet   (UriTemplate = "/redirect/passwordReset/{email}"                   )]	void Redirect_ToPasswordReset(string email);                                    
-        [OperationContract][WebGet   (UriTemplate = "/redirect/login/{referer}"                         )]	void Redirect_Login                  (string referer);
-        [OperationContract][WebGet   (UriTemplate = "/redirect/passwordReset/{userId}"                  )]	void Redirect_PasswordResetPage      (string userId);
+        [OperationContract][WebGet   (UriTemplate = "/redirect/login/{referer}"                         )]	Stream Redirect_Login                  (string referer);
+        [OperationContract][WebGet   (UriTemplate = "/redirect/passwordReset/{userId}"                  )]	Stream Redirect_PasswordResetPage      (string userId);
 	}	
 }

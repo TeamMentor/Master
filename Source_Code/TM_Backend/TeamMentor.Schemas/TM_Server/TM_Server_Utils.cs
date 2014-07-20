@@ -26,6 +26,12 @@ namespace TeamMentor.CoreLib
             return tmServer;
         }
         
+        //userActivites
+
+        public static bool                  userActivities_Disable_Logging(this TM_Server tmServer)
+        {
+            return tmServer.isNull() || tmServer.UserActivities_Disable_Logging;
+        }
         //user data
 
         public static TM_Server             add_UserData(this TM_Server tmServer, TM_Server.Config config)

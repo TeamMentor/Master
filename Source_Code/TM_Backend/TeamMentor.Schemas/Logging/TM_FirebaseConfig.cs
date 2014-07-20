@@ -2,8 +2,8 @@
 
 namespace TeamMentor.CoreLib
 {
-    [Serializable]
-    public class TM_FirebaseConfig : MarshalByRefObject
+    //[Serializable]
+    public class TM_FirebaseConfig //: MarshalByRefObject
     {
         public string Site                { get; set; }
         public string AuthToken           { get; set; }

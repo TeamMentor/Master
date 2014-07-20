@@ -14,6 +14,7 @@ namespace TeamMentor.CoreLib
 		[Admin]	                    
 		public static string executeSnippet(string snippet)
 		{
+            UserRole.Admin.demand();
 			"[REPL] executing snippet with size: {0}".info(snippet.size());
 			object executionResult;
 			var compileError = "";
@@ -35,9 +36,10 @@ namespace TeamMentor.CoreLib
 						
 			return executionResult.str();			
 		}
-
+        [Admin]	   
 		public static string executeSnippet_SeparateThread(string snippet)
-		{			
+		{		
+	        UserRole.Admin.demand();
 			var executionResult = "";			
 			var sync = new AutoResetEvent(false);
 			var thread = O2Thread.mtaThread(

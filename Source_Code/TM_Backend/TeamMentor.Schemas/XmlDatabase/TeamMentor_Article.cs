@@ -7,26 +7,25 @@ using FluentSharp.CoreLib;
 
 namespace TeamMentor.CoreLib
 {
-	public class TeamMentor_Article
+    [Serializable]
+	public class TeamMentor_Article : MarshalByRefObject
 	{ 
-        [XmlAttribute] 
-        public int  Metadata_Hash                   { get;set; }                 // Metadata Hash   
-        [XmlAttribute] 
-        public int  Content_Hash                    { get;set; }                 // Content Hash   
+        [XmlAttribute] public int           Metadata_Hash                   { get;set; }                 // Metadata Hash   
+        [XmlAttribute] public int           Content_Hash                    { get;set; }                 // Content Hash   
 
-		public TeamMentor_Article_Metadata Metadata { get; set; }
-        public TeamMentor_Article_Content  Content  { get; set; }
+		public TeamMentor_Article_Metadata  Metadata { get; set; }
+        public TeamMentor_Article_Content   Content  { get; set; }
 
         public TeamMentor_Article()
         { 
-            Metadata = new TeamMentor_Article_Metadata();
-            Content = new TeamMentor_Article_Content();
-
+            Metadata    = new TeamMentor_Article_Metadata();
+            Content     = new TeamMentor_Article_Content();
             Metadata.Id = Guid.NewGuid();
         }
     }
-
-	public class TeamMentor_Article_Metadata
+    
+    [Serializable]
+	public class TeamMentor_Article_Metadata : MarshalByRefObject
 	{        
 		//Article ID(s)
 		public Guid     Id                  { get; set; }		// Article GUID
@@ -54,11 +53,9 @@ namespace TeamMentor.CoreLib
 		public string   Source              { get; set; }		// Not Used in GUI
 		public string   License             { get; set; }		// Not Used in GUI
     }
-
-	public class TeamMentor_Article_Content
-	{ 
-           
-                                         		            
+    [Serializable]
+	public class TeamMentor_Article_Content : MarshalByRefObject
+	{             
 		[XmlAttribute] public bool Sanitized            { get; set; }		            // Flag to indicate if the data (for example Html) was sanitized before saving
         [XmlAttribute] public string DataType           { get; set; }		            // Flag to indicate if the data (for example Html) was sanitized before saving
 
@@ -80,25 +77,11 @@ namespace TeamMentor.CoreLib
                         return Data.Value.replace("&amp;", "&").replace("&amp;", "&");  //.fixXmlDoubleEncodingIssue();                        
                     }
             }
-
-        /*{
-            get
-            {
-                XmlDocument _dummyDoc = new XmlDocument();
-                return _dummyDoc.CreateCDataSection(Data_Raw);
-            }
-            set { Data_Raw = (value != null) ? value.Data : null; }
-        } */
-
         public TeamMentor_Article_Content()
         { 
             Data = new XmlDocument().CreateCDataSection("");
             DataType = "Html";
         }
-
 	}
-
-
-	//this is the class that can used to import/transform the previous version of guidanceItem files into the new 
 }
 

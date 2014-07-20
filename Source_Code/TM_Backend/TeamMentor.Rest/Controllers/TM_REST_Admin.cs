@@ -13,12 +13,19 @@ namespace TeamMentor.CoreLib
         {			
             return this.type().Assembly.version();
         }		
+        [Assert_Admin]
         public string Admin_ReloadCache()
         {
-            UserGroup.Admin.setThreadPrincipalWithRoles();
-            var response = TmWebServices.XmlDatabase_ReloadData();
-            UserGroup.Anonymous.setThreadPrincipalWithRoles();
-            return response;
+            UserGroup.Admin.assert();                               // temp elevate privileges
+            try
+            {
+                var response = TmWebServices.XmlDatabase_ReloadData();    
+                return response;
+            }
+            finally
+            {
+                UserGroup.None.assert();
+            }
         }
         public string Admin_Restart()
         {
@@ -44,18 +51,16 @@ namespace TeamMentor.CoreLib
         {
             try
             {
-                this.response_ContentType_Html();
-                //if (what.lower().contains("git"))
-                //    Admin_InvokeScript("load_NGit_Dlls");         // to solve prob with NGit dlls not being avaialble for compilation )
+                this.response_ContentType_Html();                
+                
                 TmWebServices.logUserActivity("Open TBot Page", what);
                 return new TBot_Brain(this).Run(what);
             }
             catch (SecurityException)
             {
-                TmWebServices.logUserActivity("Access Denied","TBot Page (Run): {0}".format(what));
-                Redirect_Login("/tbot");
+                TmWebServices.logUserActivity("Access Denied","TBot Page (Run): {0}".format(what));                
+                return Redirect_Login("/tbot");
             }	        
-            return null;
         }
 
         public Stream TBot_Render(string what)
@@ -96,17 +101,18 @@ namespace TeamMentor.CoreLib
             catch (SecurityException)
             {
                 TmWebServices.logUserActivity("Access Denied","TBot List Command");
-                Redirect_Login("/tbot");           
-            }
-            return null;
+                return Redirect_Login("/tbot");           
+            }            
         }
 
         [Admin] public TM_SecretData Get_TM_SecretData()
         {
+            UserRole.Admin.demand();
             return TM_UserData.Current.SecretData;
         }
         [Admin] public bool          Set_TM_SecretData(TM_SecretData tmSecretData)
         {
+            UserRole.Admin.demand();
             try
             {
                 if (tmSecretData.Rijndael_IV != TM_UserData.Current.SecretData.Rijndael_IV && 
@@ -127,16 +133,19 @@ namespace TeamMentor.CoreLib
         }
         [Admin] public bool          Reload_UserData()
         {
+            UserRole.Admin.demand();
             TM_FileStorage.Current.load_UserData();            
             return true;
         }
         [Admin] public bool          Reload_TMConfig()
         {
+            UserRole.Admin.demand();
             TM_FileStorage.Current.tmConfig_Reload();
             return true;
         }
         [Admin] public string        Reload_Cache()
         {
+            UserRole.Admin.demand();
             return TmWebServices.XmlDatabase_ReloadData();	        
         }
         /*[Admin] public string        Get_GitUserConfig()

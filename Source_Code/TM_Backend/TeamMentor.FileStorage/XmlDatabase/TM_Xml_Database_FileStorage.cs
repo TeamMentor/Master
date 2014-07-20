@@ -15,27 +15,31 @@ namespace TeamMentor.FileStorage
         {
             return tmFileStorage.notNull() ? tmFileStorage.Path_XmlDatabase : null;
         }        
-        [Admin] public static string            path_XmlDatabase(this TM_Xml_Database tmDatabase)
+        /*[Admin] public static string            path_XmlDatabase(this TM_Xml_Database tmDatabase)
         {
+            UserRole.Admin.demand();
             return TM_FileStorage.Current.path_XmlDatabase();            
-        }
+        }*/
         [Admin] public static string            path_XmlLibraries(this TM_FileStorage tmFileStorage)
         {
+            UserRole.Admin.demand();
             return tmFileStorage.notNull() ? tmFileStorage.Path_XmlLibraries : null;
         }
-        public static string                             path_XmlLibraries(this TM_Xml_Database tmXmlDatabase)
+        /*public static string                             path_XmlLibraries(this TM_Xml_Database tmXmlDatabase)
         {
             return TM_FileStorage.Current.notNull() ?  TM_FileStorage.Current.Path_XmlLibraries : null;
-        }
+        }*/
         
         [Admin] public static TM_Xml_Database   tmXmlDatabase(this TM_FileStorage tmFileStorage)
         {
+            UserRole.Admin.demand();
             return (tmFileStorage.notNull())
                         ? tmFileStorage.TMXmlDatabase
                         : null;
         }
         [Admin] public static TM_FileStorage    set_Path_XmlLibraries(this TM_FileStorage tmFileStorage)
         {
+            UserRole.Admin.demand();
             var tmXmlDatabase = tmFileStorage.tmXmlDatabase();
             var tmConfig        = TMConfig.Current;                
             if (tmXmlDatabase.isNull() || tmConfig.isNull())
@@ -69,6 +73,7 @@ namespace TeamMentor.FileStorage
 
         [Admin] public static TM_FileStorage    load_Libraries(this TM_FileStorage tmFileStorage)        
         {
+            UserRole.Admin.demand();
             var tmXmlDatabase = tmFileStorage.TMXmlDatabase;
 
             tmFileStorage.loadDataIntoMemory();
@@ -80,6 +85,7 @@ namespace TeamMentor.FileStorage
    
         [Admin] public static string            stats(this TM_Xml_Database tmDatabase)
         {
+            UserRole.Admin.demand();
             var tmFileStorage = TM_FileStorage.Current;
             var stats = "In the Folder '{0}' there are {1} library(ies), {2} views and {3} GuidanceItems"
                             .format(tmFileStorage.Path_XmlLibraries.directoryName(),
@@ -90,11 +96,11 @@ namespace TeamMentor.FileStorage
         }
         [Admin] public static string            reloadData(this TM_FileStorage tmFileStorage)               
         {
-            UserGroup.Admin.demand();
+            UserRole.Admin.demand();
             var tmDatabase = tmFileStorage.TMXmlDatabase;
             "In Reload data".info();
-            tmDatabase.clear_GuidanceItemsCache()                            // start by clearing the cache                                   
-                      .setup();
+            tmFileStorage.clear_GuidanceItemsCache();                           // start by clearing the cache                                   
+            tmDatabase.setup();
             tmFileStorage.load_Libraries();                                                                            
             return tmDatabase.stats();
                // return some stats

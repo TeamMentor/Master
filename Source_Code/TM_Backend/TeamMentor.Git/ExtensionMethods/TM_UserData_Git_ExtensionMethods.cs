@@ -10,44 +10,31 @@ namespace TeamMentor.CoreLib
 {
     public static class TM_UserData_Git_ExtensionMethods
     {        
-        public static TM_FileStorage   setup_UserData_Git_Support(this TM_FileStorage tmFileStorage)
+        public static TM_UserData_Git   setup_UserData_Git_Support(this TM_FileStorage tmFileStorage)             
         {
-            if(tmFileStorage.notNull())
+            if(tmFileStorage.userData().notNull())
             {
-               // tmXmlDatabase.Events.After_UserData_Ctor.add_Action((xmlDatabase)=>
-               //     {
-                        var userData = tmFileStorage.userData();
-                        userData.create_TM_UserData_Git();
-              //      });
-            }
-            return tmFileStorage;
-        }
-
-        public static TM_UserData_Git   create_TM_UserData_Git(this TM_UserData userData)
-        {
-            if(userData.notNull())
-            {
-                var userDataGit =  new TM_UserData_Git(userData);
+                var userDataGit =  new TM_UserData_Git(tmFileStorage);
                 userDataGit.syncWithGit();
                 return userDataGit;
             }
             return null;
         }
 
-        public static TM_UserData       userData            (this TM_UserData_Git userDataGit)
+        public static TM_UserData       userData                 (this TM_UserData_Git userDataGit)              
         {
             if (userDataGit.notNull())
                 return userDataGit.UserData;
             return null;
         }
-        public static TMUser            triggerGitCommit    (this TMUser tmUser)                            
+        /*public static TMUser            triggerGitCommit         (this TMUser tmUser)                            
         {
             TM_UserData_Git.Current.triggerGitCommit();
             return tmUser;
-        }
-        public static TM_UserData_Git   triggerGitCommit    (this TM_UserData_Git userData)                 
+        }*/
+        public static TM_UserData_Git   triggerGitCommit         (this TM_UserData_Git userData)                 
         {
-            var tmFileStorage = TM_FileStorage.Current;
+            var tmFileStorage = userData.FileStorage;
             var tmServer = tmFileStorage.Server;
             if (tmServer.notNull())
                 if (tmServer.Git.UserData_Git_Enabled && userData.NGit.notNull())
@@ -60,9 +47,9 @@ namespace TeamMentor.CoreLib
                     }
             return userData;
         }
-        public static TM_UserData_Git   pushUserRepository  (this TM_UserData_Git userData, API_NGit nGit)  
+        public static TM_UserData_Git   pushUserRepository       (this TM_UserData_Git userData, API_NGit nGit)  
         {
-            var tmServer = TM_FileStorage.Current.tmServer();
+            var tmServer = userData.FileStorage.tmServer();
 
             if (tmServer.isNull())
                 return userData;
@@ -84,16 +71,16 @@ namespace TeamMentor.CoreLib
                     });
             return userData;
         }
-        public static TM_UserData_Git   syncWithGit         (this TM_UserData_Git userDataGit)                 
+        public static TM_UserData_Git   syncWithGit              (this TM_UserData_Git userDataGit)                 
         {
             try
             {
-                var tmFileStorage = TM_FileStorage.Current;
+                var tmFileStorage = userDataGit.FileStorage;
 
                 if (userDataGit.userData().isNull())
                     return userDataGit;
 
-                var userData = userDataGit.userData();
+                //var userData = userDataGit.userData();
              //   var gitConfig = userData.tmConfig().Git;
                // if (gitConfig.UserData_Git_Enabled.isFalse())
                //     return userData;
@@ -161,9 +148,8 @@ namespace TeamMentor.CoreLib
                 ex.log("[TM_UserData]  [handleExternalGitPull]");
             }
             return userDataGit;
-        }
-    
-        public static TM_UserData_Git   clone_UserDataRepo  (this TM_UserData_Git userData, string gitLocation, string targetFolder)
+        }    
+        public static TM_UserData_Git   clone_UserDataRepo       (this TM_UserData_Git userData, string gitLocation, string targetFolder)
         {
             var start = DateTime.Now;
             "[TM_UserData] [GitClone] Start".info();

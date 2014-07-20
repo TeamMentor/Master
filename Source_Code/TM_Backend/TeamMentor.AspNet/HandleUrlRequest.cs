@@ -7,6 +7,7 @@ using FluentSharp.Web35;
 using Microsoft.Security.Application;
 using System.IO;
 using System.Security;
+using TeamMentor.FileStorage;
 using TeamMentor.SiteData;
 
 namespace TeamMentor.CoreLib
@@ -484,7 +485,7 @@ namespace TeamMentor.CoreLib
         public void handleAction_Image(string data)
         {            
             
-            var imagePath = TM_Xml_Database.Current.Get_Path_To_File(data);            
+            var imagePath = TM_FileStorage.Current.Get_Path_To_File(data);            
             if (imagePath.fileExists())
             {
                 context.Response.ContentType = "image/{0}".format(data.extension().removeFirstChar());
@@ -716,10 +717,8 @@ namespace TeamMentor.CoreLib
             context.Response.Redirect(loginPage);
         }
         public void handle_LoginOK()
-        {
-            // ensures we are redirecting into the current domain (and fixes unvalidated redirect vuln in pre 3.3)
-            var currentRequestUrl = context.Request.Url;
-            if (currentRequestUrl.notNull())
+        {            
+            if (context.Request.notNull() && context.Request.QueryString.notNull())
             {
                 var loginReferer = context.Request.QueryString["LoginReferer"]   // get user provided redirect                                                      
                                                   .replace("//","/");            // prevent urls that start with  //
@@ -727,12 +726,8 @@ namespace TeamMentor.CoreLib
                     return;
                 var referTarget = (loginReferer.notNull() && loginReferer.StartsWith("/"))
                                     ? loginReferer                               // only allow paths that start with /
-                                    : "/";                                       // default to redirect to /
-                
-                // need to calculate urlWithoutPathAndQuery since the URL class doesn't provide this value
-                var urlWithoutPathAndQuery = currentRequestUrl.AbsoluteUri.remove(currentRequestUrl.PathAndQuery);                
-                var sameDomainUrl =  urlWithoutPathAndQuery.append(referTarget);  // create redirect URL
-                context.Response.Redirect(sameDomainUrl);                        
+                                    : "/";                                       // default to redirect to /                
+                context.Response.Redirect(referTarget);        
                 // Response.Redirect will throw an exception so the current request ends here                
             }            
         }

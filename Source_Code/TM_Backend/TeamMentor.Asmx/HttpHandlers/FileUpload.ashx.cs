@@ -20,6 +20,9 @@ namespace TeamMentor.CoreLib
 
         public void ProcessRequest(HttpContext context)
         {
+            var tmFileStorage = TM_FileStorage.Current;
+            if (tmFileStorage.isNull())
+                throw new SecurityException("TM_FileStorage is not set");
             var uploadTokenString = context.Request["uploadToken"];
             if (uploadTokenString.isGuid().isFalse())
                 return;
@@ -38,7 +41,7 @@ namespace TeamMentor.CoreLib
             //calculate target folder
             var librariesZipsFolder = TMConfig.Current.TMSetup.LibrariesUploadedFiles;            
 
-            var targetFolder = TM_Xml_Database.Current.path_XmlDatabase().fullPath().pathCombine(librariesZipsFolder).fullPath();
+            var targetFolder = tmFileStorage.path_XmlDatabase().fullPath().pathCombine(librariesZipsFolder).fullPath();
             
             if (targetFolder.valid())
             {
