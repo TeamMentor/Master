@@ -19,12 +19,23 @@ Firebase Offline Logs: <a href="Firebase_Offline_Activities">Activites</a>, <a h
     <ul>
         <pre>
 <strong>TM_Xml_Database.Current.path_XmlDatabase()</strong>        : @tmFileStorage.path_XmlDatabase()
-<strong>TM_Xml_Database.Current.Path_XmlLibraries</strong>         : @tmFileStorage.Path_XmlLibraries
-<strong>TM_UserData.Current.Path_UserData</strong>                 : @tmFileStorage.Path_UserData
+<strong>TM_Xml_Database.Current.Path_XmlLibraries</strong>         : @tmFileStorage.path_XmlLibraries()
+<strong>TM_UserData.Current.Path_UserData</strong>                 : @tmFileStorage.path_UserData()
 <strong>AppDomain.CurrentDomain.BaseDirectory</strong>             : @AppDomain.CurrentDomain.BaseDirectory
 <strong>O2 Temp Dir</strong>                                       : @PublicDI.config.O2TempDir<br /></pre>
     </ul>        
 <br/>
+
+@{
+    try
+    {
+        var keys = session.Keys;            // handles case when session.Keys throws an exception
+    }
+    catch
+    {
+        return;
+    }
+}
  
 <h5>Session Values</h5>        
     <ul>
