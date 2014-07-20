@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using FluentSharp.NUnit;
+using NUnit.Framework;
 using TeamMentor.CoreLib;
 using FluentSharp.CoreLib;
 using FluentSharp.CoreLib.API;
@@ -15,31 +16,35 @@ namespace TeamMentor.UnitTests
             Assert.IsEmpty(tmUserData.tmUsers());
             return tmUserData;
         }
-        public static TM_Xml_Database delete_Database(this TM_Xml_Database tmDatabase)
-        {
-            var tmFileStorage = TM_FileStorage.Current;
+        public static TM_FileStorage delete_Database(this TM_FileStorage tmFileStorage)
+        {            
 
-            Assert.NotNull    (tmDatabase);
-            Assert.NotNull    (tmDatabase.path_XmlDatabase());
-            Assert.AreNotEqual(tmDatabase.path_XmlDatabase(), tmFileStorage.WebRoot);
-            //Assert.IsTrue     (tmDatabase.path_XmlDatabase().dirExists());
-
-            if (tmDatabase.path_XmlDatabase().dirExists())                                            // check if the folder exists      
+            tmFileStorage.assert_Not_Null()
+                         .path_XmlDatabase().assert_Not_Null()
+                                            .assert_Is_Not_Equal_To(tmFileStorage.WebRoot);
+            
+            if (tmFileStorage.path_XmlDatabase().dirExists())                                            // check if the folder exists      
             {
                 //Assert.IsNotEmpty(tmDatabase.path_XmlDatabase().files());
 
-                tmDatabase.path_XmlDatabase().files(true).files_Attribute_ReadOnly_Remove();          // make all files writable
+                tmFileStorage.path_XmlDatabase().files(true).files_Attribute_ReadOnly_Remove();          // make all files writable
 
-                Assert.IsTrue(Files.deleteFolder(tmDatabase.path_XmlDatabase(), true));                              // delete all files recusively
-                tmDatabase.clear_GuidanceItemsCache();
+                
+                tmFileStorage .waitForComplete_Save_GuidanceItemsCache();
+                tmFileStorage.clear_GuidanceItemsCache();
 
-                Assert.IsFalse(tmDatabase.path_XmlDatabase().dirExists());                            // ensure the deletion happened
-                Assert.IsEmpty(tmDatabase.path_XmlDatabase().files());
-                Assert.IsEmpty(tmDatabase.Cached_GuidanceItems);
-                Assert.IsFalse(tmDatabase.getCacheLocation().fileExists());
-                "[Test][TM_Xml_Database][delete_Database]TM database files were deleted from: {0}".info(tmDatabase.path_XmlDatabase());
+                Files.deleteFolder(tmFileStorage.path_XmlDatabase(), true);                              // delete all files recusively
+                tmFileStorage.path_XmlDatabase().folder_Wait_For_Deleted();
+                tmFileStorage.path_XmlDatabase().assert_Folder_Doesnt_Exist();
+                
+
+                Assert.IsFalse(tmFileStorage.path_XmlDatabase().dirExists());                            // ensure the deletion happened
+                Assert.IsEmpty(tmFileStorage.path_XmlDatabase().files());
+                Assert.IsEmpty(tmFileStorage.tmXmlDatabase().Cached_GuidanceItems);
+                Assert.IsFalse(tmFileStorage.getCacheLocation().fileExists());
+                "[Test][TM_Xml_Database][delete_Database]TM database files were deleted from: {0}".info(tmFileStorage.path_XmlDatabase());
             }
-            return tmDatabase;
+            return tmFileStorage;
         }        
         /*public static TM_Xml_Database loadData_No_Admin_User(this TM_Xml_Database tmDatabase)
         {

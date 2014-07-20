@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web.Services.Protocols;
 using FluentSharp.CoreLib;
-using FluentSharp.CoreLib.API;
 using NUnit.Framework;
-using TeamMentor.UnitTests.TM_Website.WebServices;
+using TeamMentor.UnitTests.TM_Website;
 
-namespace TeamMentor.UnitTests.TM_Website.WebSite
+namespace TeamMentor.UnitTests.QA
 {
-     // we don't need the IE for these cases
+     
     [TestFixture]
     public class Test_REST_Security :  TestFixture_WebServices
     {       
@@ -26,10 +22,10 @@ namespace TeamMentor.UnitTests.TM_Website.WebSite
             SecurityMappings_GET  = new List<SecurityMapping>();
            
             SecurityMappings_GET.add_Anonymous("admin/reloadCache"          , new object[0]                )
-                                .add_Anonymous("folders/{0}"                , new object[1] { Guid.Empty } ) //folders/{LIBRARYID}
+                                .add_Anonymous("folders/{0}"                , new object[ ] { Guid.Empty } ) //folders/{LIBRARYID}
                                 .add_Anonymous("libraries"                  , new object[0]                )
-                                .add_Anonymous("library/{0}"                , new object[1] { Guid.Empty } ) //REST/library/{NAMEORID}                                
-                                .add_Anonymous("user/hasRole/{0}"           , new object[1] { "abc"      } )  //user/hasRole/{ROLE}
+                                .add_Anonymous("library/{0}"                , new object[ ] { Guid.Empty } ) //REST/library/{NAMEORID}                                
+                                .add_Anonymous("user/hasRole/{0}"           , new object[ ] { "abc"      } )  //user/hasRole/{ROLE}
                                 .add_Anonymous("user/isAdmin"               , new object[0]                )
                                 .add_Anonymous("user/isAuthenticated"       , new object[0]                )
                                 .add_Anonymous("user/loggedIn"              , new object[0]                )
@@ -38,27 +34,27 @@ namespace TeamMentor.UnitTests.TM_Website.WebSite
                                 .add_Anonymous("sessionId"                  , new object[0]                )
                                 .add_Anonymous("version"                    , new object[0]                ); 
             
-            SecurityMappings_GET.add_Reader   ("article/{0}"                , new object[1] { Guid.Empty } ) //article/{ARTICLEID}
-                                .add_Reader   ("article/html/{0}"           , new object[1] { Guid.Empty } ); // article/html/{ARTICLEID}
+            SecurityMappings_GET.add_Reader   ("article/{0}"                , new object[ ] { Guid.Empty } ) //article/{ARTICLEID}
+                                .add_Reader   ("article/html/{0}"           , new object[ ] { Guid.Empty } ); // article/html/{ARTICLEID}
 
             SecurityMappings_GET.add_Admin    ("admin/logs"                 , new object[0]                ) 
                                 .add_Admin    ("admin/logs/reset"           , new object[0]                ) 
                                 .add_Admin    ("admin/reload_TMConfig"      , new object[0]                ) 
                                 .add_Admin    ("admin/reload_UserData"      , new object[0]                )
                                 .add_Admin    ("admin/reload_Cache"         , new object[0]                )
-                                .add_Admin    ("admin/gitUserData"          , new object[0]                )
-                                .add_Admin    ("admin/firstScript"          , new object[0]                )
-                                .add_Admin    ("admin/firstScript/invoke"   , new object[0]                )
+                                //.add_Admin    ("admin/gitUserData"          , new object[0]                )
+                                //.add_Admin    ("admin/firstScript"          , new object[0]                )
+                                //.add_Admin    ("admin/firstScript/invoke"   , new object[0]                )
                                 .add_Admin    ("admin/secretData"           , new object[0]                )                                
-                                .add_Admin    ("user/{0}"                   , new object[1] { "123"      } )  // user/{NAMEORID}                                
-                                .add_Admin    ("redirect/passwordReset/{0}" , new object[1] { -1         } ) // redirect/passwordReset/{USERID}
+                                .add_Admin    ("user/{0}"                   , new object[ ] { "123"      } )  // user/{NAMEORID}                                
+                                .add_Admin    ("redirect/passwordReset/{0}" , new object[ ] { -1         } ) // redirect/passwordReset/{USERID}
                                 .add_Admin    ("users"                      , new object[0]                )
                                 .add_Admin    ("tbot/list"                  , new object[0]                )                              
-                                .add_Admin    ("tbot/run/{0}"               , new object[1] { "abc"      } );  // tbot/run/{WHAT}
+                                .add_Admin    ("tbot/run/{0}"               , new object[ ] { "abc"      } );  // tbot/run/{WHAT}
                                             
             //need to be executed last
             SecurityMappings_GET.add_Anonymous("admin/restart"              , new object[0]                )
-                                .add_Anonymous("login/{0}/{1}"              , new object[2] { "ab", "12" } )  // login/{USERNAME}/{PASSWORD}                                                              
+                                .add_Anonymous("login/{0}/{1}"              , new object[ ] { "ab", "12" } )  // login/{USERNAME}/{PASSWORD}                                                              
                                 .add_Anonymous("logout"                     , new object[0]                );
 
             // this one will redirect to login which is the expected behaviour
@@ -78,11 +74,11 @@ namespace TeamMentor.UnitTests.TM_Website.WebSite
 
             SecurityMappings_PUT  = new List<SecurityMapping>();
             
-            SecurityMappings_PUT.add_Admin    ("admin/gitUserData"           , new object[1] {"{}"}         ) 
-                                .add_Admin    ("admin/secretData"            , new object[1] {"{}"}         )                                 
-                                .add_Admin    ("sendEmail/"                  , new object[1] {"{}"}         )
-                                .add_Admin    ("user"                        , new object[1] {"{}"}         )
-                                .add_Anonymous("login/"                      , new object[1] {"{}"}         ) 
+            SecurityMappings_PUT//.add_Admin    ("admin/gitUserData"           , new object[1] {"{}"}         ) 
+                                .add_Admin    ("admin/secretData"            , new object[ ] {"{}"}         )                                 
+                                .add_Admin    ("sendEmail/"                  , new object[ ] {"{}"}         )
+                                .add_Admin    ("user"                        , new object[ ] {"{}"}         )
+                                .add_Anonymous("login/"                      , new object[ ] {"{}"}         ) 
                                 ;
 
             // ************************************
@@ -90,8 +86,8 @@ namespace TeamMentor.UnitTests.TM_Website.WebSite
             // ************************************
 
             SecurityMappings_POST = new List<SecurityMapping>();
-            SecurityMappings_POST.add_Admin("users/create"                , new object[1] {"{}"}            ) 
-                                 .add_Admin("users/verify"                , new object[1] {"{}"}            ); 
+            SecurityMappings_POST.add_Admin("users/create"                , new object[ ] {"{}"}            ) 
+                                 .add_Admin("users/verify"                , new object[ ] {"{}"}            ); 
 
         }
 
@@ -152,7 +148,13 @@ namespace TeamMentor.UnitTests.TM_Website.WebSite
                 if (securityMapping.AllowedUser <= allowedUser)
                     Assert.IsTrue(result , "On method: '{0}' for user '{1}'".format(targetMethod, allowedUser));
                 else
-                    Assert.IsFalse(result, "On method: '{0}' for user '{1}'".format(targetMethod, allowedUser));                
+                { 
+                    if (result)
+                    {
+                        
+                    }
+                    Assert.IsFalse(result, "On method: '{0}' for user '{1}'".format(targetMethod, allowedUser));   
+                }
             }         
         }
 
@@ -179,8 +181,15 @@ namespace TeamMentor.UnitTests.TM_Website.WebSite
             var command_Url  = rest_BaseUrl.append(command);
             var html         = getHtml(command_Url);
             if (html.contains("Request Error"))
+            { 
                 if (html.contains("Access is denied."))
                     return false;                
+                if (html.contains("cannot be deserialized because the required data member"))
+                {
+                    "[Test_REST_Security][Deserialization Error]: \n\n{0}".info(html);
+                    return false;
+                }
+            }
             if(html.contains("Login"))
                 return false;
             return true;

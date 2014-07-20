@@ -69,10 +69,11 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Assert.AreEqual(newUserName.tmUser(), tmUser);
             Assert.NotNull (tmUser);
             Assert.Contains(tmUser, userData.users());
-        }
+        }        
         [Test] public void createTmUser()           
         {           
-            UserGroup.Anonymous.setPrivileges(); 
+            UserGroup.None.assert();                //  change current thread privildges to None
+
             var newUser = new NewUser()
                 {
                     Company     = 10.randomLetters(),
@@ -215,8 +216,11 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Assert.IsTrue(tmUser1.AccountStatus.UserEnabled);
 
             tmConfig.TMSecurity.NewAccounts_Enabled = false;
-            var tmUser2      = userData.createUser();               // this will set the tmUser2.SecretData.EnableUserToken because the admin will be emailed with the EnableUserToken
+            var tmUser2      = userData.createUser();               // becasuse Email system is disabled in these type of UnitTests 
+                                                                    // this will NOT set the tmUser2.SecretData.EnableUserToken because the admin will be emailed with the EnableUserToken
             Assert.IsFalse(tmUser2.AccountStatus.UserEnabled);
+
+            tmUser2.enableUser_Token();
 
             Assert.AreNotEqual(tmUser1, tmUser2);
             Assert.AreEqual   (Guid.Empty, tmUser1.SecretData.EnableUserToken);
@@ -257,19 +261,20 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             tmConfig.TMSecurity.NewAccounts_Enabled = true;
         }
 
-        
-        [Ignore("TO FIX (Refactor Side Effect")]
+                
         [Test (Description ="Checks that only UserRole.ManageUsers is able to invoke the userData.users() method")]
         public void CheckUserListPermissions()
         {           
             UserRole.ManageUsers        .setPrivilege();    Assert.DoesNotThrow              (()=>userData.users());
             UserRole.ReadArticles       .setPrivilege();    Assert.Throws<SecurityException> (()=>userData.users());
-            UserRole.ManageUsers        .setPrivilege();    Assert.DoesNotThrow              (()=>userData.users());
-            UserRole.EditArticles       .setPrivilege();    Assert.Throws<SecurityException> (()=>userData.users());
-            UserRole.EditGui            .setPrivilege();    Assert.Throws<SecurityException> (()=>userData.users());
+            UserRole.ManageUsers        .setPrivilege();    Assert.DoesNotThrow              (()=>userData.users());        // reconfirm previous set.Priviledge had no side effect
+            UserRole.EditArticles       .setPrivilege();    Assert.Throws<SecurityException> (()=>userData.users());            
             UserRole.Admin              .setPrivilege();    Assert.Throws<SecurityException> (()=>userData.users());
             UserRole.ReadArticlesTitles .setPrivilege();    Assert.Throws<SecurityException> (()=>userData.users());
-            UserRole.ManageUsers        .setPrivilege();    Assert.DoesNotThrow              (()=>userData.users());
+            UserRole.ManageUsers        .setPrivilege();    Assert.DoesNotThrow              (()=>userData.users());        // reconfirm previous set.Priviledge had no side effects
+            UserRole.ViewLibrary        .setPrivilege();    Assert.Throws<SecurityException> (()=>userData.users());
+            UserRole.None               .setPrivilege();    Assert.Throws<SecurityException> (()=>userData.users());
+            UserRole.ManageUsers        .setPrivilege();    Assert.DoesNotThrow              (()=>userData.users());        // reconfirm previous set.Priviledge had no side effects
         }
     }
 }

@@ -37,8 +37,7 @@ namespace TeamMentor.UnitTests.CoreLib
             context.Session["SessionID"] = userSessionId;
             handleUrlRequest = new HandleUrlRequest();
         }
-
-        [Ignore("TO FIX (Refactor Side Effect")]
+        
         [Test][Assert_Editor]
         public void GetContentForRandomGuid_CheckThrowOf_ThreadAborted()
         {
@@ -53,6 +52,8 @@ namespace TeamMentor.UnitTests.CoreLib
             Assert.DoesNotThrow     (() => handleUrlRequest.handleRequest("xsl"     , guid.str()), "xsl");
             Assert.Throws<Exception>(() => handleUrlRequest.handleRequest("jsonp"   , guid.str()), "jsonp");
             Assert.Throws<Exception>(() => handleUrlRequest.handleRequest("article" , guid.str()), "article");            
+
+            UserGroup.None.assert(); 
         }
     }
 }

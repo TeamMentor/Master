@@ -22,7 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -63,6 +63,9 @@
     </Reference>
     <Reference Include="FluentSharp.WatiN">
       <HintPath>..\..\packages\FluentSharp.WatiN.5.5.166\lib\net40\FluentSharp.WatiN.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentSharp.WatiN.NUnit">
+      <HintPath>..\..\packages\FluentSharp.WatiN.NUnit.5.5.166\lib\net40\FluentSharp.WatiN.NUnit.dll</HintPath>
     </Reference>
     <Reference Include="FluentSharp.Web_3_5, Version=5.5.0.0, Culture=neutral, PublicKeyToken=1439893e489faed4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -114,7 +117,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Bugs\Bugs_UnitTest_Via_REST.cs" />
     <Compile Include="CoreLib\Test_TM_QA_Config_Loader.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -135,19 +137,12 @@
     <Compile Include="_ConfigAndHelpers\_Extra_ExtensionMethods\Extra_API_Cassini_ExtensionMethods.cs" />
     <Compile Include="_ConfigAndHelpers\_Extra_ExtensionMethods\Extra_FluentSharp_CoreLib_ExtensionMethods.cs" />
     <Compile Include="_ConfigAndHelpers\_Extra_ExtensionMethods\Extra_FluentSharp_NUnit_ExtensionMethods.cs" />
-    <Compile Include="_ConfigAndHelpers\_Extra_ExtensionMethods\Test_Extra_FluentSharp_NUnit_ExtensionMethods.cs" />
-    <Compile Include="_ConfigAndHelpers\_Extra_ExtensionMethods\Test_Extra_Watin_ExtensionMethods.cs" />
-    <Compile Include="_ConfigAndHelpers\_Extra_ExtensionMethods\Test_Extra_API_Cassini_ExtensionMethods.cs" />
     <Content Include="WebServices\CSharp_Script_to_Clearn_References.txt" />
-    <Compile Include="WebServices\Test_WSDL_Security.cs" />
     <Compile Include="WebServices\Test_TestFixture_WebServices.cs" />
     <Compile Include="WebServices\Test_TM_WebServices_Configured.cs" />
-    <Compile Include="WebServices\Test_WebServices_Config.cs" />
     <Compile Include="WebServices\Test_WebServices_Users.cs" />
     <Compile Include="WebServices\Test_WebServices_Setup.cs" />
     <Compile Include="WebServices\Test_WebServices_Authentication.cs" />
-    <Compile Include="WebSite\Rest_GET_API.cs" />
-    <Compile Include="WebSite\Test_REST_Security.cs" />
     <Compile Include="WebSite\Test_Website_HandleRequest.cs" />
     <Compile Include="_ConfigAndHelpers\_Extra_ExtensionMethods\Extra_Watin_ExtensionMethods.cs" />
     <Compile Include="_ConfigAndHelpers\IE_TBot_Automation\API_IE_TBot.cs" />

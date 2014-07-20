@@ -4,9 +4,10 @@ using System.Xml.Serialization;
 using FluentSharp.CoreLib;
 using FluentSharp.Git;
 using FluentSharp.Git.APIs;
+using FluentSharp.NUnit;
 using NUnit.Framework;
 
-namespace TeamMentor.UnitTests.QA_Tests
+namespace TeamMentor.UnitTests.QA
 {
     public class Git_Clone_Data
     {
@@ -19,7 +20,8 @@ namespace TeamMentor.UnitTests.QA_Tests
         [XmlAttribute] public int      Repo_Files    { get; set; }
     }
 
-    [TestFixture][Ignore("Add to special Long running integration test suite")]
+    [Ignore("Only in final Integration Test")]
+    [TestFixture]
     public class Test_Loading_TM_Repos
     {
         public String GitHub_Repo_Path      { get; set; }
@@ -59,43 +61,43 @@ namespace TeamMentor.UnitTests.QA_Tests
         
         [Test] public void Test_Clone_Net_2_0()
         {           
-            runCloneForNGitAndGitExe(".NET_2.0"          , 536, 20);            
+            runCloneForNGitAndGitExe(".NET_2.0"          , 536, 40);            
         }   
         [Test] public void Test_Clone_Net_3_5()
         {
-            runCloneForNGitAndGitExe(".NET_3.5"          , 839, 20);           
+            runCloneForNGitAndGitExe(".NET_3.5"          , 839, 40);           
         }
         [Test] public void Test_Clone_Net_4_0()
         {
-            runCloneForNGitAndGitExe(".NET_4.0"          , 452, 20);            
+            runCloneForNGitAndGitExe(".NET_4.0"          , 492, 40);            
         }
         [Test] public void Test_Clone_Android()
         {
-            runCloneForNGitAndGitExe("Android"           , 058, 10);            
+            runCloneForNGitAndGitExe("Android"           , 058, 40);            
         }
         [Test] public void Test_Clone_CPP()
         {
-            runCloneForNGitAndGitExe("CPP"               , 491, 15);            
+            runCloneForNGitAndGitExe("CPP"               , 515, 40);            
         }
         [Test] public void Test_Clone_CWE()
         {
-            runCloneForNGitAndGitExe("CWE"               , 110, 10);            
+            runCloneForNGitAndGitExe("CWE"               , 110, 40);            
         }
         [Test] public void Test_Clone_HTML5()
         {
-            runCloneForNGitAndGitExe("HTML5"             , 166, 12);            
+            runCloneForNGitAndGitExe("HTML5"             , 166, 40);            
         }
         [Test] public void Test_Clone_iOS()
         {
-            runCloneForNGitAndGitExe("iOS"               , 064, 10);            
+           runCloneForNGitAndGitExe("iOS"                , 064, 40);            
         }
         [Test] public void Test_Clone_Java()
         {
-            runCloneForNGitAndGitExe("Java"              , 661, 20);            
+            runCloneForNGitAndGitExe("Java"              , 707, 40);            
         }        
         [Test] public void Test_Clone_PHP()
         {
-            runCloneForNGitAndGitExe("PHP"               , 594, 120000);         
+            runCloneForNGitAndGitExe("PHP"               , 646, 12);         
         }
         [Test] public void Test_Clone_Scala()
         {
@@ -103,7 +105,7 @@ namespace TeamMentor.UnitTests.QA_Tests
         }
         [Test] public void Test_Clone_Vulnerabilities()
         {
-            runCloneForNGitAndGitExe("Vulnerabilities"   , 188, 20);                
+            runCloneForNGitAndGitExe("Vulnerabilities"   , 373, 20);                
         }
         [Test] public void Test_Clone_PCI_DSS_Compliance()
         {
@@ -147,12 +149,18 @@ namespace TeamMentor.UnitTests.QA_Tests
                     Repo_Path     = nGit.Path_Local_Repository,
                     Repo_Source   = nGit.remote_Url("origin")
                 };
-            var path = nGit.Path_Local_Repository;
-            var source = nGit.remote_Url("origin");
+            //var path = nGit.Path_Local_Repository;
+            //var source = nGit.remote_Url("origin");
             saveCloneData(cloneData);
+            
+            nGit.close();
 
             if (Delete_Temp_Repos)
-                Assert.IsTrue  (nGit.delete_Repository_And_Files());
+            { 
+                nGit.delete_Repository_And_Files();
+                nGit.Path_Local_Repository.folder_Wait_For_Deleted()
+                                          .assert_Folder_Not_Exists();
+            }
         }
 
         public void saveCloneData(Git_Clone_Data cloneData)

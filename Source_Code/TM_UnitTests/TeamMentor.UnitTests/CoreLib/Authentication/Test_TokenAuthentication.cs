@@ -26,9 +26,11 @@ namespace TeamMentor.UnitTests.Authentication
         [Assert_Admin][SetUp]
         public void setup()
         {
+            UserGroup.Admin.assert(); 
             tmUser           = userData.createUser();    
             Assert.IsEmpty  (tmUser.AuthTokens);
             user_AuthToken   = tmUser.add_AuthToken();
+            UserGroup.None.assert(); 
         }
 
         [Test] public void TokenAuthentication_Ctor()       
@@ -121,11 +123,13 @@ namespace TeamMentor.UnitTests.Authentication
         
         [Assert_Admin] [Test] public void add_AuthToken()       
         {
+            UserGroup.Admin.assert(); 
             var authToken  = tmUser.add_AuthToken();
             Assert.IsNotNull(authToken);
             Assert.IsNotEmpty(tmUser.AuthTokens);
             Assert.AreEqual  (tmUser.AuthTokens.first(), user_AuthToken);
             Assert.AreEqual  (tmUser.AuthTokens.second(), authToken);
+            UserGroup.None.assert(); 
         }
         [Assert_Admin] [Test] public void createUserAuthToken() 
         {
@@ -141,6 +145,7 @@ namespace TeamMentor.UnitTests.Authentication
             Assert.AreEqual(Guid.Empty, userData.createUserAuthToken(tmUser.UserID));       // this user should not exist anymore
             Assert.AreEqual(Guid.Empty, userData.createUserAuthToken(-1));
             Assert.AreEqual(Guid.Empty, userData.createUserAuthToken(3000.randomNumber()));
+            UserGroup.None.assert(); 
         }
         [Assert_Admin] [Test] public void getUserAuthTokens()   
         {
@@ -158,10 +163,10 @@ namespace TeamMentor.UnitTests.Authentication
             Assert.IsEmpty   (userData.getUserAuthTokens(tmUser.UserID));
             Assert.IsEmpty   (userData.getUserAuthTokens(-1));
             Assert.IsEmpty   (userData.getUserAuthTokens(3000.randomNumber()));
+            UserGroup.None.assert(); 
         }   
         
-        // misc workflows
-        [Ignore("TO FIX (Refactor Side Effect")]
+        // misc workflows       
         [Test] public void Check_SecurityDemands()
         {
             Assert.Throws<SecurityException>(()=> tmUser.add_AuthToken());

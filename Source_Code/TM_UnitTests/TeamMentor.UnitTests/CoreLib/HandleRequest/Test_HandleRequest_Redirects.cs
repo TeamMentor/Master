@@ -132,7 +132,7 @@ namespace TeamMentor.UnitTests.CoreLib
                 request.QueryString["LoginReferer"] = item.Key;                     // set redirection target
                 Assert.Throws<Exception>(()=>handleUrlRequest.handle_LoginOK());    // trigger redirect  (Redirect throws exception after redirection is set)                             
                 Assert.IsTrue  (response.IsRequestBeingRedirected);       
-                Assert.AreEqual(targetServer + item.Value,response.RedirectLocation, 
+                Assert.AreEqual(item.Value,response.RedirectLocation, 
                                 "response.RedirectLocation for: {0}".format(item.Value));                                
             }
         }

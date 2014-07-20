@@ -17,27 +17,52 @@ namespace TeamMentor.UnitTests.Cassini
         string   admin_Pwd;
         string   server;
 
-        public Test_Cassini_User_Management()
+        [TestFixtureSetUp]
+        public void testFixtureSetup()
         {
-            ie = "Test_Cassini_User_Management".add_IE_PopupWindow(1000,600);
-            
             admin_Name = "admin";
             admin_Pwd  = "!!tmadmin";
+            ie = "Test_Cassini_User_Management".add_IE_Hidden_PopupWindow();
+            //ie.parentForm().show();
             //ie.script_IE().waitForClose();
         }
-       
+        [TestFixtureTearDown]
+        public void TestFixtureTearDown()
+        {            
+            ie.close();
+            ie.parentForm().close();
+        }        
         [Test]
         public void Login_As_Admin()
-        {
+        {            
             server 	   = apiCassini.url();
             ie.open(server.append("login").info());
 			ie.field("username").value(admin_Name);
 			ie.field("password").value(admin_Pwd);
-			ie.button("login").click();
-            ie.waitForLink("About").assert_Not_Null();
-            ie.showMessage("found About link");
-            ie.parentForm().close();
+			ie.button("login").click();            
+            ie.waitForLink("About",250,20).assert_Not_Null();         
+            ie.waitForLink("Logout").assert_Not_Null();
         }
+
+        /// <summary>
+        /// This issue occured when the login was performed on an IP adress and the
+        /// post-login redirection was done into the DNS representation of that IP
+        /// 
+        /// For example if the login was done on http://127.0.0.1:12345/login and the 
+        /// post-login redirection target was http://localhost:12345/
+        /// 
+        /// Issue Ref: https://github.com/TeamMentor/Master/issues/827 
+        /// Status: Fixed on 3.5 RC1
+        /// </summary>
+        [Test]
+        public void Issue_827_Login_redirect_does_not_always_work()
+        {
+            var expectedUrl = apiCassini.url().append("teamMentor");
+            ie.parentForm().show();            
+            Login_As_Admin();
+            ie.url().assert_Is(expectedUrl);            
+        }
+            
 
     }
     [TestFixture]
@@ -48,20 +73,23 @@ namespace TeamMentor.UnitTests.Cassini
         string admin_Pwd;
         string server;
 
-        public Test_Cassini_Library_Management()
+        [SetUp]
+        public void setup()
         {
-            ie = "Test_Cassini_Library_Management".add_IE_PopupWindow(1000,600);
             
+            ie = "Test_Cassini_Library_Management".add_IE_PopupWindow(1000,600);            
             admin_Name = "admin";
             admin_Pwd  = "!!tmadmin";
             server 	   = apiCassini.url();
         }
-        [Test] [Ignore("Under Dev")]
+        [TearDown]
+        public void tearDown()
+        {
+            ie.parentForm().close();
+        }
+        [Test]
         public void Workflow_Install_And_Delete_Library()
         {
-
-            
-
             Action<string,string> waitForElementText = 
 	            (elementId, text)=>{
 							            "waiting for '{0}' in element '{1}'".info(text, elementId);
@@ -81,8 +109,7 @@ namespace TeamMentor.UnitTests.Cassini
 							            ie.field("password").value(password);
 							            ie.button("login").click();
 						             };
-            Action logout 	  = ()=> ie.open(server.append("logout"));								 
-            Action tbot 	  = ()=> ie.open(server.append("tbot"));		
+            Action logout 	  = ()=> ie.open(server.append("logout"));								             
             Action teamMentor = ()=> {
 							            ie.open(server.append("teamMentor"));
 							            ie.waitForLink("About");
@@ -93,8 +120,10 @@ namespace TeamMentor.UnitTests.Cassini
 								            if (ie.hasLink("Control Panel").isFalse())		
 								            {
 									            logout();
-									            login(admin_Name, admin_Pwd);	
-									            teamMentor();
+									            login(admin_Name, admin_Pwd);
+	                                            ie.waitForLink("About",250,20).assert_Not_Null();         
+                                                ie.waitForLink("Logout").assert_Not_Null();
+									            //teamMentor();
 								            }
 							            };
             Action installTestLibrary =
@@ -114,23 +143,29 @@ namespace TeamMentor.UnitTests.Cassini
 			            //ie.waitForLink("Reload Server Cache").click();
 		            };
             Action deleteTestLibrary = 
-	            ()=>{		
-			            if (ie.waitForLink("OWASP").notNull().assert_True()) 
-				            ie.eval("window.TM.Gui.LibraryTree.remove_Library_from_Database('4738d445-bc9b-456c-8b35-a35057596c16')");		
-			
-			            5.loop((i)=>{				
-						                100.sleep();
-							            return (ie.getJsVariable("window.TM.WebServices.Data.AllLibraries.length").cast<int>()) > 0;
-						            });
-                        ie.getJsVariable("window.TM.WebServices.Data.AllLibraries.length").cast<int>().assert_Is_Equal_To(0);
+	            ()=>{	
+                        ie.waitForLink("OWASP").notNull().assert_True();
+
+	                    var librariesBeforeRemove = ie.getJsVariable("window.TM.WebServices.Data.AllLibraries.length").cast<int>();
+			            
+				        ie.eval("window.TM.Gui.LibraryTree.remove_Library_from_Database('4738d445-bc9b-456c-8b35-a35057596c16')");		
+			                       
+                        for(var i=0; i < 5 ; i++)
+			                if(ie.getJsVariable("window.TM.WebServices.Data.AllLibraries.length").cast<int>() < librariesBeforeRemove)		
+                                return;
+                            else
+                                100.sleep();
+
+                        "Library was not deleted".assert_Fail();
 		            };
 
             teamMentor();
             login_AsAdmin();
+            //ie.script_IE_WaitForClose();
             installTestLibrary();
             deleteTestLibrary();
 
-            ie.hasLink("OWASP").assert_True();
+            ie.hasLink("OWASP").assert_False();
         }
     }
 }

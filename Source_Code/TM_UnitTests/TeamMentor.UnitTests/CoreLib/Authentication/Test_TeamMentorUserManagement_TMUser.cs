@@ -21,11 +21,10 @@ namespace TeamMentor.UnitTests.Authentication
                                         Assert.AreEqual(userGroup, tmUser.userGroup());
                                       };
             checkMapping(UserGroup.None     , -1);
-            checkMapping(UserGroup.Anonymous,  0);
+            checkMapping(UserGroup.Viewer   ,  0);
             checkMapping(UserGroup.Admin    ,  1);
             checkMapping(UserGroup.Reader   ,  2);
-            checkMapping(UserGroup.Editor   ,  3);
-            checkMapping(UserGroup.Developer,  4);
+            checkMapping(UserGroup.Editor   ,  3);            
         }
         [Test]
         public void userRoles()     
@@ -39,11 +38,10 @@ namespace TeamMentor.UnitTests.Authentication
                                     Assert.AreEqual(expectedMapping, tmUser.userRoles());
                                  };
             checkMapping(UserGroup.None     );
-            checkMapping(UserGroup.Anonymous);
+            checkMapping(UserGroup.Viewer);
             checkMapping(UserGroup.Admin    );
             checkMapping(UserGroup.Reader   );
-            checkMapping(UserGroup.Editor   );
-            checkMapping(UserGroup.Developer);
+            checkMapping(UserGroup.Editor   );            
         }
 
         [Test]

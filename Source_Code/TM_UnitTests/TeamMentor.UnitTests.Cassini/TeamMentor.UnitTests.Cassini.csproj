@@ -20,6 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -106,7 +107,6 @@
     <Compile Include="_Config_And_Helpers\Test_Config_And_Helpers\Test_Cassini_Access_TM_Variables.cs" />
     <Compile Include="_Config_And_Helpers\Test_Config_And_Helpers\Test_NUnitTests_Cassini_TeamMentor.cs" />
     <Compile Include="_Using_Cassini\Content_Static\Test_TeamMentor_Static_Content.cs" />
-    <Compile Include="_Using_Cassini\SiteData\Test_Cassini_SiteData.cs" />
     <Compile Include="_Using_Cassini\TM_Admin_Workflows\Test_Cassini_Library_Management.cs" />
     <Compile Include="__Extra_FluentSharp\Extra_FluentSharp_NUnit_ExtensionMethods.cs" />
   </ItemGroup>

@@ -81,7 +81,7 @@ namespace TeamMentor.UnitTests.TM_Website
         }
 
         //Workflows
-        [Test] public void TM_QA_Config_Check_Test_Accounts_AuthTokens()
+         [Test] public void TM_QA_Config_Check_Test_Accounts_AuthTokens()
         {
             foreach(var testUser in QAConfig.testUsers())
             {
@@ -103,7 +103,7 @@ namespace TeamMentor.UnitTests.TM_Website
             Assert.IsTrue   (QAConfig.Url_Target_TM_Site.valid());        // target server is set
             Assert.IsTrue   (QAConfig.Default_Admin_User.valid());        // we have an admin username and password
             Assert.IsTrue   (QAConfig.Default_Admin_Pwd .valid());
-            Assert.AreEqual (QAConfig.TestUsers.size() , 4      );        // there are test users     
+            Assert.AreEqual (QAConfig.TestUsers.size() , 3      );        // there are test users     
             Assert.IsNull   (webServices.Cached_CurrentUser     );        // not logged in
             
             //login as admin

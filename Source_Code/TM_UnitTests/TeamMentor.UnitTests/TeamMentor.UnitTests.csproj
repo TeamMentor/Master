@@ -11,7 +11,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TeamMentor.UnitTests</RootNamespace>
     <AssemblyName>TeamMentor.UnitTests</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkProfile />
@@ -49,6 +49,9 @@
     </Reference>
     <Reference Include="FluentSharp.NGit">
       <HintPath>..\..\packages\FluentSharp.NGit.5.5.166\lib\net40\FluentSharp.NGit.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentSharp.NUnit">
+      <HintPath>..\..\packages\FluentSharp.NUnit.5.5.166\lib\net35\FluentSharp.NUnit.dll</HintPath>
     </Reference>
     <Reference Include="FluentSharp.Web_3_5, Version=5.5.0.0, Culture=neutral, PublicKeyToken=1439893e489faed4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -116,6 +119,7 @@
     <Compile Include="CoreLib\Schemas\Test_TM_Status.cs" />
     <Compile Include="TeamMentor.Aspx\Test_TM_Authentication__with_No_State.cs" />
     <Compile Include="TeamMentor.FileStorage\Test_TM_FileStorage.cs" />
+    <Compile Include="TeamMentor.FileStorage\Test_TM_FileStorage_Utils.cs" />
     <Compile Include="TeamMentor.FileStorage\Test_TM_Server_FileStorage.cs" />
     <Compile Include="TeamMentor.FileStorage\Test_TM_UserData.cs" />
     <Compile Include="CoreLib\Schemas\Test_WhoAmI.cs" />
@@ -131,7 +135,6 @@
     <Compile Include="CoreLib\Test_Tracking_Application.cs" />
     <Compile Include="Asmx_WebServices\Test_WebServices_Security.cs" />
     <Compile Include="CoreLib\Tracking\Test_Tracking_Application.cs" />
-    <Compile Include="QA_Tests\Test_Loading_TM_Repos.cs" />
     <Compile Include="REST_Direct\Test_REST_Users.cs" />
     <Compile Include="REST_Direct\Test_TBot.cs" />
     <Compile Include="TeamMentor.Schemas\Events\Test_Events_TM_UserData.cs" />
@@ -141,7 +144,7 @@
     <Compile Include="TeamMentor.FileStorage\TM_XmlDatabase\Test_Library_SaveToDisk.cs" />
     <Compile Include="TeamMentor.FileStorage\TM_XmlDatabase\Test_LoadLibrariesFromDisk.cs" />
     <Compile Include="TeamMentor.SiteData\Test_SiteData_Routing.cs" />
-    <Compile Include="TM_XmlDatabase\Test_LoadLibraries_FromExternalSource.cs" />
+    <Compile Include="TeamMentor.UserData\Authentication\ExtensionMethods\Test_RoleBaseSecurity_ExtensionMethods.cs" />
     <Compile Include="TeamMentor.Schemas\TM_Server\Test_TM_Server_Utils.cs" />
     <Compile Include="TM_XmlDatabase\Test_TM_TestData.cs" />
     <Compile Include="TM_XmlDatabase\Test_Setup.cs" />
@@ -185,6 +188,8 @@
     <Compile Include="WebSite_Content\Test_WebConfig.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="_Test_ConfigAndHelpers\TM_XmlDatabase_Library_Download_Helpers.cs" />
+    <Compile Include="_Test_ConfigAndHelpers\_Extra_ExtensionMethods\Extra_NUnit_ExtensionMethods.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -231,9 +236,7 @@
   <ItemGroup>
     <Compile Include="Asmx_WebServices\Test_WebServices_Authentication.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="TeamMentor.UserData\Config\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="NGit_Dlls\ICSharpCode.SharpZipLib.dll" />
     <Content Include="NGit_Dlls\Mono.Posix.dll" />

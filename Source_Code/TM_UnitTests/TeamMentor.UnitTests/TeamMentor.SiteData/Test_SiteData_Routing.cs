@@ -36,9 +36,10 @@ namespace TeamMentor.UnitTests.TeamMentor.SiteData
             Assert.IsFalse(tmFileStorage.Path_XmlDatabase.dirExists());
         }
 
-        [Test]
-        public void handledBySiteData()
+        [Test] [ Assert_Admin] public void handledBySiteData()
         {            
+            UserGroup.Admin.assert();
+
             Assert.IsFalse( "/aaa.txt"              .siteData_Handle_VirtualPath());     
             Assert.IsFalse(tmFileStorage            .siteData_Handle_VirtualPath("abc"));
             Assert.IsFalse((null as string)         .siteData_Handle_VirtualPath());
@@ -65,11 +66,14 @@ namespace TeamMentor.UnitTests.TeamMentor.SiteData
             Assert.IsFalse(tmFileStorage            .siteData_Handle_VirtualPath("abc.123"          ));
             Assert.IsFalse(tmFileStorage            .siteData_Handle_VirtualPath("//abc.123"        ));
             Assert.IsFalse(tmFileStorage            .siteData_Handle_VirtualPath(null               ));
+        
+            UserGroup.None.assert();
         }
 
-        [Test]
-        public void siteData_WriteFileToResponseStream()
+        [Test] [Assert_Admin]public void siteData_WriteFileToResponseStream()
         {
+            UserGroup.Admin.assert();
+
             tmFileStorage.set_Path_SiteData();
             var file = "aaa.txt";
             var contents = "some content";
@@ -88,6 +92,8 @@ namespace TeamMentor.UnitTests.TeamMentor.SiteData
             Assert.IsNotEmpty(responseRead); 
             Assert.AreEqual(responseRead, filePath.fileContents());
             Assert.AreEqual(context.Response.ContentType, "text/plain");
+
+            UserGroup.None.assert();
         }
         [Test]
         public void siteData_SetContentType_For_File()

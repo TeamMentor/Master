@@ -64,7 +64,7 @@ namespace TeamMentor.UnitTests.TM_Website
             Assert.AreEqual(qaConfig.Firebase_AuthToken  , ""    );
             Assert.AreEqual(qaConfig.SMTP_Password       , ""    );
             Assert.NotNull (qaConfig.TestUsers                   );
-            Assert.AreEqual(qaConfig.TestUsers.size()    , 4     );            
+            Assert.AreEqual(qaConfig.TestUsers.size()    , 3     );            
 
             // check that is exists and it is also created using .load()
             var localFilePath = qaConfigLoader.localFilePath();
@@ -102,17 +102,15 @@ namespace TeamMentor.UnitTests.TM_Website
         //Misc workflows
         [Test] public void TM_QA_Config_TestUsers()                         
         {
-            Assert.AreEqual(qaConfig.TestUsers.size() , 4 );            
+            Assert.AreEqual(qaConfig.TestUsers.size() , 3 );            
             
             Assert.NotNull (qaConfig.testUser("qa-admin"    )); 
             Assert.NotNull (qaConfig.testUser("qa-editor"   )); 
-            Assert.NotNull (qaConfig.testUser("qa-reader"   )); 
-            Assert.NotNull (qaConfig.testUser("qa-developer")); 
+            Assert.NotNull (qaConfig.testUser("qa-reader"   ));             
             
             Assert.AreEqual(qaConfig.testUser("qa-admin"    ).GroupId , 1);
             Assert.AreEqual(qaConfig.testUser("qa-reader"   ).GroupId , 2);
-            Assert.AreEqual(qaConfig.testUser("qa-editor"   ).GroupId , 3);            
-            Assert.AreEqual(qaConfig.testUser("qa-developer").GroupId , 4);
+            Assert.AreEqual(qaConfig.testUser("qa-editor"   ).GroupId , 3);                        
 
             Assert.IsNull  (qaConfig.testUser("qa-anonymous"));               // not used anymore
             Assert.IsNull  (qaConfig.testUser("aaaaaa")); 

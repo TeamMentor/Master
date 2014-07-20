@@ -4,8 +4,9 @@ using System.Reflection;
 using System.Web.Services.Protocols;
 using FluentSharp.CoreLib;
 using NUnit.Framework;
+using TeamMentor.UnitTests.TM_Website;
 
-namespace TeamMentor.UnitTests.TM_Website.WebServices
+namespace TeamMentor.UnitTests.QA
 {    
     public enum Allowed_User
     {
@@ -180,7 +181,7 @@ namespace TeamMentor.UnitTests.TM_Website.WebServices
                             
                             .add_Admin    ("CreateUser_AuthToken"                                   , new object[1] )
                             .add_Admin    ("CreateUsers"                                            , new object[1] )
-                            .add_Admin    ("CreateWebEditorSecret"                                  , new object[0] )
+                            //.add_Admin    ("CreateWebEditorSecret"                                  , new object[0] )
 
                             .add_Admin    ("DeleteUser"                                             , new object[1] )
                             .add_Admin    ("DeleteUsers"                                            , new object[1] )
@@ -199,10 +200,10 @@ namespace TeamMentor.UnitTests.TM_Website.WebServices
                             .add_Admin    ("GetUsers"                                               , new object[0] )
                             .add_Admin    ("GetUsers_byID"                                          , new object[1] )
                             
-                            .add_Admin    ("Git_Execute"                                            , new object[1] )
-                            .add_Admin    ("GitHub_Pull_Origin"                                     , new object[0] )
-                            .add_Admin    ("GitHub_Push_Commit"                                     , new object[0] )
-                            .add_Admin    ("GitHub_Push_Origin"                                     , new object[0] )
+                            //.add_Admin    ("Git_Execute"                                            , new object[1] )
+                            //.add_Admin    ("GitHub_Pull_Origin"                                     , new object[0] )
+                            //.add_Admin    ("GitHub_Push_Commit"                                     , new object[0] )
+                            //.add_Admin    ("GitHub_Push_Origin"                                     , new object[0] )
                             
                             .add_Admin    ("NewPasswordResetToken"                                  , new object[1] )
 
@@ -215,8 +216,8 @@ namespace TeamMentor.UnitTests.TM_Website.WebServices
                             
                             .add_Admin    ("Set_Libraries_Zip_Folder"                               , new object[1] )
                             .add_Admin    ("SetTMConfigFile"                                        , new object[1] )
-                            .add_Admin    ("SetUser_PostLoginScript"                                , new object[2] )
-                            .add_Admin    ("SetUser_PostLoginView"                                  , new object[2] )                            
+                            //.add_Admin    ("SetUser_PostLoginScript"                                , new object[2] )
+                            //.add_Admin    ("SetUser_PostLoginView"                                  , new object[2] )                            
                             .add_Admin    ("SetUserGroupId"                                         , new object[2] )
                             .add_Admin    ("SetUserPassword"                                        , new object[2] )
 
@@ -233,8 +234,8 @@ namespace TeamMentor.UnitTests.TM_Website.WebServices
                             .add_Admin    ("XmlDatabase_ImportLibrary_fromZipFile"                  , new object[2] )
                             .add_Admin    ("XmlDatabase_IsUsingFileStorage"                         , new object[0] )
                             .add_Admin    ("XmlDatabase_ReloadData"                                 , new object[0] )
-                            .add_Admin    ("XmlDatabase_SetLibraryPath"                             , new object[1] )
-                            .add_Admin    ("XmlDatabase_SetUserDataPath"                            , new object[1] )
+                            //.add_Admin    ("XmlDatabase_SetLibraryPath"                             , new object[1] )
+                            //.add_Admin    ("XmlDatabase_SetUserDataPath"                            , new object[1] )
 
                             .add_Admin    ("VirtualArticle_Add_Mapping_ExternalArticle"             , new object[3] )
                             .add_Admin    ("VirtualArticle_Add_Mapping_ExternalService"             , new object[3] )
@@ -261,7 +262,7 @@ namespace TeamMentor.UnitTests.TM_Website.WebServices
         //Check Security
         [Test] public void Methods_AvailableTo_Anonymous()
         {            
-            //check privileges for Anonymous
+            //check privileges for Anonymous            
             Assert.Throws<SoapException>(() => webServices.RBAC_Demand_ReadArticles());
             Assert.Throws<SoapException>(() => webServices.RBAC_Demand_EditArticles());
             Assert.Throws<SoapException>(() => webServices.RBAC_Demand_ManageUsers ());
@@ -324,9 +325,9 @@ namespace TeamMentor.UnitTests.TM_Website.WebServices
                              
 
                 if (securityMapping.AllowedUser <= allowedUser)
-                    Assert.DoesNotThrow                     (()=> targetMethod.Invoke(webServices,methodParameters), "On method: '{0}' for user '{1}'".format(targetMethod, allowedUser));
+                    Assert.DoesNotThrow                     (()=> targetMethod.Invoke(webServices,methodParameters), "\n\n ************************\n\n    On method: '{0}' for user '{1}' \n\n ************************\n\n".format(targetMethod, allowedUser));
                 else
-                    Assert.Throws<TargetInvocationException>(()=> targetMethod.Invoke(webServices,methodParameters), "On method: '{0}' for user '{1}'".format(targetMethod, allowedUser));
+                    Assert.Throws<TargetInvocationException>(()=> targetMethod.Invoke(webServices,methodParameters), "\n\n ************************\n\n    On method: '{0}' for user '{1}' \n\n ************************\n\n".format(targetMethod, allowedUser));
             }
         }
     }

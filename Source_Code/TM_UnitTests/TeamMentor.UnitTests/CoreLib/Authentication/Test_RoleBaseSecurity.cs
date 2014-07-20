@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security;
 using System.Web;
 using FluentSharp.CoreLib;
 using FluentSharp.Moq;
@@ -77,5 +78,28 @@ namespace TeamMentor.UnitTests.Authentication
                 checkMapping(userRole);            
         }
         
+        //Workflows
+        [Test] public void Check_UserRole_Assert_Demand_Functions()
+        {
+            Assert.DoesNotThrow             (()=>admin       .assert(admin       .demand));
+            Assert.DoesNotThrow             (()=>manageUsers .assert(manageUsers .demand));
+            Assert.DoesNotThrow             (()=>editArticles.assert(editArticles.demand));
+            Assert.DoesNotThrow             (()=>none        .assert(none        .demand));
+
+            Assert.Throws<SecurityException>(()=>admin       .assert(manageUsers .demand));
+            Assert.Throws<SecurityException>(()=>admin       .assert(editArticles.demand));
+            Assert.Throws<SecurityException>(()=>admin       .assert(none        .demand));
+            Assert.Throws<SecurityException>(()=>manageUsers .assert(admin       .demand));
+            Assert.Throws<SecurityException>(()=>manageUsers .assert(editArticles.demand));
+            Assert.Throws<SecurityException>(()=>manageUsers .assert(none        .demand));
+            Assert.Throws<SecurityException>(()=>none        .assert(admin       .demand));
+            Assert.Throws<SecurityException>(()=>none        .assert(manageUsers .demand));
+            Assert.Throws<SecurityException>(()=>none        .assert(editArticles.demand));
+
+            Assert.Throws<SecurityException>(admin       .demand);
+            Assert.Throws<SecurityException>(manageUsers .demand);
+            Assert.Throws<SecurityException>(editArticles.demand);            
+            Assert.DoesNotThrow             (none        .demand);
+        }
     }
 }

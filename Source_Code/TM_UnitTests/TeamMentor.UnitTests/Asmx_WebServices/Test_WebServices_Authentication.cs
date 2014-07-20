@@ -68,8 +68,10 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             Assert.AreEqual(sessionId, tmWebServices.Current_SessionID(), "tmWebServices.CurrentSessionID");
             Assert.AreEqual(user, tmWebServices.Current_User().UserName, "tmWebServices.CurrentSessionID");
             var roles = tmWebServices.GetCurrentUserRoles();			
-            Assert.AreEqual(roles.size(), 2, "userRoles size");
-            Assert.AreEqual("ReadArticlesTitles", roles[0], "first userRole");						
+            Assert.AreEqual(roles.size(), 3, "userRoles size");
+            Assert.AreEqual("ReadArticles", roles[0], "first userRole");						
+            Assert.AreEqual("ReadArticlesTitles", roles[1], "second userRole");						
+            Assert.AreEqual("ViewLibrary", roles[2], "third userRole");						
              
             "deleting user".info(); 
             UserGroup.Admin.setThreadPrincipalWithRoles(); // set current user as Admin
@@ -231,6 +233,7 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             Assert.IsNotEmpty (authTokens);
             Assert.AreEqual   (authTokens.size() ,1);
             Assert.AreEqual   (authTokens.first(),authToken);
+            UserGroup.None.assert(); 
         }
         //Helper method
         public Guid Login_As_User(string username, string password)

@@ -16,7 +16,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         }
     }
 
-    [TestFixture]
+    [TestFixture][Assert_Editor]
     public class Test_TM_TestLibrary : TM_XmlDatabase_InMemory
     {        
         public string library_Name              = "Test Library";
@@ -35,7 +35,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         [TearDown]
         public void TearDown()
         {
-            UserGroup.Anonymous.setThreadPrincipalWithRoles(); //revent premissions
+            UserGroup.None.setThreadPrincipalWithRoles(); //revent premissions
         }
 
         [Test]

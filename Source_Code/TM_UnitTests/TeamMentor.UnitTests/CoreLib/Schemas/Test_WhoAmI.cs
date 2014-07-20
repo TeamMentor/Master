@@ -1,4 +1,5 @@
 ﻿using FluentSharp.CoreLib;
+using FluentSharp.NUnit;
 using FluentSharp.Web;
 using NUnit.Framework;
 using TeamMentor.CoreLib;
@@ -11,8 +12,8 @@ namespace TeamMentor.UnitTests.CoreLib.Schemas
     {
         [Test] public void Test_WhoAmI_Ctor()
         {
-            var newUser = userData.createUser();
-            var whoAmI   = newUser.whoAmI();
+            var newUser = userData.createUser()             .assert_Not_Null();    
+            var whoAmI   = newUser.whoAmI()                 .assert_Not_Null();
             Check_WhoAmIObject_for_Reader(newUser, whoAmI);
         }
 
@@ -66,7 +67,7 @@ namespace TeamMentor.UnitTests.CoreLib.Schemas
             Assert.AreEqual (whoAmI.UserId   , tmUser.UserID);
             Assert.AreEqual (whoAmI.GroupId  , tmUser.GroupID);
             Assert.AreEqual (whoAmI.GroupName, "Reader");
-            Assert.AreEqual (whoAmI.UserRoles, "ReadArticlesTitles , ReadArticles");
+            Assert.AreEqual (whoAmI.UserRoles, "ReadArticles , ReadArticlesTitles , ViewLibrary");
         }
 
         

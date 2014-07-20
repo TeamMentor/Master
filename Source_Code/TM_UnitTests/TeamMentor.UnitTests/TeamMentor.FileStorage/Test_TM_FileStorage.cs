@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using TeamMentor.CoreLib;
 using TeamMentor.FileStorage;
 
 namespace TeamMentor.UnitTests.FileStorage
@@ -26,19 +27,23 @@ namespace TeamMentor.UnitTests.FileStorage
             Assert.IsNull (tmFileStorage.Path_XmlLibraries);
         }
 
-        [Test]
+        [Test] [Assert_Admin]
         public void TM_FileStorage_Ctor_True()
         {
+            UserGroup.Admin.assert(); 
+
             var tmFileStorage = new TM_FileStorage(loadData : true); 
             Assert.NotNull(tmFileStorage.Server);
             Assert.NotNull(tmFileStorage.TMXmlDatabase);
             Assert.NotNull(tmFileStorage.UserData);
-            Assert.IsEmpty(tmFileStorage.GuidanceExplorers_Paths);
-            Assert.IsEmpty(tmFileStorage.GuidanceItems_FileMappings);
+            Assert.NotNull(tmFileStorage.GuidanceExplorers_Paths);
+            Assert.NotNull(tmFileStorage.GuidanceItems_FileMappings);
             Assert.NotNull(tmFileStorage.WebRoot);
             Assert.NotNull(tmFileStorage.Path_XmlDatabase);
             Assert.NotNull(tmFileStorage.Path_UserData);
             Assert.NotNull(tmFileStorage.Path_XmlLibraries);
+
+            UserGroup.None.assert(); 
         }
     }
 }

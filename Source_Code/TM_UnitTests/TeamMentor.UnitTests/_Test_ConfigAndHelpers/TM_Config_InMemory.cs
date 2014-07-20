@@ -12,7 +12,7 @@ namespace TeamMentor.UnitTests
     
         public TM_Config_InMemory()
         {
-            tmConfig = TMConfig.Current = new TMConfig();            
+            tmConfig = TMConfig.Current = new TMConfig();                        
         }
     }
 }

@@ -32,19 +32,7 @@ namespace TeamMentor.UnitTests.WebSite_Content
     		var xRoot = WebConfigFile.xRoot();
     		Assert.IsNotNull(xRoot, "xRoot of webConfigFile");
     	}    	
-    	
-    	[Test][Ignore("Move to production specific QA tests")]  
-    	public void system_web_compilation_debug_IS_False()
-    	{   
-    		var compilation = WebConfigFile.xRoot().element("system.web").element("compilation");
-    		Assert.IsNotNull(compilation, "compilation element");
-    		var debugAttribute = compilation.attribute("debug");
-    		Assert.IsNotNull(debugAttribute, "debug attribute");			
-			var debugValue = debugAttribute.value();
-			Assert.AreNotEqual(debugValue.lower() ,"true", "system.web / compilation / debug attribute value should not be true");		
-            Assert.AreEqual(debugValue.lower() ,"false");
-		}
-		
+    		
 		[Test]  
     	public void system_web_compilation_customErrors_IS_Off()
     	{   

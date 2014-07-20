@@ -32,5 +32,14 @@ namespace TeamMentor.UnitTests.Cassini
 
             webRoot   .assert_Folder_Exists();          // make sure we didn't delete this by accident
         }
+
+        [Test]
+        public void Check_Cassini()
+        {
+            apiCassini.assert_Not_Null();
+            webRoot   .assert_Not_Null();
+            port      .assert_Bigger_Than(0);
+
+        }
     }
 }
