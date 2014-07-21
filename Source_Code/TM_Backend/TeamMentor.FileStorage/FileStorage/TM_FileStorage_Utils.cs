@@ -10,16 +10,29 @@ namespace TeamMentor.FileStorage
 {
     public static class TM_FileStorage_Utils
     {
+        /// <summary>
+        /// returns value of tmFileStorage.WebRoot
+        /// </summary>
+        /// <param name="tmFileStorage"></param>
+        /// <returns></returns>
         [Admin] public static string   webRoot(this TM_FileStorage tmFileStorage)
         {
-            UserRole.Admin.demand();
+            admin.demand();
             if(tmFileStorage.notNull())
                 return tmFileStorage.WebRoot;
             return null;
         }
+        /// <summary>
+        /// Sets the tmFileStorage.WebRoot
+        /// 
+        /// If the TM_FileStorage.Custom_WebRoot is set and the folder exists, then that value will be used. 
+        /// If not, TM_FileStorage.Custom_WebRoot will be set to AppDomain.CurrentDomain.BaseDirectory
+        /// </summary>
+        /// <param name="tmFileStorage"></param>
+        /// <returns></returns>
         [Admin] public static TM_FileStorage   set_WebRoot(this TM_FileStorage tmFileStorage)
         {
-            UserRole.Admin.demand();
+            admin.demand();
             if(tmFileStorage.notNull())
             {
                 if (TM_FileStorage.Custom_WebRoot.folderExists())
@@ -29,22 +42,50 @@ namespace TeamMentor.FileStorage
             }
             return tmFileStorage;
         }
-        [Admin] public static TM_FileStorage   set_Path_XmlDatabase(this TM_FileStorage tmFileStorage, string path_XmlDatabase)
+        /// <summary>
+        /// Forces tmFileStorage.WebRoot to be set to a specific folder 
+        /// 
+        /// Note: If <code>webRoot</code> folder doesn't exist, the value is not changed
+        /// </summary>
+        /// <param name="tmFileStorage"></param>
+        /// <param name="webRoot"></param>
+        /// <returns></returns>
+        [Admin] public static TM_FileStorage   set_WebRoot(this TM_FileStorage tmFileStorage, string webRoot)
         {
-            if(tmFileStorage.notNull())
-                tmFileStorage.Path_XmlDatabase = path_XmlDatabase;
+            admin.demand();
+            if(tmFileStorage.notNull() && webRoot.folderExists())
+            { 
+                tmFileStorage.WebRoot = webRoot;                
+            }
             return tmFileStorage;
         }
-        
+        /// <summary>
+        /// Sets (after calculation) the value of tmFileStorage.Path_XmlDatabas
+        /// 
+        /// The logic is a bit complicated since it takes into account the different execution locations of NCrunch, Resharper and IIS
+        /// 
+        /// There is support for using the special ASP.NET App_Data folder (also used when the current running used does not have priviledges
+        /// the mapped tmFileStorage.Path_XmlDatabase value)
+        /// </summary>
+        /// <param name="tmFileStorage"></param>
+        /// <returns></returns>
+                
         [Admin] public static TM_FileStorage   set_Path_XmlDatabase(this TM_FileStorage tmFileStorage)  
         {            
-            UserRole.Admin.demand();
+            admin.demand();
             var tmStatus = TM_Status.Current;
             try
             { 
                 if (tmFileStorage.isNull())
                     return null;
-                
+               
+                if(TM_FileStorage.Custom_Path_XmlDatabase.folder_Exists())
+                {
+                    "[TM_Server][set_Path_XmlDatabase] using TM_FileStorage.Custom_Path_XmlDatabase value".info();
+                    tmFileStorage.Path_XmlDatabase = TM_FileStorage.Custom_Path_XmlDatabase;
+                    return tmFileStorage;
+                }
+
                 var webRoot            = tmFileStorage.WebRoot;    
 
                 tmFileStorage.Path_XmlDatabase = null;                
@@ -90,14 +131,39 @@ namespace TeamMentor.FileStorage
                 "[TM_Server][set_Path_XmlDatabase] Path_XmlDatabase set to: {0}"                   .info(tmFileStorage.Path_XmlDatabase);
                 "[TM_Server][set_Path_XmlDatabase] tmStatus.TM_Database_Location_Using_AppData:{0}".info(tmStatus.TM_Database_Location_Using_AppData);                
             }
-        }    
-        public static bool using_Custom_WebRoot(this TM_FileStorage tmFileStorage)
+        }  
+        /// <summary>
+        /// Forces tmFileStorage.Path_XmlDatabase to be set to a specific folder 
+        /// 
+        /// Note: If <code>path_XmlDatabase</code> folder doesn't exist, the value is not changed
+        /// </summary>
+        /// <param name="tmFileStorage"></param>
+        /// <param name="path_XmlDatabase"></param>
+        /// <returns></returns>
+        [Admin] public static TM_FileStorage   set_Path_XmlDatabase(this TM_FileStorage tmFileStorage, string path_XmlDatabase)
         {
+            admin.demand();
+            if(tmFileStorage.notNull() && path_XmlDatabase.folderExists())
+                tmFileStorage.Path_XmlDatabase = path_XmlDatabase;
+            return tmFileStorage;
+        }
+        [Admin] public static bool using_Custom_WebRoot(this TM_FileStorage tmFileStorage)
+        {
+            admin.demand();
             return tmFileStorage.notNull() && 
                    TM_FileStorage.Custom_WebRoot.notNull() &&
                    TM_FileStorage.Custom_WebRoot == tmFileStorage.webRoot();
-
         }
+        [Admin] public static bool using_Custom_Path_XmlDatabase(this TM_FileStorage tmFileStorage)
+        {
+            admin.demand();
+            var tmStatus = TM_Status.Current;
+            return tmFileStorage.notNull() && 
+                   TM_FileStorage.Custom_Path_XmlDatabase.notNull() &&
+                   TM_FileStorage.Custom_Path_XmlDatabase == tmFileStorage.webRoot();
+        }
+
+        
 
 
 

@@ -57,7 +57,7 @@ namespace TeamMentor.FileStorage
 
         [Admin] public static TM_FileStorage   set_Path_UserData    (this TM_FileStorage tmFileStorage)
         {           
-            UserRole.Admin.demand();
+            admin.demand();
             var tmXmlDatabase = tmFileStorage.tmXmlDatabase();
             //var userData = tmFileStorage.userData();
 
@@ -93,6 +93,21 @@ namespace TeamMentor.FileStorage
             
             return tmFileStorage;
         }
+        /// <summary>        
+        /// Forces tmFileStorage.Path_UserData to be set to a specific folder 
+        /// 
+        /// Note: If <code>path_UserData</code> folder doesn't exist, the value is not changed
+        /// </summary>
+        /// <param name="tmFileStorage"></param>
+        /// <param name="path_UserData"></param>
+        /// <returns></returns>
+        [Admin] public static TM_FileStorage   set_Path_UserData    (this TM_FileStorage tmFileStorage, string path_UserData)
+        {           
+            admin.demand();
+            if(tmFileStorage.notNull() && path_UserData.folderExists())
+                tmFileStorage.Path_UserData = path_UserData;
+            return tmFileStorage;
+        }
         [Admin] public static TM_FileStorage   set_Path_SiteData    (this TM_FileStorage tmFileStorage)
         {           
             UserRole.Admin.demand();
@@ -123,6 +138,21 @@ namespace TeamMentor.FileStorage
                 "[TM_FileStorage] [set_Path_SiteData] failed to create the folder: {0}".error(siteDataPath);                
             }                                                
             
+            return tmFileStorage;
+        }
+        /// <summary>        
+        /// Forces tmFileStorage.Path_UserData to be set to a specific folder 
+        /// 
+        /// Note: If <code>path_SiteData</code> folder doesn't exist, the value is not changed
+        /// </summary>
+        /// <param name="tmFileStorage"></param>
+        /// <param name="path_SiteData"></param>
+        /// <returns></returns>
+        [Admin] public static TM_FileStorage   set_Path_SiteData    (this TM_FileStorage tmFileStorage, string path_SiteData)
+        {           
+            admin.demand();
+            if(tmFileStorage.notNull() && path_SiteData.folderExists())
+                tmFileStorage.Path_SiteData = path_SiteData;
             return tmFileStorage;
         }
        

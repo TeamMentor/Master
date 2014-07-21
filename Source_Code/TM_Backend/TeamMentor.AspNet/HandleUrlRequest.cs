@@ -332,7 +332,7 @@ namespace TeamMentor.CoreLib
                         removeVirtualArticleMapping(data);
                         break;                    
                     case "whoami":
-                        showWhoAmI();
+                        showWhoAmI(data);
                         break;
                 }
             }                
@@ -656,12 +656,13 @@ namespace TeamMentor.CoreLib
         }
 
         //User related
-        public void showWhoAmI()
+        public void showWhoAmI(string data = "")
         {
             if (tmWebServices.notNull() && tmWebServices.tmAuthentication.notNull())
             {
                 var currentUser = tmWebServices.tmAuthentication.currentUser;
-                context.Response.ContentType = "application/json";                
+                if(data=="json")
+                    context.Response.ContentType = "application/json";                
                 context.Response.Write(currentUser.whoAmI().json());
                 endResponse();             
             }

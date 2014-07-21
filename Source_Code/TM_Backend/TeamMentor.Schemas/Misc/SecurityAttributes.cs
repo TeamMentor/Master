@@ -5,9 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace TeamMentor.CoreLib
-{
-    //TODO: Add security properties that were being enforced by PostSharp
-    //demands
+{    
+    //demand clues
     public class AdminAttribute              : Attribute { }
     public class ManageUsersAttribute        : Attribute { }
     public class EditArticlesAttribute       : Attribute { }    

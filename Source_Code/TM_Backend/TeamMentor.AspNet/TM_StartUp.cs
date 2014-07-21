@@ -16,17 +16,8 @@ namespace TeamMentor.CoreLib
         public TM_Engine                TMEngine                { get; set; }        
         public Tracking_Application     TrackingApplication     { get; set; }
         public TM_FileStorage           TmFileStorage           { get; set; }        
-        public string                   Version
-        {
-            get
-            {
-                return this.type().assembly().version();
-            } 
-            set
-            {
+        public string                   Version                 { get; set; }        
                 
-            }
-        }
         public TM_StartUp()
         {
             Current  = this;
