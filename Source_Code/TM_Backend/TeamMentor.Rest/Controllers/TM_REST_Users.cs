@@ -228,7 +228,7 @@ namespace TeamMentor.CoreLib
                 DateTime outputDate;
                 if (String.IsNullOrEmpty(expiryDate)||!DateTime.TryParse(expiryDate, out outputDate))
                 {
-                    errorMessage = string.Format("Please enter a valid Expiration date for user {0}. Format must be {1}.", userName, "yy/mm/dd");
+                    errorMessage = string.Format("Please enter a valid Expiration date for user {0}. Format must be {1}.", userName, "yyyy/mm/dd");
                     break;
                 }
                 if (outputDate <= DateTime.Now)

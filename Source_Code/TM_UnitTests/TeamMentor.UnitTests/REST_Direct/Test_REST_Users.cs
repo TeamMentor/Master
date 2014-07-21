@@ -74,7 +74,7 @@ namespace TeamMentor.UnitTests.REST
         {
             var payload = "username1test,Secure1Pwd!!,someemail@gmail.com,FirstName,Last Name,Company,JobTitle,Country,State,xyza,2,N,Y \n";
             var result = TMRestUser.VerifyUserData(payload.TrimEnd());
-            Assert.IsTrue(result.Contains("Please enter a valid Expiration date for user username1test. Format must be yy/mm/dd."));
+            Assert.IsTrue(result.Contains("Please enter a valid Expiration date for user username1test. Format must be yyyy/mm/dd."));
         }
         [Test]
         public void VerifyUserDataExpiryDateMustBeGreaterThanToday()
