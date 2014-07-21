@@ -3,7 +3,7 @@ using FluentSharp.CassiniDev;
 using FluentSharp.CoreLib;
 using FluentSharp.NUnit;
 using FluentSharp.Watin;
-using FluentSharp.WatiN.NUnit;
+using FluentSharp.Web;
 using FluentSharp.WinForms;
 using NUnit.Framework;
 
@@ -76,7 +76,8 @@ namespace TeamMentor.UnitTests.Cassini
         [SetUp]
         public void setup()
         {
-            
+            if (WebUtils.offline())   
+                "Skipping test because we are offline".assert_Ignore();
             ie = "Test_Cassini_Library_Management".add_IE_PopupWindow(1000,600);            
             admin_Name = "admin";
             admin_Pwd  = "!!tmadmin";
@@ -85,7 +86,8 @@ namespace TeamMentor.UnitTests.Cassini
         [TearDown]
         public void tearDown()
         {
-            ie.parentForm().close();
+            if (ie.notNull())
+                ie.parentForm().close();
         }
         [Test]
         public void Workflow_Install_And_Delete_Library()

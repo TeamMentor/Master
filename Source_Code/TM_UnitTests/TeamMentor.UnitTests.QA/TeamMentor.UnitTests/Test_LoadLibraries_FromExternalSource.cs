@@ -45,23 +45,18 @@ namespace TeamMentor.UnitTests.QA
         [Test]//[Ignore("SEE Fix added in 3.4")]
         public void DownloadAndInstallLibraryFromZip()
         {     
-            //UserGroup.Editor.assert();
-
             var tmLibraries_Before = tmXmlDatabase.tmLibraries();            
-
-           // Install_LibraryFromZip_TopVulns();
-           // Install_LibraryFromZip_TopVulns();            //2nd time should skip install
-            tmFileStorage.install_LibraryFromZip_Docs();
+           
+            tmFileStorage.install_LibraryFromZip_Docs();    // resets privs
             tmFileStorage.install_LibraryFromZip_Docs();    //2nd time should skip install
 
             UserGroup.Editor.assert();
             Assert.IsEmpty(tmLibraries_Before, "No Libraries should be there before install");
             Assert.IsNotEmpty(tmXmlDatabase.tmLibraries(), "After install, no Libraries");
-            Assert.IsNotEmpty(tmXmlDatabase.tmViews(), "After install, no Views");
-            //Assert.IsNotEmpty(tmXmlDatabase.tmFolders(), "After install, no Folders");
+            Assert.IsNotEmpty(tmXmlDatabase.tmViews(), "After install, no Views");            
             Assert.IsNotEmpty(tmXmlDatabase.tmGuidanceItems(), "After install, no Articles");
 
-            tmFileStorage.install_LibraryFromZip_OWASP();
+            tmFileStorage.install_LibraryFromZip_OWASP();   // resets privs
             UserGroup.Editor.assert();
 
             Assert.AreEqual  (2, tmXmlDatabase.tmLibraries().size() , "After OWASP install, there should be 2");

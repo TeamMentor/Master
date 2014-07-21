@@ -39,6 +39,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamMentor.Mvc", "TM_Backen
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamMentor.UnitTests.Cassini", "TM_UnitTests\TeamMentor.UnitTests.Cassini\TeamMentor.UnitTests.Cassini.csproj", "{B182AC40-5296-433C-A248-9BB9E1E6BF56}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamMentor.UnitTests.QA", "TM_UnitTests\TeamMentor.UnitTests.QA\TeamMentor.UnitTests.QA.csproj", "{DE571F59-55A3-4C5E-8C07-07FB1B4173D2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -199,6 +201,16 @@ Global
 		{B182AC40-5296-433C-A248-9BB9E1E6BF56}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{B182AC40-5296-433C-A248-9BB9E1E6BF56}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{B182AC40-5296-433C-A248-9BB9E1E6BF56}.Release|x86.ActiveCfg = Release|Any CPU
+		{DE571F59-55A3-4C5E-8C07-07FB1B4173D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE571F59-55A3-4C5E-8C07-07FB1B4173D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE571F59-55A3-4C5E-8C07-07FB1B4173D2}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{DE571F59-55A3-4C5E-8C07-07FB1B4173D2}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{DE571F59-55A3-4C5E-8C07-07FB1B4173D2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{DE571F59-55A3-4C5E-8C07-07FB1B4173D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE571F59-55A3-4C5E-8C07-07FB1B4173D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE571F59-55A3-4C5E-8C07-07FB1B4173D2}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{DE571F59-55A3-4C5E-8C07-07FB1B4173D2}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{DE571F59-55A3-4C5E-8C07-07FB1B4173D2}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -219,6 +231,7 @@ Global
 		{747EDF82-E130-4F5E-B46B-FCAA6C354628} = {5CC37760-6B32-4E22-9F0B-7690E0667C22}
 		{898B48B8-38E9-4045-B0A7-9FE459F4A342} = {2F2BDCAC-53AC-4BCE-8398-0A03C50A9D89}
 		{B182AC40-5296-433C-A248-9BB9E1E6BF56} = {418A6789-51B1-4080-B004-8963C0E41D74}
+		{DE571F59-55A3-4C5E-8C07-07FB1B4173D2} = {418A6789-51B1-4080-B004-8963C0E41D74}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35

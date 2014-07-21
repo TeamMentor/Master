@@ -37,18 +37,4 @@ namespace TeamMentor.UnitTests.Cassini
         }
 
     }
-    public class Test_NUnitTests_Cassini_TeamMentor_ExtensionMethods
-    {
-        [Test] public void teamMentor_Root_OnDisk()
-        {
-            var nUnitTests_Cassini = new NUnitTests_Cassini_TeamMentor();
-            var teamMentor_Root_OnDisk = nUnitTests_Cassini.teamMentor_Root_OnDisk();
-            teamMentor_Root_OnDisk.assert_Folder_Exists()
-                .assert_Folder_Has_Files("web.config", "default.htm" ,
-                    "javascript/TM/settings.js" ,
-                    "javascript/gAnalytics/ga.js");
-        }
-
-        
-    }
 }

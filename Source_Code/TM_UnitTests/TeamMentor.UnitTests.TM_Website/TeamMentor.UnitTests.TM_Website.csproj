@@ -37,50 +37,52 @@
   <ItemGroup>
     <Reference Include="FluentSharp.AST, Version=1.0.0.0, Culture=neutral, PublicKeyToken=087dfa3428b0a339, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\FluentSharp.AST.5.5.166\lib\net35\FluentSharp.AST.dll</HintPath>
+      <HintPath>..\..\packages\FluentSharp.AST.5.5.167\lib\net35\FluentSharp.AST.dll</HintPath>
     </Reference>
     <Reference Include="FluentSharp.CassiniDev, Version=1.0.0.0, Culture=neutral, PublicKeyToken=95ca6567003a39c3, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\FluentSharp.CassiniDev.5.5.166\lib\net35\FluentSharp.CassiniDev.dll</HintPath>
+      <HintPath>..\..\packages\FluentSharp.CassiniDev.5.5.167\lib\net35\FluentSharp.CassiniDev.dll</HintPath>
     </Reference>
     <Reference Include="FluentSharp.CassiniDev.NUnit, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\FluentSharp.CassiniDev.NUnit.5.5.166\lib\net45\FluentSharp.CassiniDev.NUnit.dll</HintPath>
+      <HintPath>..\..\packages\FluentSharp.CassiniDev.NUnit.5.5.167\lib\net45\FluentSharp.CassiniDev.NUnit.dll</HintPath>
     </Reference>
     <Reference Include="FluentSharp.CoreLib, Version=5.5.0.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\FluentSharp.CoreLib.5.5.166\lib\net35\FluentSharp.CoreLib.dll</HintPath>
+      <HintPath>..\..\packages\FluentSharp.CoreLib.5.5.167\lib\net35\FluentSharp.CoreLib.dll</HintPath>
     </Reference>
-    <Reference Include="FluentSharp.NUnit, Version=5.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="FluentSharp.NUnit, Version=5.5.0.0, Culture=neutral, PublicKeyToken=c018b382c771f737, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\FluentSharp.NUnit.5.5.166\lib\net35\FluentSharp.NUnit.dll</HintPath>
+      <HintPath>..\..\packages\FluentSharp.NUnit.5.5.167\lib\net35\FluentSharp.NUnit.dll</HintPath>
     </Reference>
     <Reference Include="FluentSharp.REPL, Version=5.5.0.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\FluentSharp.REPL.5.5.166\lib\net35\FluentSharp.REPL.exe</HintPath>
+      <HintPath>..\..\packages\FluentSharp.REPL.5.5.167\lib\net35\FluentSharp.REPL.exe</HintPath>
     </Reference>
-    <Reference Include="FluentSharp.SharpDevelopEditor">
-      <HintPath>..\..\packages\FluentSharp.SharpDevelopEditor.5.5.166\lib\net35\FluentSharp.SharpDevelopEditor.dll</HintPath>
+    <Reference Include="FluentSharp.SharpDevelopEditor, Version=5.5.0.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\FluentSharp.SharpDevelopEditor.5.5.167\lib\net35\FluentSharp.SharpDevelopEditor.dll</HintPath>
     </Reference>
     <Reference Include="FluentSharp.WatiN">
-      <HintPath>..\..\packages\FluentSharp.WatiN.5.5.166\lib\net40\FluentSharp.WatiN.dll</HintPath>
+      <HintPath>..\..\packages\FluentSharp.WatiN.5.5.167\lib\net40\FluentSharp.WatiN.dll</HintPath>
     </Reference>
-    <Reference Include="FluentSharp.WatiN.NUnit">
-      <HintPath>..\..\packages\FluentSharp.WatiN.NUnit.5.5.166\lib\net40\FluentSharp.WatiN.NUnit.dll</HintPath>
+    <Reference Include="FluentSharp.WatiN.NUnit, Version=5.5.0.0, Culture=neutral, PublicKeyToken=c1e7d5e79b4b8c2d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\FluentSharp.WatiN.NUnit.5.5.167\lib\net40\FluentSharp.WatiN.NUnit.dll</HintPath>
     </Reference>
     <Reference Include="FluentSharp.Web_3_5, Version=5.5.0.0, Culture=neutral, PublicKeyToken=1439893e489faed4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\FluentSharp.Web_3_5.5.5.166\lib\net35\FluentSharp.Web_3_5.dll</HintPath>
+      <HintPath>..\..\packages\FluentSharp.Web_3_5.5.5.167\lib\net35\FluentSharp.Web_3_5.dll</HintPath>
     </Reference>
     <Reference Include="FluentSharp.WinForms, Version=5.5.0.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\FluentSharp.WinForms.5.5.166\lib\net35\FluentSharp.WinForms.dll</HintPath>
+      <HintPath>..\..\packages\FluentSharp.WinForms.5.5.167\lib\net35\FluentSharp.WinForms.dll</HintPath>
     </Reference>
-    <Reference Include="FluentSharp.Xml">
-      <HintPath>..\..\packages\FluentSharp.Xml.5.5.166\lib\net35\FluentSharp.Xml.dll</HintPath>
-    </Reference>
-    <Reference Include="FluentSharp.Zip, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="FluentSharp.Xml, Version=1.0.0.0, Culture=neutral, PublicKeyToken=e20c9643c6d4ac0b, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\FluentSharp.Zip.5.5.166\lib\net35\FluentSharp.Zip.dll</HintPath>
+      <HintPath>..\..\packages\FluentSharp.Xml.5.5.167\lib\net35\FluentSharp.Xml.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentSharp.Zip">
+      <HintPath>..\..\packages\FluentSharp.Zip.5.5.167\lib\net35\FluentSharp.Zip.dll</HintPath>
     </Reference>
     <Reference Include="Interop.SHDocVw">
       <HintPath>..\..\packages\WatiN.2.1.0\lib\net40\Interop.SHDocVw.dll</HintPath>
