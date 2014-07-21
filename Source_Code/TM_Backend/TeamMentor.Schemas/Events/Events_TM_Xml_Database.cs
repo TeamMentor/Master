@@ -1,10 +1,12 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace TeamMentor.CoreLib
 {
-    public class Events_TM_Xml_Database 
+    [Serializable]
+    public class Events_TM_Xml_Database : MarshalByRefObject
     {
         public TM_Xml_Database           Target                        { get; set;}
         

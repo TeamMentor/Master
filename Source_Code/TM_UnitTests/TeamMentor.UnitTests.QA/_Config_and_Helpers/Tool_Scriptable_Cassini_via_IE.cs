@@ -17,9 +17,9 @@ namespace TeamMentor.UnitTests.QA
         }
     }
     [TestFixture]
-    public class Tool_Scriptable_Cassini_via_IE
+    public class Tool_Scriptable_Cassini_via_IE  
     {
-        [Test][Ignore("Manual Invocation")]
+        [Test][Ignore("Manual Invocation")]  
         public void Show_REPL_For_Cassini_And_IE__Runnnig_TeamMentor()
         {
             var nUnitTests_Cassini = new NUnitTests_Cassini_TeamMentor().start();
@@ -47,10 +47,13 @@ return nUnitTests_Cassini;
 
 //using FluentSharp.Watin;
 //using FluentSharp.CassiniDev
+//using TeamMentor.CoreLib
 //using TeamMentor.UnitTests.Cassini
 
 //O2Ref:TeamMentor.UnitTests.Cassini.dll
 //O2Ref:TeamMentor.Schemas.dll
+//O2Ref:TeamMentor.Users.dll
+//O2Ref:TeamMentor.Database.dll
 //O2Ref:FluentSharp.WatiN.dll
 //O2Ref:FluentSharp.NUnit.dll
 //O2Ref:FluentSharp.CassiniDev.dll

@@ -20,9 +20,6 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_Http
         [SetUp] public void setup()
         {
             tmProxy.assert_Null();
-
-            //"aaa".add_IE().open(siteUri).script_IE_WaitForClose();
-
             this.tmProxy_Refresh();
             tmProxy.assert_Not_Null();
             tmProxy.TmFileStorage.assert_Not_Null();

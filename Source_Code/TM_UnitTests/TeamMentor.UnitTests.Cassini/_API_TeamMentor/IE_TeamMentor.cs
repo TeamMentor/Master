@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FluentSharp.CoreLib;
 using FluentSharp.NUnit;
 using FluentSharp.Watin;
 using FluentSharp.WinForms;
+using TeamMentor.CoreLib;
 
 namespace TeamMentor.UnitTests.Cassini
 {
@@ -24,7 +21,7 @@ namespace TeamMentor.UnitTests.Cassini
             this.siteUri           = siteUri;
         }
         
-        public IE_TeamMentor open(string virtualPath)
+        public IE_TeamMentor open(string virtualPath = "")
         {
             var fullUri = siteUri.append(virtualPath);
             if(fullUri.notNull())
@@ -35,6 +32,10 @@ namespace TeamMentor.UnitTests.Cassini
 
     public static class API_TeamMentor_WatiN_ExtensionMethods_CTors
     {
+        public static IE_TeamMentor new_IE_TeamMentor_Hidden(this NUnitTests_Cassini_TeamMentor nunitTests_Cassini)
+        {
+            return nunitTests_Cassini.new_IE_TeamMentor(true);
+        }
         public static IE_TeamMentor new_IE_TeamMentor(this NUnitTests_Cassini_TeamMentor nunitTests_Cassini, bool startHidden = false)
         {
             var webRoot           = nunitTests_Cassini.webRoot          .assert_Folder_Exists();
@@ -57,6 +58,19 @@ namespace TeamMentor.UnitTests.Cassini
     }
     public static class API_TeamMentor_WatiN_ExtensionMethods
     {
+        //ie helpers
+        public static IE_TeamMentor refresh(this IE_TeamMentor ieTeamMentor)
+        {
+            ieTeamMentor.ie.refresh();
+            return ieTeamMentor;
+        }
+
+        public static string html(this IE_TeamMentor ieTeamMentor)
+        {
+            return ieTeamMentor.ie.html();            
+        }
+
+        //pages
         public static IE_TeamMentor page_Admin(this IE_TeamMentor ieTeamMentor)
         {
             return ieTeamMentor.open("/Admin");
@@ -72,6 +86,40 @@ namespace TeamMentor.UnitTests.Cassini
         public static IE_TeamMentor page_TBot(this IE_TeamMentor ieTeamMentor)
         {
             return ieTeamMentor.open("/Tbot");
+        }
+
+        public static IE_TeamMentor login_Using_AuthToken(this IE_TeamMentor ieTeamMentor, Guid authToken)
+        {
+            return ieTeamMentor.open("whoami?auth={0}".format(authToken));
+        }
+
+        public static IE_TeamMentor article(this IE_TeamMentor ieTeamMentor, TeamMentor_Article tmArticle)
+        {
+            return ieTeamMentor.article(tmArticle.Metadata.Id);
+        }
+
+        public static IE_TeamMentor article(this IE_TeamMentor ieTeamMentor, Guid id)
+        {
+            return ieTeamMentor.open("article/{0}".format(id));
+        }
+        public static IE_TeamMentor article_Html(this IE_TeamMentor ieTeamMentor, TeamMentor_Article tmArticle)
+        {
+            return ieTeamMentor.article_Html(tmArticle.Metadata.Id);
+        }
+
+        public static IE_TeamMentor article_Html(this IE_TeamMentor ieTeamMentor, Guid id)
+        {
+            return ieTeamMentor.open("html/{0}".format(id));
+        }
+
+        public static IE_TeamMentor article_Raw(this IE_TeamMentor ieTeamMentor, TeamMentor_Article tmArticle)
+        {
+            return ieTeamMentor.article_Raw(tmArticle.Metadata.Id);
+        }
+
+        public static IE_TeamMentor article_Raw(this IE_TeamMentor ieTeamMentor, Guid id)
+        {
+            return ieTeamMentor.open("raw/{0}".format(id));
         }
     }
 }

@@ -55,12 +55,12 @@ namespace TeamMentor.UnitTests.Cassini
         
         public static TeamMentor_Objects_Proxy  map_ReferencesToTmObjects(this TeamMentor_Objects_Proxy tmProxy)
         {
-            tmProxy.TmConfig      = tmProxy.get_Current<TMConfig       >();
-            tmProxy.TmFileStorage = tmProxy.get_Current<TM_FileStorage >();            
-            tmProxy.TmStatus      = tmProxy.get_Current<TM_Status      >();
-            tmProxy.TmServer      = tmProxy.get_Current<TM_Server      >();
-            tmProxy.TmUserData    = tmProxy.get_Current<TM_UserData    >();
-            tmProxy.TmXmlDatabase = tmProxy.get_Current<TM_Xml_Database>();
+            TMConfig.Current        = tmProxy.TmConfig      = tmProxy.get_Current<TMConfig       >();
+            TM_FileStorage.Current  = tmProxy.TmFileStorage = tmProxy.get_Current<TM_FileStorage >();            
+            TM_Status.Current       = tmProxy.TmStatus      = tmProxy.get_Current<TM_Status      >();
+            TM_Server.Current       = tmProxy.TmServer      = tmProxy.get_Current<TM_Server      >();
+            TM_UserData.Current     = tmProxy.TmUserData    = tmProxy.get_Current<TM_UserData    >();
+            TM_Xml_Database.Current = tmProxy.TmXmlDatabase = tmProxy.get_Current<TM_Xml_Database>();
                       
             return tmProxy;   
         }
@@ -139,11 +139,83 @@ namespace TeamMentor.UnitTests.Cassini
 
     public static class TeamMentor_Objects_Proxy_ExtensionMethods_TM_Objects
     {
-        public static List<TMUser>  users(this TeamMentor_Objects_Proxy tmProxy)
+        //privs
+        public static TeamMentor_Objects_Proxy admin_Assert(this TeamMentor_Objects_Proxy tmProxy)
+        {
+            UserGroup.Admin.assert();
+            return tmProxy;
+        }
+
+        public static TeamMentor_Objects_Proxy editor_Assert(this TeamMentor_Objects_Proxy tmProxy)
+        {
+            UserGroup.Editor.assert();
+            return tmProxy;
+        }
+        //Users
+        public static List<TMUser>              users(this TeamMentor_Objects_Proxy tmProxy)
         {
             if(tmProxy.TmUserData.notNull())
                 return tmProxy.TmUserData.TMUsers;
             return new List<TMUser>();
+        }
+        
+        public static AuthToken                 user_AuthToken_Add(this TeamMentor_Objects_Proxy tmProxy, TMUser tmUser)
+        {
+            var authToken = tmProxy.invoke_Static(typeof(TokenAuthentication_ExtensionMethods), "add_AuthToken", tmUser);
+
+            return tmProxy.invoke_Static<AuthToken>(typeof(TokenAuthentication_ExtensionMethods), "add_AuthToken", tmUser);
+        }
+
+        public static Guid                      user_AuthToken_Valid(this TeamMentor_Objects_Proxy tmProxy, TMUser tmUser)
+        {
+            if(tmUser.AuthTokens.empty())
+                return tmProxy.user_AuthToken_Add(tmUser).Token;
+            return tmUser.AuthTokens.first().Token;
+        }
+            
+        //Articles
+        public static List<TeamMentor_Article>  articles(this TeamMentor_Objects_Proxy tmProxy)
+        {
+            if(tmProxy.TmXmlDatabase.notNull())
+                return tmProxy.TmXmlDatabase.xmlDB_GuidanceItems();
+            return new List<TeamMentor_Article>();
+        }
+
+        public static TeamMentor_Article        article_New(this TeamMentor_Objects_Proxy tmProxy)
+        {
+            return tmProxy.invoke_Static<TeamMentor_Article>(typeof(TM_Xml_Database_ExtensionMethods_XmlDataSources_GuidanceItem),"xmlDB_RandomGuidanceItem", tmProxy.TmXmlDatabase);
+        }
+        public static TeamMentor_Article        article_New(this TeamMentor_Objects_Proxy tmProxy, Guid libraryId)
+        {
+            return tmProxy.invoke_Static<TeamMentor_Article>(typeof(TM_Xml_Database_ExtensionMethods_XmlDataSources_GuidanceItem),"xmlDB_RandomGuidanceItem", tmProxy.TmXmlDatabase, libraryId);
+        }
+
+        //Libraries
+
+        public static List<TM_Library>          libraries(this TeamMentor_Objects_Proxy tmProxy)
+        {
+            if(tmProxy.TmXmlDatabase.notNull())
+                return tmProxy.TmXmlDatabase.tmLibraries();
+            return new List<TM_Library>();
+        }
+        public static TM_Library                library_New(this TeamMentor_Objects_Proxy tmProxy)
+        {
+            return tmProxy.invoke_Static<TM_Library>(typeof(TM_Xml_Database_ExtensionMethods_XML_DataSources_TM_Library),"new_TmLibrary", tmProxy.TmXmlDatabase);
+        }
+        public static TeamMentor_Article        library_New_Article_New(this TeamMentor_Objects_Proxy tmProxy)
+        {
+            var library = tmProxy.library_New();
+            return tmProxy.article_New(library.Id);
+        }
+        public static string                    cache_Reload__Data(this TeamMentor_Objects_Proxy tmProxy)
+        {
+            tmProxy.gui_ResetCache();
+            return tmProxy.invoke_Static<string>(typeof(TM_Xml_Database_FileStorage),"reloadData", tmProxy.TmFileStorage);
+        }        
+        public static TeamMentor_Objects_Proxy  gui_ResetCache(this TeamMentor_Objects_Proxy tmProxy)
+        {
+            tmProxy.invoke_Instance(typeof(TM_WebServices),"resetCache");
+            return tmProxy;
         }
     }
     

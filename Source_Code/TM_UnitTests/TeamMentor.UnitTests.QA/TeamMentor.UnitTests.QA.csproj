@@ -135,6 +135,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TeamMentor_QA_Http\Team_QA__View_Article_Content.cs" />
     <Compile Include="TeamMentor_QA_Http\Test_QA__HandleUrlRequest.cs" />
     <Compile Include="_Config_and_Helpers\Tool_Scriptable_Cassini_via_IE.cs" />
     <Compile Include="TeamMentor.UnitTests.TM_Website\Test_REST_Security.cs" />
