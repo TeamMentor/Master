@@ -47,11 +47,39 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_IE
                 .ie.assert_Has_Link        ("back to article")                // check that this link is there
                    .assert_Doesnt_Have_Link("View File History and diff");    // (Issue_830) for the 3.5 release this link should not be there            
         }
-
+        /// <summary>
+        /// https://github.com/TeamMentor/Master/issues/829
+        /// </summary>
+        [Test] public void Issue__829_Get_rid_of_Control_Panel()
+        {
+            var ie = this.new_IE_TeamMentor_Hidden(true)
+                         .login_Default_Admin_Account("/TeamMentor")
+                         .ie;
+           
+            // location 1) check link on home page
+            ie.assert_Uri_Is(siteUri.mapPath("/TeamMentor"))             // confirm that we are on the main TM page
+              .wait_For_Link                ("Logout")                   
+              .assert_Has_Link              ("Logout")
+              .assert_Has_Link              ("Tbot")
+              .assert_Doesnt_Have_Link      ("Control Panel");           // (Issue_830) for the 3.5 release this link should not be there            
+            
+            // location 2) check link on Tbot page
+            ie.link("TBot").click();
+            ie.assert_Uri_Is(siteUri.mapPath("/rest/tbot/run/Commands")) 
+              .assert_Has_Link              ("Restart Server")
+              .assert_Has_Link              ("TBot Monitor")
+              .assert_Doesnt_Have_Link      ("Control Panel (legacy)");
+            
+            //  location 3)check for link on TBot Monitor 
+            ie.link("TBot Monitor").click();
+            ie.assert_Uri_Is(siteUri.mapPath("/Tbot_Monitor/monitor.htm#/monitor/activities")) 
+              .assert_Has_Link              ("TeamMentor Admin (TBot)")
+              .assert_Doesnt_Have_Link      ("Control Panel (legacy)");
+        }
         [Test] public void Issue_838__SiteData_custom_TBot_pages_can_conflict_with_the_main_TBot_pages()
         {   
             //Open main Tbot Page and capture number of links          
-            var ieTeamMentor = this.new_IE_TeamMentor_Hidden(true);
+            var ieTeamMentor = this.new_IE_TeamMentor_Hidden();
             var ie = ieTeamMentor.ie;
 
             ieTeamMentor.login_Default_Admin_Account()

@@ -55,12 +55,7 @@
             ,	signupPage					: function()
                                                 { 
                                                     loadDialog('/Html_Pages/Gui/Dialogs/Signup.html') 
-                                                }
-            , 	controlPanel				: function ()
-                                                {																
-                                                    document.location ="/Html_Pages/ControlPanel/ControlPanel.html";			
-                                                }
-                                                
+                                                }                                                
             ,	onLogout					: function ()
                                                 {
                                                     if(TM.Gui.editMode)
@@ -106,9 +101,7 @@
                                                         
                                                         if (TM.Gui.CurrentUser.isAdmin())
                                                         {															
-                                                            //this.add_Link("Control Panel", this.controlPanel);
                                                             this.add_SimpleLink("TBot", "/tbot");
-                                                            this.add_SimpleLink("Control Panel", "/admin");
                                                         }																								
                                                         if(TM.Gui.CurrentUser.userName().indexOf('\\') === -1)
                                                             this.add_Link("Logout", TM.WebServices.WS_Users.logout);				

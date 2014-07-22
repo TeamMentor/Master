@@ -84,8 +84,7 @@ namespace TeamMentor.UnitTests.TM_Website
 
             //these should exist            
             checkLink("TM Monitor"            , true, mainUrl      + "#/monitor/activities");                        
-            checkLink("Tbot"                  , true, tbot.TargetServer + "/tbot");            
-            checkLink("Control Panel (Legacy)", true, tbot.TargetServer + "/admin");            
+            checkLink("Tbot"                  , true, tbot.TargetServer + "/tbot");                        
             checkLink("Logout"                , true, tbot.TargetServer + "/logout");
 
             //these shouldn't
