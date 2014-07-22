@@ -166,12 +166,21 @@ namespace TeamMentor.CoreLib
         
         public static List<string> TBotScriptsFiles()
         {
-            var files = TBotScriptsFolder.files(true, "*.cshtml");            
+            var files = TBotScriptsFolder.files(true, "*.cshtml");                                  // list of Razor files from the main TM folder         
             if (TM_FileStorage.Current.notNull())
             {
-                var siteDataFolder = TM_FileStorage.Current.path_SiteData().pathCombine("TBot");
-                if (siteDataFolder.dirExists())
-                    files.add(siteDataFolder.files(true, "*.cshtml"));
+                var siteDataFolder = TM_FileStorage.Current.path_SiteData().pathCombine("TBot");    // if the current Site Data has Tbot Folder
+                if (siteDataFolder.dirExists())                                                     // and it exists
+                { 
+                    var indexed_By_Filename = files.files_Indexed_by_FileName();                    // index the TM Tbot files by filename 
+                    foreach(var extraFile in siteDataFolder.files(true, "*.cshtml"))                // get the list of SiteData Tbot files, and for each one
+                    {
+                        var fileName = extraFile.fileName();            
+                        if (indexed_By_Filename.hasKey(fileName))                                   // see if is filename is one of the indexed one           
+                            files.remove(indexed_By_Filename.value(fileName));                      // and if it is, remove it
+                        files.add(extraFile);                                                       // finally add the SiteData Tbot razor page (which is the one that should be kept intact)
+                    }
+                }
             }
             return files;
         }
