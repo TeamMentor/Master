@@ -31,8 +31,8 @@ namespace TeamMentor.CoreLib
             SiteData_Configs = new List<Config>();        
         }
           
-
-        public class Config
+        [Serializable]
+        public class Config : MarshalByRefObject
         {         
             public string   Name                    { get; set; }
             public bool     Active                  { get; set; }
@@ -42,7 +42,8 @@ namespace TeamMentor.CoreLib
             public string   Remote_GitPath          { get; set; }
         }
 
-        public class Git_Config
+        [Serializable]
+        public class Git_Config : MarshalByRefObject
         {
             public bool UserData_Git_Enabled { get; set; }
             public bool UserData_Auto_Pull { get; set; }

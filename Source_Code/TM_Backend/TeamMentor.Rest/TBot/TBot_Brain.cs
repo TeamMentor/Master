@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using FluentSharp.CoreLib;
 using FluentSharp.Web;
 using FluentSharp.Web35;
@@ -13,13 +11,16 @@ using TeamMentor.FileStorage;
 
 namespace TeamMentor.CoreLib
 {    
-    public class TBot_Brain
+    [Serializable]
+    public class TBot_Brain : MarshalByRefObject
     {
         public static string TBOT_MAIN_HTML_PAGE    = "/TBot/TbotMain.html";
         public static string TBOT_SCRIPTS_FOLDER  = "/TBot";
+        public static string                    TBotScriptsFolder    { get; set; }
         public static Dictionary<string,string> AvailableScripts     { get; set; }
         public static List<int>                 ScriptContentHashes  { get; set; }
-        public static ITemplateService          TemplateService { get; set; }
+        public static ITemplateService          TemplateService      { get; set; }
+         
 
         //public DateTime         StartTime       { get; set; }
         public TM_REST         TmRest          { get; set; }
@@ -27,10 +28,11 @@ namespace TeamMentor.CoreLib
         static TBot_Brain()
         {
             try
-            {
+            {                
                 ScriptContentHashes = new List<int>();
                 TemplateService  = (ITemplateService) typeof (Razor).prop("TemplateService");
-                AvailableScripts = GetAvailableScripts();
+                TBotScriptsFolder = HttpContextFactory.Server.notNull() ? HttpContextFactory.Server.MapPath(TBOT_SCRIPTS_FOLDER) : null;
+                SetAvailableScripts();
             }
             catch (Exception ex)
             {
@@ -38,8 +40,9 @@ namespace TeamMentor.CoreLib
             }
             
         }
-        
-        //[Admin]
+        private TBot_Brain()
+        { }
+        //[Admin]        
         public TBot_Brain(TM_REST tmRest)
         {
             TmRest = tmRest;
@@ -150,30 +153,36 @@ namespace TeamMentor.CoreLib
             return GetHtml(filesHtml, false,-1);            
         }
 
-
+        public Dictionary<string,string> availableScripts()
+        {
+            return TBot_Brain.AvailableScripts;
+        }        
         // static methods
 
-        public static string TBotScriptsFolder()
-        {
-            return HttpContextFactory.Server.MapPath(TBOT_SCRIPTS_FOLDER);
+        public static TBot_Brain Create()
+        {            
+            return new TBot_Brain();
         }
+        
         public static List<string> TBotScriptsFiles()
         {
-            var files = TBotScriptsFolder().files(true, "*.cshtml");            
-            if (TM_UserData.Current.notNull())
+            var files = TBotScriptsFolder.files(true, "*.cshtml");            
+            if (TM_FileStorage.Current.notNull())
             {
-                var userDataFolder = TM_FileStorage.Current.path_SiteData().pathCombine("TBot");
-                if (userDataFolder.dirExists())
-                    files.add(userDataFolder.files(true, "*.cshtml"));
+                var siteDataFolder = TM_FileStorage.Current.path_SiteData().pathCombine("TBot");
+                if (siteDataFolder.dirExists())
+                    files.add(siteDataFolder.files(true, "*.cshtml"));
             }
             return files;
         }
-        public static Dictionary<string, string> GetAvailableScripts()
+        public static Dictionary<string, string> SetAvailableScripts()
         {
             var files = TBotScriptsFiles();
             var mappings = new Dictionary<string, string>();
             foreach (var file in files)
                 mappings.add(file.fileName_WithoutExtension(), file);            
+
+            AvailableScripts = mappings;
             return mappings;
             //return files.toDictionary((file) => file.fileName_WithoutExtension()); //this doesn't handle duplicate files names
         }

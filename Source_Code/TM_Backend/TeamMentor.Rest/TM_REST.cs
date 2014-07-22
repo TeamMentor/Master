@@ -1,5 +1,4 @@
-﻿    using System;
-using System.Collections.ObjectModel;
+﻿using System;
 using System.ServiceModel;
 using System.ServiceModel.Activation;
 using System.ServiceModel.Channels;
@@ -8,16 +7,16 @@ using System.ServiceModel.Dispatcher;
 using System.ServiceModel.Web;
 using System.Web;
 using System.Web.Routing;
-    using FluentSharp.CoreLib;
-    using FluentSharp.Web;
+using FluentSharp.Web;
 
 namespace TeamMentor.CoreLib  
 {
+    [Serializable]
     [ServiceBehavior				(//InstanceContextMode = InstanceContextMode.PerCall	,
                                      ConcurrencyMode = ConcurrencyMode.Single, 
                                      InstanceContextMode = InstanceContextMode.PerCall		  ), 
      AspNetCompatibilityRequirements(RequirementsMode	 = AspNetCompatibilityRequirementsMode.Allowed)]
-    public partial class TM_REST : ITM_REST
+    public partial class TM_REST : MarshalByRefObject,  ITM_REST
     {
         public static string urlPath		= "REST";
         public static string urlPath_Tests	= "REST_Tests";
@@ -80,11 +79,10 @@ namespace TeamMentor.CoreLib
         {
             
         }
-
-        public override void AddServiceEndpoint(ServiceEndpoint endpoint)
+        /*public override void AddServiceEndpoint(ServiceEndpoint endpoint)
         {
             base.AddServiceEndpoint(endpoint);            
-        }
+        }*/
     }
 
     public class TMWebHttpBehavior : WebHttpBehavior
