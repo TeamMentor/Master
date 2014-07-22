@@ -26,5 +26,10 @@ namespace FluentSharp.NUnit
             url.assert_Is(expectedUrl, message.format(url, expectedUrl));
             return watinIe;
         }
+        public static WatiN_IE assert_Doesnt_Have_Link(this WatiN_IE watinIe, string linkId, string message = Extra_NUnit_Messages.ASSERT_DOESNT_HAVE_LINK)
+        {
+            watinIe.hasLink(linkId).assert_False(message.format(watinIe.url(), linkId));
+            return watinIe;
+        }
     }
 }

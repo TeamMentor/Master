@@ -1,6 +1,7 @@
 using System;
 using FluentSharp.CoreLib;
 using FluentSharp.Watin;
+using WatiN.Core;
 
 namespace FluentSharp.NUnit
 {
@@ -29,6 +30,32 @@ namespace FluentSharp.NUnit
             }
             "[WatiN_IE][wait_For_Url]  did not found expected url '{0}' after {1} miliseconds. The current value is: '{2}'".format(expectedUrl,maxWait, watinIe.url());
             return watinIe;
+        }        
+        public static Element wait_For_Element_InnerHtml(this WatiN_IE watinIe, string elementName, int maxWait = 1000)
+        {            
+            var splitWait = maxWait / 10;
+            for(var i=0 ; i < 10 ; i++)
+            {
+                var element = watinIe.element(elementName);
+                if (element.notNull() && element.innerHtml().valid())
+                    return element;
+                splitWait.sleep();
+            }
+            "[WatiN_IE][wait_For_Url]  did not found valid innerHtml inside element '{0}' after {1} miliseconds. ".format(elementName,maxWait, watinIe.url());
+            return null;
+        }
+
+        public static Button to_Button(this Element element)
+        {
+            return element.cast<Button>();
+        }
+        public static Link to_Link(this Element element)
+        {
+            return element.cast<Link>();
+        }
+        public static TextField to_Field(this Element element)
+        {
+            return element.cast<TextField>();
         }
     }
 }
