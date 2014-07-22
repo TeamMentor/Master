@@ -52,7 +52,7 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_IE
         /// </summary>
         [Test] public void Issue__829_Get_rid_of_Control_Panel()
         {
-            var ie = this.new_IE_TeamMentor_Hidden(true)
+            var ie = this.new_IE_TeamMentor_Hidden()
                          .login_Default_Admin_Account("/TeamMentor")
                          .ie;
            

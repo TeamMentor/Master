@@ -35,5 +35,10 @@ namespace FluentSharp.CoreLib
         {
             return target.append(value);
         }
+
+        public static Uri mapPath(this Uri target, string value)
+        {
+            return target.append(value);
+        }
     }
 }

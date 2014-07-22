@@ -44,7 +44,11 @@ namespace FluentSharp.NUnit
             "[WatiN_IE][wait_For_Url]  did not found valid innerHtml inside element '{0}' after {1} miliseconds. ".format(elementName,maxWait, watinIe.url());
             return null;
         }
-
+        public static WatiN_IE wait_For_Link(this WatiN_IE watinIe, string nameOrId)
+        {
+            watinIe.waitForLink(nameOrId);
+            return watinIe;
+        }
         public static Button to_Button(this Element element)
         {
             return element.cast<Button>();

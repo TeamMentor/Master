@@ -39,9 +39,7 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_IE
             ie.element("Content").to_Field().value(new_Content);                                                // put new content in markdown editor
             ie.button("Save").click();                                                                          // save 
             ie.wait_For_Element_InnerHtml("guidanceItem").innerHtml().assert_Not_Null()        
-                                                         .assert_Is("<P>{0}</P>".format(new_Content));         // confirm that 'test content' was saved ok (and was markdown transformed)
-
-            ieTeamMentor.script_IE_WaitForComplete();
+                                                         .assert_Is("<P>{0}</P>".format(new_Content));         // confirm that 'test content' was saved ok (and was markdown transformed)            
         }
     }
 }
