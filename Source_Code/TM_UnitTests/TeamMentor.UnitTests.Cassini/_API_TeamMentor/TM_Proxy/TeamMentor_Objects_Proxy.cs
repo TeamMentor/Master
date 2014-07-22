@@ -27,7 +27,7 @@ namespace TeamMentor.UnitTests.Cassini
         public TeamMentor_Objects_Proxy(API_Cassini apiCassini)
         {
             this.apiCassini = apiCassini;
-            o2Proxy         = apiCassini.appDomain().o2Proxy();
+            o2Proxy         = apiCassini.appDomain().o2Proxy(); 
         }
     }
 
@@ -55,12 +55,12 @@ namespace TeamMentor.UnitTests.Cassini
         
         public static TeamMentor_Objects_Proxy  map_ReferencesToTmObjects(this TeamMentor_Objects_Proxy tmProxy)
         {
-            TMConfig.Current        = tmProxy.TmConfig      = tmProxy.get_Current<TMConfig       >();
-            TM_FileStorage.Current  = tmProxy.TmFileStorage = tmProxy.get_Current<TM_FileStorage >();            
-            TM_Status.Current       = tmProxy.TmStatus      = tmProxy.get_Current<TM_Status      >();
-            TM_Server.Current       = tmProxy.TmServer      = tmProxy.get_Current<TM_Server      >();
-            TM_UserData.Current     = tmProxy.TmUserData    = tmProxy.get_Current<TM_UserData    >();
-            TM_Xml_Database.Current = tmProxy.TmXmlDatabase = tmProxy.get_Current<TM_Xml_Database>();
+            TMConfig        .Current = tmProxy.TmConfig      = tmProxy.get_Current<TMConfig       >();
+            TM_FileStorage  .Current = tmProxy.TmFileStorage = tmProxy.get_Current<TM_FileStorage >();            
+            TM_Status       .Current = tmProxy.TmStatus      = tmProxy.get_Current<TM_Status      >();
+            TM_Server       .Current = tmProxy.TmServer      = tmProxy.get_Current<TM_Server      >();
+            TM_UserData     .Current = tmProxy.TmUserData    = tmProxy.get_Current<TM_UserData    >();
+            TM_Xml_Database .Current = tmProxy.TmXmlDatabase = tmProxy.get_Current<TM_Xml_Database>();
                       
             return tmProxy;   
         }
@@ -161,7 +161,7 @@ namespace TeamMentor.UnitTests.Cassini
         
         public static AuthToken                 user_AuthToken_Add(this TeamMentor_Objects_Proxy tmProxy, TMUser tmUser)
         {
-            var authToken = tmProxy.invoke_Static(typeof(TokenAuthentication_ExtensionMethods), "add_AuthToken", tmUser);
+            //var authToken = tmProxy.invoke_Static(typeof(TokenAuthentication_ExtensionMethods), "add_AuthToken", tmUser);
 
             return tmProxy.invoke_Static<AuthToken>(typeof(TokenAuthentication_ExtensionMethods), "add_AuthToken", tmUser);
         }

@@ -3,6 +3,7 @@ using FluentSharp.CassiniDev;
 using FluentSharp.CoreLib;
 using FluentSharp.NUnit;
 using FluentSharp.Watin;
+using FluentSharp.WatiN.NUnit;
 using FluentSharp.Web;
 using FluentSharp.WinForms;
 using NUnit.Framework;
@@ -108,7 +109,7 @@ namespace TeamMentor.UnitTests.Cassini
 							            ie.open(server.append("login"));
                                         ie.url().assert_Contains("Login");
 							            ie.field("username").value(username);
-							            ie.field("password").value(password);
+							            ie.field("password").value(password);                    
 							            ie.button("login").click();
 						             };
             Action logout 	  = ()=> ie.open(server.append("logout"));								             

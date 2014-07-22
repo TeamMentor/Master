@@ -31,7 +31,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>TeamMentor.UnitTests.QA.Program</StartupObject>
+    <StartupObject>TeamMentor.UnitTests.QA.Tools.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="FluentSharp.AST, Version=1.0.0.0, Culture=neutral, PublicKeyToken=087dfa3428b0a339, processorArchitecture=MSIL">
@@ -135,7 +135,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TeamMentor_QA_Http\Team_QA__View_Article_Content.cs" />
+    <Compile Include="TeamMentor.UnitTests.Cassini\Test_Cassini__Direct_Access_To_TBot_Brain.cs" />
+    <Compile Include="TeamMentor_QA_IE\Test_QA__SiteData_Pages.cs" />
+    <Compile Include="TeamMentor_QA_IE\Test_QA__View_Article_Content.cs" />
     <Compile Include="TeamMentor_QA_Http\Test_QA__HandleUrlRequest.cs" />
     <Compile Include="_Config_and_Helpers\Tool_Scriptable_Cassini_via_IE.cs" />
     <Compile Include="TeamMentor.UnitTests.TM_Website\Test_REST_Security.cs" />

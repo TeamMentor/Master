@@ -42,7 +42,7 @@ namespace TeamMentor.UnitTests.QA
                              });
             
         }
-        [Test]//[Ignore("SEE Fix added in 3.4")]
+        [Test]
         public void DownloadAndInstallLibraryFromZip()
         {     
             var tmLibraries_Before = tmXmlDatabase.tmLibraries();            

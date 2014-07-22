@@ -6,7 +6,7 @@ using FluentSharp.WinForms;
 using NUnit.Framework;
 using TeamMentor.UnitTests.Cassini;
 
-namespace TeamMentor.UnitTests.QA
+namespace TeamMentor.UnitTests.QA.Tools
 {
     public class Program
     {

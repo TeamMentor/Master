@@ -117,19 +117,24 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="_API_TeamMentor\IE_TeamMentor.cs" />
+    <Compile Include="_API_TeamMentor\TM_Proxy\TM_Proxy_ExtensionMethods_TBot_Brain.cs" />
+    <Compile Include="_API_TeamMentor\Tests\Test_TM_Proxy_ExtensionMethods_TBot_Brain.cs" />
     <Compile Include="_Config_And_Helpers\Classes\NUnitTests_Cassini_TeamMentor.cs" />
-    <Compile Include="_API_TeamMentor\TeamMentor_Objects_Proxy.cs" />
+    <Compile Include="_API_TeamMentor\TM_Proxy\TeamMentor_Objects_Proxy.cs" />
     <Compile Include="_Config_And_Helpers\ExtensionMethods\NUnitTests_Cassini_TeamMentor_ExtensionMethods.cs" />
     <Compile Include="_API_TeamMentor\Test_IE_TeamMentor.cs" />
     <Compile Include="_Config_And_Helpers\Test_Config_And_Helpers\Test_Cassini_Access_TM_Variables.cs" />
     <Compile Include="_Config_And_Helpers\Test_Config_And_Helpers\Test_NUnitTests_Cassini_TeamMentor.cs" />
     <Compile Include="_Config_And_Helpers\Test_Config_And_Helpers\Test_NUnitTests_Cassini_TeamMentor_ExtensionMethods.cs" />
-    <Compile Include="_API_TeamMentor\Test_TeamMentor_Objects_Proxy.cs" />
+    <Compile Include="_API_TeamMentor\Tests\Test_TeamMentor_Objects_Proxy.cs" />
     <Compile Include="_Using_Cassini\Content_Static\Test_TeamMentor_Static_Content.cs" />
     <Compile Include="_Using_Cassini\TM_Admin_Workflows\Test_Cassini_Library_Management.cs" />
     <Compile Include="_Using_Cassini\TM_User_Workflows\Test_Cassini_Password_Reset.cs" />
-    <Compile Include="__Extra_FluentSharp\Extra_FluentSharp_NUnit_ExtensionMethods.cs" />
+    <Compile Include="__Extra_FluentSharp\Extra_FluentSharp_ExtensionMethods.cs" />
+    <Compile Include="__Extra_FluentSharp\Extra_NUnit_ExtensionMethods.cs" />
+    <Compile Include="__Extra_FluentSharp\Extra_NUnit_Messages.cs" />
     <Compile Include="__Extra_FluentSharp\Extra_Watin_NUnit_Extension_Methods.cs" />
+    <Compile Include="__Extra_FluentSharp\Extra_Watin__Extension_Methods.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -151,6 +156,10 @@
     <ProjectReference Include="..\..\TM_Backend\TeamMentor.FileStorage\TeamMentor.FileStorage.csproj">
       <Project>{F5ACC621-5930-45E8-9595-39E1758CA7A9}</Project>
       <Name>TeamMentor.FileStorage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\TM_Backend\TeamMentor.Rest\TeamMentor.Rest.csproj">
+      <Project>{5A89734A-4BA1-4076-A5BA-584223C05F56}</Project>
+      <Name>TeamMentor.Rest</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\TM_Backend\TeamMentor.Schemas\TeamMentor.Schemas.csproj">
       <Project>{77E93D41-8457-45BD-82A8-37C0DEEC32AD}</Project>

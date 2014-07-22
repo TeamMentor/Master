@@ -18,6 +18,7 @@ namespace TeamMentor.UnitTests.Cassini
         public void Check_Password_Reset_Page_Reset()
         {
             webRoot.assert_Not_Null();
+            "todo".assert_Ignore();
             // TODO
         }
     }

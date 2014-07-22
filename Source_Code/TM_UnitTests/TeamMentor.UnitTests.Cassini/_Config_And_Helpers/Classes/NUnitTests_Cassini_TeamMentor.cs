@@ -44,13 +44,16 @@ namespace TeamMentor.UnitTests.Cassini
         [TestFixtureTearDown] public void testFixtureTearDown()
         {
             port      .tcpClient().assert_Not_Null();
-            apiCassini.stop();
+            apiCassini.stop();                                      
             port      .tcpClient().assert_Null();                        
 
-            webRoot   .assert_Folder_Exists();          // make sure we didn't delete this by accident
+            webRoot   .assert_Folder_Exists();                          // make sure we didn't delete this by accident (since this is the actualy TM code :)  )
             
-            Files.delete_Folder_Recursively(path_XmlLibraries).assert_True();
-            path_XmlLibraries.assert_Folder_Doesnt_Exist();     // remove temp XmlDatabase folder
+            this.tmProxy().set_Custom_Path_XmlDatabase("");             // reset this value
+            apiCassini.appDomain().unLoadAppDomain();                   // unload the AppDomain to remove any file locks that might have existed
+            Files.delete_Folder_Recursively(path_XmlLibraries);         // remove temp XmlDatabase folder
+            path_XmlLibraries.folder_Wait_For_Deleted();                // give is sometime
+            path_XmlLibraries.assert_Folder_Doesnt_Exist();             // double check the deletion
         }
         public NUnitTests_Cassini_TeamMentor stop()
         {

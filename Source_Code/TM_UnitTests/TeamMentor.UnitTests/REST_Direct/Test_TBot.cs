@@ -96,7 +96,7 @@ namespace TeamMentor.UnitTests.REST_Direct
 
         [Test] public void Script_ViewEmailsSent()
         {            
-            TBot_Brain.AvailableScripts = TBot_Brain.GetAvailableScripts();
+            TBot_Brain.AvailableScripts = TBot_Brain.SetAvailableScripts();
             //tests one script to make sure core engine is working
             // (run CheckThatAllTBotPagesLoad to test all scripts)
             var tbotBrain = new TBot_Brain(TmRest);

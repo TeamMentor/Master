@@ -9,7 +9,7 @@ using TeamMentor.UnitTests.Cassini;
 namespace TeamMentor.UnitTests.QA.TeamMentor_QA_Http
 {
     [TestFixture]
-    public class Team_QA__View_Article_Content : NUnitTests_Cassini_TeamMentor
+    public class Test_QA__View_Article_Content : NUnitTests_Cassini_TeamMentor
     {
         [SetUp] public void setup()
         {
@@ -23,12 +23,10 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_Http
     
         [Test] public void Render_Article_Html()
         {
-            tmProxy.admin_Assert()                                      // assert the admin user (or the calls below will fail due to security demands)
-            	   .library_New_Article_New();                          // create a new Library with new Article inside it
+            var article = tmProxy.admin_Assert()                        // assert the admin user (or the calls below will fail due to security demands)
+            	                    .library_New_Article_New()             // create a new Library with new Article inside it (this returns get a (byRef) object reference to the article created)
+                                    .assert_Not_Null();                    // confirm that we did receive an article
             
-            var article = tmProxy.articles().first()                    // get a (byRef) object reference to an article
-                                            .assert_Not_Null();         // confirm that we did receive an article
-
             var metadata = article.Metadata .assert_Not_Null();         // get (byRef) object reference to the article's Metadata
             var content  = article.Content  .assert_Not_Null();         // get (byRef) object reference to the article's Content
 
@@ -60,11 +58,12 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_Http
         {
             var texts_That_Confirm_Html_Footer = new [] { "TEAM Mentor © 2007-2014 all rights reserved", "eKnowledge Product" };
 
-            Render_Article_Html();                                      // call this test to make sure we have a valid article
-
-            var article = tmProxy.articles().first();                   // get a (byRef) object reference to an article      
+            var article = tmProxy.admin_Assert()                        // assert admin usergroup
+                                    .article_New()                         // create a new article
+                                    .assert_Not_Null();
 
             this.new_IE_TeamMentor_Hidden()                             // get an IE window mapped with the IE_TeamMentor API
+                .login_Default_Admin_Account()
                 .article_Html(article)                                  // open the article_Html view (ie /html/{artice Guid} )
                 .html()                                                 // get the Html of the current page
                 .assert_Contains(texts_That_Confirm_Html_Footer);       // assert that the expected texts are there                 

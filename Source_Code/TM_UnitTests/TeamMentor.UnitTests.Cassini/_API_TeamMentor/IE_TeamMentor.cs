@@ -2,6 +2,7 @@
 using FluentSharp.CoreLib;
 using FluentSharp.NUnit;
 using FluentSharp.Watin;
+using FluentSharp.WatiN.NUnit;
 using FluentSharp.WinForms;
 using TeamMentor.CoreLib;
 
@@ -13,6 +14,7 @@ namespace TeamMentor.UnitTests.Cassini
         public string   webRoot;
         public string   path_XmlLibraries;
         public Uri      siteUri;
+
         public IE_TeamMentor(string webRoot, string path_XmlLibraries, Uri siteUri, bool startHidden)
         {
             this.ie                = "Test_IE_TeamMentor".popupWindow(1000,700,startHidden).add_IE();            
@@ -32,9 +34,9 @@ namespace TeamMentor.UnitTests.Cassini
 
     public static class API_TeamMentor_WatiN_ExtensionMethods_CTors
     {
-        public static IE_TeamMentor new_IE_TeamMentor_Hidden(this NUnitTests_Cassini_TeamMentor nunitTests_Cassini)
+        public static IE_TeamMentor new_IE_TeamMentor_Hidden(this NUnitTests_Cassini_TeamMentor nunitTests_Cassini, bool forceStartVisible = false)
         {
-            return nunitTests_Cassini.new_IE_TeamMentor(true);
+            return nunitTests_Cassini.new_IE_TeamMentor(forceStartVisible.isFalse());
         }
         public static IE_TeamMentor new_IE_TeamMentor(this NUnitTests_Cassini_TeamMentor nunitTests_Cassini, bool startHidden = false)
         {
@@ -104,7 +106,9 @@ namespace TeamMentor.UnitTests.Cassini
         }
         public static IE_TeamMentor article_Html(this IE_TeamMentor ieTeamMentor, TeamMentor_Article tmArticle)
         {
-            return ieTeamMentor.article_Html(tmArticle.Metadata.Id);
+            return (ieTeamMentor.notNull() && tmArticle.notNull()) 
+                        ? ieTeamMentor.article_Html(tmArticle.Metadata.Id)
+                        : ieTeamMentor;
         }
 
         public static IE_TeamMentor article_Html(this IE_TeamMentor ieTeamMentor, Guid id)
@@ -121,5 +125,26 @@ namespace TeamMentor.UnitTests.Cassini
         {
             return ieTeamMentor.open("raw/{0}".format(id));
         }
+        
+        public static IE_TeamMentor login(this IE_TeamMentor ieTeamMentor, string username, string password, string loginReferer = "/whoami")
+        {   
+            var ie = ieTeamMentor.ie;
+
+            var expectedUri = ieTeamMentor.siteUri.append(loginReferer);			
+            ieTeamMentor.open("login?LoginReferer={0}".format(loginReferer));
+
+			ie.field("username").value(username);
+			ie.field("password").value(password);                    
+			ie.button("login").click();
+
+            ie.wait_For_Uri(expectedUri);
+			return ieTeamMentor;
+        }
+
+        public static IE_TeamMentor login_Default_Admin_Account(this IE_TeamMentor ieTeamMentor, string loginReferer = "/whoami")
+        {
+            return ieTeamMentor.login("admin", "!!tmadmin", loginReferer);          
+        }
+
     }
 }
