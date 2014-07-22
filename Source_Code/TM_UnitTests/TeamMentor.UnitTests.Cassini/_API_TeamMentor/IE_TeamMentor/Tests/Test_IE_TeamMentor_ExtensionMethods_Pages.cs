@@ -9,20 +9,7 @@ using TeamMentor.CoreLib;
 namespace TeamMentor.UnitTests.Cassini
 {
     [TestFixture]
-    public class Test_API_TeamMentor_WatiN_ExtensionMethods_CTors
-    {
-        [Test] public void new_IE_TeamMentor()
-        {
-            var nUnitTests_Cassini  = new NUnitTests_Cassini_TeamMentor().start();
-            var ieTeamMentor       = nUnitTests_Cassini.new_IE_TeamMentor();
-            var expected_TBot_Url  = ieTeamMentor.siteUri.append("Html_Pages/Gui/Pages/login.html?LoginReferer=/tbot").str();
-            ieTeamMentor.page_TBot();
-            ieTeamMentor.ie.url().assert_Is(expected_TBot_Url);
-            ieTeamMentor.close();
-        }
-    }
-    [TestFixture]
-    public class Test_API_TeamMentor_WatiN_ExtensionMethods : NUnitTests_Cassini_TeamMentor
+    public class Test_IE_TeamMentor_ExtensionMethods_Pages : NUnitTests_Cassini_TeamMentor
     {        
         public IE_TeamMentor ieTeamMentor;
         public WatiN_IE      ie;
@@ -53,6 +40,8 @@ namespace TeamMentor.UnitTests.Cassini
         }
         [Test] public void page_TBot()
         {
+            if (ieTeamMentor.am_I_Default_Admin().isFalse())
+                ieTeamMentor.login_Default_Admin_Account();
             ieTeamMentor.page_TBot();            
             ie.assert_Uri_Is(siteUri.append("rest/tbot/run/Commands"));
         }     
@@ -61,15 +50,6 @@ namespace TeamMentor.UnitTests.Cassini
             ieTeamMentor.page_Home();            
             ie.assert_Uri_Is(siteUri.append("TeamMentor"));
         }  
-        [Test] public void login_Default_Admin_Account()
-        {
-            //confirm that login works ok and we are redirected into /whoami page            
-            ieTeamMentor.login_Default_Admin_Account();                        
-                      
-            ieTeamMentor.ie                        .assert_Uri_Is  (siteUri.append("/whoami"))
-                        .body().innerHtml()        .assert_Contains("\"UserName\":\"admin\"")
-                        .json_Deserialize<WhoAmI>().assert_Not_Null()
-                        .UserName                  .assert_Is("admin");
- ;       }
+        
     }
 }

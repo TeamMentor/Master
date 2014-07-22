@@ -1,10 +1,18 @@
 using System;
 using FluentSharp.CoreLib;
 
-namespace TeamMentor.WatiN.NUnit
+namespace FluentSharp.CoreLib
 {
     public static class Extra_FluentSharp_ExtensionMethods
     {
+        public static int inc(this int value)
+        {
+            return value + 1;
+        }
+        public static int dec(this int value)
+        {
+            return value - 1;
+        }
         public static string folder_Create_Folder(this string targetFolder, string subFolderName)
         {
             if(targetFolder.folderExists())

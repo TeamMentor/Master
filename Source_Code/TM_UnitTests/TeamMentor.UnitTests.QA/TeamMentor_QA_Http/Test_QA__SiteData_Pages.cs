@@ -5,7 +5,6 @@ using TeamMentor.CoreLib;
 using TeamMentor.FileStorage;
 using TeamMentor.NUnit;
 using TeamMentor.UnitTests.Cassini;
-using TeamMentor.WatiN.NUnit;
 
 namespace TeamMentor.UnitTests.QA.TeamMentor_QA_IE
 {

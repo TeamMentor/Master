@@ -53,22 +53,5 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_Http
                         .assert_Not_Contains(metadata.Id.str())         // the id is NOT there
                         .assert_Contains    (content.Data_Json);        // but the actually article's content text (or html) is
         }
-
-        [Test] public void Issue_812_HTML_view_articles_does_not_show_up_TEAM_Mentor_copyright_footer_note()
-        {
-            var texts_That_Confirm_Html_Footer = new [] { "TEAM Mentor © 2007-2014 all rights reserved", "eKnowledge Product" };
-
-            var article = tmProxy.admin_Assert()                        // assert admin usergroup
-                                    .article_New()                         // create a new article
-                                    .assert_Not_Null();
-
-            this.new_IE_TeamMentor_Hidden()                             // get an IE window mapped with the IE_TeamMentor API
-                .login_Default_Admin_Account()
-                .article_Html(article)                                  // open the article_Html view (ie /html/{artice Guid} )
-                .html()                                                 // get the Html of the current page
-                .assert_Contains(texts_That_Confirm_Html_Footer);       // assert that the expected texts are there                 
-        }
-
-
     }
 }

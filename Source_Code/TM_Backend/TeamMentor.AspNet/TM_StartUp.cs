@@ -35,7 +35,7 @@ namespace TeamMentor.CoreLib
             TMEvents.OnApplication_BeginRequest .add(Application_BeginRequest);
         }
         public void Session_Start()
-        {
+        {            
             "[TM_StartUp] Session Start".info();
         }
         public void Session_End()
@@ -44,10 +44,10 @@ namespace TeamMentor.CoreLib
             TrackingApplication.saveLog();
         }
         
-        [Assert_Admin]                      // impersonate an admin to load the database
+        [Assert_Admin]                                              
         public void Application_Start()
         {            
-            UserGroup.Admin.assert();                                   // impersonate Admin user
+            UserGroup.Admin.assert();                                   // impersonate an admin to load the database
 
             "[TM_StartUp] Application Start".info();   
 
@@ -62,8 +62,6 @@ namespace TeamMentor.CoreLib
             MVC5.MapDefaultRoutes();                                    // Map MVC 5 routes
 
             TrackingApplication.saveLog();                              // save log                         
-             
-            SendEmails.mapTMServerUrl();                                // Map current server URL
 
             UserGroup.None.assert();                                    // revert admin user impersonation
         } 
@@ -102,7 +100,10 @@ namespace TeamMentor.CoreLib
      //          HttpContextFactory.Response.Redirect(TMConsts.DEFAULT_ERROR_PAGE_REDIRECT);            
         }           
         public void Application_BeginRequest()
-        {            
+        {   
+            if(SendEmails.TM_Server_URL.isNull())                        // (for this version of SendEMails)
+                SendEmails.mapTMServerUrl();                             // This configuration needs to be done using a live HttpContext object   
+
             TMEngine.performHealthCheck()
                     .logRequest()
                     .handleRequest();

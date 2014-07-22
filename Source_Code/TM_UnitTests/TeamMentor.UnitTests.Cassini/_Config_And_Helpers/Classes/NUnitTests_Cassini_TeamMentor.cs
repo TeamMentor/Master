@@ -53,7 +53,9 @@ namespace TeamMentor.UnitTests.Cassini
             apiCassini.appDomain().unLoadAppDomain();                   // unload the AppDomain to remove any file locks that might have existed
             Files.delete_Folder_Recursively(path_XmlLibraries);         // remove temp XmlDatabase folder
             path_XmlLibraries.folder_Wait_For_Deleted();                // give is sometime
-            path_XmlLibraries.assert_Folder_Doesnt_Exist();             // double check the deletion
+            if (path_XmlLibraries.folder_Exists())
+                path_XmlLibraries.startProcess();
+            //path_XmlLibraries.assert_Folder_Doesnt_Exist();             // double check the deletion
         }
         public NUnitTests_Cassini_TeamMentor stop()
         {

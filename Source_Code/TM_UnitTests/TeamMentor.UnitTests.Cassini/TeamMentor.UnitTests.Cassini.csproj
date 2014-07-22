@@ -116,17 +116,24 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="_API_TeamMentor\IE_TeamMentor.cs" />
+    <Compile Include="_API_TeamMentor\IE_TeamMentor\IE_TeamMentor_ExtensionMethods_Misc.cs" />
+    <Compile Include="_API_TeamMentor\IE_TeamMentor\IE_TeamMentor.cs" />
+    <Compile Include="_API_TeamMentor\IE_TeamMentor\IE_TeamMentor_ExtensionMethods_Content.cs" />
+    <Compile Include="_API_TeamMentor\IE_TeamMentor\IE_TeamMentor_ExtensionMethods_Create.cs" />
+    <Compile Include="_API_TeamMentor\IE_TeamMentor\IE_TeamMentor_ExtensionMethods_Login.cs" />
+    <Compile Include="_API_TeamMentor\IE_TeamMentor\IE_TeamMentor_ExtensionMethods_Pages.cs" />
+    <Compile Include="_API_TeamMentor\IE_TeamMentor\Tests\Test_IE_TeamMentor_ExtensionMethods_Create.cs" />
+    <Compile Include="_API_TeamMentor\IE_TeamMentor\Tests\Test_IE_TeamMentor_ExtensionMethods_Login.cs" />
     <Compile Include="_API_TeamMentor\TM_Proxy\TM_Proxy_ExtensionMethods_TBot_Brain.cs" />
-    <Compile Include="_API_TeamMentor\Tests\Test_TM_Proxy_ExtensionMethods_TBot_Brain.cs" />
+    <Compile Include="_API_TeamMentor\TM_Proxy\Tests\Test_TM_Proxy_ExtensionMethods_TBot_Brain.cs" />
     <Compile Include="_Config_And_Helpers\Classes\NUnitTests_Cassini_TeamMentor.cs" />
     <Compile Include="_API_TeamMentor\TM_Proxy\TeamMentor_Objects_Proxy.cs" />
     <Compile Include="_Config_And_Helpers\ExtensionMethods\NUnitTests_Cassini_TeamMentor_ExtensionMethods.cs" />
-    <Compile Include="_API_TeamMentor\Test_IE_TeamMentor.cs" />
+    <Compile Include="_API_TeamMentor\IE_TeamMentor\Tests\Test_IE_TeamMentor_ExtensionMethods_Pages.cs" />
     <Compile Include="_Config_And_Helpers\Test_Config_And_Helpers\Test_Cassini_Access_TM_Variables.cs" />
     <Compile Include="_Config_And_Helpers\Test_Config_And_Helpers\Test_NUnitTests_Cassini_TeamMentor.cs" />
     <Compile Include="_Config_And_Helpers\Test_Config_And_Helpers\Test_NUnitTests_Cassini_TeamMentor_ExtensionMethods.cs" />
-    <Compile Include="_API_TeamMentor\Tests\Test_TeamMentor_Objects_Proxy.cs" />
+    <Compile Include="_API_TeamMentor\TM_Proxy\Tests\Test_TeamMentor_Objects_Proxy.cs" />
     <Compile Include="_Using_Cassini\Content_Static\Test_TeamMentor_Static_Content.cs" />
     <Compile Include="_Using_Cassini\TM_Admin_Workflows\Test_Cassini_Library_Management.cs" />
     <Compile Include="_Using_Cassini\TM_User_Workflows\Test_Cassini_Password_Reset.cs" />
