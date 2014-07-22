@@ -33,7 +33,7 @@
         <strong>TM_FileStorage.Current.path_XmlDatabase():</strong>  <%=TM_FileStorage.Current.path_XmlDatabase() %><br />
         <strong>TM_FileStorage.Current.path_XmlLibraries():</strong> <%=TM_FileStorage.Current.path_XmlLibraries() %><br />
         <strong>TM_Server.Location:</strong> <%=TM_FileStorage.Current.tmServer_Location() %><br />
-        <strong>TM_Config.Location:</strong> <%= TM_UserData.Current.tmConfig_Location() %><br />
+        <strong>TM_Config.Location:</strong> <%= TM_FileStorage.Current.tmConfig_Location() %><br />
         <hr />
         <strong>UserData.Path_UserData:</strong> <%= TM_FileStorage.Current.path_UserData() %><br />
         <strong># of loaded users</strong> <%= TM_UserData.Current.TMUsers.size() %><br />

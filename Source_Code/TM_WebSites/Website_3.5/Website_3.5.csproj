@@ -659,6 +659,7 @@
     <Content Include="TBot\Admin\Internal\CSharp_REPL.cshtml" />
     <Content Include="TBot\Admin\Restart_Server.cshtml" />
     <Content Include="TBot\TBotMain.html" />
+    <None Include="TBot\Views\Debug\testPage.cshtml" />
     <Content Include="TBot_Monitor\app.js" />
     <Content Include="TBot_Monitor\components\main\controllers.js" />
     <Content Include="TBot_Monitor\components\main\directives.js" />
