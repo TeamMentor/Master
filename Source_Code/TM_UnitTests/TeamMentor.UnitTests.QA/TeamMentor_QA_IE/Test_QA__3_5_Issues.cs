@@ -35,6 +35,19 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_IE
                 .assert_Contains(texts_That_Confirm_Html_Footer);       // assert that the expected texts are there                 
         }
 
+        /// <summary>
+        /// https://github.com/TeamMentor/Master/issues/830
+        /// </summary>
+        [Test] public void Issue_830__Issues_in_git_file_history__Lets_get_rid_of_it_this_release()
+        {
+            var markdown_EditPage = "/Markdown/Editor?articleId=";            // link that will open the markdown editor
+            
+            this.new_IE_TeamMentor_Hidden()           
+                .login_Default_Admin_Account(markdown_EditPage)               // Login as admin and redirect to markdown edit page
+                .ie.assert_Has_Link        ("back to article")                // check that this link is there
+                   .assert_Doesnt_Have_Link("View File History and diff");    // (Issue_830) for the 3.5 release this link should not be there            
+        }
+
         [Test] public void Issue_838__SiteData_custom_TBot_pages_can_conflict_with_the_main_TBot_pages()
         {   
             //Open main Tbot Page and capture number of links          
