@@ -14,7 +14,7 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_IE
     public class Test_QA__TM_Config_Security_Settings
     {
         NUnitTests_Cassini_TeamMentor nUnitTests_Cassini;
-        TeamMentor_Objects_Proxy      tmProxy;
+        TM_Proxy      tmProxy;
         IE_TeamMentor                 ieTeamMentor;
         WatiN_IE                      ie;
         TMConfig                      tmConfig;

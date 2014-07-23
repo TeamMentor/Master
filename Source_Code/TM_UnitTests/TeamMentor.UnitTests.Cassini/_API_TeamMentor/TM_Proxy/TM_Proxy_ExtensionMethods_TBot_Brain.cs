@@ -7,7 +7,7 @@ namespace TeamMentor.UnitTests.Cassini
 {
     public static class TM_Proxy_ExtensionMethods_TBot_Brain
     {
-        public static TBot_Brain tbot_Brain(this TeamMentor_Objects_Proxy tmProxy)
+        public static TBot_Brain tbot_Brain(this TM_Proxy tmProxy)
         {
             if (tmProxy.isNull())
                 return null;
@@ -22,21 +22,21 @@ namespace TeamMentor.UnitTests.Cassini
             return tbotBrain;                      
         }
         
-        public static string tbot_Brain_TBotScriptsFolder(this TeamMentor_Objects_Proxy tmProxy)
+        public static string tbot_Brain_TBotScriptsFolder(this TM_Proxy tmProxy)
         {
             return  tmProxy.get_Property_Static<TBot_Brain,string>("TBotScriptsFolder");
         }
-        public static TeamMentor_Objects_Proxy tbot_Brain_TBotScriptsFolder(this TeamMentor_Objects_Proxy tmProxy, string value)
+        public static TM_Proxy tbot_Brain_TBotScriptsFolder(this TM_Proxy tmProxy, string value)
         {
             tmProxy.set_Property_Static<TBot_Brain>("TBotScriptsFolder", value);  
             return tmProxy;
         }        
-        public static Dictionary<string, string> tbot_Brain_SetAvailableScripts(this TeamMentor_Objects_Proxy tmProxy)
+        public static Dictionary<string, string> tbot_Brain_SetAvailableScripts(this TM_Proxy tmProxy)
         {
             return tmProxy.invoke_Static<Dictionary<string, string>>(typeof(TBot_Brain),"SetAvailableScripts");    
         }
 
-        public static Dictionary<string, string> tbot_Brain_AvailableScripts(this TeamMentor_Objects_Proxy tmProxy)
+        public static Dictionary<string, string> tbot_Brain_AvailableScripts(this TM_Proxy tmProxy)
         {
             return  tmProxy.get_Property_Static<TBot_Brain,Dictionary<string, string>>("AvailableScripts");
         }

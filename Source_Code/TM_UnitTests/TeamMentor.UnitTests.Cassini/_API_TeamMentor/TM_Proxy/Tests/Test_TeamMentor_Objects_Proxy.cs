@@ -11,7 +11,7 @@ namespace TeamMentor.UnitTests.Cassini
     public class Test_TeamMentor_Objects_Proxy
     {
         public NUnitTests_Cassini_TeamMentor nunitTests_Cassini;
-        public TeamMentor_Objects_Proxy tmProxy;
+        public TM_Proxy tmProxy;
 
         [TestFixtureSetUp]
         public void testFixtureSetUp()
@@ -75,7 +75,7 @@ namespace TeamMentor.UnitTests.Cassini
     public class Test_TeamMentor_Objects_Proxy_ExtensionMethods
     {
         public NUnitTests_Cassini_TeamMentor nunitTests_Cassini;
-        public TeamMentor_Objects_Proxy tmProxy;
+        public TM_Proxy tmProxy;
 
         [TestFixtureSetUp   ] public void testFixtureSetUp()          
         {

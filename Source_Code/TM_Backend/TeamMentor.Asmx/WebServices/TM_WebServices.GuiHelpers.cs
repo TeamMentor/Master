@@ -39,7 +39,7 @@ namespace TeamMentor.CoreLib
         {
             var libraryId = Guid.Empty;
                         
-            if (HttpContextFactory.Session["Library"].notNull())                
+            if (HttpContextFactory.Session.notNull() && HttpContextFactory.Session["Library"].notNull())                
             {
                 var libraryValue = HttpContextFactory.Session["Library"].str();
                 var library = (libraryValue.isGuid())

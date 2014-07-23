@@ -158,6 +158,10 @@
     <Compile Include="TeamMentor_QA_IE\Test_QA__TM_Config_Security_Settings.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\TM_Backend\TeamMentor.Asmx\TeamMentor.Asmx.csproj">
+      <Project>{AF783625-F52F-4558-B64C-AC982324A072}</Project>
+      <Name>TeamMentor.Asmx</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\TM_Backend\TeamMentor.AspNet\TeamMentor.AspNet.csproj">
       <Project>{5B02BD8E-BF90-4182-80A6-41842494399D}</Project>
       <Name>TeamMentor.AspNet</Name>

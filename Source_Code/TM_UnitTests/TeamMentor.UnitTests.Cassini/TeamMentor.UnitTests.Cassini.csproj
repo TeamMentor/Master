@@ -124,10 +124,16 @@
     <Compile Include="_API_TeamMentor\IE_TeamMentor\IE_TeamMentor_ExtensionMethods_Pages.cs" />
     <Compile Include="_API_TeamMentor\IE_TeamMentor\Tests\Test_IE_TeamMentor_ExtensionMethods_Create.cs" />
     <Compile Include="_API_TeamMentor\IE_TeamMentor\Tests\Test_IE_TeamMentor_ExtensionMethods_Login.cs" />
+    <Compile Include="_API_TeamMentor\TM_Proxy\TM_Proxy_ExtensionMethods_Helper_Reflection.cs" />
+    <Compile Include="_API_TeamMentor\TM_Proxy\TM_Proxy_ExtensionMethods_Misc.cs" />
     <Compile Include="_API_TeamMentor\TM_Proxy\TM_Proxy_ExtensionMethods_TBot_Brain.cs" />
     <Compile Include="_API_TeamMentor\TM_Proxy\Tests\Test_TM_Proxy_ExtensionMethods_TBot_Brain.cs" />
+    <Compile Include="_API_TeamMentor\TM_Proxy\TM_Proxy_ExtensionMethods_TM_Content.cs" />
+    <Compile Include="_API_TeamMentor\TM_Proxy\TM_Proxy_ExtensionMethods_TM_Settings.cs" />
+    <Compile Include="_API_TeamMentor\TM_Proxy\TM_Proxy_ExtensionMethods_TM_Users.cs" />
+    <Compile Include="_API_TeamMentor\TM_Proxy\TM_Proxy_ExtensionMethods_WatiN.cs" />
     <Compile Include="_Config_And_Helpers\Classes\NUnitTests_Cassini_TeamMentor.cs" />
-    <Compile Include="_API_TeamMentor\TM_Proxy\TeamMentor_Objects_Proxy.cs" />
+    <Compile Include="_API_TeamMentor\TM_Proxy\TM_Proxy.cs" />
     <Compile Include="_Config_And_Helpers\ExtensionMethods\NUnitTests_Cassini_TeamMentor_ExtensionMethods.cs" />
     <Compile Include="_API_TeamMentor\IE_TeamMentor\Tests\Test_IE_TeamMentor_ExtensionMethods_Pages.cs" />
     <Compile Include="_Config_And_Helpers\Test_Config_And_Helpers\Test_Cassini_Access_TM_Variables.cs" />
@@ -175,6 +181,10 @@
     <ProjectReference Include="..\..\TM_Backend\TeamMentor.Users\TeamMentor.Users.csproj">
       <Project>{5844D933-6FB7-4717-AE60-85D96F2EFA29}</Project>
       <Name>TeamMentor.Users</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TeamMentor.UnitTests\TeamMentor.UnitTests.csproj">
+      <Project>{04B01F87-4467-454F-B9F3-305647BB4E86}</Project>
+      <Name>TeamMentor.UnitTests</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using FluentSharp.CoreLib;
-using NUnit.Framework;
 
 namespace FluentSharp.NUnit
 {
@@ -44,29 +40,5 @@ namespace FluentSharp.NUnit
             }
             return thread;
         }
-    }
-    public class Extra_NUnit_Messages
-    {
-        
-    }
-    public static class Extra_NUnit_ExtensionMethods
-    {
-        
-
-        
-
-        
-
-        
-        
-
-        
-
-        
-    }
-
-    public static class Extra_NUnitTests_Methods
-    {
-        
-    }
+    }       
 }

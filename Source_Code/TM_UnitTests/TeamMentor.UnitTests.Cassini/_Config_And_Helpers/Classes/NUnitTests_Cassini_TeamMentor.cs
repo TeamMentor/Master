@@ -11,7 +11,7 @@ namespace TeamMentor.UnitTests.Cassini
     public class NUnitTests_Cassini_TeamMentor : NUnitTests
     {
         public API_Cassini              apiCassini;     
-        public TeamMentor_Objects_Proxy tmProxy;
+        public TM_Proxy tmProxy;
         public string                   webRoot;
         public string                   path_XmlLibraries;
         public int                      port;
