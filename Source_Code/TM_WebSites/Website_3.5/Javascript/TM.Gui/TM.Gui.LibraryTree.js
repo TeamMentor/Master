@@ -70,7 +70,7 @@ window.TM.Gui.LibraryTree =    {
                                                      .delegate("a", "click", this.setSelectedId)
                                                      .delegate("a", "click", function() { that.onClick(); } );
                                     
-                                    //bind renamema nd create events
+                                    //bind renamed create events
                                     $(this.targetDiv)
                                           .bind("rename.jstree",        window.TM.Gui.LibraryTree.onRename)
                                           .bind("create.jstree",        window.TM.Gui.LibraryTree.onCreate);
@@ -187,17 +187,18 @@ window.TM.Gui.LibraryTree.title             = function(node, value) {
 window.TM.Gui.LibraryTree.firstNode         = function()            {
         return window.TM.Gui.LibraryTree.nodes().first();
     };
-window.TM.Gui.LibraryTree.selectNode        = function(node)        {
-        //alert(TM.Gui.LibraryTree.selectedNode === node)
+window.TM.Gui.LibraryTree.selectNode        = function(node)        {        
         
-        if (node !==undefined) // isDefined(node))
+        if (node !==undefined) 
         {					
             var selectedNodeId = $(node).attr('id');
-            if (selectedNodeId === undefined || selectedNodeId==="") //isUndefined(selectedNodeId) || selectedNodeId==="")
+            if (selectedNodeId === undefined || selectedNodeId==="") 
             {
                 selectedNodeId = $(node).parent().attr('id');
+                if (selectedNodeId === undefined)
+                    selectedNodeId = $(node).parent().parent().attr('id');   // see test Issue_681__Navigating_libraries_views_folders__Clicking_the_icon_doesnt_work
             }
-            if (selectedNodeId !== undefined) //isDefined(selectedNodeId))
+            if (selectedNodeId !== undefined) 
             {			
                 if(selectedNodeId !== window.TM.Gui.selectedNodeId)
                 {
