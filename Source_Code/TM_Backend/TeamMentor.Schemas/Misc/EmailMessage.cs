@@ -2,14 +2,14 @@
 
 namespace TeamMentor.CoreLib
 {
-    [Serializable]
-    public class EmailMessage_Post : MarshalByRefObject
+    //[Serializable]   // was throwing REST deserialization error
+    public class EmailMessage_Post //: MarshalByRefObject
     {
         public string To            { get; set; }
         public string Subject       { get; set; }
         public string Message       { get; set; }
     }
-    [Serializable]
+    //[Serializable]
     public class EmailMessage : EmailMessage_Post
     {
         public string     From          { get; set; }                

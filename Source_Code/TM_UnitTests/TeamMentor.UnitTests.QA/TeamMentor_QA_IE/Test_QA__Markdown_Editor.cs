@@ -27,7 +27,7 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_IE
             var ie               = ieTeamMentor.ie; 
             ieTeamMentor.login_Default_Admin_Account("/article/{0}".format(article.Metadata.Id));               // Login as admin and redirect to article page
             
-            var original_Content = ie.element("guidanceItem").innerHtml().assert_Not_Null();                    // get reference to current content
+            var original_Content = ie.element("guidanceItem").innerText().assert_Not_Null();                    // get reference to current content
             ie.assert_Has_Link("Markdown Editor")       
               .link           ("Markdown Editor").click();                                                      // open markdown editor page          
                         

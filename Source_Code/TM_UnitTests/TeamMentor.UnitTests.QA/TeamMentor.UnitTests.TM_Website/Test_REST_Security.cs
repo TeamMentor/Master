@@ -146,12 +146,18 @@ namespace TeamMentor.UnitTests.QA
                 var targetMethod = securityMapping.MethodName.format(securityMapping.MethodParameters);
                 var result       = getResult(securityMapping, targetMethod);
                 if (securityMapping.AllowedUser <= allowedUser)
+                {
+                    if(result.isFalse())
+                    {
+                        //set breakpoint here
+                    }
                     Assert.IsTrue(result , "On method: '{0}' for user '{1}'".format(targetMethod, allowedUser));
+                }
                 else
                 { 
                     if (result)
                     {
-                        
+                        //set breakpoint here
                     }
                     Assert.IsFalse(result, "On method: '{0}' for user '{1}'".format(targetMethod, allowedUser));   
                 }

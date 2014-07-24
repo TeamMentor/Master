@@ -45,17 +45,20 @@ namespace TeamMentor.Website
             if (article.notNull())
             {
                 
-                ViewData["Content"] = article.Content.Data_Json;
-                ViewData["Article_Title"] = article.Metadata.Title;
-                ViewData["Article_Technology"] = article.Metadata.Technology;
-                ViewData["Article_Phase"] = article.Metadata.Phase;
-                ViewData["Article_Type"] = article.Metadata.Type;
-                ViewData["Article_Category"] = article.Metadata.Category;
-                ViewData["DirectLink"] = article.Metadata.DirectLink;                
-                ViewData["Article_DataType"] = article.Content.DataType;
+                ViewData["Content"           ] = article.Content.Data_Json   ?? "";
+                ViewData["Article_Title"     ] = article.Metadata.Title      ?? "";
+                ViewData["Article_Technology"] = article.Metadata.Technology ?? "";
+                ViewData["Article_Phase"     ] = article.Metadata.Phase      ?? "";
+                ViewData["Article_Type"      ] = article.Metadata.Type       ?? "";
+                ViewData["Article_Category"  ] = article.Metadata.Category   ?? "";
+                ViewData["DirectLink"        ] = article.Metadata.DirectLink ?? "";                
+                ViewData["Article_DataType"  ] = article.Content.DataType    ?? "";
             }
             else
-                ViewData["Content"] = "NO ARTICLE With GUID: {0}".format(articleId);
+            { 
+                ViewData["Content"]            = "NO ARTICLE With GUID: {0}".format(articleId);
+                ViewData["Article_DataType"  ] = "";
+            }
             ViewData["ArticleId"] = articleId;
      
             return View(@"~/MVC/Views/MarkDown_Editor.cshtml");

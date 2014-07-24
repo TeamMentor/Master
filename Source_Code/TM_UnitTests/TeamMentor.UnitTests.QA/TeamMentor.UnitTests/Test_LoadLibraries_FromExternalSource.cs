@@ -36,6 +36,8 @@ namespace TeamMentor.UnitTests.QA
         [TearDown]
         public void tearDown()
         {
+            if (Tests_Consts.offline)
+                return;
             admin.assert(()=>{
                                 TM_FileStorage.Custom_WebRoot = null;
                                 tmFileStorage.delete_Database();

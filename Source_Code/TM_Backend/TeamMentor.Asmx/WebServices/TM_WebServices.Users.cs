@@ -40,7 +40,10 @@ namespace TeamMentor.CoreLib
         [WebMethod(EnableSession = true)]	[Admin]	                    			public bool         SetUserGroupId  (int userId, int roleId)  		{	admin.demand(); return userData.setUserGroupId   (userId, roleId);     }  	
         [WebMethod(EnableSession = true)]	[Admin]	                    			public List<string> GetUserRoles    (int userId)					{	admin.demand(); return userData.getUserRoles     (userId);             }  	
 
-        [WebMethod(EnableSession = true)]	[Admin]	                                public bool         SendEmail               (EmailMessage_Post emailMessagePost)        {   admin.demand(); return new SendEmails().send(emailMessagePost);                     }
+        [WebMethod(EnableSession = true)]	[Admin]	                                public bool         SendEmail               (EmailMessage_Post emailMessagePost)
+        {
+            admin.demand(); return new SendEmails().send(emailMessagePost);
+        }
         [WebMethod(EnableSession = true)]	[Admin]	                    			public List<Guid>   GetUser_AuthTokens      (int userId)                                {	admin.demand(); return  userData.getUserAuthTokens(userId);                              }
         [WebMethod(EnableSession = true)]	[Admin]	                    			public Guid         CreateUser_AuthToken    (int userId)                                {	admin.demand(); return  userData.createUserAuthToken(userId);                            }        
 //        [WebMethod(EnableSession = true)]	[Admin]	                    			public TM_User      SetUser_PostLoginView   (string userName, string postLoginView)	    {	return userName.tmUser().set_PostLoginView(postLoginView).user();        }

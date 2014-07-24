@@ -27,7 +27,12 @@ namespace TeamMentor.CoreLib
         }
         
         //userActivites
-
+        public static TM_Server                  userActivities_Disable_Logging(this TM_Server tmServer, bool value)
+        {
+            if (tmServer.notNull())
+                tmServer.UserActivities_Disable_Logging = value;
+            return tmServer;
+        }
         public static bool                  userActivities_Disable_Logging(this TM_Server tmServer)
         {
             return tmServer.isNull() || tmServer.UserActivities_Disable_Logging;
