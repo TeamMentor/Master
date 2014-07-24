@@ -124,6 +124,7 @@
     <Compile Include="_API_TeamMentor\IE_TeamMentor\IE_TeamMentor_ExtensionMethods_Pages.cs" />
     <Compile Include="_API_TeamMentor\IE_TeamMentor\Tests\Test_IE_TeamMentor_ExtensionMethods_Create.cs" />
     <Compile Include="_API_TeamMentor\IE_TeamMentor\Tests\Test_IE_TeamMentor_ExtensionMethods_Login.cs" />
+    <Compile Include="_API_TeamMentor\TM_Proxy\Tests\Test_TM_Proxy_ExtensionMethods_TM_Users.cs" />
     <Compile Include="_API_TeamMentor\TM_Proxy\TM_Proxy_ExtensionMethods_Helper_Reflection.cs" />
     <Compile Include="_API_TeamMentor\TM_Proxy\TM_Proxy_ExtensionMethods_Misc.cs" />
     <Compile Include="_API_TeamMentor\TM_Proxy\TM_Proxy_ExtensionMethods_TBot_Brain.cs" />

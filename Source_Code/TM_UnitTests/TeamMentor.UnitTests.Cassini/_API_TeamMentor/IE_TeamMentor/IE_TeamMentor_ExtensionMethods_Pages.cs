@@ -14,9 +14,17 @@ namespace TeamMentor.UnitTests.Cassini
         {
             return ieTeamMentor.open("/Login");
         }        
+        public static IE_TeamMentor page_Logout(this IE_TeamMentor ieTeamMentor)
+        {
+            return ieTeamMentor.open("/Logout");
+        }        
         public static IE_TeamMentor page_TBot(this IE_TeamMentor ieTeamMentor)
         {
             return ieTeamMentor.open("/Tbot");
         }        
+        public static IE_TeamMentor page_WhoAmI(this IE_TeamMentor ieTeamMentor)
+        {
+            return ieTeamMentor.open("/WhoAmI");
+        }       
     }
 }

@@ -7,8 +7,6 @@ namespace TeamMentor.CoreLib
 {
     public static class TM_UserData_Ex_Users
     {        
-
-
         public static TMUser        tmUser                      (this int userId)
         {
             return TM_UserData.Current.tmUser(userId);

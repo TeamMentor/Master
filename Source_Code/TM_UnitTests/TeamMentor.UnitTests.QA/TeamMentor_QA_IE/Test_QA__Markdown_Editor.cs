@@ -31,14 +31,16 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_IE
             ie.assert_Has_Link("Markdown Editor")       
               .link           ("Markdown Editor").click();                                                      // open markdown editor page          
                         
-            ie.wait_For_Element_InnerHtml("Content").innerHtml().assert_Not_Null()
+            ie.wait_For_Element_InnerHtml("Content").assert_Not_Null()
+              .element                   ("Content").innerHtml()
                                                     .assert_Is(original_Content);                               // confirm content matches what was on the view page
 
             var new_Content      = "This is the new content of this article".add_5_RandomLetters();             // new 'test content'
 
             ie.element("Content").to_Field().value(new_Content);                                                // put new content in markdown editor
             ie.button("Save").click();                                                                          // save 
-            ie.wait_For_Element_InnerHtml("guidanceItem").innerHtml().assert_Not_Null()        
+            ie.wait_For_Element_InnerHtml("guidanceItem").assert_Not_Null()        
+              .element                   ("guidanceItem").innerHtml()
                                                          .assert_Is("<P>{0}</P>".format(new_Content));         // confirm that 'test content' was saved ok (and was markdown transformed)            
         }
     }
