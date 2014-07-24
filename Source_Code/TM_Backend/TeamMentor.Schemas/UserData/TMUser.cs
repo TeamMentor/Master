@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Net;
+using System.Runtime.Serialization;
 using System.Xml.Serialization;
+using FluentSharp.CoreLib;
 
 namespace TeamMentor.CoreLib
 {    
@@ -41,13 +44,15 @@ namespace TeamMentor.CoreLib
             Sessions        = new List<UserSession>();
             AuthTokens      = new List<AuthToken>();
             UserActivities  = new List<UserActivity>();
-            AccountStatus   = new UserAccountStatus
-                                    {
-                                        ExpirationDate      = default(DateTime), //TMConfig.Current.currentExpirationDate(), 
-                                        PasswordExpired     = false,
-                                        AccountNeverExpires = TMConfig.Current.TMSecurity.NewAccounts_DontExpire,
-                                        UserEnabled         = TMConfig.Current.TMSecurity.NewAccounts_Enabled //TMConfig.Current.newAccountsEnabled()                                        
-                                    };
+            AccountStatus   = TMConfig.Current.isNull() 
+                                    ? new UserAccountStatus()
+                                    : new UserAccountStatus
+                                            {
+                                                ExpirationDate      = default(DateTime), //TMConfig.Current.currentExpirationDate(), 
+                                                PasswordExpired     = false,
+                                                AccountNeverExpires = TMConfig.Current.TMSecurity.NewAccounts_DontExpire,
+                                                UserEnabled         = TMConfig.Current.TMSecurity.NewAccounts_Enabled //TMConfig.Current.newAccountsEnabled()                                        
+                                            };
             Stats           = new UserStats
                                     {
                                         CreationDate = DateTime.Now                                       
@@ -55,11 +60,12 @@ namespace TeamMentor.CoreLib
         }
     }
 
-    [Serializable]    
+    [Serializable]
+    [DataContract]  
     public class UserTag : MarshalByRefObject
     {
-        [XmlAttribute]	public string   Key		            { get; set; }
-        [XmlAttribute]	public string   Value		        { get; set; }        
+        [XmlAttribute][DataMember][Required][StringLength(255)] public string   Key		        { get; set; }
+        [XmlAttribute][DataMember][Required][StringLength(255)] public string   Value		        { get; set; }        
     }
 
     [Serializable]    

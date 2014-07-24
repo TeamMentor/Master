@@ -7,6 +7,7 @@ using FluentSharp.CoreLib;
 using FluentSharp.NUnit;
 using NUnit.Framework;
 using TeamMentor.CoreLib;
+using TeamMentor.UserData;
 
 namespace TeamMentor.UnitTests.QA.TeamMentor_QA
 {
@@ -46,5 +47,23 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA
                             "7bqGsnUsst2j/rKl6/EUg0SOLX4DpKdVdfrCjeihffP/wFKqIizWTCBpuwAO0m118fpatwrZ7RhvJPAc6PJYTA==");
         }
 
+        [Test] public void Issue_826__No_lenght_constraint_on_User_Tags()
+        {
+            var userData = new TM_UserData();
+            var newUser  = new NewUser().with_Random_Data();
+            newUser.validate().asStringList().assert_Is_Empty();
+            
+            var userTag_Ok   = new UserTag { Key = 254.randomLetters(), Value = 254.randomLetters()};
+            var userTag_Fail = new UserTag { Key = 256.randomLetters(), Value = 256.randomLetters()};
+
+            userTag_Ok  .validate().assert_Empty();
+            userTag_Fail.validate().assert_Not_Empty();
+
+            newUser.UserTags.add(userTag_Ok);
+            userData.createTmUser(newUser).assert_Is_Not(0);
+
+            newUser.UserTags.add(userTag_Fail);
+            userData.createTmUser(newUser).assert_Is(0);
+        }
     }
 }

@@ -143,8 +143,11 @@ namespace TeamMentor.UserData
 
             //validate user against the DataContract specificed in the NewUser class
             if (newUser.validation_Failed())        
-                return 0;
-
+                return 0;            
+            if(newUser.UserTags.notEmpty())
+                foreach(var userTag in newUser.UserTags)
+                    if(userTag.validation_Failed())
+                        return 0;
             // if there is a groupId provided we must check if the user has the manageUsers Priviledge							
             if (newUser.GroupId !=0)		 
                 UserRole.ManageUsers.demand();		
@@ -202,6 +205,16 @@ namespace TeamMentor.UserData
             if(newUsers.isNull())
                 return new List<int>();
             return newUsers.Select(newUser => userData.createTmUser(newUser)).toList();
+        }
+    
+        public static NewUser       with_Random_Data            (this NewUser newUser)
+        {
+            foreach(var name in newUser.property_Values_AsStrings().keys())
+	            newUser.property(name,"!!10".add_5_RandomLetters());
+            newUser.Email = "testUser".random_Email();
+            newUser.UserTags = new List<UserTag>();
+            newUser.UserTags.add(new UserTag {Key = "key".add_5_RandomLetters(), Value = "value".add_5_RandomLetters()});
+            return newUser;
         }
     }
 }
