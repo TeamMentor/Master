@@ -53,5 +53,26 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_Http
                         .assert_Not_Contains(metadata.Id.str())         // the id is NOT there
                         .assert_Contains    (content.Data_Json);        // but the actually article's content text (or html) is
         }
+        [Test] public void Direct_Links_To_Article()
+        {
+            var ieTM = this.new_IE_TeamMentor_Hidden();
+            tmProxy.editor_Assert();
+            var article = tmProxy.article_New();
+
+            var html_Guid_Article = ieTM.open("/article/" + article.Metadata.Id);
+            var html_Guid_A       = ieTM.open("/a/" + article.Metadata.Id);
+
+            html_Guid_Article.assert_Is(html_Guid_A);
+
+            var directLlink             = "link_".add_5_RandomLetters();;
+            article.Metadata.DirectLink = directLlink;
+
+            var html_DirectLink_Article = ieTM.open("/article/" + directLlink);
+            var html_DirectLink_A       = ieTM.open("/a/" + directLlink);
+
+            html_Guid_Article.assert_Is(html_DirectLink_Article)
+                             .assert_Is(html_DirectLink_A      );
+            ieTM.close();
+        }
     }
 }

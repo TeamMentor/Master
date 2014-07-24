@@ -266,6 +266,7 @@ namespace TeamMentor.CoreLib
                         break;
                     case "viewer":
                     case "article":
+                    case "a":
                         handle_ArticleViewRequest(data);
                         break;
                     case "edit":
