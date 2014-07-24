@@ -51,6 +51,7 @@ namespace TeamMentor.Website
                 ViewData["Article_Phase"] = article.Metadata.Phase;
                 ViewData["Article_Type"] = article.Metadata.Type;
                 ViewData["Article_Category"] = article.Metadata.Category;
+                ViewData["DirectLink"] = article.Metadata.DirectLink;                
                 ViewData["Article_DataType"] = article.Content.DataType;
             }
             else
@@ -63,16 +64,17 @@ namespace TeamMentor.Website
         //receive article content and update article
         [AcceptVerbs(HttpVerbs.Post)]
         [ValidateInput(false)] 
-        public ActionResult SaveContent(string articleId, string content, string category, string type, string phase, string technology, string title, string dataType)
+        public ActionResult SaveContent(string articleId, string content, string category, string type, string phase, string technology, string title, string dataType, string directLink)
         {
             var article = getArticle(articleId);
             article.Content.Data.Value = content;
-            article.Content.DataType   = dataType ?? "Markdown";
+            article.Content.DataType   = dataType ?? article.Content.DataType;
             article.Metadata.Title = title ?? article.Metadata.Title;
             article.Metadata.Category = category ?? article.Metadata.Category;
             article.Metadata.Type = type ?? article.Metadata.Type;
             article.Metadata.Phase = phase ?? article.Metadata.Phase;
             article.Metadata.Technology = technology ?? article.Metadata.Technology;            
+            article.Metadata.DirectLink   = directLink ?? article.Metadata.DirectLink;
             article.xmlDB_Save_Article(tmDatabase);
 
             TM_WebServices.guiObjectsCacheOk = false;
