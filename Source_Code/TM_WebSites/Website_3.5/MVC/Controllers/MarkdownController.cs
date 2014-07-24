@@ -63,11 +63,11 @@ namespace TeamMentor.Website
         //receive article content and update article
         [AcceptVerbs(HttpVerbs.Post)]
         [ValidateInput(false)] 
-        public ActionResult SaveContent(string articleId, string content, string category, string type, string phase, string technology, string title)
+        public ActionResult SaveContent(string articleId, string content, string category, string type, string phase, string technology, string title, string dataType)
         {
             var article = getArticle(articleId);
             article.Content.Data.Value = content;
-            article.Content.DataType   = "Markdown";
+            article.Content.DataType   = dataType ?? "Markdown";
             article.Metadata.Title = title ?? article.Metadata.Title;
             article.Metadata.Category = category ?? article.Metadata.Category;
             article.Metadata.Type = type ?? article.Metadata.Type;
