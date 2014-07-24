@@ -11,7 +11,8 @@ using FluentSharp.Web35;
 
 namespace TeamMentor.CoreLib
 {    
-    public class SendEmails
+    [Serializable]
+    public class SendEmails : MarshalByRefObject
     {   
         public static List<EmailMessage> Sent_EmailMessages  { get; set; }
         public static string             TM_Server_URL       { get; set; }
@@ -52,19 +53,31 @@ namespace TeamMentor.CoreLib
         }
         public static string mapTMServerUrl()           // this should be set by an live HTTP request
         {       
-            if (TM_Server_URL.isNull())
+            TM_Server_URL = TMConsts.DEFAULT_TM_LOCALHOST_SERVER_URL;
+            if (HttpContextFactory.Context.isNotNull() && HttpContextFactory.Request.isNotNull())
             {
-                TM_Server_URL = TMConsts.DEFAULT_TM_LOCALHOST_SERVER_URL;
-                if (HttpContextFactory.Context.isNotNull() && HttpContextFactory.Request.isNotNull())
+                var request = HttpContextFactory.Request;
+                var scheme = request.IsSecureConnection ? "https" : "http";
+                var serverName = request.ServerVariables["Server_Name"];
+                var serverPort = request.ServerVariables["Server_Port"];
+                if (serverName.notNull() && serverPort.notNull())                
                 {
-                    var request = HttpContextFactory.Request;
-                    var scheme = request.IsSecureConnection ? "https" : "http";
-                    var serverName = request.ServerVariables["Server_Name"];
-                    var serverPort = request.ServerVariables["Server_Port"];
-                    if (serverName.notNull() && serverPort.notNull())                
-                        TM_Server_URL = "{0}://{1}:{2}".format(scheme, serverName, serverPort);                                    
-                }                            
-            }
+                    switch(serverPort)
+                    {
+                        case "80":
+                            TM_Server_URL = "http://{0}".format(serverName);
+                            break;
+                        case "443":
+                            TM_Server_URL = "https://{0}".format(serverName);
+                            break;
+                        default:
+                            TM_Server_URL = "{0}://{1}:{2}".format(scheme, serverName, serverPort);
+                            break;
+                    }
+
+                    
+                }
+            }                            
             return TM_Server_URL;
         }
 
@@ -272,6 +285,7 @@ If you didn't make this request, please let us know at support@teammentor.net.
         {
             if (Disable_EmailEngine)
                 return null;
+            mapTMServerUrl();  
             var thread = O2Thread.mtaThread(
                 ()=>{
                         try
@@ -291,6 +305,7 @@ If you didn't make this request, please let us know at support@teammentor.net.
         {
             if (Disable_EmailEngine)
                 return null;
+            mapTMServerUrl();  
             var thread = O2Thread.mtaThread(
                 ()=>{
                         try

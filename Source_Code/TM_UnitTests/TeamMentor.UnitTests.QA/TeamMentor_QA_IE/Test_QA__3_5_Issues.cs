@@ -249,7 +249,7 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_IE
             tmProxy.editor_Assert();
 
             var article = tmProxy.library_New_Article_New().assert_Not_Null();
-            tmProxy.cache_Reload__Data();
+            //tmProxy.cache_Reload__Data();
 
             article.Content.DataType.assert_Is("Markdown");
 
@@ -257,7 +257,7 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_IE
 
             var expectedMarkdownEditLink = ieTeamMentor.siteUri
                                                        .append("/Markdown/Editor?articleId={0}".format(article.Metadata.Id));
-            ie.wait_For_Uri (expectedMarkdownEditLink)
+            ie.wait_For_Uri (expectedMarkdownEditLink,3000)
               .assert_Uri_Is(expectedMarkdownEditLink);
             
             ie.wait_For_Element_InnerHtml("Content").assert_Not_Null()

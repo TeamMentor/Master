@@ -2,12 +2,14 @@
 
 namespace TeamMentor.CoreLib
 {
-    public class EmailMessage_Post
+    [Serializable]
+    public class EmailMessage_Post : MarshalByRefObject
     {
         public string To            { get; set; }
         public string Subject       { get; set; }
         public string Message       { get; set; }
     }
+    [Serializable]
     public class EmailMessage : EmailMessage_Post
     {
         public string     From          { get; set; }                
@@ -30,6 +32,7 @@ namespace TeamMentor.CoreLib
         }
     }
 
+    [Serializable]
     public enum SentStatus
     {
         New,

@@ -100,10 +100,7 @@ namespace TeamMentor.CoreLib
      //          HttpContextFactory.Response.Redirect(TMConsts.DEFAULT_ERROR_PAGE_REDIRECT);            
         }           
         public void Application_BeginRequest()
-        {   
-            if(SendEmails.TM_Server_URL.isNull())                        // (for this version of SendEMails)
-                SendEmails.mapTMServerUrl();                             // This configuration needs to be done using a live HttpContext object   
-
+        {               
             TMEngine.performHealthCheck()
                     .logRequest()
                     .handleRequest();

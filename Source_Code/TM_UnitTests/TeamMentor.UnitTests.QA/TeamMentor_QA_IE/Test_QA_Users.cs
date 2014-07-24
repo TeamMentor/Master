@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FluentSharp.CoreLib;
 using FluentSharp.NUnit;
 using FluentSharp.Watin;
@@ -16,9 +13,8 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_IE
     public class Test_QA_Users : NUnitTests_Cassini_TeamMentor
     {
         [SetUp] public void setup()
-        {
-            //tmProxy.assert_Null();
-//            this.tmProxy_Refresh();
+        {            
+            this.tmProxy_Refresh();
         }
         [Test] public void Sign_Up_For_New_Account()
         {
@@ -58,6 +54,41 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_IE
             ie.element     ("topRightMenu").innerText()
                                            .assert_Contains("Logged in as", random_NewUser.Username);
 
+            ieTeamMentor.close();
+        }
+
+        [Test] public void Password_Reset_Workflow()
+        {
+            var ieTeamMentor = this.new_IE_TeamMentor_Hidden();
+            var ie           = ieTeamMentor.ie;
+
+            Func<List<EmailMessage>> email_Sent_EmailMessages = ()=>
+	            {
+		            return tmProxy.get_Property_Static<List<EmailMessage>>(typeof(SendEmails), "Sent_EmailMessages");
+	            };
+            Func<string> email_TM_Server_URL = ()=>
+	            {
+		            return tmProxy.get_Property_Static<string>(typeof(SendEmails), "TM_Server_URL");
+	            };	
+
+            var user = tmProxy.user_New().assert_Not_Null();            // create temp user
+
+            ieTeamMentor.page_Login();                                  // go to login page
+            ie.link("Forgot your password?").click();                   // go to password forgot
+            
+            ie.waitForField("email").value(user.EMail);                 // request reset link
+            ie.button("submitButton").click();
+            
+            for(var i=0; i< 5; i++)
+            {
+                var sentMessages = email_Sent_EmailMessages();
+                if (sentMessages.last().Message.contains("You can change the password of your"))
+                    break;
+                250.sleep();                                            // need better solution to have async email sending TM architecture 
+            }
+            email_Sent_EmailMessages().last()
+                                      .Message.info()
+                                      .assert_Contains("You can change the password of your");            
             ieTeamMentor.close();
         }
     }
