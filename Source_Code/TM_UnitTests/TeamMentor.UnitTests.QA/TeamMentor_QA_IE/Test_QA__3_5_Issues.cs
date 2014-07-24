@@ -28,7 +28,7 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_IE
         [Test] public void Issue_681__Navigating_libraries_views_folders__Clicking_the_icon_doesnt_work()
         {
             var tmWebServices  = new TM_WebServices();            
-            var ieTeamMentor   = this.new_IE_TeamMentor();
+            var ieTeamMentor   = this.new_IE_TeamMentor_Hidden();
             var ie             = ieTeamMentor.ie;
 
             Func<string, string> clickOnNodeUsingJQuerySelector = 
@@ -111,6 +111,7 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_IE
                 .ie.assert_Has_Link        ("back to article")                // check that this link is there
                    .assert_Doesnt_Have_Link("View File History and diff");    // (Issue_830) for the 3.5 release this link should not be there            
         }
+        
         /// <summary>
         /// https://github.com/TeamMentor/Master/issues/829
         /// </summary>
@@ -140,6 +141,7 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_IE
               .assert_Has_Link              ("TeamMentor Admin (TBot)")
               .assert_Doesnt_Have_Link      ("Control Panel (legacy)");
         }
+        
         /// <summary>
         /// https://github.com/TeamMentor/Master/issues/831
         /// 
@@ -235,5 +237,35 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_IE
 
             ieTeamMentor.close();
         }
+     
+        /// <summary>
+        /// https://github.com/TeamMentor/Master/issues/840
+        /// </summary>
+        [Test] public void Issue_840_New_articles_should_default_to_Markdown()
+        {
+            var ieTeamMentor = this.new_IE_TeamMentor_Hidden();
+            var ie           = ieTeamMentor.ie;
+
+            tmProxy.editor_Assert();
+
+            var article = tmProxy.library_New_Article_New().assert_Not_Null();
+            tmProxy.cache_Reload__Data();
+
+            article.Content.DataType.assert_Is("Markdown");
+
+            ieTeamMentor.login_Default_Admin_Account("/editor/"+ article.Metadata.Id);
+
+            var expectedMarkdownEditLink = ieTeamMentor.siteUri
+                                                       .append("/Markdown/Editor?articleId={0}".format(article.Metadata.Id));
+            ie.wait_For_Uri (expectedMarkdownEditLink)
+              .assert_Uri_Is(expectedMarkdownEditLink);
+            
+            ie.wait_For_Element_InnerHtml("Content").assert_Not_Null()
+              .element                   ("Content").innerHtml()
+                                                    .assert_Is(article.Content.Data_Json); 
+
+            ieTeamMentor.close();
+        }
+        
     }
 }

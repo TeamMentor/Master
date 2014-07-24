@@ -270,7 +270,7 @@ namespace TeamMentor.CoreLib
                         break;
                     case "edit":
                     case "editor":
-                         transfer_ArticleEditor(data);
+                         handle_ArticleEditRequest(data);
                         break;
                     case "notepad":
                         handleAction_Xsl(data, "Notepad_Edit.xslt");
@@ -635,8 +635,30 @@ namespace TeamMentor.CoreLib
             else
                 tmWebServices.logUserActivity("View Article (direct)", data);
             
-            transfer_Request("articleViewer");              // will trigger exception    
-        }		
+            transfer_Request("articleViewer");                      // will trigger exception    
+        }	
+	    public void handle_ArticleEditRequest(string data)
+	    {
+            var guid = tmWebServices.getGuidForMapping(data);
+            if (guid == Guid.Empty)
+                transfer_Request("articleViewer");                  // will trigger exception
+            else
+            {
+                tmWebServices.RBAC_Demand_EditArticles();           // will trigger an Security exception if the user if not authorized
+                
+                var article = tmWebServices.GetGuidanceItemById(guid); 
+                        
+                if (article.Content.DataType.lower() == "markdown")
+                {
+                   context.Response.Redirect("/Markdown/Editor?articleId={0}".format(guid));
+                }
+                else
+                { 
+	                transfer_ArticleEditor(article);
+                }
+            }
+	    }
+
         public void handleAction_Content(string data)
         { 
             var guid = tmWebServices.getGuidForMapping(data);
@@ -673,22 +695,10 @@ namespace TeamMentor.CoreLib
             context.Response.Flush();
             context.Response.End();
         }           
-        public void transfer_ArticleEditor(string data)
-        {         
-            var guid = tmWebServices.getGuidForMapping(data);
-            if (guid == Guid.Empty)
-                transfer_Request("articleViewer");              // will trigger exception
-            else
-            {
-                tmWebServices.RBAC_Demand_EditArticles();           // will trigger an Security exception if the user if not authorized
-                
-                var article = tmWebServices.GetGuidanceItemById(guid); 
-                        
-                tmWebServices.logUserActivity("Edit Article (WYSIWYG)", "{0} ({1})".format(article.Metadata.Title, guid));
-                                
-                transfer_Request("articleEditor");    
-            }            
-            //context.Server.Transfer("/html_pages/GuidanceItemEditor/GuidanceItemEditor.html");                        
+        public void transfer_ArticleEditor(TeamMentor_Article article)
+        {                     
+            tmWebServices.logUserActivity("Edit Article (WYSIWYG)", "{0} ({1})".format(article.Metadata.Title, article.Metadata.Id));                                
+            transfer_Request("articleEditor");    
         }
         
         public void redirect_Login_AccessDenied(string urlRequested)

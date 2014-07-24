@@ -56,7 +56,7 @@ namespace TeamMentor.CoreLib
                 },
                 Content = new TeamMentor_Article_Content
                 {
-                    DataType = "html",
+                    DataType = "Markdown",
                     Data = {Value = htmlContent}
                 }
             };
