@@ -4,6 +4,7 @@ using FluentSharp.NUnit;
 using FluentSharp.REPL;
 using FluentSharp.Watin;
 using FluentSharp.WatiN.NUnit;
+using FluentSharp.Web35;
 using NUnit.Framework;
 using TeamMentor.CoreLib;
 using TeamMentor.FileStorage;
@@ -138,6 +139,56 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_IE
             ie.assert_Uri_Is(siteUri.mapPath("/Tbot_Monitor/monitor.htm#/monitor/activities")) 
               .assert_Has_Link              ("TeamMentor Admin (TBot)")
               .assert_Doesnt_Have_Link      ("Control Panel (legacy)");
+        }
+        /// <summary>
+        /// https://github.com/TeamMentor/Master/issues/831
+        /// 
+        /// The fix was to remove a legacy document.redirect capability from login.html 
+        /// so this test checks for the correct redirection using the current server-side redirections
+        /// </summary>
+        [Test] public void Issue_831__Virtual_Article_redirect_does_not_Work_if_not_logged_in()
+        {
+            var ieTeamMentor = this.new_IE_TeamMentor_Hidden();
+            var ie           = ieTeamMentor.ie;
+            var userName    = 10.randomLetters();
+            var password    = "!abc!".add_5_RandomLetters();
+            var articleId   = Guid.NewGuid();                                                          // we can use any GUID here since what we're after is the redirection
+            
+            var tmUser = tmProxy.user_New(userName, password).assert_Not_Null()                                     // create a temp user
+                                .UserName.user(tmProxy)      .assert_Not_Null()
+                                .UserID.user(tmProxy)        .assert_Not_Null();
+
+            
+            Action<string,string> checkUrl = (originalUrl,redirectUrl)=>
+            {
+                tmProxy.user_Logout(tmUser);                                                            // its faster to logout the user via tmProxy (which will 'server-side' clean the login sessions for this user)
+                
+                ieTeamMentor.open(originalUrl);                                                         // open targetUrl
+                ie.url().assert_Contains("Html_Pages/Gui/Pages/login.html")                             // which should redirect 
+                  .uri().queryParameters_Indexed_ByName().value("LoginReferer").assert_Is(originalUrl); // with LoginReferer set to targetUrl 
+
+                ie.waitForField("username").value(userName).assert_Not_Null();                          // login with the temp reader user
+                ie.field       ("password").value(password).assert_Not_Null();           
+                ie.button      ("Login"   ).click()        .assert_Not_Null();
+
+                var expectedUri = ieTeamMentor.siteUri.append(redirectUrl);                             // wait for redirect to happen                
+                ie.wait_For_Uri(expectedUri,3000)                			                                            
+                  .assert_Uri_Is(expectedUri);
+            };
+
+            checkUrl("/article/" + articleId, "/article/" + articleId);                                 // these should work for normal users (i.e. tmUser object)            
+            checkUrl("/html/"    + articleId, "/html/"    + articleId);
+            checkUrl("/content/" + articleId, "/content/" + articleId);
+            checkUrl("/jsonp/"   + articleId, "/jsonp/"   + articleId);
+            //checkUrl("/raw/"     + articleId, "/raw/"     + articleId);                               // ie doesn't like when there is no content shown on this xml doc
+            checkUrl("/tbot"                , "/Html_Pages/Gui/Pages/login.html?LoginReferer=/tbot");   // should fail here for normal users (i.e. readers)
+              
+            tmProxy.user_Make_Admin(tmUser).assert_Not_Null()                                           // make the temp user an admin            
+                                           .userGroup().assert_Is(UserGroup.Admin);
+            tmProxy.user_Logout(tmUser);
+            ieTeamMentor.page_WhoAmI();            
+            checkUrl("/tbot"                , "/rest/tbot/run/Commands");                               // should work for admins
+            ieTeamMentor.close();
         }
         [Test] public void Issue_838__SiteData_custom_TBot_pages_can_conflict_with_the_main_TBot_pages()
         {   
