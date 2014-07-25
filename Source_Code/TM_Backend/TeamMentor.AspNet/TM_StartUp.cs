@@ -96,8 +96,7 @@ namespace TeamMentor.CoreLib
             "[TM][Application_Error]: {0}".error(lastError);
             TrackingApplication.saveLog();
             if (TMConfig.Current.TMSetup.ShowDotNetDebugErrors.isFalse())
-                 HttpContextFactory.Server.Transfer(TMConsts.DEFAULT_ERROR_PAGE_REDIRECT);            
-     //          HttpContextFactory.Response.Redirect(TMConsts.DEFAULT_ERROR_PAGE_REDIRECT);            
+                HttpContextFactory.Response.Redirect(TMConsts.DEFAULT_ERROR_PAGE_REDIRECT);            
         }           
         public void Application_BeginRequest()
         {               
