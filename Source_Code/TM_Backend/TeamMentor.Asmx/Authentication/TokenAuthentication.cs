@@ -63,6 +63,7 @@ namespace TeamMentor.CoreLib
         }
         [Admin] public static  AuthToken add_AuthToken(this TMUser tmUser)
         {
+            UserRole.Admin.demand();
             var authToken = new AuthToken
                                     {
                                         Token        = Guid.NewGuid(),
@@ -73,7 +74,7 @@ namespace TeamMentor.CoreLib
         }
         [Admin] public static Guid createUserAuthToken(this TM_UserData userData , int userId)
         {
-            UserGroup.Admin.demand();
+            UserRole.Admin.demand();            
             var tmUser = userId.tmUser();
             if(tmUser.notNull())
                 return tmUser.add_AuthToken().Token;
@@ -81,6 +82,7 @@ namespace TeamMentor.CoreLib
         }       
         [Admin] public static List<Guid> getUserAuthTokens(this TM_UserData userData , int userId)
         {
+            UserRole.Admin.demand();
             var tmUser = userId.tmUser();
             if(tmUser.notNull())
                 return (from authToken in tmUser.AuthTokens

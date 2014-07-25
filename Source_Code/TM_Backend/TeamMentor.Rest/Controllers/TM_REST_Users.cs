@@ -37,36 +37,35 @@ namespace TeamMentor.CoreLib
         //Admin: User Management
 		[Admin] public int              user_New   (TM_User user)
 		{
-            UserGroup.Admin.demand();
+            UserRole.Admin.demand();
 			return TmWebServices.CreateUser(user.newUser());
 		}
 	    [Admin] public bool             user_Save  (TM_User user)
 	    {
-            UserGroup.Admin.demand();
+            UserRole.Admin.demand();
             return TmWebServices.UpdateTmUser(user);	        
 	    }
         [Admin] public bool             user_Delete(string userId)
 	    {
-            UserGroup.Admin.demand();
+            UserRole.Admin.demand();
             if (userId.isInt())
                 return TmWebServices.DeleteUser(userId.toInt());
             return false;
 	    }
         [Admin] public List<string>             user_Verify(NewUser newUser)
 	    {       
-            UserGroup.Admin.demand();
+            UserRole.Admin.demand();
             return TmWebServices.CreateUser_Validate(newUser);
 	    }
         [Admin] public int                      user_Create(NewUser newUser)
 	    {      
-            UserGroup.Admin.demand();
+            UserRole.Admin.demand();
             return TmWebServices.CreateUser(newUser);                                
 	    }
-
         
 	    [Admin] public TM_User			user(string userNameOrId    )
 		{     
-            UserGroup.Admin.demand();
+            UserRole.Admin.demand();
 		    var user = TmWebServices.GetUser_byName(userNameOrId);      // need to this one first in case the username is an int
 			if (user.notNull())
 				return user;
@@ -74,7 +73,7 @@ namespace TeamMentor.CoreLib
 		}
         [Admin] public TM_User          user_inDomain(string domain, string user)
         {
-            UserGroup.Admin.demand();
+            UserRole.Admin.demand();
             var username = "{0}\\{1}".format(domain,user);
             return TmWebServices.GetUser_byName(username);
         }
@@ -86,12 +85,12 @@ namespace TeamMentor.CoreLib
 		}				
 		[Admin] public List<TM_User>	users()
 		{
-            UserGroup.Admin.demand();
+            UserRole.Admin.demand();
 		    return TmWebServices.GetUsers();
 		}
         [Admin] public string CreateCSVUsers(string payload)
         {
-            UserGroup.Admin.demand();
+            UserRole.Admin.demand();
             //Since the verification is performed in another call, an authenticated user can execute this method and eventually bypass any validation
             //By performing the validationa again on user creation, we prevent this.
             var verification = VerifyUserData(payload);
@@ -156,7 +155,7 @@ namespace TeamMentor.CoreLib
 
         [Admin]public string VerifyUserData(string payload)
         {
-            UserGroup.Admin.demand();
+            UserRole.Admin.demand();
             var users = payload.split("\n");            
             var userData      = TM_UserData.Current;   
             var errorMessage = string.Empty;
@@ -229,7 +228,7 @@ namespace TeamMentor.CoreLib
                 DateTime outputDate;
                 if (String.IsNullOrEmpty(expiryDate)||!DateTime.TryParse(expiryDate, out outputDate))
                 {
-                    errorMessage = string.Format("Please enter a valid Expiration date for user {0}. Format must be {1}.", userName, "yy/mm/dd");
+                    errorMessage = string.Format("Please enter a valid Expiration date for user {0}. Format must be {1}.", userName, "yyyy/mm/dd");
                     break;
                 }
                 if (outputDate <= DateTime.Now)
@@ -261,12 +260,12 @@ namespace TeamMentor.CoreLib
 
 	    [Admin] public bool				DeleteUser(string userId)
 		{
-            UserGroup.Admin.demand();
+            UserRole.Admin.demand();
 			return TmWebServices.DeleteUser(userId.toInt());
 		}		
         [Admin] public bool             user_Update(TM_User user)
 		{
-            UserGroup.Admin.demand();
+            UserRole.Admin.demand();
 			var groupId = -1; //not implemented for now
 			return TmWebServices.UpdateUser(user.UserId, user.UserName, user.FirstName, user.LastName, user.Title, user.Company,user.Email, user.Country , user.State, user.ExpirationDate, user.PasswordExpired, user.UserEnabled , user.AccountNeverExpires, groupId);
 		}

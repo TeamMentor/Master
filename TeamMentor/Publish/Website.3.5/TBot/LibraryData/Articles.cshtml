@@ -6,6 +6,11 @@
 @{
     var tmDatabase    = TM_Xml_Database.Current;
     var tmFileStorage = TM_FileStorage.Current;
+    
+    if (tmFileStorage.isNull())
+    { 
+        return;
+    }  
     var articles = tmDatabase.Cached_GuidanceItems;
     var articlePaths = tmFileStorage.GuidanceItems_FileMappings;
     var index = 1;

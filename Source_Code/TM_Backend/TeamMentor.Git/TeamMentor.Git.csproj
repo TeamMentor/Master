@@ -32,17 +32,16 @@
   <ItemGroup>
     <Reference Include="FluentSharp.CoreLib, Version=5.5.0.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\FluentSharp.CoreLib.5.5.156\lib\net35\FluentSharp.CoreLib.dll</HintPath>
+      <HintPath>..\..\packages\FluentSharp.CoreLib.5.5.167\lib\net35\FluentSharp.CoreLib.dll</HintPath>
     </Reference>
-    <Reference Include="FluentSharp.NGit, Version=5.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\FluentSharp.NGit.5.5.156\lib\net40\FluentSharp.NGit.dll</HintPath>
+    <Reference Include="FluentSharp.NGit">
+      <HintPath>..\..\packages\FluentSharp.NGit.5.5.167\lib\net40\FluentSharp.NGit.dll</HintPath>
     </Reference>
-    <Reference Include="FluentSharp.Web_3_5">
-      <HintPath>..\..\packages\FluentSharp.Web_3_5.5.5.156\lib\net35\FluentSharp.Web_3_5.dll</HintPath>
+    <Reference Include="FluentSharp.Web_3_5, Version=5.5.0.0, Culture=neutral, PublicKeyToken=1439893e489faed4, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\FluentSharp.Web_3_5.5.5.167\lib\net35\FluentSharp.Web_3_5.dll</HintPath>
     </Reference>
-    <Reference Include="FluentSharp.Web_4_5">
-      <HintPath>..\..\packages\FluentSharp.Web_4_5.5.5.156\lib\net45\FluentSharp.Web_4_5.dll</HintPath>
+    <Reference Include="FluentSharp.Web_4_5, Version=5.5.0.0, Culture=neutral, PublicKeyToken=0188572cb8cf4bdd, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\FluentSharp.Web_4_5.5.5.167\lib\net45\FluentSharp.Web_4_5.dll</HintPath>
     </Reference>
     <Reference Include="NGit, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

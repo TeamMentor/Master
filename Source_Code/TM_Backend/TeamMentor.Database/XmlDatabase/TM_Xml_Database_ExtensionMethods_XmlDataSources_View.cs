@@ -74,6 +74,7 @@ namespace TeamMentor.CoreLib
 
         [EditArticles] 	public static View_V3                                       newView                             (this TM_Xml_Database tmDatabase, Guid parentFolderId, View tmView)
         {            
+            UserRole.EditArticles.demand();
             var view = tmDatabase.xmlDB_NewView(parentFolderId, tmView);
             return (view.notNull()) 
                 ? tmDatabase.tmView(view.id.guid())
@@ -81,10 +82,12 @@ namespace TeamMentor.CoreLib
         }		
         [EditArticles] 	public static urn.microsoft.guidanceexplorer.View           xmlDB_NewView                       (this TM_Xml_Database tmDatabase, View tmView)
         {
+            UserRole.EditArticles.demand();
             return tmDatabase.xmlDB_NewView(Guid.Empty,  tmView);
         }		
         [EditArticles] 	public static urn.microsoft.guidanceexplorer.View           xmlDB_NewView                       (this TM_Xml_Database tmDatabase, Guid parentFolderId, View tmView)
         {
+            UserRole.EditArticles.demand();
             if (tmView.isNull())
                 return null;
             var tmLibrary = tmDatabase.tmLibrary(tmView.library.guid());
@@ -120,10 +123,12 @@ namespace TeamMentor.CoreLib
         }				
         [EditArticles] 	public static urn.microsoft.guidanceexplorer.View           xmlDB_UpdateView                    (this TM_Xml_Database tmDatabase, View tmView)
         {
+            UserRole.EditArticles.demand();
             return tmDatabase.xmlDB_UpdateView(tmView, new List<Guid>());
         }		
         [EditArticles] 	public static urn.microsoft.guidanceexplorer.View           xmlDB_UpdateView                    (this TM_Xml_Database tmDatabase, View tmView, List<Guid> guidanceItems)
         {
+            UserRole.EditArticles.demand();
             if (tmView.isNull())
                 return null;
             var tmLibrary = tmDatabase.tmLibrary(tmView.library.guid());
@@ -156,10 +161,12 @@ namespace TeamMentor.CoreLib
         }						
         [EditArticles] 	public static bool                                          xmlDB_RemoveView                    (this TM_Xml_Database tmDatabase, Guid libraryId,  Guid viewId )
         {
+            UserRole.EditArticles.demand();
             return tmDatabase.xmlDB_RemoveView(tmDatabase.tmLibrary(libraryId), viewId);
         }		
         [EditArticles] 	public static bool                                          xmlDB_RemoveView                    (this TM_Xml_Database tmDatabase, TM_Library tmLibrary, Guid viewId )
         {
+            UserRole.EditArticles.demand();
             if (tmLibrary.isNull())
                 "in xmlDB_RemoveViewFromFolder provided tmLibrary was null".error();
             else
@@ -188,6 +195,7 @@ namespace TeamMentor.CoreLib
         }		
         [EditArticles] 	public static bool                                          xmlDB_MoveViewToFolder              (this TM_Xml_Database tmDatabase, Guid viewId, Guid targetFolderId, Guid targetLibraryId)
         {
+            UserRole.EditArticles.demand();
             try
             {
                 var viewToMove = tmDatabase.xmlDB_View(viewId);			
@@ -231,10 +239,12 @@ namespace TeamMentor.CoreLib
         }				
         [EditArticles] 	public static bool                                          xmlDB_AddGuidanceItemToView         (this TM_Xml_Database tmDatabase, Guid viewId, Guid guidanceItemsId)
         {
+            UserRole.EditArticles.demand();
             return tmDatabase.xmlDB_AddGuidanceItemsToView(viewId, guidanceItemsId.wrapOnList());
         }		
         [EditArticles] 	public static bool                                          xmlDB_AddGuidanceItemsToView        (this TM_Xml_Database tmDatabase, Guid viewId, List<Guid> guidanceItemsIds)
         {	
+            UserRole.EditArticles.demand();
             var view = tmDatabase.xmlDB_View(viewId); 
             if (view.isNull())
                 "in xmlDB_AddGuidanceItemsToView, could not resolve view: {0}".error(viewId);
@@ -253,6 +263,7 @@ namespace TeamMentor.CoreLib
         }		
         [EditArticles] 	public static bool                                          xmlDB_RemoveGuidanceItemsFromView   (this TM_Xml_Database tmDatabase, Guid viewId, List<Guid> guidanceItemsIds)
         {	
+            UserRole.EditArticles.demand();
             var view = tmDatabase.xmlDB_View(viewId); 
             if (view.isNull())
                 "in xmlDB_AddGuidanceItemsToView, could not resolve view: {0}".error(viewId);
@@ -271,6 +282,7 @@ namespace TeamMentor.CoreLib
         }		
         [EditArticles] 	public static bool                                          xmlDB_RemoveAllGuidanceItemsFromView(this TM_Xml_Database tmDatabase, Guid viewId)
         {	
+            UserRole.EditArticles.demand();
             var view = tmDatabase.xmlDB_View(viewId); 
             if (view.isNull())
                 "in xmlDB_AddGuidanceItemsToView, could not resolve view: {0}".error(viewId);

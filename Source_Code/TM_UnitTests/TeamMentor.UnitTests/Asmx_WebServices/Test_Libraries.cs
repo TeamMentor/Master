@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentSharp.CoreLib;
+using FluentSharp.NUnit;
 using NUnit.Framework;
 using TeamMentor.CoreLib;
 using TeamMentor.FileStorage;
@@ -14,8 +15,8 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
         public Guid OWASP_LIBRARY_GUID = "4738d445-bc9b-456c-8b35-a35057596c16".guid();
 
         public Test_Libraries() 
-        {     		
-            Install_LibraryFromZip_OWASP();
+        {     		            
+            tmFileStorage.install_LibraryFromZip_OWASP();            
         }
 
         [SetUp]
@@ -26,7 +27,9 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
         [TestFixtureTearDown]
         public void tearDown()
         {    
-            tmXmlDatabase.delete_Database();
+            UserGroup.Admin.assert();
+            tmFileStorage.delete_Database();
+            UserGroup.None.assert();
         }
         [Test] public void GetLibraries() 
         {        	
@@ -105,6 +108,8 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
         [Assert_Reader]
         [Test] public void GetGuidanceItemHtml() 
         {    
+            UserGroup.Reader.assert(); 
+
             var owaspLibrary = tmWebServices.GetLibraryById(OWASP_LIBRARY_GUID); 
             var folders = tmWebServices.GetFolders(owaspLibrary.id.guid());
             var guidanceItems = tmWebServices.GetGuidanceItemsInView(folders[0].views.guids()[0]);    		
@@ -112,27 +117,38 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             var guidanceItem = guidanceItems[0];
             var html = tmWebServices.GetGuidanceItemHtml(guidanceItem.Metadata.Id);    		
             Assert.That(html != null , "GuidanceItemHtml was null");
-            Assert.That(html.size() > 0 , "GuidanceItemHtml was empty");    					
+            Assert.That(html.size() > 0 , "GuidanceItemHtml was empty");    
+			
+		    UserGroup.None.assert(); 
         } 		
         [Test][Assert_Reader] public void GetAllGuidanceItems() 
         {   
+            UserGroup.Reader.assert(); 
+
             var allGuidanceItems = tmWebServices.GetAllGuidanceItems(); 
             Assert.That(allGuidanceItems != null , "allGuidanceItems was null");
             Assert.That(allGuidanceItems.size()> 0 , "no allGuidanceItems returned");    		
             "There where  {0} items returned".info(allGuidanceItems.size());    		
+
+            UserGroup.None.assert(); 
         }    	    	    	
         [Test][Assert_Reader] public void GetGuidanceItemsInLibrary() 
-        {   		    	
-            var guidanceItemsInLibrary = tmWebServices.GetGuidanceItemsInLibrary(OWASP_LIBRARY_GUID);
-            Assert.That(guidanceItemsInLibrary != null , "guidanceItemsInLibrary was null");
+        {   	
+	    	UserGroup.Reader.assert(); 
+
+            var guidanceItemsInLibrary = tmWebServices.GetGuidanceItemsInLibrary(OWASP_LIBRARY_GUID)
+                                                      .assert_Not_Null("guidanceItemsInLibrary was null");
+            
             Assert.That(guidanceItemsInLibrary.size()> 0 , "no guidanceItemsInLibrary returned");    		
             "There where  {0} items returned".info(guidanceItemsInLibrary.size());    		
+
+            UserGroup.None.assert(); 
         }    	
         [Test] public void GetGuidanceItemsByIds() 
         {       		
             var viewId = "fc1c5b9c-becb-44a2-9812-40090d9bd135".guid(); //A02: Cross-Site Scripting (XSS)
             
-            var view = tmWebServices.GetViewById(viewId); 
+            var view = tmWebServices.GetViewById(viewId).assert_Not_Null(); 
             var guidanceItemsIds = view.guidanceItems;   
             var guidanceItems = tmXmlDatabase.xmlDB_GuidanceItems(guidanceItemsIds);
              
@@ -154,8 +170,7 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             
             
             //test searching on all content			
-            var matchedIds = searchTitleAndHtml(searchFor);
-            Assert.That(matchedIds.size() > 0, "no results when searching all GIs"); 
+            var matchedIds = searchTitleAndHtml(searchFor).assert_Not_Empty("no results when searching all articles"); 
             
             //test search on view's guidanceItems
             var view = tmWebServices.GetViewById(viewId);  
@@ -171,24 +186,26 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
 
         }    	
 
-        [Test] [Assert_Editor] public void Create_Rename_Delete_Libraries()
+        [Test] [Assert_Admin] public void Create_Rename_Delete_Libraries()
         {            
+            UserGroup.Admin.assert(); 
+
             //tmConfig.Git.AutoCommit_LibraryData = false;
                         
             var testOwaspViewId                 = "fc1c5b9c-becb-44a2-9812-40090d9bd135".guid();
             var originalName                    = "createAndDelete";  
             var newName 	                    = "_" + originalName + "_new";
             
-            Assert.IsNotNull(tmXmlDatabase.path_XmlDatabase(), null);
-            Assert.IsNotNull(tmXmlDatabase.path_XmlLibraries(), null);
-            Assert.IsTrue   (tmXmlDatabase.path_XmlLibraries().dirExists());
-            Assert.IsNull   (tmXmlDatabase.tmLibrary(originalName), "Library {0} should not exist".format(originalName));
+            Assert.IsNotNull(tmFileStorage.path_XmlDatabase(), null);
+            Assert.IsNotNull(tmFileStorage.path_XmlLibraries(), null);
+            Assert.IsTrue   (tmFileStorage.path_XmlLibraries().dirExists());
+            Assert.IsNull   (tmFileStorage.tmXmlDatabase().tmLibrary(originalName), "Library {0} should not exist".format(originalName));
 
             var newLibrary                       = tmWebServices.CreateLibrary(new Library { caption = originalName }); //Create Library
             var tmLibrary                        = tmXmlDatabase.tmLibrary(newLibrary.libraryId);
             //var guidanceItemsPath_NewName_Before = tmXmlDatabase.xmlDB_Path_Library_RootFolder(newName);            
-            var libraryPath_OriginalName         = tmXmlDatabase.xmlDB_Path_Library_XmlFile(tmLibrary);
-            var guidanceItemsPath_OriginalName   = tmXmlDatabase.xmlDB_Path_Library_RootFolder(tmLibrary);
+            var libraryPath_OriginalName         = tmFileStorage.xmlDB_Path_Library_XmlFile(tmLibrary);
+            var guidanceItemsPath_OriginalName   = tmFileStorage.xmlDB_Path_Library_RootFolder(tmLibrary);
             var testOwaspview                    = tmWebServices.GetViewById(testOwaspViewId);    	    
 
             
@@ -199,14 +216,14 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
 
             //add a GI to the Library
             var guidanceItem = tmWebServices.CreateGuidanceItem(new GuidanceItem_V3 { libraryId = newLibrary.libraryId });
-            var guidanceItemXmlFile = tmXmlDatabase.getXmlFilePathForGuidanceId(guidanceItem);
+            var guidanceItemXmlFile = tmFileStorage.getXmlFilePathForGuidanceId(guidanceItem);
             Assert.IsTrue(guidanceItemXmlFile.directoryName().contains(guidanceItemsPath_OriginalName) ,  "before rename:  guidanceItemXmlFile not in guidanceItemsPath_originalName");            
             
             //Rename Library
             var renameResult                    = tmWebServices.RenameLibrary(newLibrary.libraryId, newName);  
-            var libraryPath_NewName             = tmXmlDatabase.xmlDB_Path_Library_XmlFile(newLibrary.libraryId);			 			
+            var libraryPath_NewName             = tmFileStorage.xmlDB_Path_Library_XmlFile(newLibrary.libraryId);			 			
             var guidanceItemsPath_NewNameOldDir = libraryPath_NewName.parentFolder().pathCombine(libraryPath_OriginalName.fileName());
-            var guidanceItemsPath_NewName       = tmXmlDatabase.xmlDB_Path_Library_RootFolder(tmLibrary);            
+            var guidanceItemsPath_NewName       = tmFileStorage.xmlDB_Path_Library_RootFolder(tmLibrary);            
 
             Assert.IsTrue(renameResult, "renameResult");            
             Assert.IsTrue(libraryPath_OriginalName.fileExists()        , "libraryPath_originalName should exist after rename");
@@ -230,7 +247,7 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             Assert.IsTrue(guidanceItemsPath_NewName.dirExists()	    , "after rename guidanceItemsPath_originalName should exist");			
         
             //check if GI exists in new folder	
-            guidanceItemXmlFile = tmXmlDatabase.getXmlFilePathForGuidanceId(guidanceItem);			
+            guidanceItemXmlFile = tmFileStorage.getXmlFilePathForGuidanceId(guidanceItem);			
             
             Assert.IsTrue  (guidanceItemXmlFile.directoryName().contains(guidanceItemsPath_OriginalName), "after rename:guidanceItemsPath_OriginalName not in guidanceItemXmlFile");
             Assert.AreEqual(guidanceItemsPath_OriginalName, guidanceItemsPath_NewName                   , "after rename:, guidanceItemsPath_NewName should be equal to guidanceItemsPath_OriginalName");
@@ -244,16 +261,20 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             Assert.IsFalse(libraryPath_NewName	   .fileExists(),     "libraryPath_newName should not exist after delete");
             Assert.IsFalse(libraryPath_OriginalName.fileExists(),     "libraryPath_originalName should not exist at the end");            
             Assert.AreEqual(testOwaspview2.guidanceItems.size() , 21, "There should still be 21 views in the test OWASP A2 view");
+        
+            UserGroup.None.assert(); 
         }
-        [Test] [Assert_Editor] public void Create_Delete_Libraries_with_a_GuidanceItem()
-        {            
+        [Test] [Assert_Admin] public void Create_Delete_Libraries_with_a_GuidanceItem()
+        {  
+            UserGroup.Admin.assert(); 
+
             var originalName = "temp_lib".add_RandomLetters(3);    
              
             //Create Library 
-            var newLibrary                  = tmWebServices.CreateLibrary                  (new Library { caption = originalName });
-            var tmLibrary                   = tmXmlDatabase.tmLibrary(newLibrary.libraryId);
-            var libraryPath_OriginalName        = tmXmlDatabase.xmlDB_Path_Library_XmlFile              (tmLibrary);    
-            var libraryPath_GuidanceItemsFolder = tmXmlDatabase.xmlDB_Path_Library_RootFolder(tmLibrary); 
+            var newLibrary                      = tmWebServices.CreateLibrary                  (new Library { caption = originalName });
+            var tmLibrary                       = tmXmlDatabase.tmLibrary(newLibrary.libraryId);
+            var libraryPath_OriginalName        = tmFileStorage.xmlDB_Path_Library_XmlFile              (tmLibrary);    
+            var libraryPath_GuidanceItemsFolder = tmFileStorage.xmlDB_Path_Library_RootFolder(tmLibrary); 
 
             Assert.IsNotNull(newLibrary                                  , "newLibrary");
             Assert.IsTrue   (libraryPath_OriginalName.fileExists() 		 , "libraryPath_originalName should exist after creation");
@@ -278,6 +299,8 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             
             Assert.IsFalse(libraryPath_GuidanceItemsFolder.dirExists()  , "libraryPath_GuidanceItemsFolder should not exist after delete");
             //tmXmlDatabase.useFileStorage(false);
+            
+            UserGroup.None.assert(); 
         } 
     } 
 }    

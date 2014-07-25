@@ -13,9 +13,14 @@ namespace TeamMentor.CoreLib
     {
         public static Thread thread_Save_GuidanceItemsCache;
 
-        public static TM_Xml_Database           xmlDB_Load_GuidanceItems_and_Create_CacheFile(this TM_Xml_Database tmDatabase)
+        public static TM_FileStorage                    xmlDB_Load_GuidanceItems_and_Create_CacheFile(this TM_FileStorage tmFileStorage)
         {
-            var tmFileStorage = TM_FileStorage.Current;
+            var tmXmlDatabase = tmFileStorage.tmXmlDatabase();
+
+            if (tmFileStorage.isNull() || tmXmlDatabase.isNull())
+                return tmFileStorage;
+
+            //var tmFileStorage = TM_FileStorage.Current;
             
             var pathXmlLibraries = tmFileStorage.Path_XmlLibraries;            
             if (pathXmlLibraries.notNull() && pathXmlLibraries.notNull())
@@ -33,22 +38,21 @@ namespace TeamMentor.CoreLib
                         var libraryId = guidanceExplorer.library.name.guid();                                
                         "libraryId: {0} : {1}".info(libraryId, pathToLibraryGuidanceItems);                                
                         var filesToLoad = pathToLibraryGuidanceItems.files(true, "*.xml");
-                        tmDatabase.xmlDB_Load_GuidanceItemsV3(libraryId, filesToLoad);
+                        tmXmlDatabase.xmlDB_Load_GuidanceItemsV3(libraryId, filesToLoad);
                     }
 
                     //save it to the local cache file (reduces load time from 8s to 0.5s)
-                    tmDatabase.save_GuidanceItemsToCache();
+                    tmFileStorage.save_GuidanceItemsToCache();
                             
 
-                    tmDatabase.ensureFoldersAndViewsIdsAreUnique();
-                    tmDatabase.removeMissingGuidanceItemsIdsFromViews();
+                    tmXmlDatabase.ensureFoldersAndViewsIdsAreUnique();
+                    tmXmlDatabase.removeMissingGuidanceItemsIdsFromViews();
                     o2Timer.stop();
-                    //}
                 }            
-            return tmDatabase;
+            return tmFileStorage;
         } 
 
-        public static bool                               loadDataIntoMemory(this TM_FileStorage tmFileStorage)
+        public static bool                               loadDataIntoMemory             (this TM_FileStorage tmFileStorage)
         {
             if (tmFileStorage.path_XmlDatabase().dirExists().isFalse())
             {
@@ -56,31 +60,45 @@ namespace TeamMentor.CoreLib
                 return false;
             }
             tmFileStorage.loadLibraryDataFromDisk();
+
             //tmXmlDatabase.setupGitSupport();
             //tmXmlDatabase.UserData.loadTmUserData();
             return true;
         }
-        public static TM_Xml_Database                    loadLibraryDataFromDisk        (this TM_FileStorage tmFileStorage)
+        public static TM_FileStorage                     loadLibraryDataFromDisk        (this TM_FileStorage tmFileStorage)
         {
             var tmXmlDatabase = tmFileStorage.TMXmlDatabase;
-            tmXmlDatabase.GuidanceExplorers_XmlFormat = tmFileStorage.path_XmlLibraries().getGuidanceExplorerObjects();
-            tmFileStorage.load_GuidanceItemsFromCache();                        
-            return tmXmlDatabase;
+            tmXmlDatabase.GuidanceExplorers_XmlFormat = tmFileStorage.getGuidanceExplorerObjects(tmFileStorage.path_XmlLibraries());
+            tmFileStorage.load_GuidanceItemsFromCache(); 
+            
+            var tmDatabaseGit = "TeamMentor.Git".assembly().type("TM_Xml_Database_Git").ctor();
+
+            "TeamMentor.Git".assembly()
+                            .type("TM_Xml_Database_Git_ExtensionMethods")
+                            .invokeStatic("setupGitSupport",tmDatabaseGit);
+                                
+                
+            return tmFileStorage;
         }
-        public static TM_Xml_Database                    reloadGuidanceExplorerObjects     (this TM_Xml_Database tmDatabase)
+        public static TM_FileStorage                    reCreate_GuidanceItemsCache     (this TM_FileStorage tmFileStorage)
+        {            
+            tmFileStorage.clear_GuidanceItemsCache()
+                         .xmlDB_Load_GuidanceItems_and_Create_CacheFile();            
+            return tmFileStorage;
+
+        }	
+        public static TM_FileStorage                     reloadGuidanceExplorerObjects  (this TM_FileStorage tmFileStorage)
         {
-            tmDatabase.setGuidanceExplorerObjects();
-            tmDatabase.reCreate_GuidanceItemsCache();                  
-            return tmDatabase;
+            tmFileStorage.setGuidanceExplorerObjects();
+            tmFileStorage.reCreate_GuidanceItemsCache();                  
+            return tmFileStorage;
         }		
-        public static TM_Xml_Database                    setGuidanceExplorerObjects     (this TM_Xml_Database tmDatabase)
-        {			
-            var tmFileStorage = TM_FileStorage.Current;
-            //"in setGuidanceExplorerObjects".info();
+        public static TM_FileStorage                     setGuidanceExplorerObjects     (this TM_FileStorage tmFileStorage)
+        {			                        
             var pathXmlLibraries = tmFileStorage.Path_XmlLibraries;
             tmFileStorage.GuidanceExplorers_Paths.Clear();
-            TM_Xml_Database.Current.GuidanceExplorers_XmlFormat = pathXmlLibraries.getGuidanceExplorerObjects();				
-            return tmDatabase;
+            return tmFileStorage.guidanceExplorers_XmlFormat(tmFileStorage.getGuidanceExplorerObjects(pathXmlLibraries));
+            
         }		
         public static guidanceExplorer                   getGuidanceExplorerObject      (this string xmlFile)
         {			
@@ -100,12 +118,12 @@ namespace TeamMentor.CoreLib
             }
             return null;
         }		
-        public static Dictionary<Guid, guidanceExplorer> addGuidanceExplorerObject      (this Dictionary<Guid, guidanceExplorer> guidanceExplorers, string xmlFile)
+        public static Dictionary<Guid, guidanceExplorer> addGuidanceExplorerObject      (this TM_FileStorage tmFileStorage, Dictionary<Guid, guidanceExplorer> guidanceExplorers, string xmlFile)
         {
             var guidanceExplorer = xmlFile.getGuidanceExplorerObject();
-            return guidanceExplorers.addGuidanceExplorerObject(guidanceExplorer, xmlFile);			
+            return tmFileStorage.addGuidanceExplorerObject(guidanceExplorers, guidanceExplorer, xmlFile);			
         }		
-        public static Dictionary<Guid, guidanceExplorer> addGuidanceExplorerObject      (this Dictionary<Guid, guidanceExplorer> guidanceExplorers, guidanceExplorer newGuidanceExplorer, string xmlFile)
+        public static Dictionary<Guid, guidanceExplorer> addGuidanceExplorerObject      (this TM_FileStorage tmFileStorage, Dictionary<Guid, guidanceExplorer> guidanceExplorers, guidanceExplorer newGuidanceExplorer, string xmlFile)
         {
             if (newGuidanceExplorer.notNull())
             {			
@@ -130,8 +148,8 @@ namespace TeamMentor.CoreLib
                         newGuidanceExplorer.library.name = libraryGuid.str();
                         "[addGuidanceExplorerObject]: new ID for library {0} is now {1}".error(newGuidanceExplorer.library.caption, libraryGuid);
                         newGuidanceExplorer.xmlDB_Save_GuidanceExplorer(TM_Xml_Database.Current);//, false);
-                    }
-                    TM_FileStorage.Current.GuidanceExplorers_Paths.add(newGuidanceExplorer, xmlFile); // add this mapping so that we can find it base on name
+                    }                    
+                    tmFileStorage.GuidanceExplorers_Paths.add(newGuidanceExplorer, xmlFile); // add this mapping so that we can find it base on name
                     guidanceExplorers.Add(libraryGuid, newGuidanceExplorer);
 
                 }
@@ -142,7 +160,7 @@ namespace TeamMentor.CoreLib
             }
             return guidanceExplorers;
         }
-        public static bool                               isGuidanceExplorerFile(this string file)
+        public static bool                               isGuidanceExplorerFile         (this string file)
         {
             if (file.fileExists().isFalse())
                 return false;
@@ -158,32 +176,33 @@ namespace TeamMentor.CoreLib
                 .where(isGuidanceExplorerFile);
             return guidanceExplorerXmlFiles;
         }
-        public static Dictionary<Guid, guidanceExplorer> getGuidanceExplorerObjects     (this string pathXmlLibraries)
+        public static Dictionary<Guid, guidanceExplorer> getGuidanceExplorerObjects     (this TM_FileStorage tmFileStorage, string pathXmlLibraries)
         {			            
             var guidanceExplorers           = new Dictionary<Guid,guidanceExplorer>();
             var guidanceExplorersXmlFiles   = pathXmlLibraries.getGuidanceExplorerFilesInPath();
 
             foreach (var xmlFile in guidanceExplorersXmlFiles)            
-                guidanceExplorers.addGuidanceExplorerObject(xmlFile);            
+                tmFileStorage.addGuidanceExplorerObject(guidanceExplorers,xmlFile);            
 
             return guidanceExplorers;			
         }		
-        public static string                             getCacheLocation               (this TM_Xml_Database tmDatabase) //, TM_Library library)
+        public static string                             getCacheLocation               (this TM_FileStorage tmFileStorage) //, TM_Library library)
         {
-            var pathXmlDatabase = tmDatabase.path_XmlDatabase();
+            var pathXmlDatabase = tmFileStorage.path_XmlDatabase();
             return pathXmlDatabase.pathCombine("Cache_guidanceItems.cacheXml");//.format(library.Caption));
         }		
-        public static TM_FileStorage                    load_GuidanceItemsFromCache     (this TM_FileStorage tmFileStorage)
+        public static TM_FileStorage                     load_GuidanceItemsFromCache    (this TM_FileStorage tmFileStorage)
         {
-            if (tmFileStorage.isNull())
+            var tmDatabase = tmFileStorage.tmXmlDatabase();
+
+            if (tmDatabase.isNull())
                 return tmFileStorage;
-            var tmDatabase = tmFileStorage.TMXmlDatabase;
-                 
-            var chacheFile = tmDatabase.getCacheLocation();
+
+            var chacheFile = tmFileStorage.getCacheLocation();
             if (chacheFile.fileExists().isFalse())
             {
                 "[TM_Xml_Database] [load_GuidanceItemsFromCache] cached file not found: {0}".error(chacheFile);
-                tmDatabase.xmlDB_Load_GuidanceItems_and_Create_CacheFile();
+                tmFileStorage.xmlDB_Load_GuidanceItems_and_Create_CacheFile();
             }
             else
             {
@@ -201,26 +220,27 @@ namespace TeamMentor.CoreLib
                                 loadedGuidanceItem);
                     o2Timer.stop();
                 }
-                tmDatabase.populateGuidanceItemsFileMappings();
+                tmFileStorage.populateGuidanceItemsFileMappings();
             }
             return tmFileStorage;
         }		
-        public static TM_Xml_Database                    save_GuidanceItemsToCache       (this TM_Xml_Database tmDatabase)
+        public static TM_FileStorage                    save_GuidanceItemsToCache      (this TM_FileStorage tmFileStorage)
         {            
-            var cacheFile = tmDatabase.getCacheLocation();
-            if (cacheFile.notNull())
+            var cacheFile     = tmFileStorage.getCacheLocation();
+            var tmXmlDatabase = tmFileStorage.tmXmlDatabase();
+            if (cacheFile.notNull() && tmXmlDatabase.notNull())
             {
                 var o2Timer = new O2Timer("saveGuidanceItemsToCache").start();
-                lock (tmDatabase.Cached_GuidanceItems)
+                lock (tmXmlDatabase.Cached_GuidanceItems)
                 {
-                    tmDatabase.Cached_GuidanceItems.Values.toList().saveAs(cacheFile);
+                    tmXmlDatabase.Cached_GuidanceItems.Values.toList().saveAs(cacheFile);
                     //tmDatabase.triggerGitCommit();          // TODO: add save_GuidanceItemsToCache event to allow GIT to support for saving XML data
                 }
                 o2Timer.stop();
             }            
-            return tmDatabase;
+            return tmFileStorage;
         }					        	
-        public static TM_Xml_Database                    queue_Save_GuidanceItemsCache  (this TM_Xml_Database tmDatabase)
+        public static TM_FileStorage                    queue_Save_GuidanceItemsCache  (this TM_FileStorage tmFileStorage)
         {
             
             // do this on a separate thread so that we don't hang the current request			
@@ -228,37 +248,49 @@ namespace TeamMentor.CoreLib
             { 
                 thread_Save_GuidanceItemsCache = O2Thread.mtaThread(
                     ()=>{
-                            tmDatabase.sleep(1000,false);
-                            tmDatabase.save_GuidanceItemsToCache();
+                            1000.sleep();
+                            tmFileStorage.save_GuidanceItemsToCache();
                             thread_Save_GuidanceItemsCache = null;
                     });
             
             }			            
-            return tmDatabase;
-        }       
-        public static TM_Xml_Database                    clear_GuidanceItemsCache       (this TM_Xml_Database tmDatabase)
+            return tmFileStorage;
+        }     
+        public static TM_FileStorage                    waitForComplete_Save_GuidanceItemsCache(this TM_FileStorage tmFileStorage, int maxWait_Miliseconds = 2000)
         {
+            if (thread_Save_GuidanceItemsCache.notNull())
+                try 
+                { 
+                    thread_Save_GuidanceItemsCache.Join(maxWait_Miliseconds);
+                }
+                catch(Exception ex)
+                {
+                    ex.log("[TM_Xml_Database][waitForComplete_Save_GuidanceItemsCache]");
+                }
+            return tmFileStorage;
+        }
+        
+        public static TM_FileStorage                     clear_GuidanceItemsCache       (this TM_FileStorage tmFileStorage)
+        {
+            var tmXmlDatabase = tmFileStorage.tmXmlDatabase();
+            if (tmFileStorage.isNull() || tmXmlDatabase.isNull())
+                return tmFileStorage;
+             
             "[TM_Xml_Database] clear_GuidanceItemsCache".info();
             
-            var cacheFile = tmDatabase.getCacheLocation();
+            var cacheFile = tmFileStorage.getCacheLocation();
             if (cacheFile.notNull() && cacheFile.fileExists())
             {
                 Files.deleteFile(cacheFile);
                 "cache file deleted OK:{0}".info(cacheFile.fileExists().isFalse());
-            }
-            
-            tmDatabase.Cached_GuidanceItems.Clear();
-            return tmDatabase;
-        }
-        public static TM_Xml_Database                    reCreate_GuidanceItemsCache    (this TM_Xml_Database tmDatabase)
-        {
-            return tmDatabase.clear_GuidanceItemsCache()
-                             .xmlDB_Load_GuidanceItems_and_Create_CacheFile();            
-        }		
+            }            
+            tmXmlDatabase.Cached_GuidanceItems.Clear();
+            return tmFileStorage;
+        }        	
         	
-        public static string                             removeGuidanceItemFileMapping  (this TM_Xml_Database tmDatabase, Guid guidanceItemId)
+        public static string                             removeGuidanceItemFileMapping  (this TM_FileStorage tmFileStorage, Guid guidanceItemId)
         {
-            var fileMappings = tmDatabase.guidanceItems_FileMappings();
+            var fileMappings = tmFileStorage.guidanceItems_FileMappings();
 
             if (fileMappings.hasKey(guidanceItemId))
             {
@@ -268,11 +300,11 @@ namespace TeamMentor.CoreLib
             }
             return null;
         }		
-        public static string                             getXmlFilePathForGuidanceId    (this TM_Xml_Database tmDatabase, Guid guidanceItemId)
+        public static string                             getXmlFilePathForGuidanceId    (this TM_FileStorage tmFileStorage, Guid guidanceItemId)
         {
-            return tmDatabase.getXmlFilePathForGuidanceId(guidanceItemId, Guid.Empty);
+            return tmFileStorage.getXmlFilePathForGuidanceId(guidanceItemId, Guid.Empty);
         }		
-        public static string                             getXmlFilePathForGuidanceId    (this TM_Xml_Database tmDatabase, Guid guidanceItemId, Guid libraryId)	
+        public static string                             getXmlFilePathForGuidanceId    (this TM_FileStorage tmFileStorage, Guid guidanceItemId, Guid libraryId)	
         {		
             var tmFileStorate = TM_FileStorage.Current;
             //first see if we already have this mapping
@@ -288,13 +320,13 @@ namespace TeamMentor.CoreLib
                 "[getXmlFilePathForGuidanceId] When creating a new GuidanceItem a libraryId must be provided".error();
                 return null;
             }
-            var tmLibrary = tmDatabase.tmLibrary(libraryId);
+            var tmLibrary = tmFileStorage.tmXmlDatabase().tmLibrary(libraryId);
             if (tmLibrary == null)
             {
                 "[getXmlFilePathForGuidanceId] When creating a new GuidanceItem could not find library for libraryId: {0}".error(libraryId);
                 return null;
             }
-            var libraryPath = tmDatabase.xmlDB_Path_Library_RootFolder(tmLibrary);
+            var libraryPath = tmFileStorage.xmlDB_Path_Library_RootFolder(tmLibrary);
             var newArticleFolder = libraryPath.pathCombine(TMConsts.DEFAULT_ARTICLE_FOLDER_NAME);
             var xmlPath = newArticleFolder.createDir()                                         
                 .pathCombine("{0}.xml".format(guidanceItemId));
@@ -306,8 +338,21 @@ namespace TeamMentor.CoreLib
             
         }
 
+        public static Dictionary<Guid, guidanceExplorer> guidanceExplorers_XmlFormat    (this TM_FileStorage tmFileStorage)
+        {
+            return tmFileStorage.tmXmlDatabase().notNull()
+                        ? tmFileStorage.tmXmlDatabase().GuidanceExplorers_XmlFormat
+                        : new Dictionary<Guid, guidanceExplorer>();
+        }
+        public static TM_FileStorage                     guidanceExplorers_XmlFormat    (this TM_FileStorage tmFileStorage, Dictionary<Guid, guidanceExplorer> guidanceExplorers)
+        {
+            if (tmFileStorage.tmXmlDatabase().notNull())
+                tmFileStorage.tmXmlDatabase().GuidanceExplorers_XmlFormat = guidanceExplorers;
+            return tmFileStorage;                        
+        }
+
           // this is a (bit) time consumining (less 1s for 8000 files), so it should only be done once (this is another good cache target)
-        public static void populateGuidanceItemsFileMappings(this TM_Xml_Database tmXmlDatabase)
+        public static void populateGuidanceItemsFileMappings(this TM_FileStorage tmFileStorage)
         {
             var tmFileStorate = TM_FileStorage.Current;
             tmFileStorate.GuidanceItems_FileMappings.Clear();

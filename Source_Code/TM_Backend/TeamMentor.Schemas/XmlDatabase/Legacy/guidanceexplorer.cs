@@ -6,8 +6,7 @@ using FluentSharp.CoreLib;
 namespace urn.microsoft.guidanceexplorer 
 {
     [Serializable]
-    //[XmlRoot(Namespace="urn:microsoft:guidanceexplorer")]
-    public class guidanceExplorer
+    public class guidanceExplorer : MarshalByRefObject
     {
         [XmlAttribute] public string           name                { get; set; }
         [XmlElement]   public Library          library             { get; set; }
@@ -27,7 +26,8 @@ namespace urn.microsoft.guidanceexplorer
             this.saveAs(xmlFile);
         }
     }
-    public class Library
+    [Serializable]
+    public class Library : MarshalByRefObject
     {
         [XmlAttribute] public string           name                { get; set; }
         [XmlAttribute] public string           caption             { get; set; }        
@@ -40,7 +40,8 @@ namespace urn.microsoft.guidanceexplorer
         }
     }
 
-    public class LibraryStructure
+    [Serializable]
+    public class LibraryStructure : MarshalByRefObject
     {
         [XmlElement  ] public List<View>       view                 { get; set; }
         [XmlElement  ] public List<Folder>     folder               { get; set; }
@@ -51,8 +52,8 @@ namespace urn.microsoft.guidanceexplorer
             folder  = new List<Folder>();
         }
     }
-
-    public class Folder
+    [Serializable]
+    public class Folder : MarshalByRefObject
     {
         [XmlAttribute] public string           folderId            { get; set; }
         [XmlAttribute] public string           caption             { get; set; }
@@ -65,7 +66,8 @@ namespace urn.microsoft.guidanceexplorer
             folder1  = new List<Folder>();            
         }
     }
-    public class View
+    [Serializable]
+    public class View : MarshalByRefObject
     {   
         [XmlAttribute] public string           id                  { get; set; }
         [XmlAttribute] public string           caption             { get; set; }
@@ -78,10 +80,10 @@ namespace urn.microsoft.guidanceexplorer
             items    = new Items();                        
         }
     }
-    public class Items 
+    [Serializable]
+    public class Items : MarshalByRefObject
     {
         [XmlElement(ElementName = "item")] public List<string>     item  { get; set; }
-
         public Items()
         {
             item = new List<string>();

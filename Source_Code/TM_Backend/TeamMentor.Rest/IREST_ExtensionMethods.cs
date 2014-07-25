@@ -1,4 +1,5 @@
 ﻿using System.ServiceModel.Web;
+using FluentSharp.CoreLib;
 
 namespace TeamMentor.CoreLib
 {
@@ -18,5 +19,19 @@ namespace TeamMentor.CoreLib
                 WebOperationContext.Current.OutgoingResponse.ContentType = contentType;
             return iRest_Admin;
         }
+
+        public static ITM_REST redirect_To_Page(this ITM_REST iRestAdmin, string redirectTarget)
+        {
+            var webOperationContext = WebOperationContext.Current;
+            if (webOperationContext.notNull())
+            {
+                redirectTarget = redirectTarget.replace("//","/");            // in case they made it this far, prevent urls that have //
+                iRestAdmin.response_ContentType_Html();
+                webOperationContext.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.Redirect;
+                webOperationContext.OutgoingResponse.Headers.Add("Location", redirectTarget);                
+            }
+            return iRestAdmin;
+        }
+
     }
 }

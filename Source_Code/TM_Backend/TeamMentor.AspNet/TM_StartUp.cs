@@ -9,17 +9,20 @@ using TeamMentor.UserData;
 
 namespace TeamMentor.CoreLib
 {
-    public class TM_StartUp
+    [Serializable]
+    public class TM_StartUp : MarshalByRefObject
     {
         public static TM_StartUp        Current                 { get; set; }
-        public static TM_Engine         TMEngine                { get; set; }        
+        public TM_Engine                TMEngine                { get; set; }        
         public Tracking_Application     TrackingApplication     { get; set; }
         public TM_FileStorage           TmFileStorage           { get; set; }        
-
+        public string                   Version                 { get; set; }        
+                
         public TM_StartUp()
         {
             Current  = this;
             TMEngine = new TM_Engine();
+            Version  = this.type().assembly().version(); 
         }
 
         public void SetupEvents()
@@ -32,7 +35,7 @@ namespace TeamMentor.CoreLib
             TMEvents.OnApplication_BeginRequest .add(Application_BeginRequest);
         }
         public void Session_Start()
-        {
+        {            
             "[TM_StartUp] Session Start".info();
         }
         public void Session_End()
@@ -41,10 +44,10 @@ namespace TeamMentor.CoreLib
             TrackingApplication.saveLog();
         }
         
-        [Assert_Admin]                      // impersonate an admin to load the database
+        [Assert_Admin]                                              
         public void Application_Start()
-        {
-            UserGroup.Admin.assert();                                   // impersonate Admin user
+        {            
+            UserGroup.Admin.assert();                                   // impersonate an admin to load the database
 
             "[TM_StartUp] Application Start".info();   
 
@@ -59,8 +62,6 @@ namespace TeamMentor.CoreLib
             MVC5.MapDefaultRoutes();                                    // Map MVC 5 routes
 
             TrackingApplication.saveLog();                              // save log                         
-             
-            SendEmails.mapTMServerUrl();                                // Map current server URL
 
             UserGroup.None.assert();                                    // revert admin user impersonation
         } 
@@ -95,16 +96,22 @@ namespace TeamMentor.CoreLib
             "[TM][Application_Error]: {0}".error(lastError);
             TrackingApplication.saveLog();
             if (TMConfig.Current.TMSetup.ShowDotNetDebugErrors.isFalse())
-                 HttpContextFactory.Server.Transfer(TMConsts.DEFAULT_ERROR_PAGE_REDIRECT);            
-     //          HttpContextFactory.Response.Redirect(TMConsts.DEFAULT_ERROR_PAGE_REDIRECT);            
+                HttpContextFactory.Response.Redirect(TMConsts.DEFAULT_ERROR_PAGE_REDIRECT);            
         }           
         public void Application_BeginRequest()
-        {            
+        {               
             TMEngine.performHealthCheck()
                     .logRequest()
                     .handleRequest();
             
-            
+        }
+    }
+
+    public static class TM_StartUp_ExtensionMethods
+    {
+        public static Tracking_Application trackingApplication(this TM_StartUp tmStartup)
+        {
+            return tmStartup.notNull() ? tmStartup.TrackingApplication : null;
         }
     }
 }

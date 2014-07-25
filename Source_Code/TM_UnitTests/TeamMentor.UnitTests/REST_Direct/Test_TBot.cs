@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Xml.Linq;
 using System.IO;
 using FluentSharp.Git.APIs;
+using FluentSharp.NUnit;
 using FluentSharp.Web;
 using NUnit.Framework;
 using FluentSharp.CoreLib;
@@ -36,6 +38,7 @@ namespace TeamMentor.UnitTests.REST_Direct
         }
         [Test][Assert_Admin] public void TBot_Render()
         {
+            UserGroup.Admin.assert(); 
             var commandsHtml   = TmRest.TBot_Run("commands").cast<MemoryStream>().ascii().lower();            
             var commandsRender = TmRest.TBot_Render("commands").cast<MemoryStream>().ascii().lower();                        
             Assert.NotNull    (commandsHtml);
@@ -54,6 +57,7 @@ namespace TeamMentor.UnitTests.REST_Direct
             Assert.AreEqual   ("", noRender);
             Assert.AreEqual   ("", emptyRender);
             Assert.AreEqual   ("", nullRender);
+            UserGroup.None.assert(); 
         }
 /*        [Test][Assert_Admin] public void TBot_Json()
         {
@@ -74,13 +78,10 @@ namespace TeamMentor.UnitTests.REST_Direct
 
         [Test] public void RedirectToLoginOnNoAdmin()
         {
-            UserGroup.None.assert();
-            var response = HttpContextFactory.Response;
-            Assert.IsFalse  (response.IsRequestBeingRedirected);
-            Assert.AreEqual ("", response.RedirectLocation);            
-            Assert.Throws<Exception>(()=>TmRest.TBot_Run("abc"));
-            Assert.IsTrue   (response.IsRequestBeingRedirected);
-            Assert.AreEqual ("/Login?LoginReferer=/tbot", response.RedirectLocation);            
+            UserGroup.None.assert();                                    // remove all privileges
+            
+            TmRest.TBot_Run("abc").cast<MemoryStream>().ascii()           
+                                 .assert_Equals("Redirecting to Login Page...\n\n");
         }
 
         [Test] public void TbotMainPage()
@@ -95,7 +96,7 @@ namespace TeamMentor.UnitTests.REST_Direct
 
         [Test] public void Script_ViewEmailsSent()
         {            
-            TBot_Brain.AvailableScripts = TBot_Brain.GetAvailableScripts();
+            TBot_Brain.AvailableScripts = TBot_Brain.SetAvailableScripts();
             //tests one script to make sure core engine is working
             // (run CheckThatAllTBotPagesLoad to test all scripts)
             var tbotBrain = new TBot_Brain(TmRest);
@@ -111,35 +112,7 @@ namespace TeamMentor.UnitTests.REST_Direct
             html.info();
             Assert.IsFalse(html.contains("Unable to compile template"), "Compilation error");
             Assert.IsFalse(html.contains("<hr /><b>Exception:</b> "), "Execution Exception");
-        }        
-        [Test]        
-        [Ignore("trigger manually since it takes a while to compile all Tbot scripts")]
-        public void Script_Run_AllScripts()
-        {            
-            SetUpNGit();            
-            var tbotBrain = new TBot_Brain(TmRest);
-            foreach (var scriptName in tbotBrain.scriptsNames())
-            {
-                "================= Executing TBot script: {0}".info(scriptName);
-                var html = tbotBrain.ExecuteRazorPage(scriptName); //"View_Emails_Sent");    
-                Assert.IsNotNull(html, "for :{0}".format(scriptName));
-                var compileError = html.contains("Unable to compile template");
-                if (compileError)
-                {
-                    html.info();
-                    Assert.Fail("Failed to compile: {0}".format(scriptName));
-                }
-                var executionError = html.contains("Opps: Something went wrong:");
-                if (executionError)
-                {
-                    html.info();
-                    Assert.Fail("Execution error: on  {0}".format(scriptName));
-                }
-                
-            }
-
-            //"test webBrowser".popupWindow().add_WebBrowser().set_Html(html).waitForClose();
-        }
+        }                
 
         //Helper methods
         public void SetUpNGit()

@@ -189,13 +189,13 @@ namespace TeamMentor.UnitTests.Authentication
 
             
             tmAuthentication.mapUserRoles();
-            Assert.AreEqual(HttpContextFactory.Context.getThreadPrincipalWithRoles(), UserGroup.Anonymous.userRoles().toStringList());
+            Assert.AreEqual(HttpContextFactory.Context.getThreadPrincipalWithRoles(), UserGroup.Viewer.userRoles().toStringList());
             
             var adminUser = userData.tmUsers().first();
             tmAuthentication.sessionID = adminUser.login();
             //should not work until the CSRF token is set
             tmAuthentication.mapUserRoles();
-            Assert.AreEqual(HttpContextFactory.Context.getThreadPrincipalWithRoles(), UserGroup.Anonymous.userRoles().toStringList());
+            Assert.AreEqual(HttpContextFactory.Context.getThreadPrincipalWithRoles(), UserGroup.Viewer.userRoles().toStringList());
 
             HttpContextFactory.Context.Request.Headers["CSRF-Token"] = tmAuthentication.sessionID.csrfToken();
 
@@ -208,13 +208,13 @@ namespace TeamMentor.UnitTests.Authentication
         [Test] public void mapUserRoles_Show_ContentToAnonymousUsers()  
         {
             tmAuthentication.mapUserRoles();
-            Assert.AreEqual(HttpContextFactory.Context.getThreadPrincipalWithRoles(), UserGroup.Anonymous.userRoles().toStringList());
+            Assert.AreEqual(HttpContextFactory.Context.getThreadPrincipalWithRoles(), UserGroup.Viewer.userRoles().toStringList());
             TMConfig.Current.TMSecurity.Show_ContentToAnonymousUsers = true;
             tmAuthentication.mapUserRoles();
             Assert.AreEqual(HttpContextFactory.Context.getThreadPrincipalWithRoles(), UserGroup.Reader.userRoles().toStringList());
             TMConfig.Current.TMSecurity.Show_ContentToAnonymousUsers = false;
             tmAuthentication.mapUserRoles();
-            Assert.AreEqual(HttpContextFactory.Context.getThreadPrincipalWithRoles(), UserGroup.Anonymous.userRoles().toStringList());
+            Assert.AreEqual(HttpContextFactory.Context.getThreadPrincipalWithRoles(), UserGroup.Viewer.userRoles().toStringList());
         }
     }
 }

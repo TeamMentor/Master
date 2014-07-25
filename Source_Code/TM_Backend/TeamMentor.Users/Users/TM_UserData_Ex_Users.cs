@@ -7,8 +7,6 @@ namespace TeamMentor.CoreLib
 {
     public static class TM_UserData_Ex_Users
     {        
-
-
         public static TMUser        tmUser                      (this int userId)
         {
             return TM_UserData.Current.tmUser(userId);
@@ -165,41 +163,43 @@ namespace TeamMentor.CoreLib
             return usersId.Select(userId => userId.tmUser()).toList();
         }
         public static List<TMUser>  tmUsers             (this TM_UserData userData)
-        {
-            return TM_UserData.Current.TMUsers.toList();
+        {            
+            return (userData.notNull() && userData.TMUsers.notNull()) 
+                        ? userData.TMUsers.toList()
+                        : new List<TMUser>();
         }                                        
 
         
         [ManageUsers]   public static List<bool>    deleteTmUsers       (this TM_UserData userData, List<int> userIds)
         {
-            UserGroup.Admin.demand();
+            UserRole.ManageUsers.demand();
             if(userIds.isNull())
                 return new List<bool>();
             return userIds.Select(userId => userData.deleteTmUser(userId)).toList();
         }
         [ManageUsers]   public static bool          deleteTmUser        (this TM_UserData userData, int userId)
         {
-            UserGroup.Admin.demand();
+            UserRole.ManageUsers.demand();
             return userData.deleteTmUser(userId.tmUser());
         }
         [ManageUsers]   public static bool          updateTmUser        (this TM_UserData userData, TM_User user)
         {
-            UserGroup.Admin.demand();
+            UserRole.ManageUsers.demand();
             return userData.tmUser(user.UserId).updateTmUser(user);
         }
         [ManageUsers]   public static bool          updateTmUser        (this TM_UserData userData, int userId, string userName, string firstname, string lastname, string title, string company, string email, string country, string state, DateTime accountExpiration, bool passwordExpired, bool userEnabled, bool accountNeverExpires, int groupId)
         {
-            UserGroup.Admin.demand();
+            UserRole.ManageUsers.demand();
             return userData.tmUser(userId).updateTmUser(userName, firstname, lastname,  title, company, email,country, state, accountExpiration, passwordExpired,userEnabled, accountNeverExpires,groupId);
         }	
 	    [ManageUsers]  public static List<TMUser>   users               (this TM_UserData userData)
 	    {     
-            UserGroup.Admin.demand();
+            UserRole.ManageUsers.demand();
 	        return userData.tmUsers();            
 	    }              
         [ManageUsers]   public static List<string>  getUserRoles        (this TM_UserData userData, int userId)
         {
-            UserGroup.Admin.demand();
+            UserRole.ManageUsers.demand();
             var tmUser = userData.tmUser(userId);
             if (tmUser.notNull()) 
                 return tmUser.userGroup().userRoles().toStringList();
@@ -207,7 +207,7 @@ namespace TeamMentor.CoreLib
         }        
         [ManageUsers]   public static bool          setUserGroupId      (this TM_UserData userData, int userId, int groupId)
         {			
-            UserGroup.Admin.demand();
+            UserRole.ManageUsers.demand();
             var tmUser = userData.tmUser(userId);
             if (tmUser.notNull()) 
             {

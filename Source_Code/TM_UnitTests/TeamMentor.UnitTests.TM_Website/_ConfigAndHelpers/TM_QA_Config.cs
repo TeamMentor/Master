@@ -60,7 +60,7 @@ namespace TeamMentor.UnitTests.TM_Website
         }
         public static TM_QA_Config                  load                (this TM_QA_Config_Loader configLoader          ) 
         {
-            var localFilePath = configLoader.localFilePath();
+            var localFilePath = configLoader.localFilePath();            
             if (localFilePath.fileExists())
                 return localFilePath.load<TM_QA_Config>();              
             return configLoader.create();            
@@ -116,8 +116,7 @@ namespace TeamMentor.UnitTests.TM_Website
             tmQaConfig.new_UserList()                      
                       .add_User("qa-admin"     , 1)                      
                       .add_User("qa-reader"    , 2)
-                      .add_User("qa-editor"    , 3)
-                      .add_User("qa-developer" , 4);
+                      .add_User("qa-editor"    , 3);                      
             return tmQaConfig;
         }
         public static List<Test_User>  new_UserList        (this TM_QA_Config tmQaConfig                   ) 

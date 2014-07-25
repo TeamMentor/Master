@@ -13,15 +13,18 @@ namespace TeamMentor.UnitTests.FileStorage
     {        
         [SetUp]    public void setup()
         {            
-            Assert.IsNotNull(userData.path_UserData()); 
-            Assert.IsNotNull(userData.tmConfig_Location());
-            Assert.IsNotNull(userData.secretData_Location());
+            Assert.IsNotNull(tmFileStorage.path_UserData()); 
+            Assert.IsNotNull(tmFileStorage.tmConfig_Location());
+            Assert.IsNotNull(tmFileStorage.secretData_Location());
         }
         [TearDown] public void teardown()
         {
-            if(userData.path_UserData().folder_Exists())
-                Assert.IsTrue (Files.deleteFolder(userData.path_UserData(), true));
-            Assert.IsFalse(userData.path_UserData().dirExists());
+            if(tmFileStorage.path_UserData().folder_Exists())
+            {
+                tmFileStorage.path_UserData().files(true).files_Attribute_ReadOnly_Remove();
+                Assert.IsTrue (Files.deleteFolder(tmFileStorage.path_UserData(), true));
+            }
+            Assert.IsFalse(tmFileStorage.path_UserData().dirExists());
         }
         [Test] public void load()
         {

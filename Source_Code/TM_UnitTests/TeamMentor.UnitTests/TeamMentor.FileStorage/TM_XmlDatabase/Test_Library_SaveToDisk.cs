@@ -13,9 +13,10 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
     public class Test_Library_SaveToDisk : TM_XmlDatabase_FileStorage
     {        
                 
-        [TestFixtureTearDown]
+        [TestFixtureTearDown][Assert_Admin]
         public void TearDown()
         {
+            UserGroup.Admin.assert();            
             Assert.IsTrue     (tmFileStorage.path_XmlDatabase().dirExists());
             Assert.IsTrue     (tmFileStorage.path_XmlLibraries().dirExists());
             Assert.IsTrue     (tmFileStorage.WebRoot.dirExists());   
@@ -29,11 +30,15 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Files.deleteFolder(tmFileStorage.path_XmlDatabase(),true);
             Assert.IsFalse    (tmFileStorage.path_XmlDatabase().dirExists());
             Assert.IsFalse    (tmFileStorage.path_XmlLibraries().dirExists());
+            
+            UserGroup.None.assert();
         }
 
-        [Test]//[Ignore("This fails in TeamCity, since the Temp folder is inside the Websites AppData folder")]
+        [Test][Assert_Admin]//[Ignore("This fails in TeamCity, since the Temp folder is inside the Websites AppData folder")]
         public void TestUseOfTempFolders()
         {
+            UserGroup.Admin.assert();
+
             var databaseFolder      = tmFileStorage.path_XmlDatabase();
             var libraryFolder       = tmFileStorage.path_XmlLibraries();
             var appDomainFolder     = AppDomain.CurrentDomain.BaseDirectory;
@@ -41,22 +46,25 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Assert.IsTrue(TM_Status.Current.TM_Database_Location_Using_AppData  , "in UnitTests, should be inside App_Data folder");
             Assert.IsTrue(libraryFolder.contains(appDomainFolder)               , "in UnitTests, libraryFolder should be inside appDomainFolder");
             Assert.IsTrue(databaseFolder.contains(appDomainFolder)              , "in UnitTests, databaseFolder should be inside appDomainFolder");
+
+            UserGroup.None.assert();
             
         }
 
-        [Test][Assert_Editor]
+        [Test][Assert_Admin]
         public void Test_xmlDB_LibraryPath()
         {
-            UserGroup.Editor.assert();
+            UserGroup.Admin.assert();
+
             var newLibraryName1 = "Test_new_Library";
             var testLibrary1    = tmXmlDatabase.new_TmLibrary(newLibraryName1);
 
-            var libraryPath_Null_GuidanceExplorer = tmXmlDatabase.xmlDB_Path_Library_XmlFile(null as guidanceExplorer);
-            var libraryPath_Null_TM_Library       = tmXmlDatabase.xmlDB_Path_Library_XmlFile(null as TM_Library);
-            var libraryPath_Null_EmptyGuid        = tmXmlDatabase.xmlDB_Path_Library_XmlFile(Guid.Empty);
-            var libraryPath_TM_Library            = tmXmlDatabase.xmlDB_Path_Library_XmlFile(testLibrary1);
-            var libraryPath_Library_Id            = tmXmlDatabase.xmlDB_Path_Library_XmlFile(testLibrary1.Id);
-            var libraryPath_GuidanceExplorer      = tmXmlDatabase.xmlDB_Path_Library_XmlFile(testLibrary1.guidanceExplorer(tmXmlDatabase));            
+            var libraryPath_Null_GuidanceExplorer = tmFileStorage.xmlDB_Path_Library_XmlFile(null as guidanceExplorer);
+            var libraryPath_Null_TM_Library       = tmFileStorage.xmlDB_Path_Library_XmlFile(null as TM_Library);
+            var libraryPath_Null_EmptyGuid        = tmFileStorage.xmlDB_Path_Library_XmlFile(Guid.Empty);
+            var libraryPath_TM_Library            = tmFileStorage.xmlDB_Path_Library_XmlFile(testLibrary1);
+            var libraryPath_Library_Id            = tmFileStorage.xmlDB_Path_Library_XmlFile(testLibrary1.Id);
+            var libraryPath_GuidanceExplorer      = tmFileStorage.xmlDB_Path_Library_XmlFile(testLibrary1.guidanceExplorer(tmXmlDatabase));            
 
             Assert.IsNull(libraryPath_Null_GuidanceExplorer , "libraryPath_NullValue");
             Assert.IsNull(libraryPath_Null_TM_Library       , "libraryPath_NullValue");
@@ -69,45 +77,51 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Assert.IsTrue(libraryPath_TM_Library.valid() && libraryPath_Library_Id.valid() && libraryPath_GuidanceExplorer.valid());
             Assert.AreEqual(libraryPath_TM_Library, libraryPath_Library_Id);
             Assert.AreEqual(libraryPath_TM_Library, libraryPath_GuidanceExplorer);
+
+            UserGroup.None.assert(); 
         }
 
 
-        [Test][Assert_Editor]
+        [Test][Assert_Admin]
         public void CreateLibrary_OnDisk()
         {
-            UserGroup.Editor.assert();
+            UserGroup.Admin.assert();
+
             var newLibraryName1  = "Test_new_Library";
             var newLibraryName2  = "C++";
 
             var testLibrary1      = tmXmlDatabase.new_TmLibrary     (newLibraryName1);
-            var libraryPath1      = tmXmlDatabase.xmlDB_Path_Library_XmlFile (testLibrary1);
+            var libraryPath1      = tmFileStorage.xmlDB_Path_Library_XmlFile (testLibrary1);
             var testLibrary2      = tmXmlDatabase.new_TmLibrary     (newLibraryName2);
-            var libraryPath2      = tmXmlDatabase.xmlDB_Path_Library_XmlFile (testLibrary2);
+            var libraryPath2      = tmFileStorage.xmlDB_Path_Library_XmlFile (testLibrary2);
 
             Assert.IsTrue(libraryPath1.fileExists());
             Assert.IsTrue(libraryPath2.fileExists());
+
+            UserGroup.None.assert(); 
         }
 
         [Test][Assert_Admin]
         public void CreateArticle_OnLibraryWithDiferentNameThanFolder()
         {
             UserGroup.Admin.assert();
+
             var libraryId                   = Guid.NewGuid();
             var libraryName                 = "library_Name".add_RandomLetters(4);
             var libraryFolderAndXmlFile     = "FolderXml_Name".add_RandomLetters(4);
             var newGuidanceExplorer         = new guidanceExplorer { library = { name = libraryId.str(), caption = libraryName } };
-            var newGuidanceExplorerXmlFile  = tmXmlDatabase.path_XmlLibraries().pathCombine(@"{0}\{0}.xml".format(libraryFolderAndXmlFile));
+            var newGuidanceExplorerXmlFile  = tmFileStorage.path_XmlLibraries().pathCombine(@"{0}\{0}.xml".format(libraryFolderAndXmlFile));
 
             //manually add the new newGuidanceExplorer to the database
             tmXmlDatabase.GuidanceExplorers_XmlFormat.add(libraryId, newGuidanceExplorer);
             //manually add the new guidanceExplorer Path
-            tmXmlDatabase.guidanceExplorers_Paths().add(newGuidanceExplorer, newGuidanceExplorerXmlFile);
+            tmFileStorage.guidanceExplorers_Paths().add(newGuidanceExplorer, newGuidanceExplorerXmlFile);
             //save guidanceExplorer (which should save in the new path)
             tmXmlDatabase.xmlDB_Save_GuidanceExplorer(libraryId);
 
             //get new values
-            var libraryXmlFile = tmXmlDatabase.xmlDB_Path_Library_XmlFile      (libraryId);
-            var libraryRootFolder = tmXmlDatabase.xmlDB_Path_Library_RootFolder(newGuidanceExplorer);
+            var libraryXmlFile    = tmFileStorage.xmlDB_Path_Library_XmlFile      (libraryId);
+            var libraryRootFolder = tmFileStorage.xmlDB_Path_Library_RootFolder(newGuidanceExplorer);
 
             Assert.IsTrue     (newGuidanceExplorerXmlFile.fileExists(), "newGuidanceExplorerXmlFile.fileExists()");
             Assert.IsTrue     (libraryRootFolder.dirExists()          , "libraryRootFolder.dirExists()");
@@ -118,7 +132,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             //which was not working ok in 3.3. ( https://github.com/TeamMentor/Master/issues/482 )
             var newArticle         = tmXmlDatabase.xmlDB_RandomGuidanceItem(libraryId);            
             var articlesInLibrary  = tmXmlDatabase.getGuidanceItems_from_LibraryFolderOrView(libraryId);
-            var articlePath        = tmXmlDatabase.xmlDB_guidanceItemPath(newArticle.Metadata.Id);
+            var articlePath        = tmFileStorage.xmlDB_guidanceItemPath(newArticle.Metadata.Id);
             var articlePath_Manual = libraryRootFolder.pathCombine(TMConsts.DEFAULT_ARTICLE_FOLDER_NAME).pathCombine("{0}.xml".format(newArticle.Metadata.Id));
 
             Assert.NotNull  (newArticle                  , "newArticle was null");
@@ -129,11 +143,15 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
 
             articlePath.info();
             articlePath_Manual.info();
+
+            UserGroup.None.assert(); 
         }
 
         [Test]
         public void CreateLibrary_DirectlyOnDatabase_CheckExpectedPaths()
         {
+            admin.assert();
+
             var libraryId   = Guid.NewGuid();
             var libraryName =  "test_Library".add_RandomLetters(4);
             var newGuidanceExplorer = new guidanceExplorer {library = {name = libraryId.str(), caption = libraryName}};
@@ -148,9 +166,9 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Assert.AreEqual(tmLibrary.Id, libraryId, "tmLibrary.Id");
             Assert.AreEqual(tmLibrary.Caption, libraryName, "tmLibrary.Caption");
 
-            var libraryXml_Via_LibraryId        = tmXmlDatabase.xmlDB_Path_Library_XmlFile(libraryId);
-            var libraryXml_Via_GuidanceExplorer = tmXmlDatabase.xmlDB_Path_Library_XmlFile(newGuidanceExplorer);
-            var libraryRootFolder               = tmXmlDatabase.xmlDB_Path_Library_RootFolder(newGuidanceExplorer);
+            var libraryXml_Via_LibraryId        = tmFileStorage.xmlDB_Path_Library_XmlFile(libraryId);
+            var libraryXml_Via_GuidanceExplorer = tmFileStorage.xmlDB_Path_Library_XmlFile(newGuidanceExplorer);
+            var libraryRootFolder               = tmFileStorage.xmlDB_Path_Library_RootFolder(newGuidanceExplorer);
 
             Assert.IsTrue(libraryXml_Via_LibraryId.valid(), "libraryXml_Via_LibraryId");
             Assert.AreEqual(libraryXml_Via_LibraryId, libraryXml_Via_GuidanceExplorer, "libraryXml_Via_LibraryId and libraryXml_Via_GuidanceExplorer");
@@ -158,6 +176,8 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Assert.AreEqual(libraryName, libraryXml_Via_LibraryId.fileName_WithoutExtension(),
                             libraryXml_Via_LibraryId.fileName_WithoutExtension());
             Assert.AreEqual(libraryName, libraryRootFolder.folderName(), libraryRootFolder.folderName());
+       
+            none.assert();
         }
     }
 }

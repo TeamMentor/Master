@@ -7,6 +7,7 @@ using FluentSharp.Web35;
 using Microsoft.Security.Application;
 using System.IO;
 using System.Security;
+using TeamMentor.FileStorage;
 using TeamMentor.SiteData;
 
 namespace TeamMentor.CoreLib
@@ -265,11 +266,12 @@ namespace TeamMentor.CoreLib
                         break;
                     case "viewer":
                     case "article":
+                    case "a":
                         handle_ArticleViewRequest(data);
                         break;
                     case "edit":
                     case "editor":
-                         transfer_ArticleEditor(data);
+                         handle_ArticleEditRequest(data);
                         break;
                     case "notepad":
                         handleAction_Xsl(data, "Notepad_Edit.xslt");
@@ -331,7 +333,7 @@ namespace TeamMentor.CoreLib
                         removeVirtualArticleMapping(data);
                         break;                    
                     case "whoami":
-                        showWhoAmI();
+                        showWhoAmI(data);
                         break;
                 }
             }                
@@ -484,7 +486,7 @@ namespace TeamMentor.CoreLib
         public void handleAction_Image(string data)
         {            
             
-            var imagePath = TM_Xml_Database.Current.Get_Path_To_File(data);            
+            var imagePath = TM_FileStorage.Current.Get_Path_To_File(data);            
             if (imagePath.fileExists())
             {
                 context.Response.ContentType = "image/{0}".format(data.extension().removeFirstChar());
@@ -634,8 +636,30 @@ namespace TeamMentor.CoreLib
             else
                 tmWebServices.logUserActivity("View Article (direct)", data);
             
-            transfer_Request("articleViewer");              // will trigger exception    
-        }		
+            transfer_Request("articleViewer");                      // will trigger exception    
+        }	
+	    public void handle_ArticleEditRequest(string data)
+	    {
+            var guid = tmWebServices.getGuidForMapping(data);
+            if (guid == Guid.Empty)
+                transfer_Request("articleViewer");                  // will trigger exception
+            else
+            {
+                tmWebServices.RBAC_Demand_EditArticles();           // will trigger an Security exception if the user if not authorized
+                
+                var article = tmWebServices.GetGuidanceItemById(guid); 
+                        
+                if (article.Content.DataType.lower() == "markdown")
+                {
+                   context.Response.Redirect("/Markdown/Editor?articleId={0}".format(guid));
+                }
+                else
+                { 
+	                transfer_ArticleEditor(article);
+                }
+            }
+	    }
+
         public void handleAction_Content(string data)
         { 
             var guid = tmWebServices.getGuidForMapping(data);
@@ -655,12 +679,13 @@ namespace TeamMentor.CoreLib
         }
 
         //User related
-        public void showWhoAmI()
+        public void showWhoAmI(string data = "")
         {
             if (tmWebServices.notNull() && tmWebServices.tmAuthentication.notNull())
             {
                 var currentUser = tmWebServices.tmAuthentication.currentUser;
-                context.Response.ContentType = "application/json";                
+                if(data=="json")
+                    context.Response.ContentType = "application/json";                
                 context.Response.Write(currentUser.whoAmI().json());
                 endResponse();             
             }
@@ -671,22 +696,10 @@ namespace TeamMentor.CoreLib
             context.Response.Flush();
             context.Response.End();
         }           
-        public void transfer_ArticleEditor(string data)
-        {         
-            var guid = tmWebServices.getGuidForMapping(data);
-            if (guid == Guid.Empty)
-                transfer_Request("articleViewer");              // will trigger exception
-            else
-            {
-                tmWebServices.RBAC_Demand_EditArticles();           // will trigger an Security exception if the user if not authorized
-                
-                var article = tmWebServices.GetGuidanceItemById(guid); 
-                        
-                tmWebServices.logUserActivity("Edit Article (WYSIWYG)", "{0} ({1})".format(article.Metadata.Title, guid));
-                                
-                transfer_Request("articleEditor");    
-            }            
-            //context.Server.Transfer("/html_pages/GuidanceItemEditor/GuidanceItemEditor.html");                        
+        public void transfer_ArticleEditor(TeamMentor_Article article)
+        {                     
+            tmWebServices.logUserActivity("Edit Article (WYSIWYG)", "{0} ({1})".format(article.Metadata.Title, article.Metadata.Id));                                
+            transfer_Request("articleEditor");    
         }
         
         public void redirect_Login_AccessDenied(string urlRequested)
@@ -716,10 +729,8 @@ namespace TeamMentor.CoreLib
             context.Response.Redirect(loginPage);
         }
         public void handle_LoginOK()
-        {
-            // ensures we are redirecting into the current domain (and fixes unvalidated redirect vuln in pre 3.3)
-            var currentRequestUrl = context.Request.Url;
-            if (currentRequestUrl.notNull())
+        {            
+            if (context.Request.notNull() && context.Request.QueryString.notNull())
             {
                 var loginReferer = context.Request.QueryString["LoginReferer"]   // get user provided redirect                                                      
                                                   .replace("//","/");            // prevent urls that start with  //
@@ -727,12 +738,8 @@ namespace TeamMentor.CoreLib
                     return;
                 var referTarget = (loginReferer.notNull() && loginReferer.StartsWith("/"))
                                     ? loginReferer                               // only allow paths that start with /
-                                    : "/";                                       // default to redirect to /
-                
-                // need to calculate urlWithoutPathAndQuery since the URL class doesn't provide this value
-                var urlWithoutPathAndQuery = currentRequestUrl.AbsoluteUri.remove(currentRequestUrl.PathAndQuery);                
-                var sameDomainUrl =  urlWithoutPathAndQuery.append(referTarget);  // create redirect URL
-                context.Response.Redirect(sameDomainUrl);                        
+                                    : "/";                                       // default to redirect to /                
+                context.Response.Redirect(referTarget);        
                 // Response.Redirect will throw an exception so the current request ends here                
             }            
         }

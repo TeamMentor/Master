@@ -13,7 +13,7 @@ namespace TeamMentor.Mcv
         [Route("scriptCombiner")]
         public string Get()
         {
-            return "this is the script combi...ner";
+            return "this is the script combiner (TO BE IMPLEMENTED)";
         }
     }
 }

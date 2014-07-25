@@ -56,7 +56,7 @@ namespace TeamMentor.Website.App_Code.TempControllers
         {            
             if (path.isGuid())
             {
-                path = TM_Xml_Database.Current.xmlDB_guidanceItemPath(path.guid()).replace("\\","/");
+                path = TM_FileStorage.Current.xmlDB_guidanceItemPath(path.guid()).replace("\\","/");
             }
                 
             var gitData = nGit.gitData_Repository();

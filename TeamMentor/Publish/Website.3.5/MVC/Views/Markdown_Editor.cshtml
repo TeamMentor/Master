@@ -43,9 +43,6 @@
 
     <input class="btn btn-primary" type="submit" value="Save" />
      (<a href = "/article/@ViewBag.ArticleId">back to article</a>)
-    . 
-     (<a href = "/GitLibrary/File?path=@ViewBag.ArticleId" target="_blank">View File History and diff</a>)
-    
     <br/>
     <br />
     <!--
@@ -56,7 +53,8 @@
      <div class="input-prepend">
                 <span class="add-on" style="width:100px;">Title</span>
                 <input type="text" style="width:530px;" required value="@ViewBag.Article_Title" name="title"/>
-            </div><br/>
+     </div><br/>
+    <b>Metadata:</b><br/>
             <div class="input-prepend">
                 <span class="add-on" style="width:100px;">Technology</span>
                 <input type="text" style="width:200px;" maxlength="50"          value="@ViewBag.Article_Technology"  name="technology"/>
@@ -73,14 +71,21 @@
                 <span class="add-on" style="width:100px;">Category</span>
                 <input type="text" style="width:200px;" maxlength="30"          value="@ViewBag.Article_Category" name="category"/>
             </div>
-            <br />
-    <p> <b>Data type:</b>  @ViewBag.Article_DataType
-        @if((ViewBag.Article_DataType as string).lower()!="markdown") 
-        { 
-            @: [<b>NOTE: data type will be set to markdown on save]</b>
-        }
-    </p>
-    <table style="border-spacing: 10px;border-collapse: separate;">
+    <br />
+    <b>Article Format and Link:</b><br/>
+    <div class="input-prepend">
+        <span class="add-on" style="width:100px;">Data Type</span>
+        <select name="DataType" style="width:215px">
+            <option value="html"     @(ViewBag.Article_DataType.ToLower() == "html"     ? "selected" : "")>Html</option>
+            <option value="wikitext" @(ViewBag.Article_DataType.ToLower() == "wikitext" ? "selected" : "")>WikiText</option>
+            <option value="markdown" @(ViewBag.Article_DataType.ToLower() == "markdown" ? "selected" : "")>Markdown</option>
+        </select>
+    </div>
+    <div class="input-prepend">
+        <span class="add-on" style="width:100px;">Direct Link</span>
+        <input type="text" style="width:200px;"        value="@ViewBag.DirectLink" name="directLink"/>
+    </div>
+    <table style="border-spacing: 10px;border-collapse: separate; width:80pc">
         <thead>
             <tr>
                 <th><h3>Markdown</h3></th>

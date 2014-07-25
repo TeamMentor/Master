@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>	
     <head>	
-        <title>TeamMentor 3.4</title>		
+        <title>TeamMentor 3.5</title>		
         <link  href="/aspx_Pages/scriptCombiner.ashx?s=HomePage_CSS&ct=css" 				type="text/css" rel="stylesheet" /> 
         <!--<link  href="/Css/ArticleViewer.css" type="text/css" rel="stylesheet" /> 		-->
         <script src="/aspx_Pages/scriptCombiner.ashx?s=ArticleView_JS&_dontMinify=true"						type="text/javascript"></script>	                        
@@ -89,23 +89,32 @@
                             "TechnologyLabel"   .$().html(loadedGuidanceItem.Metadata.Technology);
                             "GuidanceTypeLabel" .$().html(loadedGuidanceItem.Metadata.Type);
                         }
-                        if (loadedGuidanceItem.Content.DataType.toLowerCase() === "markdown") {
-                            showGuidanceItemMarkdown(loadedGuidanceItem.Content.Data_Json);
-                            $("#Edit_WYSIWYG").hide();
-                            $("#Edit_Source").hide();
+                        switch (loadedGuidanceItem.Content.DataType.toLowerCase()) {
+                            case "markdown":
+                                {
+                                    showGuidanceItemMarkdown(loadedGuidanceItem.Content.Data_Json);
+                                    $("#Edit_Markdown").show();
+                                    $("#Edit_WYSIWYG").hide();
+                                    $("#Edit_Source").hide();
+                                    break;
+                                }
+                            case "wikitext":
+                                {
+                                    showGuidanceItemWikiText(loadedGuidanceItem.Content.Data_Json);
+                                    $("#Edit_Markdown").hide();
+                                    $("#Edit_WYSIWYG").hide();
+                                    $("#Edit_Source").html("Edit WikiText").show();
+                                    break;
+                                }
+                            case "html":
+                            default:
+                                {
+                                    showGuidanceItemHtml(loadedGuidanceItem.Content.Data_Json);
+                                    $("#Edit_Markdown").hide();
+                                    $("#Edit_WYSIWYG").html("Edit WYSIWYG").show();
+                                    $("#Edit_Source").html("Edit Source").show();
+                                }
                         }
-                        else if (loadedGuidanceItem.Content.DataType.toLowerCase() === "wikitext")
-                            {
-                                showGuidanceItemWikiText(loadedGuidanceItem.Content.Data_Json);
-                                $("#Edit_WYSIWYG").hide();
-                                $("#Edit_Source").html("Edit WikiText").show();                                
-                            }
-                            else
-                            {
-                                showGuidanceItemHtml(loadedGuidanceItem.Content.Data_Json);
-                                $("#Edit_WYSIWYG").html("Edit WYSIWYG").show();
-                                $("#Edit_Source").html("Edit HTML").show();
-                            }
                         if (TM.Gui.CurrentUser.isEditor())
                         {					        
                             $(".EditButtons").show();	

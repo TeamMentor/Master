@@ -26,7 +26,7 @@ namespace TeamMentor.CoreLib
                     "[TM_Xml_Database] [setupGitSupport] we are offline, so no git Pull and Pulls".info();
                 foreach (var library in tmDatabase.tmLibraries())
                 {
-                    var libraryPath = tmDatabase.xmlDB_Path_Library_XmlFile(library).parentFolder();
+                    var libraryPath = tmFileStorage.xmlDB_Path_Library_XmlFile(library).parentFolder();
                     if (libraryPath.isGitRepository())
                     {
                         var nGit = libraryPath.git_Open();

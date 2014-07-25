@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using FluentSharp.CoreLib;
 using FluentSharp.Web;
@@ -144,7 +145,7 @@ namespace TeamMentor.CoreLib
                 return "0.0.0.0";
             }
         }
-        public static string    fullName            (this TMUser tmUser)
+        public static string    fullName                (this TMUser tmUser)
         {
             if (tmUser.notNull())
                 if (tmUser.FirstName.valid())
@@ -156,7 +157,7 @@ namespace TeamMentor.CoreLib
             return "";
         } 
 
-        public static TMUser      enableUser_UsingToken(this Guid token)
+        public static TMUser    enableUser_UsingToken   (this Guid token)
         {
             var tmUser = token.enableUser_UserForToken();
             if (tmUser.notNull())
@@ -167,17 +168,17 @@ namespace TeamMentor.CoreLib
             }
             return tmUser;
         }
-        public static Guid      enableUser_Token(this TMUser user)
+        public static Guid      enableUser_Token        (this TMUser user)
         {
             if (user.SecretData.EnableUserToken == Guid.Empty)
                 user.SecretData.EnableUserToken = Guid.NewGuid();
             return  user.SecretData.EnableUserToken;
         }
-        public static bool   enableUser_IsTokenValid(this Guid token)
+        public static bool      enableUser_IsTokenValid (this Guid token)
         {
             return token.enableUser_UserForToken() != null;
         }
-        public static TMUser enableUser_UserForToken(this Guid token)
+        public static TMUser    enableUser_UserForToken (this Guid token)
         {
             if (token == Guid.Empty)
                 return null;
@@ -186,13 +187,13 @@ namespace TeamMentor.CoreLib
                     select tmUser).first();
         }
 
-        public static TMUser    set_UserGroup       (this TMUser tmUser, UserGroup userGroup)
+        public static TMUser    set_UserGroup        (this TMUser tmUser, UserGroup userGroup)
         {
             if (tmUser.notNull())
                 tmUser.GroupID = (int)userGroup;
             return tmUser;
         }
-        public static TMUser    make_Admin          (this TMUser tmUser)
+        public static TMUser    make_Admin           (this TMUser tmUser)
         {
             return tmUser.set_UserGroup(UserGroup.Admin);            
         }
@@ -204,9 +205,9 @@ namespace TeamMentor.CoreLib
         {
             return tmUser.set_UserGroup(UserGroup.Reader);            
         }
-        public static TMUser    make_Anonymous       (this TMUser tmUser)
+        public static TMUser    make_Viewer          (this TMUser tmUser)
         {
-            return tmUser.set_UserGroup(UserGroup.Anonymous);            
+            return tmUser.set_UserGroup(UserGroup.Viewer);            
         }
 
         public static bool      isAdmin              (this TMUser tmUser)        
@@ -221,9 +222,15 @@ namespace TeamMentor.CoreLib
         {
             return tmUser.GroupID == (int)UserGroup.Reader;
         }
-        public static bool      isAnonymous          (this TMUser tmUser)        
+        public static bool      isViewer             (this TMUser tmUser)        
         {
-            return tmUser.GroupID == (int)UserGroup.Anonymous;
+            return tmUser.GroupID == (int)UserGroup.Viewer;
+        }
+        public static List<UserTag> userTags         (this TMUser tmUser)
+        {
+            return tmUser.notNull() && tmUser.UserTags.notNull()
+                        ? tmUser.UserTags
+                        : new List<UserTag>();
         }
         public static WhoAmI    whoAmI               (this TMUser tmUser)        
         {

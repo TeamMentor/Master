@@ -8,14 +8,15 @@ namespace TeamMentor.CoreLib
     public static class TM_Xml_Database_ExtensionMethods_Library_Files
     {
         [Admin] 
-        public static bool upload_File_to_Library(this TM_Xml_Database tmDatabase, Guid libraryId, string filename, byte[] fileContents)
+        public static bool upload_File_to_Library(this TM_FileStorage tmFileStorage, Guid libraryId, string filename, byte[] fileContents)
         { 
-            var targetLibrary = tmDatabase.tmLibrary(libraryId);
+            UserRole.Admin.demand();
+            var targetLibrary = tmFileStorage.tmXmlDatabase().tmLibrary(libraryId);
             if (targetLibrary.notNull())
             {                                 
-                var targetFolder = tmDatabase.xmlDB_Path_Library_RootFolder(targetLibrary)
-                                            .pathCombine("_Images")
-                                            .createDir();
+                var targetFolder = tmFileStorage.xmlDB_Path_Library_RootFolder(targetLibrary)
+                                                .pathCombine("_Images")
+                                                .createDir();
                 var targetFile = targetFolder.pathCombine(filename.safeFileName());
                 return fileContents.saveAs(targetFile).fileExists();
 
@@ -24,9 +25,10 @@ namespace TeamMentor.CoreLib
         }
 
         [ReadArticles] 
-        public static string Get_Path_To_File(this TM_Xml_Database tmDatabase, string fileKey)
+        public static string Get_Path_To_File(this TM_FileStorage tmFileStorage, string fileKey)
         {
-            var filePath = TM_Xml_Database.Current.path_XmlLibraries().pathCombine("_Images").pathCombine(fileKey);    
+            UserRole.ReadArticles.demand();
+            var filePath = tmFileStorage.path_XmlLibraries().pathCombine("_Images").pathCombine(fileKey);    
             if (filePath.fileExists())
                 return filePath;
 
@@ -36,14 +38,14 @@ namespace TeamMentor.CoreLib
                 var item = splitedFileKey[0].trim();
                 var fileName = splitedFileKey[1].trim();
                 if (item.isGuid())
-                    return tmDatabase.Get_Path_To_File(item.guid(), fileName);                   
-                return tmDatabase.Get_Path_To_File(item, fileName);
+                    return tmFileStorage.Get_Path_To_File(item.guid(), fileName);                   
+                return tmFileStorage.Get_Path_To_File(item, fileName);
             }
 
 
-            foreach (var library in tmDatabase.tmLibraries())
+            foreach (var library in tmFileStorage.tmXmlDatabase().tmLibraries())
             { 
-                filePath = tmDatabase.Get_Path_To_File(library.Caption, fileKey);
+                filePath = tmFileStorage.Get_Path_To_File(library.Caption, fileKey);
                 if (filePath.notNull())
                     return filePath;
             }
@@ -51,30 +53,22 @@ namespace TeamMentor.CoreLib
         }
 
         [ReadArticles] 
-        public static string Get_Path_To_File(this TM_Xml_Database tmDatabase, Guid itemGuid, string fileName)
+        public static string Get_Path_To_File(this TM_FileStorage tmFileStorage, Guid itemGuid, string fileName)
         { 
-            var library = tmDatabase.tmLibrary(itemGuid);
+            UserRole.ReadArticles.demand();
+            var library = tmFileStorage.tmXmlDatabase().tmLibrary(itemGuid);
             if (library.notNull())
-                return tmDatabase.Get_Path_To_File(library.Caption,fileName);
-            /*var article = tmDatabase.getGuidanceItem(itemGuid);
-            if (article.notNull())
-            { 
-                var path = tmDatabase.getXmlFilePathForGuidanceId(itemGuid);
-                if (path.fileExists())
-                { 
-                    var file
-                }
-            }*/
+                return tmFileStorage.Get_Path_To_File(library.Caption,fileName);            
             return null;
 
         }
 
-        public static string Get_Path_To_File(this TM_Xml_Database tmDatabase, string libraryName, string fileName)
+        public static string Get_Path_To_File(this TM_FileStorage tmFileStorage, string libraryName, string fileName)
         {
-            var library = tmDatabase.tmLibrary(libraryName);
+            var library = tmFileStorage.tmXmlDatabase().tmLibrary(libraryName);
             if (library.notNull())
             {
-                var filePath =tmDatabase.xmlDB_Path_Library_RootFolder(library).pathCombine("_Images").pathCombine(fileName);
+                var filePath =tmFileStorage.xmlDB_Path_Library_RootFolder(library).pathCombine("_Images").pathCombine(fileName);
                 if (filePath.fileExists())
                     return filePath;
             }

@@ -1,17 +1,31 @@
 ﻿using System;
 using FluentSharp.CoreLib;
+using FluentSharp.NUnit;
+using FluentSharp.REPL;
 using FluentSharp.Watin;
+using FluentSharp.WatiN.NUnit;
+using FluentSharp.WinForms;
 using NUnit.Framework;
 
 namespace TeamMentor.UnitTests.TM_Website
 {
     [TestFixture]
     public class TBot_Users_MainPages : TestFixture_TBot
-    {
+    {        
+        [SetUp]
+        public void setUp()
+        {
+            ie.parentForm().show();
+            tbot.login_As_Admin();  
+            ie.close();
+            ie = tbot.ie = ie.parentForm().clear().add_IE();    // need to re-add the IE object since there is a bug 
+                                                                // with its state after the call with tbot.login_As_Admin();  
+        }
+
         [Test]
         public void Check_Root_Level_Pages()
-        {                                         
-            var urlTemplate  = "{0}/tbot_users/{1}";            
+        {                       
+            var urlTemplate  = "{0}/Tbot_Monitor/{1}";            
 
             Action<string,string> runTest = 
                     (pageUrl, expectedHtml) =>
@@ -19,42 +33,39 @@ namespace TeamMentor.UnitTests.TM_Website
                             var url         = urlTemplate.format(tbot.TargetServer, pageUrl);                            
                             ie.open(url);                                                     
                             "Current Url: {0}".info(ie.url());
-                            //"Current HTML {0}".info(ie.html()); 
-                          Assert.IsTrue( tbot.html().contains(expectedHtml));                            
+                            tbot.html().assert_Contains(expectedHtml);                            
                         };
             
             
-            runTest("default.htm?".add_RandomLetters(5) , "TBot v2.0");             
-            runTest("users.htm?".add_RandomLetters(5)   , "Welcome to the Users page");
+            runTest("default.htm?".add_RandomLetters(5) , "TBot V2");             
+            runTest("monitor.htm?".add_RandomLetters(5)   , "Welcome to the Monitor (in realtime) page");
+
         }        
 
         [Test]
         public void Page_main()
-        {            
-            tbot.login_As_Admin()
-                .close_IE()
-                .open_IE();
+        {                                      
 
-            ie.open(tbot.TargetServer + "/tbot_users/default.htm?".add_RandomLetters());
+            ie.open(tbot.TargetServer + "/Tbot_Monitor/default.htm?".add_RandomLetters());
 
             "Url: {0}".info(ie.url());
             "Html: {0}".info(tbot.html());
             
             
-            Assert.IsTrue(tbot.html().contains("TBot v2.0"));
+            tbot.html().assert_Contains("TBot V2");
         }
 
-        [Test][Ignore]
+        [Test]
         public void Check_Top_Links()
-        {             
-            var mainUrl = tbot.TargetServer + "/tbot_users/";
+        {                         
+            var mainUrl = tbot.TargetServer + "/Tbot_Monitor/monitor.htm";
 
-            ie.open("about:blank");
+            ie.open("about:blank");            
             Assert.AreNotEqual(ie.url(), mainUrl);
 
             ie.open(mainUrl);
-            Assert.AreEqual(ie.url(), mainUrl);
-            Assert.IsTrue (tbot.html().contains("TBot v2.0"));
+            ie.url()   .assert_Equal(mainUrl);
+            tbot.html().assert_Contains("TBot V2");
             
             var links = ie.links();            
             Assert.IsNotEmpty(links);
@@ -71,17 +82,11 @@ namespace TeamMentor.UnitTests.TM_Website
                         }
                     };
 
-            //these should exist
-            
-            checkLink("users"               , true, mainUrl      + "users.htm#/users/main");                        
+            //these should exist            
+            checkLink("TM Monitor"            , true, mainUrl      + "#/monitor/activities");                        
+            checkLink("Tbot"                  , true, tbot.TargetServer + "/tbot");                        
+            checkLink("Logout"                , true, tbot.TargetServer + "/logout");
 
-            checkLink("Admin"               , true, tbot.TargetServer + "/admin");            
-            checkLink("tbot"                , true, tbot.TargetServer + "/tbot");
-            checkLink("login"               , true, tbot.TargetServer + "/login?LoginReferer=/tbot_users");
-            checkLink("Logout"              , true, tbot.TargetServer + "/logout");
-            checkLink("Legacy Control Panel", true, tbot.TargetServer + "/admin");
-            checkLink("Main TeamMentor site", true, tbot.TargetServer + "/TeamMentor");
-            
             //these shouldn't
             checkLink("tbot1234"            , false, null);
             checkLink("AAAA"                , false, null);            
@@ -89,9 +94,9 @@ namespace TeamMentor.UnitTests.TM_Website
         }
 
         [Test]
-        public void Check_UsersMenu_Directive()
+        public void Check_Monitor_Directive()
         {
-            var usersPage = tbot.TargetServer + "/tbot_users/users.htm";
+            var usersPage = tbot.TargetServer + "/Tbot_Monitor/monitor.htm";
 
             ie.open(usersPage);
             Assert.AreEqual(usersPage, ie.url());
@@ -106,9 +111,9 @@ namespace TeamMentor.UnitTests.TM_Website
                         Assert.AreEqual   (expectedHref, linkHref);
                     };
 
-            checkLink("Home"            , "#/users/main");
-            checkLink("Users List"      , "#/users/list");
-            checkLink("Create SSO token", "#/users/sso");
+            checkLink("User Activities" , "#/monitor/activities");
+            checkLink("Debug Logs"      , "#/monitor/logs");
+            checkLink("Url Requests"    , "#/monitor/urlRequests");
         }
     }
 }

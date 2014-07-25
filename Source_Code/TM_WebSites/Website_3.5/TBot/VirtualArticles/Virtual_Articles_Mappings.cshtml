@@ -1,0 +1,108 @@
+﻿<script type="text/javascript">
+    //AngularJS 
+    function VirtualArticle($scope, $http) {
+        var asmxService = '/Aspx_Pages/TM_WebServices.asmx/';
+        var invokeService = function (method, parameters, onSuccess) {
+            $http.post(asmxService + method, parameters)
+                .success(function (data) {
+                    onSuccess(data.d);
+                });
+        };
+        $scope.add_Redirect = function (targetId, redirectUri) {
+            invokeService('VirtualArticle_Add_Mapping_Redirect',
+                { id: targetId, redirectUri: redirectUri },
+                getCurrentMappings);
+        };
+
+        $scope.remove_Mapping = function (targetId) {
+            invokeService('VirtualArticle_Remove_Mapping',
+                { id: targetId },
+                getCurrentMappings);
+        };
+
+        var getCurrentMappings = function () {
+            invokeService('VirtualArticle_GetCurrentMappings',
+                {},
+                function (data) {
+                    $scope.Mappings = data;
+                });
+        };
+
+        var loadTMConfigData = function () {
+
+            invokeService('TMConfigFile', {}, function (data) {
+                $scope.AutoRedirectIfGuidNotFound = data.VirtualArticles.AutoRedirectIfGuidNotFound;
+                $scope.AutoRedirectTarget = data.VirtualArticles.AutoRedirectTarget;
+            });
+        };
+
+        var setCSRFToken_And_TriggerDataLoad = function () {
+            invokeService('Current_User',
+                {},
+                function (data) {
+                    $http.defaults.headers.post['CSRF-Token'] = data.CSRF_Token;
+                    getCurrentMappings();
+                    loadTMConfigData();
+                });
+        };
+
+        setCSRFToken_And_TriggerDataLoad();
+
+
+        // load test data
+        $scope.targetId = "00000000-cd2b-0000-bb4c-000000009c92";
+        $scope.redirectUrl = "http://www.google.com";
+    }
+
+</script>
+
+<div ng-controller="VirtualArticle">
+    
+    <h4>Global settings</h4>    
+    <ul>
+        <li>Auto redirect if Guid not found:</b> <b>{{AutoRedirectIfGuidNotFound}}</b></li>
+        <li>Auto redirect target:<b> {{AutoRedirectTarget}}</b></li>
+    </ul>
+    <h4>Virtual Articles Mappings</h4>
+
+     <table class="table table-striped table-condensed">
+         <tr>             
+             <th>Id (click to test)</th>            
+             <th>Action</th>
+             <!--<th>Target_Id</th>            -->
+             <th>Redirect_Uri</th>   
+             <!--<th>TM_Server</th>
+             <th>Service</th> -->
+             <th>Action</th>
+         </tr>  
+         <tbody ng-repeat="Mapping in Mappings">
+             <tr>
+                 <td><a ng-href="/article/{{Mapping.Id}}" target="_blank">{{Mapping.Id}}</a></td>
+                 <td>{{Mapping.Action}}</td>
+                 <!--<td>{{Mapping.Target_Id}}</td>-->
+                 <td>{{Mapping.Redirect_Uri}}</td>
+                 <!--<td>{{Mapping.TM_Server}}</td>
+                 <td>{{Mapping.Service}}</td>-->
+                 <td><button class="btn btn-danger btn-small" ng-click="remove_Mapping(Mapping.Id)">remove</button></td>
+             </tr>    
+         </tbody>
+     
+     </table> 
+   
+    <hr/>
+
+    <h4>Add Redirect Article </h4>        
+    <form name="myForm" class="css-form" ng-submit="add_Redirect(targetId,redirectUrl)">    
+        <ul>            
+            <div class="input-prepend">
+                <span class="add-on" style="width:120px;">Target Guid Id</span>
+                <input type="text" style="width:280px;" ng-model="targetId" required/>
+            </div><br/>
+            <div class="input-prepend">
+                <span class="add-on" style="width:120px;">Redirect Url</span>
+                <input type="text" style="width:280px;" ng-model="redirectUrl" required/>
+            </div><br/>
+            <button class="btn btn-primary">Create</button>
+        </ul>
+    </form>
+</div>

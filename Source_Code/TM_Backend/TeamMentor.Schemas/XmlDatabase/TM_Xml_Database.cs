@@ -5,7 +5,8 @@ using urn.microsoft.guidanceexplorer;
 
 namespace TeamMentor.CoreLib
 {	
-    public class TM_Xml_Database 
+    [Serializable]
+    public class TM_Xml_Database : MarshalByRefObject
     {		    
         public static TM_Xml_Database   Current               { get; set; }         
         public static bool              SkipServerOnlineCheck { get; set; }                       

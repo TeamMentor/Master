@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentSharp.CoreLib;
 using FluentSharp.CoreLib.API;
+using FluentSharp.HtmlAgilityPacK;
 using FluentSharp.Web35;
 using TeamMentor.XmlDatabase;
 
@@ -12,10 +13,12 @@ namespace TeamMentor.CoreLib
     {
         [EditArticles]  public static TeamMentor_Article xmlDB_RandomGuidanceItem(this TM_Xml_Database tmDatabase)
         {
+            UserRole.EditArticles.demand();
             return tmDatabase.xmlDB_RandomGuidanceItem(Guid.NewGuid());
         }
         [EditArticles]  public static TeamMentor_Article xmlDB_RandomGuidanceItem(this TM_Xml_Database tmDatabase, Guid libraryId)
         {
+            UserRole.EditArticles.demand();
             return tmDatabase.xmlDB_NewGuidanceItem(Guid.Empty,
                 "GI title",
                 "GI images", 
@@ -33,7 +36,7 @@ namespace TeamMentor.CoreLib
         }        
         [EditArticles]  public static TeamMentor_Article xmlDB_NewGuidanceItem(this TM_Xml_Database tmDatabase, Guid guidanceItemId,  string title, string images, string topic, string technology, string category, string ruleType, string priority, string status, string author,string phase,  string htmlContent, Guid libraryId)
         {			
-                
+            UserRole.EditArticles.demand();    
             var article = new TeamMentor_Article
             {
                 Metadata = new TeamMentor_Article_Metadata
@@ -53,7 +56,7 @@ namespace TeamMentor.CoreLib
                 },
                 Content = new TeamMentor_Article_Content
                 {
-                    DataType = "html",
+                    DataType = "Markdown",
                     Data = {Value = htmlContent}
                 }
             };
@@ -63,6 +66,7 @@ namespace TeamMentor.CoreLib
         }
         [EditArticles]  public static Guid xmlDB_Create_Article(this TM_Xml_Database tmDatabase, TeamMentor_Article article)
         {      
+            UserRole.EditArticles.demand();
             if (article.notNull())
             {
                 article.Metadata.Id = Guid.NewGuid();
@@ -73,10 +77,12 @@ namespace TeamMentor.CoreLib
         }
         [EditArticles]  public static bool xmlDB_Save_Article(this TeamMentor_Article article, TM_Xml_Database tmDatabase)
         { 
+            UserRole.EditArticles.demand();
             return article.xmlDB_Save_Article(article.Metadata.Library_Id, tmDatabase);
         }
         [EditArticles]  public static bool xmlDB_Save_Article(this TeamMentor_Article article, Guid libraryId, TM_Xml_Database tmDatabase)
         {
+            UserRole.EditArticles.demand();
             if (libraryId == Guid.Empty)                                                // ensure we have a library to put the Article in
             { 
                 "[xmlDB_Save_GuidanceItem] no LibraryId was provided".error();
@@ -105,6 +111,7 @@ namespace TeamMentor.CoreLib
         }                
         [EditArticles]  public static bool xmlDB_Delete_GuidanceItems(this TM_Xml_Database tmDatabase, List<Guid> guidanceItemIds)
         {
+            UserRole.EditArticles.demand();
             if (guidanceItemIds.isNull())
                 return false;
             var result = true;
@@ -114,7 +121,8 @@ namespace TeamMentor.CoreLib
             return result;
         }
         [EditArticles]  public static bool xmlDB_Delete_GuidanceItem(this TM_Xml_Database tmDatabase, Guid articleId)
-        {            
+        {           
+            UserRole.EditArticles.demand();
             if (articleId !=  Guid.Empty && tmDatabase.Cached_GuidanceItems.hasKey(articleId))
             {                                                 
                 var tmArticle = tmDatabase.Cached_GuidanceItems[articleId];         // get article object from Cache

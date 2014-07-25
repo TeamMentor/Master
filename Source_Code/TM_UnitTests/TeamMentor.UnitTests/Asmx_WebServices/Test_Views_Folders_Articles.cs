@@ -4,6 +4,7 @@ using System.Xml;
 using System.Linq;
 using System.Collections.Generic;
 using FluentSharp.CoreLib;
+using FluentSharp.Xml;
 using NUnit.Framework;
 using TeamMentor.CoreLib;
 using TeamMentor.UserData;
@@ -17,6 +18,8 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
         
         [Test] [Assert_Editor] public void CreateLibrary_and_UpdateLibrary()
         {  
+            UserGroup.Editor.assert(); 
+
             var newLibrary = new Library { 
                                             id = Guid.NewGuid().str(),
                                             caption = "temp_lib_{0}".format(6.randomLetters())
@@ -40,16 +43,24 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             var deletedLibrary = tmWebServices.GetLibraryById(updatedLibrary.id.guid());
             Assert.IsTrue(deleteResult  , "deleteResult was not true");
             Assert.IsNull(deletedLibrary, "deletedLibrary should not be there (GetLibraryById returned it)");    		    		
+
+            UserGroup.None.assert(); 
         }    	    	    	    	           
         [Test] [Assert_Editor] public void CreateView_and_DeleteLibrary()
         {    
+            UserGroup.Editor.assert(); 
+
             var createdView = createTempView();   	            
             Assert.IsNotNull(createdView, "createdView");    		
             var result = tmWebServices.DeleteLibrary(createdView.library.guid());
-            Assert.That(result, "failed to delete library");    		    		
+            Assert.That(result, "failed to delete library");    		  
+  		
+            UserGroup.None.assert(); 
         }          
         [Test] [Assert_Editor] public void GetAllLibraryIds_and_GetLibraryById()
         {
+            UserGroup.Editor.assert(); 
+
             createTempLibrary();
             var libraries = tmWebServices.GetAllLibraryIds();
             Assert.That(libraries.notNull() , "libraries was null");    		
@@ -58,10 +69,14 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             { 
                 var libraryWithId = tmWebServices.GetLibraryById(library.guid());
                 Assert.That(libraryWithId.notNull(), "libraryWithId was null for library with Id: {0}".format(library));
-            }       		    
+            }       
+		    
+            UserGroup.None.assert(); 
         }            
-        [Test] public void UpdateView() 
-        {  
+        [Test] [Assert_Editor] public void UpdateView() 
+        {              
+            UserGroup.Editor.assert(); 
+
             var tempView = createTempView();   	    		
             tempView.caption += "_{0}".format(6.randomLetters());
             tmWebServices.UpdateView(tempView);
@@ -69,10 +84,13 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             Assert.That(updatedView.viewId == tempView.id.guid(), "ids didn't match");
             Assert.That(updatedView.caption == tempView.caption, "caption didn't match");    		
             tmWebServices.DeleteLibrary(tempView.library.guid());     		    
+
+            UserGroup.None.assert(); 
         }         
         [Test] [Assert_Editor] public void CreateGuidanceItem()
-        {  
+        {              
             UserGroup.Editor.assert();
+
             var libraryId = createTempLibrary();    		    	 	
             var tempGuidanceItemId = createTempGuidanceItem(libraryId);    		    		
             Assert.That(tempGuidanceItemId != Guid.Empty , "tempGuidanceItem was an EmptyGuid");
@@ -91,10 +109,13 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             Assert.That(guidanceItem.Metadata.Status.valid(), "status wasn't valid"); 
             Assert.That(guidanceItem.Metadata.Author.valid(), "author wasn't valid");     		
             tmWebServices.DeleteLibrary(libraryId);    		  
+
+            UserGroup.None.assert(); 
         }           
         [Test] [Assert_Editor] public void UpdateGuidanceItem()    
         {      	
 	     	UserGroup.Editor.assert();	
+
             var libraryId = createTempLibrary();  			
             "temp library created:{0}".info(libraryId); 
             var tempGuidanceItemId = createTempGuidanceItem(libraryId);
@@ -115,10 +136,13 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             Assert.That(updatedGuidanceItem.Metadata.Technology == tempGuidanceItem.Metadata.Technology, "newHtmlContent didn't match");    		
             
             tmWebServices.DeleteLibrary(libraryId);     		    		    		    
+
+            UserGroup.None.assert(); 
         } 
         [Test] [Assert_Editor] public void IJavascriptProxy_LiveWS_DeleteGuidanceItem()
         {
             UserGroup.Editor.assert();
+
             var libraryId = createTempLibrary(); 
             var tempGuidanceItemId = createTempGuidanceItem(libraryId);    		
             var newGuidanceItem = tmWebServices.GetGuidanceItemById(tempGuidanceItemId);    		            
@@ -126,10 +150,14 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
             Assert.That(result, "result was false");
             var deletedGuidanceItem = tmWebServices.GetGuidanceItemById(newGuidanceItem.Metadata.Id);    		
             Assert.IsNull(deletedGuidanceItem, "deletedGuidanceItem should be null");    		
-            tmWebServices.DeleteLibrary(libraryId);    		    		
+            tmWebServices.DeleteLibrary(libraryId);    		
+    		
+            UserGroup.None.assert(); 
         }           
-        [Test] public void AddGuidanceItemsToView_and_RemoveGuidanceItemsFromView()
+        [Test] [Assert_Editor] public void AddGuidanceItemsToView_and_RemoveGuidanceItemsFromView()
         { 
+            UserGroup.Editor.assert(); 
+
             var createdView = createTempView();  
             var viewId = createdView.id.remove("view:").guid();
             var guidanceItemsInView = tmWebServices.GetGuidanceItemsInView(viewId);
@@ -160,18 +188,26 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
              
             guidanceItemsInView = tmWebServices.GetGuidanceItemsInView(viewId);
             Assert.That(guidanceItemsInView.size()==0, "after remove the guidanceItemsInView should be zero, and it was '{0}'".format(guidanceItemsInView.size()));
+
+            UserGroup.None.assert();
         }    	    	
         [Test] [Assert_Editor] public void GetGuiObjects()
         {   
+            UserGroup.Editor.assert(); 
+
             var tempView = createTempView();
             createTempGuidanceItem(tempView.library.guid());
             var guiObjects = tmWebServices.GetGUIObjects();
             Assert.That(guiObjects.notNull(), "guiObjects was null"); 		
             Assert.That(guiObjects.UniqueStrings.size() > 0 , "empty UniqueStrings");
             Assert.That(guiObjects.GuidanceItemsMappings.size() > 0 , "empty GuidanceItemsMappings");    		
+
+            UserGroup.None.assert(); 
         }        
         [Test] [Assert_Editor] public void GetFolderStructure_Libraries()
         {
+            UserGroup.Editor.assert(); 
+
             createTempView();
             var librariesStructure = tmWebServices.GetFolderStructure_Libraries();
             Assert.That(librariesStructure.notNull(), "librariesStructure was null"); 		
@@ -182,10 +218,12 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
                           from folder in libraryStucture.subFolders
                           select folder.views;
             Assert.Greater(folders.size(),0 , "no folders");
-            Assert.Greater(views.size()  ,0 , "no views");            
+            Assert.Greater(views.size()  ,0 , "no views");    
+ 
+            UserGroup.None.assert(); 
         }
         [Test] public void GetGuidanceItemById()
-        {  
+        {              
             var sessionID = userData.newUser().tmUser()             // create a temp user
                                  .make_Editor()                     // make it an editor
                                  .login();                          // log it in

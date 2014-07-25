@@ -217,12 +217,10 @@ namespace TeamMentor.CoreLib
     //******************* TM_GuidanceItem
     
     public static class TM_Xml_Database_ExtensionMethods_TM_GuidanceItems
-    {	
-        //needs the ReadArticlesTitles privildge because of the GetGuiObjects method
-        //[ReadArticlesTitles]  // this was allowing anonynimous viewing of TM articles
+    {	        
         [ReadArticles]          public static TeamMentor_Article        tmGuidanceItem (this TM_Xml_Database tmDatabase, Guid id)
         {
-            UserGroup.Reader.demand();
+            UserRole.ReadArticles.demand();
             if (TM_Xml_Database.Current.Cached_GuidanceItems.hasKey(id))
             {
                 var article = TM_Xml_Database.Current.Cached_GuidanceItems[id];
@@ -236,21 +234,25 @@ namespace TeamMentor.CoreLib
         }        
         [ReadArticlesTitles]    public static List<TeamMentor_Article>  tmGuidanceItems(this TM_Xml_Database tmDatabase)
         {			
+            UserRole.ReadArticlesTitles.demand();
             return tmDatabase.xmlDB_GuidanceItems();						
         }                
         [ReadArticlesTitles] 	public static List<TeamMentor_Article>  tmGuidanceItems(this TM_Xml_Database tmDatabase, TM_Library tmLibrary)
         {
+            UserRole.ReadArticlesTitles.demand();
             return tmDatabase.tmGuidanceItems(tmLibrary.Id);
         }        
         [ReadArticlesTitles] 	public static List<TeamMentor_Article>  tmGuidanceItems(this TM_Xml_Database tmDatabase, Guid libraryId)
         {			
+            UserRole.ReadArticlesTitles.demand();
             return (from guidanceItem in TM_Xml_Database.Current.Cached_GuidanceItems.Values.toList()
                     where guidanceItem.Metadata.Library_Id == libraryId
                     select guidanceItem).toList();		
         }				        
 
         [ReadArticles] 	public static List<TeamMentor_Article>  tmGuidanceItems_InFolder(this TM_Xml_Database tmDatabase, Guid folderId)
-        {				
+        {		
+		    UserRole.ReadArticles.demand();
             var folder = tmDatabase.xmlDB_Folder(folderId);			
             var foldersToMap = tmDatabase.xmlDB_Folders_All(folder);			
             return (from folderToMap in foldersToMap
@@ -260,11 +262,13 @@ namespace TeamMentor.CoreLib
         }        
         [ReadArticles] 	public static string                    sanitizeHtmlContent(this string htmlContent)
         {
+            UserRole.ReadArticles.demand();
             return Sanitizer.GetSafeHtmlFragment(htmlContent);
         }		
 
         [EditArticles] 	public static Guid                      createGuidanceItem(this TM_Xml_Database tmDatabase, GuidanceItem_V3 guidanceItemV3)
         {
+            UserRole.EditArticles.demand();
             if (guidanceItemV3.isNull() || guidanceItemV3.libraryId == Guid.Empty)
             {
                 "[createGuidanceItem] no library provided for Guidance Item, stopping creation".error();

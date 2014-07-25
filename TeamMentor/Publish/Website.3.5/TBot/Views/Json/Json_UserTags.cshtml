@@ -8,7 +8,7 @@
     var userData = TM_UserData.Current;    
     
     var userTags = (from tmUser in userData.tmUsers()
-                    from userTag in tmUser.UserTags  
+                    from userTag in tmUser.userTags()
                     where userTag.Key.valid()
                     select new
                         {

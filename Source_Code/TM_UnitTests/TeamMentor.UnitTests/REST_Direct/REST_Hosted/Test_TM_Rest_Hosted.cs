@@ -74,7 +74,7 @@ namespace TeamMentor.UnitTests.REST
 
             Assert.IsTrue (identity_IsAuthenticated);
             Assert.IsNull  (identity_Name);
-            Assert.AreEqual(identity_Roles.size(), 1);
+            Assert.AreEqual(identity_Roles.size(), 2);
             Assert.IsFalse (identity_IsAdmin);
             var username   = tmConfig.TMSecurity.Default_AdminUserName;
             var pwd        = tmConfig.TMSecurity.Default_AdminPassword;
@@ -91,14 +91,14 @@ namespace TeamMentor.UnitTests.REST
             //without the CSRF-token these should fail
 
             Assert.IsFalse  (TmRest.RBAC_IsAdmin());
-            Assert.AreEqual (TmRest.RBAC_CurrentPrincipal_Roles().size(), 1);
+            Assert.AreEqual (TmRest.RBAC_CurrentPrincipal_Roles().size(), 2);
 
             sessionId.set_Guid_as_CsrfToken_on_Request();
             
             //Now the mappings should work
             
             Assert.IsTrue  (TmRest.RBAC_IsAdmin());
-            Assert.AreEqual(TmRest.RBAC_CurrentPrincipal_Roles().size(), 5);            
+            Assert.AreEqual(TmRest.RBAC_CurrentPrincipal_Roles().size(), 6);            
         }
 
         [Test]

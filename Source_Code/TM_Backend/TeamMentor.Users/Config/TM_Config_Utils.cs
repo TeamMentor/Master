@@ -15,7 +15,7 @@ namespace TeamMentor.CoreLib
         }
         public static DateTime  currentExpirationDate(this TMConfig tmConfig)
         {
-            return (tmConfig.TMSecurity.EvalAccounts_Enabled)
+            return (tmConfig.notNull() && tmConfig.TMSecurity.EvalAccounts_Enabled)
                        ? DateTime.Now.AddDays(tmConfig.TMSecurity.EvalAccounts_Days)
                        : default(DateTime);
         }

@@ -25,7 +25,27 @@ namespace TeamMentor.CoreLib
             tmServer.add_SiteData(siteData_Config);
             return tmServer;
         }
-        
+        public static bool                        realTime_Logs(this TM_Server tmServer)
+        {
+            return (tmServer.notNull()) && tmServer.RealTime_Logs;
+        }
+        public static TM_Server                  realTime_Logs(this TM_Server tmServer, bool value)
+        {
+            if (tmServer.notNull())
+                tmServer.RealTime_Logs = value;
+            return tmServer;
+        }
+        //userActivites
+        public static TM_Server                  userActivities_Disable_Logging(this TM_Server tmServer, bool value)
+        {
+            if (tmServer.notNull())
+                tmServer.UserActivities_Disable_Logging = value;
+            return tmServer;
+        }
+        public static bool                  userActivities_Disable_Logging(this TM_Server tmServer)
+        {
+            return tmServer.isNull() || tmServer.UserActivities_Disable_Logging;
+        }
         //user data
 
         public static TM_Server             add_UserData(this TM_Server tmServer, TM_Server.Config config)
@@ -107,7 +127,7 @@ namespace TeamMentor.CoreLib
             }
             return configs;
         }
-        public static List<TM_Server.Config> active_Config(this List<TM_Server.Config> configs, TM_Server.Config config)
+        public static List<TM_Server.Config> active_Config (this List<TM_Server.Config> configs, TM_Server.Config config)
         {
             if (configs.notNull() && config.notNull())
             {
@@ -116,6 +136,13 @@ namespace TeamMentor.CoreLib
             }
             return configs;
         }
-        
+        public static string                 remote_GitPath(this TM_Server.Config config)
+        {
+            return config.notNull() ? config.Remote_GitPath : null;
+        }
+        public static TM_Server.Git_Config   git           (this TM_Server tmServer)
+        {
+            return tmServer.notNull() ? tmServer.Git : null;
+        }
     }
 }

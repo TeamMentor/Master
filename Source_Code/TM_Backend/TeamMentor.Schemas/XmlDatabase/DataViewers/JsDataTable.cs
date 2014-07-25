@@ -1,10 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Script.Serialization;
 
 namespace TeamMentor.CoreLib
 {
-	public class JsDataTable
+    [Serializable]
+	public class JsDataTable : MarshalByRefObject
 	{
 		public List<List<object>> aaData;
 		public List<JsDataColumn> aoColumns;		
@@ -15,7 +16,8 @@ namespace TeamMentor.CoreLib
 			 aoColumns = new List<JsDataColumn>();
 		}
 		
-		public class JsDataColumn
+        [Serializable]
+		public class JsDataColumn : MarshalByRefObject
 		{
 			public string sTitle {get; set; }
 			public string sClass {get; set; }
@@ -24,11 +26,7 @@ namespace TeamMentor.CoreLib
 	
 	
 	public static class JsDataTable_ExtensionMethods
-	{
-		/*public static string jsonString(this JsDataTable jsDataTable)
-		{
-			return new JavaScriptSerializer().Serialize(jsDataTable);
-		}*/
+	{		
 		
 		public static JsDataTable add_Row(this JsDataTable jsDataTable, params object[] cells)
 		{

@@ -23,14 +23,11 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             var tmDatabase = new TM_Xml_Database();                                                
 
             Assert.IsNotNull(TM_Xml_Database.Current);
-            Assert.False    (tmDatabase.usingFileStorage());          // new TM_Xml_Database() defaults to UsingFileStorage = false              
+            Assert.False    (tmDatabase.usingFileStorage());        // new TM_Xml_Database() defaults to UsingFileStorage = false              
             Assert.IsNotNull(tmDatabase.Events);                    // this is the only list that should be set on the Ctor            
             Assert.IsNotNull(tmDatabase.Cached_GuidanceItems);            
             Assert.IsNotNull(tmDatabase.GuidanceExplorers_XmlFormat);                        
-            Assert.IsNotNull(tmDatabase.VirtualArticles);                        
-
-            Assert.IsNull   (tmDatabase.path_XmlDatabase());
-            Assert.IsNull   (tmDatabase.path_XmlLibraries());
+            Assert.IsNotNull(tmDatabase.VirtualArticles);                                    
         }
         
     }

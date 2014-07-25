@@ -27,8 +27,7 @@ namespace TeamMentor.UnitTests
             
             
             userData.createDefaultAdminUser(); 
-
-            Assert.IsNull(tmXmlDatabase.path_XmlDatabase()		    , "path_XmlDatabase()");          // null since we are running TM memory (default setting)            
+            
             Assert.IsEmpty(tmXmlDatabase.Cached_GuidanceItems	    , "Cached_GuidanceItems");
             Assert.IsEmpty(userData.validSessions()                 , "ActiveSessions");
             Assert.AreEqual(userData.TMUsers.size()              ,1 , "TMUsers");	                 // there should be admin            

@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using System;
 using TeamMentor.CoreLib;
 using FluentSharp.CoreLib;
 using FluentSharp.CoreLib.API;
@@ -23,42 +22,12 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         {
             //TM_Server.WebRoot = AppDomain.CurrentDomain.BaseDirectory;            
         }
-        
-        /*[Test] public void userData()
-        {
-            var tmXmlDatabase = new TM_Xml_Database();
-            Assert.IsNull(tmXmlDatabase.UserData);
-            var userData = tmXmlDatabase.userData();                //first time should create a new instance of TM_UserData
-            Assert.NotNull(userData);
-            Assert.AreEqual(userData, tmXmlDatabase.UserData);
-            Assert.AreEqual(userData, tmXmlDatabase.userData());    // 2nd time should NOT create a new instance
-            
-            tmXmlDatabase = null;
-            Assert.IsNull(tmXmlDatabase.userData(), null);
-        }*/
-        [Test] public void load_UserData()
-        {
-            var tmFileStorage = new TM_FileStorage(false);              // create empty TM_FileStorage
-            var tmServer      = tmFileStorage.Server;
-            var userData      = tmFileStorage.UserData;            
-            
-            Assert.IsNotNull(tmServer);
-            Assert.IsNotNull(userData);
-            
-            tmServer.Users_Create_Default_Admin = true;
-
-            tmFileStorage.load_UserData();
-
-            Assert.IsEmpty (userData.TMUsers);
-            
-            Assert.Ignore("Add checks specific to the load_UserData method ");
-                        
-        }
+               
         [Test] public void tmConfig_Load()
         {
             var tmFileStorage = new TM_FileStorage(false);              // create empty TM_FileStorage
-            var tmServer      = tmFileStorage.Server;
-            var userData      = tmFileStorage.UserData;                                                              
+//            var tmServer      = tmFileStorage.Server;
+//            var userData      = tmFileStorage.UserData;                                                              
             
             tmFileStorage.tmConfig_Load();
 
@@ -79,8 +48,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         }
         [Test] public void tm_Server_Load_UsingFileStorage()
         {            
-            var tmFileStorage = new TM_FileStorage(false);            
-            var tmXmlDatabase = tmFileStorage.TMXmlDatabase;
+            var tmFileStorage = new TM_FileStorage(false);                        
 
             var baseReadOnlyDir = "_tmp_webRoot".tempDir();
             var webRootVirualPath = @"site\wwwroot";        // simulates use of AppData
@@ -130,11 +98,8 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         [Test] public void tm_Server_Save()
         {                       
             var tmFileStorage = new TM_FileStorage();  
-            var tmXmlDatabase = tmFileStorage.TMXmlDatabase;
-
-            //tmXmlDatabase.set_Path_XmlDatabase()
-            //             .tmServer_Load();
-            Assert.NotNull(tmXmlDatabase.path_XmlDatabase());      
+            
+            Assert.NotNull(tmFileStorage.path_XmlDatabase());      
 
             var tmServerLocation         = tmFileStorage.tmServer_Location();
            
@@ -169,9 +134,9 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
                 Assert.IsTrue(tmServerLocation.delete_File());
                 Assert.IsFalse(tmServerLocation.fileExists());
              */
-            tmXmlDatabase.delete_Database();
+            tmFileStorage.delete_Database();
             Assert.IsFalse(tmServerLocation.fileExists());
-            Assert.IsFalse(tmXmlDatabase.path_XmlDatabase().dirExists());
+            Assert.IsFalse(tmFileStorage.path_XmlDatabase().dirExists());
 
             //check when not UsingFileStorage
 
@@ -183,9 +148,8 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         [Test] public void set_Path_UserData()
         {
             var tmFileStorage = new TM_FileStorage();  
-            var tmXmlDatabase = tmFileStorage.TMXmlDatabase;
 
-            var expectedPath  = tmXmlDatabase.path_XmlDatabase().pathCombine(TMConsts.TM_SERVER_DEFAULT_NAME_USERDATA);
+            var expectedPath  = tmFileStorage.path_XmlDatabase().pathCombine(TMConsts.TM_SERVER_DEFAULT_NAME_USERDATA);
             
             tmFileStorage.set_Path_UserData();
             var userData = tmFileStorage.UserData;
@@ -200,11 +164,10 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             var tempName = 10.randomLetters(); 
             tmFileStorage.Server.userData_Config().Name = tempName;
             tmFileStorage.set_Path_UserData();            
-            Assert.IsTrue(tmFileStorage.Path_UserData.contains(tempName));
-            Assert.IsTrue(tmFileStorage.UserData.usingFileStorage());
+            Assert.IsTrue(tmFileStorage.Path_UserData.contains(tempName));            
 
 
-            tmXmlDatabase.delete_Database();
+            tmFileStorage.delete_Database();
             Assert.False   (tmFileStorage.Path_UserData.dirExists());
 
             //check bad data handling
@@ -227,8 +190,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             tmFileStorage.UserData       = null;
             tmFileStorage.TMXmlDatabase  = null;
             tmFileStorage.set_Path_UserData();
-
-            Assert.IsFalse(tmFileStorage.UserData.usingFileStorage());
+            
             Assert.IsNull (tmFileStorage.Path_UserData);
 
             //Assert.IsNull (new TM_FileStorage(false).set_Path_UserData().Path_UserData);
@@ -239,9 +201,8 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
          [Test] public void set_Path_SiteData()
         {
             var tmFileStorage = new TM_FileStorage();  
-            var tmXmlDatabase = tmFileStorage.TMXmlDatabase;
 
-            var expectedPath  = tmXmlDatabase.path_XmlDatabase().pathCombine(TMConsts.TM_SERVER_DEFAULT_NAME_SITEDATA);
+            var expectedPath  = tmFileStorage.path_XmlDatabase().pathCombine(TMConsts.TM_SERVER_DEFAULT_NAME_SITEDATA);
             
             tmFileStorage.set_Path_SiteData();            
             
@@ -270,8 +231,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         {
             var tmFileStorage = new TM_FileStorage(false);  
             var tmXmlDatabase = tmFileStorage.TMXmlDatabase;
-            
-            var tmServer = tmFileStorage.Server;
+                        
             Assert.AreEqual(tmFileStorage, tmFileStorage.set_Path_XmlDatabase());
             Assert.AreEqual(tmXmlDatabase, TM_Xml_Database.Current);
             Assert.IsNull  (tmFileStorage.path_XmlDatabase());
@@ -290,14 +250,13 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
 
             Assert.AreEqual   (tmXmlDatabase, TM_Xml_Database.Current);
             Assert.IsTrue     (tmXmlDatabase.usingFileStorage());
-            Assert.IsNotNull  (tmXmlDatabase.path_XmlDatabase());            
+            Assert.IsNotNull  (tmFileStorage.path_XmlDatabase());            
 
-            tmXmlDatabase.delete_Database();
+            tmFileStorage.delete_Database();
         }
         [Test] public void set_Path_XmlDatabase__UsingFileStorage_On_Custom_WebRoot()
         {
-            var tmFileStorage = new TM_FileStorage(false);  
-            var tmXmlDatabase = tmFileStorage.TMXmlDatabase;
+            var tmFileStorage = new TM_FileStorage(false);              
 
             //Assert.AreEqual(tmFileStorage.WebRoot, AppDomain.CurrentDomain.BaseDirectory);
             tmFileStorage.WebRoot = "_tmp_webRoot".tempDir().info();            
@@ -311,7 +270,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
 
             var usingAppDataFolder = TM_Status.Current.TM_Database_Location_Using_AppData;
             
-            "*** DB path: {0}".info(tmXmlDatabase.path_XmlDatabase());
+            "*** DB path: {0}".info(tmFileStorage.path_XmlDatabase());
             "*** Lib path: {0}".info(tmFileStorage.Path_XmlLibraries);
             "*** Current WebRoot: {0}".debug(tmFileStorage.WebRoot);
             "*** Current WebRoot exists: {0}".debug(tmFileStorage.WebRoot.dirExists());
@@ -321,57 +280,12 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Assert.AreEqual(usingAppDataFolder, tmFileStorage.path_XmlDatabase().contains ("App_Data"));
             Assert.AreEqual(usingAppDataFolder, tmFileStorage.path_XmlDatabase().contains (tmFileStorage.WebRoot));
             Assert.AreEqual(usingAppDataFolder, tmFileStorage.path_XmlDatabase().contains (PublicDI.config.O2TempDir));
-
-            //tmXmlDatabase.delete_Database();
+            
+            tmFileStorage.delete_Database();
 
             Assert.AreEqual(usingAppDataFolder, tmFileStorage.WebRoot.dirExists()  , "if not usingAppDataFolder the TM_Server.WebRoot shouldn't exist");
-            Assert.IsFalse(tmXmlDatabase.path_XmlDatabase().dirExists()          , "should had been deleted");            
-        }
-        [Test] public void set_Path_XmlDatabase__UsingFileStorage_On_Custom_WebRoot_without_Read_Privs()
-        {
-            var tmFileStorage = new TM_FileStorage(false);  
-            var tmXmlDatabase = tmFileStorage.TMXmlDatabase;
-
-            var baseReadOnlyDir   = "_tmp_webRoot".tempDir();
-            var webRootVirualPath = @"virtual/path";
-
-            tmFileStorage.WebRoot     = baseReadOnlyDir.pathCombine(webRootVirualPath).createDir();
-
-            //Check that ensure we can write to baseReadOnlyDir
-            Assert.IsTrue  (baseReadOnlyDir.dirExists());
-            Assert.IsTrue  (tmFileStorage.WebRoot.dirExists());
-            Assert.IsTrue  (tmFileStorage.WebRoot.contains(baseReadOnlyDir));
-            Assert.IsTrue  (baseReadOnlyDir.canWriteToPath());
-            Assert.AreEqual(tmFileStorage.WebRoot.parentFolder().parentFolder(), baseReadOnlyDir);
-
-            //Now remote the write privileges for all users (on baseReadOnlyDir) while keeping  TM_Server.WebRoot writeable
-            
-            baseReadOnlyDir  .directoryInfo().deny_Write_Users();
-            tmFileStorage.WebRoot.directoryInfo().allow_Write_Users();   
-            
-            Assert.IsFalse(baseReadOnlyDir .canWriteToPath());
-            Assert.IsTrue(tmFileStorage.WebRoot.canWriteToPath());
-
-            //Since baseReadOnlyDir can be written, creating an TM_Xml_Database should now default to the App_Data folder (which is on webRootVirualPath )
-
-//            var tmXmlDatabase = new TM_Xml_Database().useFileStorage();
-            
-            tmFileStorage.set_Path_XmlDatabase();
-
-            Assert.IsNotNull(tmFileStorage.path_XmlDatabase());           
-
-            Assert.Ignore("TO FIX (Refactor Side Effect");
-            Assert.IsTrue   (tmFileStorage.path_XmlDatabase().contains("App_Data"));
-            Assert.IsTrue   (tmFileStorage.path_XmlDatabase().contains(tmFileStorage.WebRoot));
-            Assert.IsTrue   (tmFileStorage.path_XmlDatabase().contains(PublicDI.config.O2TempDir));
-
-            //Finally re enable write so that we can delete the folder
-            baseReadOnlyDir.directoryInfo().allow_Write_Users();
-            Assert.IsTrue(baseReadOnlyDir.canWriteToPath());
-            Files.deleteFolder(baseReadOnlyDir, true);
-            Assert.IsFalse  (baseReadOnlyDir.dirExists());
-
-        }
+            Assert.IsFalse(tmFileStorage.path_XmlDatabase().dirExists()          , "should had been deleted");            
+        }   
         [Test] public void set_Path_XmlDatabase__UsingFileStorage_On_AppData__without_Read_Privs()
         {
             var tmFileStorage = new TM_FileStorage(false);  
@@ -416,7 +330,8 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             tmFileStorage.Path_XmlLibraries =null;  
 
             //in the scenarios below the tmFileStorage.Path_XmlLibraries should not be set
-            TMConfig.Current.TMSetup = null;           
+            if(TMConfig.Current.notNull())
+                TMConfig.Current.TMSetup = null;           
             tmFileStorage.set_Path_XmlLibraries();
             TMConfig.Current = null;
             tmFileStorage.set_Path_XmlLibraries();
@@ -443,8 +358,8 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Assert.IsEmpty  (tmXmlDatabase.GuidanceExplorers_XmlFormat);                        
             Assert.IsEmpty  (tmXmlDatabase.VirtualArticles);            
             Assert.AreEqual (tmXmlDatabase.Events, events);                               
-            Assert.IsNull   (tmXmlDatabase.path_XmlDatabase());
 
+            Assert.IsNull   (tmFileStorage.path_XmlDatabase());
             Assert.IsEmpty  (tmFileStorage.GuidanceExplorers_Paths);           
             Assert.IsNull   (tmFileStorage.Path_XmlLibraries);
             Assert.IsNotNull(tmFileStorage.UserData);

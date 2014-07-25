@@ -106,15 +106,18 @@ namespace TeamMentor.CoreLib
 
         [EditArticles] 	public static urn.microsoft.guidanceexplorer.Folder xmlDB_Add_Folder    (this TM_Xml_Database tmDatabase, Guid libraryId, string folderCaption)
         {
+            UserRole.EditArticles.demand();
             return tmDatabase.xmlDB_Add_Folder(libraryId, Guid.Empty, folderCaption);
         }		
         [EditArticles] 	public static urn.microsoft.guidanceexplorer.Folder xmlDB_Add_Folder    (this TM_Xml_Database tmDatabase, Guid libraryId, Guid parentFolderId, string folderCaption)
         {
+            UserRole.EditArticles.demand();
             var tmLibrary = tmDatabase.tmLibrary(libraryId); 
             return tmLibrary.xmlDB_Add_Folder(parentFolderId, folderCaption, tmDatabase);
         }		
         [EditArticles] 	public static urn.microsoft.guidanceexplorer.Folder xmlDB_Add_Folder    (this TM_Library tmLibrary, Guid parentFolderId, string folderCaption, TM_Xml_Database tmDatabase)
         {		
+            UserRole.EditArticles.demand();
             try
             {	
                 var newFolder = new urn.microsoft.guidanceexplorer.Folder
@@ -150,6 +153,7 @@ namespace TeamMentor.CoreLib
         }				
         [EditArticles] 	public static bool                                  xmlDB_Rename_Folder (this TM_Xml_Database tmDatabase, Guid libraryId, Guid folderId, string newFolderName)
         {
+            UserRole.EditArticles.demand();
             //if (orginalFolderName.inValid() || newFolderName.inValid())
             //	return false;
             var folder = tmDatabase.xmlDB_Folder(libraryId, folderId);
@@ -161,6 +165,7 @@ namespace TeamMentor.CoreLib
         }		
         [EditArticles] 	public static bool                                  xmlDB_Delete_Folder (this TM_Xml_Database tmDatabase, Guid libraryId, Guid folderId)
         {
+            UserRole.EditArticles.demand();
             try
             {
                 if (folderId == Guid.Empty)

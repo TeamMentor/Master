@@ -36,16 +36,25 @@
     </Reference>
     <Reference Include="FluentSharp.CoreLib, Version=5.5.0.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\FluentSharp.CoreLib.5.5.156\lib\net35\FluentSharp.CoreLib.dll</HintPath>
+      <HintPath>..\..\packages\FluentSharp.CoreLib.5.5.167\lib\net35\FluentSharp.CoreLib.dll</HintPath>
     </Reference>
-    <Reference Include="FluentSharp.Web_3_5">
-      <HintPath>..\..\packages\FluentSharp.Web_3_5.5.5.156\lib\net35\FluentSharp.Web_3_5.dll</HintPath>
+    <Reference Include="FluentSharp.HtmlAgilityPack, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d7f3eb44d952a681, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\FluentSharp.HtmlAgilityPack.5.5.167\lib\net35\FluentSharp.HtmlAgilityPack.dll</HintPath>
     </Reference>
-    <Reference Include="FluentSharp.Web_4_5">
-      <HintPath>..\..\packages\FluentSharp.Web_4_5.5.5.156\lib\net45\FluentSharp.Web_4_5.dll</HintPath>
+    <Reference Include="FluentSharp.Web_3_5, Version=5.5.0.0, Culture=neutral, PublicKeyToken=1439893e489faed4, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\FluentSharp.Web_3_5.5.5.167\lib\net35\FluentSharp.Web_3_5.dll</HintPath>
     </Reference>
-    <Reference Include="HtmlAgilityPack">
-      <HintPath>..\..\packages\HtmlAgilityPack.1.4.6\lib\Net40\HtmlAgilityPack.dll</HintPath>
+    <Reference Include="FluentSharp.Web_4_5, Version=5.5.0.0, Culture=neutral, PublicKeyToken=0188572cb8cf4bdd, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\FluentSharp.Web_4_5.5.5.167\lib\net45\FluentSharp.Web_4_5.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentSharp.Xml, Version=1.0.0.0, Culture=neutral, PublicKeyToken=e20c9643c6d4ac0b, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\FluentSharp.Xml.5.5.167\lib\net35\FluentSharp.Xml.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlAgilityPack, Version=1.4.6.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\HtmlAgilityPack.1.4.6\lib\Net45\HtmlAgilityPack.dll</HintPath>
     </Reference>
     <Reference Include="HtmlSanitizationLibrary, Version=4.3.0.0, Culture=neutral, PublicKeyToken=d127efab8a9c114f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -70,7 +79,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExtensionMethods\Extra\Extra_HtmlAgilityPack_ExtensionMethods.cs" />
     <Compile Include="ExtensionMethods\Extra_UserActivity_ExtensionMethods.cs" />
     <Compile Include="ExtensionMethods\TeamMentor_Article_ExtensionMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -83,7 +91,6 @@
     <Compile Include="XmlDatabase\TM_Xml_Database_ExtensionMethods_XmlDataSources_View.cs" />
     <Compile Include="XmlDatabase\TM_Xml_Database_ExtensionMethods_XmlDataSources_Views_and_Folders_Guid_Fixes.cs" />
     <Compile Include="XmlDatabase\TM_Xml_Database_ExtensionMethods_XML_DataSources_TM_Library.cs" />
-    <Content Include="Utils\PostSharp.cs.txt" />
     <Compile Include="XmlDatabase\TM_Xml_Database.Config.cs" />
     <Compile Include="XmlDatabase\TM_Xml_Database.Library.cs" />
     <Compile Include="XmlDatabase\TM_Xml_Database.Library.GuidanceItem.cs" />
@@ -91,7 +98,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TeamMentor.Markdown\TeamMentor.Markdown.csproj">

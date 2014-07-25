@@ -7,15 +7,18 @@ namespace TeamMentor.FileStorage
     {
         [Admin] public static string            tmServer_Location(this TM_FileStorage tmFileStorage)          
         {
+            UserRole.Admin.demand();
             return  tmFileStorage.path_XmlDatabase()
                                  .pathCombine(TMConsts.TM_SERVER_FILENAME);                       
         }
         [Admin] public static bool              tmServer_Save(this TM_FileStorage tmFileStorage)
         {
+            UserRole.Admin.demand();
             return tmFileStorage.tmServer_Save(tmFileStorage.Server);
         }
         [Admin] public static bool              tmServer_Save(this TM_FileStorage tmFileStorage, TM_Server tmServer)     
-        {             
+        {         
+            UserRole.Admin.demand();
             if (tmFileStorage.isNull() || tmServer.isNull())                      
                 return false;
             var location = tmFileStorage.tmServer_Location();
@@ -29,6 +32,7 @@ namespace TeamMentor.FileStorage
         }*/
         [Admin] public static TM_FileStorage    tmServer_Load(this TM_FileStorage tmFileStorage)
         {
+            UserRole.Admin.demand();
             if (tmFileStorage.isNull())
                 return tmFileStorage;
             var tmServer = new TM_Server();
@@ -53,8 +57,15 @@ namespace TeamMentor.FileStorage
             tmFileStorage.Server = tmServer;
             return  tmFileStorage;
         }
+        [Admin] public static TM_FileStorage    tmServer     (this TM_FileStorage tmFileStorage, TM_Server tmServer)
+        {
+            UserRole.Admin.demand();
+            tmFileStorage.Server = tmServer;
+            return tmFileStorage;
+        }
         [Admin] public static TM_Server         tmServer     (this TM_FileStorage tmFileStorage)
         {
+            UserRole.Admin.demand();
             return (tmFileStorage.notNull())
                         ? tmFileStorage.Server
                         : null;

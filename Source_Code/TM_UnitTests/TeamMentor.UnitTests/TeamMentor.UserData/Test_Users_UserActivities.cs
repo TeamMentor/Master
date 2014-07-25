@@ -27,6 +27,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
 		[Test]
 		public void AddAnotherActivity()
 		{
+            new TM_Server().userActivities_Disable_Logging(false);
 			var name = "Test Name";
 			var details = "Test Details";
 			new TMUser().logUserActivity(name, details);

@@ -1,4 +1,5 @@
 ﻿using System;
+using FluentSharp.NUnit;
 using NUnit.Framework;
 using FluentSharp.CoreLib;
 using TeamMentor.CoreLib;
@@ -29,9 +30,12 @@ namespace TeamMentor.UnitTests.Schemas
             Assert.NotNull(tmServer);            
             Assert.IsEmpty(tmServer.UserData_Configs);
             Assert.IsEmpty(tmServer.SiteData_Configs);
+            
+            tmServer.assert_Equals(TM_Server.Current);
 
-            Assert.IsTrue(tmServer.Users_Create_Default_Admin);
+            Assert.IsTrue (tmServer.Users_Create_Default_Admin);
             Assert.IsFalse(tmServer.TM_Database_Use_AppData_Folder);            
+            Assert.IsFalse(tmServer.UserActivities_Disable_Logging);    
         }        
         [Test] public void setDefaultData()                              
         {

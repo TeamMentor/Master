@@ -39,7 +39,7 @@ namespace TeamMentor.CoreLib
         {
             var libraryId = Guid.Empty;
                         
-            if (HttpContextFactory.Session["Library"].notNull())                
+            if (HttpContextFactory.Session.notNull() && HttpContextFactory.Session["Library"].notNull())                
             {
                 var libraryValue = HttpContextFactory.Session["Library"].str();
                 var library = (libraryValue.isGuid())
@@ -116,7 +116,7 @@ namespace TeamMentor.CoreLib
         [WebMethod]
         public bool Upload_File_To_Library(Guid libraryId, string filename, byte[] contents)
         {
-            return tmXmlDatabase.upload_File_to_Library(libraryId, filename, contents);            
+            return tmFileStorage.upload_File_to_Library(libraryId, filename, contents);            
         }
     }
 }

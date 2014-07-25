@@ -1,5 +1,0 @@
-﻿
-@using FluentSharp.CoreLib
-@using TeamMentor.CoreLib
-<h4>TMConfig.Config</h4>
-<pre>@TMConfig.Current.toXml()</pre>

@@ -63,18 +63,23 @@
   <ItemGroup>
     <Reference Include="FluentSharp.CoreLib, Version=5.5.0.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\FluentSharp.CoreLib.5.5.156\lib\net35\FluentSharp.CoreLib.dll</HintPath>
+      <HintPath>..\..\packages\FluentSharp.CoreLib.5.5.167\lib\net35\FluentSharp.CoreLib.dll</HintPath>
     </Reference>
-    <Reference Include="FluentSharp.NGit">
-      <HintPath>..\..\packages\FluentSharp.NGit.5.5.156\lib\net40\FluentSharp.NGit.dll</HintPath>
+    <Reference Include="FluentSharp.NGit, Version=5.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\FluentSharp.NGit.5.5.167\lib\net40\FluentSharp.NGit.dll</HintPath>
     </Reference>
     <Reference Include="FluentSharp.Web_3_5, Version=5.5.0.0, Culture=neutral, PublicKeyToken=1439893e489faed4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\FluentSharp.Web_3_5.5.5.156\lib\net35\FluentSharp.Web_3_5.dll</HintPath>
+      <HintPath>..\..\packages\FluentSharp.Web_3_5.5.5.167\lib\net35\FluentSharp.Web_3_5.dll</HintPath>
     </Reference>
     <Reference Include="FluentSharp.Web_4_5, Version=5.5.0.0, Culture=neutral, PublicKeyToken=0188572cb8cf4bdd, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\FluentSharp.Web_4_5.5.5.156\lib\net45\FluentSharp.Web_4_5.dll</HintPath>
+      <HintPath>..\..\packages\FluentSharp.Web_4_5.5.5.167\lib\net45\FluentSharp.Web_4_5.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentSharp.Xml, Version=1.0.0.0, Culture=neutral, PublicKeyToken=e20c9643c6d4ac0b, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\FluentSharp.Xml.5.5.167\lib\net35\FluentSharp.Xml.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
@@ -654,6 +659,7 @@
     <Content Include="TBot\Admin\Internal\CSharp_REPL.cshtml" />
     <Content Include="TBot\Admin\Restart_Server.cshtml" />
     <Content Include="TBot\TBotMain.html" />
+    <None Include="TBot\Views\Debug\testPage.cshtml" />
     <Content Include="TBot_Monitor\app.js" />
     <Content Include="TBot_Monitor\components\main\controllers.js" />
     <Content Include="TBot_Monitor\components\main\directives.js" />
@@ -758,7 +764,6 @@
     <Content Include="TBot\LibraryData\Articles.cshtml" />
     <Content Include="TBot\Admin\Config\Edit_SecretData.cshtml" />
     <Content Include="TBot\Admin\Reload_Server_Objects.cshtml" />
-    <Content Include="TBot\Admin\Config\Edit_GitUserLocation.cshtml" />
     <Content Include="TBot\LibraryData\Libraries_Xml.cshtml" />
     <Content Include="TBot\Users\Import\Import Legacy Users.cshtml" />
     <Content Include="TBot\Views\Users\New Random User.cshtml" />
@@ -784,24 +789,18 @@
     <Content Include="TBot\Views\Json\Json_Activities_Unique_Action.cshtml" />
     <Content Include="TBot\Views\Json\Json_UserTags.cshtml" />
     <Content Include="TBot\Users\Analysis\All_Users_Tags.cshtml" />
-    <Content Include="TBot\NGit\GitStatus.cshtml" />
+    <Content Include="TBot\Views\Git\GitStatus.cshtml" />
     <Content Include="MVC\Views\Loggin_Needed.cshtml" />
     <Content Include="MVC\Views\Markdown_Editor.cshtml" />
     <Content Include="MVC\Views\MarkDown_Viewer.cshtml" />
     <Content Include="MVC\Views\_Layout.cshtml" />
     <None Include="Properties\PublishProfiles\3.5 Publish.pubxml" />
+    <Content Include="TBot\VirtualArticles\Local_vs_Virtual_vs_External_Links.cshtml" />
+    <Content Include="TBot\VirtualArticles\Virtual_Articles_Mappings.cshtml" />
     <None Include="TBot_Monitor\lib\bootstrap\fonts\glyphicons-halflings-regular.eot" />
     <None Include="TBot_Monitor\lib\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
     <None Include="TBot_Monitor\lib\bootstrap\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="TBot\Admin\Config\Edit_TM_Server.cshtml" />
-    <Content Include="TBot\NGit\GitDiff_UserData_Commit.cshtml" />
-    <Content Include="TBot\NGit\GitDiff_UserData_File.cshtml" />
-    <Content Include="TBot\VirtualArticles\Article_Links.cshtml" />
-    <Content Include="TBot\VirtualArticles\Current_Virtual_Articles.cshtml" />
-    <Content Include="TBot\Views\GitUserData\File.cshtml" />
-    <Content Include="TBot\Views\GitUserData\FileContents.cshtml" />
-    <Content Include="TBot\Views\GitUserData\FileDiff.cshtml" />
-    <Content Include="TBot\Views\GitUserData\Repository.cshtml" />
     <Content Include="Views\GitUserData\File.cshtml" />
     <Content Include="Views\GitUserData\FileContents.cshtml" />
     <Content Include="Views\GitUserData\FileDiff.cshtml" />

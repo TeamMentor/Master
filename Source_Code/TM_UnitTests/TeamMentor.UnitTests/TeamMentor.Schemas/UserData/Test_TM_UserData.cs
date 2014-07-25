@@ -1,7 +1,6 @@
 ﻿using NUnit.Framework;
 using TeamMentor.CoreLib;
 using TeamMentor.FileStorage;
-using TeamMentor.UserData;
 
 namespace TeamMentor.UnitTests.CoreLib
 {
@@ -12,17 +11,13 @@ namespace TeamMentor.UnitTests.CoreLib
         {
             TM_FileStorage.Current = null;
             var userData = new TM_UserData();
-
-            Assert.IsFalse  (userData.usingFileStorage());
+            
             Assert.AreEqual (TM_UserData.Current, userData);            
             Assert.IsEmpty  (userData.TMUsers);
             Assert.NotNull  (userData.SecretData);        
             Assert.NotNull  (userData.Events);
             Assert.IsNull   (TM_UserData.GitPushThread);
-            
-            Assert.IsNull   (userData.path_UserData());
-            Assert.IsNull   (userData.tmConfig_Location());
-            Assert.IsNull   (userData.secretData_Location());                        
+                        
             Assert.IsNull   (new TMUser().user_XmlFile_Name());            
         }
         

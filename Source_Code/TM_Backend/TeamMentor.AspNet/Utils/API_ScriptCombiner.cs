@@ -8,7 +8,7 @@ namespace TeamMentor.CoreLib
 {
     public class API_ScriptCombiner
     {
-        public string   MappingsLocation			 {get;set;}
+        public string   MappingsLocation    {get;set;}
 			
 		public string setName 				{ get; set;}
 		public string version 				{ get; set;}

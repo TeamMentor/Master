@@ -57,6 +57,7 @@ namespace TeamMentor.FileStorage
 
         [Admin] public static TM_FileStorage   set_Path_UserData    (this TM_FileStorage tmFileStorage)
         {           
+            admin.demand();
             var tmXmlDatabase = tmFileStorage.tmXmlDatabase();
             //var userData = tmFileStorage.userData();
 
@@ -92,9 +93,24 @@ namespace TeamMentor.FileStorage
             
             return tmFileStorage;
         }
+        /// <summary>        
+        /// Forces tmFileStorage.Path_UserData to be set to a specific folder 
+        /// 
+        /// Note: If <code>path_UserData</code> folder doesn't exist, the value is not changed
+        /// </summary>
+        /// <param name="tmFileStorage"></param>
+        /// <param name="path_UserData"></param>
+        /// <returns></returns>
+        [Admin] public static TM_FileStorage   set_Path_UserData    (this TM_FileStorage tmFileStorage, string path_UserData)
+        {           
+            admin.demand();
+            if(tmFileStorage.notNull() && path_UserData.folderExists())
+                tmFileStorage.Path_UserData = path_UserData;
+            return tmFileStorage;
+        }
         [Admin] public static TM_FileStorage   set_Path_SiteData    (this TM_FileStorage tmFileStorage)
         {           
-            
+            UserRole.Admin.demand();
             var siteData_Config = tmFileStorage.tmServer().siteData_Config();
 
             if (siteData_Config.isNull() || siteData_Config.Name.notValid())
@@ -124,11 +140,29 @@ namespace TeamMentor.FileStorage
             
             return tmFileStorage;
         }
+        /// <summary>        
+        /// Forces tmFileStorage.Path_UserData to be set to a specific folder 
+        /// 
+        /// Note: If <code>path_SiteData</code> folder doesn't exist, the value is not changed
+        /// </summary>
+        /// <param name="tmFileStorage"></param>
+        /// <param name="path_SiteData"></param>
+        /// <returns></returns>
+        [Admin] public static TM_FileStorage   set_Path_SiteData    (this TM_FileStorage tmFileStorage, string path_SiteData)
+        {           
+            admin.demand();
+            if(tmFileStorage.notNull() && path_SiteData.folderExists())
+                tmFileStorage.Path_SiteData = path_SiteData;
+            return tmFileStorage;
+        }
        
         [Admin] public static TM_FileStorage   load_UserData       (this TM_FileStorage tmFileStorage)         
         {
-                        
-            //var userData = tmFileStorage.UserData;
+            UserRole.Admin.demand();                    
+
+            "TeamMentor.Git".assembly()
+                            .type("TM_UserData_Git_ExtensionMethods")
+                            .invokeStatic("setup_UserData_Git_Support", tmFileStorage);
 
             tmFileStorage.tmConfig_Load()                            
                          .secretData_Load()
@@ -138,7 +172,7 @@ namespace TeamMentor.FileStorage
         }
     
         //TM_UserData helpers
-        public static string path_UserData(this TM_UserData userData)
+        /*public static string path_UserData(this TM_UserData userData)
         {
             return userData.usingFileStorage() 
                     ? TM_FileStorage.Current.path_UserData()
@@ -159,6 +193,6 @@ namespace TeamMentor.FileStorage
         public static bool   usingFileStorage   (this TM_UserData userData)
         {
             return userData.notNull() && TM_FileStorage.Current.notNull();
-        }
+        }*/
     }
 }

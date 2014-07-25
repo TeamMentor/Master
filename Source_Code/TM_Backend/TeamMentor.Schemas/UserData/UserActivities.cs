@@ -1,12 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
 
 namespace TeamMentor.CoreLib
 {
+    [Serializable]
     [DataContract] 
-    public class UserActivity
-    {
+    public class UserActivity : MarshalByRefObject
+    {        
         [DataMember] [XmlAttribute] public string	Action		{ get; set; }
         [DataMember] [XmlAttribute]  public string	Detail		{ get; set; }
         [DataMember] [XmlAttribute]  public string	Who		    { get; set; }
@@ -15,7 +17,8 @@ namespace TeamMentor.CoreLib
         [DataMember] [XmlAttribute]  public string  When_JS		{ get; set; }
     }
 
-    public class UserActivities
+    [Serializable]
+    public class UserActivities : MarshalByRefObject
     {
         public static UserActivities Current { get; set; }
 

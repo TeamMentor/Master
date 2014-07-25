@@ -15,19 +15,20 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
     public class Test_LoadLibrariesFromDisk  : TM_XmlDatabase_FileStorage
     {                        
         public Test_LoadLibrariesFromDisk()
-        {
+        {            
             if (Tests_Consts.offline)
                 Assert.Ignore("Ignoring Test because we are offline");   
 
            if(new O2Kernel_Web().online().isFalse())
                 Assert.Ignore("Ignoring Test because we are offline");   
 
-            Install_LibraryFromZip_OWASP();            
+            tmFileStorage.install_LibraryFromZip_OWASP();                  
         }
         
-        [Test] public void GetGuidanceExplorerFilesInPath()
+        [Test] [Assert_Admin] public void GetGuidanceExplorerFilesInPath()
         {
-            var xmlFiles = tmXmlDatabase.path_XmlLibraries().getGuidanceExplorerFilesInPath();
+            admin.assert();
+            var xmlFiles = tmFileStorage.path_XmlLibraries().getGuidanceExplorerFilesInPath();
             Assert.IsNotEmpty(xmlFiles);
             foreach (var xmlFile in xmlFiles)
             {
@@ -35,29 +36,36 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
                 var secondLine  = fileContents.lines().second();
                 Assert.That(secondLine.starts("<guidanceExplorer"));                                                            
             }
+            none.assert();
         }
-        [Test] public void LoadGuidanceExplorerFilesDirectly()
+        [Test] [Assert_Admin] public void LoadGuidanceExplorerFilesDirectly()
         {
-            foreach (var xmlFile in tmXmlDatabase.path_XmlLibraries().getGuidanceExplorerFilesInPath())
+            admin.assert();
+            foreach (var xmlFile in tmFileStorage.path_XmlLibraries().getGuidanceExplorerFilesInPath())
             {
                 "Loading libraryXmlFile: {0}".info(xmlFile.fileName());                
                 var guidanceExplorer = xmlFile.getGuidanceExplorerObject();
                 Assert.IsNotNull(guidanceExplorer);
             }
+            none.assert();
         }
-        [Test] public void LoadGuidanceExplorerFiles()
+        [Test] [Assert_Admin] public void LoadGuidanceExplorerFiles()
         {            
+            admin.assert();
             //tmXmlDatabase.setGuidanceExplorerObjects();
-            var xmlFiles    = tmXmlDatabase.path_XmlLibraries().getGuidanceExplorerFilesInPath();
+            var xmlFiles    = tmFileStorage.path_XmlLibraries().getGuidanceExplorerFilesInPath();
             var tmLibraries = tmXmlDatabase.tmLibraries();
             Assert.AreEqual(xmlFiles.size(), tmLibraries.size());
+            none.assert();
         }
-        [Test] public void Test_getGuidanceExplorerObjects()
+        [Test] [Assert_Admin] public void Test_getGuidanceExplorerObjects()
         {
-            var guidanceExplorers = tmXmlDatabase.path_XmlLibraries().getGuidanceExplorerObjects();			
+            admin.assert();
+            var guidanceExplorers = tmFileStorage.getGuidanceExplorerObjects(tmFileStorage.path_XmlLibraries());			
             Assert.IsNotNull(guidanceExplorers, "guidanceExplorers");
             Assert.That(guidanceExplorers.size()>0 , "guidanceExplorers was empty");			
             Assert.That(tmXmlDatabase.GuidanceExplorers_XmlFormat.size() > 0, "GuidanceExplorers_XmlFormat was empty");    		
+            none.assert();
         }    	    	
         [Test] public void Test_getLibraries()
         {             
@@ -99,6 +107,8 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         [Test][Assert_Editor]
         public void Test_getGuidanceHtml()
         {
+            UserGroup.Editor.assert(); 
+
             HttpContextFactory.Context = new API_Moq_HttpContext().httpContext();       // need for the logUserActivity method need to map the IP
             //LoadGuidanceExplorerFiles();            
             //tmXmlDatabase.reloadGuidanceExplorerObjects();                
@@ -112,7 +122,9 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             var sessionId = Guid.Empty;
             var html = tmXmlDatabase.getGuidanceItemHtml(sessionId,guid);
             Assert.IsNotNull(html, "html");    		
-            Assert.That(html.valid(), "html was empty");    		
+            Assert.That(html.valid(), "html was empty");    
+		
+            UserGroup.None.assert(); 
         }
 
 

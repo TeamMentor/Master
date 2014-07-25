@@ -8,12 +8,42 @@ using urn.microsoft.guidanceexplorer;
 
 namespace TeamMentor.FileStorage
 {
-    public class TM_FileStorage
+    /// <summary>
+    /// This is the TeamMentor interface with the file system. 
+    /// 
+    /// The main TM objects (ie its objects) are not aware of where (if at all) their data is saved into
+    /// </summary>
+    [Serializable]
+    public class TM_FileStorage : MarshalByRefObject
     {
-        public static TM_FileStorage Current        { get;set;}        
-        public TM_Server             Server         { get;set;}
-        public TM_UserData           UserData       { get;set;}
-        public TM_Xml_Database       TMXmlDatabase  { get;set;}
+        //***********************************
+        //***      Static  objects        ***
+        //***********************************
+
+        /// <summary>
+        /// Static reference to the current version of TM_FileStorage (there should only be one TM_FileStorage active at a given time)
+        /// </summary>
+        public static TM_FileStorage Current                    { get; set;}     
+        /// <summary>
+        /// This can be used to control the location of the main TeamMentor config and data files. 
+        /// Note that this path must exist on disk or TM_FileStorage setup will not use this
+        /// </summary>
+        public static string         Custom_WebRoot             { get; set;}     
+
+        /// <summary>
+        /// This can be used to control the location of the main TeamMentor Xml Database files (including Library files)
+        /// Note that this path must exist on disk or TM_FileStorage setup will not use this
+        /// </summary>
+        public static string         Custom_Path_XmlDatabase    { get; set;}        
+        
+        
+        //***********************************
+        //***      Instance  objects      ***
+        //***********************************
+
+        public TM_Server             Server         { get; set;}
+        public TM_UserData           UserData       { get; set;}
+        public TM_Xml_Database       TMXmlDatabase  { get; set;}
         public string WebRoot                       { get; set; }        
         public string Path_XmlDatabase              { get; set; }
         public string Path_UserData 	            { get; set; }	   

@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using FluentSharp.CoreLib;
 
 namespace TeamMentor.CoreLib
 {
-    public class TM_SMTPConfig
+    //[Serializable]
+    public class TM_SMTPConfig //: MarshalByRefObject
     {
         public string           Server       { get; set; }
         public string           UserName     { get; set; }
@@ -23,8 +26,8 @@ namespace TeamMentor.CoreLib
             Email_Footer    = TMConsts.EMAIL_DEFAULT_FOOTER;
         }
     }
-
-    public class TM_SecretData
+    //[Serializable]    
+    public class TM_SecretData //: MarshalByRefObject
     {        
         public string               Rijndael_IV     { get; set; }
         public string               Rijndael_Key    { get; set; }
