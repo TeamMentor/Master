@@ -20,7 +20,10 @@ namespace TeamMentor.UnitTests.FileStorage
         [TearDown] public void teardown()
         {
             if(tmFileStorage.path_UserData().folder_Exists())
+            {
+                tmFileStorage.path_UserData().files(true).files_Attribute_ReadOnly_Remove();
                 Assert.IsTrue (Files.deleteFolder(tmFileStorage.path_UserData(), true));
+            }
             Assert.IsFalse(tmFileStorage.path_UserData().dirExists());
         }
         [Test] public void load()

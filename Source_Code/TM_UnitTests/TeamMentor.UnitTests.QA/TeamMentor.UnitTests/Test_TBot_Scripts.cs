@@ -35,6 +35,7 @@ namespace TeamMentor.UnitTests.QA
             // Load dlls as required by some TBot pages:  
             "System.Xml.Linq".assembly().assert_Not_Null(); // Import Legacy Users
             "FluentSharp.Xml".assembly().assert_Not_Null(); // Import Legacy Users
+            "TeamMentor.AspNet".assembly().assert_Not_Null();  // DebugInfo
             //"System.Web"     .assembly().assert_Not_Null(); // IIS Sessions
 
             var tbotBrain = new TBot_Brain(TmRest);

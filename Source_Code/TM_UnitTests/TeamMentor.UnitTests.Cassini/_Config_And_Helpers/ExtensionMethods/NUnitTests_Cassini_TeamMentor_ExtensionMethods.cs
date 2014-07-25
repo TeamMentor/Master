@@ -89,7 +89,10 @@ return nUnitTests_Cassini;
             var path_XmlDatabase = nUnitTests_Cassini.tmProxy().get_Custom_Path_XmlDatabase()
                                                                .assert_Folder_Exists();
             nUnitTests_Cassini.stop();
-            Files.delete_Folder_Recursively(path_XmlDatabase).assert_True();
+            path_XmlDatabase.files().files_Attribute_ReadOnly_Remove();
+            Files.delete_Folder_Recursively(path_XmlDatabase);
+            if(path_XmlDatabase.folder_Exists())
+                "temp_Path_XmlDatabase was not not deleted ok".assert_Ignore();
             path_XmlDatabase.assert_Folder_Not_Exists();
             return nUnitTests_Cassini;
         }

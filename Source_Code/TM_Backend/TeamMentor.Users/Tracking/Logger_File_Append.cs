@@ -24,12 +24,7 @@ namespace FluentSharp.CoreLib.API
         {
             alsoWriteToDebug = true;
             LogData = new StringBuilder();
-            TargetFile = targetFile;
-            if (TargetFile.file_Doesnt_Exist())
-            { 
-                ("---------------------------------".line()+
-                 "Logger_File_Append started at {0}".line().line().format(DateTime.Now)).saveAs(TargetFile);                
-            }
+            TargetFile = targetFile;            
         }
 
         private void writeLine(string message)
@@ -50,9 +45,16 @@ namespace FluentSharp.CoreLib.API
                 LogData.Append(message);
                 try
                 {
-                    var file = File.AppendText(TargetFile);
-                    file.Write(message);
-                    file.Close();
+                    if (TargetFile.file_Doesnt_Exist())
+                    { 
+                        ("---------------------------------".line()+
+                         "Logger_File_Append started at {0}".line().line().format(DateTime.Now)).saveAs(TargetFile);                
+                    }
+                    using(var file = File.AppendText(TargetFile))
+                    {
+                        file.Write(message);
+                        file.Close();
+                    }
                 }
                 catch(Exception ex)
                 {

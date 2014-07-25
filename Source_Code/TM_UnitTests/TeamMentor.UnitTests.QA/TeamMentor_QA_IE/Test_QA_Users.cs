@@ -18,7 +18,7 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_IE
         }
         [Test] public void Sign_Up_For_New_Account()
         {
-            var ieTeamMentor = this.new_IE_TeamMentor();
+            var ieTeamMentor = this.new_IE_TeamMentor_Hidden();
             var ie = ieTeamMentor.ie;
 
             Action<NewUser> signup_For_New_Account = (newUser)=>
@@ -57,7 +57,7 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_IE
             ieTeamMentor.close();
         }
 
-        [Test] public void Password_Reset_Workflow()
+        [Test][Ignore("Serialization issue")] public void Password_Reset_Workflow()
         {
             var ieTeamMentor = this.new_IE_TeamMentor_Hidden();
             var ie           = ieTeamMentor.ie;

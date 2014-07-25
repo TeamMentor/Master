@@ -56,7 +56,7 @@ namespace TeamMentor.UnitTests.QA
             ie.open(homePageUrl)
               .assert_Has_Links("About", "Login", "Help");
             
-            ie.open(homePageUrl               ).assert_Url_Is(homePageUrl.append("teamMentor"));
+            ie.open(homePageUrl               ).waitForLink("About");ie.assert_Url_Is(homePageUrl.append("teamMentor"));
             ie.open(homePageUrl.append("Tbot")).assert_Url_Is(homePageUrl.append("Html_Pages/Gui/Pages/login.html?LoginReferer=/tbot"));
             
             ie.parentForm().Close();  

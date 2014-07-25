@@ -60,7 +60,7 @@ namespace TeamMentor.UnitTests.CoreLib
             
             var realTime_LogFilePath= tracking.realTime_LogFilePath();
             
-            realTime_LogFilePath.assert_File_Exists();
+            realTime_LogFilePath.assert_File_Not_Exists();
             
             var testMessage = "Info Test".add_5_RandomLetters().info();
 

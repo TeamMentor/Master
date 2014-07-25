@@ -205,6 +205,8 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_IE
             var password    = "!abc!".add_5_RandomLetters();
             var articleId   = Guid.NewGuid();                                                          // we can use any GUID here since what we're after is the redirection
             
+            tmProxy.get_Current<TMConfig>().TMSetup.ShowDotNetDebugErrors = true;
+
             var tmUser = tmProxy.user_New(userName, password).assert_Not_Null()                                     // create a temp user
                                 .UserName.user(tmProxy)      .assert_Not_Null()
                                 .UserID.user(tmProxy)        .assert_Not_Null();

@@ -59,8 +59,11 @@ namespace TeamMentor.UnitTests.Cassini
                    .Path_XmlDatabase.assert_Equals(temp_Path_XmlDatabase);
             
             nUnitTests_Cassini.stop();
-            
-            Files.delete_Folder_Recursively(temp_Path_XmlDatabase).assert_True();
+            temp_Path_XmlDatabase.files().files_Attribute_ReadOnly_Remove();
+            Files.delete_Folder_Recursively(temp_Path_XmlDatabase);
+            if(temp_Path_XmlDatabase.folder_Exists())
+                "temp_Path_XmlDatabase was not not deleted ok".assert_Ignore();
+                        
             temp_Path_XmlDatabase.assert_Folder_Not_Exists();
         }
         [Test] public void call_TM_StartUp_Application_Start()
