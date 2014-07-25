@@ -13,7 +13,7 @@ namespace TeamMentor.CoreLib
         public bool             Users_Create_Default_Admin     { get; set; }
         public bool             TM_Database_Use_AppData_Folder { get; set; }
         public bool             UserActivities_Disable_Logging { get; set; }
-
+        public bool             RealTime_Logs                  { get; set; }
         public Git_Config    Git              { get; set; }
         public List<Config>  UserData_Configs { get; set; }
         public List<Config>  SiteData_Configs { get; set; }
@@ -25,6 +25,7 @@ namespace TeamMentor.CoreLib
             Users_Create_Default_Admin      = true;
             TM_Database_Use_AppData_Folder  = false;
             UserActivities_Disable_Logging  = false;
+            RealTime_Logs                   = false;
 
             Git = new Git_Config();
             UserData_Configs = new List<Config>();

@@ -5,6 +5,7 @@ using FluentSharp.REPL;
 using FluentSharp.Watin;
 using FluentSharp.WatiN.NUnit;
 using FluentSharp.Web35;
+using FluentSharp.WinForms;
 using NUnit.Framework;
 using TeamMentor.CoreLib;
 using TeamMentor.FileStorage;
@@ -25,6 +26,53 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_IE
             
         }
         
+        [Test] public void Issue_310_Application_Logs_should_be_written_real_time()
+        {
+            admin.assert();
+
+            tmProxy.TmServer.assert_Not_Null()
+                            .RealTime_Logs.assert_False();
+
+            tmProxy.get_Current<TM_StartUp>()   .assert_Not_Null()
+                   .TrackingApplication         .assert_Not_Null()
+                   .RealTime_LogFilePath        .assert_Null();
+
+            var tmServerLocation = tmProxy.TmFileStorage.tmServer_Location().assert_File_Exists();
+            tmServerLocation.load<TM_Server>()
+                            .realTime_Logs(true)
+                            .saveAs(tmServerLocation);            
+            
+            tmProxy.invoke_Instance(typeof(TM_StartUp),"Application_Start");            // restart TM
+            
+            tmProxy = this.tmProxy();
+
+            tmProxy.TmServer.assert_Not_Null()
+                            .RealTime_Logs.assert_True();
+            var tm_StartUp = tmProxy.get_Current<TM_StartUp>().assert_Not_Null();
+            tm_StartUp.TrackingApplication                    .assert_Not_Null()
+                      .RealTime_LogFilePath                   .assert_Not_Null()
+                                                              .assert_File_Exists();
+
+            var logFilePath = tm_StartUp.trackingApplication().realTime_LogFilePath()
+                                                              .assert_File_Exists();
+            var contents_Before =  logFilePath.fileContents();
+            {       
+                siteUri.append("404").GET().assert_Contains("Error");   
+            }
+            var contents_After = logFilePath.fileContents();
+
+            contents_After.assert_Is_Not(contents_Before);
+
+            var ieTeamMentor = this.new_IE_TeamMentor();
+            ieTeamMentor.login_Default_Admin_Account("/tbot");
+            ieTeamMentor.ie.waitForLink("DebugInfo").click();
+            ieTeamMentor.ie.html().assert_Contains(logFilePath);
+
+            tmServerLocation.load<TM_Server>()
+                            .realTime_Logs(false)
+                            .saveAs(tmServerLocation);
+
+        }     
         [Test] public void Issue_681__Navigating_libraries_views_folders__Clicking_the_icon_doesnt_work()
         {
             var tmWebServices  = new TM_WebServices();            

@@ -66,6 +66,7 @@
     <Compile Include="Tracking\Firebase\Log_Request.cs" />
     <Compile Include="Tracking\Firebase\Requests_Firebase.cs" />
     <Compile Include="Tracking\Firebase\TM_FirebaseConfig_ExtensionMethods.cs" />
+    <Compile Include="Tracking\Logger_File_Append.cs" />
     <Compile Include="Tracking\Logger_LogItem.cs" />
     <Compile Include="Tracking\Tracking_Application.cs" />
     <Compile Include="Users\DataContracts_ExtensionMethods.cs" />

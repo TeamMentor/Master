@@ -104,7 +104,14 @@ namespace TeamMentor.CoreLib
                     .logRequest()
                     .handleRequest();
             
-            
+        }
+    }
+
+    public static class TM_StartUp_ExtensionMethods
+    {
+        public static Tracking_Application trackingApplication(this TM_StartUp tmStartup)
+        {
+            return tmStartup.notNull() ? tmStartup.TrackingApplication : null;
         }
     }
 }

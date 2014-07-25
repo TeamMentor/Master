@@ -25,7 +25,16 @@ namespace TeamMentor.CoreLib
             tmServer.add_SiteData(siteData_Config);
             return tmServer;
         }
-        
+        public static bool                        realTime_Logs(this TM_Server tmServer)
+        {
+            return (tmServer.notNull()) && tmServer.RealTime_Logs;
+        }
+        public static TM_Server                  realTime_Logs(this TM_Server tmServer, bool value)
+        {
+            if (tmServer.notNull())
+                tmServer.RealTime_Logs = value;
+            return tmServer;
+        }
         //userActivites
         public static TM_Server                  userActivities_Disable_Logging(this TM_Server tmServer, bool value)
         {
