@@ -11,9 +11,52 @@ using TeamMentor.UserData;
 
 namespace TeamMentor.UnitTests.TM_XmlDatabase
 {
-    //[Ignore("TO FIX (Refactor Side Effect")]
-    [TestFixture]//[Ignore("Git User doesn't happen on LocalRequests")]
-    public class Test_UserData_GitStorage //: TM_XmlDatabase_FileStorage
+    [TestFixture] 
+    public class TM_UserData_Git_ExtensionMethods
+    {
+        [Test] [Admin] public void setup_UserData_Git_Support()
+        {
+            admin.assert();
+            TM_UserData_Git.Current = null;
+
+            var tmFileStorage = new TM_FileStorage(false);
+
+            // check reflection based invocation of setup_UserData_Git_Support
+            "TeamMentor.Git".assembly()                                               .assert_Not_Null()
+                            .type("TM_UserData_Git_ExtensionMethods")                 .assert_Not_Null()
+                            .invokeStatic("setup_UserData_Git_Support", tmFileStorage).assert_Not_Null()
+                                                                                      .assert_Instance_Of<TM_UserData_Git>()
+                                                                                      .assert_Is(TM_UserData_Git.Current)
+                                                                                      .FileStorage.assert_Not_Null()
+                                                                                                  .assert_Is(tmFileStorage);
+            
+            //check that tmFileStorage.load_UserData  also sets TM_UserData_Git.Current
+            TM_UserData_Git.Current = null;
+            var temp_UserData = "temp_UserData".temp_Dir();
+            
+            temp_UserData.isGitRepository().assert_False();
+
+            tmFileStorage = new TM_FileStorage(false);
+                            
+            tmFileStorage.set_Path_UserData(temp_UserData)
+                         .load_UserData();
+
+            TM_UserData_Git.Current    .assert_Not_Null()
+                           .FileStorage.assert_Not_Null()
+                                       .assert_Is(tmFileStorage);
+
+            temp_UserData.isGitRepository().assert_True();
+            
+            Files.delete_Folder_Recursively(temp_UserData)
+                 .assert_True();
+            
+        }
+
+
+
+    }
+    [TestFixture]
+    public class Test_UserData_GitStorage 
     {           
         public TM_FileStorage   tmFileStorage;
         public TM_Xml_Database  tmXmlDatabase;
@@ -22,7 +65,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         public TM_UserData_Git  userDataGit;
         public API_NGit         nGit;
 
-        [SetUp]    [Admin] public void setUp()
+        [SetUp]    [Admin] public void setUp()  
         {
             UserGroup.Admin.assert();
 
@@ -60,7 +103,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
 
             UserGroup.None.assert();
         }
-        [TearDown] public void tearDown()                               
+        [TearDown] public void tearDown()       
         {            
             admin.assert(()=>tmFileStorage.delete_Database());
             Files.delete_Folder_Recursively(TM_FileStorage.Custom_WebRoot);
@@ -68,6 +111,8 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             TM_FileStorage.Custom_WebRoot.assert_Folder_Doesnt_Exist();
             TM_FileStorage.Custom_WebRoot = null;            
         }
+        
+        //workflows
         [Test] public void Check_Non_Git_Repo_Doesnt_Commit()                          
         {            
             var temp_Path_UserData      = "nonGitRepo".tempDir(); 
@@ -104,7 +149,6 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             
             tmFileStorage.path_UserData().assert_Folder_Doesnt_Exist();     
         }
-
         [Test] public void Manualy_Git_Commit_NewUsers()                        
         {
             var head1              = nGit.head();
@@ -214,6 +258,8 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             nGit.status ().assert_Not_Empty()
                           .assert_Not_Equal_To(status1);                                            
         }
+        
+        
         [Ignore("BUG - To fix")]
         [Test] public void BUG_Check_That_Git_Commit_Happens_On_UserData_Load()     
         {

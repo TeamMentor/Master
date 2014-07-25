@@ -128,6 +128,11 @@ namespace TeamMentor.FileStorage
                           .load_Libraries();
                 */
 
+                "TeamMentor.Git".assembly()
+                                .type("TM_Xml_Database_Git_ExtensionMethods")
+                                .invokeStatic("handle_UserData_GitLibraries",tmDatabase);
+
+
                tmDatabase.Events.After_Setup.raise(); 
                 
                 //.set_Path_XmlLibraries();

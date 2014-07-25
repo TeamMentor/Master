@@ -160,6 +160,10 @@ namespace TeamMentor.FileStorage
         {
             UserRole.Admin.demand();                    
 
+            "TeamMentor.Git".assembly()
+                            .type("TM_UserData_Git_ExtensionMethods")
+                            .invokeStatic("setup_UserData_Git_Support", tmFileStorage);
+
             tmFileStorage.tmConfig_Load()                            
                          .secretData_Load()
                          .users_Load();                         

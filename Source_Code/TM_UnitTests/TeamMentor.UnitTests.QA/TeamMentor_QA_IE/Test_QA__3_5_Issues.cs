@@ -1,5 +1,6 @@
 ﻿using System;
 using FluentSharp.CoreLib;
+using FluentSharp.Git;
 using FluentSharp.NUnit;
 using FluentSharp.REPL;
 using FluentSharp.Watin;
@@ -286,6 +287,23 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_IE
             ieTeamMentor.close();
         }
      
+        [Test] public void Issue_839__Git_Commit_for_users_and_articles_is_broken_in_3_5()
+        {
+            var pathUserData = tmFileStorage.path_UserData().assert_Folder_Exists();
+            pathUserData.isGitRepository().assert_True();
+            var nGit = pathUserData.git_Open();
+            var size_Before = nGit.commits().assert_Not_Empty().size();
+
+            var ieTeamMentor = this.new_IE_TeamMentor();
+            ieTeamMentor.login_Default_Admin_Account();
+
+            nGit.commits().assert_Size_Is(size_Before);
+
+            tmProxy.invoke_Instance(typeof(TM_StartUp),"Application_Start");            // restart TM
+
+            nGit.commits().assert_Size_Is(size_Before + 1);
+        }
+
         /// <summary>
         /// https://github.com/TeamMentor/Master/issues/840
         /// </summary>

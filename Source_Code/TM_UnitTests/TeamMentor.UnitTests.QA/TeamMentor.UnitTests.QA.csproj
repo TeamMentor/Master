@@ -138,6 +138,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TeamMentor.UnitTests.Cassini\Test_Cassini__Direct_Access_To_TBot_Brain.cs" />
     <Compile Include="TeamMentor_QA\Test_QA__3_5_Issues.cs" />
+    <Compile Include="TeamMentor_QA_Http\Test_QA__Git_Support.cs" />
     <Compile Include="TeamMentor_QA_Http\Test_QA__SiteData_Pages.cs" />
     <Compile Include="TeamMentor_QA_IE\Test_QA_Users.cs" />
     <Compile Include="TeamMentor_QA_IE\Test_QA__3_5_Issues.cs" />

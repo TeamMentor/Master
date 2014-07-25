@@ -127,7 +127,7 @@ namespace TeamMentor.CoreLib
             }
             return configs;
         }
-        public static List<TM_Server.Config> active_Config(this List<TM_Server.Config> configs, TM_Server.Config config)
+        public static List<TM_Server.Config> active_Config (this List<TM_Server.Config> configs, TM_Server.Config config)
         {
             if (configs.notNull() && config.notNull())
             {
@@ -136,6 +136,13 @@ namespace TeamMentor.CoreLib
             }
             return configs;
         }
-        
+        public static string                 remote_GitPath(this TM_Server.Config config)
+        {
+            return config.notNull() ? config.Remote_GitPath : null;
+        }
+        public static TM_Server.Git_Config   git           (this TM_Server tmServer)
+        {
+            return tmServer.notNull() ? tmServer.Git : null;
+        }
     }
 }

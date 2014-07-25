@@ -60,6 +60,7 @@ namespace TeamMentor.CoreLib
                 return false;
             }
             tmFileStorage.loadLibraryDataFromDisk();
+
             //tmXmlDatabase.setupGitSupport();
             //tmXmlDatabase.UserData.loadTmUserData();
             return true;
@@ -68,7 +69,15 @@ namespace TeamMentor.CoreLib
         {
             var tmXmlDatabase = tmFileStorage.TMXmlDatabase;
             tmXmlDatabase.GuidanceExplorers_XmlFormat = tmFileStorage.getGuidanceExplorerObjects(tmFileStorage.path_XmlLibraries());
-            tmFileStorage.load_GuidanceItemsFromCache();                        
+            tmFileStorage.load_GuidanceItemsFromCache(); 
+            
+            var tmDatabaseGit = "TeamMentor.Git".assembly().type("TM_Xml_Database_Git").ctor();
+
+            "TeamMentor.Git".assembly()
+                            .type("TM_Xml_Database_Git_ExtensionMethods")
+                            .invokeStatic("setupGitSupport",tmDatabaseGit);
+                                
+                
             return tmFileStorage;
         }
         public static TM_FileStorage                    reCreate_GuidanceItemsCache     (this TM_FileStorage tmFileStorage)

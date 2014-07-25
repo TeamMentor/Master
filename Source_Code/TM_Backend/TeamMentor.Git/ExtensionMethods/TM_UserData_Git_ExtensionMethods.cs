@@ -75,27 +75,29 @@ namespace TeamMentor.CoreLib
         {
             try
             {
+                if (TM_Server.Current.git().isNull())
+                    return userDataGit;
                 var tmFileStorage = userDataGit.FileStorage;
 
                 if (userDataGit.userData().isNull())
                     return userDataGit;
 
                 //var userData = userDataGit.userData();
-             //   var gitConfig = userData.tmConfig().Git;
-               // if (gitConfig.UserData_Git_Enabled.isFalse())
-               //     return userData;
+                var gitConfig = TM_Server.Current.git();
+                if (gitConfig.UserData_Git_Enabled.isFalse())
+                    return userDataGit;
 
                 var userData_Config = tmFileStorage.Server.userData_Config();
 
-                var gitLocation = userData_Config.Remote_GitPath;
+                var gitLocation = userData_Config.remote_GitPath();
                 if (gitLocation.valid())
                 {             
                     
                     //Adjust Path_UserData so that there is an unique folder per repo
-                    var extraFolderName = "_Git_";
+                    //var extraFolderName = "_Git_";
                     
                     // extra mode to switch of multiple Git_Hosting in same server
-                    extraFolderName += gitLocation.replace("\\","/").split("/").last().remove(".git").safeFileName();
+                    //extraFolderName += gitLocation.replace("\\","/").split("/").last().remove(".git").safeFileName();
 
                     //userData.Path_UserData = userData.Path_UserData_Base + extraFolderName;
                     //userData.Path_UserData.createDir();
@@ -106,8 +108,8 @@ namespace TeamMentor.CoreLib
 
                     if (tmFileStorage.Path_UserData.isGitRepository())
                     {
-                     //   if (gitConfig.UserData_Auto_Pull.isFalse())     //skip if this is set     
-                     //       return userData;
+                        if (gitConfig.UserData_Auto_Pull.isFalse())     //skip if this is set     
+                            return userDataGit;
 
                         "[TM_UserData] [GitPull]".info();
                         var nGit = tmFileStorage.Path_UserData.git_Open();
@@ -145,6 +147,8 @@ namespace TeamMentor.CoreLib
             }
             catch (Exception ex)
             {
+                var message = ex.Message;
+                System.Diagnostics.Debug.Write(ex.Message);
                 ex.log("[TM_UserData]  [handleExternalGitPull]");
             }
             return userDataGit;
