@@ -11,15 +11,15 @@ namespace TeamMentor.CoreLib
             {
                 Name = TMConsts.TM_SERVER_DEFAULT_NAME_USERDATA,
                 Active = true,
-                Use_FileSystem = false,
-                Enable_Git_Support = false
+//                Use_FileSystem = false,
+//                Enable_Git_Support = false
             };
             var siteData_Config = new TM_Server.Config
             {
                 Name = TMConsts.TM_SERVER_DEFAULT_NAME_SITEDATA,
                 Active = true,
-                Use_FileSystem = false,
-                Enable_Git_Support = false
+//                Use_FileSystem = false,
+//                Enable_Git_Support = false
             };            
             tmServer.add_UserData(userData_Config);
             tmServer.add_SiteData(siteData_Config);

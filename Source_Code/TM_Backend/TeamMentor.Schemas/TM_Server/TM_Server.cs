@@ -6,7 +6,7 @@ using FluentSharp.CoreLib;
 
 namespace TeamMentor.CoreLib
 {
-    [Serializable]
+    
     public class TM_Server : MarshalByRefObject
     {
         public static TM_Server Current                        { get; set; }
@@ -32,18 +32,17 @@ namespace TeamMentor.CoreLib
             SiteData_Configs = new List<Config>();        
         }
           
-        [Serializable]
+        
         public class Config : MarshalByRefObject
         {         
             public string   Name                    { get; set; }
             public bool     Active                  { get; set; }
-            public bool     Use_FileSystem          { get; set; }
-            public bool     Enable_Git_Support      { get; set; }            
-            public string   Local_GitPath           { get; set; }
+//            public bool     Use_FileSystem          { get; set; }
+//            public bool     Enable_Git_Support      { get; set; }            
+//            public string   Local_GitPath           { get; set; }
             public string   Remote_GitPath          { get; set; }
         }
-
-        [Serializable]
+        
         public class Git_Config : MarshalByRefObject
         {
             public bool UserData_Git_Enabled { get; set; }

@@ -48,7 +48,7 @@ namespace TeamMentor.UnitTests.TeamMentor.FileStorage
             var test_Config   = new TM_Server.Config
                                     {
                                         Name           = "Test_Config",
-                                        Local_GitPath  = 10.randomLetters(),
+//                                        Local_GitPath  = 10.randomLetters(),
                                         Remote_GitPath = 10.randomLetters()
                                     };      
       
