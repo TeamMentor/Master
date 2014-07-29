@@ -87,8 +87,18 @@ namespace TeamMentor.CoreLib
                 tmUser.AccountStatus.ExpirationDate      = user.ExpirationDate;
                 tmUser.AccountStatus.PasswordExpired     = user.PasswordExpired;
                 tmUser.AccountStatus.UserEnabled         = user.UserEnabled;
-                tmUser.AccountStatus.AccountNeverExpires = user.AccountNeverExpires; 
-                
+                tmUser.AccountStatus.AccountNeverExpires = user.AccountNeverExpires;
+                if (tmUser.UserTags.notEmpty())
+                {
+                    foreach (var userTag in tmUser.UserTags)
+                    {
+                        if (userTag.validation_Failed())
+                        {
+                            tmUser.logUserActivity(String.Format("Failing to update user {0} because UserTags validation failed.", tmUser.UserName), "");
+                            return false;
+                        }
+                    }
+                }
                 tmUser.event_User_Updated();      //tmUser.saveTmUser();                
                             
                 tmUser.logUserActivity("User Updated",""); // so that we don't get this log entry on new user creation
