@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace TeamMentor.CoreLib
-{
-    [Serializable]
+{    
 	public class JsTree : MarshalByRefObject
 	{
 		public List<JsTreeNode> data;
@@ -15,7 +14,6 @@ namespace TeamMentor.CoreLib
 		}
 	}
 	
-    [Serializable]
 	public class JsTreeNode : MarshalByRefObject
 	{
 		public Attributes       attr { get; set; }       
@@ -45,7 +43,7 @@ namespace TeamMentor.CoreLib
 			return data.title;
 		}
 	}
-    [Serializable]
+    
 	public class Attributes : MarshalByRefObject
 	{
 	    public string id    { get; set; }   
@@ -53,7 +51,6 @@ namespace TeamMentor.CoreLib
 	    public string mdata { get; set; }       
 	}
 	
-    [Serializable]
 	public class Data : MarshalByRefObject
 	{
 	    public string title { get; set; }       

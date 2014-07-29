@@ -6,7 +6,6 @@ using FluentSharp.CoreLib;
 
 namespace TeamMentor.CoreLib
 {
-    [Serializable]
     public class TM_UserData : MarshalByRefObject
     {        
         public static TM_UserData       Current             { get; set; }

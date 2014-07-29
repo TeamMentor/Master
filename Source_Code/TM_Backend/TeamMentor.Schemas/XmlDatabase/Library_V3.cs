@@ -4,7 +4,6 @@ using FluentSharp.CoreLib;
 
 namespace TeamMentor.CoreLib
 {
-    [Serializable]
 	public class Library_V3	: MarshalByRefObject
 	{
 		public Guid             libraryId 		{ get; set; }

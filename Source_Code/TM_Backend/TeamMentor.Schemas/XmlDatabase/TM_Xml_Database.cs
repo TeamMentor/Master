@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
-using FluentSharp.CoreLib;
 using urn.microsoft.guidanceexplorer;
 
 namespace TeamMentor.CoreLib
 {	
-    [Serializable]
     public class TM_Xml_Database : MarshalByRefObject
     {		    
         public static TM_Xml_Database   Current               { get; set; }         

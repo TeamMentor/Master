@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TeamMentor.CoreLib
 {
-    [Serializable]
+
     public class Events_TM_UserData : MarshalByRefObject
     { 
         public TM_UserData           Target                     { get; set;}

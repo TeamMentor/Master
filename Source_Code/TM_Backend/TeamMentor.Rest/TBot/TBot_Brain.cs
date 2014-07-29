@@ -11,7 +11,6 @@ using TeamMentor.FileStorage;
 
 namespace TeamMentor.CoreLib
 {    
-    [Serializable]
     public class TBot_Brain : MarshalByRefObject
     {
         public static string TBOT_MAIN_HTML_PAGE    = "/TBot/TbotMain.html";

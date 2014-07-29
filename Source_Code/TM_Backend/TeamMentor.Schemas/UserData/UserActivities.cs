@@ -4,8 +4,7 @@ using System.Runtime.Serialization;
 using System.Xml.Serialization;
 
 namespace TeamMentor.CoreLib
-{
-    [Serializable]
+{    
     [DataContract] 
     public class UserActivity : MarshalByRefObject
     {        
@@ -16,8 +15,7 @@ namespace TeamMentor.CoreLib
         [DataMember] [XmlAttribute]  public long    When		{ get; set; }        
         [DataMember] [XmlAttribute]  public string  When_JS		{ get; set; }
     }
-
-    [Serializable]
+    
     public class UserActivities : MarshalByRefObject
     {
         public static UserActivities Current { get; set; }

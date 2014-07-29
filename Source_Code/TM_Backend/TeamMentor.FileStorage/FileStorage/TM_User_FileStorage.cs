@@ -4,7 +4,6 @@ using TeamMentor.CoreLib;
 
 namespace TeamMentor.FileStorage
 {
-    [Serializable]
     public static class TM_User_FileStorage
     {        
         [Admin] public static TM_FileStorage                hook_Events_TM_UserData(this TM_FileStorage tmFileStorage)

@@ -10,8 +10,7 @@ using FluentSharp.Web;
 using FluentSharp.Web35;
 
 namespace TeamMentor.CoreLib
-{    
-    [Serializable]
+{        
     public class SendEmails : MarshalByRefObject
     {   
         public static List<EmailMessage> Sent_EmailMessages  { get; set; }
