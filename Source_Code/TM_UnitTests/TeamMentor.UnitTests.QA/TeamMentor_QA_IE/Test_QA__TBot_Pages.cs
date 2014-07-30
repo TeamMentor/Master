@@ -28,9 +28,7 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_IE
             var secretDataFile = tmProxy.TmFileStorage.cast<TM_FileStorage>()                              // actually location of the 
                                                        .secretData_Location()                              // TM_SecretData file
                                                        .assert_File_Exists();
-            
-            secretDataFile.assert_Is(@"E:\TeamMentor\TM_QA\UserData_Repos\Site_sme.teammentor.net\TMSecretData.config");
-                        
+         
             var tmSecretData    = secretDataFile                                                           // deserialize it directly
                                       .load<TM_SecretData>();
             
@@ -67,10 +65,7 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_IE
 
             //return tmProxy.TmFileStorage.cast<TM_FileStorage>().secretData_Location().fileContents();
 
-            var updated_tmSecretData    = secretDataFile.load<TM_SecretData>();                            // load update from this
-            
-            "secreatDataFile".o2Cache(secretDataFile);
-            ieTeamMentor.script_IE_WaitForComplete();
+            var updated_tmSecretData    = secretDataFile.load<TM_SecretData>();                             // load update from this
 
             updated_tmSecretData.Rijndael_IV      .assert_Not_Equal_To(tmSecretData.Rijndael_IV)            // confirm Rijndael_IV value was updated
                                                   .assert_Is_Equal_To (rijndael_IV);

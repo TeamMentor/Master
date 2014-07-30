@@ -111,7 +111,13 @@ namespace TeamMentor.FileStorage
         {           
             admin.demand();
             if(tmFileStorage.notNull() && path_UserData.folderExists())
+            { 
                 tmFileStorage.Path_UserData = path_UserData;
+                
+                "TeamMentor.Git".assembly()
+                                .type("TM_UserData_Git_ExtensionMethods")
+                                .invokeStatic("setup_UserData_Git_Support", tmFileStorage);
+            }
             return tmFileStorage;
         }
         [Admin] public static TM_FileStorage   set_Path_SiteData    (this TM_FileStorage tmFileStorage)

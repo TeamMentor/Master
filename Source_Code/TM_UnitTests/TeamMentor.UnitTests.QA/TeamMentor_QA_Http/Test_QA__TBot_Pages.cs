@@ -32,14 +32,14 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_Http
             //Try JSON Deserialization
             var jsonData = uri.httpWebRequest().GET_Json()                .assert_Not_Null();
 
-            jsonData.assert_Contains("__identity"); 
+           // jsonData.assert_Contains("__identity"); 
 
             jsonData.javascript_Deserialize<TM_SecretData>()              .assert_Not_Null().assert_Instance_Of<TM_SecretData>();
             jsonData.json_Deserialize      <TM_SecretData>()              .assert_Not_Null().assert_Instance_Of<TM_SecretData>();
 
             //Try XML Deserialization
             var xmlData = uri.GET()                                       .assert_Not_Empty();
-            xmlData.assert_Contains("__identity");                                                   // there because TM_SecretData is marked with MarshalByRefObject
+           // xmlData.assert_Contains("__identity");                                                   // there because TM_SecretData is marked with MarshalByRefObject
             
             xmlData.deserialize<TM_SecretData>(false).assert_Is_Null();                              // XML serialization doesn't work by default
             xmlData.remove("xmlns=\"http://schemas.datacontract.org/2004/07/TeamMentor.CoreLib\"")   // but if we remote this xmlns reference
