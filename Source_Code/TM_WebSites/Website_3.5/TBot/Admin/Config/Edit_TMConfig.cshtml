@@ -177,6 +177,15 @@
                         <tm-checkbox tm-name="'Sanitize Html Content'"               tm-model="tmConfig.TMSecurity.Sanitize_HtmlContent"></tm-checkbox>
                     </div>
                 </div>
+                <!--OnInstallation-->
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><b>OnInstallation</b></h3>
+                    </div>
+                    <div class="panel-body">
+                        <tm-checkbox tm-name="'Force Default Admin Password'" tm-model="tmConfig.OnInstallation.ForceDefaultAdminPassword"></tm-checkbox>
+                    </div>
+                </div>
             </div>
 
             <!--TMConfig-->
@@ -188,28 +197,13 @@
                     <div class="panel-body">                        
                         <tm-input    tm-name="'TM Library Data Virtual Path'"     tm-model="tmConfig.TMSetup.TMLibraryDataVirtualPath"></tm-input>
                         <tm-input    tm-name="'Xml Libraries Path'"               tm-model="tmConfig.TMSetup.XmlLibrariesPath"></tm-input>
-                        <tm-input    tm-name="'Libraries Uploaded Files'"         tm-model="tmConfig.TMSetup.LibrariesUploadedFiles"></tm-input>
-                        <tm-checkbox tm-name="'Use AppData Folder'"               tm-model="tmConfig.TMSetup.UseAppDataFolder"></tm-checkbox>
-                        <tm-checkbox tm-name="'Only Load UserData'"               tm-model="tmConfig.TMSetup.OnlyLoadUserData"></tm-checkbox>
+                        <tm-input    tm-name="'Libraries Uploaded Files'"         tm-model="tmConfig.TMSetup.LibrariesUploadedFiles"></tm-input>                        
                         <tm-checkbox tm-name="'Enable GZip for Web Services'"     tm-model="tmConfig.TMSetup.EnableGZipForWebServices"></tm-checkbox>
                         <tm-checkbox tm-name="'Enable 304 Redirects'"             tm-model="tmConfig.TMSetup.Enable304Redirects"></tm-checkbox>
                     </div>
                 </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="panel panel-success">
-                    <div class="panel-heading">
-                        <h3 class="panel-title"><b>Git</b></h3>
-                    </div>
-                    <div class="panel-body">                        
-                        <tm-checkbox tm-name="'Auto Commit UserData'"       tm-model="tmConfig.Git.AutoCommit_UserData"></tm-checkbox>                  
-                        <tm-checkbox tm-name="'Auto Commit LibraryData'"    tm-model="tmConfig.Git.AutoCommit_LibraryData"></tm-checkbox>                                          
-                    </div>
-                </div>
-            </div>  
-        </div>    
-        
-        <div class= "row">
+            </div>                        
+               
             <!--WindowsAuthentication-->
             <div class="col-sm-6">
                 <div class="panel panel-success">
@@ -223,20 +217,8 @@
                         <tm-input      tm-name="'Admin Group'"          tm-model="tmConfig.WindowsAuthentication.AdminGroup"></tm-input>
                     </div>
                 </div>
-            </div>
                              
-            <!--OnInstallation-->
-            <div class="col-sm-6">
-                <div class="panel panel-success">
-                    <div class="panel-heading">
-                        <h3 class="panel-title"><b>OnInstallation</b></h3>
-                    </div>
-                    <div class="panel-body">                        
-                        <tm-checkbox tm-name="'Force Default Admin Password'"           tm-model="tmConfig.OnInstallation.ForceDefaultAdminPassword"></tm-checkbox>
-                        <tm-input    tm-name="'Default Library to Install: Name'"     tm-model="tmConfig.OnInstallation.DefaultLibraryToInstall_Name"></tm-input>
-                        <tm-input    tm-name="'Default Library to Install: Location'" tm-model="tmConfig.OnInstallation.DefaultLibraryToInstall_Location"></tm-input>
-                    </div>
-                </div>
+          
             </div>
         </div>
 
