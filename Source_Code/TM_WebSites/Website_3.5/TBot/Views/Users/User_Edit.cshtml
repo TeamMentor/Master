@@ -27,7 +27,7 @@
                         .success(function(data)
                             {       
                                 $scope.result_Info = "";
-                                if (data)
+                                if (data=="true")
                                     $scope.result_Ok    = "User saved";
                                 else
                                     $scope.result_Error = "Failed to save user";
@@ -93,7 +93,7 @@
                 {
                     if ($scope.userData.UserTags ==null)
  				        $scope.userData.UserTags = [];
-                    $scope.userData.UserTags.push({ __identity:'', Key: '', Value: '' });
+                    $scope.userData.UserTags.push({__identity:'', Key:'' , Value : ''});                    
                 };
             $scope.removeTag = function(index)
                 {
@@ -230,8 +230,8 @@
                                 <th></th>
                             </tr>
                             <tr ng-repeat="userTag in userData.UserTags" class="borderless">                                
-                                <td><input type="text" class='form-control input-tag' ng-model='userTag.Key'   placeholder="key" />  </td>
-                                <td><input type="text" class='form-control input-tag' ng-model='userTag.Value' placeholder="value" /></td>
+                                <td><input type="text" class='form-control input-tag' ng-model='userTag.Key'   placeholder="key"   maxlength="255" />  </td>
+                                <td><input type="text" class='form-control input-tag' ng-model='userTag.Value' placeholder="Value" maxlength="255" />  </td>
                                 <td><a href="" ng-click="removeTag($index)">remove</a></td>
                             </tr>
                         </table>
