@@ -10,7 +10,7 @@ using TeamMentor.UnitTests.Cassini;
 namespace TeamMentor.UnitTests.QA.TeamMentor_QA_IE
 {
     [TestFixture]
-    public class Test_QA_Users : NUnitTests_Cassini_TeamMentor
+    public class Test_QA__Users : NUnitTests_Cassini_TeamMentor
     {
         [SetUp] public void setup()
         {            

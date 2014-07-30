@@ -41,6 +41,14 @@ namespace TeamMentor.NUnit
         }
 
 
+        public static T assert_Type<T>(this object target)
+        {
+            return target.assert_Instance_Of<T>();
+        }
+        public static T assert_Is<T>(this object target)
+        {
+            return target.assert_Instance_Of<T>();
+        }
     
     }
     
