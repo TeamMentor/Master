@@ -4,7 +4,7 @@ using System.Xml.Serialization;
 
 namespace TeamMentor.CoreLib
 {
-    /*[Serializable]
+    /*
 	public class GuidanceItemIndex : MarshalByRefObject
 	{		
 		[XmlAttribute]		public string id { get; set; }
@@ -12,14 +12,13 @@ namespace TeamMentor.CoreLib
 		[XmlAttribute]		public bool deleted { get; set; }
 	}
 
-    [Serializable]
 	public class LibraryIndex : MarshalByRefObject
 	{
 		[XmlArrayItem("GuidanceItem", IsNullable = false)]	public GuidanceItemIndex[] GuidanceItems { get; set; }
 		[XmlAttribute]										public string id { get; set; }
 	}
 
-    [Serializable]
+
 	public class Field : MarshalByRefObject
 	{
 		[XmlAttribute]		public string    id { get; set; }
@@ -28,21 +27,19 @@ namespace TeamMentor.CoreLib
 		[XmlAttribute]		public bool      distinct { get; set; }
 	}
 	
-    [Serializable]
+
 	public enum FieldType
 	{
 		Text,
 		Combo,
 	}
 
-    [Serializable]
 	public class Schema : MarshalByRefObject
 	{
 		[XmlArrayItem(IsNullable = false)]	public Field[] Fields { get; set; }
 		[XmlAttribute]						public string id { get; set; }
 	}
 
-    [Serializable]
 	public class GuidanceType : MarshalByRefObject
 	{
 		[XmlAttribute]		public string   id { get; set; }
@@ -60,7 +57,6 @@ namespace TeamMentor.CoreLib
 		[XmlIgnore]			public bool     deleteSpecified { get; set; }
 	}
 	
-    [Serializable]
 	public class UserViews : FolderStructure            { }
 	
     [Serializable]
@@ -70,7 +66,6 @@ namespace TeamMentor.CoreLib
 		public Libraries Libraries { get; set; }
 	}
 
-    [Serializable]
 	public class Credentials : System.Web.Services.Protocols.SoapHeader
 	{
 		public string			User { get; set; }
@@ -80,7 +75,6 @@ namespace TeamMentor.CoreLib
 		public XmlAttribute[]	AnyAttr { get; set; }
 	}
 
-    [Serializable]
 	public class Content : MarshalByRefObject
 	{
 		[XmlElement("GuidanceItem")]	public GuidanceItem[] GuidanceItem { get; set; }
@@ -89,26 +83,23 @@ namespace TeamMentor.CoreLib
 	}
 	*/
 
-    [Serializable]
 	public class Identifiable : MarshalByRefObject
 	{
 		[XmlAttribute]      public string id                    { get; set; }
 		[XmlAttribute]      public bool delete                  { get; set; }
 	}
 
-    [Serializable]
 	public class Libraries : Identifiable
 	{
 		[XmlElement("Library")] public Library[] Library        { get; set; }
 	}
 
-    [Serializable]
+
 	public class Library : FolderStructure
 	{
 		[XmlAttribute]      public bool readProtection { get; set; }
 	}
 	
-    [Serializable]
 	public class FolderStructure : Identifiable
 	{
 		[XmlArrayItem(IsNullable = false)]	public View[] Views { get; set; }
@@ -116,7 +107,6 @@ namespace TeamMentor.CoreLib
 		[XmlAttribute]						public string caption { get; set; }
 	}
 
-	[Serializable]
 	public class View : Identifiable
 	{
 		[XmlAttribute]	public string caption { get; set; }
@@ -129,7 +119,6 @@ namespace TeamMentor.CoreLib
 		[XmlIgnore]		public bool lastUpdateSpecified { get; set; }
 	}
 
-    [Serializable]
 	public class GuidanceItem
 	{
 		[XmlAttribute]		public string id_original { get; set; }
@@ -146,7 +135,7 @@ namespace TeamMentor.CoreLib
 		[XmlAttribute]		public string images { get; set; }
 		[XmlAnyAttribute]	public XmlAttribute[] AnyAttr { get; set; }
 	}
-    [Serializable]
+
 	public class Folder : FolderStructure               { }
 	/*
 	public class ListView

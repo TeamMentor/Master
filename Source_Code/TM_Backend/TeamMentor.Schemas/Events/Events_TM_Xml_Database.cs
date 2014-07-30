@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace TeamMentor.CoreLib
 {
-    [Serializable]
+    
     public class Events_TM_Xml_Database : MarshalByRefObject
     {
         public TM_Xml_Database           Target                        { get; set;}

@@ -122,8 +122,7 @@ namespace TeamMentor.CoreLib
                     return false;
                 }
                 TM_UserData.Current.SecretData = tmSecretData;
-                TM_FileStorage.Current.secretData_Save();       //TM_UserData.Current.secretData_Save();                
-                return true;
+                return TM_FileStorage.Current.secretData_Save();       //TM_UserData.Current.secretData_Save();                                
             }
             catch (Exception ex)
             {

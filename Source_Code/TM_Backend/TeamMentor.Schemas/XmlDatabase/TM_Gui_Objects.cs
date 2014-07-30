@@ -4,7 +4,6 @@ using FluentSharp.CoreLib;
 
 namespace TeamMentor.CoreLib
 {	
-    [Serializable]
 	public class TM_GUI_Objects : MarshalByRefObject
 	{		
 		public List<string> GuidanceItemsMappings 	{ get; set;}

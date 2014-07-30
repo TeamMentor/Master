@@ -49,14 +49,14 @@ namespace TeamMentor.UnitTests.Schemas
             var userData = tmServer.userData_Config();
             Assert.AreEqual(userData.Name               , TMConsts.TM_SERVER_DEFAULT_NAME_USERDATA);
             Assert.AreEqual(userData.Active             , true);
-            Assert.AreEqual(userData.Use_FileSystem     , false);
-            Assert.AreEqual(userData.Enable_Git_Support , false);
+//            Assert.AreEqual(userData.Use_FileSystem     , false);
+//            Assert.AreEqual(userData.Enable_Git_Support , false);
 
             var siteData = tmServer.siteData_Config();
             Assert.AreEqual(siteData.Name               , TMConsts.TM_SERVER_DEFAULT_NAME_SITEDATA);
             Assert.AreEqual(siteData.Active             , true);
-            Assert.AreEqual(siteData.Use_FileSystem     , false);
-            Assert.AreEqual(siteData.Enable_Git_Support , false);
+//            Assert.AreEqual(siteData.Use_FileSystem     , false);
+//            Assert.AreEqual(siteData.Enable_Git_Support , false);
         }
         [Test] public void add_UserData_Repo()                      
         {

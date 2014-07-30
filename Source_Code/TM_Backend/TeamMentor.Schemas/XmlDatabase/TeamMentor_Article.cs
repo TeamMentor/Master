@@ -7,7 +7,6 @@ using FluentSharp.CoreLib;
 
 namespace TeamMentor.CoreLib
 {
-    [Serializable]
 	public class TeamMentor_Article : MarshalByRefObject
 	{ 
         [XmlAttribute] public int           Metadata_Hash                   { get;set; }                 // Metadata Hash   
@@ -24,7 +23,6 @@ namespace TeamMentor.CoreLib
         }
     }
     
-    [Serializable]
 	public class TeamMentor_Article_Metadata : MarshalByRefObject
 	{        
 		//Article ID(s)
@@ -53,7 +51,7 @@ namespace TeamMentor.CoreLib
 		public string   Source              { get; set; }		// Not Used in GUI
 		public string   License             { get; set; }		// Not Used in GUI
     }
-    [Serializable]
+
 	public class TeamMentor_Article_Content : MarshalByRefObject
 	{             
 		[XmlAttribute] public bool Sanitized            { get; set; }		            // Flag to indicate if the data (for example Html) was sanitized before saving

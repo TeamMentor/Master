@@ -16,7 +16,7 @@ namespace TeamMentor.UnitTests.REST
 
 		public TM_Rest_Hosted()
 		{
-			TMConfig.Current.TMSetup.UseAppDataFolder = true;									// set the TM XMl Database folder to be 
+//			TMConfig.Current.TMSetup.UseAppDataFolder = true;									// set the TM XMl Database folder to be 
 			HttpContextFactory.Context = new API_Moq_HttpContext().httpContext();		
 			TmRest = new TM_REST();
 		}

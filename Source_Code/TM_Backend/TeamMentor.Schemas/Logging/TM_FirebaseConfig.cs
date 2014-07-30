@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Runtime.Serialization;
 
 namespace TeamMentor.CoreLib
 {
-    //[Serializable]
-    public class TM_FirebaseConfig //: MarshalByRefObject
+    //[Serializable]                                       // Serializable breaks the TBOT Page 
+    public class TM_FirebaseConfig //: MarshalByRefObject  // MarshalByRef was causing conflict with TBOT Rest API
     {
         public string Site                { get; set; }
         public string AuthToken           { get; set; }

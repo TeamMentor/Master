@@ -142,8 +142,8 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
 
             tmFileStorage.path_UserData().assert_False(path=>path.isGitRepository())
                                          .files().assert_Not_Empty()
-                                         .first().parentFolder().assert_Folder_File_Count_Is(2)
-                                         .files(true).assert_Size_Is(3);
+                                         .first().parentFolder().assert_Folder_File_Count_Is(1)
+                                         .files(true).assert_Size_Is(2);
            
             Files.delete_Folder_Recursively(tmFileStorage.path_UserData())
                  .assert_True("UserData Folder failed to delete");
@@ -261,7 +261,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             nGit.status ().assert_Not_Empty()
                           .assert_Not_Equal_To(status1);                                            
         } 
-        [Test] public void BUG_Check_That_Git_Commit_Happens_On_UserData_Load()     
+        [Test] public void Check_That_Git_Commit_Happens_On_UserData_Load()     
         {
             tmFileStorage.path_UserData().isGitRepository().assert_True();            
 
@@ -272,7 +272,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
 
             nGit.status ().assert_Not_Empty( );
             nGit.commits().assert_Size_Is  (2);
-            admin.assert(()=>tmFileStorage.load_UserData());              // this should trigger an git commit
+            admin.assert(()=>tmFileStorage.set_Path_UserData());              // this should trigger an git commit
             
             nGit.status ().assert_Empty    ( );
             nGit.commits().assert_Size_Is  (3);            

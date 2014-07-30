@@ -1,10 +1,6 @@
-﻿using System;
-using System.IO;
-using System.Web;
-using System.Web.Hosting;
+﻿using System.Web;
 using FluentSharp.CoreLib;
 using FluentSharp.Web;
-using TeamMentor.CoreLib;
 using TeamMentor.FileStorage;
 
 namespace TeamMentor.SiteData
@@ -20,7 +16,7 @@ namespace TeamMentor.SiteData
             if (tmFileStorage.isNull() || virtualPath.isNull())
                 return false;
 
-            temp_SwapSiteDataUtil(virtualPath.removeFirstChar());
+            //temp_SwapSiteDataUtil(virtualPath.removeFirstChar());
 
             var pathSiteData  = tmFileStorage.path_SiteData();
             if (pathSiteData.isNull())
@@ -42,7 +38,7 @@ namespace TeamMentor.SiteData
         }
 
         //temp method to help debugging (move to REST API)
-        private static void temp_SwapSiteDataUtil(string virtualPath)
+        /*private static void temp_SwapSiteDataUtil(string virtualPath)
         {
             try
             {
@@ -68,7 +64,7 @@ namespace TeamMentor.SiteData
             {
                 ex.log();
             }
-        }
+        }*/
 
         public static bool siteData_WriteFileToResponseStream(this string fullPath)
         {

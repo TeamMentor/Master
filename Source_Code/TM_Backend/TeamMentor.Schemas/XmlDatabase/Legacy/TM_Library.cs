@@ -3,7 +3,6 @@ using System.Xml.Serialization;
 
 namespace TeamMentor.CoreLib
 {	
-    [Serializable]
 	public class TM_Library : MarshalByRefObject
 	{		
 		[XmlAttribute] public Guid Id		 { get; set; }
@@ -26,7 +25,6 @@ namespace TeamMentor.CoreLib
 		[XmlElementAttribute(IsNullable = true)] public Nullable<DateTime> ExpirationDate { get; set; }		
 	}*/
 
-    [Serializable]
 	public class TM_GuidanceItem : MarshalByRefObject
 	{
 
@@ -45,7 +43,6 @@ namespace TeamMentor.CoreLib
 		[XmlAttribute]	public Guid		Library			{ get; set; }	
 	}
 
-    [Serializable]
 	public class TM_Folder : MarshalByRefObject
 	{
 	 

@@ -9,7 +9,7 @@ namespace TeamMentor.CoreLib
         public static TM_Xml_Database                               ensureFoldersAndViewsIdsAreUnique       (this TM_Xml_Database tmDatabase, bool verbose = false)
         {
             var conflictsDetected = 0;
-            "in ensureFoldersAndViewsIdsAreUnique".info();
+            //"[TM_Xml_Database] in ensureFoldersAndViewsIdsAreUnique".info();
             var mappedItems = new List<string>();
             foreach(var view in tmDatabase.xmlDB_Views())
             {
@@ -17,10 +17,10 @@ namespace TeamMentor.CoreLib
                 {
                     conflictsDetected++;
                     if (verbose)
-                        "[ensureFoldersAndViewsIdsAreUnique] there was repeated viewId for view {0}: {1}".error(view.caption, view.id);
+                        "[TM_Xml_Database][ensureFoldersAndViewsIdsAreUnique] there was repeated viewId for view {0}: {1}".error(view.caption, view.id);
                     view.id = Guid.NewGuid().str();
                     if (verbose)
-                        "[ensureFoldersAndViewsIdsAreUnique] new Guid assigned to view {0}: {1}".debug(view.caption, view.id);					
+                        "[TM_Xml_Database][ensureFoldersAndViewsIdsAreUnique] new Guid assigned to view {0}: {1}".debug(view.caption, view.id);					
                 }					
                 mappedItems.Add(view.id);
             }
@@ -30,24 +30,24 @@ namespace TeamMentor.CoreLib
                 if(mappedItems.contains(folder.folderId))
                 {
                     if (verbose)
-                        "[ensureFoldersAndViewsIdsAreUnique] there was repeated folderId for folder {0}: {1}".error(folder.caption, folder.folderId);
+                        "[TM_Xml_Database][ensureFoldersAndViewsIdsAreUnique] there was repeated folderId for folder {0}: {1}".error(folder.caption, folder.folderId);
                     folder.folderId = Guid.NewGuid().str();
                     if (verbose)
-                        "[ensureFoldersAndViewsIdsAreUnique] new Guid assigned to view {0}: {1}".debug(folder.caption, folder.folderId);
+                        "[TM_Xml_Database][ensureFoldersAndViewsIdsAreUnique] new Guid assigned to view {0}: {1}".debug(folder.caption, folder.folderId);
                     conflictsDetected++;
                 }					
                 mappedItems.Add(folder.folderId);
             }
             if (conflictsDetected > 0)
             {
-                "[ensureFoldersAndViewsIdsAreUnique] There were {0} fixes made: {0}".info(conflictsDetected);	 
+                "[TM_Xml_Database][ensureFoldersAndViewsIdsAreUnique] There were {0} fixes made: {0}".info(conflictsDetected);	 
                 tmDatabase.xmlDB_Save_GuidanceExplorers();
             }
             return tmDatabase;
         }		
         public static TM_Xml_Database                               removeMissingGuidanceItemsIdsFromViews  (this TM_Xml_Database tmDatabase, bool verbose = false)
         {				
-            "in removeMissingGuidanceItemsIdsFromViews".info();
+            //"[TM_Xml_Database] in removeMissingGuidanceItemsIdsFromViews".info();
             var conflictsDetected = 0;
             foreach(var view in tmDatabase.xmlDB_Views())
             {					
@@ -60,7 +60,7 @@ namespace TeamMentor.CoreLib
                             view.items.item.Remove(id);
                             conflictsDetected++;
                             if (verbose)
-                                "[removeMissingGuidanceItemsIdsFromViews] in view {0}:{1}, there was a missing guid: {2}".error(view.caption, view.id, id);
+                                "[TM_Xml_Database][removeMissingGuidanceItemsIdsFromViews] in view {0}:{1}, there was a missing guid: {2}".error(view.caption, view.id, id);
                         }
                     //else
                     //"guid in View: {0}".info(id);					
@@ -68,7 +68,7 @@ namespace TeamMentor.CoreLib
             }
             if (conflictsDetected >0)
             {
-                "[removeMissingGuidanceItemsIdsFromViews] There were {0} fixes made: {0}".error(conflictsDetected);	 
+                "[TM_Xml_Database][removeMissingGuidanceItemsIdsFromViews] There were {0} fixes made: {0}".error(conflictsDetected);	 
                 tmDatabase.xmlDB_Save_GuidanceExplorers();
             }
             return tmDatabase;

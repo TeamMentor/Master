@@ -32,7 +32,7 @@ namespace TeamMentor.UnitTests.Cassini
             port      .tcpClient().assert_Null();
             apiCassini.start();
 
-            this.tmProxy().set_Custom_Path_XmlDatabase(path_XmlLibraries);              // configure TM to the temp path_XmlLibraries folder for all files created
+            this.tmProxy().set_Custom_Path_XmlDatabase(path_XmlLibraries);              // configure TM to the temp path_XmlLibraries folder for all files created            
         }
         public NUnitTests_Cassini_TeamMentor start(bool makeTcpRequestToPort = true)
         {
@@ -47,15 +47,17 @@ namespace TeamMentor.UnitTests.Cassini
             apiCassini.stop();                                      
             port      .tcpClient().assert_Null();                        
 
-            webRoot   .assert_Folder_Exists();                          // make sure we didn't delete this by accident (since this is the actualy TM code :)  )
+            webRoot   .assert_Folder_Exists();                               // make sure we didn't delete this by accident (since this is the actualy TM code :)  )
             
-            this.tmProxy().set_Custom_Path_XmlDatabase("");             // reset this value
-            apiCassini.appDomain().unLoadAppDomain();                   // unload the AppDomain to remove any file locks that might have existed
-            Files.delete_Folder_Recursively(path_XmlLibraries);         // remove temp XmlDatabase folder
-            path_XmlLibraries.folder_Wait_For_Deleted();                // give is sometime
+            this.tmProxy().set_Custom_Path_XmlDatabase("");                  // reset this value
+            apiCassini.appDomain().unLoadAppDomain();                        // unload the AppDomain to remove any file locks that might have existed
+
+            path_XmlLibraries.files(true).files_Attribute_ReadOnly_Remove(); // Remove ReadOnly attributes added by git
+            Files.delete_Folder_Recursively(path_XmlLibraries);              // remove temp XmlDatabase folder
+            path_XmlLibraries.folder_Wait_For_Deleted();                     // give is sometime
             if (path_XmlLibraries.folder_Exists())
                 path_XmlLibraries.startProcess();
-            //path_XmlLibraries.assert_Folder_Doesnt_Exist();             // double check the deletion
+            //path_XmlLibraries.assert_Folder_Doesnt_Exist();                // double check the deletion
         }
         public NUnitTests_Cassini_TeamMentor stop()
         {

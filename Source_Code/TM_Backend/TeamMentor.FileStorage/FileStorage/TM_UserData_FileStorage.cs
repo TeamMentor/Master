@@ -78,7 +78,13 @@ namespace TeamMentor.FileStorage
             var xmlDatabasePath = tmFileStorage.path_XmlDatabase();                    // all files are relative to this path
                                 
             var userDataPath    = xmlDatabasePath.pathCombine(userData_Config.Name); // use the userData_Config.Name as the name of the folder to put UserData files
-                
+            
+            tmFileStorage.Path_UserData = userDataPath;                             // needed by Git Clone
+            "TeamMentor.Git".assembly()
+                            .type("TM_UserData_Git_ExtensionMethods")
+                            .invokeStatic("setup_UserData_Git_Support", tmFileStorage);
+
+
             userDataPath.createDir();                                                // create if needed
             if (userDataPath.dirExists())
             {
@@ -105,7 +111,13 @@ namespace TeamMentor.FileStorage
         {           
             admin.demand();
             if(tmFileStorage.notNull() && path_UserData.folderExists())
+            { 
                 tmFileStorage.Path_UserData = path_UserData;
+                
+                "TeamMentor.Git".assembly()
+                                .type("TM_UserData_Git_ExtensionMethods")
+                                .invokeStatic("setup_UserData_Git_Support", tmFileStorage);
+            }
             return tmFileStorage;
         }
         [Admin] public static TM_FileStorage   set_Path_SiteData    (this TM_FileStorage tmFileStorage)
@@ -160,11 +172,11 @@ namespace TeamMentor.FileStorage
         {
             UserRole.Admin.demand();                    
 
-            "TeamMentor.Git".assembly()
-                            .type("TM_UserData_Git_ExtensionMethods")
-                            .invokeStatic("setup_UserData_Git_Support", tmFileStorage);
+         //   "TeamMentor.Git".assembly()
+         //                   .type("TM_UserData_Git_ExtensionMethods")
+         //                   .invokeStatic("setup_UserData_Git_Support", tmFileStorage);
 
-            tmFileStorage.tmConfig_Load()                            
+            tmFileStorage//.tmConfig_Load()                            
                          .secretData_Load()
                          .users_Load();                         
                         

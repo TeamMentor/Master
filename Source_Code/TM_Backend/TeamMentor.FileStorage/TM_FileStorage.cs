@@ -13,7 +13,6 @@ namespace TeamMentor.FileStorage
     /// 
     /// The main TM objects (ie its objects) are not aware of where (if at all) their data is saved into
     /// </summary>
-    [Serializable]
     public class TM_FileStorage : MarshalByRefObject
     {
         //***********************************

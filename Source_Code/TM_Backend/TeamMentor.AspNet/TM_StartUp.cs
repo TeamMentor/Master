@@ -9,7 +9,6 @@ using TeamMentor.UserData;
 
 namespace TeamMentor.CoreLib
 {
-    [Serializable]
     public class TM_StartUp : MarshalByRefObject
     {
         public static TM_StartUp        Current                 { get; set; }

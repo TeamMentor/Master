@@ -11,7 +11,6 @@ using FluentSharp.Web;
 
 namespace TeamMentor.CoreLib  
 {
-    [Serializable]
     [ServiceBehavior				(//InstanceContextMode = InstanceContextMode.PerCall	,
                                      ConcurrencyMode = ConcurrencyMode.Single, 
                                      InstanceContextMode = InstanceContextMode.PerCall		  ), 

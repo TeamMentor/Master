@@ -4,7 +4,6 @@ using System.Xml.Serialization;
 
 namespace TeamMentor.CoreLib    
 {    
-    [Serializable]
     [XmlRoot(ElementName="TMConfig")]
     public class TMConfig : MarshalByRefObject
     {
@@ -27,17 +26,11 @@ namespace TeamMentor.CoreLib
             OnInstallation          = new OnInstallation_Config();            
             VirtualArticles         = new VirtualArticles_Config();
         }
-
-        
-
-        
-        [Serializable]
+                       
         public class TMSetup_Config : MarshalByRefObject
-        {
-            public bool			UseAppDataFolder			{ get; set; }           
+        {            
             public string       TMLibraryDataVirtualPath    { get; set; }
-            public string 		XmlLibrariesPath 	        { get; set; }
-            public string 		UserDataPath 	            { get; set; }		                
+            public string 		XmlLibrariesPath 	        { get; set; }            		                
             public string 		LibrariesUploadedFiles	    { get; set; }	                           
             public bool         EnableGZipForWebServices	{ get; set; }
             public bool         Enable304Redirects			{ get; set; }
@@ -46,15 +39,14 @@ namespace TeamMentor.CoreLib
             public TMSetup_Config()
             {
                 TMLibraryDataVirtualPath    = "..\\..";
-                XmlLibrariesPath            = "TM_Libraries";
-                UserDataPath                = "User_Data";
+                XmlLibrariesPath            = "TM_Libraries";                
                 LibrariesUploadedFiles      = "LibrariesUploadedFiles";
                 Enable304Redirects          = true;
                 EnableGZipForWebServices    = true;                  
                 ShowDotNetDebugErrors       = false;
             }
         }
-        [Serializable]
+
         public class TMSecurity_Config : MarshalByRefObject
         {
             public bool 		Show_ContentToAnonymousUsers { get; set; }
@@ -85,7 +77,7 @@ namespace TeamMentor.CoreLib
                 EmailAdmin_On_NewUsers       = true; 
             }            
         }
-        [Serializable]
+        
         public class WindowsAuthentication_Config : MarshalByRefObject
         {				
             public bool		    Enabled		                { get; set; }
@@ -102,21 +94,16 @@ namespace TeamMentor.CoreLib
             }
         }        
 
-        [Serializable]
         public class OnInstallation_Config : MarshalByRefObject
         {
             public bool         ForceDefaultAdminPassword			    { get; set; }
-            public string       DefaultLibraryToInstall_Name		{ get; set; }
-            public string       DefaultLibraryToInstall_Location	{ get; set; }
-
+            
             public OnInstallation_Config()
             {
-                ForceDefaultAdminPassword          = false;
-                DefaultLibraryToInstall_Name     = "";
-                DefaultLibraryToInstall_Location = "";
+                ForceDefaultAdminPassword          = false;                
             }
         }  
-        [Serializable]
+
         public class VirtualArticles_Config : MarshalByRefObject
         { 
             public bool         AutoRedirectIfGuidNotFound          { get; set; }

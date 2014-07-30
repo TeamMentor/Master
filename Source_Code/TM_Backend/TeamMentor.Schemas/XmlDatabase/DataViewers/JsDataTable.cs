@@ -4,7 +4,6 @@ using System.Linq;
 
 namespace TeamMentor.CoreLib
 {
-    [Serializable]
 	public class JsDataTable : MarshalByRefObject
 	{
 		public List<List<object>> aaData;
@@ -16,7 +15,6 @@ namespace TeamMentor.CoreLib
 			 aoColumns = new List<JsDataColumn>();
 		}
 		
-        [Serializable]
 		public class JsDataColumn : MarshalByRefObject
 		{
 			public string sTitle {get; set; }
@@ -26,8 +24,7 @@ namespace TeamMentor.CoreLib
 	
 	
 	public static class JsDataTable_ExtensionMethods
-	{		
-		
+	{				
 		public static JsDataTable add_Row(this JsDataTable jsDataTable, params object[] cells)
 		{
 			return jsDataTable.add_Row(cells.ToList());

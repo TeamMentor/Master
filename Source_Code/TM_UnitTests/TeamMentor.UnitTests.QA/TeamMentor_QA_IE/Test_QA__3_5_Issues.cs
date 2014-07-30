@@ -334,6 +334,55 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_IE
 
             ieTeamMentor.close();
         }
+    
+        /// <summary>
+        /// https://github.com/TeamMentor/Master/issues/852
+        /// </summary>
+        [Test][Ignore("To Fix")] public void  Issue_852_Unable_to_load_Configs()
+        {
+            var ieTeamMentor = this.new_IE_TeamMentor_Hidden();
+            var ie           = ieTeamMentor.ie;
+            var temp_Server  = 10.randomLetters();
+
+            ieTeamMentor.login_Default_Admin_Account("/TBot");                                              // login
+            ie.waitForLink("Edit SecretData").click();                                                      // go into the "Edit SecretData"
+            ie.field      ("Server"         ).value().assert_Not_Empty();                                   // confirm values where set
+            ie.field      ("Server"         ).value(temp_Server);                                           // set it to a temp_Server value
+            ie.button     ("SaveData"       ).click();                                                      // trigger save
+            
+            ie.invokeEval("_scope.result_Ok = undefined");
+
+            ie.waitForJsVariable(" _scope.result_Ok")                                                       
+              .cast<string>().trim().assert_Is("SecretData data saved");                                    // wait for the confirmation message
+
+           /* tmProxy.TmFileStorage.secretData_Location()
+                                 .load<TM_SecretData>()
+                                 .SmtpConfig.Server       .assert_Is(temp_Server);   */                     
+        }
+        /*
         
+tmProxy = nUnitTests_Cassini.tmProxy();
+//
+//
+ie.field("Rijndael_IV").value("aa");
+ie.field("Site").value("aa");
+//ie.refresh();
+//return ie.element("Site").attribute("val","a");
+//return ie.fields();
+//ie.button("SaveData").click();
+//changing the Rijndael_IV value
+//ie.invokeEval("$('input').eq(0).val('abc')");
+//return ie.getJsVariable("$('input').eq(0).val()");
+//return ie.element("Site").html();
+//return ie.element("SaveData").typeName();
+
+ie.button("SaveData").click();
+ie.waitForJsVariable(" _scope.result_Ok").cast<string>().trim();
+//SecretData data saved
+//2000.sleep();
+return tmProxy.TmFileStorage.cast<TM_FileStorage>().secretData_Location().fileContents();
+var tmSecretData = tmProxy.TmFileStorage.cast<TM_FileStorage>().secretData_Location().load<TM_SecretData>();
+return tmSecretData.Rijndael_IV;
+         * */
     }
 }

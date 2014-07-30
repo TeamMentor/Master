@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Security.Cryptography;
+using System.ServiceModel;
 using FluentSharp.CoreLib;
 
 namespace TeamMentor.CoreLib
 {
-    //[Serializable]
-    public class TM_SMTPConfig //: MarshalByRefObject
+    //[Serializable]                                   // Serializable breaks the TBOT Page 
+    public class TM_SMTPConfig // : MarshalByRefObject // MarshalByRef was causing conflict with TBOT Rest API
     {
         public string           Server       { get; set; }
         public string           UserName     { get; set; }
@@ -26,9 +27,10 @@ namespace TeamMentor.CoreLib
             Email_Footer    = TMConsts.EMAIL_DEFAULT_FOOTER;
         }
     }
-    //[Serializable]    
-    public class TM_SecretData //: MarshalByRefObject
-    {        
+    
+    //[Serializable]                                  // Serializable breaks the TBOT Page 
+    public class TM_SecretData //: MarshalByRefObject // MarshalByRef was causing conflict with TBOT Rest API
+    {           
         public string               Rijndael_IV     { get; set; }
         public string               Rijndael_Key    { get; set; }
         

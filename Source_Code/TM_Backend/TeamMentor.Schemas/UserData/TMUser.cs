@@ -7,8 +7,8 @@ using System.Xml.Serialization;
 using FluentSharp.CoreLib;
 
 namespace TeamMentor.CoreLib
-{    
-    [Serializable]            
+{                
+    //[Serializable]
     public class TMUser : MarshalByRefObject
     {
         [XmlAttribute] public Guid		ID          { get; set; }
@@ -59,16 +59,14 @@ namespace TeamMentor.CoreLib
                                     };                
         }
     }
-
-    [Serializable]
+    
     [DataContract]  
     public class UserTag : MarshalByRefObject
     {
         [XmlAttribute][DataMember][Required][StringLength(255)] public string   Key		        { get; set; }
         [XmlAttribute][DataMember][Required][StringLength(255)] public string   Value		        { get; set; }        
     }
-
-    [Serializable]    
+    
     public class UserSecretData : MarshalByRefObject
     {
         [XmlAttribute]	public string   PasswordHash		{ get; set; }        
@@ -79,7 +77,7 @@ namespace TeamMentor.CoreLib
         [XmlAttribute]  public string   PostLoginScript     { get; set; }
         [XmlAttribute]	public Guid     EnableUserToken		{ get; set; }
     }
-    [Serializable]    
+    
     public class UserSession : MarshalByRefObject
     {
         [XmlAttribute]	public Guid     SessionID		    { get; set; }
@@ -87,13 +85,13 @@ namespace TeamMentor.CoreLib
         [XmlAttribute]	public string   IpAddress		    { get; set; }
         [XmlAttribute]	public string   LoginMethod		    { get; set; }
     }
-    [Serializable]    
+    
     public class AuthToken : MarshalByRefObject
     {
         [XmlAttribute]	public Guid      Token		        { get; set; }
         [XmlAttribute]	public DateTime  CreationDate		{ get; set; }        
     }
-    [Serializable]    
+    
     public class UserAccountStatus : MarshalByRefObject
     {
         [XmlAttribute]	public bool     AccountNeverExpires	{ get; set; }
@@ -102,7 +100,7 @@ namespace TeamMentor.CoreLib
         [XmlAttribute]	public bool     UserEnabled		    { get; set; }        
         
     }
-    [Serializable]    
+    
     public class UserStats : MarshalByRefObject
     {
         [XmlAttribute]	public DateTime CreationDate		{ get; set; }		        

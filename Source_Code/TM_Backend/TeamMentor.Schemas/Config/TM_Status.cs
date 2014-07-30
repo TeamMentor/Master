@@ -3,7 +3,6 @@ using FluentSharp.CoreLib;
 
 namespace TeamMentor.CoreLib
 {
-    [Serializable]
     public class TM_Status : MarshalByRefObject
     {        
         public static string      Version                             {	get; set; }

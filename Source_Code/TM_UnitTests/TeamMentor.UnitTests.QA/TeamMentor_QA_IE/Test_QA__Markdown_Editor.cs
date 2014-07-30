@@ -42,6 +42,8 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_IE
             ie.wait_For_Element_InnerHtml("guidanceItem").assert_Not_Null()        
               .element                   ("guidanceItem").innerHtml()
                                                          .assert_Is("<P>{0}</P>".format(new_Content));         // confirm that 'test content' was saved ok (and was markdown transformed)            
+       
+            ieTeamMentor.close();
         }
     }
 }

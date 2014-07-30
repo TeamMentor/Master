@@ -4,13 +4,14 @@ using TeamMentor.CoreLib;
 
 namespace TeamMentor.FileStorage
 {
-    [Serializable]
     public static class TM_User_FileStorage
     {        
         [Admin] public static TM_FileStorage                hook_Events_TM_UserData(this TM_FileStorage tmFileStorage)
         {
             UserRole.Admin.demand();
             var tmUserData = tmFileStorage.UserData;
+            
+            tmUserData.Events.After_TM_Config_Changed.add((userData) => tmFileStorage.tmConfig_Save());
             
             tmUserData.Events.User_Updated.add((userData,tmUser) => tmFileStorage.saveTmUser(tmUser));
             tmUserData.Events.User_Deleted.add((userData,tmUser) => tmFileStorage.tmUser_Delete(tmUser));

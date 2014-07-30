@@ -1,7 +1,5 @@
-﻿using FluentSharp.CoreLib;
-using FluentSharp.NUnit;
+﻿using FluentSharp.NUnit;
 using FluentSharp.Watin;
-using FluentSharp.WatiN.NUnit;
 using FluentSharp.Web35;
 using FluentSharp.WinForms;
 using NUnit.Framework;

@@ -44,12 +44,21 @@ namespace TeamMentor.UnitTests.Cassini
 
             return tmProxy.invoke_Static<AuthToken>(typeof(TokenAuthentication_ExtensionMethods), "add_AuthToken", tmUser);
         }
+        public static Guid          user_AuthToken_Valid(this TM_Proxy tmProxy, string username)
+        {
+            var tmUser    = tmProxy.user("admin");
+            return (tmUser.notNull())
+                        ? tmProxy.user_AuthToken_Valid(tmUser)
+                        : Guid.Empty;
+        }
         public static Guid          user_AuthToken_Valid(this TM_Proxy tmProxy, TMUser tmUser)                   
         {
             if(tmUser.AuthTokens.empty())
                 return tmProxy.user_AuthToken_Add(tmUser).Token;
             return tmUser.AuthTokens.first().Token;
         }
+
+
         public static TM_Proxy      admin_Assert        (this TM_Proxy tmProxy)                                  
         {
             UserGroup.Admin.assert();

@@ -7,7 +7,6 @@ using FluentSharp.Web;
 
 namespace TeamMentor.CoreLib
 {
-    [Serializable]
     public class TM_Engine : MarshalByRefObject
     {
         public TM_Engine performHealthCheck()
