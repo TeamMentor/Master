@@ -8,7 +8,7 @@ using FluentSharp.CoreLib;
 
 namespace TeamMentor.CoreLib
 {                
-    [Serializable]
+    //[Serializable]
     public class TMUser : MarshalByRefObject
     {
         [XmlAttribute] public Guid		ID          { get; set; }
