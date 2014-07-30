@@ -93,7 +93,7 @@
                 {
                     if ($scope.userData.UserTags ==null)
  				        $scope.userData.UserTags = [];
-                    $scope.userData.UserTags.push({ Key:'' , Value : ''});                    
+                    $scope.userData.UserTags.push({ __identity:'', Key: '', Value: '' });
                 };
             $scope.removeTag = function(index)
                 {
