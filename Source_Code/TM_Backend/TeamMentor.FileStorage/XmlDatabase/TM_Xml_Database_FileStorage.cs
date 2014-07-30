@@ -87,7 +87,7 @@ namespace TeamMentor.FileStorage
         {
             UserRole.Admin.demand();
             var tmFileStorage = TM_FileStorage.Current;
-            var stats = "In the Folder '{0}' there are {1} library(ies), {2} views and {3} GuidanceItems"
+            var stats = "[TM_Xml_Database] In the Folder '{0}' there are {1} library(ies), {2} views and {3} GuidanceItems"
                             .format(tmFileStorage.Path_XmlLibraries.directoryName(),
                                     tmDatabase.tmLibraries().size(),
                                     tmDatabase.tmViews().size(),
@@ -98,7 +98,7 @@ namespace TeamMentor.FileStorage
         {
             UserRole.Admin.demand();
             var tmDatabase = tmFileStorage.TMXmlDatabase;
-            "In Reload data".info();
+            "[TM_Xml_Database] In Reload data".info();
             tmFileStorage.clear_GuidanceItemsCache();                           // start by clearing the cache                                   
             tmDatabase.setup();
             tmFileStorage.load_Libraries();                                                                            
@@ -110,7 +110,7 @@ namespace TeamMentor.FileStorage
         {
             UserRole.Admin.demand();
             if (TM_Status.Current.TM_Database_In_Setup_Workflow)
-                throw new Exception("TM Exeption: TM_Xml_Database Setup was called twice in a row (without the first Setup sequence had ended)");
+                throw new Exception("[TM_Xml_Database][TM Exeption] TM_Xml_Database Setup was called twice in a row (without the first Setup sequence had ended)");
 
             TM_Status.Current.TM_Database_In_Setup_Workflow = true;
             

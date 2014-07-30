@@ -12,45 +12,53 @@ namespace TeamMentor.UserData
     {
         public static int           createDefaultAdminUser      (this TM_UserData userData)
         {  
-            //var tmServer = userData.tmServer();
+            try
+            { 
+                //var tmServer = userData.tmServer();
 
-            if (userData.isNull())
-                return -1;
+                if (userData.isNull())
+                    return -1;
             
-            //if(userData.tmServer().Users_Create_Default_Admin.isFalse())
-            //    return -1;
+                //if(userData.tmServer().Users_Create_Default_Admin.isFalse())
+                //    return -1;
 
-            var tmConfig = TMConfig.Current;
-            lock (tmConfig)
-            {                
-                var defaultAdminUser_Name  = tmConfig.TMSecurity.Default_AdminUserName;
-                var defaultAdminUser_Pwd   = tmConfig.TMSecurity.Default_AdminPassword;                
-                var defaultAdminUser_Email = tmConfig.TMSecurity.Default_AdminEmail;                
-                var adminUser              = userData.tmUser(defaultAdminUser_Name);
+                var tmConfig = TMConfig.Current;
+                lock (tmConfig)
+                {                
+                    var defaultAdminUser_Name  = tmConfig.TMSecurity.Default_AdminUserName;
+                    var defaultAdminUser_Pwd   = tmConfig.TMSecurity.Default_AdminPassword;                
+                    var defaultAdminUser_Email = tmConfig.TMSecurity.Default_AdminEmail;                
+                    var adminUser              = userData.tmUser(defaultAdminUser_Name);
                 
-                if (adminUser.notNull())
-                {
-                    if (adminUser.SecretData.PasswordHash.notValid() || tmConfig.OnInstallation.ForceDefaultAdminPassword)
+                    if (adminUser.notNull())
                     {
-                        "[createDefaultAdminUser] reseting password since passwordHash was not valid and ForceDefaultAdminPassword was set".error();
-                        adminUser.SecretData.PasswordHash = adminUser.createPasswordHash(defaultAdminUser_Pwd);                                                
-                        adminUser.event_User_Updated(); //adminUser.saveTmUser();                                              
-                    }
-                    if (adminUser.GroupID != (int) UserGroup.Admin)
-                    {
-                        "[createDefaultAdminUser] admin user was not admin (changed to admin)".error();
-                        adminUser.GroupID = (int) UserGroup.Admin;
-                        adminUser.event_User_Updated(); //adminUser.saveTmUser();
-                    }                    
-                    return adminUser.UserID;
-                }				
-                "[createDefaultAdminUser] admin user didn't exist (creating it)".debug();
-                var userId = userData.newUser(defaultAdminUser_Name, defaultAdminUser_Pwd,defaultAdminUser_Email,1);
-                adminUser = userId.tmUser();
-                adminUser.AccountStatus.ExpirationDate = DateTime.Now.AddYears(10);        // default to setting the expiry value to 10 years in the future
-                adminUser.event_User_Updated();  //adminUser.saveTmUser();
-                return userId;
-            }            
+                        if (adminUser.SecretData.PasswordHash.notValid() || tmConfig.OnInstallation.ForceDefaultAdminPassword)
+                        {
+                            "[createDefaultAdminUser] reseting password since passwordHash was not valid and ForceDefaultAdminPassword was set".error();
+                            adminUser.SecretData.PasswordHash = adminUser.createPasswordHash(defaultAdminUser_Pwd);                                                
+                            adminUser.event_User_Updated(); //adminUser.saveTmUser();                                              
+                        }
+                        if (adminUser.GroupID != (int) UserGroup.Admin)
+                        {
+                            "[createDefaultAdminUser] admin user was not admin (changed to admin)".error();
+                            adminUser.GroupID = (int) UserGroup.Admin;
+                            adminUser.event_User_Updated(); //adminUser.saveTmUser();
+                        }                    
+                        return adminUser.UserID;
+                    }				
+                    "[createDefaultAdminUser] admin user didn't exist (creating it)".debug();
+                    var userId = userData.newUser(defaultAdminUser_Name, defaultAdminUser_Pwd,defaultAdminUser_Email,1);
+                    adminUser = userId.tmUser();
+                    adminUser.AccountStatus.ExpirationDate = DateTime.Now.AddYears(10);        // default to setting the expiry value to 10 years in the future
+                    adminUser.event_User_Updated();  //adminUser.saveTmUser();
+                    return userId;
+                }   
+            }
+            catch(Exception ex)
+            {
+                ex.log("[TM_UserData][createDefaultAdminUser]");
+                return -1;
+            }
         }        
         public static TMUser        createUser                  (this string userName)
         {

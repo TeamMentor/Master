@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Security;
 using System.Security.Permissions;
 using FluentSharp.CoreLib;
 
@@ -55,7 +56,16 @@ namespace TeamMentor.CoreLib
         }		
 		public static void demand(this UserRole userRole)
         {
-			new PrincipalPermission(null, userRole.str()).Demand();         
+            try
+            { 
+			    new PrincipalPermission(null, userRole.str()).Demand();         
+            }
+            catch(SecurityException ex)
+            {                
+                ex.logWithStackTrace("[demand] for {0} permission failed".format(userRole));
+                // ReSharper disable once PossibleIntendedRethrow
+                throw ex;    
+            }
         }			
 		public static void demand(this UserGroup userGroup)
 		{

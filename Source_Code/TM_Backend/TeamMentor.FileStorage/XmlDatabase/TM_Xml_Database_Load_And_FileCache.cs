@@ -20,16 +20,12 @@ namespace TeamMentor.CoreLib
             if (tmFileStorage.isNull() || tmXmlDatabase.isNull())
                 return tmFileStorage;
 
-            //var tmFileStorage = TM_FileStorage.Current;
-            
             var pathXmlLibraries = tmFileStorage.Path_XmlLibraries;            
             if (pathXmlLibraries.notNull() && pathXmlLibraries.notNull())
                 lock (pathXmlLibraries)
-                {
-                    //if (tmDatabase.getCacheLocation().fileExists().isFalse())
-                    //{
-                    "[TM_Xml_Database] in xmlDB_Load_GuidanceItems, creating cache file".debug();
-                    var o2Timer = new O2Timer("loaded GuidanceItems from disk").start();
+                {                    
+                    "[TM_FileStorage] in xmlDB_Load_GuidanceItems, creating cache file".debug();
+                    var o2Timer = new O2Timer("[TM_FileStorage] loaded GuidanceItems from disk").start();
                     //Load GuidanceItem from the disk				
                     foreach (var item in tmFileStorage.GuidanceExplorers_Paths)
                     {
@@ -44,7 +40,6 @@ namespace TeamMentor.CoreLib
                     //save it to the local cache file (reduces load time from 8s to 0.5s)
                     tmFileStorage.save_GuidanceItemsToCache();
                             
-
                     tmXmlDatabase.ensureFoldersAndViewsIdsAreUnique();
                     tmXmlDatabase.removeMissingGuidanceItemsIdsFromViews();
                     o2Timer.stop();
@@ -201,7 +196,7 @@ namespace TeamMentor.CoreLib
             var chacheFile = tmFileStorage.getCacheLocation();
             if (chacheFile.fileExists().isFalse())
             {
-                "[TM_Xml_Database] [load_GuidanceItemsFromCache] cached file not found: {0}".error(chacheFile);
+                "[TM_Xml_Database] [load_GuidanceItemsFromCache] cached file not found: {0}".debug(chacheFile);
                 tmFileStorage.xmlDB_Load_GuidanceItems_and_Create_CacheFile();
             }
             else
@@ -230,7 +225,7 @@ namespace TeamMentor.CoreLib
             var tmXmlDatabase = tmFileStorage.tmXmlDatabase();
             if (cacheFile.notNull() && tmXmlDatabase.notNull())
             {
-                var o2Timer = new O2Timer("saveGuidanceItemsToCache").start();
+                var o2Timer = new O2Timer("[TM_FileStorage] saveGuidanceItemsToCache").start();
                 lock (tmXmlDatabase.Cached_GuidanceItems)
                 {
                     tmXmlDatabase.Cached_GuidanceItems.Values.toList().saveAs(cacheFile);
