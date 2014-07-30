@@ -11,6 +11,8 @@ namespace TeamMentor.FileStorage
             UserRole.Admin.demand();
             var tmUserData = tmFileStorage.UserData;
             
+            tmUserData.Events.After_TM_Config_Changed.add((userData) => tmFileStorage.tmConfig_Save());
+            
             tmUserData.Events.User_Updated.add((userData,tmUser) => tmFileStorage.saveTmUser(tmUser));
             tmUserData.Events.User_Deleted.add((userData,tmUser) => tmFileStorage.tmUser_Delete(tmUser));
             
