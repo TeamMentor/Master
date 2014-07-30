@@ -143,6 +143,8 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Aspx_Pages\CxIntegration.asmx" />
+    <Content Include="Aspx_Pages\CxIntegrationSSO.asmx" />
     <Content Include="Aspx_Pages\TM_Javascript_Settings.aspx" />
     <Content Include="Aspx_Pages\EnableUser.aspx" />
     <Content Include="Aspx_Pages\SetLibrary.aspx" />
@@ -659,6 +661,7 @@
     <Content Include="TBot\Admin\Internal\CSharp_REPL.cshtml" />
     <Content Include="TBot\Admin\Restart_Server.cshtml" />
     <Content Include="TBot\TBotMain.html" />
+    <Content Include="Aspx_Pages\TM_Mappings_CWE.csv" />
     <None Include="TBot\Views\Debug\testPage.cshtml" />
     <Content Include="TBot_Monitor\app.js" />
     <Content Include="TBot_Monitor\components\main\controllers.js" />
