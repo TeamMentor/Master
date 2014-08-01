@@ -93,16 +93,18 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_Http
             var securityError ="{ 'error': 'SecurityException' }";
 
             Func<string,string>   get_Html            = (view) 
-                                                      => siteUri.append(basePath) .append(view)         .assert_Not_Null()
-                                                                                  .GET_Json  ()         .assert_Not_Null();
+                                                      => siteUri.append(basePath).append(view          ).assert_Not_Null().str().error()
+                                                                                 .GET_Json            ().assert_Not_Null();
 
             Func<string,Dictionary<string,object>> 
                                   get_FirstJsonObject = (view)    
-                                                      => get_Html(view.append(authToken.str()))         .assert_Not_Null()
-                                                                      .json_Deserialize      ()         .assert_Not_Null()
-                                                                      .cast<Object[]>().first()         .assert_Not_Null()
-                                                                      .cast<Dictionary<string,object>>().assert_Not_Null();     
-                                           
+                                                      => get_Html(view).json_Deserialize               ().assert_Not_Null()
+                                                                       .cast<Object[]>().first         ().assert_Not_Null()
+                                                                       .cast<Dictionary<string,object>>().assert_Not_Null();     
+
+            Func<string,string>   add_AuthToken       = (view)
+                                                      => "{0}?auth={1}".format(view,authToken);
+
             Action<string,string> checkViewHtml       = (view, expectedHtml)            
                                                       => get_Html(view     ).assert_Equal_To(expectedHtml);   
             
@@ -121,10 +123,14 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_Http
             
            // var adminToken = "?auth=".append(tmProxy.user_AuthToken_Valid("admin").str());
             
-            get_FirstJsonObject("Json_Users").assert_Are_Equal(json=>json["UserName" ],"add")
-                                             .assert_Are_Equal(json=>json["UserGroup"],"1")
-                                             .showDetails_WaitForClose();
-
+            get_FirstJsonObject(add_AuthToken("Json_Users"   )).assert_Are_Equal(json=>json["UserName"   ], "admin")
+                                                               .assert_Are_Equal(json=>json["Company"    ], "..."  )
+                                                               .assert_Are_Equal(json=>json["GroupID"    ], 1      )
+                                                               .assert_Are_Equal(json=>json["UserEnabled"], true   );
+                                                               
+            
+                                                            
+            get_FirstJsonObject(add_AuthToken("Json_UserTags")).str().alert();
             
 
          //   https://teammentor.net/rest/tbot/json/Json_UserTags
