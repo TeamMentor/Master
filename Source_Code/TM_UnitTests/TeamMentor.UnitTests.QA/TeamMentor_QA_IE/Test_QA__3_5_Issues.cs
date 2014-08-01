@@ -4,6 +4,7 @@ using FluentSharp.Git;
 using FluentSharp.NUnit;
 using FluentSharp.REPL;
 using FluentSharp.Watin;
+using FluentSharp.WatiN;
 using FluentSharp.WatiN.NUnit;
 using FluentSharp.Web35;
 using FluentSharp.WinForms;

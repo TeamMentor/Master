@@ -17,6 +17,22 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_IE
                 .tmProxy.assert_Not_Null();            
             
         }
+
+        /// <summary>
+        /// Opens the User Edit pages and ensures that they have content
+        /// </summary>
+        [Test] public void View_User_Details()
+        {
+            var ieTeamMentor = this.new_IE_TeamMentor_Hidden(true);
+            ieTeamMentor.login_Default_Admin_Account("/TBot");    
+            
+			ieTeamMentor.click("Current Users")
+                        .click("Admin");
+
+//            ieTeamMentor.script_IE_WaitForComplete();
+            "In Dev".assert_Fail();
+        }
+        
         /// <summary>
         /// checks that TM_SecretData can be view, edited, saved and loaded
         /// </summary>

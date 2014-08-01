@@ -8,7 +8,7 @@ using TeamMentor.CoreLib;
 using TeamMentor.FileStorage;
 using TeamMentor.UnitTests.Cassini;
 
-namespace TeamMentor.UnitTests.QA.TeamMentor.UnitTests.Cassini
+namespace TeamMentor.UnitTests.QA
 {
     [TestFixture]
     public class Test_Cassini__Direct_Access_To_TBot_Brain : NUnitTests_Cassini_TeamMentor

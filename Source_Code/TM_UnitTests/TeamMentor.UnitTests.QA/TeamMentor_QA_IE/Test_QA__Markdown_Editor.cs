@@ -1,6 +1,7 @@
 ﻿using FluentSharp.CoreLib;
 using FluentSharp.NUnit;
 using FluentSharp.Watin;
+using FluentSharp.WatiN;
 using FluentSharp.WatiN.NUnit;
 using NUnit.Framework;
 using TeamMentor.UnitTests.Cassini;

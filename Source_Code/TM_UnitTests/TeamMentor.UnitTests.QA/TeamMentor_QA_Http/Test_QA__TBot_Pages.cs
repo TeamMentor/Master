@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using FluentSharp.CoreLib;
 using FluentSharp.NUnit;
 using FluentSharp.Web;
 using FluentSharp.Web35;
+using FluentSharp.WinForms;
 using NUnit.Framework;
 using TeamMentor.CoreLib;
 using TeamMentor.FileStorage;
@@ -46,7 +48,6 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_Http
                    .deserialize<TM_SecretData>(false).assert_Is_Not_Null()                           // XML serialization will now work
                                                      .assert_Instance_Of<TM_SecretData>();   
         }
-
         [Test] public void Check_SecretData_Data_PUT()
         {
             var uri      = siteUri.append("/rest/admin/secretData?auth={0}".format(authToken));
@@ -86,11 +87,47 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_Http
                                  .load<TM_SecretData>()                                    .assert_Is<TM_SecretData>()
                                  .SmtpConfig.Server.assert_Equal(testData);
         }
-        /*
-         * tmProxy = nUnitTests_Cassini.tmProxy();
+        [Test] public void Check_JSON_View_Pages_Consumed_()
+        {
+            var basePath      = "rest/tbot/json/"; 
+            var securityError ="{ 'error': 'SecurityException' }";
 
-tmProxy.admin_Assert();
+            Func<string,string>   get_Html            = (view) 
+                                                      => siteUri.append(basePath) .append(view)         .assert_Not_Null()
+                                                                                  .GET_Json  ()         .assert_Not_Null();
 
-         */ 
+            Func<string,Dictionary<string,object>> 
+                                  get_FirstJsonObject = (view)    
+                                                      => get_Html(view.append(authToken.str()))         .assert_Not_Null()
+                                                                      .json_Deserialize      ()         .assert_Not_Null()
+                                                                      .cast<Object[]>().first()         .assert_Not_Null()
+                                                                      .cast<Dictionary<string,object>>().assert_Not_Null();     
+                                           
+            Action<string,string> checkViewHtml       = (view, expectedHtml)            
+                                                      => get_Html(view     ).assert_Equal_To(expectedHtml);   
+            
+            Action<string[]>      checkSecurityError  = (viewNames)
+                                                      => {
+                                                             foreach(var viewName in viewNames)
+                                                                 checkViewHtml(viewName, securityError);
+                                                         };
+                //var view     = "Json_UserTags";
+            
+            checkSecurityError(new [] {"Json_Users" , 
+                                       "Json_UserTags" ,
+                                       "Json_Activities",
+                                       "Json_Activities_Unique_Actions",
+                                       "Json_Users","AAAAA"});         
+            
+           // var adminToken = "?auth=".append(tmProxy.user_AuthToken_Valid("admin").str());
+            
+            get_FirstJsonObject("Json_Users").assert_Are_Equal(json=>json["UserName" ],"add")
+                                             .assert_Are_Equal(json=>json["UserGroup"],"1")
+                                             .showDetails_WaitForClose();
+
+            
+
+         //   https://teammentor.net/rest/tbot/json/Json_UserTags
+        }
     }
 }

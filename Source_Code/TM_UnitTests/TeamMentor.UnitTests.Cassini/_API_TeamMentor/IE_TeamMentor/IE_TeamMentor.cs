@@ -21,12 +21,6 @@ namespace TeamMentor.UnitTests.Cassini
             this.siteUri           = siteUri;
         }
         
-        public IE_TeamMentor open(string virtualPath = "")
-        {
-            var fullUri = siteUri.append(virtualPath);
-            if(fullUri.notNull())
-                ie.open(fullUri.str());
-            return this;
-        }
+
     }
 }
