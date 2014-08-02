@@ -62,6 +62,10 @@ namespace TeamMentor.CoreLib
 
             var serviceDebugBehaviour = TM_REST.serviceHostBase.Description.Behaviors.Find<ServiceDebugBehavior>();            
             serviceDebugBehaviour.IncludeExceptionDetailInFaults = true;
+
+            var serviceAuthorizationBehaviour = TM_REST.serviceHostBase.Description.Behaviors.Find<ServiceAuthorizationBehavior>();  // see    : https://github.com/TeamMentor/Master/issues/852 
+            serviceAuthorizationBehaviour.PrincipalPermissionMode = PrincipalPermissionMode.None;                                    // namely : https://github.com/TeamMentor/Master/issues/852#issuecomment-50945302
+
             return TM_REST.serviceHostBase;
         }
 

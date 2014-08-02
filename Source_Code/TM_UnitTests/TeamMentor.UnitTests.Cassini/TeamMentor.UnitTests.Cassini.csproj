@@ -137,7 +137,6 @@
     <Compile Include="_API_TeamMentor\TM_Proxy\TM_Proxy.cs" />
     <Compile Include="_Config_And_Helpers\ExtensionMethods\NUnitTests_Cassini_TeamMentor_ExtensionMethods.cs" />
     <Compile Include="_API_TeamMentor\IE_TeamMentor\Tests\Test_IE_TeamMentor_ExtensionMethods_Pages.cs" />
-    <Compile Include="_Config_And_Helpers\Test_Config_And_Helpers\Test_Cassini_Access_TM_Variables.cs" />
     <Compile Include="_Config_And_Helpers\Test_Config_And_Helpers\Test_NUnitTests_Cassini_TeamMentor.cs" />
     <Compile Include="_Config_And_Helpers\Test_Config_And_Helpers\Test_NUnitTests_Cassini_TeamMentor_ExtensionMethods.cs" />
     <Compile Include="_API_TeamMentor\TM_Proxy\Tests\Test_TeamMentor_Objects_Proxy.cs" />

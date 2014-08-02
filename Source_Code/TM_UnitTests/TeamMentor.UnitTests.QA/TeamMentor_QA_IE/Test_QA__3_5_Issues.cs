@@ -4,6 +4,7 @@ using FluentSharp.Git;
 using FluentSharp.NUnit;
 using FluentSharp.REPL;
 using FluentSharp.Watin;
+using FluentSharp.WatiN;
 using FluentSharp.WatiN.NUnit;
 using FluentSharp.Web35;
 using FluentSharp.WinForms;
@@ -294,7 +295,7 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_IE
             var pathUserData = tmFileStorage.path_UserData().assert_Folder_Exists();
             pathUserData.isGitRepository().assert_True();
             var nGit = pathUserData.git_Open();
-            var size_Before = nGit.commits().assert_Not_Empty().size();
+            var size_Before = nGit.commits().assert_Empty().size();
 
             var ieTeamMentor = this.new_IE_TeamMentor();
             ieTeamMentor.login_Default_Admin_Account();

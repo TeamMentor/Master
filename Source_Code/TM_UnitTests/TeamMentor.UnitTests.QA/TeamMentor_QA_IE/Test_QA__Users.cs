@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using FluentSharp.CoreLib;
 using FluentSharp.NUnit;
 using FluentSharp.Watin;
+using FluentSharp.WatiN;
 using NUnit.Framework;
 using TeamMentor.CoreLib;
 using TeamMentor.UnitTests.Cassini;

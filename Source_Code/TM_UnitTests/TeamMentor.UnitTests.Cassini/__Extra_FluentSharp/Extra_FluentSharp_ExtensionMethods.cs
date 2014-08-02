@@ -5,7 +5,7 @@ using FluentSharp.CoreLib;
 
 namespace FluentSharp.CoreLib
 {
-    public static class Extra_FluentSharp_Wet_ExtensionMethods
+    public static class Extra_FluentSharp_Web_ExtensionMethods
     {
         public static HttpWebRequest httpWebRequest(this string url)
         {
@@ -54,6 +54,15 @@ namespace FluentSharp.CoreLib
         {
             return httpWebRequest.json_Request()
                                  .readToEnd();
+        }
+
+        public static string GET_Json(this string url)
+        {
+            return url.uri().GET_Json();
+        }
+        public static string GET_Json(this Uri uri)
+        {
+            return uri.httpWebRequest().GET_Json();
         }
     }
     public static class Extra_FluentSharp_ExtensionMethods

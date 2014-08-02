@@ -3,7 +3,7 @@ using FluentSharp.CoreLib;
 using FluentSharp.Watin;
 using WatiN.Core;
 
-namespace FluentSharp.NUnit
+namespace FluentSharp.WatiN
 {
     public static class Extra_Watin__Extension_Methods
     {
@@ -97,6 +97,35 @@ namespace FluentSharp.NUnit
         public static TextField to_Field(this Element element)
         {
             return element.cast<TextField>();
+        }
+
+        /// <summary>
+        /// tries to find a link or button using the provided identified (<paramref name="linkOrButtonRef"/>) and click on it
+        /// 
+        /// Returns the original watinIe object so that multiple clicks can be chained
+        /// 
+        /// Returns null if the link or button was not found
+        /// </summary>
+        /// <param name="watinIe"></param>
+        /// <param name="linkOrButtonRef"></param>
+        /// <returns></returns>
+        public static WatiN_IE click(this WatiN_IE watinIe, string linkOrButtonRef)
+        {
+            if(watinIe.isNull() || linkOrButtonRef.notValid())
+                return watinIe;
+            if(watinIe.hasLink(linkOrButtonRef))
+            {
+                watinIe.link(linkOrButtonRef).click();
+                return watinIe;
+            }
+            if(watinIe.hasButton(linkOrButtonRef))
+            {
+                watinIe.button(linkOrButtonRef).click();
+                return watinIe;
+            }
+            
+            "[WatiN_IE][click] could not find link or button with reference: {0}".error(linkOrButtonRef);
+           return null;     
         }
     }
 }

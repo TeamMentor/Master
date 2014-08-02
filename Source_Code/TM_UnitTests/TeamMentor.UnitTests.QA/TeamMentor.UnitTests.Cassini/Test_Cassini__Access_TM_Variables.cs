@@ -3,18 +3,16 @@ using FluentSharp.CassiniDev;
 using FluentSharp.CoreLib;
 using FluentSharp.CoreLib.API;
 using FluentSharp.NUnit;
-using FluentSharp.REPL;
 using FluentSharp.Web35;
-using FluentSharp.WinForms;
 using NUnit.Framework;
 using TeamMentor.CoreLib;
 using TeamMentor.FileStorage;
-using TeamMentor.UserData;
+using TeamMentor.UnitTests.Cassini;
 
-namespace TeamMentor.UnitTests.Cassini
+namespace TeamMentor.UnitTests.QA
 {
     [TestFixture]
-    public class Test_Cassini_Access_TM_Variables : NUnitTests_Cassini_TeamMentor
+    public class Test_Cassini__Access_TM_Variables : NUnitTests_Cassini_TeamMentor
     {
         O2Proxy o2Proxy;
 

@@ -1,6 +1,8 @@
+using FluentSharp.CoreLib;
 using FluentSharp.REPL;
 using FluentSharp.REPL.Controls;
 using FluentSharp.Watin;
+using FluentSharp.WatiN;
 using FluentSharp.WatiN.NUnit;
 using FluentSharp.WinForms;
 
@@ -9,6 +11,25 @@ namespace TeamMentor.UnitTests.Cassini
     public static class IE_TeamMentor_ExtensionMethods_Misc
     {
         //ie helpers
+        public static IE_TeamMentor click(this IE_TeamMentor ieTeamMentor, string linkOrButtonRef)
+        {
+            var result = Extra_Watin__Extension_Methods.click(ieTeamMentor.ie(), linkOrButtonRef);
+            //var result =  ieTeamMentor.ie().click(linkOrButtonRef).notNull();
+            return result.notNull()
+                        ? ieTeamMentor
+                        : null;
+        }
+        public static WatiN_IE ie(this IE_TeamMentor ieTeamMentor)
+        {
+            return ieTeamMentor.notNull() ? ieTeamMentor.ie : null;
+        }
+        public static IE_TeamMentor open(this IE_TeamMentor ieTeamMentor, string virtualPath = "")
+        {
+            var fullUri = ieTeamMentor.siteUri.append(virtualPath);
+            if(fullUri.notNull())
+                ieTeamMentor.ie.open(fullUri.str());
+            return ieTeamMentor;
+        }
         public static IE_TeamMentor refresh(this IE_TeamMentor ieTeamMentor)
         {
             ieTeamMentor.ie.refresh();

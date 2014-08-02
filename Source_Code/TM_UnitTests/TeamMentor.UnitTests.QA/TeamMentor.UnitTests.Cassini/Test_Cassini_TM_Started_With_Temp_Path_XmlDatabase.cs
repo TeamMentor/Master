@@ -2,7 +2,6 @@
 using FluentSharp.CoreLib;
 using FluentSharp.NUnit;
 using FluentSharp.Watin;
-using FluentSharp.WatiN.NUnit;
 using FluentSharp.Web35;
 using NUnit.Framework;
 using TeamMentor.CoreLib;
