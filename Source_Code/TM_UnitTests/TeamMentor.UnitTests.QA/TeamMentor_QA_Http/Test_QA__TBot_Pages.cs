@@ -87,53 +87,53 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_Http
                                  .load<TM_SecretData>()                                    .assert_Is<TM_SecretData>()
                                  .SmtpConfig.Server.assert_Equal(testData);
         }
-        [Test] public void Check_JSON_View_Pages_Consumed_()
+        [Test] public void Check_JSON_View_Pages()
         {
             var basePath      = "rest/tbot/json/"; 
             var securityError ="{ 'error': 'SecurityException' }";
 
-            Func<string,string>   get_Html            = (view) 
+            Func<string,string>   get_Json            = (view) 
                                                       => siteUri.append(basePath).append(view          ).assert_Not_Null().str().error()
-                                                                                 .GET_Json            ().assert_Not_Null();
+                                                                                 .GET_Json            ()     
+                                                                                 .trim                ().assert_Not_Null();
 
             Func<string,Dictionary<string,object>> 
                                   get_FirstJsonObject = (view)    
-                                                      => get_Html(view).json_Deserialize               ().assert_Not_Null()
+                                                      => get_Json(view).json_Deserialize               ().assert_Not_Null()
                                                                        .cast<Object[]>().first         ().assert_Not_Null()
-                                                                       .cast<Dictionary<string,object>>().assert_Not_Null();     
+                                                                       .cast<Dictionary<string,object>>().assert_Not_Null();     ;
 
             Func<string,string>   add_AuthToken       = (view)
                                                       => "{0}?auth={1}".format(view,authToken);
 
             Action<string,string> checkViewHtml       = (view, expectedHtml)            
-                                                      => get_Html(view     ).assert_Equal_To(expectedHtml);   
+                                                      => get_Json(view     ).assert_Equal_To(expectedHtml);   
             
             Action<string[]>      checkSecurityError  = (viewNames)
                                                       => {
                                                              foreach(var viewName in viewNames)
                                                                  checkViewHtml(viewName, securityError);
-                                                         };
-                //var view     = "Json_UserTags";
+                                                         };                
             
             checkSecurityError(new [] {"Json_Users" , 
                                        "Json_UserTags" ,
                                        "Json_Activities",
-                                       "Json_Activities_Unique_Actions",
+                                       "Json_Activities_Unique_Action",
                                        "Json_Users","AAAAA"});         
+
             
-           // var adminToken = "?auth=".append(tmProxy.user_AuthToken_Valid("admin").str());
-            
-            get_FirstJsonObject(add_AuthToken("Json_Users"   )).assert_Are_Equal(json=>json["UserName"   ], "admin")
+            get_FirstJsonObject(add_AuthToken("Json_Users"   )).assert_Are_Equal(json=>json["UserName"   ], "admin")                //rest/tbot/json/Json_Users
                                                                .assert_Are_Equal(json=>json["Company"    ], "..."  )
                                                                .assert_Are_Equal(json=>json["GroupID"    ], 1      )
                                                                .assert_Are_Equal(json=>json["UserEnabled"], true   );
                                                                
             
-                                                            
-            get_FirstJsonObject(add_AuthToken("Json_UserTags")).str().alert();
+            get_FirstJsonObject (add_AuthToken("Json_Activities")).assert_Are_Equal(json=>json["Action"   ], "User Login")           //rest/tbot/json/Json_Activities
+                                                                 .assert_Are_Equal(json=>json["Who"      ], "admin");               
             
-
-         //   https://teammentor.net/rest/tbot/json/Json_UserTags
+           
+            get_Json           (add_AuthToken("Json_Activities_Unique_Action")).assert_Is("[\"New User\",\"User Login\"]");        //rest/tbot/json/Json_Activities_Unique_Action                  
+            get_Json           (add_AuthToken("Json_UserTags"                )).assert_Is("[]"                            );        //rest/tbot/json/Json_UserTags    
         }
     }
 }

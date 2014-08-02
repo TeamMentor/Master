@@ -76,7 +76,7 @@ namespace TeamMentor.UnitTests.QA
             
             SecurityMappings_PUT//.add_Admin    ("admin/gitUserData"           , new object[1] {"{}"}         ) 
                                 .add_Admin    ("admin/secretData"            , new object[ ] {"{}"}         )                                 
-                                .add_Admin    ("sendEmail/"                  , new object[ ] {"{}"}         )
+                                .add_Admin    ("sendEmail/"                  , new object[ ] {"{\"__identity\":\"\"}"}         )
                                 .add_Admin    ("user"                        , new object[ ] {"{}"}         )
                                 .add_Anonymous("login/"                      , new object[ ] {"{}"}         ) 
                                 ;

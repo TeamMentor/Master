@@ -19,18 +19,20 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_IE
         }
 
         /// <summary>
-        /// Opens the User Edit pages and ensures that they have content
+        /// Opens the main User Edit page and ensures that it has content
         /// </summary>
         [Test] public void View_User_Details()
         {
             var ieTeamMentor = this.new_IE_TeamMentor_Hidden(true);
+            var ie = ieTeamMentor.ie();
+
             ieTeamMentor.login_Default_Admin_Account("/TBot");    
             
-			ieTeamMentor.click("Current Users")
-                        .click("Admin");
-
-//            ieTeamMentor.script_IE_WaitForComplete();
-            "In Dev".assert_Fail();
+            ie.waitForLink("Current Users").assert_Not_Null()
+              .click();
+            ie.open(ie.waitForLink("admin").assert_Not_Null().url());
+            ie.fields().first().value().assert_Is("admin");			     
+            ieTeamMentor.close();
         }
         
         /// <summary>

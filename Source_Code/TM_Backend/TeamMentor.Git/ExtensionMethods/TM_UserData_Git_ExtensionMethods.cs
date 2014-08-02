@@ -34,6 +34,7 @@ namespace TeamMentor.CoreLib
         }*/
         public static TM_UserData_Git   triggerGitCommit         (this TM_UserData_Git userData)                 
         {
+            "[TM_UserData_Git][triggerGitCommit]".info();
             var tmFileStorage = userData.FileStorage;
             var tmServer = tmFileStorage.Server;
             if (tmServer.notNull())
