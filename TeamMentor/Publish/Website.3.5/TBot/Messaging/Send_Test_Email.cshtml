@@ -22,9 +22,10 @@
             
             $http.put('/rest/sendEmail/', 
                             {
-                                "To"     : email.to,
-                                "Subject": email.subject,
-                                "Message": email.message
+                                "__identity": "",
+                                "To"        : email.to,
+                                "Subject"   : email.subject,
+                                "Message"   : email.message
                             })
                 .success(function(data, status) { $scope.result = 'success: ' + data})
                 .error(function(data, status)   { $scope.result = 'error: ' + data});                
