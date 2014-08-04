@@ -337,6 +337,21 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_IE
         }
     
         /// <summary>
+        /// https://github.com/TeamMentor/Master/issues/864
+        /// </summary>
+        [Test] public void Issue_864_SMTP_Password_needs_to_be_a_password_field_not_a_textbox()
+        {
+            var ieTeamMentor = this.new_IE_TeamMentor_Hidden();
+            ieTeamMentor.login_Default_Admin_Account("/rest/tbot/run/Edit_SecretData");                          // Login and go into Edit_SecretData page
+
+            ieTeamMentor.ie.waitForField("Server").value().assert_Is("smtp.sendgrid.net");                       // confirm that default values are in there
+            
+            ieTeamMentor.ie.field("Password (Smtp)").assert_Not_Null().attribute("type").assert_Is("password");  //configm that "Password (Smtp)" field type is "password"
+            ieTeamMentor.close();
+        }
+
+
+        /// <summary>
         /// https://github.com/TeamMentor/Master/issues/852
         /// </summary>
         [Test][Ignore("To Fix")] public void  Issue_852_Unable_to_load_Configs()
@@ -385,5 +400,6 @@ return tmProxy.TmFileStorage.cast<TM_FileStorage>().secretData_Location().fileCo
 var tmSecretData = tmProxy.TmFileStorage.cast<TM_FileStorage>().secretData_Location().load<TM_SecretData>();
 return tmSecretData.Rijndael_IV;
          * */
+  
     }
 }
