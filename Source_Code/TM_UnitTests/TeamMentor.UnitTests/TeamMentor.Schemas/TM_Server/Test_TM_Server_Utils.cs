@@ -33,8 +33,8 @@ namespace TeamMentor.UnitTests.Schemas
             
             tmServer.assert_Equals(TM_Server.Current);
 
-            Assert.IsTrue (tmServer.Users_Create_Default_Admin);
-            Assert.IsFalse(tmServer.TM_Database_Use_AppData_Folder);            
+//            Assert.IsTrue (tmServer.Users_Create_Default_Admin);
+            //Assert.IsFalse(tmServer.TM_Database_Use_AppData_Folder);            
             Assert.IsFalse(tmServer.UserActivities_Disable_Logging);    
         }        
         [Test] public void setDefaultData()                              
