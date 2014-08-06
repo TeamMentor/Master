@@ -33,7 +33,7 @@ namespace TeamMentor.Markdown
             {
                 ex.log("[wikiText_transform]");                
             }
-            return "<b>TEAM Mentor Error:</b><br/><br/> Sorry It was not possible to render this article. Please contact <a href=\"mailto:support@securityinnovation.com\">Security Innovation Support Us</a>.";
+            return "<b>TEAM Mentor Error:</b><br/><br/> Sorry it was not possible to render this article. Please contact <a href=\"mailto:support@securityinnovation.com\">Security Innovation Support</a>.";
 		}
 
         /// <summary>
