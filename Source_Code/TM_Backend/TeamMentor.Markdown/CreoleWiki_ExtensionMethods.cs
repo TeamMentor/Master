@@ -13,28 +13,27 @@ namespace TeamMentor.Markdown
     {
         public static int MAX_RENDER_WAIT = 2000;
         public static string wikiText_Transform(this string wikiText)
-		{		
-			var html = "";	
+		{						
             try
             {                
                 wikiText = wikiText.wikiCreole_Fix_WikiText_Bullets();
-                
+                var html  = "";
                 var wikiParseThread = O2Thread.mtaThread(()=>
                     {
-                         html = new CreoleParser().Parse(wikiText)              
-                                                  .wikiCreole_Replaced_Html_Code_Tag_with_Pre();                         
+                        html = new CreoleParser().Parse(wikiText)              
+                                                 .wikiCreole_Replaced_Html_Code_Tag_with_Pre();
                     });
-                if(wikiParseThread.Join(MAX_RENDER_WAIT).isFalse())
-                {
-                    "[CreoleWiki_ExtensionMethods][wikiText_Transform] failed for WikiText: \n\n{0}\n\n".error(wikiParseThread);
-                    wikiParseThread.Abort();
-                }
+                if(wikiParseThread.Join(MAX_RENDER_WAIT))
+                    return html;
+                
+                "[CreoleWiki_ExtensionMethods][wikiText_Transform] failed for WikiText: \n\n{0}\n\n".error(wikiParseThread);
+                wikiParseThread.Abort();
             }
             catch(Exception ex)
             {
                 ex.log("[wikiText_transform]");                
             }
-            return html;
+            return "TEAM Mentor Error: Sorry It was not possible to render this article. Please contact <a href=\"mailto:support@securityinnovation.com\">Security Innovation Support Us</a>.";
 		}
 
         /// <summary>
