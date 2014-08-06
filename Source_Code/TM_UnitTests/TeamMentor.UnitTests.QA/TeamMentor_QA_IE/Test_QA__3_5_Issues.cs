@@ -2,7 +2,6 @@
 using FluentSharp.CoreLib;
 using FluentSharp.Git;
 using FluentSharp.NUnit;
-using FluentSharp.REPL;
 using FluentSharp.Watin;
 using FluentSharp.WatiN;
 using FluentSharp.WatiN.NUnit;
@@ -18,17 +17,35 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_IE
     [TestFixture]
     public class Test_QA__3_5_Issues : NUnitTests_Cassini_TeamMentor
     {
+        IE_TeamMentor ieTeamMentor;
+        WatiN_IE      ie;
         TM_FileStorage tmFileStorage;
 
-        [SetUp] public void setup()
-        {      
+
+        [TestFixtureSetUp]    
+        public override void testFixtureSetUp()
+        {            
+            base.testFixtureSetUp();      
+          
             this.tmProxy_Refresh()
                 .tmProxy.assert_Not_Null();
+
             tmFileStorage = tmProxy.TmFileStorage.assert_Not_Null();
+
+            ieTeamMentor  = this.new_IE_TeamMentor_Hidden(true);
+            ie            = ieTeamMentor.ie;
             
         }
+
+        [TestFixtureTearDown]
+        public override void testFixtureTearDown()
+        {            
+            ieTeamMentor.close();
+            base.testFixtureTearDown();            
+        }
         
-        [Test] public void Issue_310_Application_Logs_should_be_written_real_time()
+        
+        [Test] public void Issue_310__Application_Logs_should_be_written_real_time()
         {
             admin.assert();
 
@@ -64,9 +81,8 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_IE
             var contents_After = logFilePath.fileContents();
 
             contents_After.assert_Is_Not(contents_Before);
-
-            var ieTeamMentor = this.new_IE_TeamMentor();
-            ieTeamMentor.login_Default_Admin_Account("/tbot");
+            
+            ieTeamMentor.open_TBot_Login_if_Needed();
             ieTeamMentor.ie.waitForLink("DebugInfo").click();
             ieTeamMentor.ie.html().assert_Contains(logFilePath);
 
@@ -75,11 +91,10 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_IE
                             .saveAs(tmServerLocation);
 
         }     
+        
         [Test] public void Issue_681__Navigating_libraries_views_folders__Clicking_the_icon_doesnt_work()
         {
             var tmWebServices  = new TM_WebServices();            
-            var ieTeamMentor   = this.new_IE_TeamMentor_Hidden();
-            var ie             = ieTeamMentor.ie;
 
             Func<string, string> clickOnNodeUsingJQuerySelector = 
 	            (jQuerySelector)=>
@@ -129,9 +144,6 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_IE
             
             (click_View_5_Using_A == click_View_1_Using_Icon).assert_False(); // (Issue 681) this was true since the view was not updating
             (click_View_5_Using_A == click_View_5_Using_Icon).assert_True(); 
-            
-            ie.close();
-            ieTeamMentor.close();
         }
     
         [Test] public void Issue_812__HTML_view_articles_does_not_show_up_TEAM_Mentor_copyright_footer_note()
@@ -142,34 +154,18 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_IE
                                     .article_New()                         // create a new article
                                     .assert_Not_Null();
 
-            this.new_IE_TeamMentor_Hidden()                             // get an IE window mapped with the IE_TeamMentor API
-                .login_Default_Admin_Account()
-                .article_Html(article)                                  // open the article_Html view (ie /html/{artice Guid} )
-                .html()                                                 // get the Html of the current page
-                .assert_Contains(texts_That_Confirm_Html_Footer);       // assert that the expected texts are there                 
+            ieTeamMentor.open_TBot_Login_if_Needed()                            // ensure we are logged in
+                        .article_Html(article)                                  // open the article_Html view (ie /html/{artice Guid} )
+                        .html()                                                 // get the Html of the current page
+                        .assert_Contains(texts_That_Confirm_Html_Footer);       // assert that the expected texts are there                 
         }
 
-        /// <summary>
-        /// https://github.com/TeamMentor/Master/issues/830
-        /// </summary>
-        [Test] public void Issue_830__Issues_in_git_file_history__Lets_get_rid_of_it_this_release()
-        {
-            var markdown_EditPage = "/Markdown/Editor?articleId=";            // link that will open the markdown editor
-            
-            this.new_IE_TeamMentor_Hidden()           
-                .login_Default_Admin_Account(markdown_EditPage)               // Login as admin and redirect to markdown edit page
-                .ie.assert_Has_Link        ("back to article")                // check that this link is there
-                   .assert_Doesnt_Have_Link("View File History and diff");    // (Issue_830) for the 3.5 release this link should not be there            
-        }
-        
         /// <summary>
         /// https://github.com/TeamMentor/Master/issues/829
         /// </summary>
         [Test] public void Issue_829__Get_rid_of_Control_Panel()
         {
-            var ie = this.new_IE_TeamMentor_Hidden()
-                         .login_Default_Admin_Account("/TeamMentor")
-                         .ie;
+            ieTeamMentor.open_Page_Login_if_Needed("/TeamMentor");            
            
             // location 1) check link on home page
             ie.assert_Uri_Is(siteUri.mapPath("/TeamMentor"))             // confirm that we are on the main TM page
@@ -193,39 +189,57 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_IE
         }
         
         /// <summary>
+        /// https://github.com/TeamMentor/Master/issues/830
+        /// </summary>
+        [Test] public void Issue_830__Issues_in_git_file_history__Lets_get_rid_of_it_this_release()
+        {
+            var markdown_EditPage = "/Markdown/Editor?articleId=";            // link that will open the markdown editor
+            
+            this.new_IE_TeamMentor_Hidden()           
+                .open_Page_Login_if_Needed (markdown_EditPage)                // Login as admin and redirect to markdown edit page
+                .ie.assert_Has_Link        ("back to article")                // check that this link is there
+                   .assert_Doesnt_Have_Link("View File History and diff");    // (Issue_830) for the 3.5 release this link should not be there            
+        }
+                
+        /// <summary>
         /// https://github.com/TeamMentor/Master/issues/831
         /// 
         /// The fix was to remove a legacy document.redirect capability from login.html 
         /// so this test checks for the correct redirection using the current server-side redirections
         /// </summary>
         [Test] public void Issue_831__Virtual_Article_redirect_does_not_Work_if_not_logged_in()
-        {
-            var ieTeamMentor = this.new_IE_TeamMentor_Hidden();
-            var ie           = ieTeamMentor.ie;
+        {                        
             var userName    = 10.randomLetters();
             var password    = "!abc!".add_5_RandomLetters();
-            var articleId   = Guid.NewGuid();                                                          // we can use any GUID here since what we're after is the redirection
+            var articleId   = Guid.NewGuid();                                                             // we can use any GUID here since what we're after is the redirection
             
+            this.ieTeamMentor.page_Logout();  
+
+            var ieTeamMentor = this.new_IE_TeamMentor_Hidden(true);                                       // run this on a separate IE instance
+            var ie            = ieTeamMentor.ie();                                                      
+
+            ieTeamMentor.page_Logout();                                                                   // ensure that we are logged out
             tmProxy.get_Current<TMConfig>().TMSetup.ShowDotNetDebugErrors = true;
 
-            var tmUser = tmProxy.user_New(userName, password).assert_Not_Null()                                     // create a temp user
+            var tmUser = tmProxy.user_New(userName, password).assert_Not_Null()                           // create a temp user
                                 .UserName.user(tmProxy)      .assert_Not_Null()
                                 .UserID.user(tmProxy)        .assert_Not_Null();
 
             
             Action<string,string> checkUrl = (originalUrl,redirectUrl)=>
             {
-                tmProxy.user_Logout(tmUser);                                                            // its faster to logout the user via tmProxy (which will 'server-side' clean the login sessions for this user)
+                tmProxy.user_Logout(tmUser);                                                              // its faster to logout the user via tmProxy (which will 'server-side' clean the login sessions for this user)
                 
-                ieTeamMentor.open(originalUrl);                                                         // open targetUrl
-                ie.url().assert_Contains("Html_Pages/Gui/Pages/login.html")                             // which should redirect 
-                  .uri().queryParameters_Indexed_ByName().value("LoginReferer").assert_Is(originalUrl); // with LoginReferer set to targetUrl 
+                ieTeamMentor.open(originalUrl);                                                           // open targetUrl
+                ie.url().assert_Contains("Html_Pages/Gui/Pages/login.html")                               // which should redirect 
+                  .uri().queryParameters_Indexed_ByName().value("LoginReferer").trim().lower()
+                                                         .assert_Is_Equal_To(originalUrl.trim().lower()); // with LoginReferer set to targetUrl 
 
-                ie.waitForField("username").value(userName).assert_Not_Null();                          // login with the temp reader user
+                ie.waitForField("username").value(userName).assert_Not_Null();                            // login with the temp reader user
                 ie.field       ("password").value(password).assert_Not_Null();           
                 ie.button      ("Login"   ).click()        .assert_Not_Null();
 
-                var expectedUri = ieTeamMentor.siteUri.append(redirectUrl);                             // wait for redirect to happen                
+                var expectedUri = ieTeamMentor.siteUri.append(redirectUrl);                               // wait for redirect to happen                
                 ie.wait_For_Uri(expectedUri,3000)                			                                            
                   .assert_Uri_Is(expectedUri);
             };
@@ -241,17 +255,16 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_IE
                                            .userGroup().assert_Is(UserGroup.Admin);
             tmProxy.user_Logout(tmUser);
             ieTeamMentor.page_WhoAmI();            
-            checkUrl("/tbot"                , "/rest/tbot/run/Commands");                               // should work for admins
+            checkUrl("/tbot"                , "/rest/tbot/run/Commands");                               // should work for admins            
+            
             ieTeamMentor.close();
         }
+        
         [Test] public void Issue_838__SiteData_custom_TBot_pages_can_conflict_with_the_main_TBot_pages()
         {   
             //Open main Tbot Page and capture number of links          
-            var ieTeamMentor = this.new_IE_TeamMentor_Hidden();
-            var ie = ieTeamMentor.ie;
 
-            ieTeamMentor.login_Default_Admin_Account()
-                        .page_TBot()
+            ieTeamMentor.open_TBot_Login_if_Needed() 
                         .html().assert_Contains("your friendly TeamMentor Bot", "Welcome to the TBot control center");
                         
             var links_Size = ieTeamMentor.ie.links().size().assert_Bigger_Than(15);
@@ -285,9 +298,7 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_IE
             ie.link("Reset Razor Templates").click();
             ie.link("TBot"                 ).click();
             ie.link("DebugInfo"            ).click();              // opening DebugInfo
-            ie.html().assert_Contains("this is an TBot page: 42"); // should show the 'overridden' Tbot page
-
-            ieTeamMentor.close();
+            ie.html().assert_Contains("this is an TBot page: 42"); // should show the 'overridden' Tbot page            
         }
      
         [Test] public void Issue_839__Git_Commit_for_users_and_articles_is_broken_in_3_5()
@@ -295,10 +306,9 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_IE
             var pathUserData = tmFileStorage.path_UserData().assert_Folder_Exists();
             pathUserData.isGitRepository().assert_True();
             var nGit = pathUserData.git_Open();
-            var size_Before = nGit.commits().assert_Empty().size();
+            var size_Before = nGit.commits().size();
 
-            var ieTeamMentor = this.new_IE_TeamMentor();
-            ieTeamMentor.login_Default_Admin_Account();
+            ieTeamMentor.open_TBot_Login_if_Needed();
 
             nGit.commits().assert_Size_Is(size_Before);
 
@@ -312,9 +322,6 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_IE
         /// </summary>
         [Test] public void Issue_840_New_articles_should_default_to_Markdown()
         {
-            var ieTeamMentor = this.new_IE_TeamMentor_Hidden();
-            var ie           = ieTeamMentor.ie;
-
             tmProxy.editor_Assert();
 
             var article = tmProxy.library_New_Article_New().assert_Not_Null();
@@ -322,7 +329,7 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_IE
 
             article.Content.DataType.assert_Is("Markdown");
 
-            ieTeamMentor.login_Default_Admin_Account("/editor/"+ article.Metadata.Id);
+            ieTeamMentor.open_Page_Login_if_Needed("/editor/"+ article.Metadata.Id);
 
             var expectedMarkdownEditLink = ieTeamMentor.siteUri
                                                        .append("/Markdown/Editor?articleId={0}".format(article.Metadata.Id));
@@ -332,35 +339,17 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_IE
             ie.wait_For_Element_InnerHtml("Content").assert_Not_Null()
               .element                   ("Content").innerHtml()
                                                     .assert_Is(article.Content.Data_Json); 
-
-            ieTeamMentor.close();
+            
         }
     
-        /// <summary>
-        /// https://github.com/TeamMentor/Master/issues/864
-        /// </summary>
-        [Test] public void Issue_864_SMTP_Password_needs_to_be_a_password_field_not_a_textbox()
-        {
-            var ieTeamMentor = this.new_IE_TeamMentor_Hidden();
-            ieTeamMentor.login_Default_Admin_Account("/rest/tbot/run/Edit_SecretData");                          // Login and go into Edit_SecretData page
-
-            ieTeamMentor.ie.waitForField("Server").value().assert_Is("smtp.sendgrid.net");                       // confirm that default values are in there
-            
-            ieTeamMentor.ie.field("Password (Smtp)").assert_Not_Null().attribute("type").assert_Is("password");  //configm that "Password (Smtp)" field type is "password"
-            ieTeamMentor.close();
-        }
-
-
         /// <summary>
         /// https://github.com/TeamMentor/Master/issues/852
         /// </summary>
         [Test][Ignore("To Fix")] public void  Issue_852_Unable_to_load_Configs()
         {
-            var ieTeamMentor = this.new_IE_TeamMentor_Hidden();
-            var ie           = ieTeamMentor.ie;
             var temp_Server  = 10.randomLetters();
 
-            ieTeamMentor.login_Default_Admin_Account("/TBot");                                              // login
+            ieTeamMentor.open_TBot_Login_if_Needed();                                                       // ensure we are logged in login
             ie.waitForLink("Edit SecretData").click();                                                      // go into the "Edit SecretData"
             ie.field      ("Server"         ).value().assert_Not_Empty();                                   // confirm values where set
             ie.field      ("Server"         ).value(temp_Server);                                           // set it to a temp_Server value
@@ -401,5 +390,20 @@ var tmSecretData = tmProxy.TmFileStorage.cast<TM_FileStorage>().secretData_Locat
 return tmSecretData.Rijndael_IV;
          * */
   
+        /// <summary>
+        /// https://github.com/TeamMentor/Master/issues/864
+        /// </summary>
+        [Test] public void Issue_864_SMTP_Password_needs_to_be_a_password_field_not_a_textbox()
+        {                                    
+            ieTeamMentor.open_TBot_Login_if_Needed("Edit_SecretData");                          // Login and go into Edit_SecretData page            
+            ieTeamMentor.ie.waitForField("Server").value().assert_Is("smtp.sendgrid.net");                       // confirm that default values are in there
+            
+            ieTeamMentor.ie.field("Password (Smtp)").assert_Not_Null().attribute("type").assert_Is("password");  //configm that "Password (Smtp)" field type is "password"
+        }
+
+      /*  [Test] public void Issue_833_Some_wikitext_articles_do_not_show_up_well_in_preview()
+        {
+            
+        }*/
     }
 }

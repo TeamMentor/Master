@@ -18,7 +18,7 @@ namespace TeamMentor.UnitTests.Cassini
         public Uri                      siteUri;
 
         [TestFixtureSetUp]        
-        public void testFixtureSetUp()
+        public virtual void testFixtureSetUp()
         {
             webRoot           = this.teamMentor_Root_OnDisk() .assert_Folder_Exists();  // this points to a folder with the full TM 
             path_XmlLibraries = "path_XmlLibraries".tempDir() .assert_Folder_Exists();  // this points to a temp folder
@@ -41,7 +41,7 @@ namespace TeamMentor.UnitTests.Cassini
                 port      .tcpClient().assert_Not_Null();
             return this;
         }
-        [TestFixtureTearDown] public void testFixtureTearDown()
+        [TestFixtureTearDown] public virtual void testFixtureTearDown()
         {
             port      .tcpClient().assert_Not_Null();
             apiCassini.stop();                                      
