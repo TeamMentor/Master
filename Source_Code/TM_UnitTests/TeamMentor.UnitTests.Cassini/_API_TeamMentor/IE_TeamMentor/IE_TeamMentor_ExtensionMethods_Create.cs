@@ -27,6 +27,7 @@ namespace TeamMentor.UnitTests.Cassini
         
         public static IE_TeamMentor close(this IE_TeamMentor ieTeamMentor)
         {
+            ieTeamMentor.ie.close();
             ieTeamMentor.ie.parentForm().close();
             return ieTeamMentor;
         }

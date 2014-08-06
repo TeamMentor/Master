@@ -768,7 +768,6 @@
     <Content Include="TBot\Admin\Config\Edit_SecretData.cshtml" />
     <Content Include="TBot\Admin\Reload_Server_Objects.cshtml" />
     <Content Include="TBot\LibraryData\Libraries_Xml.cshtml" />
-    <Content Include="TBot\Users\Import\Import Legacy Users.cshtml" />
     <Content Include="TBot\Views\Users\New Random User.cshtml" />
     <Content Include="TBot\Admin\Config\Edit_TMConfig.cshtml" />
     <Content Include="packages.config">

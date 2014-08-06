@@ -19,7 +19,7 @@ namespace TeamMentor.UnitTests.CoreLib
         public void SetUp()                             
         {
             SendEmails.Disable_EmailEngine = false;
-            SendEmails.Send_Emails_As_Sync = true;            
+//            SendEmails.Send_Emails_As_Sync = true;            
             
             sendEmails = new SendEmails();
             Assert.IsNotNull(sendEmails);
@@ -29,17 +29,17 @@ namespace TeamMentor.UnitTests.CoreLib
         [TearDown]
         public void TearDown()                          
         {            
-            SendEmails.Send_Emails_As_Sync = false;             // restore value to its default state
+//            SendEmails.Send_Emails_As_Sync = false;             // restore value to its default state
         }
 
         [Test] public void SendEmails_Ctor()            
         {   
-            SendEmails.Send_Emails_As_Sync = false;             // is false by default
+//            SendEmails.Send_Emails_As_Sync = false;             // is false by default
             //static vars
             Assert.IsNotNull(SendEmails.TM_Server_URL);
             Assert.IsNotNull(SendEmails.Sent_EmailMessages);
             Assert.IsFalse  (SendEmails.Disable_EmailEngine);
-            Assert.IsFalse  (SendEmails.Send_Emails_As_Sync);
+//            Assert.IsFalse  (SendEmails.Send_Emails_As_Sync);
             Assert.IsFalse  (SendEmails.Dont_Send_Emails);
             
             //instance vars                        

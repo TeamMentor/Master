@@ -10,8 +10,8 @@ namespace TeamMentor.CoreLib
     public class TM_Server : MarshalByRefObject
     {
         public static TM_Server Current                        { get; set; }
-        public bool             Users_Create_Default_Admin     { get; set; }
-        public bool             TM_Database_Use_AppData_Folder { get; set; }
+        //public bool             Users_Create_Default_Admin     { get; set; }
+        //public bool             TM_Database_Use_AppData_Folder { get; set; }
         public bool             UserActivities_Disable_Logging { get; set; }
         public bool             RealTime_Logs                  { get; set; }
         public Git_Config    Git              { get; set; }
@@ -22,8 +22,8 @@ namespace TeamMentor.CoreLib
         {          
             Current = this;
 
-            Users_Create_Default_Admin      = true;
-            TM_Database_Use_AppData_Folder  = false;
+            //Users_Create_Default_Admin      = true;
+            //TM_Database_Use_AppData_Folder  = false;
             UserActivities_Disable_Logging  = false;
             RealTime_Logs                   = false;
 

@@ -20,7 +20,7 @@ namespace TeamMentor.UnitTests.QA.To_Do_Ignored
             Assert.IsNotNull(tmServer);
             Assert.IsNotNull(userData);
             
-            tmServer.Users_Create_Default_Admin = true;
+            //tmServer.Users_Create_Default_Admin = true;
 
             tmFileStorage.load_UserData();
 
