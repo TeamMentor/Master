@@ -13,7 +13,9 @@ namespace TeamMentor.Markdown
     {
         public static int MAX_RENDER_WAIT = 2000;
         public static string wikiText_Transform(this string wikiText)
-		{						
+		{		
+			if(wikiText.notValid())
+                return "";
             try
             {                
                 wikiText = wikiText.wikiCreole_Fix_WikiText_Bullets();
@@ -24,16 +26,17 @@ namespace TeamMentor.Markdown
                                                  .wikiCreole_Replaced_Html_Code_Tag_with_Pre();
                     });
                 if(wikiParseThread.Join(MAX_RENDER_WAIT))
-                    return html;
+                    if(html.valid())
+                        return html;
                 
-                "[CreoleWiki_ExtensionMethods][wikiText_Transform] failed for WikiText: \n\n{0}\n\n".error(wikiParseThread);
+                "[CreoleWiki_ExtensionMethods][wikiText_Transform] failed for WikiText: \n\n{0}\n\n".error(wikiText);
                 wikiParseThread.Abort();
             }
             catch(Exception ex)
             {
                 ex.log("[wikiText_transform]");                
             }
-            return "<b>TEAM Mentor Error:</b><br/><br/> Sorry It was not possible to render this article. Please contact <a href=\"mailto:support@securityinnovation.com\">Security Innovation Support Us</a>.";
+            return "<b>TEAM Mentor Error:</b><br/><br/> Sorry it was not possible to render this article. Please contact <a href=\"mailto:support@securityinnovation.com\">Security Innovation Support</a>.";
 		}
 
         /// <summary>
@@ -45,6 +48,7 @@ namespace TeamMentor.Markdown
         /// <returns></returns>
         public static string wikiCreole_Fix_WikiText_Bullets(this string wikiText)
         {           
+            wikiText = wikiText.fix_CRLF();
             var lines = wikiText.split("\n");
 
             for(var i = 0; i < lines.size() ; i++)                              
@@ -67,8 +71,10 @@ namespace TeamMentor.Markdown
                     wikiText = wikiText.replace(line, fix);                    
                     continue;
                 }
-                if (line.starts("#"  ).isTrue () &&                      // case three: #* is on the beggining of the line                     
-                    line.starts("# ").isFalse())                    
+                if (line.starts("#"  ).isTrue () &&                      // case three: #* is on the beggining of the line   
+                    line.starts("##" ).isFalse() && 
+                    line.starts("# " ).isFalse() &&
+                    line.starts("#*" ).isFalse ())                    
                 { 
                     var fix = "# " + line.subString_After("#");
                     wikiText = wikiText.replace(line, fix);                    
@@ -81,16 +87,25 @@ namespace TeamMentor.Markdown
                     wikiText = wikiText.replace(line, fix);                    
                     continue;
                 }
-                if (line.starts("#*"  ).isTrue () &&                     // case five: #* is on the beggining of the line 
-                    line.starts("#**" ).isFalse() &&
-                    line.starts("#* " ).isFalse())                    
+                if (line.starts("#*"  ).isTrue () &&                     // case five: #* is on the beggining of the line (this needs a different fix since we need to make it into **)
+                    line.starts("#**" ).isFalse())                    
                 { 
-                    var fix = "#* " + line.subString_After("    #*");
+                    var fix = "** " + line.subString_After("#*");
                     wikiText = wikiText.replace(line, fix);                    
                     continue;
                 }
+                if (line.starts("##"  ).isTrue () &&                     // case six: ## is on the beggining of the line 
+                    line.starts("##*" ).isFalse() &&
+                    line.starts("## " ).isFalse())                    
+                { 
+                    var fix = "## " + line.subString_After("##");
+                    wikiText = wikiText.replace(line, fix);                    
+                    continue;
+                }
+
                 
             }
+         
             return wikiText;
             //return size2.join("\n");
             var joinedLines = lines.join("".line());

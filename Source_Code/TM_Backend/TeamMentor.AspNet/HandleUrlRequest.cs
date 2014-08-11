@@ -104,20 +104,21 @@ namespace TeamMentor.CoreLib
                     {
                         if (sslPageIsAvailable())           // addresses issue that happened when an SSL redirection was set for a server without SSL configured
                         {
-                            var redirectUrl = request.Url.ToString().Replace("http://", "https://");
-                            "Redirecting current request to https: {0}".info(context.Request.Url);
+                            var originalRequest = request.Url.str();
+                            var redirectUrl     = originalRequest.Replace("http://", "https://");
+                            "[redirectedToSSL] Redirecting original request '{0}' to {1}".info(originalRequest,redirectUrl);
                             context.Response.Redirect(redirectUrl);
                             return true;
                         }
-                        "[redirectedToSLL] redirection failed because https server was not found!".error();
+                        "[redirectedToSSL] since sslPageIsAvailable was failed, setting SSL_Redirection_Disabled to true".debug();
+                        SSL_Redirection_Disabled = true;                // prevents multiple attemps to check for redirections (was causing lots of error messages on live servers)                       
                     }
                 }
             }
             catch (Exception ex)
             {
                 ex.log("[in redirectedToSLL]");
-            }
-            SSL_Redirection_Disabled = true;                // prevents multiple attemps to check for redirections (was causing lots of error messages on live servers)
+            }            
             return false;
         }
 
@@ -125,14 +126,20 @@ namespace TeamMentor.CoreLib
         {
             if (request.Url != null)
             {
-                var currentServer = request.Url.str().remove(request.Url.PathAndQuery)
-                                                     .Replace("http://", "https://");
-                if (currentServer.contains("https://"))
-                {
-                    var response = currentServer.GET();
-                    return response.valid();
+                var currentServer = (request.Url.PathAndQuery != "/") 
+                                        ? request.Url.str().remove(request.Url.PathAndQuery)
+                                        : request.Url.str();
+                var httpLink = currentServer.replace("http://", "https://");                
+                if (httpLink.contains("https://"))
+                { 
+                    if (httpLink.uri().HEAD())
+                    {
+                        "[sslPageIsAvailable] got valid HEAD request from: {0}".debug(httpLink);
+                        return true;
+                    }                    
+                    "[sslPageIsAvailable]HEAD request to server failed!: {0}".error(httpLink);
+                    return false;
                 }
-                
                 "[sslPageIsAvailable] no https:// on '{0}' original request is '{1}".info(currentServer,request.Url.str());                
             }
             return false;

@@ -68,7 +68,7 @@ namespace TeamMentor.FileStorage
 
             if (userData_Config.isNull() || userData_Config.Name.notValid())
             { 
-                "[TM_Xml_Database][set_Path_UserData] userData_Config or its name was null or empty, so going to to use the default value of: {0}".error(TMConsts.TM_SERVER_DEFAULT_NAME_USERDATA);
+                "[TM_Xml_Database][set_Path_UserData] userData_Config or its name was null or empty, so going to to use the default value of: {0}".debug(TMConsts.TM_SERVER_DEFAULT_NAME_USERDATA);
                 userData_Config = new TM_Server.Config()
                                     {
                                         Name = TMConsts.TM_SERVER_DEFAULT_NAME_USERDATA
@@ -127,7 +127,7 @@ namespace TeamMentor.FileStorage
 
             if (siteData_Config.isNull() || siteData_Config.Name.notValid())
             { 
-                "[TM_FileStorage][set_Path_SiteData] set_Path_SiteData or its name was null or empty, so going to to use the default value of: {0}".error(TMConsts.TM_SERVER_DEFAULT_NAME_USERDATA);
+                "[TM_FileStorage][set_Path_SiteData] set_Path_SiteData or its name was null or empty, so going to to use the default value of: {0}".debug(TMConsts.TM_SERVER_DEFAULT_NAME_USERDATA);
                 siteData_Config = new TM_Server.Config()
                                     {
                                         Name = TMConsts.TM_SERVER_DEFAULT_NAME_SITEDATA
