@@ -45,6 +45,7 @@ namespace TeamMentor.Markdown
         /// <returns></returns>
         public static string wikiCreole_Fix_WikiText_Bullets(this string wikiText)
         {           
+            wikiText = wikiText.fix_CRLF();
             var lines = wikiText.split("\n");
 
             for(var i = 0; i < lines.size() ; i++)                              
@@ -67,8 +68,10 @@ namespace TeamMentor.Markdown
                     wikiText = wikiText.replace(line, fix);                    
                     continue;
                 }
-                if (line.starts("#"  ).isTrue () &&                      // case three: #* is on the beggining of the line                     
-                    line.starts("# ").isFalse())                    
+                if (line.starts("#"  ).isTrue () &&                      // case three: #* is on the beggining of the line   
+                    line.starts("##" ).isFalse() && 
+                    line.starts("# " ).isFalse() &&
+                    line.starts("#*" ).isFalse ())                    
                 { 
                     var fix = "# " + line.subString_After("#");
                     wikiText = wikiText.replace(line, fix);                    
@@ -81,16 +84,25 @@ namespace TeamMentor.Markdown
                     wikiText = wikiText.replace(line, fix);                    
                     continue;
                 }
-                if (line.starts("#*"  ).isTrue () &&                     // case five: #* is on the beggining of the line 
-                    line.starts("#**" ).isFalse() &&
-                    line.starts("#* " ).isFalse())                    
+                if (line.starts("#*"  ).isTrue () &&                     // case five: #* is on the beggining of the line (this needs a different fix since we need to make it into **)
+                    line.starts("#**" ).isFalse())                    
                 { 
-                    var fix = "#* " + line.subString_After("    #*");
+                    var fix = "** " + line.subString_After("#*");
                     wikiText = wikiText.replace(line, fix);                    
                     continue;
                 }
+                if (line.starts("##"  ).isTrue () &&                     // case six: ## is on the beggining of the line 
+                    line.starts("##*" ).isFalse() &&
+                    line.starts("## " ).isFalse())                    
+                { 
+                    var fix = "## " + line.subString_After("##");
+                    wikiText = wikiText.replace(line, fix);                    
+                    continue;
+                }
+
                 
             }
+         
             return wikiText;
             //return size2.join("\n");
             var joinedLines = lines.join("".line());
