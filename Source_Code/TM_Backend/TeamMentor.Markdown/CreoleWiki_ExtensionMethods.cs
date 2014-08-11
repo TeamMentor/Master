@@ -13,7 +13,9 @@ namespace TeamMentor.Markdown
     {
         public static int MAX_RENDER_WAIT = 2000;
         public static string wikiText_Transform(this string wikiText)
-		{						
+		{		
+			if(wikiText.notValid())
+                return "";
             try
             {                
                 wikiText = wikiText.wikiCreole_Fix_WikiText_Bullets();
@@ -24,9 +26,10 @@ namespace TeamMentor.Markdown
                                                  .wikiCreole_Replaced_Html_Code_Tag_with_Pre();
                     });
                 if(wikiParseThread.Join(MAX_RENDER_WAIT))
-                    return html;
+                    if(html.valid())
+                        return html;
                 
-                "[CreoleWiki_ExtensionMethods][wikiText_Transform] failed for WikiText: \n\n{0}\n\n".error(wikiParseThread);
+                "[CreoleWiki_ExtensionMethods][wikiText_Transform] failed for WikiText: \n\n{0}\n\n".error(wikiText);
                 wikiParseThread.Abort();
             }
             catch(Exception ex)
