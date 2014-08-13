@@ -1,0 +1,50 @@
+
+<script src="/javascript/jsPrettify/beautify.js"    type="text/javascript"></script>
+<script src="/javascript/jsPrettify/prettify.js"    type="text/javascript"></script>
+<link   href="/javascript/jsPrettify/prettify.css" 	rel="stylesheet" type="text/css" />        		
+
+
+<style type="text/css"> 
+	
+</style>	
+
+<style type="text/css"> 
+				
+		
+</style> 	
+
+<script>
+
+    	$(function ()
+    	{
+    	    TM.ControlPanel.AdminTasks.createGui();
+    	});
+</script>
+
+
+<h2>Admin Tasks</h2>
+<br/>
+<div id="adminTasksLinks"></div>
+<div id="adminTasksLinksExecutionResult" class="prettyprint">
+	<div id="executionParameters" >
+		<h2>Execution Parameters</h2>
+		<br/>
+		<table>
+			<tr>
+				<td width='20'>WebMethod</td>
+				<td><input id='webMethodName'  type="TextBox" value=""/></td>
+				<td rowspan="2" width='20'><input id='invoke' type='button' value='invoke'/></td>
+				
+			</tr>						
+			<tr>
+				<td width='20'>Params</td>
+				<td ><input  id='webMethodParams' class='url' type='TextBox' value=""/></td>				
+				
+			</tr>						
+		</table>
+	</div>
+	<br/>
+	<h2>Execution Result</h2>
+	<br/>
+	<pre id="jsonResult" class="prettyprint"></pre>
+</div>

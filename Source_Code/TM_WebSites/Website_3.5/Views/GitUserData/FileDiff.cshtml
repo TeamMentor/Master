@@ -1,0 +1,42 @@
+﻿@using FluentSharp.CoreLib
+@model TeamMentor.Website.App_Code.TempControllers.View_GitFileDiff
+@{
+    ViewBag.Title = "title";
+    Layout = "~/Views/_Layouts/Layout_AngularJS.cshtml";
+}
+
+<td><a href="File?path=@Model.FilePath">back to file</a> 
+
+<h2>Viewing Diff contents</h2>
+
+<b> File:</b> @Model.FilePath <a href="/article/@Model.FilePath.fileName_WithoutExtension()" target=_blank>view article</a> , <a href="/Markdown/Editor?articleId=@Model.FilePath.fileName_WithoutExtension()" target=_blank>edit article</a>  <br />
+<b> From Sha1:</b> @Model.FromSha1<br />
+<b> To Sha1:</b> @Model.ToSha1<br />
+<b>Diff:</b><br /> 
+
+@{
+    var diffLines = Model.Diff.fix_CRLF().lines();    
+    var diffLines_WithData = diffLines.where((line) => line.starts("+") && !line.starts("++")|| line.starts("-") && !line.starts("--"));
+
+    
+    <p>
+      <ul>
+        <small>
+            @foreach (var line in diffLines_WithData)
+            {        
+                var color = "black";
+                if (line.starts("+") )
+                {   color = "green"; }
+                else if (line.starts("-") )
+                {   color = "red"; }        
+                <span style='color:@color'>@line</span><br/>
+            }  
+        </small>
+      </ul>
+    </p>
+}
+
+<b>Diff (Raw):</b><br /> 
+<pre>
+    @Model.Diff
+</pre>

@@ -1,0 +1,88 @@
+<html>
+	<head>
+		<title>Admin Actions</title>
+        <link  href="/Javascript/bootstrap/bootstrap.min.css"                       type="text/css"  rel="stylesheet" />
+		<script src="/aspx_Pages/scriptCombiner.ashx?s=GlobalVariables"				type="text/javascript"></script>				
+
+		<script>
+			TM.ControlPanel.AdminActions = 
+				{
+						setUp 			: function()
+							{
+								if(opener == null)
+									$("#adminActions").html("<h3>Error: you must open this window from the control panel</h3>");
+								else								
+									this.add_Actions();
+										
+							}
+					,	add_Link		: function(text, callback)
+							{
+								$("#adminActions").append($("<li>").append(
+														  $("<a>").append(text).attr("href","#").click(callback)));
+								return this;
+							}
+					,	add_Actions		: function()
+							{
+								var that = this;
+								this.add_Link("Login as Admin"						, function() { that.login_as_User(TM.QUnit.defaultUser_Admin , TM.QUnit.defaultPassord_Admin) 		    })
+									.add_Link("Login as Editor"						, function() { that.login_as_User(TM.QUnit.defaultUser_Editor, TM.QUnit.defaultPassord_Editor) 			})
+									.add_Link("Login as Reader"						, function() { that.login_as_User(TM.QUnit.defaultUser_Reader, TM.QUnit.defaultPassord_Reader) 			})
+									.add_Link("Login as Admin -> Web Services"		, function() { that.login_and_OpenLink("Web Services")	})
+									.add_Link("Login as Admin -> Admin Tasks"		, function() { that.login_and_OpenLink("Admin Tasks")	})
+									.add_Link("Login as Admin -> Install Libraries"	, function() { that.login_and_OpenLink("Upload Libraries")	});
+
+							}
+					, 	login			: function(username, password, callback)
+							{		
+                                
+                                if (opener.TM.Gui.CurrentUser.userName() === username)
+                                {
+                                    opener.TM.Events.onLoginDialogClose();
+                                    return;
+                                }   			
+								opener.TM.Events.onLoginDialogOpen.add(function()
+									{
+										opener.$("#UsernameBox").val(username)
+										opener.$("#PasswordBox").val(password)
+										opener.$("button:contains('login')").click();
+										opener.TM.Events.onLoginDialogOpen.remove();
+										if (isDefined(callback))
+											callback();
+									});	
+								opener.$("#leftMenu_Links").find("a:contains(Login)").click()
+							}
+					, 	login_as_User	: function(user, password, callback)
+							{								
+								this.login(user,password, callback );
+							}
+							
+					, 	login_and_OpenLink : function(linkText)
+							{		
+								opener.TM.Events.onLoginDialogClose.add(
+									 function () 
+                                        {	                                                                   										
+											opener.$("#leftMenu_Links").find("a:contains('"+ linkText+"')").click()
+											opener.TM.Events.onLoginDialogClose.remove();
+										});
+								this.login_as_User(TM.QUnit.defaultUser_Admin, TM.QUnit.defaultPassord_Admin);									
+							}
+				};
+				
+			$(function() { window.TM.ControlPanel.AdminActions.setUp(); })
+			//GetLibrariesZipFolder
+		</script>
+
+	</head>
+	<body>
+		<h2>TeamMentor Control Panel Actions</h2>
+
+		<div id="UIAutomation">
+			<ul>
+				<div id="adminActions"></div>						
+			</ul>
+		</div>		
+<!--		<h3>Execution Messages</h3>
+		<div id="info"></div>
+-->	
+	</body>
+</html>

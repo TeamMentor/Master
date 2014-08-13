@@ -1,12 +1,9 @@
 #Dev specific
-bin
+Source_Code/**/bin
+
 
 #TM specific
 /Library_Data/XmlDatabase
-/Web Applications/TestResults
-/Web Applications/TM_Website/App_Data
-TmUsers.xml
-webEditorSecretData.config
 
 # Visual Studio files # 
 *.pdb
@@ -15,23 +12,51 @@ webEditorSecretData.config
 *.nupkg
 obj
 
+#InteliJ
+
 .idea
 
-#Debug
-/Tools/_temp
-
-Web Applications/TeamMentor.CoreLib/bin/Debug
-Web Applications/TeamMentor.CoreLib/bin/Release
-Web Applications/TM_API/bin
-Web Applications/TeamMentor.UnitTests/bin/
-
-Web Applications/TM_Website/bin/*.xml
-/Web Applications/TM_Website/App_Code/TM_Customization_Local.cs
-/Web Applications/TM_Website/gitUserData.config
-/Web Applications/TM_Website/_Customizations
+#NCrunc
 
 *.ncrunchsolution
 *.ncrunchproject
 *.cache
+_NCrunch_TM_Website
 
-/Web Applications/_NCrunch_TM_Website/StoredText
+NDependOut
+
+
+#NuGet packages not used
+/TeamMentor/*.ndproj
+
+*.nupkg
+/Source_Code/packages/AntiXSS.4.3.0/lib/net35
+/Source_Code/packages/AntiXSS.4.3.0/lib/net20
+/Source_Code/packages/Microsoft.AspNet.WebApi.Client.5.2.0/lib/portable-wp8+netcore45+net45+wp81+wpa81
+/Source_Code/packages/Microsoft.Net.Http.2.2.22/lib/monoandroid
+/Source_Code/packages/Microsoft.Net.Http.2.2.22/lib/monotouch
+/Source_Code/packages/Microsoft.Net.Http.2.2.22/lib/net40
+/Source_Code/packages/Microsoft.Net.Http.2.2.22/lib/wpa81
+/Source_Code/packages/Microsoft.Net.Http.2.2.22/lib/portable-net40+sl4+win8+wp71+wpa81
+/Source_Code/packages/Microsoft.Net.Http.2.2.22/lib/portable-net45+win8
+/Source_Code/packages/Microsoft.Net.Http.2.2.22/lib/portable-net45+win8+wpa81
+/Source_Code/packages/Microsoft.Net.Http.2.2.22/lib/sl4-windowsphone71
+/Source_Code/packages/Microsoft.Net.Http.2.2.22/lib/win8
+/Source_Code/packages/Newtonsoft.Json.6.0.3/lib/net20
+/Source_Code/packages/Newtonsoft.Json.6.0.3/lib/net35
+/Source_Code/packages/Newtonsoft.Json.6.0.3/lib/net40
+/Source_Code/packages/Newtonsoft.Json.6.0.3/lib/portable-net45+wp80+win8+wpa81
+/Source_Code/packages/Newtonsoft.Json.6.0.3/lib/netcore45
+/Source_Code/packages/Newtonsoft.Json.6.0.3/lib/portable-net40+sl4+wp7+win8
+/Source_Code/packages/WatiN.2.1.0/WatiN.chm
+/Source_Code/packages/WatiN.2.1.0/mozilla
+/Source_Code/packages/WatiN.2.1.0/lib/net35
+/Source_Code/packages/WatiN.2.1.0/lib/net20
+/Source_Code/packages/HtmlAgilityPack.1.4.6/lib/Net20
+/Source_Code/packages/HtmlAgilityPack.1.4.6/lib/Net40-client
+/Source_Code/packages/HtmlAgilityPack.1.4.6/lib/sl3-wp
+/Source_Code/packages/HtmlAgilityPack.1.4.6/lib/sl4
+/Source_Code/packages/HtmlAgilityPack.1.4.6/lib/sl4-windowsphone71
+/Source_Code/packages/HtmlAgilityPack.1.4.6/lib/sl5
+/Source_Code/packages/HtmlAgilityPack.1.4.6/lib/winrt45
+/Library_Data

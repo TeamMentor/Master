@@ -1,0 +1,70 @@
+﻿@using FluentSharp.CoreLib
+@using FluentSharp.Git.Utils
+@model FluentSharp.Git.APIs.GitData_File
+
+@{
+    ViewBag.Title = "title";
+    Layout = "~/Views/_Layouts/Layout_AngularJS.cshtml";
+}
+
+@{if(Model.isNull())
+  {
+     <h2>File: NOT FOUND</h2>
+      {
+          return;
+      }
+  }
+}
+<a href="/GitUserData">back to GitUserData</a>
+
+<h2>
+    File: @Model.FilePath.fileName() 
+</h2>
+<br />
+<b>FilePath:</b>@Model.FilePath     
+
+    <a href="/article/@Model.FilePath.fileName_WithoutExtension()" target=_blank>view article</a> , 
+    <a href="/Markdown/Editor?articleId=@Model.FilePath.fileName_WithoutExtension()" target=_blank>edit article</a>  <br />
+<br />
+<b>#Commits: </b>  @Model.Commits.size()   <br />
+<b>Sha1    : </b> @Model.Sha1 <br />
+<br />
+<table class="table table-striped table-condensed">
+    <tr>
+        <th>#</th>
+        <th>Actions</th>         
+        <th>Commit Sha1</th>            
+        <th>File Sha1</th>
+        <th>Author</th>            
+        <th>When</th>   
+        
+    </tr>   
+    @{
+        var count = @Model.Commits.size();        
+        var size = Model.Commits.size();
+    }
+
+    @for(var i=0 ; i < size; i++)
+    {        
+        var commit = @Model.Commits[i];        
+        
+        var fromSha1  = (i == size -1) ? NGit_Consts.EMPTY_SHA1 : Model.Commits[i+1].Commit_Sha1 ;
+        
+        <tr>
+            <td>@(count--)</td>
+            <td><a href="FileContents?path=@Model.FilePath&sha1=@commit.File_Sha1">contents</a> , 
+                
+                    <a href="FileDiff?path=@Model.FilePath&tosha1=@commit.Commit_Sha1&fromsha1=@fromSha1">diff</a>
+                
+                </td>                
+            <td>@commit.Commit_Sha1</td>
+            <td>@commit.File_Sha1</td>
+            <td>@commit.Author</td>
+            <td>@commit.When.fromFileTimeUtc()</td>            
+        </tr>        
+    }
+</table>
+
+
+
+

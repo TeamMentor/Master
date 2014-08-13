@@ -1,0 +1,124 @@
+<script type="text/javascript">
+	var loadAdminPage = function(pageToLoad, onLoadCallback)
+	{
+		loadPage("#controlPanel_Center", pageToLoad);
+		//"controlPanel_Center".$().load(pageToLoad + '?time='+ new Date().getTime(), onLoadCallback);
+		
+	}
+	
+	var add_Title = function(text)
+	{
+		"leftMenu_Links".$().append("<h3>{0}</h3>".format(text));	
+	}
+	
+	var add_Space = function(text)
+	{
+		"leftMenu_Links".$().append("<br/>")
+	}
+	
+	var add_AdminLink = function(text, pageToLoad, onLoadCallback)
+		{
+			"leftMenu_Links".$().append(" - ");	
+			"leftMenu_Links".$().add_Link(text)
+								.click(function()
+										{ 
+											loadAdminPage(pageToLoad, onLoadCallback);
+										});
+			"leftMenu_Links".$().append(" <br/> ");	
+		}
+		
+	var add_Link = function(text, pageToLoad)
+		{
+			"leftMenu_Links".$().append(" - ");	
+			"leftMenu_Links".$().add_Link(text, pageToLoad);
+								/*.click(function()
+										{ 
+											window.location=pageToLoad;
+										});*/
+			"leftMenu_Links".$().append(" <br/> ");	
+		}
+
+	var add_AdminLink_AsDialog = function(text, pageToLoad, onLoadCallback)
+		{
+			"leftMenu_Links".$().append(" - ");	
+			"leftMenu_Links".$().add_Link(text)
+								.click(function()
+										{ 
+											openUrl(pageToLoad +"?time=" + new Date().getTime(), text, 
+													 1250,750, 10,10)
+											//loadAdminPage(pageToLoad, onLoadCallback);
+										});
+			"leftMenu_Links".$().append(" <br/> ");	
+		}
+	
+	var add_AdminLink_ToFunction = function(text, onClick)
+	{		
+		"leftMenu_Links".$().append(" - ");	
+			"leftMenu_Links".$().add_Link(text)
+								.click(function() { onClick() } );
+			"leftMenu_Links".$().append(" <br/> ");	
+	}
+	$(function () 
+		{
+			"leftMenu_Links".$().html('');
+															
+			if (TM.Gui.CurrentUser.loggedIn())
+			{
+				add_Title("User Management");
+				add_AdminLink_ToFunction("My Account", TM.ControlPanel.open_MyAccount);
+			}			
+			
+			if (TM.Gui.CurrentUser.isAdmin())
+			{
+				add_AdminLink_ToFunction("Manage Users", TM.ControlPanel.open_ManageUsers);
+				add_AdminLink_ToFunction("Create Multiple Users" , TM.ControlPanel.open_CreateUsers);				
+				
+				add_Space();			
+				add_Title("BackEnd");
+                add_AdminLink_ToFunction("Set Library Path", TM.ControlPanel.open_SetLibraryPath);
+			    add_AdminLink_ToFunction("Set UserData Path", TM.ControlPanel.open_SetUserDataPath);
+				add_AdminLink_ToFunction("Admin Tasks", TM.ControlPanel.open_AdminTasks);												
+				
+				
+				
+				if (TM.Debug.showExperimentalFeatures)
+				{
+					add_Space();			
+					add_Title("Developer Utils");
+					add_AdminLink_ToFunction("Install/Upload Libraries", TM.ControlPanel.open_InstallLibrary);
+					add_Space();	
+					add_AdminLink("Firebug Lite",'/Javascript/Firebug/beta/Firebug.html');												
+                    add_AdminLink_AsDialog("C# REPL",'/html_pages/ControlPanel/CSharp_REPL/repl.html');
+					add_Space();	
+					add_AdminLink_ToFunction("TeamMentor QUnit Tests", TM.ControlPanel.open_QUnitTests);								
+					add_AdminLink_ToFunction("UIAutomation (Admin)", TM.ControlPanel.open_AdminActions);
+					add_AdminLink_ToFunction("UIAutomation (User)",  TM.ControlPanel.open_UserActions);
+					
+				}				
+			}
+			
+			add_Space();
+			add_Title("Misc links:");
+	        add_Link("Open TBot",  '/Tbot');
+			add_AdminLink("Login",'/Html_Pages/Gui/Dialogs/Login.html');			
+			add_AdminLink_ToFunction("Logout", function() {  TM.Gui.CurrentUser.logout(); } );			
+			add_Link("Advanced Admin Tools",'/admin_extra');			
+			//add_AdminLink_ToFunction("Refresh Gui", TM.ControlPanel.refresh);			
+			
+			add_Space();
+			add_Title("Navigation");
+			//if (typeof(TM.Gui.Main.homePage)!= "undefined")
+			//	add_AdminLink_ToFunction("Return to Main Page",TM.Gui.Main.homePage);
+			//else
+				add_Link("Open Main Page",'/');			
+				
+			//add_Title("Navigation");
+			//add_Link("Main Page (Old)",'/Aspx_Pages/TM_3_0.aspx');
+			//add_Link("Main Page (New)",'/Aspx_Pages/TM_3_0_With_Panels.aspx');			
+						
+			TM.Events.onControlPanelGuiLoaded();
+		});
+			
+</script>
+
+<span id="leftMenu_Links"></span>

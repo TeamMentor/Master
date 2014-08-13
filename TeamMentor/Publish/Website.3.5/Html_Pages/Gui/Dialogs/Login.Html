@@ -1,0 +1,94 @@
+<!--Page: <b>Login Page </b>-->
+    <script type="text/javascript">
+		function loginResponse(loginId)
+		{			
+			//$('#PleaseWait').f('display','none');					
+			if(loginId =='00000000-0000-0000-0000-000000000000')
+			{
+				$('#LoginMainContent').css('display','');			
+				$('#errorMessageLogin').html('Incorrect username or password')
+									   .fadeIn(1000); 
+				TM.Debug.LastLoginResult = "Failed";
+			}
+			else
+			{
+				loginDialog.closeDialog();					
+				TM.Debug.LastLoginResult = "Ok";				
+			}			
+			
+		}
+		
+		function loginUser()
+		{		
+			$('#errorMessageLogin').hide();			
+			$('#LoginMainContent').css('display','none');						
+			var username = $('#UsernameBox').attr('value');
+			var password = $('#PasswordBox').attr('value');
+
+			if (username.length > 0 && password.length>0)
+			    TM.WebServices.WS_Users.login(username, password, loginResponse);
+			else {
+			    $('#errorMessageLogin').html('Incorrect username or password')
+									   .fadeIn(1000);
+			}
+		}
+
+		/*function passwordForgot() 
+		{
+		    window.location = "/passwordForgot";
+		}*/
+
+		if (typeof(loginDialog) != "undefined")
+			loginDialog.remove();
+		if (typeof(signupDialog) != "undefined")
+			signupDialog.remove();
+			
+		$(function()
+			{					
+				$("*").eq(0).css('overflow','hidden');
+				
+				delete (TM.Debug.LastLoginResult);
+				var dialogOptions = { 	
+											title:'Login into TeamMentor'
+										,	modal: true		
+										,	buttons: {  " Login" : loginUser } //" Password forgot" : passwordForgot,
+										,	width: '400px'
+										, 	open:  TM.Events.onLoginDialogOpen	
+										, 	close: function()
+													{														
+														TM.Gui.CurrentUser.loadUserData();
+														TM.Events.onLoginDialogClose();
+													}
+									};				
+				
+
+				
+				
+				loginDialog = "LoginDialog".$().dialog(dialogOptions);											
+					
+				$('#UsernameBox').keypress(function(e)  { if(e.which == 13) { loginUser(); } });
+				$('#PasswordBox').keypress(function(e)  { if(e.which == 13) { loginUser(); } });
+
+				$('#UsernameBox').focus();
+		        
+		        //loginDialog.parent().find("button").first().absolute().left(10);
+		        var forgotPasswordLink = $("<a href='/passwordForgot' id='passwordForgotLink'>Forgot your password?</a>")
+                        .relative().top(13)
+		                .css("font-size","9pt");
+
+                loginDialog.parent().find("button").first().absolute().left(10)     //moving Login button to the left
+		                   .attr('id','loginButton')
+                           .parent().height(45)
+                           .append(forgotPasswordLink);
+
+			});
+	</script>
+	<div id="LoginDialog" class="_LoginArea">							
+		<!--<h1>Login</h1>-->
+		
+		<span id="usernameLabel" style="display:inline-block;width:130px;">Username:</span><input name="ctl00$ContentPlaceHolder1$UsernameBox" type="text" id="UsernameBox" class="otherTextBox" style="width:200px;" /><br />
+		<br />
+		<span id="passwordLabel" style="display:inline-block;width:130px;">Password:</span><input name="ctl00$ContentPlaceHolder1$PasswordBox" type="password" id="PasswordBox" class="otherTextBox" style="width:200px;" /><br />		
+		<br />		
+	    <span class="errorMessageLogin" id ="errorMessageLogin" ></span>        
+	</div>

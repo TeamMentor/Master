@@ -1,0 +1,169 @@
+Fortify Category: Subcategory,CWE ID(s),TM GUID,TM Name,Technology
+SQL Injection ,CWE ID 89 ,2abc6c1b-dd8b-41d3-ad24-c717807e43e9,SQL Injection,PHP
+Cross-Site Scripting: Persistent ,CWE ID 79; CWE ID 80 ,add8a099-08da-40cc-a202-5e083267cef7,Cross-Site Scripting,PHP
+Cross-Site Scripting: Poor Validation ,CWE ID 79; CWE ID 80 ,add8a099-08da-40cc-a202-5e083267cef7,Cross-Site Scripting,PHP
+Cross-Site Scripting: Reflected ,CWE ID 79; CWE ID 80 ,add8a099-08da-40cc-a202-5e083267cef7,Cross-Site Scripting,PHP
+Dangerous File Inclusion ,CWE ID 94; CWE ID 98 ,80380670-a6f7-431c-8709-b7fe5db60295,Remote File Inclusion,PHP
+Open Redirect ,CWE ID 601 ,279ad567-2b34-44ce-8e56-8d96770ba500,Open Redirect,PHP
+Path Manipulation ,CWE ID 22; CWE ID 73 ,b88255fa-86f1-4d3b-9f7f-66bc144e985c,Path Traversal,PHP
+Dynamic Code Evaluation: Code Injection ,CWE ID 95 ,940d6e95-fc25-4e9d-8545-2262ed6e99ba,Code Injection,PHP
+Key Management: Hardcoded Encryption Key ,CWE ID 259; CWE ID 798 ,07d18aec-f7cc-4932-a734-97e31a6f7f07,Use of Hard-coded Cryptographic Key,PHP
+ASPNET Misconfiguration: Missing Error Handling,CWE ID 12 ,fb0341e3-41c2-43bc-99d4-d12a037c1edd,Unchecked Error Condition,ASPNET
+Open Redirect ,CWE ID 601 ,fdd2fa70-27b7-4399-ba3c-3b0b1bc7360b,Open Redirect,ASPNET
+Path Manipulation ,CWE ID 22; CWE ID 73 ,ee22e5e0-0953-4276-b0e6-955becda5ee8,Path Traversal,ASPNET
+SQL Injection ,CWE ID 89 ,5fdf23f4-8ff9-4043-a3bb-2d7d10704b0e,SQL Injection,ASPNET
+SQL Injection: Castle ActiveRecord ,CWE ID 89 ,5fdf23f4-8ff9-4043-a3bb-2d7d10704b0e,SQL Injection,ASPNET
+SQL Injection: LINQ ,CWE ID 89 ,5fdf23f4-8ff9-4043-a3bb-2d7d10704b0e,SQL Injection,ASPNET
+SQL Injection: NHibernate ,CWE ID 89 ,5fdf23f4-8ff9-4043-a3bb-2d7d10704b0e,SQL Injection,ASPNET
+SQL Injection: SubSonic ,CWE ID 89 ,5fdf23f4-8ff9-4043-a3bb-2d7d10704b0e,SQL Injection,ASPNET
+LDAP Injection ,CWE ID 90 ,26cf3a5c-3bbd-4239-b74f-f776df950ac8,LDAP Injection,ASPNET
+Log Forging ,CWE ID 117 ,700cbc96-fcfe-4ec7-b4cd-fc3eb8a98e40,Log Forging,ASPNET
+Cross-Site Scripting: Persistent ,CWE ID 79; CWE ID 80 ,937f2173-5e39-48b6-bb3a-ecfd8f052bb0,Cross-Site Scripting,ASPNET
+Cross-Site Scripting: Poor Validation ,CWE ID 79; CWE ID 80 ,937f2173-5e39-48b6-bb3a-ecfd8f052bb0,Cross-Site Scripting,ASPNET
+Cross-Site Scripting: Reflected ,CWE ID 79; CWE ID 80 ,937f2173-5e39-48b6-bb3a-ecfd8f052bb0,Cross-Site Scripting,ASPNET
+XPath Injection ,CWE ID 643,c2ab8f50-3b6b-47a8-b530-c9a705bdf6c8,XPath Injection,ASPNET
+Password Management: Hardcoded Password,CWE ID 259; CWE ID 798 ,0cc358fe-0396-4142-bab5-ad327920b340,Use of Hard-coded Password,ASPNET
+Password Management: Password in Comment ,CWE ID 615,0cc358fe-0396-4142-bab5-ad327920b340,Use of Hard-coded Password,ASPNET
+Password Management ,CWE ID 256 ,9a44e0a4-823a-4d99-90fb-7de648a094c8,Insufficiently Protected Credentials,ASPNET
+Password Management: Weak Cryptography ,CWE ID 261 ,9a44e0a4-823a-4d99-90fb-7de648a094c8,Insufficiently Protected Credentials,ASPNET
+Command Injection ,CWE ID 77; CWE ID 78 ,ea00a8ee-1248-42b5-9954-439a93fb14d8,Command Injection,ASPNET
+Missing XML Validation ,CWE ID 112 ,099d9a5b-3ac2-4acb-9192-5b6d7fafda34,Missing XML Validation,ASPNET
+Missing XML Validation(validating_reader) ,CWE ID 112 ,099d9a5b-3ac2-4acb-9192-5b6d7fafda34,Missing XML Validation,ASPNET
+Cross-Site Request Forgery ,CWE ID 352 ,36d0c6a6-8a5c-4586-b0d5-917a9aff9557,Cross-Site Request Forgery,ASPNET
+Password Management: Password in Configuration File ,CWE ID 13; CWE ID 260; CWE ID 555 ,0cc358fe-0396-4142-bab5-ad327920b340,Use of Hard-coded Password,ASPNET
+Command Injection ,CWE ID 77; CWE ID 78 ,2e03d087-3614-4927-8d20-d9efc3f7bbc4,Command Injection,Java
+Cross-Site Scripting: DOM ,CWE ID 79; CWE ID 80 ,e1066fc2-22e3-47b3-ac0d-34a6fa70da68,Cross-Site Scripting,Java
+Cross-Site Scripting: External Links ,CWE ID 79; CWE ID 80 ,e1066fc2-22e3-47b3-ac0d-34a6fa70da68,Cross-Site Scripting,Java
+Cross-Site Scripting: Persistent ,CWE ID 79; CWE ID 80 ,e1066fc2-22e3-47b3-ac0d-34a6fa70da68,Cross-Site Scripting,Java
+Cross-Site Scripting: Poor Validation ,CWE ID 79; CWE ID 80 ,e1066fc2-22e3-47b3-ac0d-34a6fa70da68,Cross-Site Scripting,Java
+Cross-Site Scripting: Reflected ,CWE ID 79; CWE ID 80 ,e1066fc2-22e3-47b3-ac0d-34a6fa70da68,Cross-Site Scripting,Java
+LDAP Injection ,CWE ID 90 ,418cfb77-5d0a-4fd9-9825-1732cf40070d,LDAP Injection,Java
+Log Forging ,CWE ID 117 ,59f42764-e58b-4695-962f-5efdf1f36bd6,Log Forging,Java
+Open Redirect ,CWE ID 601 ,79aaa6c6-54bd-4a98-9649-77f81312085e,Open Redirect,Java
+SQL Injection ,CWE ID 89 ,c92edd0d-f59a-4dd5-bed3-48a2190c895f,SQL Injection,Java
+SQL Injection: Hibernate ,CWE ID 89 ,c92edd0d-f59a-4dd5-bed3-48a2190c895f,SQL Injection,Java
+SQL Injection: JDO ,CWE ID 89 ,c92edd0d-f59a-4dd5-bed3-48a2190c895f,SQL Injection,Java
+SQL Injection: Persistence ,CWE ID 89 ,c92edd0d-f59a-4dd5-bed3-48a2190c895f,SQL Injection,Java
+SQL Injection: iBatis Data Map ,CWE ID 89 ,c92edd0d-f59a-4dd5-bed3-48a2190c895f,SQL Injection,Java
+Missing XML Validation ,CWE ID 112 ,fa554526-0e27-470f-ba6c-464c2250cfbd,Missing XML Validation,Java
+Password Management,CWE ID 256 ,ac9e0d29-dfd0-4671-98f5-7106e6505c24,Insufficiently Protected Credentials,Java
+Password Management: Empty Password ,CWE ID 259 ,ac9e0d29-dfd0-4671-98f5-7106e6505c24,Insufficiently Protected Credentials,Java
+Password Management: Hardcoded Password ,CWE ID 259; CWE ID 798 ,ac9e0d29-dfd0-4671-98f5-7106e6505c24,Insufficiently Protected Credentials,Java
+Password Management: Null Password ,CWE ID 259 ,ac9e0d29-dfd0-4671-98f5-7106e6505c24,Insufficiently Protected Credentials,Java
+Password Management: Password in Comment ,CWE ID 615,ac9e0d29-dfd0-4671-98f5-7106e6505c24,Insufficiently Protected Credentials,Java
+Password Management: Password in Redirect ,CWE ID 359 ,ac9e0d29-dfd0-4671-98f5-7106e6505c24,Insufficiently Protected Credentials,Java
+Password Management: Weak Cryptography ,CWE ID 261 ,ac9e0d29-dfd0-4671-98f5-7106e6505c24,Insufficiently Protected Credentials,Java
+Password Management: Empty Password in Configuration File,CWE ID 258 ,ac9e0d29-dfd0-4671-98f5-7106e6505c24,Insufficiently Protected Credentials,Java
+Password Management: Password in Configuration File ,CWE ID 13; CWE ID 260; CWE ID 555 ,ac9e0d29-dfd0-4671-98f5-7106e6505c24,Insufficiently Protected Credentials,Java
+Path Manipulation ,CWE ID 22; CWE ID 73 ,238dd87a-c842-4167-8854-a9e8a58bc3bd,Path Manipulation ,Java
+Null Dereference ,CWE ID 476 ,0222317d-61d3-4b11-955e-247bb66eb50a,Null Dereference ,Java
+Poor Error Handling: Empty Catch Block ,CWE ID 391 ,64ef29be-8402-4ee2-9cfe-78254c8c8a1b,Poor Error Handling,Java
+Poor Error Handling: Overly Broad Catch,CWE ID 396 ,64ef29be-8402-4ee2-9cfe-78254c8c8a1b,Poor Error Handling,Java
+Poor Error Handling: Overly Broad Throws ,CWE ID 397 ,64ef29be-8402-4ee2-9cfe-78254c8c8a1b,Poor Error Handling,Java
+Poor Error Handling: Program Catches NullPointerException ,CWE ID 395 ,64ef29be-8402-4ee2-9cfe-78254c8c8a1b,Poor Error Handling,Java
+Poor Error Handling: Return Inside Finally ,CWE ID 584 ,64ef29be-8402-4ee2-9cfe-78254c8c8a1b,Poor Error Handling,Java
+Poor Error Handling: Swallowed ThreadDeath ,CWE ID 691 ,64ef29be-8402-4ee2-9cfe-78254c8c8a1b,Poor Error Handling,Java
+Poor Error Handling: Throw Inside Finally ,CWE ID 398 ,64ef29be-8402-4ee2-9cfe-78254c8c8a1b,Poor Error Handling,Java
+Often Misused: File Upload ,CWE ID 434 ,387104b2-dacf-48e3-b0f7-148cd4c75711,File Upload,Java
+XML Injection ,CWE ID 91 ,96d2c85e-5db6-4380-b55c-798aaa3fac0b,XML Injection ,Java
+XPath Injection ,CWE ID 643 ,f93eca13-f40e-4975-8c2c-d84829947672,XPath Injection ,Java
+Cookie Security: Cookie not Sent Over SSL ,CWE ID 614 ,5b5754fa-53f7-467e-93c5-ff4dc8c2f32b,Cookie Security,Java
+Cookie Security: Overly Broad Domain ,NA,5b5754fa-53f7-467e-93c5-ff4dc8c2f32b,Cookie Security,Java
+Cookie Security: Overly Broad Path ,NA,5b5754fa-53f7-467e-93c5-ff4dc8c2f32b,Cookie Security,Java
+Cookie Security: Persistent Cookie ,CWE ID 539 ,5b5754fa-53f7-467e-93c5-ff4dc8c2f32b,Cookie Security,Java
+Insecure Randomness ,CWE ID 330 ,0a4a96d8-a365-4576-b2d2-b313c8753928,Insecure Randomness ,Java
+Insecure Randomness: Poor Seeding ,CWE ID 330 ,0a4a96d8-a365-4576-b2d2-b313c8753928,Insecure Randomness ,Java
+Weak Cryptographic Hash ,CWE ID 310 ,0010a1e4-6d8f-41a4-8eaf-d047398a34bc,Weak Cryptographic Hash,Java
+Weak Cryptographic Hash: Hardcoded Salt ,CWE ID 326 ,0010a1e4-6d8f-41a4-8eaf-d047398a34bc,Weak Cryptographic Hash,Java
+Weak Encryption ,CWE ID 327 ,676b874a-f1e3-4957-855e-c386bd289e22,Weak Encryption,Java
+Weak Encryption: Inadequate RSA Padding ,CWE ID 325 ,676b874a-f1e3-4957-855e-c386bd289e22,Weak Encryption,Java
+Weak Encryption: Insufficient Key Size ,CWE ID 310 ,676b874a-f1e3-4957-855e-c386bd289e22,Weak Encryption,Java
+Session Fixation ,CWE ID 384 ,92bf559d-061b-4daa-be06-ee2665b1110f,Session Fixation,Java
+Missing Check against Null ,CWE ID 253; CWE ID 690 ,8cdac89d-5f52-49fd-aea3-1d14d460a8c3,Missing Check Against Null,CPP
+Double Free ,CWE ID 415 ,a749782c-1f6b-4020-aea3-77046fabf428,Double Free,CPP
+Format String: Argument Number Mismatch ,CWE ID 126 ,9f06e83b-77bf-40b8-9f20-5f88e892630c,Format String,CPP
+Format String: Argument Type Mismatch ,CWE ID 787; CWE ID 125 ,9f06e83b-77bf-40b8-9f20-5f88e892630c,Format String,CPP
+Null Dereference ,CWE ID 476 ,ca78ad0b-1460-4884-a8f5-b31c864d7976,Null Dereference,CPP
+Uninitialized Variable ,CWE ID 457 ,d87dc143-4a28-43ac-a439-93226c7fb514,Uninitialized Variable,CPP
+Unreleased Resource ,CWE ID 404 ,be7eab47-34dd-4647-b65a-6541e1fab67b,Unreleased Resource ,CPP
+Use After Free ,CWE ID 416 ,2ee01615-0ed3-46ad-9a22-f1520a55cc1d,Use After Free,CPP
+Buffer Overflow ,CWE ID 787; CWE ID 120; CWE ID 129; CWE ID 131 ,0530569f-b6bb-4a31-ae68-55dac9f4781a,Buffer Overflow,CPP
+Buffer Overflow: Format String ,CWE ID 787; CWE ID 134 ,9f06e83b-77bf-40b8-9f20-5f88e892630c,Format String,CPP
+Buffer Overflow: Format String (%f/%F) ,CWE ID 787 ,9f06e83b-77bf-40b8-9f20-5f88e892630c,Format String,CPP
+Buffer Overflow: Off-by-One ,CWE ID 787; CWE ID 193; CWE ID 805; CWE ID 129; CWE ID 131 ,0530569f-b6bb-4a31-ae68-55dac9f4781a,Buffer Overflow,CPP
+Buffer Overflow: Signed Comparison ,CWE ID 195; CWE ID 805 ,0530569f-b6bb-4a31-ae68-55dac9f4781a,Buffer Overflow,CPP
+Command Injection ,CWE ID 77; CWE ID 78 ,db5bc41d-c414-497b-a7cf-2d63e7720fc6,Command Injection ,CPP
+Format String ,CWE ID 134 ,9f06e83b-77bf-40b8-9f20-5f88e892630c,Format String,CPP
+Integer Overflow ,CWE ID 190 ,2674f188-5758-47f2-b0f1-c2286999d166,Integer Overflow,CPP
+LDAP Injection ,CWE ID 90 ,7fc7f4f3-2b0b-4d48-a18a-1f189361b651,LDAP Injection ,CPP
+Out-of-Bounds Read ,CWE ID 125; CWE ID 129; CWE ID 131; CWE ID 805 ,5d4dd17c-34a6-470a-b2a7-83940d98c4e8,Out-of-Bounds Read,CPP
+Out-of-Bounds Read: Off-by-One ,CWE ID 125; CWE ID 129; CWE ID 131; CWE ID 193; CWE ID 805 ,5d4dd17c-34a6-470a-b2a7-83940d98c4e8,Out-of-Bounds Read,CPP
+Out-of-Bounds Read: Signed Comparison ,CWE ID 195; CWE ID 805 ,5d4dd17c-34a6-470a-b2a7-83940d98c4e8,Out-of-Bounds Read,CPP
+Path Manipulation ,CWE ID 22; CWE ID 73 ,a1d217c4-2d2f-4657-99cd-7e4cd69411bd,Path Traversal,CPP
+SQL Injection ,CWE ID 89 ,a72f6958-7f22-4de1-8504-8106a9c302a4,SQL Injection ,CPP
+String Termination Error ,CWE ID 170 ,f770b2db-081d-4808-a314-4803beb54a01,String Termination Error ,CPP
+String Termination Error(truncate) ,CWE ID 170 ,f770b2db-081d-4808-a314-4803beb54a01,String Termination Error ,CPP
+Password Management ,CWE ID 256 ,1f4a41a3-1598-4a12-a63c-966d0c6ad77c,Password Management,CPP
+Password Management: Empty Password ,CWE ID 259 ,1f4a41a3-1598-4a12-a63c-966d0c6ad77c,Password Management,CPP
+Password Management: Hardcoded Password ,CWE ID 259; CWE ID 798 ,1f4a41a3-1598-4a12-a63c-966d0c6ad77c,Password Management,CPP
+Password Management: Null Password ,CWE ID 259 ,1f4a41a3-1598-4a12-a63c-966d0c6ad77c,Password Management,CPP
+Password Management: Password in Comment ,CWE ID 615 ,1f4a41a3-1598-4a12-a63c-966d0c6ad77c,Password Management,CPP
+Password Management: Weak Cryptography ,CWE ID 261 ,1f4a41a3-1598-4a12-a63c-966d0c6ad77c,Password Management,CPP
+Weak Cryptographic Hash ,CWE ID 310 ,30d4067e-2c33-425b-b439-18b849374a06,Weak Cryptographic Hash,CPP
+Weak Cryptographic Hash: Hardcoded Salt ,CWE ID 326 ,30d4067e-2c33-425b-b439-18b849374a06,Weak Cryptographic Hash,CPP
+Weak Encryption ,CWE ID 327 ,bd46c04c-a6bc-44f7-bf00-646738e228c6,Weak Encryption ,CPP
+Weak Encryption: Inadequate RSA Padding ,CWE ID 325 ,bd46c04c-a6bc-44f7-bf00-646738e228c6,Weak Encryption ,CPP
+Weak Encryption: Insufficient Key Size ,CWE ID 310 ,bd46c04c-a6bc-44f7-bf00-646738e228c6,Weak Encryption ,CPP
+Code Correctness: Regular Expressions Denial of Service ,CWE ID 185; CWE ID 730 ,9159f9ce-097c-4210-88ef-e2072e5da9f2,Regular Expressions Denial of Service,PHP
+Insecure Transport ,CWE ID 311 ,c6852bd5-91b9-4daa-a472-7a1035d299fc,Insecure Transport,PHP
+System Information Leak ,CWE ID 497 ,829e3767-afca-4485-9fbb-8c7ab3be3061,System Information Leak ,PHP
+Cookie Security: HTTPOnly not Set on Session Cookie ,NA,acc078c3-b325-4430-a521-c91e47b40305,Cookie Security,PHP
+Cookie Security: Persistent Session Cookie ,CWE ID 539 ,acc078c3-b325-4430-a521-c91e47b40305,Cookie Security,PHP
+Cookie Security: Session Cookie not Sent Over SSL ,CWE ID 614 ,acc078c3-b325-4430-a521-c91e47b40305,Cookie Security,PHP
+System Information Leak: PHP Errors ,CWE ID 209; CWE ID 215 ,829e3767-afca-4485-9fbb-8c7ab3be3061,System Information Leak ,PHP
+System Information Leak: PHP Version ,CWE ID 497 ,829e3767-afca-4485-9fbb-8c7ab3be3061,System Information Leak ,PHP
+Command Injection ,CWE ID 77; CWE ID 78 ,9178de03-1ccd-4987-b4e1-6db7a164fc4c,Command Injection ,PHP
+Often Misused: File Upload ,CWE ID 434 ,fc1d8337-3bc1-40f5-bc88-db1575d5657a,File Upload,PHP
+XML Injection ,CWE ID 631; CWE ID 91 ,b220c5e1-4303-4fb5-910f-82f4a7cc470a,XML Injection ,PHP
+XPath Injection ,CWE ID 643 ,1a89b5be-d8eb-4948-9e87-079fa6bf8320,XPath Injection ,PHP
+XQuery Injection ,CWE ID 652 ,09e95598-89b6-43b9-b910-a2f0100648ce,XQuery Injection ,PHP
+XSLT Injection ,CWE ID 631 ,0c03c774-eb34-4c5e-bbbb-c231fff51eb5,XSLT Injection ,PHP
+Cookie Security: Cookie not Sent Over SSL,CWE ID 614 ,acc078c3-b325-4430-a521-c91e47b40305,Cookie Security,PHP
+Cookie Security: HTTPOnly not Set ,NA,acc078c3-b325-4430-a521-c91e47b40305,Cookie Security,PHP
+Cookie Security: HTTPOnly not Set on Session Cookie ,NA,acc078c3-b325-4430-a521-c91e47b40305,Cookie Security,PHP
+Cookie Security: Overly Broad Domain ,NA,acc078c3-b325-4430-a521-c91e47b40305,Cookie Security,PHP
+Cookie Security: Overly Broad Session Cookie Domain ,NA,acc078c3-b325-4430-a521-c91e47b40305,Cookie Security,PHP
+Cookie Security: Overly Broad Session Cookie Path ,NA,acc078c3-b325-4430-a521-c91e47b40305,Cookie Security,PHP
+Cookie Security: Persistent Cookie ,CWE ID 539 ,acc078c3-b325-4430-a521-c91e47b40305,Cookie Security,PHP
+Cookie Security: Persistent Session Cookie ,CWE ID 539 ,acc078c3-b325-4430-a521-c91e47b40305,Cookie Security,PHP
+Cookie Security: Session Cookie not Sent Over SSL ,CWE ID 614 ,acc078c3-b325-4430-a521-c91e47b40305,Cookie Security,PHP
+Insecure Randomness ,CWE ID 330 ,5cdbc019-536d-4c36-ad03-de11031a0f04,Insecure Randomness ,PHP
+Key Management: Empty Encryption Key ,CWE ID 259 ,88aedbf8-d924-412b-a941-05f70d0c9820,Weak Encryption ,PHP
+Key Management: Null Encryption Key ,CWE ID 259 ,88aedbf8-d924-412b-a941-05f70d0c9820,Weak Encryption ,PHP
+Password Management ,CWE ID 256 ,cad337fe-3564-4f00-9894-a23ab01abfe3,Password Management,PHP
+Password Management: Empty Password ,CWE ID 259 ,cad337fe-3564-4f00-9894-a23ab01abfe3,Password Management,PHP
+Password Management: Hardcoded Password ,CWE ID 259; CWE ID 798 ,cad337fe-3564-4f00-9894-a23ab01abfe3,Password Management,PHP
+Password Management: Null Password ,CWE ID 259 ,cad337fe-3564-4f00-9894-a23ab01abfe3,Password Management,PHP
+Password Management: Password in Comment ,CWE ID 615 ,cad337fe-3564-4f00-9894-a23ab01abfe3,Password Management,PHP
+Password Management: Weak Cryptography ,CWE ID 261 ,cad337fe-3564-4f00-9894-a23ab01abfe3,Password Management,PHP
+Weak Cryptographic Hash ,CWE ID 310 ,7d7de04c-96d1-4b2e-bf99-9ef0555f3332,Weak Cryptographic Hash,PHP
+Weak Cryptographic Hash: Hardcoded Salt ,CWE ID 326,7d7de04c-96d1-4b2e-bf99-9ef0555f3332,Weak Cryptographic Hash,PHP
+Weak Encryption ,CWE ID 327,88aedbf8-d924-412b-a941-05f70d0c9820,Weak Encryption ,PHP
+Weak Encryption: Inadequate RSA Padding ,CWE ID 325 ,88aedbf8-d924-412b-a941-05f70d0c9820,Weak Encryption ,PHP
+System Information Leak ,CWE ID 497 ,d2455286-ddf5-474b-b8c9-7cede24ef31a,System Information Leak,ASPNET
+Cookie Security: HTTPOnly not Set on Application Cookie ,NA,f3aa0389-da45-47cf-8ace-4a71d006958d,Cookie Security,ASPNET
+Cookie Security: Session Cookie not Sent Over SSL ,CWE ID 614 ,f3aa0389-da45-47cf-8ace-4a71d006958d,Cookie Security,ASPNET
+Often Misused: File Upload ,CWE ID 434 ,de524f32-c3f0-452d-ba89-b6044a03a4e8,File Upload,ASPNET
+XML External Entity Injection ,CWE ID 611 ,1c21c884-0644-4822-868a-20bc957875f7,XML External Entity (XXE) Injection,ASPNET
+XML Injection ,CWE ID 91 ,61db0098-48cc-4d33-9441-315b800b0647,XML Injection ,ASPNET
+Password Management: Empty Password ,CWE ID 259 ,b07ad2fb-1079-4097-a1ff-3991f1f64e05,Password Management,ASPNET
+Password Management: Null Password ,CWE ID 259 ,b07ad2fb-1079-4097-a1ff-3991f1f64e05,Password Management,ASPNET
+Cookie Security: Cookie not Sent Over SSL ,CWE ID 614 ,f3aa0389-da45-47cf-8ace-4a71d006958d,Cookie Security,ASPNET
+Cookie Security: HTTPOnly not Set ,NA,f3aa0389-da45-47cf-8ace-4a71d006958d,Cookie Security,ASPNET
+Cookie Security: Overly Broad Domain ,NA,f3aa0389-da45-47cf-8ace-4a71d006958d,Cookie Security,ASPNET
+Cookie Security: Overly Broad Path ,NA,f3aa0389-da45-47cf-8ace-4a71d006958d,Cookie Security,ASPNET
+Cookie Security: Persistent Cookie ,CWE ID 539 ,f3aa0389-da45-47cf-8ace-4a71d006958d,Cookie Security,ASPNET
+Weak Cryptographic Hash ,CWE ID 310 ,0010a1e4-6d8f-41a4-8eaf-d047398a34bc,Weak Cryptographic Hash,ASPNET
+Weak Encryption ,CWE ID 327 ,676b874a-f1e3-4957-855e-c386bd289e22,Weak Encryption,ASPNET
+Weak Encryption: Inadequate RSA Padding,CWE ID 325 ,676b874a-f1e3-4957-855e-c386bd289e22,Weak Encryption,ASPNET
+Weak Encryption: Insufficient Key Size ,CWE ID 310 ,676b874a-f1e3-4957-855e-c386bd289e22,Weak Encryption,ASPNET

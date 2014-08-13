@@ -1,0 +1,57 @@
+<h2>Page: <b>Invoke Web Services for : OnlineStorage</b></h2>
+
+<script type="text/javascript">
+		
+		var data = {
+						url: TM.tmWebServices + 'GetTime',
+						params: '{}',
+						table: [	
+							//{ name: 'GetAllUserLogs'			, url: TM.tmWebServices + 'GetAllUserLogs' 					, params: '{}' },
+							{ name: 'GetAllLibraryIds'			, url: TM.tmWebServices + 'GetAllLibraryIds' 					, params: '{}' }, 						
+							{ name: 'GetLibraryById'			, url: TM.tmWebServices + 'GetLibraryById' 					, params: '{ libraryId: "ea854894-8e16-46c8-9c61-737ef46d7e82"}' },
+							{ name: 'CreateLibrary'				, url: TM.tmWebServices + 'CreateLibrary' 						, params: '{ library : { id: "10000000-0000-0000-0000-000000000000", caption : "temp_lib_12345" } }' },
+							{ name: 'UpdateLibrary'				, url: TM.tmWebServices + 'UpdateLibrary' 						, params: '{ library : { id: "10000000-0000-0000-0000-000000000000", caption : "temp_lib_12345AAA" } }' },
+							{ name: 'DeleteLibrary'				, url: TM.tmWebServices + 'DeleteLibrary' 						, params: '{ libraryId: "10000000-0000-0000-0000-000000000000"}' },
+							{ name: 'UnDeleteLibrary'			, url: TM.tmWebServices + 'UnDeleteLibrary' 					, params: '{ libraryId: "10000000-0000-0000-0000-000000000000"}' },
+							{ name: 'DeleteTempLibraries'		, url: TM.tmWebServices + 'DeleteTempLibraries' 				, params: '{}' },
+							{ name: 'GetDeletedLibraries'		, url: TM.tmWebServices + 'GetDeletedLibraries' 				, params: '{}' },
+							{ name: 'DeleteDeletedLibraries'	, url: TM.tmWebServices + 'DeleteDeletedLibraries' 			, params: '{}' },
+							{ name: 'CreateView'				, url: TM.tmWebServices + 'CreateView' 						, params: '{ folderId: "" , view : { id: "10000000-1000-0000-0000-000000000000", parentFolder : "a folder (from web)", caption : "test view (from web)", creatorCaption : "guidanceLibrary" , criteria : "", library: "10000000-0000-0000-0000-000000000000" } }' },
+							{ name: 'UpdateView'				, url: TM.tmWebServices + 'UpdateView' 						, params: '{ view : { id: "10000000-1000-0000-0000-000000000000", parentFolder : "a folder - updated (from web)", caption : "test view - updated(from web)", creatorCaption : "guidanceLibrary" , criteria : "", library: "10000000-0000-0000-0000-000000000000" } }' },
+							{ name: 'GetViewByID'				, url: TM.tmWebServices + 'GetViewByID' 						, params: '{ viewId: "10000000-1000-0000-0000-000000000000"}' },
+/*							{ name: 'GetGuidanceTypes'			, url: TM.tmWebServices + 'GetGuidanceTypes' 					, params: '{}' }, 								
+							{ name: 'CreateGuidanceType'		, url: TM.tmWebServices + 'CreateGuidanceType' 				, params: '{ guidanceType : { id: "10000000-1000-0000-1000-000000000000", name : "name (from web)", caption : "caption_(from web)",listCaption : "listCaption (from web)", newCaption : "newCaption (from web)" , exampleContent : "exampleContent (from web)",templateSchemaContent : "templateSchemaContent (from web)", templateContent : "templateContent (from web)", lastUpdate : "6/26/2011 4:50:37 PM", lastUpdateSpecified : "true"  }, columns : ["1","2"] }'},
+							{ name: 'DeleteGuidanceType'		, url: TM.tmWebServices + 'DeleteGuidanceType' 				, params: '{ guidanceTypeId: "10000000-1000-0000-1000-000000000000"}' },
+							{ name: 'DeleteDeletedGuidanceTypes', url: TM.tmWebServices + 'DeleteDeletedGuidanceTypes' 		, params: '{}' }, 													
+							{ name: 'UpdateGuidanceType'		, url: TM.tmWebServices + 'UpdateGuidanceType' 				, params: '{ guidanceType : { id: "10000000-1000-0000-1000-000000000000", name : "name updated (from web)", caption : "caption_(from web)",listCaption : "listCaption (from web)", newCaption : "newCaption (from web)" , exampleContent : "exampleContent (from web)",templateSchemaContent : "templateSchemaContent (from web)", templateContent : "templateContent (from web)", lastUpdate : "6/26/2011 4:50:37 PM", lastUpdateSpecified : "true"  }, columns : ["1","2", "3","aa4"] }'},
+							{ name: 'GetGuidanceTypeById'		, url: TM.tmWebServices + 'GetGuidanceTypeById' 				, params: '{ guidanceTypeId: "10000000-1000-0000-1000-000000000000"}' },
+							{ name: 'GetGuidanceTypeByName'		, url: TM.tmWebServices + 'GetGuidanceTypeByName' 				, params: '{ guidanceTypeName: "roadmap"}' },
+							{ name: 'GetGuidanceTypeColumns'	, url: TM.tmWebServices + 'GetGuidanceTypeColumns' 			, params: '{ guidanceTypeId: "10000000-1000-0000-1000-000000000000"}' },
+							{ name: 'GetSchemaById'				, url: TM.tmWebServices + 'GetSchemaById' 						, params: '{ schemaId: ""}' },
+*/
+							{ name: 'GetGuidanceItemById'		, url: TM.tmWebServices + 'GetGuidanceItemById' 				, params: '{ guidanceItemId: "d64765a5-8649-47a1-bbc4-17eeece413c7"}' },
+							{ name: 'CreateGuidanceItem'		, url: TM.tmWebServices + 'CreateGuidanceItem' 				, params: '{ guidanceItem: { "topic": "Topic..", "technology": "Technology....", "category": "Category...", "rule_Type": "RuleType...", "priority": "Priority...", "status": "Status..", "author": "Author..." , "libraryId": "10000000-0000-0000-0000-000000000000", "guidanceType": "f531f722-47d1-43a3-b0cf-62cf5dcf8c35", "creatorId": "fbb1db92-c314-4fb0-a0db-1ff82bc2d68f", "creatorCaption": "guidanceLibrary", "title": "GI title", "images": "GI images", "lastUpdate": "\\\\/Date(1309232562210)\\\\/" , "htmlContent": "GI HTML content"} } ' },							
+							{ name: 'UpdateGuidanceItem'		, url: TM.tmWebServices + 'UpdateGuidanceItem' 				, params: '{ guidanceItem: { guidanceItemId: "" , "topic": "Topic..", "technology": "Technology....", "category": "Category...", "rule_Type": "RuleType...", "priority": "Priority...", "status": "Status..", "author": "Author..." , "libraryId": "10000000-0000-0000-0000-000000000000", "guidanceType": "f531f722-47d1-43a3-b0cf-62cf5dcf8c35", "creatorId": "fbb1db92-c314-4fb0-a0db-1ff82bc2d68f", "creatorCaption": "guidanceLibrary", "title": "GI title", "images": "GI images", "lastUpdate": "\\\\/Date(1309232562210)\\\\/" , "htmlContent": "GI HTML content"} } ' },							
+							{ name: 'DeleteGuidanceItem'		, url: TM.tmWebServices + 'DeleteGuidanceItem' 				, params: '{ guidanceItemId: ""}' },
+							{ name: 'DeleteView'				, url: TM.tmWebServices + 'RemoveViewFromFolder' 				, params: '{ libraryId : "4235a580-704a-4b5b-84e4-5070762182c4" , folder: "", viewId : "a22742ec-b932-46cf-a95b-f6a8547b6b72"}' },													
+							{ name: '* UpdateGuidanceItemHtml'	, url: TM.tmWebServices + 'UpdateGuidanceItemHtml' 			, params: '{ guidanceItemId: "", htmlContent: ""}' },
+							{ name: 'AddGuidanceItemsToView'	, url: TM.tmWebServices + 'AddGuidanceItemsToView' 			, params: '{ viewId : "10000000-1000-0000-0000-000000000000" , guidanceItemIds: [""]  }' },
+							{ name: 'RemoveGuidanceItemsFromView', url: TM.tmWebServices + 'RemoveGuidanceItemsFromView' 		, params: '{ viewId : "10000000-1000-0000-0000-000000000000" , guidanceItemIds: [""]  }' }
+							
+							
+
+							
+							//{ name: 'RemoveGuidanceTypeColumns', url: TM.tmWebServices + 'RemoveGuidanceTypeColumns' 		, params: '{ schemaId: ""}' },														
+
+							
+							
+														
+							 
+						]
+					};
+
+		jQuery('#local_JS_Page').load(TM.ControlPanel.WebServices.configDir + 'Invoke_WebServices.html?time=' + new Date().getTime());
+</script>		
+
+<div id="local_JS_Page"> </div>
+

@@ -1,0 +1,18 @@
+﻿
+@using TeamMentor.CoreLib;
+@using FluentSharp.CoreLib;
+@using TeamMentor.FileStorage
+
+@{
+    var tmDatabase = TM_Xml_Database.Current;    
+    var guidanceExplorers = tmDatabase.GuidanceExplorers_XmlFormat.Values;
+}
+<h4>Library Data: Libraries Xml</h4>
+<p>
+    Here are is the serialization of the <b>@guidanceExplorers.size()</b> library(ies) currently loaded (the files on disk should match)<br/>
+</p>
+    @foreach(var guidanceExplorer in guidanceExplorers)
+    {
+        <b>@guidanceExplorer.library.caption</b><span> - @guidanceExplorer.library.name</span>
+        <pre>@guidanceExplorer.toXml();</pre>
+    }

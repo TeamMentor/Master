@@ -1,0 +1,52 @@
+﻿
+@using TeamMentor.CoreLib
+@using FluentSharp.CoreLib;
+
+@{
+    var sendEmails = new SendEmails();
+    var sentMessages = SendEmails.Sent_EmailMessages.reverse();
+    var serverConfigured = sendEmails.serverNotConfigured() ? "No, emails are NOT being sent" : "Yes, emails ARE being sent";    
+    var index = sentMessages.size();
+}
+
+<h4>Email Messages (current TM Process)</h4>
+<p>
+    <b>Is email system configured:</b> @serverConfigured    <br/>
+    <b># of messsages:</b> @sentMessages.size()     <br/>
+    <b>TM_Server_URL</b>: @SendEmails.TM_Server_URL <br/>
+</p>
+<br/>
+<style>
+ table { table-layout: auto; }
+ table th, table td { overflow: auto; }
+</style>
+    <table class="table table-striped table-condensed">
+        <tr>
+            <th>#</th>
+            <th>Created</th>
+            <th>To</th>
+            <th>Subject</th>
+            <th>Sent Status</th>
+            <th>Message</th>            
+        </tr>
+    @foreach (var message in sentMessages)
+    {
+        var trClass = (message.SentStatus == SentStatus.Offline ||  message.SentStatus == SentStatus.Error) ? "error" : "";
+        <tr class="@trClass" >
+            <td> @(--index)</td>            
+            <td> @message.Created_Date.fromFileTimeUtc()</td>                    
+            <td> @message.To </td>                        
+            <td> @message.Subject </td>
+            <td> @message.SentStatus </td>
+            <td>
+                <pre style="height: 3pc; overflow-y: scroll;">@message.Message</pre>
+            </td>
+            <!--<td><textarea class="input-xxlarge" >@message.Message </textarea> </td>            -->
+            
+        </tr>
+    }
+    </table>
+
+
+
+

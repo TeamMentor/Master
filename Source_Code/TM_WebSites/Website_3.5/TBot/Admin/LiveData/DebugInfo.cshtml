@@ -1,0 +1,67 @@
+﻿
+@using FluentSharp.CoreLib
+@using FluentSharp.CoreLib.API
+@using FluentSharp.Web
+@using TeamMentor.CoreLib
+@using TeamMentor.FileStorage
+
+@{
+    var tmRest    = (TM_REST) @Model;
+    var session   = HttpContextFactory.Session;
+    var log_Lines = tmRest.Admin_Logs().trim().fix_CRLF().lines().removeEmpty().reverse(); 
+    var tmFileStorage = TM_FileStorage.Current;
+}
+
+<h4>Debug Info</h4>
+
+Firebase Offline Logs: <a href="Firebase_Offline_Activities">Activites</a>, <a href="Firebase_Offline_DebugMsgs">Debug Messages</a>, <a href="Firebase_Offline_RequestUrls">Request Urls</a>
+<h5>TM Config values</h5>        
+    <ul>
+        <pre>
+<strong>TM_Xml_Database.Current.path_XmlDatabase()</strong>        : @tmFileStorage.path_XmlDatabase()
+<strong>TM_Xml_Database.Current.path_XmlLibraries()</strong>       : @tmFileStorage.path_XmlLibraries()
+<strong>TM_UserData.Current.path_UserData()</strong>               : @tmFileStorage.path_UserData()
+<strong>TM_UserData.Current.Path_SiteData</strong>                 : @tmFileStorage.path_SiteData()
+<strong>AppDomain.CurrentDomain.BaseDirectory</strong>             : @AppDomain.CurrentDomain.BaseDirectory
+<strong>O2 Temp Dir</strong>                                       : @PublicDI.config.O2TempDir
+<strong>trackingApplication().realTime_LogFilePath()</strong>      : @TM_StartUp.Current.trackingApplication().realTime_LogFilePath()
+</pre>
+        
+    </ul>        
+<br/>
+
+@{
+    try
+    {
+        var keys = session.Keys;            // handles case when session.Keys throws an exception
+    }
+    catch
+    {
+        return;
+    }
+}
+ 
+<h5>Session Values</h5>        
+    <ul>
+        @foreach (string key in session.Keys)
+        {
+            <li>@key: @session[key]</li>
+        }
+    </ul>
+
+<br />
+<h5>Logs (latest first)</h5>
+<ul>
+    <code>@foreach (var line in log_Lines)
+                 {        
+                     var color = "black";
+                     if (line.starts("DEBUG:"))
+                     {   color = "green"; }
+                     else if (line.starts(new List<string> {"ERROR:", "Exception:"}))
+                     {   color = "red"; }        
+                     <span style='color:@color'>@line</span><br/>
+                 }        
+           </code>     
+</ul>            
+
+

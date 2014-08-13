@@ -1,0 +1,98 @@
+﻿<script>
+    //var TMUser =angular.module('TMUser',[]);
+
+    function EditObject($scope, $http) {
+        var asmxService = '/Aspx_Pages/TM_WebServices.asmx/';
+        var invokeService = function (method, parameters, onSuccess) {
+            $http.post(asmxService + method, parameters)
+                .success(function (data) {
+                    onSuccess(data.d);
+                })
+                .error(function (data, status, headers, config) {
+                    _data = data;
+                    _status = status;
+                    _headers = headers;
+                    _config = config;
+                    alert(data.Message);
+                });
+        };
+        var setCSRFToken_And_TriggerDataLoad = function () {
+            invokeService('Current_User',
+                {},
+                function (data) {
+                    $http.defaults.headers.post['CSRF-Token'] = data.CSRF_Token;
+                    loadTMConfigData();
+                });
+        };
+        var loadTMConfigData = function () {
+            invokeService('TMServerFileLocation',
+                {},
+                function (data) {
+                    $scope.TMConfigPath = data;
+                });
+
+            invokeService('TMServerFile',
+                {},
+                function (data) {
+                    $scope.objectToEdit = angular.toJson(data, true);                    
+                    $scope.message = "data loaded";
+                });
+        };
+
+        $scope.saveRawObject = function () {
+            $scope.message = "saving data";
+
+            invokeService('SetTMServerFile', { tmServer: angular.fromJson($scope.objectToEdit) },
+                function (result) {
+                    $scope.message = "data saved: " + result;
+                    //loadTMConfigData();
+                });
+
+        };
+
+        setCSRFToken_And_TriggerDataLoad();
+    };   
+</script>
+
+
+<h4>Editing TMServer.Config file (and preview)</h4>
+
+<br/>
+<br/>
+<div ng-controller="EditObject">
+    
+    <div><strong></strong>          : </div>
+    <form role="form">                
+        <div class="form-group col-sm-12">
+            <label class="col-sm-2 control-label">TMConfig.Config path</label>
+            <div class="col-sm-10">               {{TMConfigPath}}</div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">File Contents (Raw Edit)</label>
+            <div class="col-sm-10">
+                <textarea ng-model="objectToEdit" rows="20" class="form-control">        </textarea>
+                <br />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button class="btn btn-primary" ng-click="saveRawObject()">Save</button>
+                    <span>{{message}}</span>
+                </div>
+            </div>
+        </div>       
+    </form>
+
+
+
+    <!--
+    <pre>
+        
+        
+    <textarea ng-model="objectToEdit"  rows="15" class="input-xxlarge" >        </textarea>
+    <button class="btn btn-primary" ng-click="saveObject()">Save</button>
+    <span>{{message}}</span>
+    <textarea ng-model="liveObject"  rows="15" class="input-xxlarge" disabled>        </textarea>
+-->
+</div>

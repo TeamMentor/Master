@@ -1,0 +1,257 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{04B01F87-4467-454F-B9F3-305647BB4E86}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TeamMentor.UnitTests</RootNamespace>
+    <AssemblyName>TeamMentor.UnitTests</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <SkipPostSharp>False</SkipPostSharp>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <SkipPostSharp>False</SkipPostSharp>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FluentSharp.CoreLib, Version=5.5.0.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\FluentSharp.CoreLib.5.5.167\lib\net35\FluentSharp.CoreLib.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentSharp.Moq, Version=5.5.0.0, Culture=neutral, PublicKeyToken=cb5cfe5e99ebc2b4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\FluentSharp.Moq.5.5.167\lib\net45\FluentSharp.Moq.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentSharp.NGit, Version=5.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\FluentSharp.NGit.5.5.167\lib\net40\FluentSharp.NGit.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentSharp.NUnit, Version=5.5.0.0, Culture=neutral, PublicKeyToken=c018b382c771f737, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\FluentSharp.NUnit.5.5.167\lib\net35\FluentSharp.NUnit.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentSharp.Web_3_5, Version=5.5.0.0, Culture=neutral, PublicKeyToken=1439893e489faed4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\FluentSharp.Web_3_5.5.5.167\lib\net35\FluentSharp.Web_3_5.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentSharp.Web_4_5, Version=5.5.0.0, Culture=neutral, PublicKeyToken=0188572cb8cf4bdd, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\FluentSharp.Web_4_5.5.5.167\lib\net45\FluentSharp.Web_4_5.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentSharp.WinForms, Version=5.5.0.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\FluentSharp.WinForms.5.5.167\lib\net35\FluentSharp.WinForms.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentSharp.Xml, Version=1.0.0.0, Culture=neutral, PublicKeyToken=e20c9643c6d4ac0b, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\FluentSharp.Xml.5.5.167\lib\net35\FluentSharp.Xml.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Mono.Posix, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL" />
+    <Reference Include="Mono.Security, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL" />
+    <Reference Include="Moq, Version=4.2.1402.2112, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Moq.4.2.1402.2112\lib\net40\Moq.dll</HintPath>
+    </Reference>
+    <Reference Include="NGit, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="NSch, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Sharpen, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">
+      <Visible>False</Visible>
+    </CodeAnalysisDependentAssemblyPaths>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CoreLib\Authentication\Test_RoleBaseSecurity.cs" />
+    <Compile Include="CoreLib\Authentication\Test_TeamMentorUserManagement_TMUser.cs" />
+    <Compile Include="TeamMentor.Aspx\Test_GZip.cs" />
+    <Compile Include="TeamMentor.Aspx\Test_TM_Authentication.cs" />
+    <Compile Include="CoreLib\Authentication\Test_TokenAuthentication.cs" />
+    <Compile Include="CoreLib\Authentication\Test_UserRoleBaseSecurity.cs" />
+    <Compile Include="CoreLib\Authentication\Test_WindowsAuthentication.cs" />
+    <Compile Include="CoreLib\HandleRequest\Test_HandleRequest_UserData.cs" />
+    <Compile Include="CoreLib\Schemas\Test_TMUser.cs" />
+    <Compile Include="CoreLib\Schemas\Test_TM_Config.cs" />
+    <Compile Include="CoreLib\Schemas\Test_TM_SecretData.cs" />
+    <Compile Include="CoreLib\Schemas\Test_TM_Status.cs" />
+    <Compile Include="TeamMentor.Aspx\Test_TM_Authentication__with_No_State.cs" />
+    <Compile Include="TeamMentor.FileStorage\Test_TM_FileStorage.cs" />
+    <Compile Include="TeamMentor.FileStorage\Test_TM_FileStorage_Utils.cs" />
+    <Compile Include="TeamMentor.FileStorage\Test_TM_Server_FileStorage.cs" />
+    <Compile Include="TeamMentor.FileStorage\Test_TM_UserData.cs" />
+    <Compile Include="CoreLib\Schemas\Test_WhoAmI.cs" />
+    <Compile Include="CoreLib\HandleRequest\Test_HandleUrlRequest.cs" />
+    <Compile Include="CoreLib\HandleRequest\Test_HandleRequest_LibraryData.cs" />
+    <Compile Include="CoreLib\Schemas\Test_Schemas_Validation.cs" />
+    <Compile Include="CoreLib\Tracking\Firebase\Test_API_Firebase_SubmitQueue.cs" />
+    <Compile Include="CoreLib\Tracking\Test_TM_Logger_Memory.cs" />
+    <Compile Include="CoreLib\Messaging\Test_Email.cs" />
+    <Compile Include="CoreLib\HandleRequest\Test_HandleRequest_Redirects.cs" />
+    <Compile Include="TeamMentor.FileStorage\Test_TM_SecretData.cs" />
+    <Compile Include="TeamMentor.Schemas\UserData\Test_TM_UserData.cs" />
+    <Compile Include="CoreLib\Test_Tracking_Application.cs" />
+    <Compile Include="Asmx_WebServices\Test_WebServices_Security.cs" />
+    <Compile Include="CoreLib\Tracking\Test_Tracking_Application.cs" />
+    <Compile Include="REST_Direct\Test_REST_Users.cs" />
+    <Compile Include="REST_Direct\Test_TBot.cs" />
+    <Compile Include="TeamMentor.Schemas\Events\Test_Events_TM_UserData.cs" />
+    <Compile Include="TeamMentor.Schemas\Events\Test_Events_TM_Database.cs" />
+    <Compile Include="TeamMentor.Schemas\Events\Test_TM_Events.cs" />
+    <Compile Include="TeamMentor.Git\Test_TM_UserData_Git.cs" />
+    <Compile Include="TeamMentor.FileStorage\TM_XmlDatabase\Test_Library_SaveToDisk.cs" />
+    <Compile Include="TeamMentor.FileStorage\TM_XmlDatabase\Test_LoadLibrariesFromDisk.cs" />
+    <Compile Include="TeamMentor.SiteData\Test_SiteData_Routing.cs" />
+    <Compile Include="TeamMentor.UserData\Authentication\ExtensionMethods\Test_RoleBaseSecurity_ExtensionMethods.cs" />
+    <Compile Include="TeamMentor.Schemas\TM_Server\Test_TM_Server_Utils.cs" />
+    <Compile Include="TM_XmlDatabase\Test_TM_TestData.cs" />
+    <Compile Include="TM_XmlDatabase\Test_Setup.cs" />
+    <Compile Include="TeamMentor.FileStorage\TM_XmlDatabase\Test_TM_Xml_Database.Config.cs" />
+    <Compile Include="TM_XmlDatabase\Test_TM_Xml_Database.cs" />
+    <Compile Include="TeamMentor.Git\Test_UserData_GitStorage.cs" />
+    <Compile Include="TeamMentor.UserData\Users\Test_Users_Creation.cs" />
+    <Compile Include="TeamMentor.UserData\Test_Users_Sessions.cs" />
+    <Compile Include="TeamMentor.UserData\Test_Users_UserActivities.cs" />
+    <Compile Include="_Test_ConfigAndHelpers\Misc_TeamMenTor_Database_ExtensionMethods.cs" />
+    <Compile Include="_Test_ConfigAndHelpers\Tests_Config.cs" />
+    <Compile Include="_Test_ConfigAndHelpers\TM_Config_InMemory.cs" />
+    <Compile Include="_Test_ConfigAndHelpers\TM_Test_Utils_Extension_Methods.cs" />
+    <Compile Include="_Test_ConfigAndHelpers\TM_UserData_InMemory.cs" />
+    <Compile Include="_Test_ConfigAndHelpers\TM_WebServices_FileStorage.cs" />
+    <Compile Include="_Test_ConfigAndHelpers\TM_WebServices_InMemory.cs" />
+    <Compile Include="_Test_ConfigAndHelpers\TM_XmlDatabase_FileStorage.cs" />
+    <Compile Include="_Test_ConfigAndHelpers\TM_XmlDatabase_InMemory.cs" />
+    <Compile Include="_Test_ConfigAndHelpers\TM_Rest_Hosted.cs" />
+    <Compile Include="_Test_ConfigAndHelpers\TM_Rest_Direct.cs" />
+    <Compile Include="REST_Direct\RBAC_Functions.cs" />
+    <Compile Include="REST_Direct\CheckConfigurationAndSetup.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="REST_Direct\REST_Hosted\TM_REST_Host.cs" />
+    <Compile Include="REST_Direct\Test_REST_Admin.cs" />
+    <Compile Include="REST_Direct\Test_TmConfig.cs" />
+    <Compile Include="REST_Direct\Test_REST_User_Management.cs" />
+    <Compile Include="REST_Direct\REST_Hosted\Test_TM_Rest_Hosted.cs" />
+    <Compile Include="Asmx_WebServices\Test_WebServices_User_Management.cs" />
+    <Compile Include="TeamMentor.UserData\Test_Users_Activities.cs" />
+    <Compile Include="TeamMentor.UserData\Test_Users_Management.cs" />
+    <Compile Include="WebSite_Content\Test_CheckJavascriptResources.cs" />
+    <Compile Include="TeamMentor.UserData\Test_Users_Rbac.cs" />
+    <Compile Include="CoreLib\Test_JavascriptCombiner.cs" />
+    <Compile Include="Asmx_WebServices\Test_Libraries.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Asmx_WebServices\Test_Views_Folders_Articles.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="WebSite_Content\Test_WebConfig.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="_Test_ConfigAndHelpers\TM_XmlDatabase_Library_Download_Helpers.cs" />
+    <Compile Include="_Test_ConfigAndHelpers\_Extra_ExtensionMethods\Extra_NUnit_ExtensionMethods.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\TM_Backend\TeamMentor.Asmx\TeamMentor.Asmx.csproj">
+      <Project>{AF783625-F52F-4558-B64C-AC982324A072}</Project>
+      <Name>TeamMentor.Asmx</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\TM_Backend\TeamMentor.AspNet\TeamMentor.AspNet.csproj">
+      <Project>{5B02BD8E-BF90-4182-80A6-41842494399D}</Project>
+      <Name>TeamMentor.AspNet</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\TM_Backend\TeamMentor.Database\TeamMentor.Database.csproj">
+      <Project>{e08703fb-d33c-4acd-b679-c1be867d6f0c}</Project>
+      <Name>TeamMentor.Database</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\TM_Backend\TeamMentor.FileStorage\TeamMentor.FileStorage.csproj">
+      <Project>{F5ACC621-5930-45E8-9595-39E1758CA7A9}</Project>
+      <Name>TeamMentor.FileStorage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\TM_Backend\TeamMentor.Git\TeamMentor.Git.csproj">
+      <Project>{6F12D85C-EC73-4C85-8F96-B6D97604E2EF}</Project>
+      <Name>TeamMentor.Git</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\TM_Backend\TeamMentor.Rest\TeamMentor.Rest.csproj">
+      <Project>{5A89734A-4BA1-4076-A5BA-584223C05F56}</Project>
+      <Name>TeamMentor.Rest</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\TM_Backend\TeamMentor.Schemas\TeamMentor.Schemas.csproj">
+      <Project>{77E93D41-8457-45BD-82A8-37C0DEEC32AD}</Project>
+      <Name>TeamMentor.Schemas</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\TM_Backend\TeamMentor.SiteData\TeamMentor.SiteData.csproj">
+      <Project>{3D6CFD55-9A23-4210-B004-705EACD96EB5}</Project>
+      <Name>TeamMentor.SiteData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\TM_Backend\TeamMentor.Users\TeamMentor.Users.csproj">
+      <Project>{5844D933-6FB7-4717-AE60-85D96F2EFA29}</Project>
+      <Name>TeamMentor.Users</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Asmx_WebServices\Test_WebServices_Authentication.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="NGit_Dlls\ICSharpCode.SharpZipLib.dll" />
+    <Content Include="NGit_Dlls\Mono.Posix.dll" />
+    <Content Include="NGit_Dlls\Mono.Security.dll" />
+    <Content Include="NGit_Dlls\NGit.dll" />
+    <Content Include="NGit_Dlls\NSch.dll" />
+    <Content Include="NGit_Dlls\Sharpen.dll" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,160 @@
+﻿
+@using FluentSharp.CoreLib
+@using FluentSharp.Git
+@using TeamMentor.CoreLib
+@using TeamMentor.FileStorage
+
+@{
+    
+    int max;
+    TM_FileStorage tmFileStorage;
+    TM_UserData userData;
+    string userDataLocation;
+    string userStatus;
+    string xmlLibraryLocation;
+    string libraryStatus;
+    try
+    {
+        max = 5;
+        tmFileStorage = TM_FileStorage.Current;
+        userData = TM_UserData.Current;
+        if (userData.isNull() || tmFileStorage.isNull())
+        {
+            @:UserData object not available, stopping execution
+            return;
+        }
+        userDataLocation = tmFileStorage.Path_UserData;
+        userStatus  = userDataLocation.isGitRepository() ? userDataLocation.git_Open().status()  : "(folder is not a repository)";
+        xmlLibraryLocation = tmFileStorage.Path_XmlLibraries;
+        libraryStatus = xmlLibraryLocation.isGitRepository() ? xmlLibraryLocation.git_Open().status() : "(folder is not a repository)";
+
+    }
+    catch (Exception ex)
+    {
+        @:<hr /><b>Exception:</b> @ex.Message <pre>@ex.StackTrace</pre>
+        return;
+    }  
+                    
+}
+@if (userDataLocation.isGitRepository().isFalse())
+{
+    <span> @userDataLocation is not a git repo</span>
+    return;  
+}
+
+@{
+    
+    var nGit = userDataLocation.git_Open();
+    
+    //var gitRepository = nGit.Repository;  
+}
+<h4>Git Status</h4>
+<h5>User Data</h5>
+    <p>
+        <b>Location: </b>@userDataLocation  <br/>
+        <b>is Git:</b> @userDataLocation.isGitRepository()<br/>
+        <b>Repo Status:</b> @userStatus.trim()
+    </p>
+    
+    
+    
+@{
+    return;
+}        
+        
+    <b>Files:</b><br/>
+    <ul>
+        @foreach (var file in nGit.files().sort())
+        {
+            <li><a href="GitDiff_UserData_File?file=@file">@file</a></li>
+        }   
+    </ul>       
+<br/>
+
+    <b>Commits:</b><br/>
+    <ul>
+        
+        <table class="table table-striped table-condensed">
+            <tr>
+                <th>Who commited</th>
+                <th>Date</th>
+                <th>Message</th>            
+                <th>Diff</th>
+            </tr>   
+        
+        
+         @foreach (var xrefLog in nGit.commits().take(max))
+        {            
+            <tr>
+                <td>@xrefLog.author_Name()</td>
+                <td>@xrefLog.when()</td>
+                <td>@xrefLog.message().subString(0,1000)</td>                
+            </tr>
+        }
+        @foreach (var xrefLog in nGit.refLogs_Raw().take(max))
+        {            
+            <tr>
+                <td>@xrefLog.GetWho().GetName()</td>
+                <td>@xrefLog.GetWho().GetWhen()</td>
+                <td>@xrefLog.GetComment().subString(0,1000)</td>
+                <td><a href="GitDiff_UserData_Commit?fromId=@xrefLog.GetOldId().Name&toId=@xrefLog.GetNewId().Name">view</a></td>
+            </tr>
+        }      
+        @*          
+            @foreach (var commit in nGit.commits().take(max))
+        {            
+                
+                
+            <tr>
+                <td>@commit.author_Name()</td>
+                <td>@commit.when()</td>
+                <td>@commit.message()</td>
+                <td><a href="GitDiff_UserData_Commit?fromId=@commit.sha1&toId=@commit.sha1()">view</a></td>
+            </tr>
+            
+         }  
+         *@              
+        </table>    
+</ul>
+<h4>Xml Library Data</h4>
+<ul>
+
+    @{
+        
+    nGit = xmlLibraryLocation.git_Open();
+}
+Location: @xmlLibraryLocation  , is Git: @xmlLibraryLocation.isGitRepository()
+   
+    Repo Status:<pre>@libraryStatus.trim()</pre>
+
+    
+      <b>Commits:</b><br/>
+    <ul>
+        @{
+            if (@xmlLibraryLocation.isGitRepository().isFalse())
+            {
+                return;
+            }
+        }
+        <table class="table table-striped table-condensed">
+            <tr>
+                <th>Hash</th>
+                <th>Date</th>
+                <th>Message</th>            
+                <th>Diff</th>
+            </tr>   
+        
+        @foreach (var xrefLog in nGit.refLogs_Raw().take(max))
+        {            
+            <tr>
+                <td>@xrefLog.GetNewId().Name</td>
+                <td>@xrefLog.GetWho().GetWhen()</td>
+                <td>@xrefLog.GetComment().subString(0,1000)</td>
+                <td><a href="GitDiff_XmlDatabase_Commit?fromId=@xrefLog.GetOldId().Name&toId=@xrefLog.GetNewId().Name">view</a></td>
+            </tr>
+         }                
+        </table>    
+    </ul>
+</ul>
+
+

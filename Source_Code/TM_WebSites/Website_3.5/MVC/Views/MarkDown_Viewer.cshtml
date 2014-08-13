@@ -1,0 +1,17 @@
+﻿@using TeamMentor.Website
+@using System.Web.Mvc
+
+@inherits WebViewPage
+
+@{
+    ViewBag.Title = "This is the page Title";
+    Layout = "_Layout.cshtml";   
+
+}
+
+@Html.Raw(ViewData["Content"])
+
+<hr/>
+<p><a class="btn btn-primary" href='Editor?articleId=@ViewData["articleId"]'>Edit</a>
+
+

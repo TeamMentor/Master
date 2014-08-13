@@ -1,0 +1,15 @@
+﻿
+@using System.Linq
+@using FluentSharp.CoreLib
+@using FluentSharp.Web
+@using TeamMentor.CoreLib
+
+@{
+    var userData = TM_UserData.Current;    
+    
+    var actions = (from tmUser in userData.tmUsers()
+                      from activity in tmUser.UserActivities                        
+                      where activity.Action.valid()                    
+                      select activity.Action).unique().sort();
+}
+@Raw(actions.javascript_Serialize())

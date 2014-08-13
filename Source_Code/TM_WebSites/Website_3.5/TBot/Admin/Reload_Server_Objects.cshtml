@@ -1,0 +1,50 @@
+﻿
+<h4>Reloading Server objects</h4>
+
+<script>
+    //var TMUser =angular.module('TMUser',[]);
+
+    function EditObject($scope,$http)
+    {
+        $scope.reload_UserData = function()
+        {
+            $scope.message_userDataReload = "Reloading UserData";
+            $http.get('/rest/admin/reload_UserData', $scope.objectToEdit).success(function(result)
+                {
+                    $scope.message_userDataReload = "Done: " + result;
+                });
+        }
+        $scope.reload_TMConfig = function()
+        {
+            $scope.message_tmConfigReload = "Reloading UserData";
+            $http.get('/rest/admin/reload_TMConfig', $scope.objectToEdit).success(function(result)
+            {
+                $scope.message_tmConfigReload = "Done: " + result;
+            });
+        }
+        $scope.reload_Cache = function()
+        {
+            $scope.message_cacheReload = "Reloading UserData";
+            $http.get('/rest/admin/reload_Cache', $scope.objectToEdit).success(function(result)
+            {
+                $scope.message_cacheReload = "Done: " + result;
+            });
+        }
+
+    };
+</script>
+
+
+<div ng-controller="EditObject" ng-submit="update(userData)">
+
+
+    <button class="btn btn-primary" ng-click="reload_UserData()">Reload UserData (and Git Pull and Push)</button>
+    <span>{{message_userDataReload}}</span>
+    <br/><br/>
+    <button class="btn btn-primary" ng-click="reload_TMConfig()">Reload TMConfig</button>
+    <span>{{message_tmConfigReload}}</span>
+    <br/><br/>
+    <button class="btn btn-primary" ng-click="reload_Cache()">Reload Cache (will reload entire Xml database, including User data)</button>
+    <span>{{message_cacheReload}}</span>
+
+</div>

@@ -1,0 +1,67 @@
+		
+		<script src="/javascript/fileuploader/fileuploader.js" type="text/javascript"></script>
+		<link href="/javascript/fileuploader/fileuploader.css" rel="stylesheet" type="text/css">	
+		
+		
+		<script>
+				
+				
+				TM.ControlPanel.FileUpload = 	
+					{
+							uploadToken					: null
+						,	uploader					: {} 
+						,	defaultAction				: '/aspx_pages/File_Upload.ashx'
+						,	buildGui					: function()
+															{									         
+																this.uploader = new qq.FileUploader(
+																	{
+																			element			: document.getElementById('file-uploader')																		
+																		,	action			: '/aspx_pages/File_Upload.ashx'
+																		,   params			:  { } 
+																		,	debug			: false
+											
+																		,	onSubmit		: function(id, fileName)
+																								{ 																																																	
+																								} 
+								//										,	onProgress		: function(id, fileName, loaded, total){console.log("onProgress:" + fileName);}
+																		,	onComplete		: function(id, fileName, responseJSON)
+																								{ 																									
+																									TM.Events.onFileUploaded();
+																									TM.ControlPanel.FileUpload.getUploadToken();  // get another token
+																								}
+																		,	onCancel		: function(id, fileName)	{ console.log("onComplete");}
+
+																		,	messages: {}
+																		,	showMessage: function(message){ console.log(message); }
+																	});           
+																this.applyCss();
+																this.getUploadToken();
+															}        
+
+    					,	getUploadToken				: function()
+															{
+																var that = TM.ControlPanel.FileUpload;
+																$(that.uploader._options.element).hide();
+																var setUploadToken = function(token)
+																	{																		
+																		that.uploadToken = token;
+																		that.uploader.setParams({uploadToken : that.uploadToken});
+																		$(that.uploader._options.element).fadeIn();
+																	}
+																TM.WebServices.Helper.invoke_TM_WebService('GetUploadToken', {} , setUploadToken);
+															}
+																		
+						,	applyCss				: function()  
+								{
+									$(".qq-upload-drop-area").width(200);
+								}
+					}	
+					
+				$(function()
+				{														
+					TM.ControlPanel.FileUpload.buildGui();					
+				});
+		</script>
+	
+		<div id="file-uploader">				 </div>   
+	

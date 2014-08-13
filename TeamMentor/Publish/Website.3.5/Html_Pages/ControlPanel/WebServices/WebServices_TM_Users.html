@@ -1,0 +1,34 @@
+<h2>Page: <b>Invoke Web Services for : User Management</b></h2>
+
+<script type="text/javascript">
+		
+		var data = {
+						url: TM.tmWebServices + 'GetTime',
+						params: '{}',
+						table: [							
+							            { name: 'GetUser_byId'			 , url: TM.tmWebServices + 'GetUser_byID' 			, params: '{ userId:"1"}' }
+							        ,   { name: 'GetUser_byName'		 , url: TM.tmWebServices + 'GetUser_byName'			, params: '{ name:"admin"}' }
+							        ,   { name: 'GetUsers'				 , url: TM.tmWebServices + 'GetUsers'				, params: '{}' }
+							        ,   { name: 'CreateUser'			 , url: TM.tmWebServices + 'CreateUser'				, params: '{ newUser: { Username:"a", Password:"123",Wmail:"c",Firstname: "d", Lastname:"e", Note: "f" } }' }
+							        ,   { name: 'CreateUsers'			 , url: TM.tmWebServices + 'CreateUsers'		    , params: '{ newUsers: [  { Username:"a2", Password:"b",Email:"c",Firstname: "d", Lastname:"e", Note: "f" }  , { Username:"a1", Password:"b",Email:"c",Firstname: "d", Lastname:"e", Note: "f" } ]  }' }
+							        ,   { name: 'BatchUserCreation'		 , url: TM.tmWebServices + 'BatchUserCreation'		, params: '{ batchUserData: "test_user_1 , pwd , test, user1 \\\\n test_user_2 , pwd , test, user2" }' }
+							        ,   { name: 'DeleteUser'			 , url: TM.tmWebServices + 'DeleteUser' 			, params: '{ userId:"12345"}' }
+							        ,   { name: 'DeleteUsers'			 , url: TM.tmWebServices + 'DeleteUsers'		    , params: '{ userIds: [ "2","3" ]  }' }
+							        ,   { name: 'UpdateUser'			 , url: TM.tmWebServices + 'UpdateUser'		        , params: '{ userId : "12345", userName : "a1" , firstname  : "b1" , lastname : "c1" , title  : "d1" , company  : "e1" , email : "f1" , groupId:0 }' }
+							        ,   { name: 'SetUserPassword'	     , url: TM.tmWebServices + 'SetUserPassword'	    , params: '{ userId: "", password : "" }' }
+							        ,   { name: 'GetUserGroupName'		 , url: TM.tmWebServices + 'GetUserGroupId'			, params: '{ userId: "" }' }
+							        ,   { name: 'GetUserRoles'			 , url: TM.tmWebServices + 'GetUserRoles'			, params: '{ userId: "" }' }
+							        ,   { name: 'SetUserGroupId'		 , url: TM.tmWebServices + 'SetUserGroupId'			, params: '{ userId: "" , roleId: "2"}' }
+                                    ,   { name: 'SSO_GetSSOTokenForUser' , url: TM.tmWebServices + 'SSO_GetSSOTokenForUser'	, params: '{ userName: "admin"}' }
+                                    ,   { name: 'SetUser_PostLoginView'  , url: TM.tmWebServices + 'SetUser_PostLoginView'	, params:  '{ userName: "admin" , postLoginView : "Technology:Java"}' }
+                                    ,   { name: 'SetUser_PostLoginScript', url: TM.tmWebServices + 'SetUser_PostLoginScript', params:  '{ userName: "admin" , postLoginScript: "alert(42)" }' }                                                                        
+							
+							 
+						]
+					};
+
+		jQuery('#local_JS_Page').load(TM.ControlPanel.WebServices.configDir + 'Invoke_WebServices.html?time=' + new Date().getTime());
+</script>		
+
+<div id="local_JS_Page"> </div>
+

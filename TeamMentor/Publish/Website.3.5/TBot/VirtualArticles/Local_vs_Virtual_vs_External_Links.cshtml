@@ -1,0 +1,72 @@
+﻿@using TeamMentor.CoreLib;
+@using FluentSharp.CoreLib;
+
+@{
+    var tmDatabase = TM_Xml_Database.Current;
+    var articles = tmDatabase.Cached_GuidanceItems;
+    var index = 0;
+    var guidRexEx = @"([a-z0-9]{8}[-][a-z0-9]{4}[-][a-z0-9]{4}[-][a-z0-9]{4}[-][a-z0-9]{12})";
+    //var GUIDs = articleContent.matches(guidRexEx).select((match)=> match.Value);
+    
+    Func<String, List<string>> contentGuids =
+        (articleContent) =>
+            {
+                var guids = articleContent.matches(guidRexEx).select((match)=> match.Value);
+                return guids;                
+            };
+    Func<string, string> getGuidType =
+        (id) =>
+            {
+                if (tmDatabase.tmGuidanceItem(id.guid()).notNull())
+                    return "label-success";
+                if (tmDatabase.VirtualArticles.hasKey(id.guid()))
+                    return "label-primary";
+                return "label-default"; 
+                return "";
+            };
+
+}
+<h4>Local vs Virtual vs External Links</h4>
+<p>This page provides a mapping of the links that exists in Articles and their respective statusd (Local, Virtual or External)</p>
+<br />
+<b>Possible Article Status:</b>
+<ul>
+    <li><span class="label label-success">Local Articles</span>  - links that exist in the current TEAM Mentor Article Database</li>
+    <li><span class="label label-primary">Virtual Article</span> - Links that have a an explict mapping in this server (see <a href="Virtual_Articles_Mappings">Virtual Articles Mappings</a>)</li>
+    <li><span class="label label-default">External articles</span> - Links that will be redirected into the upstream TEAM Mentor server</li>
+</ul>
+<br/>
+<br />
+<b>Table with Article's GUID Links (mapped to its status)</b>
+<br/>
+<table class="table table-striped table-condensed">
+    <tr>
+        <th>#</th>            
+        <th>Title of page hosting the link (Guid)</th>                   
+        <th>Technology</th>   
+        <th>Phase</th>   
+        <th>Type</th>   
+        <th>Category</th>   
+        <th>Link Status (Local, Virtual, External)</th>         
+    </tr>
+    @foreach (var article in articles)
+    {
+        <tr>
+            <td>@(index++)</td>
+                    <td><a href="/article/@article.Key" target="_blank">@article.Value.Metadata.Title</a></td>                    
+                    <td>@article.Value.Metadata.Technology</td>
+                    <td>@article.Value.Metadata.Phase</td>
+                    <td>@article.Value.Metadata.Type</td>
+            <td>@article.Value.Metadata.Category</td>
+            <td><ul>
+                    @foreach(var guid in contentGuids(article.Value.Content.Data_Json))
+                    {
+                        <li><a href="/article/@guid"  target="_blank">
+                                <span class="label @getGuidType(@guid)">@guid</span>
+                            </a></li>
+                    }
+                </ul>
+            </td>
+        </tr>
+    }
+</table>

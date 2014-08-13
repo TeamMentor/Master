@@ -1,0 +1,131 @@
+﻿3.5 
+APPLICATION CHANGES:
+The following application changes are included in 3.5 release
+
+MAJOR IMPROVEMENTS
+- Markdown support 
+- Site Data, which is client customization, and User Data, which is config and Users information, are now separated
+- Virtual Articles is now supported for redirecting to another TM instance.
+- Checkmarx native integration for Checkmarx GUI
+- Direct Link article support, allows  /a/<any text> to be directly mapped to an article
+
+
+REQUIREMENTS
+
+Server:
++ Windows 2008/2012 with IIS 7.5
++ .NET Framework 4.5
+
+Client:
+IE8 (IE11 for Administration)
+FireFox
+Chrome 
+Safari
+
+
+DEFAULT ACCOUNTS
+
+Username: admin
+Password: !!tmadmin
+
+
+LOCAL WEBSITE
+
+To run TeamMentor locally run "start TeamMentor.bat" which will start a local WebServer (Cassini) on a high port: http://127.0.0.1:12120
+
+
+SUPPORT INFORMATION
+
++ For more information about TeamMentor, please see "TeamMentor Documentation" at http://docs.teammentor.net/
+
+
+DETAILED ISSUE LIST
+
+866 Explain the following observation with Library(es) repository  when Git for Library tracking is enabled
+865 In  Tbot  Import legacy users does not work. I don’t think we need this anymore.
+864 In Tbot Secred Data Config  SMTP Password needs to be a password field not a textbox
+863 Explain how does  "ForceDefaultAdminPassword" different from "Users_Create_Default_Admin":
+862 Explain what the following config options do:
+859 Tracking: Create a TM 3.5 SiteData customization for www.teamentor.net customizations
+858 Tracking: SSO No longer works for existing links in 3.5
+857 Link to TEAM Mentor instance points to "localhost" instead of FQDN in emails
+855 TBot issues on 3.5 RC instance deployed to Azure
+852 Unable to load Configs
+850 Git does not pull configured libraries.
+848 Unable to save user details when user tags are present
+847 Some parameters in TMServer.config editor gui are not in the files.
+846 Remove ALL unused configuration parameters from TMConfig.conf (including the GUI))
+845 Remove Git Configuration from TMConfig.config (including the GUI)
+844 TMConfig.config is not saved to disk
+842 Tracking Issue: McKesson New Random user feature is broken and needs to be fixed to be compatible with TM 3.5
+841 Enable direct link to an article.
+840 New articles should default to Markdown
+839 Git Commit for users and articles is broken in 3.5 (after refactoring)
+838 SiteData custom TBot pages can conflict with the main TBot pages
+837 Tracking Issue : TBOT Users_Accounts_Expiration broken in TEAM Mentor 3.5
+836 Tracking Issue : TBOT Users_Mapped_by_Email broken in TEAM Mentor 3.5
+835 Tracking Issue Upgrade TM_Portal.aspx code to 3.5 APIs (and SiteData location) 
+833 Some wikitext articles do not show up well in preview.
+831 Virtual Article redirect does not work if not logged in
+830 Issues in git file history. Lets get rid of it this release. 
+829 Get rid of "Control Panel"
+828 Include 3.4.3 - Cx integration into 3.5 
+827 Login redirect does not always work
+826 No lenght constraint on User Tags
+825 No way to change article type from Markdown to anything else
+824 No way to change article metadata in HTML/Wikitext editor
+823 Markdown editor should not be an option for wikitext/HTML articles 
+822 When NewUserEnabled is false  admin account is not created. 
+821 Old user accounts no longer work. 
+820 Ensure 3.5 WebServices Security match the 3.4 mappings
+818 3.5 SiteData needs to support ASPX pages
+815 set Strict-Transport-Security to a high value
+812 HTML view articles does not show up TEAM Mentor copyright footer note
+807 Regression Issues caused by major refactoring on 3.5 - Beta 3
+799 Spelling mistakes to fix on 3.5
+798 Problem in UserTags Tbot View
+796 Password reset emails are sent with link to Http (which are not redirected)
+795 Bug in saving newly created users
+791 CSRF on Login page
+785 Button text is changed to "Submitting Request" and nothing happens
+784 UI lenght constraints when creating a new user
+774 View Emails Sent no longer shows any emails. 
+771 #User #Signup #Form In chrome the article list disappears when you click on a box in a signup form
+770 Tbot User_Data location should not be set in User_Data TMconfig file and Tbot UI
+762 #Admin #Tbot: Offline Filebase shows an error
+748 There is no logout button when using AD integration
+735 Admin: Tbot: CSV import instructions should supply the format for the date
+716 Double-encoding Somewhere
+681 Navigating libraries/views/folders:  Clicking the icon doesn't work
+663 backport Virtual Articles feature to 3.4 as hotfix
+662 Updating PostSharp 3.0.40.9 in TM 3.4
+630 When opening an article the login page title is TeamMentor 3.2. It should be the current version of the product
+628 Some articles in /html/ are broken in Firefox
+597 tbot shows that it allows to change the username
+595 Tbot allows creation of users with duplicate email addresses
+587 Double-encoding in Notepad Editor
+585 Tables do not work in markdown
+577 The scrolling of the markdown text entry should be in sync with the scrolling of the preview. 
+576 not all wikitext articles render in full article view  they do render in preview 
+570 TM Bug: Click Library/Folder/View icon vs. Click Library/Folder/View name
+564 WikiCreole: ## doesn't provide proper secondary numbering
+558 Article links should not be under Virtual Articles
+549 Viewing library contents - clicking icon vs. clicking library name
+547 SSL redirect does not work for FF and IE (WAS:Tons of ssl redirect errors in teamMentor.net)
+537 Add Support for ASP.NET MVC 4.0 to TM
+535 Allow the default error message and redirect to be configurable via TMConfig
+532 Update Virtual Articles functionality and add upstream server
+524 Change UserRole and password from TBot user page
+523 Create Web Editor for VirtualArticles and add global redirect
+518 Remove ASP.NET version from response headers
+489 SITE_DOCS:Horizontal scroll bar when browser horizontal size is less then text
+488 SITE_DOCS: Navigation Menu scrolls up/down with the rest of text.
+487 SITE_DOCS: Double Encoding Bugs in the Docs View
+476 TM is accessible even though SSL Redirect is set to true on IIS6
+438 TBOT and REST pages vulnerable to CSRF
+427 RealTime web-based log view
+413 Use Password Field Rather than Text Field
+409 Log viewer shows no information
+305 Password Change should be a logged event
+187 TM stores passwords insecurely
+178 Error on Login using Email and valid pwd

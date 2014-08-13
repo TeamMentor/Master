@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E08703FB-D33C-4ACD-B679-C1BE867D6F0C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TeamMentor.CoreLib</RootNamespace>
+    <AssemblyName>TeamMentor.Database</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AntiXssLibrary, Version=4.3.0.0, Culture=neutral, PublicKeyToken=d127efab8a9c114f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\AntiXSS.4.3.0\lib\net40\AntiXssLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentSharp.CoreLib, Version=5.5.0.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\FluentSharp.CoreLib.5.5.167\lib\net35\FluentSharp.CoreLib.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentSharp.HtmlAgilityPack, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d7f3eb44d952a681, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\FluentSharp.HtmlAgilityPack.5.5.167\lib\net35\FluentSharp.HtmlAgilityPack.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentSharp.Web_3_5, Version=5.5.0.0, Culture=neutral, PublicKeyToken=1439893e489faed4, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\FluentSharp.Web_3_5.5.5.167\lib\net35\FluentSharp.Web_3_5.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentSharp.Web_4_5, Version=5.5.0.0, Culture=neutral, PublicKeyToken=0188572cb8cf4bdd, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\FluentSharp.Web_4_5.5.5.167\lib\net45\FluentSharp.Web_4_5.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentSharp.Xml, Version=1.0.0.0, Culture=neutral, PublicKeyToken=e20c9643c6d4ac0b, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\FluentSharp.Xml.5.5.167\lib\net35\FluentSharp.Xml.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlAgilityPack, Version=1.4.6.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\HtmlAgilityPack.1.4.6\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlSanitizationLibrary, Version=4.3.0.0, Culture=neutral, PublicKeyToken=d127efab8a9c114f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\AntiXSS.4.3.0\lib\net40\HtmlSanitizationLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ExtensionMethods\Extra_UserActivity_ExtensionMethods.cs" />
+    <Compile Include="ExtensionMethods\TeamMentor_Article_ExtensionMethods.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Schemas\GuidanceItem_V3.cs" />
+    <Compile Include="XmlDatabase\Articles\Articles_Cache.cs" />
+    <Compile Include="XmlDatabase\TM_Xml_Database_ExtensionMethods_XmlDataSources_Folder.Library.Views_and_Folders.cs" />
+    <Compile Include="XmlDatabase\TM_Xml_Database_ExtensionMethods_XmlDataSources_GuidanceExplorer.Library.GuidanceExplorer.cs" />
+    <Compile Include="XmlDatabase\TM_Xml_Database_ExtensionMethods_XmlDataSources_GuidanceItem.cs" />
+    <Compile Include="XmlDatabase\TM_Xml_Database_ExtensionMethods_XmlDataSources_GuidanceItems_Search.cs" />
+    <Compile Include="XmlDatabase\TM_Xml_Database_ExtensionMethods_XmlDataSources_View.cs" />
+    <Compile Include="XmlDatabase\TM_Xml_Database_ExtensionMethods_XmlDataSources_Views_and_Folders_Guid_Fixes.cs" />
+    <Compile Include="XmlDatabase\TM_Xml_Database_ExtensionMethods_XML_DataSources_TM_Library.cs" />
+    <Compile Include="XmlDatabase\TM_Xml_Database.Config.cs" />
+    <Compile Include="XmlDatabase\TM_Xml_Database.Library.cs" />
+    <Compile Include="XmlDatabase\TM_Xml_Database.Library.GuidanceItem.cs" />
+    <Compile Include="XmlDatabase\TM_Xml_Database.Virtual_Articles.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TeamMentor.Markdown\TeamMentor.Markdown.csproj">
+      <Project>{24b43f80-c6f2-4ec9-985a-28dda363aa2c}</Project>
+      <Name>TeamMentor.Markdown</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TeamMentor.Schemas\TeamMentor.Schemas.csproj">
+      <Project>{77e93d41-8457-45bd-82a8-37c0deec32ad}</Project>
+      <Name>TeamMentor.Schemas</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TeamMentor.Users\TeamMentor.Users.csproj">
+      <Project>{5844d933-6fb7-4717-ae60-85d96f2efa29}</Project>
+      <Name>TeamMentor.Users</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,134 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <title>C# REPL on the Web - using O2Platform's FluentSharp.CoreLib</title>
+
+    <meta charset="utf-8">
+
+      <meta name="description" content="A Browser based C# REPL">
+    <meta name="author" content="Dinis Cruz">
+    <meta name="author" content="O2 Platform">
+
+
+    <!--
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Droid+Sans:regular,bold|Inconsolata|PT+Sans:400,700">    	
+    -->
+	<link href="bootstrap.css" rel="stylesheet" type="text/css" />
+	<link href="gui.css" rel="stylesheet" type="text/css" />  <!-- based on the original src/css/jshint.css -->
+	<link href="../WebEditor/codeMirror/codemirror.css" rel="stylesheet" type="text/css" />
+    
+
+	<script src="/Javascript/jQuery/jquery-1.8.1.min.js" type="text/javascript"></script>
+	<script src="O2_REPL.js" type="text/javascript"></script>
+	<script src="/Javascript/json/json2.js" type="text/javascript"></script>
+    
+	<script src="../WebEditor/codeMirror/codemirror.js" type="text/javascript"></script>
+	<script src="../WebEditor/codeMirror/clike.js" type="text/javascript"></script>
+
+    <script type="text/javascript">
+  
+		var executeCode = function()
+			{
+				$("#execute").html("Compiling");
+				$('div.alert-message.success').fadeOut();				
+				$('div.alert-message.error').fadeOut();				
+				O2Platform.JS.executeCSharpCode(Editor.getValue(), showResult, showError);
+			};
+
+		var showResult = function(result)
+			{
+				if (result.search("Compilation failed:") > -1)
+					showError(result);
+				else
+					$('div.alert-message.success').html(result).fadeIn();				
+				
+				$("#execute").html("Execute");
+			};
+
+		var showError = function(error)
+			{
+				$('div.alert-message.error').html(error).fadeIn();				
+				$("#execute").html("Execute");
+			};
+
+		$(function()
+			{
+				$("#execute").click(executeCode);
+				$('div.alert-message.info').click(executeCode);
+				O2Platform.JS.GetTeamMentorCRSF(executeCode);
+			});
+
+    </script>
+  </head>
+
+  <body>
+    <div class="topbar-wrapper navigation">
+      <div class="topbar">
+        <div class="fill">
+          <div class="container">
+            <h3><a href="#">Web C# REPL (for TeamMentor)</a></h3>
+
+            <ul>              
+			  <li><a href="http://diniscruz.blogspot.co.uk/p/owasp-o2-platform.html"	target="_blank">Powered by the O2 Platform</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container editor">
+      <div class="editorArea">
+
+		<div class="alert-message info">
+          <p><span class="logo"><string>Web C# REPL</string></span> is a simple wrapper on O2 Platform's FluentSharp.CoreLib API</p>		  
+        </div>
+
+          <textarea id="code" cols="120" rows="10">return TM_FileStorage.Current.Path_XmlDatabase;
+
+//using TeamMentor.CoreLib;
+//using TeamMentor.FileStorage;
+//O2Ref:TeamMentor.Schemas.dll
+//O2Ref:TeamMentor.Database.dll
+//O2Ref:TeamMentor.FileStorage.dll</textarea>
+		
+        <div class="buttons">			
+			<button data-action="lint" class="btn" id="execute">Execute</button>
+        </div>
+
+		<br />
+
+        <div class="alert-message error" style="display:none;">
+			...
+        </div>
+
+        <div class="alert-message success" style="display:none;">
+			...
+        </div>
+
+        
+
+        
+		
+      </div>
+
+    </div>
+
+
+    <script>
+	
+
+		var Editor = CodeMirror.fromTextArea(document.getElementById("code"), 
+						{
+							lineNumbers  : true,
+							matchBrackets: true,
+							resize       : true,    
+							mode: "text/x-csharp"
+						});
+
+		Editor.focus();			
+    </script>
+
+
+  </body>
+</html>

@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{77E93D41-8457-45BD-82A8-37C0DEEC32AD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TeamMentor.CoreLib</RootNamespace>
+    <AssemblyName>TeamMentor.Schemas</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FluentSharp.CoreLib, Version=5.5.0.0, Culture=neutral, PublicKeyToken=55a0f9bf4256d533, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\FluentSharp.CoreLib.5.5.167\lib\net35\FluentSharp.CoreLib.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Events\Events_TM_User.cs" />
+    <Compile Include="Events\Events_TM_UserData.cs" />
+    <Compile Include="Events\TM_Event.cs" />
+    <Compile Include="Events\TM_Event_ExtensionMethods.cs" />
+    <Compile Include="XmlDatabase\DataViewers\JsDataTable.cs" />
+    <Compile Include="XmlDatabase\DataViewers\JsTreeNode.cs" />
+    <Compile Include="XmlDatabase\Folder_V3.cs" />
+    <Compile Include="XmlDatabase\Legacy\guidanceexplorer.cs" />
+    <Compile Include="XmlDatabase\Legacy\OnlineStorage_Library.cs" />
+    <Compile Include="XmlDatabase\Legacy\TM_Library.cs" />
+    <Compile Include="XmlDatabase\Library_V3.cs" />
+    <Compile Include="XmlDatabase\VirtualArticleAction.cs" />
+    <Compile Include="Misc\EmailMessage.cs" />
+    <Compile Include="XmlDatabase\TeamMentor_Article.cs" />
+    <Compile Include="Misc\KeyValue.cs" />
+    <Compile Include="Misc\SecurityAttributes.cs" />
+    <Compile Include="Events\Events_TM_Xml_Database.cs" />
+    <Compile Include="TM_Server\TM_Server.cs" />
+    <Compile Include="Config\TM_Status.cs" />
+    <Compile Include="XmlDatabase\TM_Gui_Objects.cs" />
+    <Compile Include="Misc\WhoAmI.cs" />
+    <Compile Include="Config\TMConsts.cs" />
+    <Compile Include="XmlDatabase\TM_Xml_Database.cs" />
+    <Compile Include="UserData\TMUser.cs" />
+    <Compile Include="UserData\TM_Credentials.cs" />
+    <Compile Include="UserData\TM_User.cs" />
+    <Compile Include="UserData\NewUser.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Config\TMConfig.cs" />
+    <Compile Include="Logging\TM_FirebaseConfig.cs" />
+    <Compile Include="UserData\TM_SecretData.cs" />
+    <Compile Include="UserData\TM_UserData.cs" />
+    <Compile Include="XmlDatabase\View_V3.cs" />
+    <Compile Include="UserData\UserActivities.cs" />
+    <Compile Include="TM_Server\TM_Server_Utils.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

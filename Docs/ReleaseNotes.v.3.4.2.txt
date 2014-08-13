@@ -1,0 +1,120 @@
+3.4.2
+This is a hotfix addressing a number of Internet Explorer 8 and 9 issues.
+
+
+3.4.1
+TEAM Mentor release 3.4.1 includes a number of back-end and front end enhancements gathered from customer feedback and requirements. This includes custom user fields in signup form, and user approval workflow, better activity logging and reporting, single sign on enhancements as well as a number of bug fixes and performance enhancements. Content changes include .NET 2.0 Library update,  .NET 3.5 Library Update, and updates to the Vulnerability library.
+
+
+APPLICATION CHANGES
+The following application changes are included in 3.4.1 release.
+
+MAJOR IMPROVEMENTS
+- User signup approval flow, where admin can now approve new users via email
+- Custom defined fields in the user registration form
+- Improvements in controlling what is shown to anonymous (non-logged in users)
+- Overhaul of the admin interface
+- Centralized logging using Firebase
+- Improved User Activity tracking and reporting
+- Email template improvements
+- AD integration fixes
+- SSO improvements and integration with TEAM Professor
+- Bulk user import using CSV file
+- Branding changes
+
+DETAIL ISSUE LIST
++ #779 Performance issue caused by Git Commit of UserData 
++ #772 #UserLogin #Signup: Signup fails when Job/Title field is longer than 50 characters: No descriptive error is displayed 
++ #768 Improvements to the email approval upon registration 
++ #766 #Admin #Tbot - Unable to access Activity logs directly 
++ #765 #Admin #UserTags: Key and Value pairs are reversed between XML and Tbot
++ #760 #Admin #Config: No emails should be sent on AD user creation 
++ #757 #Admin: #Config When ContentToAnonymousUser is configured in User_Data and LibraryToAnonymousUser in default config LibraryToAnonymousUser defaults to false
++ #751 Admin: Tbot: View secret data and View TM Config throw an O2 error 
++ #750 #Admin #Tbot: Edit TMConfig in tbot looks unusable: 
++ #747 #Integration #AD Change password button should be removed, when using AD integration 
++ #746 #Integration #AD There is no way to log in as a local TM account. 
++ #745 #Integration #AD No user activity or other data is stored in an XML file. 
++ #744 #Integration #AD User gets created with a 30 day expiration date. 
++ #743 #Integration #AD Group membership is not enforced. 
++ #740 Admin: Tbot: CSV import: accidently clicking twice on Create Accounts, creates multiple accounts: 
++ #739 Admin: Tbot: CSV import same email can be set for multiple users 
++ #734 Add the ability to add extra data fields to the TMUser object 
++ #733 Use Git.exe to clone when it exists on the current server 
++ #730 Problem installing TM from an existing User_Data repository 
++ #725 Add firebase support to TM as shown in the AD PoC 
++ #724 SSO implementation should have a 1x1 pixel image such that it can be called from absorb 
++ #717 SSO does not work with other direct links 
++ #710 Change TM branding per marketing requirements
++ #709 Integrate SSO into main TM code base 
++ #698 Active Directory integration is currently broken. 
++ #692 Brief for TBot page on: CVS import Spec
++ #688 No email/expiration date in the CSV user creation. 
++ #608 #Admin #Config #Tbot: Tbot should edit the tmconfig.xml located in User_Data not in Webroot 
++ #602 Migrate CSV user creation from control pannel to tbot 
++ #542 Add SSO support to TM (as done for Portal)
++ #499 IT should be possible to configure TM to allow admin to remove the expiration date from user account 
++ #481 #Admin #Config #Tbot: Add better editing for TMConfig in Tbot (WAS:Add Admin UI option to control the expired settings) 
++ #370 Provide ability to select which email alerts to send
++ #365 Provide a facility to migrate user with Eval account to a paying user or extend the eval (change expiration date)
+
+
+CONTENT CHANGES
+
+The TeamMentor 3.4.1 release includes the following content changes:
+
+Vulnerability Library Update
+
+A number of articles to the new Vulnerability library has been added to aid integration with code vulnerability scanners. A vulnerability type article directs the user to the guidance for implementing the relevant countermeasures and course materials for background information. The Vulnerability pages are designed to be used from a code scanner, but can be used independently. The Vulnerability library currently has 221 articles and it is growing rapidly.
+
+.NET 2.0 Library Update
+
+921 items have been removed to optimize the reading experience.
+Previous versions include "Question and Answer" type articles that are essentially the same in function as "Checklist Item" type articles. Additionally, many "Checklist Item" type articles were nearly identical. The result was that the library was difficult to navigate because of many similar articles. The redundant articles have been removed and the quality of the remaining articles has been improved.
+
+.NET 3.5 Library Update
+
+943 items have been removed to optimize the reading experience.
+Previous versions include "Question and Answer" type articles, that are essentially the same in function as "Checklist Item" type articles. Additionally, many "Checklist Item" type articles were nearly identical. The result was that the library was difficult to navigate because of many similar articles. The redundant articles have been removed and the quality of the remaining articles has been improved.
+
+.NET 4.0 Library Update
+
+8 items have been added to facilitate scanner integration.
+Guidelines and Checklist Items have been added to support integration with the Fortify scanner.
+
+Java Library Update
+
+16 items have been added to facilitate scanner integration.
+Guidelines and Checklist Items have been added to support integration with the Fortify scanner.
+
+C++ Library Update
+
+16 items have been added to facilitate scanner integration.
+Guidelines and Checklist Items have been added to support integration with the Fortify scanner.
+
+PHP Library Update
+
+22 items have been added to facilitate scanner integration. 
+Guidelines and Checklist Items have been added to support integration with the Fortify scanner.
+
+
+REQUIREMENTS
+
++ Windows
++ .NET Framework 4.0
+
+
+DEFAULT ACCOUNTS
+
+Username: admin
+Password: !!tmadmin
+
+
+LOCAL WEBSITE
+
+To run TeamMentor locally run "start TeamMentor.bat" which will start a local WebServer (Cassini) on a high port: http://127.0.0.1:12120
+
+
+SUPPORT INFORMATION
+
++ For more information about TeamMentor, please see "TeamMentor Documentation" at http://docs.teammentor.net/

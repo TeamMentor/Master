@@ -1,0 +1,29 @@
+﻿
+@using System.Linq
+@using FluentSharp.CoreLib
+@using FluentSharp.Web
+@using TeamMentor.CoreLib
+
+@{
+    var userData = TM_UserData.Current;    
+    var max      = "max".request_Value_Int(1000);
+    var who      = "who".request_Value_String();
+    var action   = "action".request_Value_String();
+    var activities = (from tmUser in userData.tmUsers()
+                      from activity in tmUser.UserActivities
+                      where (who   .notValid() || activity.Who   .regEx(who   )) &&
+                            (action.notValid() || activity.Action.regEx(action))
+                      orderby activity.When
+                      //select activity                         // can't do this because of legacy issue with When and When_JS
+                      select new
+                          {
+                                When      = activity.When.fromFileTimeUtc().jsDate(),   
+//                                When_JS   = activity.When_JS,                            // this was only introducedin 3.4.1 (so older version of the data don't have it)
+                                Who       = activity.Who,
+                                Detail    = activity.Detail,
+                                Action    = activity.Action,
+                                IPAddress = activity.IPAddress
+                          }
+                      ).Reverse().toList().take(max);
+}
+@Raw(activities.javascript_Serialize())
