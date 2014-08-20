@@ -56,7 +56,8 @@ namespace TeamMentor.CoreLib
             {        
                 if (action == "teammentor")
                     tmWebServices.logUserActivity("Open TeamMentor", "The HomePage (ie. http://.../teamMentor)");
-                context.Response.ContentType = "text/html";		
+                context.Response.ContentType = "text/html";
+                Server_Transfers[action].siteData_Handle_VirtualPath();
                 context.Server.Transfer(Server_Transfers[action],true);   // will throw "Thread was being aborted exception                
             }            
         }
