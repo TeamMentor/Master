@@ -1,4 +1,8 @@
-﻿3.5 
+3.5.1 
+This is a hotfix addressing issue 877 GuidanceItemViewer and GuidanceItemEditor customizations are not picked up.
+
+
+3.5 
 APPLICATION CHANGES:
 The following application changes are included in 3.5 release
 
