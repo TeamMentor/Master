@@ -19,7 +19,8 @@ namespace TeamMentor.FileStorage
 
             tmXmlDatabase.Events.Articles_Cache_Updated .add((tmArticle)=> tmFileStorage.queue_Save_GuidanceItemsCache());
             tmXmlDatabase.Events.Article_Saved          .add((tmDatabase, tmArticle) => tmFileStorage.article_Save(tmArticle));           
-            tmXmlDatabase.Events.Library_Deleted        .add((tmDatabase, tmLibrary) => tmFileStorage.library_Deleted(tmLibrary));                       
+            tmXmlDatabase.Events.Library_Deleted        .add((tmDatabase, tmLibrary) => tmFileStorage.library_Deleted(tmLibrary));
+            tmXmlDatabase.Events.Article_Deleted        .add((tmDatabase, tmArticle) => tmFileStorage.article_Delete(tmArticle));                       
             tmXmlDatabase.Events.GuidanceExplorer_Save  .add((tmDatabase, guidanceExplorer) => guidanceExplorer.guidanceExplorer_Save(tmFileStorage));           
             return tmFileStorage;
         }
