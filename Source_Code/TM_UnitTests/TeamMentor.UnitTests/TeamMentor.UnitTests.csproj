@@ -119,6 +119,7 @@
     <Compile Include="CoreLib\Schemas\Test_TM_SecretData.cs" />
     <Compile Include="CoreLib\Schemas\Test_TM_Status.cs" />
     <Compile Include="TeamMentor.Aspx\Test_TM_Authentication__with_No_State.cs" />
+    <Compile Include="TeamMentor.FileStorage\Test_TM_FileStorage_Libraries.cs" />
     <Compile Include="TeamMentor.FileStorage\Test_TM_FileStorage.cs" />
     <Compile Include="TeamMentor.FileStorage\Test_TM_FileStorage_Utils.cs" />
     <Compile Include="TeamMentor.FileStorage\Test_TM_Server_FileStorage.cs" />
