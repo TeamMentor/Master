@@ -3,6 +3,7 @@ using System.Security;
 using NUnit.Framework;
 using FluentSharp.CoreLib;
 using TeamMentor.CoreLib;
+using TeamMentor.FileStorage;
 using urn.microsoft.guidanceexplorer;
 using View = TeamMentor.CoreLib.View;
 
@@ -184,6 +185,48 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             tmXmlDatabase.delete_Library(library);
         }
 
+        [Test][Assert_Admin]
+        public void Create_And_Delete_Article()
+        {
+            UserGroup.Admin.assert();
+          
+            var tmFileStorage = new TM_FileStorage(loadData:true);
+            tmXmlDatabase = tmFileStorage.TMXmlDatabase;
+
+            var library = tmXmlDatabase.new_TmLibrary(library_Name);
+            //Create folders
+            var newFolderInLibrary = tmXmlDatabase.xmlDB_Add_Folder(library.Id, folder_In_Library_Name);
+            var newViewInLibrary = tmXmlDatabase.xmlDB_NewView(new View { library = library.Id.str(), caption = view_In_Library_Name });
+            var newViewInFolder = tmXmlDatabase.xmlDB_NewView(newFolderInLibrary.folderId.guid(), new View { library = library.Id.str(), caption = view_In_Folder_Name });
+
+            //Check that they are there
+            var tmView1 = tmXmlDatabase.tmView(newViewInLibrary.id.guid());
+            var tmView2 = tmXmlDatabase.tmView(newViewInFolder.id.guid());
+            Assert.AreEqual(tmView1.caption, newViewInLibrary.caption, "tmView1.caption");
+            Assert.AreEqual(tmView2.caption, newViewInFolder.caption, "tmView2.caption");
+
+            Assert.IsTrue(tmView1.guidanceItems.count()==0);
+
+            var Id = Guid.Parse("40D29566-1CA9-4C4A-938E-283B2274FB10");
+            tmXmlDatabase.xmlDB_AddGuidanceItemToView(tmView1.viewId, Id);
+            tmXmlDatabase.Cached_GuidanceItems.Add(Id, new TeamMentor_Article());
+            tmXmlDatabase.save();
+            tmXmlDatabase.xmlDB_Delete_GuidanceItem(Id);
+            tmXmlDatabase.save();
+            Assert.IsTrue(tmXmlDatabase.Events.Article_Deleted.count()==1);
+
+            //Delete and check that they are not there
+            var result1 = tmXmlDatabase.xmlDB_RemoveView(library, tmView1.viewId);
+            var result2 = tmXmlDatabase.xmlDB_RemoveView(tmView1.libraryId, tmView2.viewId);
+            var tmView1_AfterDelete = tmXmlDatabase.tmView(newViewInLibrary.id.guid());
+            var tmView2_AfterDelete = tmXmlDatabase.tmView(newViewInFolder.id.guid());
+
+            Assert.IsTrue(result1, "result 1 was false");
+            Assert.IsTrue(result2, "result 2 was false");
+            Assert.IsNull(tmView1_AfterDelete, "tmView1 was still there after delete");
+            Assert.IsNull(tmView2_AfterDelete, "tmView2 was still there after delete");
+            tmXmlDatabase.delete_Library(library);
+        }
     }
 
 }
