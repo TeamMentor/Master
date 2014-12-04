@@ -23,7 +23,7 @@ namespace TeamMentor.UnitTests.CoreLib
             var testUser  = "user".add_RandomLetters(10);                       
             var testPwd   = "!!Pwd".add_RandomLetters(10);
             userData.newUser(testUser, testPwd).tmUser();                           //create test user     
-            userSessionId = userData.login(testUser, testPwd);
+            userSessionId = userData.login(testUser, testPwd).Token;
             Assert.AreNotEqual(userSessionId,Guid.Empty);
             "Current User SessionID: {0}".info(userSessionId);
         }

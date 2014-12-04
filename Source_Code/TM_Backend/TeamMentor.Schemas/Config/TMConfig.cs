@@ -10,7 +10,8 @@ namespace TeamMentor.CoreLib
         public static TMConfig              Current                     { get; set; }
 
         public TMSetup_Config               TMSetup                     { get; set; }
-        public TMSecurity_Config			TMSecurity				    { get; set; }        
+        public TMSecurity_Config			TMSecurity				    { get; set; }
+        public TMErrorMessages_Config       TMErrorMessages              { get; set; }
         public WindowsAuthentication_Config WindowsAuthentication		{ get; set; }       
         public OnInstallation_Config		OnInstallation				{ get; set; }
         public VirtualArticles_Config       VirtualArticles             { get; set; }
@@ -22,6 +23,7 @@ namespace TeamMentor.CoreLib
 
             TMSetup                 = new TMSetup_Config();
             TMSecurity              = new TMSecurity_Config();
+            TMErrorMessages         = new TMErrorMessages_Config();
             WindowsAuthentication   = new WindowsAuthentication_Config();
             OnInstallation          = new OnInstallation_Config();            
             VirtualArticles         = new VirtualArticles_Config();
@@ -35,6 +37,7 @@ namespace TeamMentor.CoreLib
             public bool         EnableGZipForWebServices	{ get; set; }
             public bool         Enable304Redirects			{ get; set; }
             public bool         ShowDotNetDebugErrors	    { get; set; }
+            public bool         ShowDetailedErrorMessages   { get; set; }
 
             public TMSetup_Config()
             {
@@ -44,6 +47,7 @@ namespace TeamMentor.CoreLib
                 Enable304Redirects          = true;
                 EnableGZipForWebServices    = true;                  
                 ShowDotNetDebugErrors       = false;
+                ShowDetailedErrorMessages = true;
             }
         }
 
@@ -62,6 +66,7 @@ namespace TeamMentor.CoreLib
             public string 		Default_AdminPassword        { get; set; }	
             public string 		Default_AdminEmail           { get; set; }
             public bool 		EmailAdmin_On_NewUsers       { get; set; }
+            public string General_Error_Message              { get; set; }
 
             public TMSecurity_Config()                                          //need to do this here so that they survive serialization
             {
@@ -74,10 +79,19 @@ namespace TeamMentor.CoreLib
                 Default_AdminUserName        = TMConsts.USERDATA_DEFAULT_ADMIN_USERNAME;
                 Default_AdminPassword        = TMConsts.USERDATA_DEFAULT_ADMIN_PASSWORD;
                 Default_AdminEmail           = TMConsts.USERDATA_DEFAULT_ADMIN_EMAIL;
-                EmailAdmin_On_NewUsers       = true; 
+                EmailAdmin_On_NewUsers       = true;
+                General_Error_Message       =  TMConsts.DEFAULT_ERROR_MESSAGE;
             }            
         }
-        
+
+        public class TMErrorMessages_Config : MarshalByRefObject
+        {
+            public string AccountExpiredErrorMessage { get; set; }
+            public string AccountDisabledErrorMessage { get; set; }
+            public string PasswordNoMatchErrorMessage { get; set; }
+            public string UserNameNoExistErrorMessage { get; set; }
+        }
+
         public class WindowsAuthentication_Config : MarshalByRefObject
         {				
             public bool		    Enabled		                { get; set; }

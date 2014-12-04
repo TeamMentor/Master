@@ -32,45 +32,45 @@ namespace TeamMentor.CoreLib
             }
             return Guid.Empty;    			
         }*/
-        public static Guid              login (this TM_UserData userData, string username, string password)
-        {
-            try
-            {                
-                if (username.valid() && password.valid())
-                {
-                    var tmUser = userData.tmUser(username);
+        //public static Guid              login (this TM_UserData userData, string username, string password)
+        //{
+        //    try
+        //    {                
+        //        if (username.valid() && password.valid())
+        //        {
+        //            var tmUser = userData.tmUser(username);
 
-                    if (tmUser.notNull())
-                    {
-                       // tmUser.SecretData.SessionID = Guid.Empty;          // reset the user SessionID
-                        if (tmUser.account_Expired())
-                        {
-                            tmUser.logUserActivity("Account Expired", "Expiry date: {0}".format(tmUser.AccountStatus.ExpirationDate));
-                            return Guid.Empty;
-                        }
-                        var pwdOk = tmUser.SecretData.PasswordHash == tmUser.createPasswordHash(password);
-                        if (pwdOk)
-                        {
-                            if(tmUser.account_Enabled())
-                                return tmUser.login("Password");                    // call login with a new SessionID            
+        //            if (tmUser.notNull())
+        //            {
+        //               // tmUser.SecretData.SessionID = Guid.Empty;          // reset the user SessionID
+        //                if (tmUser.account_Expired())
+        //                {
+        //                    tmUser.logUserActivity("Account Expired", "Expiry date: {0}".format(tmUser.AccountStatus.ExpirationDate));
+        //                    return Guid.Empty;
+        //                }
+        //                var pwdOk = tmUser.SecretData.PasswordHash == tmUser.createPasswordHash(password);
+        //                if (pwdOk)
+        //                {
+        //                    if(tmUser.account_Enabled())
+        //                        return tmUser.login("Password");                    // call login with a new SessionID            
                             
-                            tmUser.logUserActivity("Login Fail",  "pwd ok, but account disabled");
-                        }
-                        else
-                        {                            
-                            tmUser.logUserActivity("Login Fail", "bad pwd");                            
-                        }
-                    }
-                    else
-                        userData.logTBotActivity("Login Fail", "bad username: {0}".format(username));
-                }
-            }
-            catch (Exception ex)
-            {
-                ex.log("[TM_Xml_Database] login");                
-            }
-            return Guid.Empty;    			
-        }
+        //                    tmUser.logUserActivity("Login Fail",  "pwd ok, but account disabled");
+        //                }
+        //                else
+        //                {                            
+        //                    tmUser.logUserActivity("Login Fail", "bad pwd");                            
+        //                }
+        //            }
+        //            else
+        //                userData.logTBotActivity("Login Fail", "bad username: {0}".format(username));
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ex.log("[TM_Xml_Database] login");                
+        //    }
+        //    return Guid.Empty;    			
+        //}
         public static Guid              login (this TMUser tmUser, string loginMethod = "Direct")                                         
         {         
             return TM_UserData.Current.login(tmUser, loginMethod);
@@ -96,6 +96,101 @@ namespace TeamMentor.CoreLib
             }
             return Guid.Empty;
         }
+
+        public static Login_Response login(this TM_UserData userData, string username, string password)
+        {
+            //Object Initalization
+            var response = new Login_Response();
+            try
+            {
+                if (username.valid() && password.valid())
+                {
+                    var tmUser = userData.tmUser(username);
+                    var tmConfig = TMConfig.Current;
+
+                    if (tmUser.notNull())
+                    {
+                        if (tmUser.account_Expired())
+                        {
+                            tmUser.logUserActivity("Account Expired", "Expiry date: {0}".format(tmUser.AccountStatus.ExpirationDate));
+                            response.Login_Status = Login_Response.LoginStatus.Validation_Failed;
+                            if (tmConfig.showDetailedErrorMessages())
+                            {
+                                response.Validation_Results.Add(new Validation_Results
+                                {
+                                    Field = "ExpirationDate",
+                                    Message = TMConfig.Current.TMErrorMessages.AccountExpiredErrorMessage.ToString()
+                                   // Message = "Account Expired.Expiry date: {0}".format(tmUser.AccountStatus.ExpirationDate)
+                                    
+                                });
+                            }
+                            else
+                                response.Simple_Error_Message= tmConfig.TMSecurity.General_Error_Message;
+
+                            return response;
+                        }
+                        var pwdOk = tmUser.SecretData.PasswordHash == tmUser.createPasswordHash(password);
+                        if (pwdOk)
+                        {
+                            if (tmUser.account_Enabled())
+                            {
+                                var token = tmUser.login("Password");
+                                response.Token = token;
+                                response.Login_Status = Login_Response.LoginStatus.Login_Ok;
+                                return response;
+                            }
+                            tmUser.logUserActivity("Login Fail", "pwd ok, but account disabled");
+                            response.Login_Status = Login_Response.LoginStatus.Validation_Failed;
+                            if (tmConfig.showDetailedErrorMessages())
+                            {
+                                response.Validation_Results.Add(new Validation_Results
+                                {
+                                    Field = "UserEnabled",
+                                    Message = TMConfig.Current.TMErrorMessages.AccountDisabledErrorMessage
+                                });
+                            }
+                            else
+                                response.Simple_Error_Message = tmConfig.TMSecurity.General_Error_Message;
+                            return response;
+                        }
+                        tmUser.logUserActivity("Login Fail", "bad pwd");
+                        response.Login_Status = Login_Response.LoginStatus.Login_Fail;
+                        if (tmConfig.showDetailedErrorMessages())
+                        {
+                            response.Validation_Results.Add(new Validation_Results
+                            {
+                                Field = "Password",
+                                Message = TMConfig.Current.TMErrorMessages.PasswordNoMatchErrorMessage
+                            });
+                        }
+                        else
+                            response.Simple_Error_Message = tmConfig.TMSecurity.General_Error_Message;
+                        return response;
+                    }
+                    userData.logTBotActivity("Login Fail", "bad username: {0}".format(username));
+                    response.Login_Status = Login_Response.LoginStatus.Login_Fail;
+                    if (tmConfig.showDetailedErrorMessages())
+                    {
+                        response.Validation_Results.Add(new Validation_Results
+                        {
+                            Field = "Username",
+                            Message = TMConfig.Current.TMErrorMessages.UserNameNoExistErrorMessage
+                        });
+                    }
+                    else
+                    {
+                        response.Simple_Error_Message = tmConfig.TMSecurity.General_Error_Message;
+                    }
+                    return response;
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.log("[TM_Xml_Database] login");
+            }
+            return response;
+        }
+
         public static bool              logout(this TMUser tmUser)
         {
             var sessionIDs = tmUser.session_sessionIds();

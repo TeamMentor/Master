@@ -238,7 +238,7 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
         //Helper method
         public Guid Login_As_User(string username, string password)
         {
-            var sessionId = tmWebServices.Login(username, password);
+            var sessionId = tmWebServices.Login(username, password).Token;
             HttpContextFactory.Context.addCookieFromResponseToRequest("Session");
             Assert.AreNotEqual(sessionId , Guid.Empty, "Failed to login As {0}".format(username));
             Assert.AreEqual   (tmWebServices.Current_User().UserName, username);

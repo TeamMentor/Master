@@ -15,7 +15,10 @@ namespace TeamMentor.CoreLib
         [DataMember][StringLength(30)]    public string   State       { get; set; }		
 		[DataMember][StringLength(255)]    public string   Title      { get; set; }
 
-        [DataMember][Required][StringLength(99)]    public string           Password    { get; set; }
+        [DataMember][Required][StringLength(99)]
+        [MinLength(8, ErrorMessage ="Password must be at least 8 characters")]
+        [RegularExpression("/^[a-zA-Z0-9]+$/",ErrorMessage = "Password must contain a non-letter and a non-number character")]
+        public string           Password    { get; set; }
 		[DataMember][Required][StringLength(30)]    public string           Username    { get; set; }
 
         [DataMember][Required][StringLength(50)]

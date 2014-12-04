@@ -20,6 +20,7 @@ namespace TeamMentor.CoreLib
         public static string USERDATA_DEFAULT_ADMIN_USERNAME  = "admin";
         public static string USERDATA_DEFAULT_ADMIN_PASSWORD  = "!!tmadmin";        
         public static string USERDATA_DEFAULT_ADMIN_EMAIL     = "TM_alerts@securityinnovation.com";
+        public static string DEFAULT_ERROR_MESSAGE            = "An error occurred";
         
         public static int    FIREBASE_SUBMIT_QUEUE_MAX_WAIT    = 60000;
         public static string FIREBASE_AREA_DEBUG_MSGS          = "debugMsgs";

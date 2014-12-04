@@ -139,31 +139,32 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
 
             //change using tmUser
             tmUser.setPassword(password1);
-            Assert.AreNotEqual(Guid.Empty,userData.login(tmUser.UserName, password1));
-            Assert.AreEqual   (Guid.Empty,userData.login(tmUser.UserName, password2));
-            Assert.AreEqual   (Guid.Empty,userData.login(tmUser.UserName, password3));
-            Assert.AreEqual   (Guid.Empty,userData.login(tmUser.UserName, password4));
+            Assert.AreNotEqual(Guid.Empty,userData.login(tmUser.UserName, password1).Token);
+            Assert.AreEqual   (Guid.Empty,userData.login(tmUser.UserName, password2).Token);
+            Assert.AreEqual   (Guid.Empty,userData.login(tmUser.UserName, password3).Token);
+            Assert.AreEqual   (Guid.Empty,userData.login(tmUser.UserName, password4).Token);
 
             //change using tmUser.UserID
             userData.setUserPassword(tmUser.UserID,password2);
-            Assert.AreEqual   (Guid.Empty,userData.login(tmUser.UserName, password1));
-            Assert.AreNotEqual(Guid.Empty,userData.login(tmUser.UserName, password2));
-            Assert.AreEqual   (Guid.Empty,userData.login(tmUser.UserName, password3));
-            Assert.AreEqual   (Guid.Empty,userData.login(tmUser.UserName, password4));
+            Assert.AreEqual   (Guid.Empty,userData.login(tmUser.UserName, password1).Token);
+            Assert.AreEqual   (Guid.Empty,userData.login(tmUser.UserName, password1).Token);
+            Assert.AreNotEqual(Guid.Empty,userData.login(tmUser.UserName, password2).Token);
+            Assert.AreEqual   (Guid.Empty,userData.login(tmUser.UserName, password3).Token);
+            Assert.AreEqual   (Guid.Empty,userData.login(tmUser.UserName, password4).Token);
 
             //change using tmUser.UserName
             userData.setUserPassword(tmUser.UserName,password3);
-            Assert.AreEqual   (Guid.Empty,userData.login(tmUser.UserName, password1));
-            Assert.AreEqual   (Guid.Empty,userData.login(tmUser.UserName, password2));
-            Assert.AreNotEqual(Guid.Empty,userData.login(tmUser.UserName, password3));
-            Assert.AreEqual   (Guid.Empty,userData.login(tmUser.UserName, password4));
+            Assert.AreEqual   (Guid.Empty,userData.login(tmUser.UserName, password1).Token);
+            Assert.AreEqual   (Guid.Empty,userData.login(tmUser.UserName, password2).Token);
+            Assert.AreNotEqual(Guid.Empty,userData.login(tmUser.UserName, password3).Token);
+            Assert.AreEqual   (Guid.Empty,userData.login(tmUser.UserName, password4).Token);
 
             //change using password hash
             tmUser.setPasswordHash(tmUser.createPasswordHash(password4));
-            Assert.AreEqual   (Guid.Empty,userData.login(tmUser.UserName, password1));
-            Assert.AreEqual   (Guid.Empty,userData.login(tmUser.UserName, password2));
-            Assert.AreEqual   (Guid.Empty,userData.login(tmUser.UserName, password3));
-            Assert.AreNotEqual(Guid.Empty,userData.login(tmUser.UserName, password4));
+            Assert.AreEqual   (Guid.Empty,userData.login(tmUser.UserName, password1).Token);
+            Assert.AreEqual   (Guid.Empty,userData.login(tmUser.UserName, password2).Token);
+            Assert.AreEqual   (Guid.Empty,userData.login(tmUser.UserName, password3).Token);
+            Assert.AreNotEqual(Guid.Empty,userData.login(tmUser.UserName, password4).Token);
 
         }
         [Test] public void updateTmUser()           
