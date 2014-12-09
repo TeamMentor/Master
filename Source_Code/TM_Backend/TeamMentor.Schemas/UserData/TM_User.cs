@@ -9,7 +9,8 @@ namespace TeamMentor.CoreLib
 {
     public class ValidationRegex
     {        
-        public const string Email = @"^[\w-+\.]{1,}\@([\w-]{1,}\.){1,}[a-zA-Z]{2,4}$";
+        public const string Email                = @"^[\w-+\.]{1,}\@([\w-]{1,}\.){1,}[a-zA-Z]{2,4}$";
+        public const string PasswordComplexity   = @"^.*(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?=.*[\d\W]).*$";
     }
     // This is the TMUser VIEW Object (only to be used for data transfer)
     [DataContract]

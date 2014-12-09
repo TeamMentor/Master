@@ -141,6 +141,11 @@ namespace TeamMentor.UserData
 	    {
 	        return TM_UserData.Current.createTmUser(newUser);
 	    }
+        public static Signup_Response createSigupResponse(this NewUser newUser)
+        {
+            return TM_UserData.Current.createTmUserResponse(newUser);
+        }
+
         public static int           createTmUser                (this TM_UserData userData, NewUser newUser)
         {
             if (newUser.isNull())
@@ -171,6 +176,173 @@ namespace TeamMentor.UserData
             
             return userData.newUser(newUser.Username, newUser.Password, newUser.Email, newUser.Firstname, newUser.Lastname, newUser.Note, newUser.Title, newUser.Company, newUser.Country, newUser.State, newUser.UserTags,newUser.GroupId);						
         }
+
+        public static Signup_Response createTmUserResponse(this TM_UserData userData, NewUser newUser)
+        {
+            var sigupResponse = new Signup_Response();
+            var tmConfig = TMConfig.Current;
+            if (newUser.isNull())
+            {
+                userData.logTBotActivity("User Creation Fail", "TEAM Mentor user is null");
+                sigupResponse.Signup_Status = Signup_Response.SignupStatus.Signup_Error;
+                sigupResponse.UserCreated = 0;
+                sigupResponse.Simple_Error_Message = tmConfig.TMErrorMessages.General_SignUp_Error_Message;
+                return sigupResponse;
+            }
+            // ensure the email is lowercase (will fail validation otherwise)
+            newUser.Email = newUser.Email.lower();
+            //Validate Password Length.
+            if (newUser.Password.Length < 8 || newUser.Password.Length> 256)
+            {
+                userData.logTBotActivity("User Creation Fail", "Password must be 8 to 256 character long but was {0}".format(newUser.Password.Length));
+                return ValidatePasswordLength(tmConfig);
+            }
+            //validate user against the DataContract specificed in the NewUser class
+            if (newUser.validation_Failed())
+            {
+                return ValidationFailed(tmConfig, newUser);
+            }
+
+            if (newUser.UserTags.notEmpty())
+                foreach (var userTag in newUser.UserTags)
+                    if (userTag.validation_Failed())
+                    {
+                        return UserTags_Validation(tmConfig, userTag);
+                    }
+            // if there is a groupId provided we must check if the user has the manageUsers Priviledge							
+            if (newUser.GroupId != 0)
+                UserRole.ManageUsers.demand();
+
+            // Check if there is already a user with the provided username or email
+            if (newUser.Username.tmUser().notNull())
+            {
+                userData.logTBotActivity("User Creation Fail", "Username ('{0}') already existed".format(newUser.Username));
+                return ValidateUserName(tmConfig);
+            }
+
+            if (newUser.Email.tmUser_FromEmail().notNull())
+            {
+                userData.logTBotActivity("User Creation Fail", "Email ('{0}') already existed".format(newUser.Email));
+                return ValidateEmail(tmConfig);
+            }
+            
+            var userCreated = userData.newUser(newUser.Username, newUser.Password, newUser.Email, newUser.Firstname, newUser.Lastname, newUser.Note, newUser.Title, newUser.Company, newUser.Country, newUser.State, newUser.UserTags, newUser.GroupId);
+            sigupResponse.UserCreated = userCreated;
+            sigupResponse.Signup_Status = Signup_Response.SignupStatus.Signup_Ok;
+            return sigupResponse;
+        }
+
+        #region Sigup validations, shorter and specialized methods
+        private static Signup_Response ValidatePasswordLength(TMConfig config)
+        {
+            var sigupResponse = new Signup_Response
+            {
+                Signup_Status = Signup_Response.SignupStatus.Validation_Failed,
+                UserCreated = 0
+            };
+            var errorMessage = TMConfig.Current.TMErrorMessages.PasswordLengthErrorMessage;
+            if (config.showDetailedErrorMessages())
+            {
+                sigupResponse.Validation_Results.Add(new Validation_Results { Field = "Password", Message = errorMessage });
+            }
+            else
+                sigupResponse.Simple_Error_Message = config.TMErrorMessages.General_SignUp_Error_Message;
+
+            return sigupResponse;
+        }
+        private static Signup_Response ValidationFailed(TMConfig config, NewUser newUser)
+        {
+            var sigupResponse = new Signup_Response();
+            var validationList = newUser.validate();
+            sigupResponse.Signup_Status = Signup_Response.SignupStatus.Validation_Failed;
+            sigupResponse.UserCreated = 0;
+            if (config.showDetailedErrorMessages())
+            {
+                foreach (var validation in validationList)
+                {
+                    var field = validation.MemberNames.FirstOrDefault();
+                    if (field == "Password")
+                    {
+                        sigupResponse.Validation_Results.Add(new Validation_Results
+                        {
+                            Field = field,
+                            Message = config.TMErrorMessages.PasswordComplexityErroMessage
+                        });
+                    }
+                    else
+                    {
+                        sigupResponse.Validation_Results.Add(new Validation_Results
+                        {
+                            Field = field,
+                            Message = validation.ErrorMessage
+                        });
+                    }
+                }
+            }
+            else
+                sigupResponse.Simple_Error_Message = config.TMErrorMessages.General_SignUp_Error_Message;
+            return  sigupResponse;
+        }
+
+        private static Signup_Response UserTags_Validation(TMConfig config, UserTag tag)
+        {
+            var signupResponse = new Signup_Response();
+            var validationList = tag.validate();
+            signupResponse.Signup_Status = Signup_Response.SignupStatus.Validation_Failed;
+            signupResponse.UserCreated = 0;
+            if (!config.showDetailedErrorMessages())
+            {
+                signupResponse.Simple_Error_Message = config.TMErrorMessages.General_SignUp_Error_Message;
+            }
+            else
+            {
+                foreach (var validation in validationList)
+                {
+                    signupResponse.Validation_Results.Add(new Validation_Results { Field = validation.ToString(), Message = validation.ErrorMessage });
+                }
+            }
+            return signupResponse;
+        }
+
+        private static Signup_Response ValidateEmail(TMConfig config)
+        {
+            var signupResponse = new Signup_Response
+            {
+                Signup_Status = Signup_Response.SignupStatus.Validation_Failed,
+                UserCreated = 0
+            };
+
+            if (config.showDetailedErrorMessages())
+            {
+                signupResponse.Validation_Results.Add(new Validation_Results { Field = "Email", Message = TMConfig.Current.TMErrorMessages.SignUpEmailAlreadyExist });
+            }
+            else
+            {
+                signupResponse.Simple_Error_Message = config.TMErrorMessages.General_SignUp_Error_Message;
+            }
+
+            return signupResponse;
+        }
+
+        private static Signup_Response ValidateUserName(TMConfig config)
+        {
+            var signupResponse = new Signup_Response
+            {
+                Signup_Status = Signup_Response.SignupStatus.Validation_Failed,
+                UserCreated = 0
+            };
+            if (config.showDetailedErrorMessages())
+            {
+                signupResponse.Validation_Results.Add(new Validation_Results { Field = "Username", Message = TMConfig.Current.TMErrorMessages.SignUpUsernameAlreadyExist });
+            }
+            else
+            {
+                signupResponse.Simple_Error_Message = config.TMErrorMessages.General_SignUp_Error_Message;
+            }
+
+            return signupResponse;
+        }
+        #endregion
         public static List<int>     createTmUsers               (this TM_UserData userData, string batchUserData) 
         {						
             if (batchUserData.valid().isFalse())

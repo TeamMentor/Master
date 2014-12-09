@@ -12,7 +12,7 @@ namespace TeamMentor.UnitTests.CoreLib
         [Test]
         public void TM_Config_Ctor()
         {
-            //var tmConfig = new TMConfig();
+            //var tmConfig = new TMConfig(); 
 
             Assert.NotNull(tmConfig);
             Assert.NotNull(tmConfig.TMSetup);
@@ -20,6 +20,7 @@ namespace TeamMentor.UnitTests.CoreLib
             Assert.NotNull(tmConfig.WindowsAuthentication);
             Assert.NotNull(tmConfig.OnInstallation);
             Assert.NotNull(tmConfig.VirtualArticles);
+            Assert.NotNull(tmConfig.TMErrorMessages);
         }
 
         [Test]

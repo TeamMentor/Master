@@ -189,7 +189,7 @@ namespace TeamMentor.UnitTests.Authentication
             var username         = 10.randomLetters();
             var password         = "!!123".add_RandomLetters(10);
             var userId           = userData.newUser(username,password);
-            var loginId          = userData.login(username, password).Token;
+            var loginId          = userData.login(username, password);
             var tmAuthentication = new TM_Authentication(null);
 
             Assert.Less       (0, userId);

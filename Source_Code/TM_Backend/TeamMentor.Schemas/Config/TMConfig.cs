@@ -66,7 +66,6 @@ namespace TeamMentor.CoreLib
             public string 		Default_AdminPassword        { get; set; }	
             public string 		Default_AdminEmail           { get; set; }
             public bool 		EmailAdmin_On_NewUsers       { get; set; }
-            public string General_Error_Message              { get; set; }
 
             public TMSecurity_Config()                                          //need to do this here so that they survive serialization
             {
@@ -80,16 +79,34 @@ namespace TeamMentor.CoreLib
                 Default_AdminPassword        = TMConsts.USERDATA_DEFAULT_ADMIN_PASSWORD;
                 Default_AdminEmail           = TMConsts.USERDATA_DEFAULT_ADMIN_EMAIL;
                 EmailAdmin_On_NewUsers       = true;
-                General_Error_Message       =  TMConsts.DEFAULT_ERROR_MESSAGE;
             }            
         }
 
         public class TMErrorMessages_Config : MarshalByRefObject
         {
-            public string AccountExpiredErrorMessage { get; set; }
-            public string AccountDisabledErrorMessage { get; set; }
-            public string PasswordNoMatchErrorMessage { get; set; }
-            public string UserNameNoExistErrorMessage { get; set; }
+            public string General_Login_Error_Message    { get; set; }
+            public string General_SignUp_Error_Message { get; set; }
+            public string AccountExpiredErrorMessage     { get; set; }
+            public string AccountDisabledErrorMessage    { get; set; }
+            public string PasswordDoNotMatch             { get; set; }
+            public string UserNameDoNotExistErrorMessage { get; set; }
+            public string PasswordLengthErrorMessage     { get;set; }
+            public string PasswordComplexityErroMessage  { get; set; }
+            public string SignUpUsernameAlreadyExist     { get; set; }
+            public string SignUpEmailAlreadyExist        { get; set; }
+            public TMErrorMessages_Config()
+            {
+                AccountExpiredErrorMessage       = TMConsts.DEFAULT_LOGIN_ACCOUNT_EXPIRED_MESSAGE;
+                AccountDisabledErrorMessage      = TMConsts.DEFAULT_LOGIN_ACCOUNT_DISABLED_MESSAGE;
+                PasswordDoNotMatch               = TMConsts.DEFAULT_LOGIN_PASSWORD_DONOT_MATCH_MESSAGE;
+                UserNameDoNotExistErrorMessage   = TMConsts.DEFAULT_LOGIN_USERNAME_DONOT_EXIST_MESSAGE;
+                PasswordLengthErrorMessage       = TMConsts.DEFAULT_PASSWORD_LENGTH_MESSAGE;
+                General_Login_Error_Message      = TMConsts.DEFAULT_LOGIN_ERROR_MESSAGE;
+                General_SignUp_Error_Message     = TMConsts.DEFAULT_SIGNUP_ERROR_MESSAGE;
+                PasswordComplexityErroMessage    = TMConsts.DEFAULT_PASSWORD_COMPLEXITY_ERROR_MESSAGE;
+                SignUpUsernameAlreadyExist       = TMConsts.DEFAULT_SIGNUP_USERNAME_EXIST_MESSAGE;
+                SignUpEmailAlreadyExist          = TMConsts.DEFAULT_SIGNUP_EMAIL_EXIST_MESSAGE;
+            }
         }
 
         public class WindowsAuthentication_Config : MarshalByRefObject

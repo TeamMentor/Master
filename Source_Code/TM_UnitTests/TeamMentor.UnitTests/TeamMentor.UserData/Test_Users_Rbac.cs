@@ -21,7 +21,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             var userId = userData.newUser(user, pwd);
             Assert.Greater(userId, 0, "userID");
 
-            var sessionId = userData.login(user, pwd).Token;
+            var sessionId = userData.login(user, pwd);
             var userGroup = sessionId.session_UserGroup();					//new users currently default to Reader
             var userRoles = sessionId.session_UserRoles();
 

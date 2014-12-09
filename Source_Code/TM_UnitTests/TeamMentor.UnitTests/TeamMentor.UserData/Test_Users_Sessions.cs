@@ -282,7 +282,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             tmUser            .setPassword(newPassword);    
   
             Assert.IsFalse    (tmUser.password_Expired(), "Password expiry should not be set after password change");
-            Assert.AreNotEqual(Guid.Empty               , userData.login(tmUser.UserName, newPassword).Token);
+            Assert.AreNotEqual(Guid.Empty               , userData.login(tmUser.UserName, newPassword));
         }                
     }
 }

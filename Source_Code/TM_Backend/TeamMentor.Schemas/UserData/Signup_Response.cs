@@ -21,9 +21,9 @@ namespace TeamMentor.CoreLib
         #endregion  
         public enum SignupStatus
         {
-            Login_Ok = 0,
-            Login_Fail = 1,
-            Login_Error = 2,
+            Signup_Ok = 0,
+            Signup_Fail = 1,
+            Signup_Error = 2,
             Validation_Failed = 3
         };
         [DataMember]
