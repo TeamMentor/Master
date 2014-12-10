@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using FluentSharp.CoreLib;
 using TeamMentor.CoreLib;
@@ -197,6 +198,11 @@ namespace TeamMentor.UserData
                 userData.logTBotActivity("User Creation Fail", "Password must be 8 to 256 character long but was {0}".format(newUser.Password.Length));
                 return ValidatePasswordLength(tmConfig);
             }
+            //Password complexity
+            if (Regex.IsMatch(newUser.Password, ValidationRegex.PasswordComplexity))
+            {
+                return ValidatePasswordComplexity(tmConfig);
+            }
             //validate user against the DataContract specificed in the NewUser class
             if (newUser.validation_Failed())
             {
@@ -233,6 +239,23 @@ namespace TeamMentor.UserData
         }
 
         #region Sigup validations, shorter and specialized methods
+        private static Signup_Response ValidatePasswordComplexity(TMConfig config)
+        {
+            var sigupResponse = new Signup_Response
+            {
+                Signup_Status = Signup_Response.SignupStatus.Validation_Failed,
+                UserCreated = 0
+            };
+            var errorMessage = TMConfig.Current.TMErrorMessages.PasswordComplexityErroMessage;
+            if (config.showDetailedErrorMessages())
+            {
+                sigupResponse.Validation_Results.Add(new Validation_Results { Field = "Password", Message = errorMessage });
+            }
+            else
+                sigupResponse.Simple_Error_Message = config.TMErrorMessages.General_SignUp_Error_Message;
+
+            return sigupResponse;
+        }
         private static Signup_Response ValidatePasswordLength(TMConfig config)
         {
             var sigupResponse = new Signup_Response
@@ -261,22 +284,12 @@ namespace TeamMentor.UserData
                 foreach (var validation in validationList)
                 {
                     var field = validation.MemberNames.FirstOrDefault();
-                    if (field == "Password")
+
+                    sigupResponse.Validation_Results.Add(new Validation_Results
                     {
-                        sigupResponse.Validation_Results.Add(new Validation_Results
-                        {
-                            Field = field,
-                            Message = config.TMErrorMessages.PasswordComplexityErroMessage
-                        });
-                    }
-                    else
-                    {
-                        sigupResponse.Validation_Results.Add(new Validation_Results
-                        {
-                            Field = field,
-                            Message = validation.ErrorMessage
-                        });
-                    }
+                        Field = field,
+                        Message = validation.ErrorMessage
+                    });
                 }
             }
             else
