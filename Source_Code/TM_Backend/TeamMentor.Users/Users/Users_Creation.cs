@@ -142,7 +142,7 @@ namespace TeamMentor.UserData
 	    {
 	        return TM_UserData.Current.createTmUser(newUser);
 	    }
-        public static Signup_Response createSigupResponse(this NewUser newUser)
+        public static Signup_Result createSigupResponse(this NewUser newUser)
         {
             return TM_UserData.Current.createTmUserResponse(newUser);
         }
@@ -178,14 +178,14 @@ namespace TeamMentor.UserData
             return userData.newUser(newUser.Username, newUser.Password, newUser.Email, newUser.Firstname, newUser.Lastname, newUser.Note, newUser.Title, newUser.Company, newUser.Country, newUser.State, newUser.UserTags,newUser.GroupId);						
         }
 
-        public static Signup_Response createTmUserResponse(this TM_UserData userData, NewUser newUser)
+        public static Signup_Result createTmUserResponse(this TM_UserData userData, NewUser newUser)
         {
-            var sigupResponse = new Signup_Response();
+            var sigupResponse = new Signup_Result();
             var tmConfig = TMConfig.Current;
             if (newUser.isNull())
             {
                 userData.logTBotActivity("User Creation Fail", "TEAM Mentor user is null");
-                sigupResponse.Signup_Status = Signup_Response.SignupStatus.Signup_Error;
+                sigupResponse.Signup_Status = Signup_Result.SignupStatus.Signup_Error;
                 sigupResponse.UserCreated = 0;
                 sigupResponse.Simple_Error_Message = tmConfig.TMErrorMessages.General_SignUp_Error_Message;
                 return sigupResponse;
@@ -234,16 +234,16 @@ namespace TeamMentor.UserData
             
             var userCreated = userData.newUser(newUser.Username, newUser.Password, newUser.Email, newUser.Firstname, newUser.Lastname, newUser.Note, newUser.Title, newUser.Company, newUser.Country, newUser.State, newUser.UserTags, newUser.GroupId);
             sigupResponse.UserCreated = userCreated;
-            sigupResponse.Signup_Status = Signup_Response.SignupStatus.Signup_Ok;
+            sigupResponse.Signup_Status = Signup_Result.SignupStatus.Signup_Ok;
             return sigupResponse;
         }
 
         #region Sigup validations, shorter and specialized methods
-        private static Signup_Response ValidatePasswordComplexity(TMConfig config)
+        private static Signup_Result ValidatePasswordComplexity(TMConfig config)
         {
-            var sigupResponse = new Signup_Response
+            var sigupResponse = new Signup_Result
             {
-                Signup_Status = Signup_Response.SignupStatus.Validation_Failed,
+                Signup_Status = Signup_Result.SignupStatus.Validation_Failed,
                 UserCreated = 0
             };
             var errorMessage = TMConfig.Current.TMErrorMessages.PasswordComplexityErroMessage;
@@ -256,11 +256,11 @@ namespace TeamMentor.UserData
 
             return sigupResponse;
         }
-        private static Signup_Response ValidatePasswordLength(TMConfig config)
+        private static Signup_Result ValidatePasswordLength(TMConfig config)
         {
-            var sigupResponse = new Signup_Response
+            var sigupResponse = new Signup_Result
             {
-                Signup_Status = Signup_Response.SignupStatus.Validation_Failed,
+                Signup_Status = Signup_Result.SignupStatus.Validation_Failed,
                 UserCreated = 0
             };
             var errorMessage = TMConfig.Current.TMErrorMessages.PasswordLengthErrorMessage;
@@ -273,11 +273,11 @@ namespace TeamMentor.UserData
 
             return sigupResponse;
         }
-        private static Signup_Response ValidationFailed(TMConfig config, NewUser newUser)
+        private static Signup_Result ValidationFailed(TMConfig config, NewUser newUser)
         {
-            var sigupResponse = new Signup_Response();
+            var sigupResponse = new Signup_Result();
             var validationList = newUser.validate();
-            sigupResponse.Signup_Status = Signup_Response.SignupStatus.Validation_Failed;
+            sigupResponse.Signup_Status = Signup_Result.SignupStatus.Validation_Failed;
             sigupResponse.UserCreated = 0;
             if (config.showDetailedErrorMessages())
             {
@@ -297,11 +297,11 @@ namespace TeamMentor.UserData
             return  sigupResponse;
         }
 
-        private static Signup_Response UserTags_Validation(TMConfig config, UserTag tag)
+        private static Signup_Result UserTags_Validation(TMConfig config, UserTag tag)
         {
-            var signupResponse = new Signup_Response();
+            var signupResponse = new Signup_Result();
             var validationList = tag.validate();
-            signupResponse.Signup_Status = Signup_Response.SignupStatus.Validation_Failed;
+            signupResponse.Signup_Status = Signup_Result.SignupStatus.Validation_Failed;
             signupResponse.UserCreated = 0;
             if (!config.showDetailedErrorMessages())
             {
@@ -317,11 +317,11 @@ namespace TeamMentor.UserData
             return signupResponse;
         }
 
-        private static Signup_Response ValidateEmail(TMConfig config)
+        private static Signup_Result ValidateEmail(TMConfig config)
         {
-            var signupResponse = new Signup_Response
+            var signupResponse = new Signup_Result
             {
-                Signup_Status = Signup_Response.SignupStatus.Validation_Failed,
+                Signup_Status = Signup_Result.SignupStatus.Validation_Failed,
                 UserCreated = 0
             };
 
@@ -337,11 +337,11 @@ namespace TeamMentor.UserData
             return signupResponse;
         }
 
-        private static Signup_Response ValidateUserName(TMConfig config)
+        private static Signup_Result ValidateUserName(TMConfig config)
         {
-            var signupResponse = new Signup_Response
+            var signupResponse = new Signup_Result
             {
-                Signup_Status = Signup_Response.SignupStatus.Validation_Failed,
+                Signup_Status = Signup_Result.SignupStatus.Validation_Failed,
                 UserCreated = 0
             };
             if (config.showDetailedErrorMessages())

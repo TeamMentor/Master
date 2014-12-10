@@ -19,9 +19,9 @@ namespace TeamMentor.CoreLib
             return TmWebServices.Login(username, password);
         }
 
-        public Login_Response LoginResponse(string username, string password)
+        public Login_Result LoginResponse(string username, string password)
         {
-            return TmWebServices.LoginResponse(username, password);
+            return TmWebServices.Login_Response(username, password);
         }
 
         public Guid		Login_using_Credentials(TM_Credentials credentials)

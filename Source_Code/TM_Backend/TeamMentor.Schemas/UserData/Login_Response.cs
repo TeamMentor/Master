@@ -5,9 +5,9 @@ using System.Runtime.Serialization;
 namespace TeamMentor.CoreLib
 {
     [DataContract]
-    public class Login_Response : MarshalByRefObject
+    public class Login_Result : MarshalByRefObject
     {
-        public Login_Response()
+        public Login_Result()
         {
             Validation_Results = new List<Validation_Results>();
             Token = Guid.Empty;

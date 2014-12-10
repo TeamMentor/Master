@@ -150,7 +150,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             var response = newUser.createSigupResponse();
             Assert.IsTrue(response.notNull());
             Assert.IsTrue(response.UserCreated >0);
-            Assert.IsTrue(response.Signup_Status == Signup_Response.SignupStatus.Signup_Ok);
+            Assert.IsTrue(response.Signup_Status == Signup_Result.SignupStatus.Signup_Ok);
             Assert.IsTrue(response.Validation_Results.count()==0);
             
         }
@@ -230,7 +230,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             var response = userData.createTmUserResponse(newUser);
             Assert.IsTrue((response!=null));
             Assert.IsTrue(response != null && response.UserCreated==0);           
-            Assert.IsTrue(response != null && response.Signup_Status== Signup_Response.SignupStatus.Validation_Failed);
+            Assert.IsTrue(response != null && response.Signup_Status== Signup_Result.SignupStatus.Validation_Failed);
             Assert.IsTrue(response != null && response.Validation_Results!=null & response.Validation_Results.count() >0);
             var results = response.Validation_Results;
             Assert.IsTrue(results.count() >0);
@@ -260,7 +260,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             var response = userData.createTmUserResponse(newUser);
             Assert.IsTrue((response != null));
             Assert.IsTrue(response != null && response.UserCreated == 0);
-            Assert.IsTrue(response != null && response.Signup_Status == Signup_Response.SignupStatus.Validation_Failed);
+            Assert.IsTrue(response != null && response.Signup_Status == Signup_Result.SignupStatus.Validation_Failed);
             Assert.IsTrue(response != null && response.Validation_Results != null & response.Validation_Results.count() > 0);
             var results = response.Validation_Results;
             Assert.IsTrue(results.count() > 0);
@@ -290,7 +290,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             var response = userData.createTmUserResponse(newUser);
             Assert.IsTrue((response != null));
             Assert.IsTrue(response != null && response.UserCreated == 0);
-            Assert.IsTrue(response != null && response.Signup_Status == Signup_Response.SignupStatus.Validation_Failed);
+            Assert.IsTrue(response != null && response.Signup_Status == Signup_Result.SignupStatus.Validation_Failed);
             Assert.IsTrue(response != null && response.Validation_Results != null & response.Validation_Results.count() > 0);
             var results = response.Validation_Results;
             Assert.IsTrue(results.count() > 0);
@@ -319,7 +319,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             var response = userData.createTmUserResponse(newUser);
             Assert.IsTrue((response != null));
             Assert.IsTrue(response != null && response.UserCreated == 0);
-            Assert.IsTrue(response != null && response.Signup_Status == Signup_Response.SignupStatus.Validation_Failed);
+            Assert.IsTrue(response != null && response.Signup_Status == Signup_Result.SignupStatus.Validation_Failed);
             Assert.IsTrue(response != null && response.Validation_Results != null & response.Validation_Results.count() > 0);
             var results = response.Validation_Results;
             Assert.IsTrue(results.count() > 0);
@@ -337,7 +337,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             var response = userData.createTmUserResponse(null);
             Assert.IsTrue((response != null));
             Assert.IsTrue(response != null && response.UserCreated == 0);
-            Assert.IsTrue(response != null && response.Signup_Status == Signup_Response.SignupStatus.Signup_Error);
+            Assert.IsTrue(response != null && response.Signup_Status == Signup_Result.SignupStatus.Signup_Error);
             Assert.IsTrue(response != null && response.Simple_Error_Message.Length > 0);
             Assert.IsTrue(response != null && response.Simple_Error_Message == "An error occurred creating a new account");
         }
@@ -362,12 +362,12 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             var response = userData.createTmUserResponse(newUser);
             Assert.IsTrue((response != null));
             Assert.IsTrue(response != null && response.UserCreated>0);
-            Assert.IsTrue(response != null && response.Signup_Status == Signup_Response.SignupStatus.Signup_Ok);
+            Assert.IsTrue(response != null && response.Signup_Status == Signup_Result.SignupStatus.Signup_Ok);
 
             response = userData.createTmUserResponse(newUser);
 
             Assert.IsTrue(response.notNull());
-            Assert.IsTrue(response.Signup_Status== Signup_Response.SignupStatus.Validation_Failed);
+            Assert.IsTrue(response.Signup_Status== Signup_Result.SignupStatus.Validation_Failed);
             var results = response.Validation_Results;
             Assert.IsTrue(results.count()>0);
             Assert.IsTrue(results.FirstOrDefault().Field=="Username");
@@ -394,13 +394,13 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             var response = userData.createTmUserResponse(newUser);
             Assert.IsTrue((response != null));
             Assert.IsTrue(response != null && response.UserCreated > 0);
-            Assert.IsTrue(response != null && response.Signup_Status == Signup_Response.SignupStatus.Signup_Ok);
+            Assert.IsTrue(response != null && response.Signup_Status == Signup_Result.SignupStatus.Signup_Ok);
 
             newUser.Username = "tA2@".add_RandomLetters(8);
             response = userData.createTmUserResponse(newUser);
 
             Assert.IsTrue(response.notNull());
-            Assert.IsTrue(response.Signup_Status == Signup_Response.SignupStatus.Validation_Failed);
+            Assert.IsTrue(response.Signup_Status == Signup_Result.SignupStatus.Validation_Failed);
             var results = response.Validation_Results;
             Assert.IsTrue(results.count() > 0);
             Assert.IsTrue(results.FirstOrDefault().Field == "Email");

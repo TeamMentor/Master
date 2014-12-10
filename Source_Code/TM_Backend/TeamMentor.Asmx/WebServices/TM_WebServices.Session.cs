@@ -8,7 +8,7 @@ namespace TeamMentor.CoreLib
     public partial class TM_WebServices
     {
         [WebMethod(EnableSession = true)]   public Guid Login(string username, string password)                             {   return tmAuthentication.sessionID = userData.login(username, password); }
-        [WebMethod (EnableSession = true)]  public Login_Response LoginResponse (string username, string password)                                              {   var response = userData.LoginResponse(username, password); tmAuthentication.sessionID = response.Token;return response;}
+        [WebMethod (EnableSession = true)]  public Login_Result Login_Response (string username, string password)           {   var response = userData.loginResponse(username, password); tmAuthentication.sessionID = response.Token;return response;}
         [WebMethod(EnableSession = true)]	public Guid Login_Using_AuthToken(Guid authToken)      		                    {   return tmAuthentication.sessionID = authToken.login_Using_AuthToken();                    }  			
         //[WebMethod(EnableSession = true)]	public Guid Login_Using_LoginToken(string username, Guid loginToken)            {   return tmAuthentication.sessionID = userData.login_Using_LoginToken(username,loginToken); }  			      
         [WebMethod(EnableSession = true)]	public Guid Logout()      										                {	return tmAuthentication.logout();                                                         }	 // note: logout will set tmAuthentication.sessionID 

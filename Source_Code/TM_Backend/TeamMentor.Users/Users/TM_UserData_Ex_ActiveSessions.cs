@@ -110,7 +110,7 @@ namespace TeamMentor.CoreLib
             }
             return Guid.Empty;
         }
-        public static Login_Response LoginResponse(this TM_UserData userData, string username, string password)
+        public static Login_Result loginResponse(this TM_UserData userData, string username, string password)
         {
             try
             {
@@ -137,10 +137,10 @@ namespace TeamMentor.CoreLib
                             {
                                 //Login successfull. Returning the authentication token.
                                 var token = tmUser.login("Password");
-                                var response = new Login_Response
+                                var response = new Login_Result
                                 {
                                     Token = token,
-                                    Login_Status = Login_Response.LoginStatus.Login_Ok
+                                    Login_Status = Login_Result.LoginStatus.Login_Ok
                                 };
                                 return response;
                             }
@@ -160,13 +160,13 @@ namespace TeamMentor.CoreLib
             {
                 ex.log("[TM_Xml_Database] login");
             }
-            return new Login_Response();
+            return new Login_Result();
         }
 
         #region Login Validations 
-        private static Login_Response AccountExpiredResponse(TMConfig tmConfig)
+        private static Login_Result AccountExpiredResponse(TMConfig tmConfig)
         {
-            var response = new Login_Response {Login_Status = Login_Response.LoginStatus.Validation_Failed};
+            var response = new Login_Result {Login_Status = Login_Result.LoginStatus.Validation_Failed};
             if (tmConfig.showDetailedErrorMessages())
             {
                 response.Validation_Results.Add(new Validation_Results
@@ -181,9 +181,9 @@ namespace TeamMentor.CoreLib
             return response;
         }
 
-        private static Login_Response AccountDisabledResponse(TMConfig tmConfig)
+        private static Login_Result AccountDisabledResponse(TMConfig tmConfig)
         {
-            var response = new Login_Response {Login_Status = Login_Response.LoginStatus.Validation_Failed};
+            var response = new Login_Result {Login_Status = Login_Result.LoginStatus.Validation_Failed};
             if (tmConfig.showDetailedErrorMessages())
             {
                 response.Validation_Results.Add(new Validation_Results
@@ -197,9 +197,9 @@ namespace TeamMentor.CoreLib
             return response;
         }
 
-        private static Login_Response BadPasswordResponse(TMConfig tmConfig)
+        private static Login_Result BadPasswordResponse(TMConfig tmConfig)
         {
-            var response = new Login_Response {Login_Status = Login_Response.LoginStatus.Login_Fail};
+            var response = new Login_Result {Login_Status = Login_Result.LoginStatus.Login_Fail};
             if (tmConfig.showDetailedErrorMessages())
             {
                 response.Validation_Results.Add(new Validation_Results
@@ -214,9 +214,9 @@ namespace TeamMentor.CoreLib
             return response;
         }
 
-        private static Login_Response BadUsernameResponse(TMConfig tmConfig)
+        private static Login_Result BadUsernameResponse(TMConfig tmConfig)
         {
-            var response = new Login_Response {Login_Status = Login_Response.LoginStatus.Login_Fail};
+            var response = new Login_Result {Login_Status = Login_Result.LoginStatus.Login_Fail};
             if (tmConfig.showDetailedErrorMessages())
             {
                 response.Validation_Results.Add(new Validation_Results

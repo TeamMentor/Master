@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 namespace TeamMentor.CoreLib
 {
     [DataContract]
-    public class Signup_Response : MarshalByRefObject
+    public class Signup_Result : MarshalByRefObject
     {
         #region class constructor
-        public Signup_Response()
+        public Signup_Result()
         {
             Post_Login_Url = string.Empty;
             Simple_Error_Message = string.Empty;

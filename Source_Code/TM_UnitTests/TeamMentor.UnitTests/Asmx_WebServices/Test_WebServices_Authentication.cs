@@ -57,9 +57,9 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
         }
         [Test]public void LoginResponse_PwdInClearText()
         {
-            var sessionId_Admin = tmWebServices.LoginResponse(user_admin, default_Pwd).Token;
-            var sessionId_Editor = tmWebServices.LoginResponse(user_editor, default_Pwd).Token;
-            var sessionId_Reader = tmWebServices.LoginResponse(user_reader, default_Pwd).Token;
+            var sessionId_Admin = tmWebServices.Login_Response(user_admin, default_Pwd).Token;
+            var sessionId_Editor = tmWebServices.Login_Response(user_editor, default_Pwd).Token;
+            var sessionId_Reader = tmWebServices.Login_Response(user_reader, default_Pwd).Token;
 
             Assert.AreNotEqual(sessionId_Admin, Guid.Empty, "sessionId_Admin was empty");
             Assert.AreNotEqual(sessionId_Editor, Guid.Empty, "sessionId_Editor was empty");
@@ -101,7 +101,7 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
 
 
             //test on tmWebServices
-            var sessionId = tmWebServices.LoginResponse(user, pwd).Token;
+            var sessionId = tmWebServices.Login_Response(user, pwd).Token;
             Assert.AreEqual(sessionId, tmWebServices.Current_SessionID(), "tmWebServices.CurrentSessionID");
             Assert.AreEqual(user, tmWebServices.Current_User().UserName, "tmWebServices.CurrentSessionID");
             var roles = tmWebServices.GetCurrentUserRoles();
@@ -302,7 +302,7 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
 
         public Guid LoginResponse_As_User(string username, string password)
         {
-            var sessionId = tmWebServices.LoginResponse(username, password).Token;
+            var sessionId = tmWebServices.Login_Response(username, password).Token;
             Assert.AreNotEqual(sessionId, Guid.Empty);
             Assert.IsTrue(sessionId.ToString().isGuid());
             HttpContextFactory.Context.addCookieFromResponseToRequest("Session");
