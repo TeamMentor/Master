@@ -22,14 +22,19 @@ namespace TeamMentor.CoreLib
         public static string USERDATA_DEFAULT_ADMIN_EMAIL                   = "TM_alerts@securityinnovation.com";
         public static string DEFAULT_LOGIN_ERROR_MESSAGE                    = "An error occurred";
         public static string DEFAULT_SIGNUP_ERROR_MESSAGE                   = "An error occurred creating a new account";
-        public static string DEFAULT_LOGIN_ACCOUNT_EXPIRED_MESSAGE          = "Account Expired";
-        public static string DEFAULT_LOGIN_ACCOUNT_DISABLED_MESSAGE         = "Account Disabled";
+        public static string DEFAULT_ACCOUNT_EXPIRED_MESSAGE                = "Account Expired";
+        public static string DEFAULT_ACCOUNT_DISABLED_MESSAGE               = "Account Disabled";
         public static string DEFAULT_LOGIN_PASSWORD_DONOT_MATCH_MESSAGE     = "Wrong Password";
 	    public static string DEFAULT_LOGIN_USERNAME_DONOT_EXIST_MESSAGE     = "Username does not exist";
         public static string DEFAULT_SIGNUP_USERNAME_EXIST_MESSAGE          = "Username already exist";
         public static string DEFAULT_SIGNUP_EMAIL_EXIST_MESSAGE             = "Email already exist";
         public static string DEFAULT_PASSWORD_LENGTH_MESSAGE                = "Password must be 8 to 256 character long";
-	    public static string DEFAULT_PASSWORD_COMPLEXITY_ERROR_MESSAGE      = "Password must contain a non-letter and a non-number character including 1 uppercase letter.";
+	    public static string DEFAULT_PASSWORD_COMPLEXITY_ERROR_MESSAGE      = "Password must contain a non-letter and a non-number character";
+        public static string DEFAULT_NEW_PASSWORD_ERROR_MESSAGE             = "The new password must differ from your current password";
+        public static string CURRENT_PASSWORD_DONOT_MATCH_ERROR_MESSAGE     = "Current Password does not match provided value";
+        public static string DEFAULT_PASSWORD_CHANGE_ERROR_MESSAGE          = "The password cannot be changed at this time";
+        public static string DEFAULT_PASSWORD_RESET_ERROR_MESSAGE           = "The password cannot be reseted at this time";
+	    public static string DEFAULT_EMAIL_DOES_NOT_EXIST_ERROR_MESSAGE     = "Email address does not exist";
 
         public static int    FIREBASE_SUBMIT_QUEUE_MAX_WAIT                 = 60000;
         public static string FIREBASE_AREA_DEBUG_MSGS                       = "debugMsgs";

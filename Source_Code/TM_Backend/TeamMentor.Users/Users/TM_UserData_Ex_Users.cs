@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using FluentSharp.CoreLib;
 
 namespace TeamMentor.CoreLib
@@ -70,7 +71,99 @@ namespace TeamMentor.CoreLib
                 }
             }
             return false;
-        }                	
+        }
+        public static ChangePassword_Result setUserPasswordResponse(this TM_UserData userData, TMUser tmUser, string currentPassword, string newPassword)
+        {
+            //var tmUser = tmAuthentication.currentUser;
+            if (tmUser.notNull())
+            {
+                if (tmUser.SecretData.PasswordHash == tmUser.createPasswordHash(currentPassword)) // check if current password matches provided value
+                {
+                    var newPasswordHash = tmUser.createPasswordHash(newPassword);
+                    if (newPasswordHash != tmUser.SecretData.PasswordHash) // check that password are not repeated
+                    {
+                        tmUser.logUserActivity("User Password Change", "With previous password provided");
+                        if (newPassword.Length < 8 || newPassword.Length > 256)
+                        {
+                            return ValidatePasswordLength();
+                        }
+                        //Password Complexity chechek
+                        if (Regex.IsMatch(newPassword, ValidationRegex.PasswordComplexity))
+                        {
+                            tmUser.logUserActivity("User Password Change", "New Password must contain a non-letter and a non-number character");
+                            return ValidatePasswordComplexity();
+                        }
+                        var result = tmUser.setPasswordHash(newPasswordHash);
+                        if (result)
+                            return new ChangePassword_Result {PasswordChanged = true, Message = ""};
+                        return new ChangePassword_Result { PasswordChanged = false, Message = TMConsts.DEFAULT_PASSWORD_CHANGE_ERROR_MESSAGE };
+                    }
+                    tmUser.logUserActivity("User Password Change", "Current Password and New Password are equals");
+                    return CurrentPasswordAndNewPasswordAreEqualsResponse();
+                }
+                tmUser.logUserActivity("User Password Change", "Current Password does not match provided value");
+                return CurrentPasswordDoNotMatchResponse();
+            }
+            return new ChangePassword_Result();
+        }
+        #region ChangePassword validations
+        private static  ChangePassword_Result CurrentPasswordDoNotMatchResponse()
+        {
+            var tmConfig = TMConfig.Current;
+            var showDetailedErors = TMConfig.Current.showDetailedErrorMessages();
+            var response = new ChangePassword_Result
+            {
+                Message =
+                    showDetailedErors
+                        ? tmConfig.TMErrorMessages .CurrentPasswordDoNotMatch
+                        : tmConfig.TMErrorMessages.General_PasswordChange_Error_Message,
+                PasswordChanged = false
+            };
+            return response;
+        }
+        private static ChangePassword_Result CurrentPasswordAndNewPasswordAreEqualsResponse()
+        {
+            var tmConfig = TMConfig.Current;
+            var showDetailedErors = TMConfig.Current.showDetailedErrorMessages();
+            var response = new ChangePassword_Result
+            {
+                Message =
+                    showDetailedErors
+                        ? tmConfig.TMErrorMessages.NewPassword_ErrorMessage
+                        : tmConfig.TMErrorMessages.General_PasswordChange_Error_Message,
+                PasswordChanged = false
+            };
+            return response;
+        }
+        private static ChangePassword_Result ValidatePasswordComplexity()
+        {
+            var tmConfig = TMConfig.Current;
+            var showDetailedErors = TMConfig.Current.showDetailedErrorMessages();
+            var response = new ChangePassword_Result
+            {
+                Message =
+                    showDetailedErors
+                        ? tmConfig.TMErrorMessages.PasswordComplexityErroMessage
+                        : tmConfig.TMErrorMessages.General_PasswordChange_Error_Message,
+                PasswordChanged = false
+            };
+            return response;
+        }
+        private static ChangePassword_Result ValidatePasswordLength()
+        {
+            var tmConfig = TMConfig.Current;
+            var showDetailedErors = TMConfig.Current.showDetailedErrorMessages();
+            var response = new ChangePassword_Result
+            {
+                Message =
+                    showDetailedErors
+                        ? tmConfig.TMErrorMessages.PasswordLengthErrorMessage
+                        : tmConfig.TMErrorMessages.General_PasswordChange_Error_Message,
+                PasswordChanged = false
+            };
+            return response;
+        }
+        #endregion
         public static bool          passwordReset               (this TM_UserData userData, string userName, Guid token, string newPassword)
         {
             var tmUser = userName.tmUser();
