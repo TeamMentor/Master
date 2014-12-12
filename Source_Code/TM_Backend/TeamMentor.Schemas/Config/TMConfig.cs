@@ -84,28 +84,40 @@ namespace TeamMentor.CoreLib
 
         public class TMErrorMessages_Config : MarshalByRefObject
         {
-            public string General_Login_Error_Message    { get; set; }
-            public string General_SignUp_Error_Message { get; set; }
-            public string AccountExpiredErrorMessage     { get; set; }
-            public string AccountDisabledErrorMessage    { get; set; }
-            public string PasswordDoNotMatch             { get; set; }
-            public string UserNameDoNotExistErrorMessage { get; set; }
-            public string PasswordLengthErrorMessage     { get;set; }
-            public string PasswordComplexityErroMessage  { get; set; }
-            public string SignUpUsernameAlreadyExist     { get; set; }
-            public string SignUpEmailAlreadyExist        { get; set; }
+            public string General_Login_Error_Message           { get; set; }
+            public string General_SignUp_Error_Message          { get; set; }
+            public string AccountExpiredErrorMessage            { get; set; }
+            public string AccountDisabledErrorMessage           { get; set; }
+            public string Login_PasswordDoNotMatch                    { get; set; }
+            public string UserNameDoNotExistErrorMessage        { get; set; }
+            public string PasswordLengthErrorMessage            { get;set; }
+            public string PasswordComplexityErroMessage         { get; set; }
+            public string SignUpUsernameAlreadyExist            { get; set; }
+            public string SignUpEmailAlreadyExist               { get; set; }
+            public string NewPassword_ErrorMessage              { get; set; } //New password is equal to current password
+            public string CurrentPasswordDoNotMatch             { get; set; } //Current password does not exist.
+            public string General_PasswordChange_Error_Message  { get; set; }
+            public string General_PasswordReset_Error_Message   { get; set; }
+            public string Email_Does_Not_Exist_ErrorMessage     { get; set; }
+
             public TMErrorMessages_Config()
             {
-                AccountExpiredErrorMessage       = TMConsts.DEFAULT_LOGIN_ACCOUNT_EXPIRED_MESSAGE;
-                AccountDisabledErrorMessage      = TMConsts.DEFAULT_LOGIN_ACCOUNT_DISABLED_MESSAGE;
-                PasswordDoNotMatch               = TMConsts.DEFAULT_LOGIN_PASSWORD_DONOT_MATCH_MESSAGE;
-                UserNameDoNotExistErrorMessage   = TMConsts.DEFAULT_LOGIN_USERNAME_DONOT_EXIST_MESSAGE;
-                PasswordLengthErrorMessage       = TMConsts.DEFAULT_PASSWORD_LENGTH_MESSAGE;
-                General_Login_Error_Message      = TMConsts.DEFAULT_LOGIN_ERROR_MESSAGE;
-                General_SignUp_Error_Message     = TMConsts.DEFAULT_SIGNUP_ERROR_MESSAGE;
-                PasswordComplexityErroMessage    = TMConsts.DEFAULT_PASSWORD_COMPLEXITY_ERROR_MESSAGE;
-                SignUpUsernameAlreadyExist       = TMConsts.DEFAULT_SIGNUP_USERNAME_EXIST_MESSAGE;
-                SignUpEmailAlreadyExist          = TMConsts.DEFAULT_SIGNUP_EMAIL_EXIST_MESSAGE;
+                AccountExpiredErrorMessage              = TMConsts.DEFAULT_ACCOUNT_EXPIRED_MESSAGE;
+                AccountDisabledErrorMessage             = TMConsts.DEFAULT_ACCOUNT_DISABLED_MESSAGE;
+                Login_PasswordDoNotMatch                = TMConsts.DEFAULT_LOGIN_PASSWORD_DONOT_MATCH_MESSAGE;
+                UserNameDoNotExistErrorMessage          = TMConsts.DEFAULT_LOGIN_USERNAME_DONOT_EXIST_MESSAGE;
+                PasswordLengthErrorMessage              = TMConsts.DEFAULT_PASSWORD_LENGTH_MESSAGE;
+                General_Login_Error_Message             = TMConsts.DEFAULT_LOGIN_ERROR_MESSAGE;
+                General_SignUp_Error_Message            = TMConsts.DEFAULT_SIGNUP_ERROR_MESSAGE;
+                PasswordComplexityErroMessage           = TMConsts.DEFAULT_PASSWORD_COMPLEXITY_ERROR_MESSAGE;
+                SignUpUsernameAlreadyExist              = TMConsts.DEFAULT_SIGNUP_USERNAME_EXIST_MESSAGE;
+                SignUpEmailAlreadyExist                 = TMConsts.DEFAULT_SIGNUP_EMAIL_EXIST_MESSAGE;
+                NewPassword_ErrorMessage                = TMConsts.DEFAULT_NEW_PASSWORD_ERROR_MESSAGE;
+                CurrentPasswordDoNotMatch               = TMConsts.CURRENT_PASSWORD_DONOT_MATCH_ERROR_MESSAGE;
+                General_PasswordChange_Error_Message    = TMConsts.DEFAULT_PASSWORD_CHANGE_ERROR_MESSAGE;
+                General_PasswordReset_Error_Message     = TMConsts.DEFAULT_PASSWORD_RESET_ERROR_MESSAGE;
+                Email_Does_Not_Exist_ErrorMessage       = TMConsts.DEFAULT_EMAIL_DOES_NOT_EXIST_ERROR_MESSAGE;
+
             }
         }
 

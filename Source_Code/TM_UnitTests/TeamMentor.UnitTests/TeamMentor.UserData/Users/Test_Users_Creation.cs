@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Security;
 using FluentSharp.CoreLib;
+using Moq;
 using NUnit.Framework;
 using TeamMentor.CoreLib;
 using TeamMentor.UserData;
@@ -448,7 +449,139 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Assert.AreEqual   (Guid.Empty,userData.login(tmUser.UserName, password2));
             Assert.AreEqual   (Guid.Empty,userData.login(tmUser.UserName, password3));
             Assert.AreNotEqual(Guid.Empty,userData.login(tmUser.UserName, password4));
+        }
+        [Test]
+        public void setUserPasswordResult()
+        {
+           var currentPassword = "!#4" + 10.randomLetters();
+            var username = 5.randomLetters() + 2.randomNumber() + 3.randomLetters();
+            var tmUser = userData.newUser(username, currentPassword).tmUser();
+            var password1 = "!"  + 10.randomLetters();
+            var password2 = "@"  + 10.randomLetters();
+            var password3 = "!$" + 9.randomLetters();
+            var password4 = "&*" + 9.randomLetters();
 
+            Assert.AreEqual(Guid.Empty, userData.loginResponse(tmUser.UserName, password1).Token);
+            Assert.AreEqual(Guid.Empty, userData.loginResponse(tmUser.UserName, password2).Token);
+            Assert.AreEqual(Guid.Empty, userData.loginResponse(tmUser.UserName, password3).Token);
+            Assert.AreEqual(Guid.Empty, userData.loginResponse(tmUser.UserName, password4).Token);
+
+            //change using tmUser
+            userData.setUserPasswordResponse(tmUser, currentPassword, password1);
+            Assert.AreNotEqual(Guid.Empty, userData.loginResponse(tmUser.UserName, password1).Token);
+            Assert.AreEqual(Guid.Empty, userData.login(tmUser.UserName, password2));
+            Assert.AreEqual(Guid.Empty, userData.login(tmUser.UserName, password3));
+            Assert.AreEqual(Guid.Empty, userData.login(tmUser.UserName, password4));
+
+            //change using tmUser.UserID
+            userData.setUserPasswordResponse(tmUser, password1, password2);
+            Assert.AreEqual(Guid.Empty, userData.login(tmUser.UserName, password1));
+            Assert.AreNotEqual(Guid.Empty, userData.login(tmUser.UserName, password2));
+            Assert.AreEqual(Guid.Empty, userData.login(tmUser.UserName, password3));
+            Assert.AreEqual(Guid.Empty, userData.login(tmUser.UserName, password4));
+
+            //change using tmUser.UserName
+            userData.setUserPasswordResponse(tmUser, password2, password3);
+            Assert.AreEqual(Guid.Empty, userData.login(tmUser.UserName, password1));
+            Assert.AreEqual(Guid.Empty, userData.login(tmUser.UserName, password2));
+            Assert.AreNotEqual(Guid.Empty, userData.login(tmUser.UserName, password3));
+            Assert.AreEqual(Guid.Empty, userData.login(tmUser.UserName, password4));
+
+            //change using password hash
+            userData.setUserPasswordResponse(tmUser, password3, password4);
+            Assert.AreEqual(Guid.Empty, userData.login(tmUser.UserName, password1));
+            Assert.AreEqual(Guid.Empty, userData.login(tmUser.UserName, password2));
+            Assert.AreEqual(Guid.Empty, userData.login(tmUser.UserName, password3));
+            Assert.AreNotEqual(Guid.Empty, userData.login(tmUser.UserName, password4));
+
+        }
+
+        [Test]
+        public void setUserPasswordResult_CurrentPasswordDonotMatch()
+        {
+            var currentPassword = "!#4" + 10.randomLetters();
+            var username = 5.randomLetters() + 2.randomNumber() + 3.randomLetters();
+            var tmUser = userData.newUser(username, currentPassword).tmUser();
+            var password1 = "!" + 10.randomLetters();
+            //change using tmUser
+            var response = userData.setUserPasswordResponse(tmUser, password1, password1);
+            Assert.IsTrue(response.notNull());
+            Assert.IsTrue(response.PasswordChanged== false);
+            Assert.IsTrue(response.Message == TMConsts.CURRENT_PASSWORD_DONOT_MATCH_ERROR_MESSAGE);
+        }
+
+        [Test]
+        public void setUserPasswordResult_CurrentPasswordAndNewPassword_AreEquals()
+        {
+            var currentPassword = "!#4" + 10.randomLetters();
+            var username = 5.randomLetters() + 2.randomNumber() + 3.randomLetters();
+            var tmUser = userData.newUser(username, currentPassword).tmUser();
+            var password1 = "!" + 10.randomLetters();
+            //change using tmUser
+            var response = userData.setUserPasswordResponse(tmUser, currentPassword, currentPassword);
+            Assert.IsTrue(response.notNull());
+            Assert.IsTrue(response.PasswordChanged == false);
+            Assert.IsTrue(response.Message == TMConsts.DEFAULT_NEW_PASSWORD_ERROR_MESSAGE);
+        }
+
+        [Test]
+        public void setUserPasswordResult_PasswordComplexityFails()
+        {
+            var currentPassword = "!#4" + 10.randomLetters();
+            var username = 5.randomLetters() + 2.randomNumber() + 3.randomLetters();
+            var tmUser = userData.newUser(username, currentPassword).tmUser();
+            var password1 = "weaujajjkpwd";
+            //change using tmUser
+            var response = userData.setUserPasswordResponse(tmUser, currentPassword, password1);
+            Assert.IsTrue(response.notNull());
+            Assert.IsTrue(response.PasswordChanged == false);
+            Assert.IsTrue(response.Message == TMConsts.DEFAULT_PASSWORD_COMPLEXITY_ERROR_MESSAGE);
+        }
+        [Test]
+        public void setUserPasswordResult_PasswordLenghLessThan_8Characters()
+        {
+            var currentPassword = "!#4" + 10.randomLetters();
+            var username = 5.randomLetters() + 2.randomNumber() + 3.randomLetters();
+            var tmUser = userData.newUser(username, currentPassword).tmUser();
+            var password1 = "wfr";
+            //change using tmUser
+            var response = userData.setUserPasswordResponse(tmUser, currentPassword, password1);
+            Assert.IsTrue(response.notNull());
+            Assert.IsTrue(response.PasswordChanged == false);
+            Assert.IsTrue(response.Message == TMConsts.DEFAULT_PASSWORD_LENGTH_MESSAGE);
+        }
+
+        [Test]
+        public void setUserPasswordResult_PasswordLenghGreaterThan_256Characters()
+        {
+            var currentPassword = "!#4" + 10.randomLetters();
+            var username = 5.randomLetters() + 2.randomNumber() + 3.randomLetters();
+            var tmUser = userData.newUser(username, currentPassword).tmUser();
+            var password1 = "w" + 256.randomLetters();
+            //change using tmUser
+            var response = userData.setUserPasswordResponse(tmUser, currentPassword, password1);
+            Assert.IsTrue(response.notNull());
+            Assert.IsTrue(response.PasswordChanged == false);
+            Assert.IsTrue(response.Message == TMConsts.DEFAULT_PASSWORD_LENGTH_MESSAGE);
+        }
+
+        [Test]
+        public void setUserPasswordResult_DefaulChangePassword_Message()
+        {
+            tmConfig.TMSetup.ShowDetailedErrorMessages = false;
+            tmConfig.save();
+           
+            var currentPassword = "!#4" + 10.randomLetters();
+            var username = 5.randomLetters() + 2.randomNumber() + 3.randomLetters();
+            var tmUser = userData.newUser(username, currentPassword).tmUser();
+            var password1 = "w" + 256.randomLetters();
+            //change using tmUser
+            var response = userData.setUserPasswordResponse(tmUser, currentPassword, password1);
+            Assert.IsTrue(response.notNull());
+            Assert.IsTrue(response.PasswordChanged == false);
+            Assert.IsTrue(response.Message == TMConsts.DEFAULT_PASSWORD_CHANGE_ERROR_MESSAGE);
+            tmConfig.TMSetup.ShowDetailedErrorMessages = true;
+            tmConfig.save();
         }
         [Test] public void updateTmUser()           
         {       
@@ -545,7 +678,53 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             tmConfig.TMSecurity.NewAccounts_Enabled = true;
         }
 
-                
+        [Test(Description = "Verifies that Password reset works fine if email is valid")]
+        public void PasswordReset_OK()
+        {
+            var currentPassword = "!#4" + 10.randomLetters();
+            var username = 5.randomLetters() + 2.randomNumber() + 3.randomLetters();
+            var tmUser = userData.newUser(username, currentPassword).tmUser();
+            var response = tmUser.EMail.sendPasswordReminder_Response();
+            Assert.IsTrue(response.PasswordReseted== true);
+            Assert.IsTrue(response.Message== String.Empty);
+        }
+        [Test(Description = "Password reset should fail if email address does not exist.")]
+        public void PasswordReset_EmailNot_Valid()
+        {
+            var testEmail = 4.randomLetters() + "@" + 4.randomLetters() + ".com";
+            var response = testEmail.sendPasswordReminder_Response();
+            Assert.IsTrue(response.PasswordReseted == false);
+           
+        }
+
+        [Test(Description = "Password reset should fail if account is disabled")]
+        public void PasswordReset_AccountDisabled()
+        {
+            var currentPassword = "!#4" + 10.randomLetters();
+            var username = 5.randomLetters() + 2.randomNumber() + 3.randomLetters();
+            var tmUser = userData.newUser(username, currentPassword).tmUser();
+            tmUser.disable_Account();
+            tmUser.save();
+            var response = tmUser.EMail.sendPasswordReminder_Response();
+            Assert.IsTrue(response.PasswordReseted == false);
+            Assert.IsTrue(response.Message == TMConsts.DEFAULT_ACCOUNT_DISABLED_MESSAGE);
+
+        }
+
+        [Test(Description = "Password reset should fail if account is has exired")]
+        public void PasswordReset_AccountExpired()
+        {
+            var currentPassword = "!#4" + 10.randomLetters();
+            var username = 5.randomLetters() + 2.randomNumber() + 3.randomLetters();
+            var tmUser = userData.newUser(username, currentPassword).tmUser();
+            tmUser.expire_Account();
+            tmUser.save();
+            var response = tmUser.EMail.sendPasswordReminder_Response();
+            Assert.IsTrue(response.PasswordReseted == false);
+            Assert.IsTrue(response.Message == TMConsts.DEFAULT_ACCOUNT_EXPIRED_MESSAGE);
+
+        }
+
         [Test (Description ="Checks that only UserRole.ManageUsers is able to invoke the userData.users() method")]
         public void CheckUserListPermissions()
         {           

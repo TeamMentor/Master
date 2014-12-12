@@ -205,7 +205,7 @@ namespace TeamMentor.CoreLib
                 response.Validation_Results.Add(new Validation_Results
                 {
                     Field = "Password",
-                    Message = TMConfig.Current.TMErrorMessages.PasswordDoNotMatch
+                    Message = TMConfig.Current.TMErrorMessages.Login_PasswordDoNotMatch
                 });
             }
             else
