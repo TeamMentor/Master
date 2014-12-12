@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using FluentSharp.CoreLib;
-using JetBrains.Annotations;
 
 namespace TeamMentor.CoreLib
 {
