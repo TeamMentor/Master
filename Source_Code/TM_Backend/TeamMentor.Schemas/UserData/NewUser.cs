@@ -14,8 +14,8 @@ namespace TeamMentor.CoreLib
         [DataMember][StringLength(30)]    public string   Note        { get; set; }				
         [DataMember][StringLength(30)]    public string   State       { get; set; }		
 		[DataMember][StringLength(255)]    public string   Title      { get; set; }
-
-        [DataMember][Required][StringLength(99)]    public string           Password    { get; set; }
+  
+        [DataMember][Required][StringLength(256)]   public string           Password    { get; set; }
 		[DataMember][Required][StringLength(30)]    public string           Username    { get; set; }
 
         [DataMember][Required][StringLength(50)]

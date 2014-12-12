@@ -42,7 +42,13 @@ namespace TeamMentor.CoreLib
             if (tmConfig.notNull() && tmConfig.TMSetup.notNull())
                 return tmConfig.TMSetup.Enable304Redirects;                               
             return false;
-        }        
+        }
+        public static bool showDetailedErrorMessages(this TMConfig tmConfig)
+        {
+            if (tmConfig.notNull() && tmConfig.TMSetup.notNull())
+                return tmConfig.TMSetup.ShowDetailedErrorMessages;
+            return false;
+        }
         public static bool  show_ContentToAnonymousUsers(this TMConfig tmConfig)
         {
             if (tmConfig.notNull() && tmConfig.TMSecurity.notNull())

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Security;
 using FluentSharp.CoreLib;
 using NUnit.Framework;
@@ -81,7 +82,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
                     Firstname   = 10.randomLetters(),
                     Lastname    = 10.randomLetters(),
                     Note        = 10.randomLetters(),
-                    Password    = 10.randomLetters(),
+                    Password    = "tE3!"+10.randomLetters(),
                     State       = 10.randomLetters(),
                     Title       = 10.randomLetters(),
                     Username    = 10.randomLetters(),
@@ -124,6 +125,288 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             newUser.Username = null;            
             Assert.AreEqual   (0, newUser.create());            
         }
+
+        [Test]
+        public void CreateTmUserSigupResponse_Success()
+        {
+            UserGroup.None.assert();                //  change current thread privildges to None
+
+            var newUser = new NewUser()
+            {
+                Company = 10.randomLetters(),
+                Country = 10.randomLetters(),
+                Firstname = 10.randomLetters(),
+                Lastname = 10.randomLetters(),
+                Note = 10.randomLetters(),
+                Password = "!rJ"+10.randomLetters(),
+                State = 10.randomLetters(),
+                Title = 10.randomLetters(),
+                Username = 10.randomLetters(),
+                Email = "{0}@{0}.{0}".format(3.randomLetters())
+            };
+
+            Assert.IsEmpty(newUser.validate());
+
+            var response = newUser.createSigupResponse();
+            Assert.IsTrue(response.notNull());
+            Assert.IsTrue(response.UserCreated >0);
+            Assert.IsTrue(response.Signup_Status == Signup_Result.SignupStatus.Signup_Ok);
+            Assert.IsTrue(response.Validation_Results.count()==0);
+            
+        }
+
+        [Test]
+        public void CreateTmUserSigupResponse()
+        {
+            UserGroup.None.assert();                //  change current thread privildges to None
+
+            var newUser = new NewUser()
+            {
+                Company = 10.randomLetters(),
+                Country = 10.randomLetters(),
+                Firstname = 10.randomLetters(),
+                Lastname = 10.randomLetters(),
+                Note = 10.randomLetters(),
+                Password = "!!md" + 10.randomLetters(),
+                State = 10.randomLetters(),
+                Title = 10.randomLetters(),
+                Username = 10.randomLetters(),
+                Email = "{0}@{0}.{0}".format(3.randomLetters())
+            };
+
+            Assert.IsEmpty(newUser.validate());
+
+            var user1 = newUser.createSigupResponse();
+            var user2 = newUser.createSigupResponse();
+
+            Assert.AreNotEqual(user1.UserCreated, 0);
+            Assert.AreNotEqual(user1.UserCreated, user2);
+
+            //try with email in upper case
+            newUser.Username = 10.randomLetters();
+            newUser.Email = newUser.Email.upper();
+
+            //try creating a repeated user
+            Assert.AreEqual(0, newUser.createSigupResponse().UserCreated);
+
+            //try creating an admin user (which should fail for anonymous users)
+            newUser.GroupId = (int)UserGroup.Admin;
+            newUser.Username = 10.randomLetters();
+            newUser.Email = "{0}@{0}.{0}".format(3.randomLetters());
+            Assert.Throws<SecurityException>(() => newUser.createSigupResponse());
+
+            UserGroup.Admin.setPrivileges();
+            Assert.AreNotEqual(0, newUser.createSigupResponse().UserCreated);
+
+            //try creating a repeated user
+            Assert.AreEqual(0, newUser.createSigupResponse().UserCreated);
+            newUser.Username = 10.randomLetters();                      // just difference username should fail 
+            Assert.AreEqual(0, newUser.create());
+            newUser.Email = "{0}@{0}.{0}".format(3.randomLetters()); // with different username and password should work
+            Assert.AreNotEqual(0, newUser.createSigupResponse().UserCreated);
+
+            //test nulls and fail validation
+            Assert.AreEqual(0, userData.createTmUserResponse(null).UserCreated);
+            newUser.Username = null;
+            Assert.AreEqual(0, newUser.create());
+        }
+        [Test]
+        public void CreateTmUserSigupResponse_PasswordIsLessThan8Characters()
+        {
+            UserGroup.None.assert();                //  change current thread privildges to None
+            var newUser = new NewUser()
+            {
+                Company = 10.randomLetters(),
+                Country = 10.randomLetters(),
+                Firstname = 10.randomLetters(),
+                Lastname = 10.randomLetters(),
+                Note = 10.randomLetters(),
+                Password = "!rJ" + 1.randomLetters(),
+                State = 10.randomLetters(),
+                Title = 10.randomLetters(),
+                Username = 10.randomLetters(),
+                Email = "{0}@{0}.{0}".format(3.randomLetters())
+            };
+            var response = userData.createTmUserResponse(newUser);
+            Assert.IsTrue((response!=null));
+            Assert.IsTrue(response != null && response.UserCreated==0);           
+            Assert.IsTrue(response != null && response.Signup_Status== Signup_Result.SignupStatus.Validation_Failed);
+            Assert.IsTrue(response != null && response.Validation_Results!=null & response.Validation_Results.count() >0);
+            var results = response.Validation_Results;
+            Assert.IsTrue(results.count() >0);
+            var result = results.FirstOrDefault();
+            Assert.IsTrue(result.notNull());
+            Assert.IsTrue(result.Field=="Password");
+            Assert.IsTrue(result.Message==tmConfig.TMErrorMessages.PasswordLengthErrorMessage);
+        }
+
+        [Test]
+        public void CreateTmUserSigupResponse_PasswordIsGreatherThan256Characters()
+        {
+            UserGroup.None.assert();                //  change current thread privildges to None
+            var newUser = new NewUser()
+            {
+                Company = 10.randomLetters(),
+                Country = 10.randomLetters(),
+                Firstname = 10.randomLetters(),
+                Lastname = 10.randomLetters(),
+                Note = 10.randomLetters(),
+                Password = "!rJ10" + 260.randomLetters(),
+                State = 10.randomLetters(),
+                Title = 10.randomLetters(),
+                Username = 10.randomLetters(),
+                Email = "{0}@{0}.{0}".format(3.randomLetters())
+            };
+            var response = userData.createTmUserResponse(newUser);
+            Assert.IsTrue((response != null));
+            Assert.IsTrue(response != null && response.UserCreated == 0);
+            Assert.IsTrue(response != null && response.Signup_Status == Signup_Result.SignupStatus.Validation_Failed);
+            Assert.IsTrue(response != null && response.Validation_Results != null & response.Validation_Results.count() > 0);
+            var results = response.Validation_Results;
+            Assert.IsTrue(results.count() > 0);
+            var result = results.FirstOrDefault();
+            Assert.IsTrue(result.notNull());
+            Assert.IsTrue(result.Field == "Password");
+            Assert.IsTrue(result.Message == tmConfig.TMErrorMessages.PasswordLengthErrorMessage);
+        }
+
+        [Test]
+        public void CreateTmUserSigupResponse_PasswordIsWeak()
+        {
+            UserGroup.None.assert();                //  change current thread privildges to None
+            var newUser = new NewUser()
+            {
+                Company = 10.randomLetters(),
+                Country = 10.randomLetters(),
+                Firstname = 10.randomLetters(),
+                Lastname = 10.randomLetters(),
+                Note = 10.randomLetters(),
+                Password = "rjdq" + 8.randomLetters(),
+                State = 10.randomLetters(),
+                Title = 10.randomLetters(),
+                Username = 10.randomLetters(),
+                Email = "{0}@{0}.{0}".format(3.randomLetters())
+            };
+            var response = userData.createTmUserResponse(newUser);
+            Assert.IsTrue((response != null));
+            Assert.IsTrue(response != null && response.UserCreated == 0);
+            Assert.IsTrue(response != null && response.Signup_Status == Signup_Result.SignupStatus.Validation_Failed);
+            Assert.IsTrue(response != null && response.Validation_Results != null & response.Validation_Results.count() > 0);
+            var results = response.Validation_Results;
+            Assert.IsTrue(results.count() > 0);
+            var result = results.FirstOrDefault();
+            Assert.IsTrue(result.notNull());
+            Assert.IsTrue(result.Message == tmConfig.TMErrorMessages.PasswordComplexityErroMessage);
+           
+        }
+        [Test]
+        public void CreateTmUserSigupResponse_Username_Mustbe_30CharacterLong_()
+        {
+            UserGroup.None.assert();                //  change current thread privildges to None
+            var newUser = new NewUser()
+            {
+                Company = 10.randomLetters(),
+                Country = 10.randomLetters(),
+                Firstname = 10.randomLetters(),
+                Lastname = 10.randomLetters(),
+                Note = 10.randomLetters(),
+                Password = "!!tmadmin" + 6.randomLetters(),
+                State = 10.randomLetters(),
+                Title = 10.randomLetters(),
+                Username = 100.randomLetters(),
+                Email = "{0}@{0}.{0}".format(3.randomLetters())
+            };
+            var response = userData.createTmUserResponse(newUser);
+            Assert.IsTrue((response != null));
+            Assert.IsTrue(response != null && response.UserCreated == 0);
+            Assert.IsTrue(response != null && response.Signup_Status == Signup_Result.SignupStatus.Validation_Failed);
+            Assert.IsTrue(response != null && response.Validation_Results != null & response.Validation_Results.count() > 0);
+            var results = response.Validation_Results;
+            Assert.IsTrue(results.count() > 0);
+            var result = results.FirstOrDefault();
+            Assert.IsTrue(result.notNull());
+            Assert.IsTrue(result.Field=="Username");
+            Assert.IsTrue((result.Message== "The field Username must be a string with a maximum length of 30."));
+            
+        }
+
+        [Test]
+        public void CreateTmUserSigupResponse_TMUserIsNull()
+        {
+            UserGroup.None.assert();                //  change current thread privildges to None
+            var response = userData.createTmUserResponse(null);
+            Assert.IsTrue((response != null));
+            Assert.IsTrue(response != null && response.UserCreated == 0);
+            Assert.IsTrue(response != null && response.Signup_Status == Signup_Result.SignupStatus.Signup_Error);
+            Assert.IsTrue(response != null && response.Simple_Error_Message.Length > 0);
+            Assert.IsTrue(response != null && response.Simple_Error_Message == "An error occurred creating a new account");
+        }
+
+        [Test]
+        public void CreateTmUserSigupResponse_Username_AlreadyExist()
+        {
+            UserGroup.None.assert();                //  change current thread privildges to None
+            var newUser = new NewUser()
+            {
+                Company = 10.randomLetters(),
+                Country = 10.randomLetters(),
+                Firstname = 10.randomLetters(),
+                Lastname = 10.randomLetters(),
+                Note = 10.randomLetters(),
+                Password = "!rJ4" + 10.randomLetters(),
+                State = 10.randomLetters(),
+                Title = 10.randomLetters(),
+                Username = "!!T".add_5_RandomLetters(),
+                Email = "{0}@{0}.{0}".format(3.randomLetters())
+            };
+            var response = userData.createTmUserResponse(newUser);
+            Assert.IsTrue((response != null));
+            Assert.IsTrue(response != null && response.UserCreated>0);
+            Assert.IsTrue(response != null && response.Signup_Status == Signup_Result.SignupStatus.Signup_Ok);
+
+            response = userData.createTmUserResponse(newUser);
+
+            Assert.IsTrue(response.notNull());
+            Assert.IsTrue(response.Signup_Status== Signup_Result.SignupStatus.Validation_Failed);
+            var results = response.Validation_Results;
+            Assert.IsTrue(results.count()>0);
+            Assert.IsTrue(results.FirstOrDefault().Field=="Username");
+            Assert.IsTrue(results.FirstOrDefault().Message == TMConsts.DEFAULT_SIGNUP_USERNAME_EXIST_MESSAGE);
+
+        }
+        [Test]
+        public void CreateTmUserSigupResponse_Email_AlreadyExist()
+        {
+            UserGroup.None.assert();                //  change current thread privildges to None
+            var newUser = new NewUser()
+            {
+                Company = 10.randomLetters(),
+                Country = 10.randomLetters(),
+                Firstname = 10.randomLetters(),
+                Lastname = 10.randomLetters(),
+                Note = 10.randomLetters(),
+                Password = "!rJ4" + 10.randomLetters(),
+                State = 10.randomLetters(),
+                Title = 10.randomLetters(),
+                Username = "tA2!".add_RandomLetters(8),
+                Email    = "test@securityinnovation.com"
+            };
+            var response = userData.createTmUserResponse(newUser);
+            Assert.IsTrue((response != null));
+            Assert.IsTrue(response != null && response.UserCreated > 0);
+            Assert.IsTrue(response != null && response.Signup_Status == Signup_Result.SignupStatus.Signup_Ok);
+
+            newUser.Username = "tA2@".add_RandomLetters(8);
+            response = userData.createTmUserResponse(newUser);
+
+            Assert.IsTrue(response.notNull());
+            Assert.IsTrue(response.Signup_Status == Signup_Result.SignupStatus.Validation_Failed);
+            var results = response.Validation_Results;
+            Assert.IsTrue(results.count() > 0);
+            Assert.IsTrue(results.FirstOrDefault().Field == "Email");
+            Assert.IsTrue(results.FirstOrDefault().Message == TMConsts.DEFAULT_SIGNUP_EMAIL_EXIST_MESSAGE);
+
+        }
         [Test] public void setUserPassword()        
         {
             var tmUser   = "tempUser".createUser();
@@ -146,6 +429,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
 
             //change using tmUser.UserID
             userData.setUserPassword(tmUser.UserID,password2);
+            Assert.AreEqual   (Guid.Empty,userData.login(tmUser.UserName, password1));
             Assert.AreEqual   (Guid.Empty,userData.login(tmUser.UserName, password1));
             Assert.AreNotEqual(Guid.Empty,userData.login(tmUser.UserName, password2));
             Assert.AreEqual   (Guid.Empty,userData.login(tmUser.UserName, password3));

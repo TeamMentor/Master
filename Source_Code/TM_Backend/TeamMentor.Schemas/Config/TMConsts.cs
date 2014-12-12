@@ -2,46 +2,56 @@ namespace TeamMentor.CoreLib
 {
 	public class TMConsts
 	{
-        public static string AUTH_TOKEN_REQUEST_VAR_NAME      = "auth";
-		public static string PATH_HTML_PAGE_UNAVAILABLE       = "/Html_Pages/Gui/Pages/unavailable.html";      
+        public static string AUTH_TOKEN_REQUEST_VAR_NAME                    = "auth";
+		public static string PATH_HTML_PAGE_UNAVAILABLE                     = "/Html_Pages/Gui/Pages/unavailable.html";      
 
-        public static string DEFAULT_ARTICLE_FOLDER_NAME      = "Articles";
-        public static string VIRTUAL_PATH_MAPPING			  = "..\\..\\..";					  
-        public static string XML_DATABASE_VIRTUAL_PATH		  = "TeamMentor";
-		public static string XML_DATABASE_VIRTUAL_PATH_LEGACY = "Library_Data\\XmlDatabase"; // for legacy support (pre 3.3)
+        public static string DEFAULT_ARTICLE_FOLDER_NAME                    = "Articles";
+        public static string VIRTUAL_PATH_MAPPING			                = "..\\..\\..";					  
+        public static string XML_DATABASE_VIRTUAL_PATH		                = "TeamMentor";
+		public static string XML_DATABASE_VIRTUAL_PATH_LEGACY               = "Library_Data\\XmlDatabase"; // for legacy support (pre 3.3)
                 
-        public static string DEFAULT_TM_LOCALHOST_SERVER_URL  = "http://localhost";
-	    public static string APPLICATION_LOGS_FOLDER_NAME     = "Application_Logs";
+        public static string DEFAULT_TM_LOCALHOST_SERVER_URL                = "http://localhost";
+	    public static string APPLICATION_LOGS_FOLDER_NAME                   = "Application_Logs";
 
-        public static string USERDATA_FIRST_SCRIPT_TO_INVOKE  = "H2Scripts//FirstScriptToInvoke.h2";
-        public static string USERDATA_PATH_USER_XML_FILES     = "Users";        
-        public static string USERDATA_PATH_WEB_ROOT_FILES     = "WebRoot_Files";
-        public static string USERDATA_FORMAT_USER_XML_FILE    = "{0}_{1}.userData.xml";
-        public static string USERDATA_DEFAULT_ADMIN_USERNAME  = "admin";
-        public static string USERDATA_DEFAULT_ADMIN_PASSWORD  = "!!tmadmin";        
-        public static string USERDATA_DEFAULT_ADMIN_EMAIL     = "TM_alerts@securityinnovation.com";
+        public static string USERDATA_FIRST_SCRIPT_TO_INVOKE                = "H2Scripts//FirstScriptToInvoke.h2";
+        public static string USERDATA_PATH_USER_XML_FILES                   = "Users";        
+        public static string USERDATA_PATH_WEB_ROOT_FILES                   = "WebRoot_Files";
+        public static string USERDATA_FORMAT_USER_XML_FILE                  = "{0}_{1}.userData.xml";
+        public static string USERDATA_DEFAULT_ADMIN_USERNAME                = "admin";
+        public static string USERDATA_DEFAULT_ADMIN_PASSWORD                = "!!tmadmin";        
+        public static string USERDATA_DEFAULT_ADMIN_EMAIL                   = "TM_alerts@securityinnovation.com";
+        public static string DEFAULT_LOGIN_ERROR_MESSAGE                    = "An error occurred";
+        public static string DEFAULT_SIGNUP_ERROR_MESSAGE                   = "An error occurred creating a new account";
+        public static string DEFAULT_LOGIN_ACCOUNT_EXPIRED_MESSAGE          = "Account Expired";
+        public static string DEFAULT_LOGIN_ACCOUNT_DISABLED_MESSAGE         = "Account Disabled";
+        public static string DEFAULT_LOGIN_PASSWORD_DONOT_MATCH_MESSAGE     = "Wrong Password";
+	    public static string DEFAULT_LOGIN_USERNAME_DONOT_EXIST_MESSAGE     = "Username does not exist";
+        public static string DEFAULT_SIGNUP_USERNAME_EXIST_MESSAGE          = "Username already exist";
+        public static string DEFAULT_SIGNUP_EMAIL_EXIST_MESSAGE             = "Email already exist";
+        public static string DEFAULT_PASSWORD_LENGTH_MESSAGE                = "Password must be 8 to 256 character long";
+	    public static string DEFAULT_PASSWORD_COMPLEXITY_ERROR_MESSAGE      = "Password must contain a non-letter and a non-number character including 1 uppercase letter.";
+
+        public static int    FIREBASE_SUBMIT_QUEUE_MAX_WAIT                 = 60000;
+        public static string FIREBASE_AREA_DEBUG_MSGS                       = "debugMsgs";
+        public static string FIREBASE_AREA_ACTIVITIES                       = "activities";
+        public static string FIREBASE_AREA_REQUESTS_URLS                    = "requestUrls";
         
-        public static int    FIREBASE_SUBMIT_QUEUE_MAX_WAIT    = 60000;
-        public static string FIREBASE_AREA_DEBUG_MSGS          = "debugMsgs";
-        public static string FIREBASE_AREA_ACTIVITIES          = "activities";
-        public static string FIREBASE_AREA_REQUESTS_URLS       = "requestUrls";
-        
-        public static string EMAIL_SUBJECT_NEW_USER_WELCOME   = "Welcome to TeamMentor";
-        public static string EMAIL_TEST_SUBJECT               = "Test Email";
-        public static string EMAIL_TEST_MESSAGE               = "From TeamMentor";
+        public static string EMAIL_SUBJECT_NEW_USER_WELCOME                 = "Welcome to TeamMentor";
+        public static string EMAIL_TEST_SUBJECT                             = "Test Email";
+        public static string EMAIL_TEST_MESSAGE                             = "From TeamMentor";
 
         
-        public static string TM_CONFIG_FILENAME               = "TMConfig.config";
+        public static string TM_CONFIG_FILENAME                             = "TMConfig.config";
 
-        public static string TM_SERVER_FILENAME               = "TMServer.config";
-        public static string TM_SERVER_DEFAULT_NAME_USERDATA  = "User_Data";
-        public static string TM_SERVER_DEFAULT_NAME_SITEDATA  = "Site_Data";
+        public static string TM_SERVER_FILENAME                             = "TMServer.config";
+        public static string TM_SERVER_DEFAULT_NAME_USERDATA                = "User_Data";
+        public static string TM_SERVER_DEFAULT_NAME_SITEDATA                = "Site_Data";
 
-        public static string NGIT_DEFAULT_AUTHOR_NAME         = "tm-bot";
-        public static string NGIT_DEFAULT_AUTHOR_EMAIL        = "tm-bot@teammentor.net";
+        public static string NGIT_DEFAULT_AUTHOR_NAME                       = "tm-bot";
+        public static string NGIT_DEFAULT_AUTHOR_EMAIL                      = "tm-bot@teammentor.net";
 
-        public static string DEFAULT_ERROR_PAGE_REDIRECT      = "/error";        
-        public static string EMAIL_BODY_NEW_USER_WELCOME =
+        public static string DEFAULT_ERROR_PAGE_REDIRECT                    = "/error";        
+        public static string EMAIL_BODY_NEW_USER_WELCOME                    =
 @"Hello,
 
 It's a pleasure to confirm that a new TeamMentor account has been created for you and that you'll now be able to access

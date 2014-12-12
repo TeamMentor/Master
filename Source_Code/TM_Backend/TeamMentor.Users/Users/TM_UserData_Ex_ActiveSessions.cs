@@ -7,7 +7,7 @@ using FluentSharp.Web;
 namespace TeamMentor.CoreLib
 {
     public static class TM_UserData_Ex_ActiveSessions
-    {   
+    {
         /*public static Guid              login_Using_LoginToken (this TM_UserData userData, string username, Guid loginToken)
         {
             try
@@ -32,17 +32,56 @@ namespace TeamMentor.CoreLib
             }
             return Guid.Empty;    			
         }*/
-        public static Guid              login (this TM_UserData userData, string username, string password)
+        //public static Guid              login (this TM_UserData userData, string username, string password)
+        //{
+        //    try
+        //    {                
+        //        if (username.valid() && password.valid())
+        //        {
+        //            var tmUser = userData.tmUser(username);
+
+        //            if (tmUser.notNull())
+        //            {
+        //               // tmUser.SecretData.SessionID = Guid.Empty;          // reset the user SessionID
+        //                if (tmUser.account_Expired())
+        //                {
+        //                    tmUser.logUserActivity("Account Expired", "Expiry date: {0}".format(tmUser.AccountStatus.ExpirationDate));
+        //                    return Guid.Empty;
+        //                }
+        //                var pwdOk = tmUser.SecretData.PasswordHash == tmUser.createPasswordHash(password);
+        //                if (pwdOk)
+        //                {
+        //                    if(tmUser.account_Enabled())
+        //                        return tmUser.login("Password");                    // call login with a new SessionID            
+
+        //                    tmUser.logUserActivity("Login Fail",  "pwd ok, but account disabled");
+        //                }
+        //                else
+        //                {                            
+        //                    tmUser.logUserActivity("Login Fail", "bad pwd");                            
+        //                }
+        //            }
+        //            else
+        //                userData.logTBotActivity("Login Fail", "bad username: {0}".format(username));
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ex.log("[TM_Xml_Database] login");                
+        //    }
+        //    return Guid.Empty;    			
+        //}
+        public static Guid login(this TM_UserData userData, string username, string password)
         {
             try
-            {                
+            {
                 if (username.valid() && password.valid())
                 {
                     var tmUser = userData.tmUser(username);
 
                     if (tmUser.notNull())
                     {
-                       // tmUser.SecretData.SessionID = Guid.Empty;          // reset the user SessionID
+                        // tmUser.SecretData.SessionID = Guid.Empty;          // reset the user SessionID
                         if (tmUser.account_Expired())
                         {
                             tmUser.logUserActivity("Account Expired", "Expiry date: {0}".format(tmUser.AccountStatus.ExpirationDate));
@@ -51,14 +90,14 @@ namespace TeamMentor.CoreLib
                         var pwdOk = tmUser.SecretData.PasswordHash == tmUser.createPasswordHash(password);
                         if (pwdOk)
                         {
-                            if(tmUser.account_Enabled())
+                            if (tmUser.account_Enabled())
                                 return tmUser.login("Password");                    // call login with a new SessionID            
-                            
-                            tmUser.logUserActivity("Login Fail",  "pwd ok, but account disabled");
+
+                            tmUser.logUserActivity("Login Fail", "pwd ok, but account disabled");
                         }
                         else
-                        {                            
-                            tmUser.logUserActivity("Login Fail", "bad pwd");                            
+                        {
+                            tmUser.logUserActivity("Login Fail", "bad pwd");
                         }
                     }
                     else
@@ -67,10 +106,133 @@ namespace TeamMentor.CoreLib
             }
             catch (Exception ex)
             {
-                ex.log("[TM_Xml_Database] login");                
+                ex.log("[TM_Xml_Database] login");
             }
-            return Guid.Empty;    			
+            return Guid.Empty;
         }
+        public static Login_Result loginResponse(this TM_UserData userData, string username, string password)
+        {
+            try
+            {
+                //Empty fileds check
+                if (username.valid() && password.valid())
+                {
+                    var tmUser = userData.tmUser(username);
+                    var tmConfig = TMConfig.Current;
+                    //Checking if username does exist in the database.
+                    if (tmUser.notNull())
+                    {
+                        //Checking if account is expired
+                        if (tmUser.account_Expired())
+                        {
+                            tmUser.logUserActivity("Account Expired", "Expiry date: {0}".format(tmUser.AccountStatus.ExpirationDate));
+                            return AccountExpiredResponse(tmConfig);
+                        }
+                        //Password verification
+                        var pwdOk = tmUser.SecretData.PasswordHash == tmUser.createPasswordHash(password);
+                        if (pwdOk)
+                        {
+                            //Checking if account is enabled
+                            if (tmUser.account_Enabled())
+                            {
+                                //Login successfull. Returning the authentication token.
+                                var token = tmUser.login("Password");
+                                var response = new Login_Result
+                                {
+                                    Token = token,
+                                    Login_Status = Login_Result.LoginStatus.Login_Ok
+                                };
+                                return response;
+                            }
+                             //Account disabled.
+                             tmUser.logUserActivity("Login Fail", "pwd ok, but account disabled");
+                             return AccountDisabledResponse(tmConfig);
+                        }
+                        //Login fail. Wrong Password
+                         tmUser.logUserActivity("Login Fail", "bad pwd");
+                         return BadPasswordResponse(tmConfig);
+                    }
+                    userData.logTBotActivity("Login Fail", "bad username: {0}".format(username));
+                    return BadUsernameResponse (tmConfig);
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.log("[TM_Xml_Database] login");
+            }
+            return new Login_Result();
+        }
+
+        #region Login Validations 
+        private static Login_Result AccountExpiredResponse(TMConfig tmConfig)
+        {
+            var response = new Login_Result {Login_Status = Login_Result.LoginStatus.Validation_Failed};
+            if (tmConfig.showDetailedErrorMessages())
+            {
+                response.Validation_Results.Add(new Validation_Results
+                {
+                    Field = "ExpirationDate",
+                    Message = TMConfig.Current.TMErrorMessages.AccountExpiredErrorMessage
+                });
+            }
+            else
+                response.Simple_Error_Message = tmConfig.TMErrorMessages.General_Login_Error_Message;
+
+            return response;
+        }
+
+        private static Login_Result AccountDisabledResponse(TMConfig tmConfig)
+        {
+            var response = new Login_Result {Login_Status = Login_Result.LoginStatus.Validation_Failed};
+            if (tmConfig.showDetailedErrorMessages())
+            {
+                response.Validation_Results.Add(new Validation_Results
+                {
+                    Field = "UserEnabled",
+                    Message = TMConfig.Current.TMErrorMessages.AccountDisabledErrorMessage
+                });
+            }
+            else
+                response.Simple_Error_Message = tmConfig.TMErrorMessages.General_Login_Error_Message;
+            return response;
+        }
+
+        private static Login_Result BadPasswordResponse(TMConfig tmConfig)
+        {
+            var response = new Login_Result {Login_Status = Login_Result.LoginStatus.Login_Fail};
+            if (tmConfig.showDetailedErrorMessages())
+            {
+                response.Validation_Results.Add(new Validation_Results
+                {
+                    Field = "Password",
+                    Message = TMConfig.Current.TMErrorMessages.PasswordDoNotMatch
+                });
+            }
+            else
+                response.Simple_Error_Message = tmConfig.TMErrorMessages.General_Login_Error_Message;
+
+            return response;
+        }
+
+        private static Login_Result BadUsernameResponse(TMConfig tmConfig)
+        {
+            var response = new Login_Result {Login_Status = Login_Result.LoginStatus.Login_Fail};
+            if (tmConfig.showDetailedErrorMessages())
+            {
+                response.Validation_Results.Add(new Validation_Results
+                {
+                    Field = "Username",
+                    Message = TMConfig.Current.TMErrorMessages.UserNameDoNotExistErrorMessage
+                });
+            }
+            else
+            {
+                response.Simple_Error_Message = tmConfig.TMErrorMessages.General_Login_Error_Message;
+            }
+            return response;
+        }
+        #endregion  
+
         public static Guid              login (this TMUser tmUser, string loginMethod = "Direct")                                         
         {         
             return TM_UserData.Current.login(tmUser, loginMethod);
@@ -96,6 +258,7 @@ namespace TeamMentor.CoreLib
             }
             return Guid.Empty;
         }
+
         public static bool              logout(this TMUser tmUser)
         {
             var sessionIDs = tmUser.session_sessionIds();
