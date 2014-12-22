@@ -227,6 +227,18 @@ namespace TeamMentor.CoreLib
             if (tmUser.EMail.valid())
             {
                 var subj = TMConsts.EMAIL_SUBJECT_NEW_USER_WELCOME;
+                //If URL is null, then the value is retrieved from SecretData repository
+                if (TM_Server_URL.isNull())
+                {
+                    var secretData = TM_UserData.Current.SecretData;
+                    if (secretData.notNull())
+                    {
+                        if (secretData.SmtpConfig != null)
+                        {
+                            TM_Server_URL = secretData.SmtpConfig.TM_Server_URL;
+                        }
+                    }
+                }
                 var userMessage = TMConsts.EMAIL_BODY_NEW_USER_WELCOME.format(TM_Server_URL, tmUser.UserName);
                 SendEmailToEmail(tmUser.EMail, subj, userMessage);
                 //userMessage = "(sent to: {0})\n\n{1}".format(tmUser.EMail, userMessage);
@@ -264,9 +276,17 @@ namespace TeamMentor.CoreLib
         {
             UserGroup.Admin.assert(); 
             try
-            {           
+            {
+                var secretData = TM_UserData.Current.SecretData;
+                if (secretData.notNull())
+                {
+                    if (secretData.SmtpConfig != null)
+                    {
+                        TM_Server_URL = secretData.SmtpConfig.TM_Server_URL;
+                    }                    
+                }
                 //mapTMServerUrl();
-var userMessage =
+                var userMessage =
 @"Hi {0}, a password reminder was requested for your account.
 
 You can change the password of your {1} account using {3}/passwordReset/{1}/{2}

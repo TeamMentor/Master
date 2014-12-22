@@ -51,8 +51,8 @@ namespace TeamMentor.UnitTests.CoreLib
 
         }
         [Test] public void Get_TMServer_From_ConfigFile()             
-        {                        
-            Assert.AreEqual (SendEmails.TM_Server_URL, TMConsts.DEFAULT_TM_LOCALHOST_SERVER_URL);
+        {
+       
             var context = HttpContextFactory.Context.mock();
             var request = HttpContextFactory.Request;
             Assert.IsNotNull(context);
@@ -68,7 +68,7 @@ namespace TeamMentor.UnitTests.CoreLib
             var serverUrl = SendEmails.TM_Server_URL;
             Assert.AreEqual(serverUrl, TMConsts.DEFAULT_TM_LOCALHOST_SERVER_URL);
             Assert.AreEqual(serverUrl, SendEmails.TM_Server_URL);
-            SendEmails.TM_Server_URL = TMConsts.DEFAULT_TM_LOCALHOST_SERVER_URL;
+            
         }
         [Test] public void send_TestEmail()             
         {
@@ -157,6 +157,23 @@ namespace TeamMentor.UnitTests.CoreLib
             var expectedMessage =
                 "Hello,\r\n\r\nIt's a pleasure to confirm that a new TeamMentor account has been created for you and that you'll now be able to access\r\nthe entire set of guidance available in the TM repository.\r\n\r\nTo access the service:\r\n\r\n- Go to {0} and login at the top right-hand corner of the page.\r\n- Use your username : {1}.\r\n\r\nThanks,\r\n\r\n".format(serverUrl,username);
             Assert.IsTrue(tmMessage == expectedMessage);
-        }        
+        }
+
+        [Test]
+        public void MessageBody_ServerAndPort_Correct()
+        {
+            const string serverUrl = @"https://localhost:1337";
+            const string username = "tmadmin";
+            var tmMessage = TMConsts.EMAIL_BODY_NEW_USER_WELCOME.format(serverUrl, username);
+            var expectedMessage =
+                "Hello,\r\n\r\nIt's a pleasure to confirm that a new TeamMentor account has been created for you and that you'll now be able to access\r\nthe entire set of guidance available in the TM repository.\r\n\r\nTo access the service:\r\n\r\n- Go to {0} and login at the top right-hand corner of the page.\r\n- Use your username : {1}.\r\n\r\nThanks,\r\n\r\n".format(serverUrl, username);
+            Assert.IsTrue(tmMessage == expectedMessage);
+        }
+
+        [Test]
+        public void SendWelcomeEmailToUser_Server_ConfigValue_IsNull()
+        {
+           
+        }
     }
 }
