@@ -50,7 +50,7 @@ namespace TeamMentor.UnitTests.CoreLib
             Assert.AreEqual  (sendEmails.Smtp_Password  , userData.SecretData.SmtpConfig.Password     );
 
         }
-        [Test] public void mapTMServerUrl()             
+        [Test] public void Get_TMServer_From_ConfigFile()             
         {                        
             Assert.AreEqual (SendEmails.TM_Server_URL, TMConsts.DEFAULT_TM_LOCALHOST_SERVER_URL);
             var context = HttpContextFactory.Context.mock();
@@ -63,13 +63,10 @@ namespace TeamMentor.UnitTests.CoreLib
             request.ServerVariables["Server_Name"] = serverName;
             request.ServerVariables["Server_Port"] = serverPort;
             Assert.AreEqual (request.ServerVariables["Server_Name"], serverName);
-            Assert.AreEqual (request.ServerVariables["Server_Port"], serverPort);            
+            Assert.AreEqual (request.ServerVariables["Server_Port"], serverPort);
 
-            //request.IsSecureConnection = false;
-            SendEmails.TM_Server_URL = null;
-            var expectedServer = "http://{0}:{1}".format(serverName, serverPort);
-            var serverUrl = SendEmails.mapTMServerUrl();
-            Assert.AreEqual(serverUrl, expectedServer);
+            var serverUrl = SendEmails.TM_Server_URL;
+            Assert.AreEqual(serverUrl, TMConsts.DEFAULT_TM_LOCALHOST_SERVER_URL);
             Assert.AreEqual(serverUrl, SendEmails.TM_Server_URL);
             SendEmails.TM_Server_URL = TMConsts.DEFAULT_TM_LOCALHOST_SERVER_URL;
         }

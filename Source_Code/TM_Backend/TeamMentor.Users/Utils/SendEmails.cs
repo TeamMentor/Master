@@ -34,7 +34,7 @@ namespace TeamMentor.CoreLib
 
         public SendEmails()
         {
-            mapTMServerUrl();  
+            //mapTMServerUrl();  
             
             if (TM_UserData.Current.notNull())
             { 
@@ -47,10 +47,11 @@ namespace TeamMentor.CoreLib
                     From          = secretData.SmtpConfig.Default_From;
                     To            = secretData.SmtpConfig.Default_To;
                     Email_Footer  = secretData.SmtpConfig.Email_Footer.lineBefore();
+                    TM_Server_URL = secretData.SmtpConfig.TM_Server_URL;
                 }
             }
         }
-        public static string mapTMServerUrl()           // this should be set by an live HTTP request
+       /* public static string mapTMServerUrl()           // this should be set by an live HTTP request
         {       
             try
             { 
@@ -85,7 +86,7 @@ namespace TeamMentor.CoreLib
                 "Could not set TM_Server_URL at this stage (due to '{0}')".debug(ex.Message);
             }
             return TM_Server_URL;
-        }
+        }*/
 
         /*public SendEmails(string smtpServer, string smtpUserName, string smtpPassword ) : this()
         {
@@ -264,7 +265,7 @@ namespace TeamMentor.CoreLib
             UserGroup.Admin.assert(); 
             try
             {           
-                mapTMServerUrl();
+                //mapTMServerUrl();
 var userMessage =
 @"Hi {0}, a password reminder was requested for your account.
 
@@ -323,7 +324,7 @@ If you didn't make this request, please let us know at support@teammentor.net.
         {
             if (Disable_EmailEngine)
                 return false;
-            mapTMServerUrl();
+            //mapTMServerUrl();
             
             try
             {
