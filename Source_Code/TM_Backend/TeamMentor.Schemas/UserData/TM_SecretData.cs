@@ -16,6 +16,7 @@ namespace TeamMentor.CoreLib
         public string           Default_From { get; set; }
         public string           Default_To   { get; set; }       
         public string           Email_Footer { get; set; }
+        public String           TM_Server_URL { get; set; }
 
         public TM_SMTPConfig()
         {
@@ -25,6 +26,7 @@ namespace TeamMentor.CoreLib
             Default_From    = TMConsts.USERDATA_DEFAULT_ADMIN_EMAIL;
             Default_To      = TMConsts.USERDATA_DEFAULT_ADMIN_EMAIL;
             Email_Footer    = TMConsts.EMAIL_DEFAULT_FOOTER;
+            TM_Server_URL   = TMConsts.DEFAULT_TM_LOCALHOST_SERVER_URL;
         }
     }
     
