@@ -139,7 +139,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
                 Firstname = 10.randomLetters(),
                 Lastname = 10.randomLetters(),
                 Note = 10.randomLetters(),
-                Password = "!rJ"+10.randomLetters(),
+                Password = "!r4J"+10.randomLetters(),
                 State = 10.randomLetters(),
                 Title = 10.randomLetters(),
                 Username = 10.randomLetters(),
@@ -168,7 +168,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
                 Firstname = 10.randomLetters(),
                 Lastname = 10.randomLetters(),
                 Note = 10.randomLetters(),
-                Password = "!!md" + 10.randomLetters(),
+                Password = "!!4Tmd" + 10.randomLetters(),
                 State = 10.randomLetters(),
                 Title = 10.randomLetters(),
                 Username = 10.randomLetters(),
@@ -181,7 +181,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             var user2 = newUser.createSigupResponse();
 
             Assert.AreNotEqual(user1.UserCreated, 0);
-            Assert.AreNotEqual(user1.UserCreated, user2);
+            Assert.IsFalse(user2.UserCreated > 0);
 
             //try with email in upper case
             newUser.Username = 10.randomLetters();
@@ -222,7 +222,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
                 Firstname = 10.randomLetters(),
                 Lastname = 10.randomLetters(),
                 Note = 10.randomLetters(),
-                Password = "!rJ" + 1.randomLetters(),
+                Password = "!4rJ" + 1.randomLetters(),
                 State = 10.randomLetters(),
                 Title = 10.randomLetters(),
                 Username = 10.randomLetters(),
@@ -311,7 +311,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
                 Firstname = 10.randomLetters(),
                 Lastname = 10.randomLetters(),
                 Note = 10.randomLetters(),
-                Password = "!!tmadmin" + 6.randomLetters(),
+                Password = "!!4tmadmin" + 6.randomLetters(),
                 State = 10.randomLetters(),
                 Title = 10.randomLetters(),
                 Username = 100.randomLetters(),
@@ -453,13 +453,13 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         [Test]
         public void setUserPasswordResult()
         {
-           var currentPassword = "!#4" + 10.randomLetters();
+           var currentPassword = "!#4uT" + 10.randomLetters();
             var username = 5.randomLetters() + 2.randomNumber() + 3.randomLetters();
             var tmUser = userData.newUser(username, currentPassword).tmUser();
-            var password1 = "!"  + 10.randomLetters();
-            var password2 = "@"  + 10.randomLetters();
-            var password3 = "!$" + 9.randomLetters();
-            var password4 = "&*" + 9.randomLetters();
+            var password1 = "2!Aa"  + 10.randomLetters();
+            var password2 = "2@As"  + 10.randomLetters();
+            var password3 = "2$Aa" + 9.randomLetters();
+            var password4 = "2&*aA" + 9.randomLetters();
 
             Assert.AreEqual(Guid.Empty, userData.loginResponse(tmUser.UserName, password1).Token);
             Assert.AreEqual(Guid.Empty, userData.loginResponse(tmUser.UserName, password2).Token);

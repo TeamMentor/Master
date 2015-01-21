@@ -97,6 +97,28 @@ namespace TeamMentor.UnitTests.CoreLib
                 }                
             }
         }
+        [Test]
+        public void Validation_Password_Size()
+        {
+            var newUser = new NewUser();
+            var loopMax = 300;
+            var expectedMaxLength = 256;
+            for (int i = 1; i < loopMax; i++)
+            {
+                newUser.Password = (i * 10).randomLetters();     //works quite fast even with values as hight as 1000000                
+                var dateStart = DateTime.Now;
+                var validationResults = newUser.validate();
+                var resultsMapped = validationResults.indexed_By_MemberName();
+                var seconds = (DateTime.Now - dateStart).TotalSeconds;
+                Assert.Less(seconds, 1, "A Password with size {0} took more than 1 sec to calculate".format(i * 10));
+                Assert.IsTrue(resultsMapped["Password"].contains("The field Password must match the regular expression '{0}'.".format(ValidationRegex.PasswordComplexity)), "It was {0}".format(resultsMapped["Password"].toString()));
+                if (i > expectedMaxLength)
+                {
+                    Assert.AreEqual(resultsMapped["Password"].size(), 2);
+                    Assert.IsTrue(resultsMapped["Password"].contains("The field Password must be a string with a maximum length of {0}.".format(expectedMaxLength)));
+                }
+            }
+        }
 
         [Test]
         public void Validation_Email_Format()

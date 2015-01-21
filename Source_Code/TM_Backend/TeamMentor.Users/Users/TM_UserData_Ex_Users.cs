@@ -88,7 +88,7 @@ namespace TeamMentor.CoreLib
                             return ValidatePasswordLength();
                         }
                         //Password Complexity chechek
-                        if (Regex.IsMatch(newPassword, ValidationRegex.PasswordComplexity))
+                        if (!Regex.IsMatch(newPassword, ValidationRegex.PasswordComplexity))
                         {
                             tmUser.logUserActivity("User Password Change", "New Password must contain a non-letter and a non-number character");
                             return ValidatePasswordComplexity();
