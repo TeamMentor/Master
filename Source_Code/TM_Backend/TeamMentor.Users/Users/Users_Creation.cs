@@ -199,7 +199,7 @@ namespace TeamMentor.UserData
                 return ValidatePasswordLength(tmConfig);
             }
             //Password complexity
-            if (Regex.IsMatch(newUser.Password, ValidationRegex.PasswordComplexity))
+            if (!Regex.IsMatch(newUser.Password, ValidationRegex.PasswordComplexity))
             {
                 return ValidatePasswordComplexity(tmConfig);
             }
