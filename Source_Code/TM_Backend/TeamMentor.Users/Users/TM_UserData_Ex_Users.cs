@@ -90,7 +90,7 @@ namespace TeamMentor.CoreLib
                         //Password Complexity chechek
                         if (!Regex.IsMatch(newPassword, ValidationRegex.PasswordComplexity))
                         {
-                            tmUser.logUserActivity("User Password Change", "New Password must contain a non-letter and a non-number character");
+                            tmUser.logUserActivity("User Password Change", "Your password should be at least 8 characters long. It should have one uppercase and one lowercase letter, a number and a special character.");
                             return ValidatePasswordComplexity();
                         }
                         var result = tmUser.setPasswordHash(newPasswordHash);

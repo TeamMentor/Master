@@ -103,8 +103,8 @@ TM.Gui.CurrentUser =
                                                                 $(errorDiv).text("Passwords don't match");
                                                             else if (password.length < 8)
                                                                 $(errorDiv).text("Password must be at least 8 characters").fadeIn();
-                                                            else if (/^[a-zA-Z0-9]+$/.test(password))	
-                                                                $(errorDiv).text("Password must contain a non-letter and a non-number character");
+                                                            else if (/((?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*\W).{8,256})/.test(password) === false)
+                                                                $(errorDiv).text("Password should be at least 8 characters long. It should have one uppercase and one lowercase letter, a number and a special character.");
                                                             else
                                                                 return true;										
                                                             $(errorDiv).fadeIn();
