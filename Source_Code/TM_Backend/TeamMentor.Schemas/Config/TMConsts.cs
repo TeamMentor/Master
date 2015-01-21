@@ -29,7 +29,7 @@ namespace TeamMentor.CoreLib
         public static string DEFAULT_SIGNUP_USERNAME_EXIST_MESSAGE          = "Username already exist";
         public static string DEFAULT_SIGNUP_EMAIL_EXIST_MESSAGE             = "Email already exist";
         public static string DEFAULT_PASSWORD_LENGTH_MESSAGE                = "Password must be 8 to 256 character long";
-	    public static string DEFAULT_PASSWORD_COMPLEXITY_ERROR_MESSAGE      = "Password must contain a non-letter and a non-number character";
+	    public static string DEFAULT_PASSWORD_COMPLEXITY_ERROR_MESSAGE      = "Password should be at least 8 characters long. It should have one uppercase and one lowercase letter, a number and a special character.";
         public static string DEFAULT_NEW_PASSWORD_ERROR_MESSAGE             = "The new password must differ from your current password";
         public static string CURRENT_PASSWORD_DONOT_MATCH_ERROR_MESSAGE     = "Current Password does not match provided value";
         public static string DEFAULT_PASSWORD_CHANGE_ERROR_MESSAGE          = "The password cannot be changed at this time";
