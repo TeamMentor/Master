@@ -88,7 +88,7 @@ namespace TeamMentor.CoreLib
             public string General_SignUp_Error_Message          { get; set; }
             public string AccountExpiredErrorMessage            { get; set; }
             public string AccountDisabledErrorMessage           { get; set; }
-            public string Login_PasswordDoNotMatch                    { get; set; }
+            public string Login_PasswordDoNotMatch              { get; set; }
             public string UserNameDoNotExistErrorMessage        { get; set; }
             public string PasswordLengthErrorMessage            { get;set; }
             public string PasswordComplexityErroMessage         { get; set; }
