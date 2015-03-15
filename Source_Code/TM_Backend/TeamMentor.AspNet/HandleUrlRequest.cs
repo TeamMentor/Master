@@ -657,7 +657,7 @@ namespace TeamMentor.CoreLib
                 
                 var article = tmWebServices.GetGuidanceItemById(guid); 
                         
-                if (article.Content.DataType.lower() == "markdown")
+                if (article.Content.DataType.lower() == "markdown" || article.Content.DataType.lower() == "html")
                 {
                    context.Response.Redirect("/Markdown/Editor?articleId={0}".format(guid));
                 }
