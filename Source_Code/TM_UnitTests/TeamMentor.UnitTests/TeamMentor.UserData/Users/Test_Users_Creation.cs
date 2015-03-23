@@ -157,6 +157,93 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         }
 
         [Test]
+        public void CreateTmUserSigupResponse_TLD_Email_Success()
+        {
+            UserGroup.None.assert();                //  change current thread privildges to None
+
+            var newUser = new NewUser()
+            {
+                Company = 10.randomLetters(),
+                Country = 10.randomLetters(),
+                Firstname = 10.randomLetters(),
+                Lastname = 10.randomLetters(),
+                Note = 10.randomLetters(),
+                Password = "!r4J" + 10.randomLetters(),
+                State = 10.randomLetters(),
+                Title = 10.randomLetters(),
+                Username = 10.randomLetters(),
+                Email = "dmin@xn--xn--fsqu00a.xn--g6w251d"
+            };
+
+            Assert.IsEmpty(newUser.validate());
+
+            var response = newUser.createSigupResponse();
+            Assert.IsTrue(response.notNull());
+            Assert.IsTrue(response.UserCreated > 0);
+            Assert.IsTrue(response.Signup_Status == Signup_Result.SignupStatus.Signup_Ok);
+            Assert.IsTrue(response.Validation_Results.count() == 0);
+
+        }
+
+        [Test]
+        public void CreateTmUserSigupResponse_EmailMaxLength_Allowed()
+        {
+            UserGroup.None.assert();                //  change current thread privildges to None
+
+            var newUser = new NewUser()
+            {
+                Company = 10.randomLetters(),
+                Country = 10.randomLetters(),
+                Firstname = 10.randomLetters(),
+                Lastname = 10.randomLetters(),
+                Note = 10.randomLetters(),
+                Password = "!r4J" + 10.randomLetters(),
+                State = 10.randomLetters(),
+                Title = 10.randomLetters(),
+                Username = 10.randomLetters(),
+                Email = "".random_Email() + "".add_RandomLetters(230)
+            };
+             
+            Assert.IsTrue(newUser.Email.Length ==256);
+            Assert.IsEmpty(newUser.validate());
+
+            var response = newUser.createSigupResponse();
+            Assert.IsTrue(response.notNull());
+            Assert.IsTrue(response.UserCreated > 0);
+            Assert.IsTrue(response.Signup_Status == Signup_Result.SignupStatus.Signup_Ok);
+            Assert.IsTrue(response.Validation_Results.count() == 0);
+
+        }
+        [Test]
+        public void CreateTmUserSigupResponse_Unicode_Email_Success()
+        {
+            UserGroup.None.assert();                //  change current thread privildges to None
+
+            var newUser = new NewUser()
+            {
+                Company = 10.randomLetters(),
+                Country = 10.randomLetters(),
+                Firstname = 10.randomLetters(),
+                Lastname = 10.randomLetters(),
+                Note = 10.randomLetters(),
+                Password = "!r4J" + 10.randomLetters(),
+                State = 10.randomLetters(),
+                Title = 10.randomLetters(),
+                Username = 10.randomLetters(),
+                Email = "admin@استفتاء.مصر"
+            };
+
+            Assert.IsEmpty(newUser.validate());
+
+            var response = newUser.createSigupResponse();
+            Assert.IsTrue(response.notNull());
+            Assert.IsTrue(response.UserCreated > 0);
+            Assert.IsTrue(response.Signup_Status == Signup_Result.SignupStatus.Signup_Ok);
+            Assert.IsTrue(response.Validation_Results.count() == 0);
+
+        }
+
+        [Test]
         public void CreateTmUserSigupResponse()
         {
             UserGroup.None.assert();                //  change current thread privildges to None
@@ -407,6 +494,92 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             Assert.IsTrue(results.FirstOrDefault().Field == "Email");
             Assert.IsTrue(results.FirstOrDefault().Message == TMConsts.DEFAULT_SIGNUP_EMAIL_EXIST_MESSAGE);
 
+        }
+
+        [Test]
+        public void CreateTmUserSigupResponse_Email_Address_Invalid_Bad_Format()
+        {
+            UserGroup.None.assert();                //  change current thread privildges to None
+            var newUser = new NewUser()
+            {
+                Username = "tA2!".add_RandomLetters(8),
+                Email = "notValidEmail"
+            };
+            var response = userData.createTmUserResponse(newUser);
+            Assert.IsTrue((response != null));
+            Assert.IsTrue(response != null && response.UserCreated ==0);
+            Assert.IsTrue(response != null && response.Signup_Status == Signup_Result.SignupStatus.Validation_Failed);
+            if (response != null)
+            {
+                var results = response.Validation_Results;
+                Assert.IsTrue(results.count() > 0);
+                Assert.IsTrue(results.FirstOrDefault().Field == "Email");
+                Assert.IsTrue(results.FirstOrDefault().Message == TMConsts.DEFAULT_EMAIL_ADDRESS_IS_INVALID);
+            }
+        }
+        [Test]
+        public void CreateTmUserSigupResponse_Email_Address_Large()
+        {
+            UserGroup.None.assert();                //  change current thread privildges to None
+            var newUser = new NewUser()
+            {
+                Username = "tA2!".add_RandomLetters(8),
+                Email = "".random_Email().add_RandomLetters(300)
+            };
+            var response = userData.createTmUserResponse(newUser);
+            Assert.IsTrue((response != null));
+            Assert.IsTrue(response != null && response.UserCreated == 0);
+            Assert.IsTrue(response != null && response.Signup_Status == Signup_Result.SignupStatus.Validation_Failed);
+            if (response != null)
+            {
+                var results = response.Validation_Results;
+                Assert.IsTrue(results.count() > 0);
+                Assert.IsTrue(results.FirstOrDefault().Field == "Email");
+                Assert.IsTrue(results.FirstOrDefault().Message == TMConsts.DEFAULT_EMAIL_ADDRESS_IS_INVALID);
+            }
+        }
+        [Test]
+        public void CreateTmUserSigupResponse_Email_Address_IsNull()
+        {
+            UserGroup.None.assert();                //  change current thread privildges to None
+            var newUser = new NewUser()
+            {
+                Username = "tA2!".add_RandomLetters(8),
+                Email = null
+            };
+            var response = userData.createTmUserResponse(newUser);
+            Assert.IsTrue((response != null));
+            Assert.IsTrue(response != null && response.UserCreated == 0);
+            Assert.IsTrue(response != null && response.Signup_Status == Signup_Result.SignupStatus.Validation_Failed);
+            if (response != null)
+            {
+                var results = response.Validation_Results;
+                Assert.IsTrue(results.count() > 0);
+                Assert.IsTrue(results.FirstOrDefault().Field == "Email");
+                Assert.IsTrue(results.FirstOrDefault().Message == TMConsts.DEFAULT_EMAIL_ADDRESS_IS_INVALID);
+            }
+        }
+       
+        [Test]
+        public void CreateTmUserSigupResponse_Email_Address_NullorEmpty()
+        {
+            UserGroup.None.assert();                //  change current thread privildges to None
+            var newUser = new NewUser()
+            {
+                Username = "tA2!".add_RandomLetters(8),
+                Email = String.Empty
+            };
+            var response = userData.createTmUserResponse(newUser);
+            Assert.IsTrue((response != null));
+            Assert.IsTrue(response != null && response.UserCreated == 0);
+            Assert.IsTrue(response != null && response.Signup_Status == Signup_Result.SignupStatus.Validation_Failed);
+            if (response != null)
+            {
+                var results = response.Validation_Results;
+                Assert.IsTrue(results.count() > 0);
+                Assert.IsTrue(results.FirstOrDefault().Field == "Email");
+                Assert.IsTrue(results.FirstOrDefault().Message == TMConsts.DEFAULT_EMAIL_ADDRESS_IS_INVALID);
+            }
         }
         [Test] public void setUserPassword()        
         {

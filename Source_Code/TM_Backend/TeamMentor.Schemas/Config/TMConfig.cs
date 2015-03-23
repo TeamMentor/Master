@@ -99,6 +99,7 @@ namespace TeamMentor.CoreLib
             public string General_PasswordChange_Error_Message  { get; set; }
             public string General_PasswordReset_Error_Message   { get; set; }
             public string Email_Does_Not_Exist_ErrorMessage     { get; set; }
+            public string Email_Address_Is_Invalid              { get; set; }
 
             public TMErrorMessages_Config()
             {
@@ -117,6 +118,7 @@ namespace TeamMentor.CoreLib
                 General_PasswordChange_Error_Message    = TMConsts.DEFAULT_PASSWORD_CHANGE_ERROR_MESSAGE;
                 General_PasswordReset_Error_Message     = TMConsts.DEFAULT_PASSWORD_RESET_ERROR_MESSAGE;
                 Email_Does_Not_Exist_ErrorMessage       = TMConsts.DEFAULT_EMAIL_DOES_NOT_EXIST_ERROR_MESSAGE;
+                Email_Address_Is_Invalid                = TMConsts.DEFAULT_EMAIL_ADDRESS_IS_INVALID;
 
             }
         }

@@ -192,6 +192,16 @@ namespace TeamMentor.UserData
             }
             // ensure the email is lowercase (will fail validation otherwise)
             newUser.Email = newUser.Email.lower();
+            //Email check (length, null, valid)
+            if (newUser.Email.isNull() || newUser.Email.Length>256 || !IsValidEmailAddress(newUser.Email))
+            {
+                if (newUser.Email.notNull() && newUser.Email.Length> 256)
+                {
+                    userData.logTBotActivity("User Creation Fail", "Input rejected because email address ('{0}') is larger than 256 characters".format(newUser.Email));
+                }
+                return ValidateEmailPattern(tmConfig);
+            }
+
             //Validate Password Length.
             if (newUser.Password.Length < 8 || newUser.Password.Length> 256)
             {
@@ -239,6 +249,38 @@ namespace TeamMentor.UserData
         }
 
         #region Sigup validations, shorter and specialized methods
+        private static  bool IsValidEmailAddress(string emailAddress)
+        {
+            bool isValid = false;
+            try
+            {
+                var address = new System.Net.Mail.MailAddress(emailAddress);
+                isValid = true;
+            }
+            catch
+            {
+                isValid = false;
+            }
+            return isValid;
+        }
+        private static Signup_Result ValidateEmailPattern(TMConfig config)
+        {
+            var sigupResponse = new Signup_Result
+            {
+                Signup_Status = Signup_Result.SignupStatus.Validation_Failed,
+                UserCreated = 0
+            };
+            var errorMessage = TMConfig.Current.TMErrorMessages.Email_Address_Is_Invalid;
+            if (config.showDetailedErrorMessages())
+            {
+                sigupResponse.Validation_Results.Add(new Validation_Results { Field = "Email", Message = errorMessage });
+            }
+            else
+                sigupResponse.Simple_Error_Message = config.TMErrorMessages.General_SignUp_Error_Message;
+
+            return sigupResponse;
+        }
+
         private static Signup_Result ValidatePasswordComplexity(TMConfig config)
         {
             var sigupResponse = new Signup_Result
