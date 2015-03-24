@@ -472,64 +472,48 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         public void CreateTmUserSigupResponse_Email_Address_Invalid_Bad_Format()
         {
             UserGroup.None.assert();                //  change current thread privildges to None
-            var newUser = new NewUser()
-            {
-                Username = "tA2!".add_RandomLetters(8),
-                Email = "notValidEmail"
-            };
-            var response = userData.createTmUserResponse(newUser);
-            Assert.IsTrue((response != null));
-            Assert.IsTrue(response != null && response.UserCreated ==0);
-            Assert.IsTrue(response != null && response.Signup_Status == Signup_Result.SignupStatus.Validation_Failed);
-            if (response != null)
-            {
-                var results = response.Validation_Results;
-                Assert.IsTrue(results.count() > 0);
-                Assert.IsTrue(results.FirstOrDefault().Field == "Email");
-                Assert.IsTrue(results.FirstOrDefault().Message == TMConsts.DEFAULT_EMAIL_ADDRESS_IS_INVALID);
-            }
+            var newUser = new NewUser().with_Random_Data();
+            newUser.Email = "novalid";
+            userData.createTmUserResponse(newUser).assert_Not_Null();
+            userData.createTmUserResponse(newUser).UserCreated.assert_Is(0);
+            userData.createTmUserResponse(newUser).Signup_Status.assert_Is(Signup_Result.SignupStatus.Validation_Failed);
+            userData.createTmUserResponse(newUser).Validation_Results.assert_Not_Null();
+            var validations = userData.createTmUserResponse(newUser).Validation_Results;
+            validations.assert_Not_Null();
+            validations.FirstOrDefault().Field.assert_Is("Email");
+            validations.FirstOrDefault().Message.assert_Is(TMConsts.DEFAULT_EMAIL_ADDRESS_IS_INVALID);
         }
         [Test]
         public void CreateTmUserSigupResponse_Email_Address_Large()
         {
             UserGroup.None.assert();                //  change current thread privildges to None
-            var newUser = new NewUser()
-            {
-                Username = "tA2!".add_RandomLetters(8),
-                Email = "".random_Email().add_RandomLetters(300)
-            };
+            var newUser = new NewUser().with_Random_Data();
+            newUser.Email = "".random_Email().add_RandomLetters(300);
+            
             var response = userData.createTmUserResponse(newUser);
-            Assert.IsTrue((response != null));
-            Assert.IsTrue(response != null && response.UserCreated == 0);
-            Assert.IsTrue(response != null && response.Signup_Status == Signup_Result.SignupStatus.Validation_Failed);
-            if (response != null)
-            {
-                var results = response.Validation_Results;
-                Assert.IsTrue(results.count() > 0);
-                Assert.IsTrue(results.FirstOrDefault().Field == "Email");
-                Assert.IsTrue(results.FirstOrDefault().Message == TMConsts.DEFAULT_EMAIL_ADDRESS_IS_INVALID);
-            }
-        }
+            response.assert_Is_Not_Null();
+            response.UserCreated.assert_Is(0);
+            response.Signup_Status.assert_Is(Signup_Result.SignupStatus.Validation_Failed);
+            response.Validation_Results.assert_Not_Null();
+            response.Validation_Results.count().assert_Bigger_Than(0);
+            response.Validation_Results.FirstOrDefault().Field.assert_Is("Email");
+            response.Validation_Results.FirstOrDefault().Message.assert_Is(TMConsts.DEFAULT_EMAIL_ADDRESS_IS_INVALID);
+         }
+
         [Test]
         public void CreateTmUserSigupResponse_Email_Address_IsNull()
         {
             UserGroup.None.assert();                //  change current thread privildges to None
-            var newUser = new NewUser()
-            {
-                Username = "tA2!".add_RandomLetters(8),
-                Email = null
-            };
+            var newUser = new NewUser().with_Random_Data();
+            newUser.Email = null;
             var response = userData.createTmUserResponse(newUser);
-            Assert.IsTrue((response != null));
-            Assert.IsTrue(response != null && response.UserCreated == 0);
-            Assert.IsTrue(response != null && response.Signup_Status == Signup_Result.SignupStatus.Validation_Failed);
-            if (response != null)
-            {
-                var results = response.Validation_Results;
-                Assert.IsTrue(results.count() > 0);
-                Assert.IsTrue(results.FirstOrDefault().Field == "Email");
-                Assert.IsTrue(results.FirstOrDefault().Message == TMConsts.DEFAULT_EMAIL_ADDRESS_IS_INVALID);
-            }
+            response.assert_Not_Null();
+            response.UserCreated.assert_Is(0);
+            response.Signup_Status.assert_Is(Signup_Result.SignupStatus.Validation_Failed);
+            response.Validation_Results.count().assert_Bigger_Than(0);
+            response.Validation_Results.FirstOrDefault().Field.assert_Is("Email");
+            response.Validation_Results.FirstOrDefault().Message.assert_Is(TMConsts.DEFAULT_EMAIL_ADDRESS_IS_INVALID);
+
         }
        
         [Test]
