@@ -138,10 +138,10 @@ namespace TeamMentor.UserData
             //userData.triggerGitCommit();
             return userId;    		
         }			
-	    public static int           create                      (this NewUser newUser)
-	    {
-	        return TM_UserData.Current.createTmUser(newUser);
-	    }
+        public static int           create                      (this NewUser newUser)
+        {
+            return TM_UserData.Current.createTmUser(newUser);
+        }
         public static Signup_Result createSigupResponse(this NewUser newUser)
         {
             return TM_UserData.Current.createTmUserResponse(newUser);
@@ -193,12 +193,14 @@ namespace TeamMentor.UserData
             // ensure the email is lowercase (will fail validation otherwise)
             newUser.Email = newUser.Email.lower();
             //Email check (length, null, valid)
-            if (newUser.Email.isNull() || newUser.Email.Length>256 || !IsValidEmailAddress(newUser.Email))
+            if (newUser.Email.notNull() && newUser.Email.Length > 256)
             {
-                if (newUser.Email.notNull() && newUser.Email.Length> 256)
-                {
-                    userData.logTBotActivity("User Creation Fail", "Input rejected because email address ('{0}') is larger than 256 characters".format(newUser.Email));
-                }
+                userData.logTBotActivity("User Creation Fail", "Input rejected because email address ('{0}') is larger than 256 characters".format(newUser.Email));
+                return ValidateEmailPattern(tmConfig);
+            }
+            //Check email format
+            if (newUser.not_Email_Address())
+            {
                 return ValidateEmailPattern(tmConfig);
             }
 
@@ -445,11 +447,25 @@ namespace TeamMentor.UserData
         public static NewUser       with_Random_Data            (this NewUser newUser)
         {
             foreach(var name in newUser.property_Values_AsStrings().keys())
-	            newUser.property(name,"!!10".add_5_RandomLetters());
+                newUser.property(name,"!!10Ma".add_5_RandomLetters());
             newUser.Email = "testUser".random_Email();
             newUser.UserTags = new List<UserTag>();
             newUser.UserTags.add(new UserTag {Key = "key".add_5_RandomLetters(), Value = "value".add_5_RandomLetters()});
             return newUser;
+        }
+        public static bool not_Email_Address(this NewUser tmUser)
+        {
+            if (tmUser.Email.isNull())
+                return true;
+            try
+            {
+                var address = new System.Net.Mail.MailAddress(tmUser.Email);
+                return false;
+            }
+            catch (Exception ex)
+            {
+                return true;
+            }
         }
     }
 }

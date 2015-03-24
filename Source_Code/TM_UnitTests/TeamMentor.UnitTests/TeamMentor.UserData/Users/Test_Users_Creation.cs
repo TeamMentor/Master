@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Security;
 using FluentSharp.CoreLib;
+using FluentSharp.NUnit;
 using Moq;
 using NUnit.Framework;
 using TeamMentor.CoreLib;
@@ -132,116 +133,87 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         {
             UserGroup.None.assert();                //  change current thread privildges to None
 
-            var newUser = new NewUser()
-            {
-                Company = 10.randomLetters(),
-                Country = 10.randomLetters(),
-                Firstname = 10.randomLetters(),
-                Lastname = 10.randomLetters(),
-                Note = 10.randomLetters(),
-                Password = "!r4J"+10.randomLetters(),
-                State = 10.randomLetters(),
-                Title = 10.randomLetters(),
-                Username = 10.randomLetters(),
-                Email = "{0}@{0}.{0}".format(3.randomLetters())
-            };
-
-            Assert.IsEmpty(newUser.validate());
+            var newUser = new NewUser().with_Random_Data();
+            newUser.validate().empty();
 
             var response = newUser.createSigupResponse();
-            Assert.IsTrue(response.notNull());
-            Assert.IsTrue(response.UserCreated >0);
-            Assert.IsTrue(response.Signup_Status == Signup_Result.SignupStatus.Signup_Ok);
-            Assert.IsTrue(response.Validation_Results.count()==0);
+            response.assert_Not_Null();
+            response.UserCreated.assert_Bigger_Than(0);
+            
+            response.Signup_Status.assert_Is(Signup_Result.SignupStatus.Signup_Ok);
+            response.Validation_Results.count().assert_Is(0);
             
         }
 
+       
         [Test]
         public void CreateTmUserSigupResponse_TLD_Email_Success()
         {
             UserGroup.None.assert();                //  change current thread privildges to None
 
-            var newUser = new NewUser()
-            {
-                Company = 10.randomLetters(),
-                Country = 10.randomLetters(),
-                Firstname = 10.randomLetters(),
-                Lastname = 10.randomLetters(),
-                Note = 10.randomLetters(),
-                Password = "!r4J" + 10.randomLetters(),
-                State = 10.randomLetters(),
-                Title = 10.randomLetters(),
-                Username = 10.randomLetters(),
-                Email = "dmin@xn--xn--fsqu00a.xn--g6w251d"
-            };
+            var newUser = new NewUser().with_Random_Data();
+            newUser.Email = "dmin@xn--xn--fsqu00a.xn--g6w251d";
+            newUser.not_Email_Address().assert_False();
+        }
+        [Test]
 
-            Assert.IsEmpty(newUser.validate());
+        public void CreateTmUserSigupResponse_Unicode_Email_Success()
+        {
+            UserGroup.None.assert();                //  change current thread privildges to None
 
-            var response = newUser.createSigupResponse();
-            Assert.IsTrue(response.notNull());
-            Assert.IsTrue(response.UserCreated > 0);
-            Assert.IsTrue(response.Signup_Status == Signup_Result.SignupStatus.Signup_Ok);
-            Assert.IsTrue(response.Validation_Results.count() == 0);
+            var newUser = new NewUser().with_Random_Data();
+            newUser.Email = "admin@استفتاء.مصر";
+            newUser.not_Email_Address().assert_False();
+
+        }
+        [Test]
+        public void CreateTmUserSigupResponse_Invalid_Email()
+        {
+            UserGroup.None.assert();                //  change current thread privildges to None
+
+            var newUser = new NewUser().with_Random_Data();
+            newUser.Email = "admin@";
+            newUser.not_Email_Address().assert_True();
 
         }
 
+        [Test]
+        public void CreateTmUserSigupResponse_Valid_Email()
+        {
+            UserGroup.None.assert();                //  change current thread privildges to None
+
+            var newUser = new NewUser().with_Random_Data();
+            newUser.Email = "admin@domain";
+            newUser.not_Email_Address().assert_False();
+
+        }
+
+        [Test]
+        public void CreateTmUserSigupResponse_EmailMaxLength_Exceeded()
+        {
+            UserGroup.None.assert();                //  change current thread privildges to None
+
+            var newUser = new NewUser().with_Random_Data();
+            newUser.Email= newUser.Email +"".add_RandomLetters(260);
+            newUser.Email.Length.assert_Bigger_Than(256);
+            newUser.validate().notEmpty();
+            newUser.validate().count().assert_Is(1);
+            newUser.validate().first().ErrorMessage.assert_Is("The field Email must be a string with a maximum length of 256.");
+
+
+        }
         [Test]
         public void CreateTmUserSigupResponse_EmailMaxLength_Allowed()
         {
             UserGroup.None.assert();                //  change current thread privildges to None
 
-            var newUser = new NewUser()
-            {
-                Company = 10.randomLetters(),
-                Country = 10.randomLetters(),
-                Firstname = 10.randomLetters(),
-                Lastname = 10.randomLetters(),
-                Note = 10.randomLetters(),
-                Password = "!r4J" + 10.randomLetters(),
-                State = 10.randomLetters(),
-                Title = 10.randomLetters(),
-                Username = 10.randomLetters(),
-                Email = "".random_Email() + "".add_RandomLetters(230)
-            };
-             
-            Assert.IsTrue(newUser.Email.Length ==256);
-            Assert.IsEmpty(newUser.validate());
-
-            var response = newUser.createSigupResponse();
-            Assert.IsTrue(response.notNull());
-            Assert.IsTrue(response.UserCreated > 0);
-            Assert.IsTrue(response.Signup_Status == Signup_Result.SignupStatus.Signup_Ok);
-            Assert.IsTrue(response.Validation_Results.count() == 0);
-
+            var newUser = new NewUser().with_Random_Data();
+            newUser.Email = newUser.Email + "".add_RandomLetters(232);
+            newUser.Email.Length.assert_Is(256);
+            newUser.validate().assert_Is_Empty();
+            newUser.createSigupResponse().UserCreated.assert_Bigger_Than(0);
         }
-        [Test]
-        public void CreateTmUserSigupResponse_Unicode_Email_Success()
-        {
-            UserGroup.None.assert();                //  change current thread privildges to None
 
-            var newUser = new NewUser()
-            {
-                Company = 10.randomLetters(),
-                Country = 10.randomLetters(),
-                Firstname = 10.randomLetters(),
-                Lastname = 10.randomLetters(),
-                Note = 10.randomLetters(),
-                Password = "!r4J" + 10.randomLetters(),
-                State = 10.randomLetters(),
-                Title = 10.randomLetters(),
-                Username = 10.randomLetters(),
-                Email = "admin@استفتاء.مصر"
-            };
-
-            Assert.IsEmpty(newUser.validate());
-
-            var response = newUser.createSigupResponse();
-            Assert.IsTrue(response.notNull());
-            Assert.IsTrue(response.UserCreated > 0);
-            Assert.IsTrue(response.Signup_Status == Signup_Result.SignupStatus.Signup_Ok);
-            Assert.IsTrue(response.Validation_Results.count() == 0);
-
-        }
 
         [Test]
         public void CreateTmUserSigupResponse()
