@@ -262,20 +262,6 @@ namespace TeamMentor.CoreLib
             }
             return(String.IsNullOrEmpty(errorMessage) ? "Success" : errorMessage);
         }
-        private static bool IsValidEmailAddress(string emailAddress)
-        {
-            bool isValid = false;
-            try
-            {
-                var address = new System.Net.Mail.MailAddress(emailAddress);
-                isValid = true;
-            }
-            catch
-            {
-                isValid = false;
-            }
-            return isValid;
-        }
 
         [Admin] public bool				DeleteUser(string userId)
 		{

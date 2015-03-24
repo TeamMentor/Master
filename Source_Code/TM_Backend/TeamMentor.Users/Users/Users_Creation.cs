@@ -251,20 +251,6 @@ namespace TeamMentor.UserData
         }
 
         #region Sigup validations, shorter and specialized methods
-        private static  bool IsValidEmailAddress(string emailAddress)
-        {
-            bool isValid = false;
-            try
-            {
-                var address = new System.Net.Mail.MailAddress(emailAddress);
-                isValid = true;
-            }
-            catch
-            {
-                isValid = false;
-            }
-            return isValid;
-        }
         private static Signup_Result ValidateEmailPattern(TMConfig config)
         {
             var sigupResponse = new Signup_Result
