@@ -153,7 +153,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
 
             var newUser = new NewUser().with_Random_Data();
             newUser.Email = "dmin@xn--xn--fsqu00a.xn--g6w251d";
-            newUser.not_Email_Address().assert_False();
+            newUser.valid_Email_Address().assert_True();
         }
         [Test]
 
@@ -163,7 +163,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
 
             var newUser = new NewUser().with_Random_Data();
             newUser.Email = "admin@استفتاء.مصر";
-            newUser.not_Email_Address().assert_False();
+            newUser.valid_Email_Address().assert_Is_True();
 
         }
         [Test]
@@ -173,7 +173,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
 
             var newUser = new NewUser().with_Random_Data();
             newUser.Email = "admin@";
-            newUser.not_Email_Address().assert_True();
+            newUser.valid_Email_Address().assert_Is_False();
 
         }
 
@@ -184,7 +184,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
 
             var newUser = new NewUser().with_Random_Data();
             newUser.Email = "admin@domain";
-            newUser.not_Email_Address().assert_False();
+            newUser.valid_Email_Address().assert_Is_True();
 
         }
 

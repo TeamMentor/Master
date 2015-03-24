@@ -199,7 +199,7 @@ namespace TeamMentor.UserData
                 return ValidateEmailPattern(tmConfig);
             }
             //Check email format
-            if (newUser.not_Email_Address())
+            if (newUser.valid_Email_Address().isFalse())
             {
                 return ValidateEmailPattern(tmConfig);
             }
@@ -453,18 +453,18 @@ namespace TeamMentor.UserData
             newUser.UserTags.add(new UserTag {Key = "key".add_5_RandomLetters(), Value = "value".add_5_RandomLetters()});
             return newUser;
         }
-        public static bool not_Email_Address(this NewUser tmUser)
+        public static bool valid_Email_Address(this NewUser tmUser)
         {
             if (tmUser.Email.isNull())
-                return true;
+                return false;
             try
             {
                 var address = new System.Net.Mail.MailAddress(tmUser.Email);
-                return false;
+                return true;
             }
             catch (Exception ex)
             {
-                return true;
+                return false;
             }
         }
     }

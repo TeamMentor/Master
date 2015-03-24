@@ -204,7 +204,7 @@ namespace TeamMentor.CoreLib
                     errorMessage = string.Format("Username {0} already exist.", userName);
                     break;
                 }
-                if (!IsValidEmailAddress(tmUser.Email))
+                if (tmUser.valid_Email_Address().isFalse())
                 {
                     errorMessage = TMConsts.DEFAULT_EMAIL_ADDRESS_IS_INVALID;
                     break;
