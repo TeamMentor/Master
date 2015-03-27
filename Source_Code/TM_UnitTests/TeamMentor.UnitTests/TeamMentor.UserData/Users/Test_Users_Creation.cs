@@ -214,6 +214,58 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
             newUser.createSigupResponse().UserCreated.assert_Bigger_Than(0);
         }
 
+        [Test]
+        public void EmailValidation_Performance_Test()
+        {
+            var maxIterations = 10000;
+            var newUser = new NewUser().with_Random_Data();
+            var sw = new System.Diagnostics.Stopwatch();
+            for (var index = 0; index < maxIterations; index++)
+            {
+                //Incrementing email lenght.
+                newUser.Email = "".add_RandomLetters(50 + index);
+                sw.Start();
+                newUser.valid_Email_Address().assert_False();
+                sw.stop();
+                sw.Elapsed.seconds().assert_Size_Is_Smaller_Than(3);
+                sw.Reset();
+
+            }
+        }
+        [Test]
+        public void EmailValidation_Performance_Fixed_Strings()
+        {
+            int maxIterations = 100000;
+            var newUser = new NewUser().with_Random_Data();
+            var sw = new System.Diagnostics.Stopwatch();
+            for (var index = 0; index < maxIterations; index++)
+            {
+                newUser.Email = "".add_RandomLetters(50);
+                sw.Start();
+                bool result = newUser.valid_Email_Address();
+                sw.stop();
+                sw.Elapsed.seconds().assert_Size_Is_Smaller_Than(3);
+                sw.Reset();
+
+            }
+        }
+        [Test]
+        public void EmailValidation_Performance_Random_EmailAdress()
+        {
+            var maxIterations = 100000;
+            var newUser = new NewUser().with_Random_Data();
+            var sw = new System.Diagnostics.Stopwatch();
+            for (var index = 0; index < maxIterations; index++)
+            {
+                newUser.Email = "".random_Email();
+                sw.Start();
+                newUser.valid_Email_Address().assert_Is_True();
+                sw.stop();
+                sw.Elapsed.seconds().assert_Size_Is_Smaller_Than(3);
+                sw.Reset();
+
+            }
+        }
 
         [Test]
         public void CreateTmUserSigupResponse()
