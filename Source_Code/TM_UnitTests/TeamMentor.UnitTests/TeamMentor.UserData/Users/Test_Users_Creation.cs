@@ -572,22 +572,17 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
         public void CreateTmUserSigupResponse_Email_Address_NullorEmpty()
         {
             UserGroup.None.assert();                //  change current thread privildges to None
-            var newUser = new NewUser()
-            {
-                Username = "tA2!".add_RandomLetters(8),
-                Email = String.Empty
-            };
+            var newUser = new NewUser().with_Random_Data();
+            newUser.Email = string.Empty;
+
             var response = userData.createTmUserResponse(newUser);
-            Assert.IsTrue((response != null));
-            Assert.IsTrue(response != null && response.UserCreated == 0);
-            Assert.IsTrue(response != null && response.Signup_Status == Signup_Result.SignupStatus.Validation_Failed);
-            if (response != null)
-            {
-                var results = response.Validation_Results;
-                Assert.IsTrue(results.count() > 0);
-                Assert.IsTrue(results.FirstOrDefault().Field == "Email");
-                Assert.IsTrue(results.FirstOrDefault().Message == TMConsts.DEFAULT_EMAIL_ADDRESS_IS_INVALID);
-            }
+            response.assert_Not_Null();
+            response.UserCreated.assert_Is(0);
+            response.Signup_Status.assert_Equal(Signup_Result.SignupStatus.Validation_Failed);
+            var results = response.Validation_Results;
+            results.count().assert_Bigger_Than(0);
+            results.FirstOrDefault().Field.assert_Is("Email");
+            results.FirstOrDefault().Message.assert_Is(TMConsts.DEFAULT_EMAIL_ADDRESS_IS_INVALID);
         }
         [Test] public void setUserPassword()        
         {
