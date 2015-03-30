@@ -65,13 +65,13 @@ the entire set of guidance available in the TM repository.
 To access the service:
 
 - Go to {0} and login at the top right-hand corner of the page.
-- Use your username : {1}.
+- Use your username : {1}
 
 Thanks,
 
 ";
         public static string EMAIL_DEFAULT_FOOTER =
-@"Sent by TeamMentor. 
+@"The TEAMMentor team. 
 
 ";        
 	
