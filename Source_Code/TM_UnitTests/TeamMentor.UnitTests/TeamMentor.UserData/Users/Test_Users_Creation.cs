@@ -283,7 +283,7 @@ namespace TeamMentor.UnitTests.TM_XmlDatabase
                 State = 10.randomLetters(),
                 Title = 10.randomLetters(),
                 Username = 10.randomLetters(),
-                Email = "{0}@{0}.{0}".format(3.randomLetters())
+                Email ="".random_Email()
             };
 
             Assert.IsEmpty(newUser.validate());
