@@ -144,7 +144,7 @@ namespace TeamMentor.UnitTests.CoreLib
             //SendEmails.TM_Server_URL = "http://localhost:88/";
             var lastMessageSent1 = SendEmails.Sent_EmailMessages.last();            
             
-            Assert.IsTrue (lastMessageSent1.Message.contains("CreateTmUserSigupResponse_Email_Address_Invalid_Bad_Format."));
+            Assert.IsTrue (lastMessageSent1.Message.contains("The TEAMMentor team."));
             Assert.IsTrue(lastMessageSent1.Message.contains("It's a pleasure to confirm that a new TeamMentor"));
             
             

@@ -72,7 +72,7 @@ Thanks,
 
 ";
         public static string EMAIL_DEFAULT_FOOTER =
-@"Sent by TeamMentor. 
+@"The TEAMMentor team. 
 
 ";        
 	
