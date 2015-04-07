@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using FluentSharp.CoreLib;
 using TeamMentor.CoreLib;
+using TeamMentor.UserData;
 
 namespace TeamMentor.UnitTests.CoreLib
 {
@@ -75,11 +76,11 @@ namespace TeamMentor.UnitTests.CoreLib
                              "mappings : {0}".format(result.Value.toString()));
         }
         
-        [Test,Ignore]
+        [Test]
         public void Validation_Email_Size()
         {
             var newUser             = new NewUser();                        
-            var loopMax             = 100;         
+            var loopMax             = 1000;         
             var expectedMaxLength   = 256;
             for (int i = 1; i < loopMax; i++)
             {
@@ -87,14 +88,16 @@ namespace TeamMentor.UnitTests.CoreLib
                 newUser.Username = "".add_RandomLetters(10);
                 newUser.Password = "Xs88!".add_RandomLetters(20);            
                 var dateStart = DateTime.Now;
+                var validEmail = newUser.valid_Email_Address();
+                Assert.IsFalse(validEmail);
                 var validationResults = newUser.validate();
                 var resultsMapped     = validationResults.indexed_By_MemberName();
                 var seconds = (DateTime.Now - dateStart).TotalSeconds;
                 Assert.Less(seconds,1, "A email with size {0} took more than 1 sec to calculate".format(i*10));
-                Assert.IsTrue(resultsMapped["Email"].contains("The field Email must match the regular expression '{0}'.".format(ValidationRegex.Email)), "It was {0}".format(resultsMapped["Email"].toString()));
+                
                 if (i > expectedMaxLength)
                 {
-                    Assert.AreEqual(resultsMapped["Email"].size()  , 2);
+                    Assert.AreEqual(resultsMapped["Email"].size()  , 1);
                     Assert.IsTrue  (resultsMapped["Email"].contains("The field Email must be a string with a maximum length of {0}.".format(expectedMaxLength)));
                 }                
             }
