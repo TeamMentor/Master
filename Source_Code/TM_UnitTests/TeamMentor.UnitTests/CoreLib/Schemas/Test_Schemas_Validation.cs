@@ -125,13 +125,13 @@ namespace TeamMentor.UnitTests.CoreLib
             }
         }
 
-        [Test,Ignore]
+        [Test]
         public void Validation_Email_Format()
         {
             var shouldFailValidation = new []
                 {
-                    "aaa", "bbb", "aa.bb", "aa.bb", "a@b","a@.b.c",
-                    "a;aaa@email.com","aaa@em;ail.com", "aaa@email.c;om","a@..com", "a@bbb..com", "a@.aa.com", "a@..aa.com"
+                    "aaa", "bbb", "aa.bb", "aa.bb", "Abc.example.com","a@.b.c",
+                    "a;aaa@email.com","aaa@em;ail.com", "aaa@email.c;om","a@..com", "a@b@bb..com", "a@.aa.com", "a@..aa.com","A@b@c@example.com"
                 };
             var shouldPassValidation = new []
                 {
@@ -142,11 +142,8 @@ namespace TeamMentor.UnitTests.CoreLib
             Func<string,bool> validEmail = 
                 (email)=>{
                              var newUser = new NewUser { Email = email };   // create new user  
-                             return newUser.validate()                      // validate
-                                           .indexed_By_MemberName()         // get dictionary with results
-                                           .hasKey("Email")                 // see if email 
-                                           .isFalse();                      // is not there
-                };
+                             return newUser.valid_Email_Address();
+                         };
             
             foreach(var testEmail in shouldFailValidation )                 // these should all fail
                 Assert.IsFalse(validEmail(testEmail), "Should had failed for: {0}".format(testEmail));
