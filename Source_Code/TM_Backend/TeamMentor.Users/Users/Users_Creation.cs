@@ -138,10 +138,10 @@ namespace TeamMentor.UserData
             //userData.triggerGitCommit();
             return userId;    		
         }			
-	    public static int           create                      (this NewUser newUser)
-	    {
-	        return TM_UserData.Current.createTmUser(newUser);
-	    }
+        public static int           create                      (this NewUser newUser)
+        {
+            return TM_UserData.Current.createTmUser(newUser);
+        }
         public static Signup_Result createSigupResponse(this NewUser newUser)
         {
             return TM_UserData.Current.createTmUserResponse(newUser);
@@ -182,6 +182,7 @@ namespace TeamMentor.UserData
         {
             var sigupResponse = new Signup_Result();
             var tmConfig = TMConfig.Current;
+            // ensure the email is lowercase (will fail validation otherwise)
             if (newUser.isNull())
             {
                 userData.logTBotActivity("User Creation Fail", "TEAM Mentor user is null");
@@ -190,24 +191,48 @@ namespace TeamMentor.UserData
                 sigupResponse.Simple_Error_Message = tmConfig.TMErrorMessages.General_SignUp_Error_Message;
                 return sigupResponse;
             }
-            // ensure the email is lowercase (will fail validation otherwise)
             newUser.Email = newUser.Email.lower();
+
+            //Validating if Username has not been already registered.
+            if (newUser.Username.tmUser().notNull())
+            {
+                userData.logTBotActivity("User Creation Fail", "Username ('{0}') already exist in TEAM Mentor".format(newUser.Username));
+                return GetErrorMessage("Username", tmConfig.TMErrorMessages.SignUpUsernameAlreadyExist);
+            }
+            //Email check (length, null, valid)
+            if (newUser.Email.notNull() && newUser.Email.Length > 256)
+            {
+                userData.logTBotActivity("User Creation Fail", "Input rejected because email address ('{0}') is larger than 256 characters".format(newUser.Email));
+                return GetErrorMessage("Email", tmConfig.TMErrorMessages.Email_Address_Is_Invalid);
+            }
+            //Check email format
+            if (newUser.valid_Email_Address().isFalse())
+            {
+                userData.logTBotActivity("User Creation Fail", "Input rejected because email address ('{0}') is not valid".format(newUser.Email));
+                return GetErrorMessage("Email", tmConfig.TMErrorMessages.Email_Address_Is_Invalid);
+            }
+
+            if (newUser.Email.tmUser_FromEmail().notNull())
+            {
+                userData.logTBotActivity("User Creation Fail", "Email ('{0}') already existed".format(newUser.Email));
+                return GetErrorMessage("Email",tmConfig.TMErrorMessages.SignUpEmailAlreadyExist);
+            }
+
             //Validate Password Length.
             if (newUser.Password.Length < 8 || newUser.Password.Length> 256)
             {
                 userData.logTBotActivity("User Creation Fail", "Password must be 8 to 256 character long but was {0}".format(newUser.Password.Length));
-                return ValidatePasswordLength(tmConfig);
+                return GetErrorMessage("Password", tmConfig.TMErrorMessages.PasswordLengthErrorMessage);
             }
             //Password complexity
             if (!Regex.IsMatch(newUser.Password, ValidationRegex.PasswordComplexity))
             {
-                return ValidatePasswordComplexity(tmConfig);
+                userData.logTBotActivity("User Creation Fail", "Password {0} does not meet complexity requirements.".format(newUser.Password));
+                return GetErrorMessage("Password", tmConfig.TMErrorMessages.PasswordComplexityErroMessage);
             }
             //validate user against the DataContract specificed in the NewUser class
             if (newUser.validation_Failed())
-            {
                 return ValidationFailed(tmConfig, newUser);
-            }
 
             if (newUser.UserTags.notEmpty())
                 foreach (var userTag in newUser.UserTags)
@@ -219,60 +244,40 @@ namespace TeamMentor.UserData
             if (newUser.GroupId != 0)
                 UserRole.ManageUsers.demand();
 
-            // Check if there is already a user with the provided username or email
-            if (newUser.Username.tmUser().notNull())
-            {
-                userData.logTBotActivity("User Creation Fail", "Username ('{0}') already existed".format(newUser.Username));
-                return ValidateUserName(tmConfig);
-            }
-
-            if (newUser.Email.tmUser_FromEmail().notNull())
-            {
-                userData.logTBotActivity("User Creation Fail", "Email ('{0}') already existed".format(newUser.Email));
-                return ValidateEmail(tmConfig);
-            }
-            
             var userCreated = userData.newUser(newUser.Username, newUser.Password, newUser.Email, newUser.Firstname, newUser.Lastname, newUser.Note, newUser.Title, newUser.Company, newUser.Country, newUser.State, newUser.UserTags, newUser.GroupId);
-            sigupResponse.UserCreated = userCreated;
-            sigupResponse.Signup_Status = Signup_Result.SignupStatus.Signup_Ok;
+            if (userCreated > 0)
+            {
+                sigupResponse.UserCreated = userCreated;
+                sigupResponse.Signup_Status = Signup_Result.SignupStatus.Signup_Ok;
+            }
+            else
+            {
+                userData.logTBotActivity("User Creation Fail", "Error occurred creating user".format(newUser.ToString()));
+                sigupResponse.UserCreated = userCreated;
+                sigupResponse.Signup_Status = Signup_Result.SignupStatus.Validation_Failed;
+                sigupResponse.Simple_Error_Message = tmConfig.TMErrorMessages.General_SignUp_Error_Message;
+            }
             return sigupResponse;
+        }
+
+        private static Signup_Result GetErrorMessage(string field, string message)
+        {
+            var tmConfig = TMConfig.Current;
+            var response = new Signup_Result
+            {
+                Signup_Status = Signup_Result.SignupStatus.Validation_Failed,
+                UserCreated = 0
+            };
+            if (tmConfig.showDetailedErrorMessages())
+                response.Validation_Results.Add(new Validation_Results { Field = field, Message = message });
+            else
+                response.Simple_Error_Message = tmConfig.TMErrorMessages.General_SignUp_Error_Message;
+
+            return response;
         }
 
         #region Sigup validations, shorter and specialized methods
-        private static Signup_Result ValidatePasswordComplexity(TMConfig config)
-        {
-            var sigupResponse = new Signup_Result
-            {
-                Signup_Status = Signup_Result.SignupStatus.Validation_Failed,
-                UserCreated = 0
-            };
-            var errorMessage = TMConfig.Current.TMErrorMessages.PasswordComplexityErroMessage;
-            if (config.showDetailedErrorMessages())
-            {
-                sigupResponse.Validation_Results.Add(new Validation_Results { Field = "Password", Message = errorMessage });
-            }
-            else
-                sigupResponse.Simple_Error_Message = config.TMErrorMessages.General_SignUp_Error_Message;
-
-            return sigupResponse;
-        }
-        private static Signup_Result ValidatePasswordLength(TMConfig config)
-        {
-            var sigupResponse = new Signup_Result
-            {
-                Signup_Status = Signup_Result.SignupStatus.Validation_Failed,
-                UserCreated = 0
-            };
-            var errorMessage = TMConfig.Current.TMErrorMessages.PasswordLengthErrorMessage;
-            if (config.showDetailedErrorMessages())
-            {
-                sigupResponse.Validation_Results.Add(new Validation_Results { Field = "Password", Message = errorMessage });
-            }
-            else
-                sigupResponse.Simple_Error_Message = config.TMErrorMessages.General_SignUp_Error_Message;
-
-            return sigupResponse;
-        }
+    
         private static Signup_Result ValidationFailed(TMConfig config, NewUser newUser)
         {
             var sigupResponse = new Signup_Result();
@@ -314,26 +319,6 @@ namespace TeamMentor.UserData
                     signupResponse.Validation_Results.Add(new Validation_Results { Field = validation.ToString(), Message = validation.ErrorMessage });
                 }
             }
-            return signupResponse;
-        }
-
-        private static Signup_Result ValidateEmail(TMConfig config)
-        {
-            var signupResponse = new Signup_Result
-            {
-                Signup_Status = Signup_Result.SignupStatus.Validation_Failed,
-                UserCreated = 0
-            };
-
-            if (config.showDetailedErrorMessages())
-            {
-                signupResponse.Validation_Results.Add(new Validation_Results { Field = "Email", Message = TMConfig.Current.TMErrorMessages.SignUpEmailAlreadyExist });
-            }
-            else
-            {
-                signupResponse.Simple_Error_Message = config.TMErrorMessages.General_SignUp_Error_Message;
-            }
-
             return signupResponse;
         }
 
@@ -403,11 +388,25 @@ namespace TeamMentor.UserData
         public static NewUser       with_Random_Data            (this NewUser newUser)
         {
             foreach(var name in newUser.property_Values_AsStrings().keys())
-	            newUser.property(name,"!!10".add_5_RandomLetters());
+                newUser.property(name,"!!10Ma".add_5_RandomLetters());
             newUser.Email = "testUser".random_Email();
             newUser.UserTags = new List<UserTag>();
             newUser.UserTags.add(new UserTag {Key = "key".add_5_RandomLetters(), Value = "value".add_5_RandomLetters()});
             return newUser;
+        }
+        public static bool valid_Email_Address(this NewUser tmUser)
+        {
+            if (tmUser.Email.isNull())
+                return false;
+            try
+            {
+                var address = new System.Net.Mail.MailAddress(tmUser.Email);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
     }
 }

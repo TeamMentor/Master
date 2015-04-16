@@ -31,7 +31,7 @@ namespace TeamMentor.UnitTests.REST
             var payload = "user_1_reader,Secure1Pwd!!,Email,FirstName,LastName,Company,JobTitle,Country,State,ExpirationDate,2,N,Y \n" +
            "user_2_editor, Secure1Pwd!!,Email,FirstName,LastName,Company,JobTitle,Country,State,ExpirationDate,3,N,Y";
             var result = TMRestUser.VerifyUserData(payload);
-            Assert.IsTrue(result.contains("The field Email must match the regular expression '^[\\w-+\\.]{1,}\\@([\\w-]{1,}\\.){1,}[a-zA-Z]{2,4}$'"));
+            Assert.IsTrue(result.contains(TMConsts.DEFAULT_EMAIL_ADDRESS_IS_INVALID));
 
         }
         [Test]
