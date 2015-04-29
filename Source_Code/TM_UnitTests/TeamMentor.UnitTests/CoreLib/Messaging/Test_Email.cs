@@ -50,9 +50,9 @@ namespace TeamMentor.UnitTests.CoreLib
             Assert.AreEqual  (sendEmails.Smtp_Password  , userData.SecretData.SmtpConfig.Password     );
 
         }
-        [Test] public void mapTMServerUrl()             
-        {                        
-            Assert.AreEqual (SendEmails.TM_Server_URL, TMConsts.DEFAULT_TM_LOCALHOST_SERVER_URL);
+        [Test] public void Get_TMServer_From_ConfigFile()             
+        {
+       
             var context = HttpContextFactory.Context.mock();
             var request = HttpContextFactory.Request;
             Assert.IsNotNull(context);
@@ -63,15 +63,12 @@ namespace TeamMentor.UnitTests.CoreLib
             request.ServerVariables["Server_Name"] = serverName;
             request.ServerVariables["Server_Port"] = serverPort;
             Assert.AreEqual (request.ServerVariables["Server_Name"], serverName);
-            Assert.AreEqual (request.ServerVariables["Server_Port"], serverPort);            
+            Assert.AreEqual (request.ServerVariables["Server_Port"], serverPort);
 
-            //request.IsSecureConnection = false;
-            SendEmails.TM_Server_URL = null;
-            var expectedServer = "http://{0}:{1}".format(serverName, serverPort);
-            var serverUrl = SendEmails.mapTMServerUrl();
-            Assert.AreEqual(serverUrl, expectedServer);
+            var serverUrl = SendEmails.TM_Server_URL;
+            Assert.AreEqual(serverUrl, TMConsts.DEFAULT_TM_LOCALHOST_SERVER_URL);
             Assert.AreEqual(serverUrl, SendEmails.TM_Server_URL);
-            SendEmails.TM_Server_URL = TMConsts.DEFAULT_TM_LOCALHOST_SERVER_URL;
+            
         }
         [Test] public void send_TestEmail()             
         {
@@ -147,7 +144,7 @@ namespace TeamMentor.UnitTests.CoreLib
             //SendEmails.TM_Server_URL = "http://localhost:88/";
             var lastMessageSent1 = SendEmails.Sent_EmailMessages.last();            
             
-            Assert.IsTrue (lastMessageSent1.Message.contains("Sent by TeamMentor."));
+            Assert.IsTrue (lastMessageSent1.Message.contains("The TEAMMentor team."));
             Assert.IsTrue(lastMessageSent1.Message.contains("It's a pleasure to confirm that a new TeamMentor"));
             
             
@@ -158,8 +155,25 @@ namespace TeamMentor.UnitTests.CoreLib
             const string username = "tmadmin";
             var tmMessage = TMConsts.EMAIL_BODY_NEW_USER_WELCOME.format(serverUrl, username);
             var expectedMessage =
-                "Hello,\r\n\r\nIt's a pleasure to confirm that a new TeamMentor account has been created for you and that you'll now be able to access\r\nthe entire set of guidance available in the TM repository.\r\n\r\nTo access the service:\r\n\r\n- Go to {0} and login at the top right-hand corner of the page.\r\n- Use your username : {1}.\r\n\r\nThanks,\r\n\r\n".format(serverUrl,username);
+                "Hello,\r\n\r\nIt's a pleasure to confirm that a new TeamMentor account has been created for you and that you'll now be able to access\r\nthe entire set of guidance available in the TM repository.\r\n\r\nTo access the service:\r\n\r\n- Go to {0} and login at the top right-hand corner of the page.\r\n- Use your username : {1}\r\n\r\nThanks,\r\n\r\n".format(serverUrl,username);
             Assert.IsTrue(tmMessage == expectedMessage);
-        }        
+        }
+
+        [Test]
+        public void MessageBody_ServerAndPort_Correct()
+        {
+            const string serverUrl = @"https://localhost:1337";
+            const string username = "tmadmin";
+            var tmMessage = TMConsts.EMAIL_BODY_NEW_USER_WELCOME.format(serverUrl, username);
+            var expectedMessage =
+                "Hello,\r\n\r\nIt's a pleasure to confirm that a new TeamMentor account has been created for you and that you'll now be able to access\r\nthe entire set of guidance available in the TM repository.\r\n\r\nTo access the service:\r\n\r\n- Go to {0} and login at the top right-hand corner of the page.\r\n- Use your username : {1}\r\n\r\nThanks,\r\n\r\n".format(serverUrl, username);
+            Assert.IsTrue(tmMessage == expectedMessage);
+        }
+
+        [Test]
+        public void SendWelcomeEmailToUser_Server_ConfigValue_IsNull()
+        {
+           
+        }
     }
 }

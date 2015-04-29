@@ -46,7 +46,7 @@ namespace TeamMentor.UnitTests.REST
             var tmRestHosted = new TM_Rest_Hosted();
             Assert.IsNotNull(tmRestHosted);
             tmRestHosted.WCFHost_Start();
-            Assert.IsFalse  (tmRestHosted.HostStarted);
+            Assert.IsTrue(tmRestHosted.HostStarted);
             Tests_Consts.TM_REST_Service_Port = currentPort;
             Tests_Consts.TM_REST_Url_Template = currentTemplate;
         }

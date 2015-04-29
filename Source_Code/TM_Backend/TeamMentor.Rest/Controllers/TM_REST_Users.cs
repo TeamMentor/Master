@@ -204,6 +204,11 @@ namespace TeamMentor.CoreLib
                     errorMessage = string.Format("Username {0} already exist.", userName);
                     break;
                 }
+                if (tmUser.valid_Email_Address().isFalse())
+                {
+                    errorMessage = TMConsts.DEFAULT_EMAIL_ADDRESS_IS_INVALID;
+                    break;
+                }
                 if (tmUser.validate().Count > 0)
                 {
                     errorMessage = string.Format("Please verify data for user {0}  :", userName);
@@ -258,7 +263,7 @@ namespace TeamMentor.CoreLib
             return(String.IsNullOrEmpty(errorMessage) ? "Success" : errorMessage);
         }
 
-	    [Admin] public bool				DeleteUser(string userId)
+        [Admin] public bool				DeleteUser(string userId)
 		{
             UserRole.Admin.demand();
 			return TmWebServices.DeleteUser(userId.toInt());

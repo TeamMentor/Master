@@ -65,5 +65,26 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA
             newUser.UserTags.add(userTag_Fail);
             userData.createTmUser(newUser).assert_Is(0);
         }
+
+
+        [Test]
+        public void Issue_826__No_lenght_constraint_on_User_Tags_SigupResponse()
+        {
+            var userData = new TM_UserData();
+            var newUser = new NewUser().with_Random_Data();
+            newUser.validate().asStringList().assert_Is_Empty();
+
+            var userTag_Ok = new UserTag { Key = 254.randomLetters(), Value = 254.randomLetters() };
+            var userTag_Fail = new UserTag { Key = 256.randomLetters(), Value = 256.randomLetters() };
+
+            userTag_Ok.validate().assert_Empty();
+            userTag_Fail.validate().assert_Not_Empty();
+
+            newUser.UserTags.add(userTag_Ok);
+            userData.createTmUserResponse(newUser).UserCreated.assert_Is_Not(0);
+
+            newUser.UserTags.add(userTag_Fail);
+            userData.createTmUser(newUser).assert_Is(0);
+        }
     }
 }
