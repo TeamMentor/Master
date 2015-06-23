@@ -18,8 +18,12 @@
                 {
                     $scope.phase = 'publishing';
                     $http.get("/rest/admin/publish_Data")
-                         .success($scope.publishComplete)
-                         .error($scope.publishRestarting);
+                    .success(function(data) {
+                            if (data =="true") {
+                                 return $scope.publishComplete();
+                            }else return $scope.publishRestarting();
+                        })
+                      .error($scope.publishRestarting);
                 };
 
             $scope.publishComplete = function()

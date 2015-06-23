@@ -157,6 +157,11 @@ namespace TeamMentor.CoreLib
             if (TMConfig.Current.notNull())
             {
                 var scriptPath = TMConfig.Current.TMSetup.TmReloadDataScriptPath;
+                if (!scriptPath.fileExists())
+                {
+                    "[Publishing Data]You need to set the location of the bat file".log();
+                    return false;
+                }
                 var processInfo = new ProcessStartInfo()
                 {
                     FileName                = scriptPath, 
@@ -175,7 +180,7 @@ namespace TeamMentor.CoreLib
                     process.StandardOutput.ReadToEnd().log();
                     if (process.StandardError.ReadToEnd().notNull() && process.StandardError.ReadToEnd().Length > 0)
                     {
-                        "Error publishing data ".log();
+                        "[Publishing Data]Error publishing data ".log();
                         process.StandardError.ReadToEnd().log();
                         return false;
                     }
