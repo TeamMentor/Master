@@ -1,0 +1,62 @@
+﻿
+<h4>Publish TEAM Mentor Data</h4>
+
+<script type="text/javascript">
+    var tbot = angular.module("tbot");
+
+    tbot.controller("TMPublishData", function($scope,$http, $timeout)
+        {
+            $scope.phase = "show publish button";
+
+            $scope.publishData = function()
+                {
+                    $scope.message_userDataReload = "Publishing TEAM Mentor Data";
+                    $scope.startPublishing(); // so that the user can read the first message
+                };
+         
+            $scope.startPublishing = function()
+                {
+                    $scope.phase = 'publishing';
+                    $http.get("/rest/admin/publish_Data")
+                         .success($scope.publishComplete)
+                         .error($scope.publishRestarting);
+                };
+
+            $scope.publishComplete = function()
+                {
+                    $scope.phase = 'publish complete';
+                    $scope.message_userDataReload = "Data Published!.";
+                };
+            $scope.publishRestarting = function()
+                {
+                    $scope.phase = 'Publish failed';
+                };
+        });
+</script>
+
+<div ng-controller="TMPublishData">
+    <div ng-show="phase === 'show publish button' ">
+        <p>
+            If you want to publish TEAM Mentor data, click on the button below
+        </p>
+        <p>This will make TeamMentor unavailable for a couple seconds.</p>
+
+        <a class="btn btn-danger" ng-click="publishData()">Publish Data</a>
+        <span>{{message_userDataReload}}</span>
+    </div>
+    <div ng-show="phase === 'publishing' ">
+        <div class="alert alert-info">
+            <b> TEAM Mentor data is being plublished, please wait.</b>
+        </div>
+    </div>
+    <div ng-show="phase === 'publish complete' ">
+        <div class="alert alert-success">
+            <b>Data Publish Complete!</b> You can now access a fresh instance of TeamMentor :)
+        </div>
+        <a class="btn btn-danger" ng-click="publishData()">Publish Data</a>
+        <p>You can now go back to <a href="/TBot">Tbot</a> or the main <a href="/TeamMentor">TeamMentor</a> homepage.</p>
+    </div>
+    <div ng-show="phase === 'Publish failed' ">
+        <div class="alert alert-danger"><b>Error Publishing TEAM Mentor data</b> Please check the logs to see what happened</div>
+    </div>
+</div>

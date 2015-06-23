@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Security;
 using System.Web;
 using FluentSharp.CoreLib;
@@ -147,6 +149,42 @@ namespace TeamMentor.CoreLib
             UserRole.Admin.demand();
             return TmWebServices.XmlDatabase_ReloadData();	        
         }
+
+        [Admin]
+        public bool Publish_Data()
+        {
+            UserRole.Admin.demand();
+            if (TMConfig.Current.notNull())
+            {
+                var scriptPath = TMConfig.Current.TMSetup.TmReloadDataScriptPath;
+                var processInfo = new ProcessStartInfo()
+                {
+                    FileName                = scriptPath, 
+                    CreateNoWindow          = true,
+                    UseShellExecute         = false,
+                    RedirectStandardError   = true,
+                    RedirectStandardOutput  = true,
+                    WorkingDirectory        = Path.GetDirectoryName(scriptPath)
+                };
+
+                using (var process = Process.Start(processInfo))
+                {
+                    if (process == null) return false;
+                    process.Start();
+                    process.WaitForExit();
+                    process.StandardOutput.ReadToEnd().log();
+                    if (process.StandardError.ReadToEnd().notNull() && process.StandardError.ReadToEnd().Length > 0)
+                    {
+                        "Error publishing data ".log();
+                        process.StandardError.ReadToEnd().log();
+                        return false;
+                    }
+                    return true;
+                }
+            }
+            return false;
+        }
+
         /*[Admin] public string        Get_GitUserConfig()
         {            
             return TM_Xml_Database.Current.getGitUserConfigFile().fileContents();
@@ -155,7 +193,7 @@ namespace TeamMentor.CoreLib
         {            
             return  TM_Xml_Database.Current.setGitUserConfigFile(gitUserConfig_Data);               
         }*/
-        /*[Admin] public string        FirstScript_FileContents()
+            /*[Admin] public string        FirstScript_FileContents()
         {
             return TM_UserData.Current.firstScript_FileLocation().fileContents();
         }
@@ -164,7 +202,7 @@ namespace TeamMentor.CoreLib
             return TM_UserData.Current.firstScript_Invoke();
         }*/
 
-    }
+        }
 
 
 }
