@@ -167,9 +167,9 @@ namespace TeamMentor.CoreLib
                 try
                 {
                     //FluentSharp method.
-                    var outpulLog = scriptPath.startProcess_getConsoleOut(arguments, workingDirectory);
+                    var outputLog = scriptPath.startProcess_getConsoleOut(arguments, workingDirectory);
                     //Login output
-                    outpulLog.log();
+                    outputLog.log();
 
                     return true;
                 }
