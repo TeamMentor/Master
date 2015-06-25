@@ -164,21 +164,14 @@ namespace TeamMentor.CoreLib
                 }
                 var workingDirectory = Path.GetDirectoryName(scriptPath);
                 var arguments        = String.Empty;
-                try
-                {
-                    //FluentSharp method.
-                    var outputLog = scriptPath.startProcess_getConsoleOut(arguments, workingDirectory);
-                    //Login output
-                    outputLog.log();
+                
+                 //FluentSharp method.
+                 var outputLog = scriptPath.startProcess_getConsoleOut(arguments, workingDirectory);
+                 //Login output
+                 outputLog.log();
 
-                    return true;
-                }
-                catch (Exception e)
-                {
-                    e.log();
-                    return false;
-                }
-             }
+                 return outputLog.Contains("... Data has been published");
+            }
             return false;
         }
 
