@@ -156,37 +156,29 @@ namespace TeamMentor.CoreLib
             UserRole.Admin.demand();
             if (TMConfig.Current.notNull())
             {
-                var scriptPath = TMConfig.Current.TMSetup.TmReloadDataScriptPath;
+                var scriptPath = TMConfig.Current.TMSetup.TMReloadDataScriptPath;
                 if (!scriptPath.fileExists())
                 {
                     "[Publishing Data]You need to set the location of the bat file".log();
                     return false;
                 }
-                var processInfo = new ProcessStartInfo()
+                var workingDirectory = Path.GetDirectoryName(scriptPath);
+                var arguments        = String.Empty;
+                try
                 {
-                    FileName                = scriptPath, 
-                    CreateNoWindow          = true,
-                    UseShellExecute         = false,
-                    RedirectStandardError   = true,
-                    RedirectStandardOutput  = true,
-                    WorkingDirectory        = Path.GetDirectoryName(scriptPath)
-                };
+                    //FluentSharp method.
+                    var outpulLog = scriptPath.startProcess_getConsoleOut(arguments, workingDirectory);
+                    //Login output
+                    outpulLog.log();
 
-                using (var process = Process.Start(processInfo))
-                {
-                    if (process == null) return false;
-                    process.Start();
-                    process.WaitForExit();
-                    process.StandardOutput.ReadToEnd().log();
-                    if (process.StandardError.ReadToEnd().notNull() && process.StandardError.ReadToEnd().Length > 0)
-                    {
-                        "[Publishing Data]Error publishing data ".log();
-                        process.StandardError.ReadToEnd().log();
-                        return false;
-                    }
                     return true;
                 }
-            }
+                catch (Exception e)
+                {
+                    e.log();
+                    return false;
+                }
+             }
             return false;
         }
 

@@ -33,7 +33,7 @@ namespace TeamMentor.CoreLib
         {            
             public string       TMLibraryDataVirtualPath    { get; set; }
 
-            public string       TmReloadDataScriptPath      { get; set; }
+            public string       TMReloadDataScriptPath      { get; set; }
             public string 		XmlLibrariesPath 	        { get; set; }            		                
             public string 		LibrariesUploadedFiles	    { get; set; }	                           
             public bool         EnableGZipForWebServices	{ get; set; }
@@ -44,7 +44,7 @@ namespace TeamMentor.CoreLib
             public TMSetup_Config()
             {
                 TMLibraryDataVirtualPath    = "..\\..";
-                TmReloadDataScriptPath      = "";
+                TMReloadDataScriptPath      = "";
                 XmlLibrariesPath            = "TM_Libraries";                
                 LibrariesUploadedFiles      = "LibrariesUploadedFiles";
                 Enable304Redirects          = true;

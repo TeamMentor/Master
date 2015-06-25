@@ -17,15 +17,18 @@
             $scope.startPublishing = function()
                 {
                     $scope.phase = 'publishing';
-                    $http.get("/rest/admin/publish_Data")
-                    .success(function(data) {
-                            if (data =="true") {
-                                 return $scope.publishComplete();
-                            }else return $scope.publishRestarting();
-                        })
-                      .error($scope.publishRestarting);
-                };
 
+                    $http.get("/rest/admin/publish_Data")
+                         .success($scope.publishSuccess)
+                         .error  ($scope.publishRestarting);
+                };
+            $scope.publishSuccess = function (data)
+                {
+                    if (data == "true")
+                        return $scope.publishComplete();
+                    else
+                        return $scope.publishRestarting();
+                };
             $scope.publishComplete = function()
                 {
                     $scope.phase = 'publish complete';
