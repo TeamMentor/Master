@@ -170,7 +170,7 @@ namespace TeamMentor.CoreLib
                  //Login output
                  outputLog.log();
 
-                 return outputLog.Contains("... Data has been published");
+                 return outputLog.contains("... Data has been published");
             }
             return false;
         }
