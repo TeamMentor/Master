@@ -70,7 +70,8 @@ namespace TeamMentor.CoreLib
         [OperationContract] [WebGet(UriTemplate = "/admin/logs")]		        string		    Admin_Logs();
         [OperationContract] [WebGet(UriTemplate = "/admin/logs/reset")]		    string		    Admin_Logs_Reset();
         [OperationContract] [WebGet(UriTemplate = "/admin/reload_UserData")]    bool		    Reload_UserData();        
-        [OperationContract] [WebGet(UriTemplate = "/admin/reload_TMConfig")]    bool		    Reload_TMConfig(); 
+        [OperationContract] [WebGet(UriTemplate = "/admin/reload_TMConfig")]    bool		    Reload_TMConfig();
+	    [OperationContract] [WebGet(UriTemplate = "/admin/publish_Data")]       bool            Publish_Data();
         [OperationContract] [WebGet(UriTemplate = "/admin/reload_Cache")]       string		    Reload_Cache(); 
         
         [OperationContract] [WebGet(UriTemplate = "/admin/secretData")]		    TM_SecretData	Get_TM_SecretData();
