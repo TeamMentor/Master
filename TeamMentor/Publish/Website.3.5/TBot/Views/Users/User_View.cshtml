@@ -15,18 +15,20 @@
     }                
 }
 
-<h4>View user: @userNameOrId</h4>
 
-<a href="Current_Users">Users list</a>
-<hr/>
-
-<a href="User_View?userName=@userNameOrId" class="btn btn-info" disabled>View User</a>
-<a href="User_Edit?@userNameOrId" class="btn btn-info" >Edit User</a>
-<a href="User_Activities?user=@userNameOrId" class="btn btn-info" >View Activity/Logs</a>
-<a href="User_Raw?user=@userNameOrId">Raw/Xml Data</a>
 
 @if (tmUser.notNull())
 {
+    <h4>View user: @userNameOrId</h4>
+
+    <a href="Current_Users">Users list</a>
+    <hr />
+
+    <a href="User_View?userName=@userNameOrId" class="btn btn-info" disabled>View User</a>
+    <a href="User_Edit?@userNameOrId" class="btn btn-info">Edit User</a>
+    <a href="User_Activities?user=@userNameOrId" class="btn btn-info">View Activity/Logs</a>
+    <a href="User_Raw?user=@userNameOrId">Raw/Xml Data</a>
+    
     <h4>User details</h4>
     <ul>
         <b>User Name:       </b> @tmUser.UserName <br/>
