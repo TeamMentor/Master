@@ -14,19 +14,18 @@
     if (max == 0)
     {
         max = 50;
-    }
-    
+    }   
 }
-
-<h4>User Activity: @userNameOrId</h4>
-
-<a href="Current_Users">Users list</a>
-<hr/>
 
 @if (tmUser.notNull())
 {
-    var index = tmUser.UserActivities.size();
+    <h4>User Activity: @userNameOrId</h4>
+
+    <a href="Current_Users">Users list</a>
+    <hr />
     
+    var index = tmUser.UserActivities.size();
+
     <a href="User_View?user=@userNameOrId" class="btn btn-info" >View User</a>
     <a href="User_Edit?@userNameOrId" class="btn btn-info" >Edit User</a>
     <a href="User_Activities?user=@userNameOrId" class="btn btn-info" disabled>View Activity/Logs</a>
