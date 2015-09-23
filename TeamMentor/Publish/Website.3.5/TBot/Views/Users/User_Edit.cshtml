@@ -39,35 +39,40 @@
                 };
             
             var userName = window.location.search.substring(1);
-            if (userName != "")
-            {
-                    $scope.userName = userName;
-                                        
-                    $http.get('/rest/user/' + userName).success(function(data)
-                        {                            
-                            if (data=== "")
-                            {
-                                $scope.userData = { UserName :  "No user found with provided UserName!!!" };
-                            }
-                            else
-                            {
-                                $scope.userData = data;
+            if (userName != "") {
+                $scope.userName = userName;
 
-                                var currentExpirationDate = new Date(parseInt($scope.userData.ExpirationDate.replace("/Date(", "").replace(")/",""), 10));
+                $http.get('/rest/user/' + userName).success(function (data) {
+                    if (data === "")
+                    {
+                        $scope.userData = { UserName: "No user found with provided UserName!!!" };
+                        $scope.result_Info = "";
+                    }
+                    else {
+                        $scope.userData = data;
 
-                                var picker = $('#expirationDate').datetimepicker();
-                                var dateTimePicker = picker.data('DateTimePicker');
-                                dateTimePicker.setDate(currentExpirationDate);
-                                $scope.accountExpired = (currentExpirationDate < new Date());                                
-                                $scope.dataLoaded = true;
-                                $scope.userEnabled = data.UserEnabled;
-                                
-                                $scope.result_Info = "";
-                            }
-                        });        
+                        var currentExpirationDate = new Date(parseInt($scope.userData.ExpirationDate.replace("/Date(", "").replace(")/", ""), 10));
+
+                        var picker = $('#expirationDate').datetimepicker();
+                        var dateTimePicker = picker.data('DateTimePicker');
+                        dateTimePicker.setDate(currentExpirationDate);
+                        $scope.accountExpired = (currentExpirationDate < new Date());
+                        $scope.dataLoaded = true;
+                        $scope.userEnabled = data.UserEnabled;
+
+                        $scope.result_Info = "";
+                    }
+                }).error(function (data)
+                    {
+                        $scope.userData = { UserName: "No user found with provided UserName!!!" };
+                        $scope.result_Info = "";
+                    });
             }
-            else        
-                $scope.userData = { UserName :  "No user found with provided UserName!!!" };
+            else
+                {
+                    $scope.userData = { UserName: "No user found with provided UserName!!!" };
+                    $scope.result_Info = "";
+                }
 		
             $scope.deleteUser = function(userId)
                 {
