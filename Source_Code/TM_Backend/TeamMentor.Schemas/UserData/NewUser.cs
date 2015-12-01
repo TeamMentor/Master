@@ -17,7 +17,7 @@ namespace TeamMentor.CoreLib
   
         [DataMember][Required][StringLength(256)]
         [RegularExpression(ValidationRegex.PasswordComplexity)]   public string           Password    { get; set; }
-		[DataMember][Required][StringLength(30)]    public string           Username    { get; set; }
+		[DataMember][Required][StringLength(256)]    public string           Username    { get; set; }
 
         [DataMember][Required][StringLength(256)]    public string           Email       { get; set; }
 
