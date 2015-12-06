@@ -84,7 +84,7 @@ namespace TeamMentor.CoreLib
                 tmUser.State        = user.State;     //Encoder.XmlEncode(user.State);
                 tmUser.UserTags     = user.UserTags;
                 tmUser.GroupID      = user.GroupID > -1 ? user.GroupID : tmUser.GroupID;
-                tmUser.AccountStatus.ExpirationDate      = user.ExpirationDate;
+                tmUser.AccountStatus.ExpirationDate      = user.ExpirationDate.ToLocalTime();
                 tmUser.AccountStatus.PasswordExpired     = user.PasswordExpired;
                 tmUser.AccountStatus.UserEnabled         = user.UserEnabled;
                 tmUser.AccountStatus.AccountNeverExpires = user.AccountNeverExpires;
