@@ -4,6 +4,8 @@ This release is in support of TEAM Mentor 4.0. .NET 3.6 is used as a backend and
 - Taging of articles is enabled in Markdown editor
 - 4.0 Specific web services to support user managemnet
 - Data Reload functionality from the backend to the fronend in Tbot
+- Username max lenght set to 256 characters to keep consistency with other form fields.
+- User expiration date has been fixed to make sure that different expiration mechanisms (manual or automatic expiration) uses the same logic.
 
 REQUIREMENTS
 
