@@ -84,9 +84,53 @@ namespace TeamMentor.CoreLib
             if (resetToken != Guid.Empty)
                 return SendEmails.SendPasswordReminderToUser(tmUser, resetToken);
             return false;
-        } 
-        
-   
+        }
+
+
+        public static ResetPassword_Result sendPasswordReminder_Response(this string email)
+        {
+            var tmConfig = TMConfig.Current;
+            var response = new ResetPassword_Result();
+            var tmUser = email.tmUser_FromEmail();
+            //Email does not exist
+            if (tmUser.isNull())
+            {
+                response.PasswordReseted = false;
+                response.Message = TMConfig.Current.showDetailedErrorMessages() 
+                                    ? tmConfig.TMErrorMessages.Email_Does_Not_Exist_ErrorMessage 
+                                    : tmConfig.TMErrorMessages.General_PasswordReset_Error_Message;
+                return response;
+            }
+            //Account Expired
+            if (tmUser.account_Expired())
+            {
+                response.PasswordReseted = false;
+                response.Message = TMConfig.Current.showDetailedErrorMessages() 
+                                   ? tmConfig.TMErrorMessages.AccountExpiredErrorMessage
+                                   : tmConfig.TMErrorMessages.General_PasswordReset_Error_Message;
+                return response;
+            }
+            //Account Disabled
+            if (!tmUser.account_Enabled())
+            {
+                response.PasswordReseted = false;
+                response.Message = TMConfig.Current.showDetailedErrorMessages() 
+                                   ? tmConfig.TMErrorMessages.AccountDisabledErrorMessage
+                                   : tmConfig.TMErrorMessages.General_PasswordReset_Error_Message;
+                return response;
+            }
+            var resetToken = email.passwordResetToken_getHash();
+            if (resetToken != Guid.Empty)
+            {
+               var result= SendEmails.SendPasswordReminderToUser(tmUser, resetToken);
+               response.PasswordReseted = result;
+               response.Message = string.Empty;
+               return response;
+            }
+            return new ResetPassword_Result();
+        }
+
+
         public static bool      passwordResetToken_isValid(this TMUser tmUser, Guid resetToken)
         {
             if(tmUser.notNull())

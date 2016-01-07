@@ -53,6 +53,10 @@
     <Compile Include="Events\Events_TM_UserData.cs" />
     <Compile Include="Events\TM_Event.cs" />
     <Compile Include="Events\TM_Event_ExtensionMethods.cs" />
+    <Compile Include="UserData\ChangePassword_Result.cs" />
+    <Compile Include="UserData\Login_Result.cs" />
+    <Compile Include="UserData\ResetPassword_Result.cs" />
+    <Compile Include="UserData\Signup_Result.cs" />
     <Compile Include="XmlDatabase\DataViewers\JsDataTable.cs" />
     <Compile Include="XmlDatabase\DataViewers\JsTreeNode.cs" />
     <Compile Include="XmlDatabase\Folder_V3.cs" />

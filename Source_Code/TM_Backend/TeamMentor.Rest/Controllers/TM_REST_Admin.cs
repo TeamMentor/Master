@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Security;
 using System.Web;
 using FluentSharp.CoreLib;
@@ -147,6 +149,32 @@ namespace TeamMentor.CoreLib
             UserRole.Admin.demand();
             return TmWebServices.XmlDatabase_ReloadData();	        
         }
+
+        [Admin]
+        public bool Publish_Data()
+        {
+            UserRole.Admin.demand();
+            if (TMConfig.Current.notNull())
+            {
+                var scriptPath = TMConfig.Current.TMSetup.TMReloadDataScriptPath;
+                if (!scriptPath.fileExists())
+                {
+                    "[Publishing Data]You need to set the location of the bat file".log();
+                    return false;
+                }
+                var workingDirectory = Path.GetDirectoryName(scriptPath);
+                var arguments        = String.Empty;
+                
+                 //FluentSharp method.
+                 var outputLog = scriptPath.startProcess_getConsoleOut(arguments, workingDirectory);
+                 //Login output
+                 outputLog.log();
+
+                 return outputLog.contains("... Data has been published");
+            }
+            return false;
+        }
+
         /*[Admin] public string        Get_GitUserConfig()
         {            
             return TM_Xml_Database.Current.getGitUserConfigFile().fileContents();
@@ -155,7 +183,7 @@ namespace TeamMentor.CoreLib
         {            
             return  TM_Xml_Database.Current.setGitUserConfigFile(gitUserConfig_Data);               
         }*/
-        /*[Admin] public string        FirstScript_FileContents()
+            /*[Admin] public string        FirstScript_FileContents()
         {
             return TM_UserData.Current.firstScript_FileLocation().fileContents();
         }
@@ -164,7 +192,7 @@ namespace TeamMentor.CoreLib
             return TM_UserData.Current.firstScript_Invoke();
         }*/
 
-    }
+        }
 
 
 }

@@ -34,7 +34,7 @@ namespace TeamMentor.CoreLib
 
         public SendEmails()
         {
-            mapTMServerUrl();  
+            //mapTMServerUrl();  
             
             if (TM_UserData.Current.notNull())
             { 
@@ -47,10 +47,11 @@ namespace TeamMentor.CoreLib
                     From          = secretData.SmtpConfig.Default_From;
                     To            = secretData.SmtpConfig.Default_To;
                     Email_Footer  = secretData.SmtpConfig.Email_Footer.lineBefore();
+                    TM_Server_URL = secretData.SmtpConfig.TM_Server_URL;
                 }
             }
         }
-        public static string mapTMServerUrl()           // this should be set by an live HTTP request
+       /* public static string mapTMServerUrl()           // this should be set by an live HTTP request
         {       
             try
             { 
@@ -85,7 +86,7 @@ namespace TeamMentor.CoreLib
                 "Could not set TM_Server_URL at this stage (due to '{0}')".debug(ex.Message);
             }
             return TM_Server_URL;
-        }
+        }*/
 
         /*public SendEmails(string smtpServer, string smtpUserName, string smtpPassword ) : this()
         {
@@ -226,6 +227,18 @@ namespace TeamMentor.CoreLib
             if (tmUser.EMail.valid())
             {
                 var subj = TMConsts.EMAIL_SUBJECT_NEW_USER_WELCOME;
+                //If URL is null, then the value is retrieved from SecretData repository
+                if (TM_Server_URL.isNull())
+                {
+                    var secretData = TM_UserData.Current.SecretData;
+                    if (secretData.notNull())
+                    {
+                        if (secretData.SmtpConfig != null)
+                        {
+                            TM_Server_URL = secretData.SmtpConfig.TM_Server_URL;
+                        }
+                    }
+                }
                 var userMessage = TMConsts.EMAIL_BODY_NEW_USER_WELCOME.format(TM_Server_URL, tmUser.UserName);
                 SendEmailToEmail(tmUser.EMail, subj, userMessage);
                 //userMessage = "(sent to: {0})\n\n{1}".format(tmUser.EMail, userMessage);
@@ -263,9 +276,17 @@ namespace TeamMentor.CoreLib
         {
             UserGroup.Admin.assert(); 
             try
-            {           
-                mapTMServerUrl();
-var userMessage =
+            {
+                var secretData = TM_UserData.Current.SecretData;
+                if (secretData.notNull())
+                {
+                    if (secretData.SmtpConfig != null)
+                    {
+                        TM_Server_URL = secretData.SmtpConfig.TM_Server_URL;
+                    }                    
+                }
+                //mapTMServerUrl();
+                var userMessage =
 @"Hi {0}, a password reminder was requested for your account.
 
 You can change the password of your {1} account using {3}/passwordReset/{1}/{2}
@@ -323,7 +344,7 @@ If you didn't make this request, please let us know at support@teammentor.net.
         {
             if (Disable_EmailEngine)
                 return false;
-            mapTMServerUrl();
+            //mapTMServerUrl();
             
             try
             {

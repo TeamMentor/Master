@@ -30,7 +30,7 @@ namespace TeamMentor.UnitTests.CoreLib
         {
             Assert.IsTrue       (testDir.dirExists());
             Files.deleteFolder  (testDir, true);
-            Assert.IsFalse      (testDir.dirExists());
+            Assert.IsFalse(testDir.dirExists());
         }
         [Test]public void StartAndStop()
         {

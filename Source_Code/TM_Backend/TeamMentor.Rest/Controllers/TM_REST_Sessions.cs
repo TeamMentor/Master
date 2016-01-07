@@ -18,10 +18,17 @@ namespace TeamMentor.CoreLib
         {
             return TmWebServices.Login(username, password);
         }
+
+        public Login_Result LoginResponse(string username, string password)
+        {
+            return TmWebServices.Login_Response(username, password);
+        }
+
         public Guid		Login_using_Credentials(TM_Credentials credentials)
         {
             return TmWebServices.Login(credentials.UserName, credentials.Password);
         }
+       
         public Guid		Logout()
         {
             return TmWebServices.Logout();

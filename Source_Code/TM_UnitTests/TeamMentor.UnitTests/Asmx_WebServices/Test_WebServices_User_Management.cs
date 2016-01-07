@@ -174,7 +174,7 @@ namespace TeamMentor.UnitTests.Asmx_WebServices
         //Helper methods
         public NewUser newTempUser()
         {
-            var password1 = "Sdimfl!@#".add_RandomLetters(10);
+            var password1 = "13Sdimfl!@#".add_RandomLetters(10);
             
             var newUser = new NewUser
                 {

@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using FluentSharp.CoreLib;
 using TeamMentor.CoreLib;
+using TeamMentor.UserData;
 
 namespace TeamMentor.UnitTests.CoreLib
 {
@@ -79,22 +80,48 @@ namespace TeamMentor.UnitTests.CoreLib
         public void Validation_Email_Size()
         {
             var newUser             = new NewUser();                        
-            var loopMax             = 100;         
-            var expectedMaxLength   = 50;
+            var loopMax             = 1000;         
+            var expectedMaxLength   = 256;
             for (int i = 1; i < loopMax; i++)
             {
-                newUser.Email = (i*10).randomLetters();     //works quite fast even with values as hight as 1000000                
+                newUser.Email = (i*256).randomLetters();     //works quite fast even with values as hight as 1000000    
+                newUser.Username = "".add_RandomLetters(10);
+                newUser.Password = "Xs88!".add_RandomLetters(20);            
                 var dateStart = DateTime.Now;
+                var validEmail = newUser.valid_Email_Address();
+                Assert.IsFalse(validEmail);
                 var validationResults = newUser.validate();
                 var resultsMapped     = validationResults.indexed_By_MemberName();
                 var seconds = (DateTime.Now - dateStart).TotalSeconds;
                 Assert.Less(seconds,1, "A email with size {0} took more than 1 sec to calculate".format(i*10));
-                Assert.IsTrue(resultsMapped["Email"].contains("The field Email must match the regular expression '{0}'.".format(ValidationRegex.Email)), "It was {0}".format(resultsMapped["Email"].toString()));
+                
                 if (i > expectedMaxLength)
                 {
-                    Assert.AreEqual(resultsMapped["Email"].size()  , 2);
+                    Assert.AreEqual(resultsMapped["Email"].size()  , 1);
                     Assert.IsTrue  (resultsMapped["Email"].contains("The field Email must be a string with a maximum length of {0}.".format(expectedMaxLength)));
                 }                
+            }
+        }
+        [Test]
+        public void Validation_Password_Size()
+        {
+            var newUser = new NewUser();
+            var loopMax = 300;
+            var expectedMaxLength = 256;
+            for (int i = 1; i < loopMax; i++)
+            {
+                newUser.Password = (i * 10).randomLetters();     //works quite fast even with values as hight as 1000000                
+                var dateStart = DateTime.Now;
+                var validationResults = newUser.validate();
+                var resultsMapped = validationResults.indexed_By_MemberName();
+                var seconds = (DateTime.Now - dateStart).TotalSeconds;
+                Assert.Less(seconds, 1, "A Password with size {0} took more than 1 sec to calculate".format(i * 10));
+                Assert.IsTrue(resultsMapped["Password"].contains("The field Password must match the regular expression '{0}'.".format(ValidationRegex.PasswordComplexity)), "It was {0}".format(resultsMapped["Password"].toString()));
+                if (i > expectedMaxLength)
+                {
+                    Assert.AreEqual(resultsMapped["Password"].size(), 2);
+                    Assert.IsTrue(resultsMapped["Password"].contains("The field Password must be a string with a maximum length of {0}.".format(expectedMaxLength)));
+                }
             }
         }
 
@@ -103,8 +130,8 @@ namespace TeamMentor.UnitTests.CoreLib
         {
             var shouldFailValidation = new []
                 {
-                    "aaa", "bbb", "aa.bb", "aa.bb", "a@b","a@.b.c",
-                    "a;aaa@email.com","aaa@em;ail.com", "aaa@email.c;om","a@..com", "a@bbb..com", "a@.aa.com", "a@..aa.com"
+                    "aaa", "bbb", "aa.bb", "aa.bb", "Abc.example.com","a@.b.c",
+                    "a;aaa@email.com","aaa@em;ail.com", "aaa@email.c;om","a@..com", "a@b@bb..com", "a@.aa.com", "a@..aa.com","A@b@c@example.com"
                 };
             var shouldPassValidation = new []
                 {
@@ -115,11 +142,8 @@ namespace TeamMentor.UnitTests.CoreLib
             Func<string,bool> validEmail = 
                 (email)=>{
                              var newUser = new NewUser { Email = email };   // create new user  
-                             return newUser.validate()                      // validate
-                                           .indexed_By_MemberName()         // get dictionary with results
-                                           .hasKey("Email")                 // see if email 
-                                           .isFalse();                      // is not there
-                };
+                             return newUser.valid_Email_Address();
+                         };
             
             foreach(var testEmail in shouldFailValidation )                 // these should all fail
                 Assert.IsFalse(validEmail(testEmail), "Should had failed for: {0}".format(testEmail));
