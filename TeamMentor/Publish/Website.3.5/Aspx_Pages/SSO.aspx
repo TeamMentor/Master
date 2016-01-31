@@ -44,6 +44,19 @@
                 "[TM SSO] Username does not exist in TeamMentor".error();
                 throw new Exception(String.Format("Username {0} not found in TeamMentor.Please verify.", userName));
             }
+            //Validating if account is disabled
+            if (!tmUser.account_Enabled()) 
+            {
+                tmUser.logUserActivity("[TM SSO] Login Fail","Account was Disabled.");
+                throw new Exception("[TM SSO] Failed to SSO with the values provided: {0} {1} . Account is Disabled".error(userName, requestToken));
+            }
+            
+            //Validating if account is Expired following this patterns;
+            if (tmUser.account_Expired())
+            {
+                tmUser.logUserActivity("[TM SSO] Account Expired", "Expiry date: {0}".format(tmUser.AccountStatus.ExpirationDate));
+                throw new Exception("[TM SSO] Failed to SSO with the values provided: {0} {1} . Account is expired".error(userName, requestToken));
+            }
             var loginGuid = tmUser.login("SSO");             // login user in TM   
             authentication.sessionID = loginGuid;       // triggers the update of user's cookies
             if(format == "img")
