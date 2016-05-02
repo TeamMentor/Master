@@ -13,18 +13,19 @@ namespace TeamMentor.CoreLib
 {        
     public class SendEmails : MarshalByRefObject
     {   
-        public static List<EmailMessage> Sent_EmailMessages  { get; set; }
-        public static string             TM_Server_URL       { get; set; }
-        public static bool               Disable_EmailEngine { get; set; }
-        public static bool               Dont_Send_Emails    { get; set; }
+        public static List<EmailMessage> Sent_EmailMessages     { get; set; }
+        public static string             TM_Server_URL          { get; set; }
+        public static string             TM_Backend_Server_URL  { get; set; }
+        public static bool               Disable_EmailEngine    { get; set; }
+        public static bool               Dont_Send_Emails       { get; set; }
 //        public static bool               Send_Emails_As_Sync { get; set; }
 
-        public        string             From                { get; set; }
-        public        string             To                  { get; set; }
-        public        string             Smtp_Server         { get; set; }
-        public        string             Smtp_UserName       { get; set; }
-        public        string             Smtp_Password       { get; set; }
-        public        string             Email_Footer        { get; set; }
+        public        string             From                   { get; set; }
+        public        string             To                     { get; set; }
+        public        string             Smtp_Server            { get; set; }
+        public        string             Smtp_UserName          { get; set; }
+        public        string             Smtp_Password          { get; set; }
+        public        string             Email_Footer           { get; set; }
 
         static SendEmails()
         {
@@ -41,13 +42,15 @@ namespace TeamMentor.CoreLib
                 var secretData = TM_UserData.Current.SecretData;
                 if (secretData.notNull())
                 {
-                    Smtp_Server   = secretData.SmtpConfig.Server;
-                    Smtp_UserName = secretData.SmtpConfig.UserName;
-                    Smtp_Password = secretData.SmtpConfig.Password;
-                    From          = secretData.SmtpConfig.Default_From;
-                    To            = secretData.SmtpConfig.Default_To;
-                    Email_Footer  = secretData.SmtpConfig.Email_Footer.lineBefore();
-                    TM_Server_URL = secretData.SmtpConfig.TM_Server_URL;
+                    Smtp_Server             = secretData.SmtpConfig.Server;
+                    Smtp_UserName           = secretData.SmtpConfig.UserName;
+                    Smtp_Password           = secretData.SmtpConfig.Password;
+                    From                    = secretData.SmtpConfig.Default_From;
+                    To                      = secretData.SmtpConfig.Default_To;
+                    Email_Footer            = secretData.SmtpConfig.Email_Footer.lineBefore();
+                    TM_Server_URL           = secretData.SmtpConfig.TM_Server_URL;
+                    TM_Backend_Server_URL   = secretData.SmtpConfig.TM_Backend_Server_URL;
+                    
                 }
             }
         }
@@ -251,9 +254,9 @@ namespace TeamMentor.CoreLib
             var userMessage = TMConsts.EMAIL_BODY_NEW_USER_NEEDS_APPROVAL;
             SendEmailToEmail(tmUser.EMail, subj, userMessage);
 
-            var enableUserUrl = "{0}/aspx_pages/EnableUser.aspx?token={1}".format(SendEmails.TM_Server_URL, tmUser.enableUser_Token());
+            var enableUserUrl = "{0}/aspx_pages/EnableUser.aspx?token={1}".format(SendEmails.TM_Backend_Server_URL, tmUser.enableUser_Token());
 
-            var userEditUrl   = "{0}/rest/tbot/run/User_Edit?{1}".format(SendEmails.TM_Server_URL, tmUser.UserName.urlEncode());
+            var userEditUrl = "{0}/rest/tbot/run/User_Edit?{1}".format(SendEmails.TM_Backend_Server_URL, tmUser.UserName.urlEncode());
             var tmMessage     = TMConsts.EMAIL_BODY_ADMIN_NEW_USER_APPROVAL.format(tmUser.UserID, 
                                                                                    tmUser.UserName,
                                                                                    tmUser.Company,

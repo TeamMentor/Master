@@ -10,23 +10,25 @@ namespace TeamMentor.CoreLib
     //[Serializable]                                   // Serializable breaks the TBOT Page 
     public class TM_SMTPConfig // : MarshalByRefObject // MarshalByRef was causing conflict with TBOT Rest API
     {
-        public string           Server       { get; set; }
-        public string           UserName     { get; set; }
-        public string           Password     { get; set; }
-        public string           Default_From { get; set; }
-        public string           Default_To   { get; set; }       
-        public string           Email_Footer { get; set; }
-        public String           TM_Server_URL { get; set; }
+        public string           Server                  { get; set; }
+        public string           UserName                { get; set; }
+        public string           Password                { get; set; }
+        public string           Default_From            { get; set; }
+        public string           Default_To              { get; set; }       
+        public string           Email_Footer            { get; set; }
+        public String           TM_Server_URL           { get; set; }
+        public String           TM_Backend_Server_URL   { get; set; }
 
         public TM_SMTPConfig()
         {
-            Server          = "smtp.sendgrid.net";
-            UserName        = "TeamMentor";
-            Password        = "";
-            Default_From    = TMConsts.USERDATA_DEFAULT_ADMIN_EMAIL;
-            Default_To      = TMConsts.USERDATA_DEFAULT_ADMIN_EMAIL;
-            Email_Footer    = TMConsts.EMAIL_DEFAULT_FOOTER;
-            TM_Server_URL   = TMConsts.DEFAULT_TM_LOCALHOST_SERVER_URL;
+            Server                  = "smtp.sendgrid.net";
+            UserName                = "TeamMentor";
+            Password                = "";
+            Default_From            = TMConsts.USERDATA_DEFAULT_ADMIN_EMAIL;
+            Default_To              = TMConsts.USERDATA_DEFAULT_ADMIN_EMAIL;
+            Email_Footer            = TMConsts.EMAIL_DEFAULT_FOOTER;
+            TM_Server_URL           = TMConsts.DEFAULT_TM_LOCALHOST_SERVER_URL;
+            TM_Backend_Server_URL   = TMConsts.DEFAULT_TM_LOCALHOST_SERVER_URL;
         }
     }
     
