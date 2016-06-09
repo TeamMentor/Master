@@ -30,10 +30,10 @@ namespace TeamMentor.UnitTests.QA.TeamMentor_QA_IE
 		        ie.field       ("ctl00_ContentPlaceHolder1_EmailBox"	     ).value(newUser.Email      ).assert_Not_Null(); 
 		        ie.field       ("ctl00_ContentPlaceHolder1_FNameBox"	     ).value(newUser.Firstname  ).assert_Not_Null();
 		        ie.field       ("ctl00_ContentPlaceHolder1_LNameBox"	     ).value(newUser.Lastname   ).assert_Not_Null();  
-		        ie.field       ("ctl00_ContentPlaceHolder1_Company"	         ).value(newUser.Company    ).assert_Not_Null(); 
-		        ie.field       ("ctl00_ContentPlaceHolder1_Title"		     ).value(newUser.Title      ).assert_Not_Null();  
-		        ie.field       ("ctl00_ContentPlaceHolder1_Country"	         ).value(newUser.Country    ).assert_Not_Null();  
-		        ie.field       ("ctl00_ContentPlaceHolder1_State"		     ).value(newUser.State      ).assert_Not_Null();
+		        ie.field       ("ctl00_ContentPlaceHolder1_Company"	     ).value(newUser.Company    ).assert_Not_Null(); 
+		        ie.field       ("ctl00_ContentPlaceHolder1_Title"            ).value(newUser.Title      ).assert_Not_Null();  
+		        ie.field       ("ctl00_ContentPlaceHolder1_Country"	     ).value(newUser.Country    ).assert_Not_Null();  
+		        ie.field       ("ctl00_ContentPlaceHolder1_State"            ).value(newUser.State      ).assert_Not_Null();
 		        ie.button      ("Sign Up").click();
 	        };
             
