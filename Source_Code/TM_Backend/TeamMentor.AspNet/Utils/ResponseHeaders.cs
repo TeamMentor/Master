@@ -18,6 +18,8 @@ namespace TeamMentor.CoreLib
 		            case "DENY":
 		                HttpContextFactory.Response.AddHeader("X-Frame-Options", "DENY");
 		                break;
+                    case "NONE": /*In this case the HTTP header is not set at all.*/
+                        break;
 		            case "ALLOW-FROM":
 		                var allowedUrl = TMConfig.Current.TMSecurity.Allow_From_URI;
 		                /* Uri.IsWellFormedUriString: https://msdn.microsoft.com/en-us/library/system.uri.iswellformeduristring(v=vs.110).aspx
