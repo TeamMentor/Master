@@ -9,7 +9,7 @@ namespace TeamMentor.CoreLib
 		public static void addDefaultResponseHeaders()
 		{
 		    //add clickjacking protection
-		    if (!TMConfig.Current.TMSecurity.X_Frame_Options.isEmpty()) 
+		    if (!TMConfig.Current.TMSecurity.X_Frame_Options.isEmpty())
 		        switch (TMConfig.Current.TMSecurity.X_Frame_Options.ToUpper())
 		        {
 		            case "SAMEORIGIN":
@@ -18,8 +18,8 @@ namespace TeamMentor.CoreLib
 		            case "DENY":
 		                HttpContextFactory.Response.AddHeader("X-Frame-Options", "DENY");
 		                break;
-                    case "NONE": /*In this case the HTTP header is not set at all.*/
-                        break;
+		            case "NONE": /*In this case the HTTP header is not set at all.*/
+		                break;
 		            case "ALLOW-FROM":
 		                var allowedUrl = TMConfig.Current.TMSecurity.Allow_From_URI;
 		                /* Uri.IsWellFormedUriString: https://msdn.microsoft.com/en-us/library/system.uri.iswellformeduristring(v=vs.110).aspx
