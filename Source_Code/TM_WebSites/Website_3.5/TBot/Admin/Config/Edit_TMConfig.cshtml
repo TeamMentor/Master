@@ -49,9 +49,16 @@
                     //$scope.liveObject = $scope.objectToEdit;
                     $scope.message = "data loaded";
                     show_Temporary_Ok("Data loaded");
+                    //when radio button is changed, the Allow_From_URI field is cleared.
+                    var initializing = true;
+                    $scope.$watch('tmConfig.TMSecurity.X_Frame_Options', function () {
+                        if (initializing)
+                            initializing = false;
+                        else
+                            $scope.tmConfig.TMSecurity.Allow_From_URI = '';
+                    });
                 });
         };
-
 
         $scope.saveObject = function()
             {
@@ -130,7 +137,24 @@
                                           '  </div>                                                         '    
                        };
                               
-            });
+            })
+     .directive('tmRadio', function()
+     {
+         return {
+             restrict    : 'E',
+             scope       : { tmModel : "=" , tmName : "=" , tmValue: "="},
+             template: ' <div class="form-group">                                        ' +
+                           '     <label  class="col-sm-6 control-label">{{tmName}}</label>   ' +
+                           '     <div class="col-sm-6"  style="padding-left: 10px;">                                      ' +
+                           '         <div style="margin: 4px">                                  ' +
+                           '                 <input type="radio" name={{tmName}} ng-model="tmModel" value={{tmValue}} ng-change="onradiochange"  />     ' +
+                           '         </div>                                                  ' +
+                           '     </div>                                                      ' +
+                           '  </div>                                                         '    
+         };
+                              
+     })
+    
 </script>
 
 
@@ -159,35 +183,59 @@
             <div class="col-sm-6">
                 <div class="panel panel-success">
                     <div class="panel-heading">
-                        <h3 class="panel-title"><b>TM Security</b></h3>
-                    </div>
-                    <div class="panel-body">                        
-                        <tm-checkbox tm-name="'Show Content to Anonymous Users'"     tm-model="tmConfig.TMSecurity.Show_ContentToAnonymousUsers"></tm-checkbox>                  
-                        <tm-checkbox tm-name="'Show Library to Anonymous Users'"     tm-model="tmConfig.TMSecurity.Show_LibraryToAnonymousUsers"></tm-checkbox>                  
-                        <tm-checkbox tm-name="'SSL Redirect Http to Https'"          tm-model="tmConfig.TMSecurity.SSL_RedirectHttpToHttps"></tm-checkbox>                  
-                        <tm-checkbox tm-name="'New Accounts Enabled'"                tm-model="tmConfig.TMSecurity.NewAccounts_Enabled"></tm-checkbox>                                                                  
-                        <tm-checkbox tm-name="'New Accounts Don\'t Expire'"          tm-model="tmConfig.TMSecurity.NewAccounts_DontExpire"></tm-checkbox>                        
-                        <tm-checkbox tm-name="'Eval Accounts Enabled'"               tm-model="tmConfig.TMSecurity.EvalAccounts_Enabled"></tm-checkbox>
-                        <tm-input    tm-name="'Eval Accounts Days'"                  tm-model="tmConfig.TMSecurity.EvalAccounts_Days"></tm-input>                        
-                        <tm-checkbox tm-name="'Email Admin: On NewUsers'"            tm-model="tmConfig.TMSecurity.EmailAdmin_On_NewUsers"></tm-checkbox>
-                        <tm-input    tm-name="'Default Admin: UserName'"             tm-model="tmConfig.TMSecurity.Default_AdminUserName"></tm-input>
-                        <tm-input    tm-name="'Default Admin: Password'"             tm-model="tmConfig.TMSecurity.Default_AdminPassword"></tm-input>
-                        <tm-input    tm-name="'Default Admin: Email'"                tm-model="tmConfig.TMSecurity.Default_AdminEmail"></tm-input>
-                        <tm-checkbox tm-name="'REST Allow Cross-Domain Access'"      tm-model="tmConfig.TMSecurity.REST_AllowCrossDomainAccess"></tm-checkbox>                        
-                        <tm-checkbox tm-name="'Sanitize Html Content'"               tm-model="tmConfig.TMSecurity.Sanitize_HtmlContent"></tm-checkbox>
-                    </div>
-                </div>
-                <!--OnInstallation-->
-                <div class="panel panel-success">
-                    <div class="panel-heading">
-                        <h3 class="panel-title"><b>OnInstallation</b></h3>
+                        <h3 class="panel-title"><b>TM Security</b>
+                        </h3>
                     </div>
                     <div class="panel-body">
-                        <tm-checkbox tm-name="'Force Default Admin Password'" tm-model="tmConfig.OnInstallation.ForceDefaultAdminPassword"></tm-checkbox>
+                        <tm-checkbox tm-name="'Show Content to Anonymous Users'" tm-model="tmConfig.TMSecurity.Show_ContentToAnonymousUsers"></tm-checkbox>
+                        <tm-checkbox tm-name="'Show Library to Anonymous Users'" tm-model="tmConfig.TMSecurity.Show_LibraryToAnonymousUsers"></tm-checkbox>
+                        <tm-checkbox tm-name="'SSL Redirect Http to Https'" tm-model="tmConfig.TMSecurity.SSL_RedirectHttpToHttps"></tm-checkbox>
+                        <tm-checkbox tm-name="'New Accounts Enabled'" tm-model="tmConfig.TMSecurity.NewAccounts_Enabled"></tm-checkbox>
+                        <tm-checkbox tm-name="'New Accounts Don\'t Expire'" tm-model="tmConfig.TMSecurity.NewAccounts_DontExpire"></tm-checkbox>
+                        <tm-checkbox tm-name="'Eval Accounts Enabled'" tm-model="tmConfig.TMSecurity.EvalAccounts_Enabled"></tm-checkbox>
+                        <tm-input tm-name="'Eval Accounts Days'" tm-model="tmConfig.TMSecurity.EvalAccounts_Days"></tm-input>
+                        <tm-checkbox tm-name="'Email Admin: On NewUsers'" tm-model="tmConfig.TMSecurity.EmailAdmin_On_NewUsers"></tm-checkbox>
+                        <tm-input tm-name="'Default Admin: UserName'" tm-model="tmConfig.TMSecurity.Default_AdminUserName"></tm-input>
+                        <tm-input tm-name="'Default Admin: Password'" tm-model="tmConfig.TMSecurity.Default_AdminPassword"></tm-input>
+                        <tm-input tm-name="'Default Admin: Email'" tm-model="tmConfig.TMSecurity.Default_AdminEmail"></tm-input>
+                        <tm-checkbox tm-name="'REST Allow Cross-Domain Access'" tm-model="tmConfig.TMSecurity.REST_AllowCrossDomainAccess"></tm-checkbox>
+                        <tm-checkbox tm-name="'Sanitize Html Content'" tm-model="tmConfig.TMSecurity.Sanitize_HtmlContent"></tm-checkbox>
+
+                        <div id="x-frame-options-settings">
+                            <!--Configuring X-Frame-Options HTTP Header-->
+                            <div class="form-group">
+                                <label class="col-sm-8 control-label">X-Frame-Options Response Headers Configuration:</label>
+                            </div>
+                            <tm-radio tm-name="'Do not send header'" tm-value="'NONE'" tm-model="tmConfig.TMSecurity.X_Frame_Options"></tm-radio>
+                            <tm-radio tm-name="'SAMEORIGIN'" tm-value="'SAMEORIGIN'" tm-model="tmConfig.TMSecurity.X_Frame_Options"></tm-radio>
+                            <tm-radio tm-name="'DENY'" tm-value="'DENY'" tm-model="tmConfig.TMSecurity.X_Frame_Options"></tm-radio>
+                            <tm-radio tm-name="'ALLOW-FROM'" tm-value="'ALLOW-FROM'" tm-model="tmConfig.TMSecurity.X_Frame_Options"></tm-radio>
+                            <!--ALLOW-FROM URL -->
+                            <div class="form-group" ng-show="tmConfig.TMSecurity.X_Frame_Options =='ALLOW-FROM'">
+                                <label class=" col-sm-6 control-label">
+                                    Provide URL
+                                </label>
+                                <div class="col-sm-6">
+                                    <input class="form-control" type="url" ng-model="tmConfig.TMSecurity.Allow_From_URI"
+                                           ng-required="tmConfig.TMSecurity.X_Frame_Options =='ALLOW-FROM'"
+                                           placeholder="eg https://www.example.com"/>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+                    <!--OnInstallation-->
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <h3 class="panel-title"><b>OnInstallation</b>
+                            </h3>
+                        </div>
+                        <div class="panel-body">
+                            <tm-checkbox tm-name="'Force Default Admin Password'" tm-model="tmConfig.OnInstallation.ForceDefaultAdminPassword"></tm-checkbox>
+                        </div>
+                    </div>
             </div>
-
+           
             <!--TMConfig-->
             <div class="col-sm-6">
                 <div class="panel panel-success">
@@ -222,7 +270,7 @@
           
             </div>
         </div>
-
+        
         <div class= "row">
             <div class="form-group">
                 <div class="col-sm-offset-1 col-sm-2">                                  
