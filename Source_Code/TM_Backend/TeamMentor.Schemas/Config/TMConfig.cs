@@ -64,7 +64,9 @@ namespace TeamMentor.CoreLib
             public bool         EvalAccounts_Enabled         { get; set; }
             public int          EvalAccounts_Days            { get; set; }
             public bool         REST_AllowCrossDomainAccess  { get; set; }                       
-            public bool 		Sanitize_HtmlContent         { get; set; }            
+            public bool 		Sanitize_HtmlContent         { get; set; }
+            public string       X_Frame_Options              { get; set; }
+            public String       Allow_From_URI               { get; set; }
             public string 		Default_AdminUserName        { get; set; }
             public string 		Default_AdminPassword        { get; set; }	
             public string 		Default_AdminEmail           { get; set; }
@@ -77,10 +79,12 @@ namespace TeamMentor.CoreLib
                 SSL_RedirectHttpToHttps      = true;
                 EvalAccounts_Enabled         = true;
                 NewAccounts_Enabled          = true;
+                Allow_From_URI               = String.Empty;
                 EvalAccounts_Days            = 15;
                 Default_AdminUserName        = TMConsts.USERDATA_DEFAULT_ADMIN_USERNAME;
                 Default_AdminPassword        = TMConsts.USERDATA_DEFAULT_ADMIN_PASSWORD;
                 Default_AdminEmail           = TMConsts.USERDATA_DEFAULT_ADMIN_EMAIL;
+                X_Frame_Options              = TMConsts.DEFAULT_X_FRAME_OPTIONS;
                 EmailAdmin_On_NewUsers       = true;
             }            
         }
